@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "./styles.sass";
+import { Link } from "react-router-dom";
 
-class Header extends Component {
+export class Header extends Component {
   render() {
     return (
       <React.Fragment>
@@ -53,14 +54,14 @@ class Header extends Component {
                     </a>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="#">
+                    <Link className="nav-link" to="/auth/login">
                       تسجيل الدخول
-                    </a>
+                    </Link>
                   </li>
                   <li className="nav-item">
-                    <a className="nav-link" href="#">
+                    <Link className="nav-link" to="/auth/register">
                       إنشاء حساب
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -71,5 +72,3 @@ class Header extends Component {
     );
   }
 }
-
-export default Header;

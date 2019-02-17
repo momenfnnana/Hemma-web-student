@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "./styles.sass";
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
 
-class Footer extends Component {
+export class Footer extends Component {
   state = {};
   render() {
     return (
@@ -87,19 +89,10 @@ class Footer extends Component {
               </p>
               <form>
                 <div className="input-group w-75">
-                  <div className="input-group-prepend">
-                    <div className="input-group-text">
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/images/flag.png"}
-                        height="15"
-                        width="20"
-                      />
-                    </div>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="رقم الجوال"
+                  <IntlTelInput
+                    containerClassName="intl-tel-input"
+                    inputClassName="form-control"
+                    defaultCountry="sa"
                   />
                 </div>
               </form>
@@ -110,5 +103,3 @@ class Footer extends Component {
     );
   }
 }
-
-export default Footer;
