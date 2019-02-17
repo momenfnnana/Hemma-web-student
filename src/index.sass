@@ -1,0 +1,86 @@
+$dark-blue: #4b3a85 
+$light-blue: #2bc3cc 
+$white: #FFF 
+$black: #000000 
+$red: #f66271 
+$silver: #dbdbdb
+$dark-silver: #a9acb4 
+
+@font-face 
+    font-family: GessLight 
+    src: url("/assets/fonts/GESSLight.otf") 
+@font-face 
+    font-family: GessMedium 
+    src: url("/assets/fonts/GESSMedium.otf") 
+@font-face 
+    font-family: GessBold 
+    src: url("/assets/fonts/GESSBold.otf") 
+html, body 
+    font-family: "GessMedium" 
+    direction: rtl
+/*General styles
+a:hover, a:focus, a:active
+  text-decoration: none
+  color: inherit
+  outline: none    
+.form-control:focus, .form-control:focus, .form-control:hover
+  outline: 0
+  box-shadow: none
+  border-color: $silver
+
+.dark-text
+    color: $dark-blue
+
+.light-text
+    color: $light-blue
+.dark-silver-text
+    color: $dark-silver
+.dark-bg
+    background: $dark-blue
+
+.light-font-text
+    font-family: GessLight
+.underlined-tabs
+    li
+        width: 100px
+        text-align: center
+    li>a.active
+        color: $light-blue
+    li>a:after
+        display: block
+        content: ""
+        border-bottom: 2px solid $light-blue
+        transform: scaleX(0)
+        transition: transform 250ms ease-in-out
+        transform-origin: 100% 50%
+        margin: 0 auto
+        margin-top: 5px
+        width: 85%
+    li>a:hover:after, li>a.active:after
+            transform: scaleX(1)
+            ransform-origin: 0 50%    
+
+form
+    input.form-control::placeholder
+        color: $silver 
+    input.form-control
+        height: 40px
+        border-radius: 5px
+        border: 1px solid $silver
+        font-family: GessLight
+        font-size: 13px  
+    .input-group-text
+        background-color: $white
+        border: 1px solid $silver
+        height: 40px
+        img
+            object-fit: contain
+    .dark-outline-btn
+        border-radius: 50px
+        border: 1px solid $dark-blue
+        color: $dark-blue
+        height: 40px
+        font-size: 13px    
+form.centered
+    margin: 0 auto
+    width: 50%
