@@ -5,7 +5,6 @@ $black: #000000
 $red: #f66271 
 $silver: #dbdbdb 
 $dark-silver: #a9acb4 
-
 @font-face 
     font-family: GessLight 
     src: url("/assets/fonts/GESSLight.otf") 
@@ -15,6 +14,9 @@ $dark-silver: #a9acb4
 @font-face 
     font-family: GessBold 
     src: url("/assets/fonts/GESSBold.otf") 
+@font-face 
+    font-family: MontserratRegular 
+    src: url("/assets/fonts/MontserratRegular.ttf")     
 html,body 
     font-family: "GessMedium" 
     direction: rtl
@@ -27,7 +29,8 @@ a:hover, a:focus, a:active
   outline: 0
   box-shadow: none
   border-color: $silver
-
+.en-text
+    font-family: MontserratRegular
 .dark-text
     color: $dark-blue
 
@@ -61,26 +64,44 @@ a:hover, a:focus, a:active
             ransform-origin: 0 50%    
 
 form
+    .input-group>.custom-select:not(:last-child), .input-group>.form-control:not(:last-child)
+        border-top-left-radius: 5px
+        border-bottom-left-radius: 5px
     input.form-control::placeholder
-        color: $silver 
+        color: $silver
+        font-family: GESSLight 
     input.form-control
+        color: $dark-blue
         height: 40px
         border-radius: 5px
         border: 1px solid $silver
-        font-family: GessLight
-        font-size: 13px  
+        font-size: 13px
     .input-group-text
         background-color: $white
         border: 1px solid $silver
         height: 40px
-        img
-            object-fit: contain
+        svg
+            color: $silver
+            font-size: 18px
     .dark-outline-btn
         border-radius: 50px
         border: 1px solid $dark-blue
         color: $dark-blue
         height: 40px
-        font-size: 13px    
+        font-size: 13px
+    input.ltr-input
+        direction: ltr
+        font-family: MontserratRegular
+    input.ltr-input::-webkit-input-placeholder
+        direction: rtl
+    small
+        color: $red
+        font-size: 10px
+        padding-top: 5px
+    .input-error>.input-group-prepend>.input-group-text, .input-error>input.form-control
+        border: 1px solid $red
+        svg
+            color: $red    
 form.centered
     margin: 0 auto
     width: 50%
@@ -88,3 +109,6 @@ form.centered
 .intl-tel-input
     direction: ltr
     width: 100%
+
+
+   

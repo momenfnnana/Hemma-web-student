@@ -8,21 +8,32 @@ import { Auth } from "./components/auth/auth";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
+import { createStore, combineReducers } from "redux";
+import { reducer as formReducer } from "redux-form";
+import { Provider } from "react-redux";
+
+const rootReducer = combineReducers({
+  form: formReducer
+});
+
+const store = createStore(rootReducer);
+
 class App extends Component {
   render() {
     return (
-      <React.Fragment>
-        <div>
-          <BrowserRouter>
-            <div>
-              <Header />
-
-              <Route path="/" component={Auth} />
-            </div>
-          </BrowserRouter>
-        </div>
-        <Footer />
-      </React.Fragment>
+      <Provider store={store}>
+        <React.Fragment>
+          <div>
+            <BrowserRouter>
+              <div>
+                <Header />
+                <Route path="/" component={Auth} />
+              </div>
+            </BrowserRouter>
+          </div>
+          <Footer />
+        </React.Fragment>
+      </Provider>
     );
   }
 }
