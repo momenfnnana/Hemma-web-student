@@ -15,8 +15,8 @@ $dark-silver: #a9acb4
     font-family: GessBold 
     src: url("/assets/fonts/GESSBold.otf") 
 @font-face 
-    font-family: MontserratRegular 
-    src: url("/assets/fonts/MontserratRegular.ttf")     
+    font-family: MontserratMedium 
+    src: url("/assets/fonts/MontserratMedium.ttf")     
 html,body 
     font-family: "GessMedium" 
     direction: rtl
@@ -30,7 +30,7 @@ a:hover, a:focus, a:active
   box-shadow: none
   border-color: $silver
 .en-text
-    font-family: MontserratRegular
+    font-family: MontserratMedium
 .dark-text
     color: $dark-blue
 
@@ -69,7 +69,6 @@ form
         border-bottom-left-radius: 5px
     input.form-control::placeholder
         color: $silver
-        font-family: GESSLight 
     input.form-control
         color: $dark-blue
         height: 40px
@@ -91,17 +90,22 @@ form
         font-size: 13px
     input.ltr-input
         direction: ltr
-        font-family: MontserratRegular
+        font-family: MontserratMedium
     input.ltr-input::-webkit-input-placeholder
         direction: rtl
+        font-family: GESSLight 
     small
         color: $red
         font-size: 10px
         padding-top: 5px
-    .input-error>.input-group-prepend>.input-group-text, .input-error>input.form-control
+    .input-error>.input-group-prepend>.input-group-text, .input-error>input.form-control, .input-error>.intl-tel-input>input
         border: 1px solid $red
         svg
-            color: $red    
+            color: $red 
+    .input-success>.input-group-prepend>.input-group-text, .input-success>input.form-control, .input-success>.intl-tel-input>input
+        border: 1px solid $light-blue
+        svg
+            color: $light-blue             
 form.centered
     margin: 0 auto
     width: 50%
@@ -109,6 +113,21 @@ form.centered
 .intl-tel-input
     direction: ltr
     width: 100%
+    font-family: MontserratMedium
+.react-code-input
+    direction: ltr
+    input
+        font-family: MontserratMedium !important
+        box-shadow: none !important
+        outline: 0 !important
+        text-align: center !important
+        color: $dark-blue !important
+        width: 36px !important
+        height: 36px !important
+        font-size: 18px !important
+        padding-left: 0px !important
+        margin: 4px !important
+        border-radius: 4px !important
 
-
-   
+.swal-title, .swal-text
+    color: $dark-blue       

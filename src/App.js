@@ -11,6 +11,8 @@ import { BrowserRouter, Route } from "react-router-dom";
 import { createStore, combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { Provider } from "react-redux";
+import { Verification } from "./components/verification/verification";
+import { Home } from "./components/home/home";
 
 const rootReducer = combineReducers({
   form: formReducer
@@ -28,6 +30,7 @@ class App extends Component {
               <div>
                 <Header />
                 <Route path="/" component={Auth} />
+                {/* <Route path="/" exact component={Verification} /> */}
               </div>
             </BrowserRouter>
           </div>
