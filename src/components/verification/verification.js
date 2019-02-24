@@ -19,12 +19,12 @@ export class Verification extends Component {
                 أدخل رمز التحقق الذي أرسلناه إلى جوالك
               </h6>
             </div>
-            <form className="centered">
+            <form className="text-center">
               <div className="mb-3">
                 <ReactCodeInput fields={6} />
               </div>
 
-              <button type="submit" className="btn dark-outline-btn w-100">
+              <button type="submit" className="btn dark-outline-btn w-50">
                 تحقق من الرمز{" "}
               </button>
             </form>

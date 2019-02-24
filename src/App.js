@@ -12,7 +12,7 @@ import { createStore, combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { Provider } from "react-redux";
 import { Verification } from "./components/verification/verification";
-import { Home } from "./components/home/home";
+import { forgotPassword } from "./components/forgotPassword/forgotPassword";
 
 const rootReducer = combineReducers({
   form: formReducer

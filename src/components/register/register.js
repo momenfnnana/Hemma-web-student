@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import IntlTelInput from "react-intl-tel-input";
-import "react-intl-tel-input/dist/main.css";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
-
 import axios from "axios";
-
 import { FaRegUser, FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
+import { inputField } from "../shared/inputs/inputField";
+import { phoneField } from "../shared/inputs/phoneField";
 
 const validate = values => {
   const errors = {};
@@ -91,81 +89,6 @@ function myFormHandler(props) {
     });
 }
 
-const renderField = props => {
-  let inputClass = props.className;
-  let wrapperClass = "input-group mb-3";
-  if (props.meta.touched && props.meta.error) {
-    wrapperClass += " input-error";
-  } else if (props.meta.touched && props.meta.valid) {
-    wrapperClass += " input-success";
-  }
-  return (
-    <React.Fragment>
-      <div className={wrapperClass}>
-        <div className="input-group-prepend">
-          <div className="input-group-text">{props.children}</div>
-        </div>
-        <input
-          {...props.input}
-          type={props.type}
-          className={inputClass}
-          placeholder={props.placeholder}
-        />
-        {props.meta.touched && props.meta.error && (
-          <small className="w-100">{props.meta.error}</small>
-        )}
-      </div>
-    </React.Fragment>
-  );
-};
-
-const renderPhoneField = props => {
-  let inputClass = props.inputClassName;
-  let containerClass = props.containerClassName;
-  let countryCode = props.defaultCountry;
-  let inputName = props.fieldName;
-  let wrapperClass = "input-group mb-3";
-  if (props.meta.touched && props.meta.error) {
-    wrapperClass += " input-error";
-  } else if (props.meta.touched && props.meta.valid) {
-    wrapperClass += " input-success";
-  }
-
-  const handleBlur = (valid, value, country) => {
-    props.input.onBlur({
-      phoneNumber: value,
-      countryCode: country.iso2
-    });
-  };
-
-  const handleChange = (valid, value, country) => {
-    props.input.onChange({
-      phoneNumber: value,
-      countryCode: country.iso2
-    });
-  };
-
-  return (
-    <React.Fragment>
-      <div className={wrapperClass}>
-        <IntlTelInput
-          {...props.IntlTelInput}
-          type={props.type}
-          fieldName={inputName}
-          containerClassName={containerClass}
-          inputClassName={inputClass}
-          defaultCountry={countryCode}
-          onPhoneNumberBlur={handleBlur}
-          onPhoneNumberChange={handleChange}
-        />
-        {props.meta.touched && props.meta.error && (
-          <small className="w-100">{props.meta.error}</small>
-        )}
-      </div>
-    </React.Fragment>
-  );
-};
-
 let RegisterComponent = props => {
   const { handleSubmit, submitting } = props;
   return (
@@ -173,7 +96,7 @@ let RegisterComponent = props => {
       <Field
         name="username"
         type="text"
-        component={renderField}
+        component={inputField}
         className="form-control border-left-0 pl-0"
         placeholder="الاسم الكامل"
       >
@@ -221,7 +144,7 @@ let RegisterComponent = props => {
       <Field
         fieldName="phone"
         name="phone"
-        component={renderPhoneField}
+        component={phoneField}
         containerClassName="intl-tel-input"
         inputClassName="form-control"
         defaultCountry="sa"
@@ -230,7 +153,7 @@ let RegisterComponent = props => {
       <Field
         name="password"
         type="password"
-        component={renderField}
+        component={inputField}
         className="form-control border-left-0 pl-0 ltr-input"
         placeholder="كلمة المرور"
       >
@@ -240,7 +163,7 @@ let RegisterComponent = props => {
       <Field
         name="confirmPassword"
         type="password"
-        component={renderField}
+        component={inputField}
         className="form-control border-left-0 pl-0 ltr-input"
         placeholder="تأكيد كلمة المرور"
       >
@@ -250,7 +173,7 @@ let RegisterComponent = props => {
       <Field
         name="email"
         type="email"
-        component={renderField}
+        component={inputField}
         className="form-control border-left-0 pl-0 ltr-input"
         placeholder="البريد الإلكتروني"
       >
