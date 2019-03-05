@@ -44,7 +44,9 @@ function myFormHandler(props) {
   axios
     .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
     .then(function(response) {
-      console.log("got response ", response);
+      let token = response.data.data.token;
+      localStorage.setItem("token", token);
+      console.log("token is ", localStorage.getItem("token"));
     })
     .catch(function(error) {
       switch (error.response.data && error.response.data.error) {
