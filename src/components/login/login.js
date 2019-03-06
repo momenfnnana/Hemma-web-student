@@ -6,6 +6,8 @@ import axios from "axios";
 import { MdLockOutline } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
+import jwt from "jsonwebtoken";
+import { withRouter } from "react-router-dom";
 
 const validate = values => {
   const errors = {};
@@ -35,66 +37,88 @@ const validate = values => {
   return errors;
 };
 
-function myFormHandler(props) {
-  let data = {
-    countryCode: props.phone.countryCode,
-    phoneNumber: props.phone.phoneNumber,
-    password: props.password
+class LoginComponent extends Component {
+  myFormHandler = values => {
+    let data = {
+      countryCode: values.phone.countryCode,
+      phoneNumber: values.phone.phoneNumber,
+      password: values.password
+    };
+    axios
+      .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
+      .then(response => {
+        localStorage.setItem("token", response.data.data.token);
+      })
+      .then(res => {
+        let token = localStorage.getItem("token");
+        let jwtToken = jwt.decode(token);
+        localStorage.setItem("jwtToken", jwtToken);
+        if (jwtToken.phoneConfirmed == "False") {
+          let headers = {
+            Authorization: `Bearer ${token}`
+          };
+          axios
+            .post(
+              "https://api.staging.hemma.sa/api/v1/auth/phone/send_token",
+              null,
+              { headers }
+            )
+            .then(response => {
+              this.props.history.push("/auth/verify");
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      })
+      .catch(error => {
+        switch (error.response.data && error.response.data.error) {
+          case "InvalidCredentials":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          default:
+            console.log("other error");
+        }
+      });
   };
-  axios
-    .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
-    .then(function(response) {
-      let token = response.data.data.token;
-      localStorage.setItem("token", token);
-      console.log("token is ", localStorage.getItem("token"));
-    })
-    .catch(function(error) {
-      switch (error.response.data && error.response.data.error) {
-        case "InvalidCredentials":
-          swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-            button: "متابعة"
-          });
-          break;
 
-        default:
-          console.log("other error");
-      }
-    });
+  render() {
+    const { handleSubmit, submitting } = this.props;
+    return (
+      <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
+        <Field
+          fieldName="phone"
+          name="phone"
+          component={phoneField}
+          containerClassName="intl-tel-input"
+          inputClassName="form-control"
+          defaultCountry="sa"
+        />
+
+        <Field
+          name="password"
+          type="password"
+          component={inputField}
+          className="form-control border-left-0 pl-0 ltr-input"
+          placeholder="كلمة المرور"
+        >
+          <MdLockOutline />
+        </Field>
+
+        <button
+          type="submit"
+          className="btn dark-outline-btn w-100"
+          disabled={submitting}
+        >
+          تسجيل الدخول
+        </button>
+      </form>
+    );
+  }
 }
-
-let LoginComponent = props => {
-  const { handleSubmit, submitting } = props;
-  return (
-    <form className="centered" onSubmit={handleSubmit(myFormHandler)}>
-      <Field
-        fieldName="phone"
-        name="phone"
-        component={phoneField}
-        containerClassName="intl-tel-input"
-        inputClassName="form-control"
-        defaultCountry="sa"
-      />
-
-      <Field
-        name="password"
-        type="password"
-        component={inputField}
-        className="form-control border-left-0 pl-0 ltr-input"
-        placeholder="كلمة المرور"
-      >
-        <MdLockOutline />
-      </Field>
-
-      <button
-        type="submit"
-        className="btn dark-outline-btn w-100"
-        disabled={submitting}
-      >
-        تسجيل الدخول
-      </button>
-    </form>
-  );
-};
 
 function mapStateToProps(state) {
   return {
@@ -109,4 +133,4 @@ LoginComponent = reduxForm({
 
 LoginComponent = connect(mapStateToProps)(LoginComponent);
 
-export const Login = LoginComponent;
+export const Login = withRouter(LoginComponent);

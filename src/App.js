@@ -30,9 +30,9 @@ class App extends Component {
             <BrowserRouter>
               <div>
                 <Header />
-                <Route path="/" component={Courses} />
-                {/* <Route path="/" component={Auth} /> */}
-                {/* <Route path="/" exact component={Verification} /> */}
+                {/* <Route path="/" component={Courses} /> */}
+                <Route path="/" component={Auth} />
+                <Route path="/auth/verify" component={Verification} />
               </div>
             </BrowserRouter>
           </div>

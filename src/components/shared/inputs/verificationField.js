@@ -3,6 +3,10 @@ import ReactCodeInput from "react-code-input";
 
 export class VerificationField extends Component {
   render() {
-    return <ReactCodeInput fields={6} />;
+    return (
+      <React.Fragment>
+        <ReactCodeInput {...this.props.input} fields={6} />
+      </React.Fragment>
+    );
   }
 }
