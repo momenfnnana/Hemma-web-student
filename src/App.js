@@ -14,6 +14,8 @@ import { Provider } from "react-redux";
 import { Verification } from "./components/verification/verification";
 import { forgotPassword } from "./components/forgotPassword/forgotPassword";
 import { Courses } from "./components/courses/courses";
+import { Home } from "./components/home/home";
+import { Register } from "./components/register/register";
 
 const rootReducer = combineReducers({
   form: formReducer
@@ -30,8 +32,8 @@ class App extends Component {
             <BrowserRouter>
               <div>
                 <Header />
-                {/* <Route path="/" component={Courses} /> */}
-                <Route path="/" component={Auth} />
+                <Route path="/courses" component={Courses} />
+                <Route path="/" exact component={Home} />
                 <Route path="/auth/verify" component={Verification} />
               </div>
             </BrowserRouter>

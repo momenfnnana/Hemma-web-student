@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { Link } from "react-router-dom";
+import { NavLink, Route } from "react-router-dom";
 
 export class Header extends Component {
   render() {
@@ -23,14 +23,14 @@ export class Header extends Component {
         <div className="header">
           <nav className="navbar navbar-expand-lg navbar-light bg-white">
             <div className="container">
-              <a className="navbar-brand" href="#">
+              <NavLink className="navbar-brand" to="/">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="70"
                 />
                 <span />
                 <h5 className="dark-text">سلسلة بالبيد التعليمية</h5>
-              </a>
+              </NavLink>
               <button
                 className="navbar-toggler"
                 type="button"
@@ -49,19 +49,31 @@ export class Header extends Component {
               >
                 <ul className="navbar-nav ml-auto">
                   <li className="nav-item active">
-                    <a className="nav-link" href="#">
+                    <NavLink
+                      className="nav-link"
+                      activeClassName="active"
+                      to="/courses"
+                    >
                       الدورات الحالية
-                    </a>
+                    </NavLink>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/auth/login">
+                    <NavLink
+                      className="nav-link"
+                      activeClassName="active"
+                      to="/auth/login"
+                    >
                       تسجيل الدخول
-                    </Link>
+                    </NavLink>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/auth/register">
+                    <NavLink
+                      className="nav-link"
+                      activeClassName="active"
+                      to="/auth/register"
+                    >
                       إنشاء حساب
-                    </Link>
+                    </NavLink>
                   </li>
                 </ul>
               </div>

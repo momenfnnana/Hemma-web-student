@@ -6,8 +6,7 @@ export class Home extends Component {
       <div className="hero-section">
         <div className="container">
           <div className="row">
-            <div className="col-md-6 col-12" />
-            <div className="col-md-6 col-12" />
+            <div className="col-12">Home Component</div>
           </div>
         </div>
       </div>
