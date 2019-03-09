@@ -16,6 +16,7 @@ import { forgotPassword } from "./components/forgotPassword/forgotPassword";
 import { Categories } from "./components/categories/list";
 import { Home } from "./components/home/home";
 import { CategoryDetails } from "./components/categories/details";
+import { Courses } from "./components/account/courses";
 
 const rootReducer = combineReducers({
   form: formReducer
@@ -41,6 +42,7 @@ class App extends Component {
                   path="/categories/details/:id"
                   component={CategoryDetails}
                 />
+                <Route path="/account/courses" component={Courses} />
               </div>
             </BrowserRouter>
           </div>

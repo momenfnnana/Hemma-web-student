@@ -40,9 +40,11 @@ a:hover, a:focus, a:active
     color: $dark-silver
 .dark-bg
     background: $dark-blue
-
 .light-font-text
     font-family: GessLight
+.cover-img
+    object-fit: cover
+    object-position: left    
 .underlined-tabs
     li
         width: 100px
@@ -81,19 +83,7 @@ form
         height: 40px
         svg
             color: $silver
-            font-size: 18px
-    .dark-outline-btn
-        border-radius: 50px
-        border: 1px solid $dark-blue
-        color: $dark-blue
-        height: 40px
-        font-size: 13px
-    .light-outline-btn
-        border-radius: 50px
-        border: 1px solid $light-blue
-        color: $light-blue
-        height: 40px
-        font-size: 13px    
+            font-size: 18px  
     input.ltr-input
         direction: ltr
         font-family: MontserratMedium
@@ -115,7 +105,18 @@ form
 form.centered
     margin: 0 auto
     width: 50%
-
+.dark-outline-btn
+    border-radius: 50px
+    border: 1px solid $dark-blue
+    color: $dark-blue
+    height: 40px
+    font-size: 13px
+.light-outline-btn
+    border-radius: 50px
+    border: 1px solid $light-blue
+    color: $light-blue
+    height: 40px
+    font-size: 13px  
 .intl-tel-input
     direction: ltr
     width: 100%
@@ -156,3 +157,8 @@ form.centered
 .unset-height
     height: unset !important
  
+.box-layout
+   border: 1px solid $silver
+   border-radius: 5px
+
+   
