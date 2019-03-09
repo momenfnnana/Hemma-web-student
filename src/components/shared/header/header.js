@@ -6,7 +6,7 @@ export class Header extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="top-header dark-bg">
+        {/* <div className="top-header dark-bg">
           <div className="container">
             <div className="row">
               <div className="col-12 text-center">
@@ -19,9 +19,17 @@ export class Header extends Component {
               </div>
             </div>
           </div>
-        </div>
-        <div className="header">
-          <nav className="navbar navbar-expand-lg navbar-light bg-white">
+        </div> */}
+        <div
+          className="header"
+          // style={{
+          //   backgroundImage: "url(" + "/assets/images/header-bg.png" + ")",
+          //   height: 900,
+          //   backgroundRepeat: "no-repeat",
+          //   backgroundSize: "cover"
+          // }}
+        >
+          <nav className="navbar navbar-expand-lg navbar-light bg-transparent">
             <div className="container">
               <NavLink className="navbar-brand" to="/">
                 <img
@@ -52,7 +60,7 @@ export class Header extends Component {
                     <NavLink
                       className="nav-link"
                       activeClassName="active"
-                      to="/courses"
+                      to="/categories"
                     >
                       الدورات الحالية
                     </NavLink>

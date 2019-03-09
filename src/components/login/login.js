@@ -64,7 +64,7 @@ class LoginComponent extends Component {
               { headers }
             )
             .then(response => {
-              this.props.history.push("/auth/verify");
+              this.props.history.push("/verify");
             })
             .catch(error => {
               console.log(error);

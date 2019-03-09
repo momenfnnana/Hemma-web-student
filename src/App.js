@@ -13,9 +13,9 @@ import { reducer as formReducer } from "redux-form";
 import { Provider } from "react-redux";
 import { Verification } from "./components/verification/verification";
 import { forgotPassword } from "./components/forgotPassword/forgotPassword";
-import { Courses } from "./components/courses/courses";
+import { Categories } from "./components/categories/list";
 import { Home } from "./components/home/home";
-import { Register } from "./components/register/register";
+import { CategoryDetails } from "./components/categories/details";
 
 const rootReducer = combineReducers({
   form: formReducer
@@ -32,9 +32,15 @@ class App extends Component {
             <BrowserRouter>
               <div>
                 <Header />
-                <Route path="/courses" component={Courses} />
+                <Route path="/auth" component={Auth} />
+
                 <Route path="/" exact component={Home} />
-                <Route path="/auth/verify" component={Verification} />
+                <Route path="/verify" component={Verification} />
+                <Route exact path="/categories" component={Categories} />
+                <Route
+                  path="/categories/details/:id"
+                  component={CategoryDetails}
+                />
               </div>
             </BrowserRouter>
           </div>

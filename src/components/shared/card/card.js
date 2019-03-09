@@ -10,7 +10,7 @@ export class Card extends Component {
     var courseDate = day + "-" + month + "-" + year;
     return (
       <React.Fragment>
-        <div className="card" dir="rtl">
+        <div className="card m-2" dir="rtl">
           <img
             className="card-img-top"
             key={course.id}
@@ -22,7 +22,7 @@ export class Card extends Component {
               {course.nameAr}
             </h6>
             <ul className="list-inline mb-2">
-              <li className="list-inline-item light-font-text small dark-text mr-4">
+              <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
                   height="12"
@@ -31,7 +31,7 @@ export class Card extends Component {
                 />
                 <span className="en-text">{course.durationInHours}</span> ساعة
               </li>
-              <li className="list-inline-item light-font-text small dark-text en-text">
+              <li className="list-inline-item light-font-text small dark-text en-text d-inline-flex align-items-center">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/quarters.png"}
                   height="12"

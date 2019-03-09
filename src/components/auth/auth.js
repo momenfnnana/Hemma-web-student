@@ -14,9 +14,11 @@ export class Auth extends Component {
           <div className="col-md-6 col-12">
             <img
               src={
-                this.props.location.pathname === "/auth/login" ?
-                process.env.PUBLIC_URL + "/assets/images/login-artwork.png" :
-                process.env.PUBLIC_URL + "/assets/images/register-artwork.png" }
+                this.props.location.pathname === "/auth/login"
+                  ? process.env.PUBLIC_URL + "/assets/images/login-artwork.png"
+                  : process.env.PUBLIC_URL +
+                    "/assets/images/register-artwork.png"
+              }
               width="100%"
             />
           </div>

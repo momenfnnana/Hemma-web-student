@@ -81,7 +81,7 @@ class VerificationComponent extends Component {
                 <Field name="token" component={VerificationField} />
               </div>
 
-              <button type="submit" className="btn dark-outline-btn w-50">
+              <button type="submit" className="btn dark-outline-btn w-100">
                 تحقق من الرمز{" "}
               </button>
             </form>

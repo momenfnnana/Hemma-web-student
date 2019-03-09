@@ -1,23 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../card/card";
 
 export class CardsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      courses: [],
-      responsive: {
-        0: { items: 1 },
-        600: { items: 1 },
-        1024: { items: 3 }
-      },
-      stagePadding: {
-        paddingLeft: 0,
-        paddingRight: 0
-      }
+      courses: []
     };
   }
 
@@ -30,7 +22,6 @@ export class CardsList extends Component {
       )
       .then(response => {
         this.setState({ courses: response.data.data.data });
-        console.log("courses are ", this.state.courses);
       })
       .catch(error => {
         console.log(error);
@@ -44,22 +35,41 @@ export class CardsList extends Component {
   }
 
   render() {
-    const items = this.renderCards();
+    var settings = {
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: false
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            initialSlide: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    };
     return (
       <React.Fragment>
-        <div dir="ltr">
-          <AliceCarousel
-            items={items}
-            responsive={this.state.responsive}
-            dotsDisabled={true}
-            buttonsDisabled={true}
-            mouseDragEnabled={true}
-            stagePadding={this.state.stagePadding}
-            infinite={true}
-            autoPlayDirection="rtl"
-            startIndex={0}
-          />
-        </div>
+        <Slider {...settings}>{this.renderCards()}</Slider>
       </React.Fragment>
     );
   }
