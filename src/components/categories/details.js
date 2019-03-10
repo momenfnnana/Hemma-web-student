@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
+import { PublicationDetails } from "../publication/publication";
 
 export class CategoryDetails extends Component {
   constructor(props) {
@@ -17,14 +18,15 @@ export class CategoryDetails extends Component {
       lectures: [],
       content: [],
       publications: [],
+      selectedPublicationId: null,
       modalIsOpen: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
+  openModal(id) {
+    this.setState({ modalIsOpen: true, selectedPublicationId: id });
   }
   closeModal() {
     this.setState({ modalIsOpen: false });
@@ -77,7 +79,6 @@ export class CategoryDetails extends Component {
       )
       .then(response => {
         this.setState({ publications: response.data.data.data });
-        console.log(this.state.publications);
       })
       .catch(error => {
         console.log(error);
@@ -90,7 +91,7 @@ export class CategoryDetails extends Component {
         <img
           src={publication.thumbnailUrl}
           width="100%"
-          onClick={this.openModal}
+          onClick={() => this.openModal(publication.id)}
         />
       </div>
     ));
@@ -148,24 +149,6 @@ export class CategoryDetails extends Component {
   // }
 
   render() {
-    const customStyles = {
-      content: {
-        top: "50%",
-        left: "50%",
-        right: "auto",
-        bottom: "auto",
-        marginRight: "-50%",
-        transform: "translate(-50%, -50%)",
-        width: "50%",
-        height: "50%",
-        borderWidth: 0
-      },
-      overlay: {
-        backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 2
-      }
-    };
-
     var customSettings = {
       infinite: false,
       slidesToShow: 1,
@@ -203,8 +186,6 @@ export class CategoryDetails extends Component {
       infinite: false,
       slidesToShow: 4,
       slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 2000,
       responsive: [
         {
           breakpoint: 1024,
@@ -254,7 +235,7 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-            <div className="row pt-5 pb-5">
+            <div className="row pt-2 pb-5">
               <div className="col-12">
                 <CardsList catId={params.id} />
               </div>
@@ -318,23 +299,11 @@ export class CategoryDetails extends Component {
 
               <div className="col-12">
                 <Slider {...settings}>{this.renderPublications()}</Slider>
-                <Modal
-                  isOpen={this.state.modalIsOpen}
-                  onRequestClose={this.closeModal}
-                  style={customStyles}
-                >
-                  {/* <button onClick={this.closeModal}>close</button> */}
-                  <div className="container pt-3">
-                    <div className="row">
-                      <div className="col-6">
-                        <h6 className="light-text">تفاصيل الكتاب</h6>
-                      </div>
-                      <div className="col-6">
-                        <h4>Hello</h4>
-                      </div>
-                    </div>
-                  </div>
-                </Modal>
+                <PublicationDetails
+                  id={this.state.selectedPublicationId}
+                  modalIsOpen={this.state.modalIsOpen}
+                  onClose={this.closeModal}
+                />
               </div>
             </div>
           </div>

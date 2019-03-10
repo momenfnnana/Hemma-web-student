@@ -20,15 +20,7 @@ export class Header extends Component {
             </div>
           </div>
         </div> */}
-        <div
-          className="header"
-          // style={{
-          //   backgroundImage: "url(" + "/assets/images/header-bg.png" + ")",
-          //   height: 900,
-          //   backgroundRepeat: "no-repeat",
-          //   backgroundSize: "cover"
-          // }}
-        >
+        <div className="header">
           <nav className="navbar navbar-expand-lg navbar-light bg-transparent">
             <div className="container">
               <NavLink className="navbar-brand" to="/">

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./styles.sass";
 
 export class Card extends Component {
   render() {
@@ -10,7 +11,7 @@ export class Card extends Component {
     var courseDate = day + "-" + month + "-" + year;
     return (
       <React.Fragment>
-        <div className="card m-2" dir="rtl">
+        <div className="card shadow-sm border-0 m-2" dir="rtl">
           <img
             className="card-img-top"
             key={course.id}
