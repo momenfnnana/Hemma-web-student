@@ -32,17 +32,17 @@ export class Courses extends Component {
                     src={
                       process.env.PUBLIC_URL + "/assets/images/profile-img.png"
                     }
-                    height="150"
+                    height="110"
                     className="mb-3"
                   />
-                  <h4 className="dark-text">إبراهيم أحمد</h4>
+                  <h6 className="dark-text mb-1">إبراهيم أحمد</h6>
                   <p className="dark-text en-text small mb-0">
                     Raihan-s6h@hotmail.com
                   </p>
                   <p className="dark-text en-text small mb-1" dir="ltr">
                     +962759514752{" "}
                   </p>
-                  <a href="" className="light-text text-underline">
+                  <a href="" className="light-text text-underline small">
                     تعديل الملف الشخصي
                   </a>
                 </div>
@@ -57,18 +57,18 @@ export class Courses extends Component {
                     أختر دورتك الآن
                   </button> */}
 
-                  <div className="bg-white box-layout w-100 p-4 d-flex align-items-center mb-4">
+                  <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
                     <div className="media w-75">
                       <img
-                        class="mr-3 rounded cover-img"
+                        className="mr-3 rounded cover-img"
                         src={
                           process.env.PUBLIC_URL + "/assets/images/course1.png"
                         }
-                        height="120"
-                        width="120"
+                        height="100"
+                        width="100"
                       />
                       <div className="media-body mt-2">
-                        <h5 class="mt-0 dark-text">دورة القدرات للجامعيين</h5>
+                        <h6 class="mt-0 dark-text">دورة القدرات للجامعيين</h6>
                         <span class="badge blue-status light-font-text">
                           سارية
                         </span>
@@ -76,23 +76,23 @@ export class Courses extends Component {
                     </div>
                     <div className="seperator" />
                     <div className="">
-                      <h6 className="dark-text mb-0">الحالة المالية</h6>
+                      <h6 className="dark-text mb-0 small">الحالة المالية</h6>
                       <p className="dark-silver-text small mb-0">مسددة </p>
                     </div>
                   </div>
 
-                  <div className="bg-white box-layout w-100 p-4 d-flex align-items-center mb-4">
+                  <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
                     <div className="media w-75">
                       <img
                         class="mr-3 rounded cover-img"
                         src={
                           process.env.PUBLIC_URL + "/assets/images/course2.png"
                         }
-                        height="120"
-                        width="120"
+                        height="100"
+                        width="100"
                       />
                       <div className="media-body mt-2">
-                        <h5 class="mt-0 dark-text">دورة القدرات للجامعيين</h5>
+                        <h6 class="mt-0 dark-text">دورة القدرات للجامعيين</h6>
 
                         <span
                           class="badge yellow-status light-font-text tooltip-on-hover"
@@ -109,23 +109,34 @@ export class Courses extends Component {
                           placement="bottom"
                           style={{
                             backgroundColor: "#f2fdfe",
-                            color: "#4b3a85",
-                            opacity: 1
+                            color: "#4b3a85"
                           }}
                         >
                           <p className="light-font-text small mb-1 mt-2">
                             حقك علينا لسه ما تم تأكيد طلبك إذا تجاوز طلبك 48
                             ساعة ياريت تراسلنا
                           </p>
-                          <p className="small en-text mb-2" dir="ltr">
-                            +9660539412412
+                          <p
+                            className="small en-text mb-2 d-inline-flex align-items-center"
+                            dir="ltr"
+                          >
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/whatsapp.png"
+                              }
+                              height="20"
+                              width="20"
+                              className="ml-1"
+                            />
+                            +9660539412412{" "}
                           </p>
                         </Tooltip>
                       </div>
                     </div>
                     <div className="seperator" />
                     <div className="">
-                      <h6 className="dark-text mb-0">الحالة المالية</h6>
+                      <h6 className="dark-text mb-0 small">الحالة المالية</h6>
                       <p className="dark-silver-text small mb-0">
                         مسددة جزئيا{" "}
                       </p>

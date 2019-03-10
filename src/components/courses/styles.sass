@@ -1,0 +1,150 @@
+$dark-blue: #4b3a85
+$light-blue: #2bc3cc
+$white: #FFF
+$black: #000000
+$red: #f66271
+$silver: #d7d7d7
+
+.u-position-absolute
+  position: absolute
+
+.u-position-relative
+  position: relative
+
+.accordion
+  border-radius: 2.5px
+
+.accordion__item--has-icon
+  position: relative
+
+.accordion__title
+  background-color: #7f72a7
+  cursor: pointer
+  padding-left: 25px
+  padding-right: 25px
+  width: 100%
+  border: none
+  border-top-right-radius: 2.5px
+  border-top-left-radius: 2.5px
+  height: 50px
+  display: flex
+  align-items: center
+
+.accordion__body
+  padding-left: 25px
+  padding-right: 25px
+  display: block
+  animation: fadein 0.35s ease-in
+  background: #FBFBFB
+  border: solid 0.5px #dbdbdb
+  border-top: none
+  height: 50px
+  display: flex
+  align-items: center
+.accordion__body:last-child
+  border-bottom-right-radius: 2.5px
+  border-bottom-left-radius: 2.5px
+
+.accordion__body--hidden
+  display: none
+  opacity: 0
+  animation: fadein 0.35s ease-in
+
+.accordion__title > *:last-child, .accordion__body > *:last-child
+  margin-bottom: 0
+
+.accordion__arrow
+  display: inline-block
+  position: relative
+  width: 24px
+  height: 12px
+  position: absolute
+  top: 50%
+  right: 0
+  margin-top: -6px
+  &::after
+    display: block
+    position: absolute
+    top: 50%
+    width: 10px
+    height: 2px
+    background-color: currentColor
+    content: ''
+  &::before
+    display: block
+    position: absolute
+    top: 50%
+    width: 10px
+    height: 2px
+    background-color: currentColor
+    content: ''
+    left: 4px
+    transform: rotate(45deg)
+
+[aria-expanded='true'] .accordion__arrow::before, [aria-selected='true'] .accordion__arrow::before
+  transform: rotate(-45deg)
+
+.accordion__arrow::after
+  right: 4px
+  transform: rotate(-45deg)
+
+[aria-expanded='true'] .accordion__arrow::after, [aria-selected='true'] .accordion__arrow::after
+  transform: rotate(45deg)
+
+.accordion__arrow
+  &::before, &::after
+    transition: transform 0.25s ease, -webkit-transform 0.25s ease
+
+/* --------------------------------------------------
+/* ---------------- Animation part ------------------
+/* --------------------------------------------------
+
+@keyframes fadein
+  0%
+    opacity: 0
+
+  100%
+    opacity: 1
+
+
+@keyframes move-down
+  0%
+    transform: translateY(0)
+
+  10%
+    transform: translateY(0)
+
+  20%
+    transform: translateY(5px)
+
+  30%
+    transform: translateY(0)
+
+  100%
+    transform: translateY(0)
+
+
+@keyframes move-up
+  0%
+    transform: translateY(0)
+
+  10%
+    transform: translateY(0)
+
+  20%
+    transform: translateY(-5px)
+
+  30%
+    transform: translateY(0)
+
+  100%
+    transform: translateY(0)
+
+
+.accordion__title--animated
+  &:hover .accordion__arrow
+    animation-name: move-down
+    animation-duration: 1.5s
+  &[aria-expanded='true']:hover .accordion__arrow
+    animation-name: move-up
+    animation-duration: 1.5s

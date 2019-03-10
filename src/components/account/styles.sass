@@ -12,7 +12,8 @@ $yellow: #ffe552
 .silver-bg
   background-color: #fbfbfb
 .badge
-   padding: 10px 15px 10px 15px
+   padding: 5px 15px 5px 15px
+   font-size: 70%
 .blue-status
    background-color: $light-blue
    color: $white
@@ -22,7 +23,11 @@ $yellow: #ffe552
    
 .seperator
     float: left
-    height: 120px
+    height: 100px
     width: 1px
     background-color: $silver
     margin-left: 25px
+.bs-tooltip-auto[x-placement^=bottom] .arrow::before, .bs-tooltip-bottom .arrow::before
+    border-bottom-color: #f2fdfe
+.tooltip.show
+    opacity: 1    
