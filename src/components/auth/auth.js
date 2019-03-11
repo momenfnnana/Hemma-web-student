@@ -1,10 +1,18 @@
 import React, { Component } from "react";
 import "./styles.sass";
-
 import { Login } from "../login/login";
 import { Register } from "../register/register";
-
 import { NavLink, Route } from "react-router-dom";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { GoogleLogin } from "react-google-login";
+
+const responseFacebook = response => {
+  console.log(response);
+};
+
+const responseGoogle = response => {
+  console.log(response);
+};
 
 export class Auth extends Component {
   render() {
@@ -63,22 +71,46 @@ export class Auth extends Component {
             </div>
             <ul className="list-inline mb-0 text-center">
               <li className="list-inline-item">
-                <a href="">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/google-plus.png"
-                    }
-                    height="35"
-                  />
-                </a>
+                <GoogleLogin
+                  clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                  render={renderProps => (
+                    <button
+                      className="transparent-bg border-0 p-0"
+                      onClick={renderProps.onClick}
+                    >
+                      {" "}
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/google-plus.png"
+                        }
+                        height="35"
+                      />
+                    </button>
+                  )}
+                  onSuccess={responseGoogle}
+                  onFailure={responseGoogle}
+                />
               </li>
               <li className="list-inline-item">
-                <a href="">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/facebook.png"}
-                    height="35"
-                  />
-                </a>
+                <FacebookLogin
+                  appId="1088597931155576"
+                  autoLoad
+                  callback={responseFacebook}
+                  render={renderProps => (
+                    <button
+                      className="transparent-bg border-0 p-0"
+                      onClick={renderProps.onClick}
+                    >
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/facebook.png"
+                        }
+                        height="35"
+                      />
+                    </button>
+                  )}
+                />
               </li>
               <li className="list-inline-item">
                 <a href="">

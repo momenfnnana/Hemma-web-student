@@ -4,7 +4,8 @@ $mid-blue: #6c53bf
 $white: #FFF 
 $black: #000000 
 $red: #f66271 
-$silver: #dbdbdb 
+$silver: #dbdbdb
+$light-silver: #f2f2f2 
 $dark-silver: #a9acb4 
 @font-face 
     font-family: GessLight 
@@ -30,6 +31,8 @@ a:hover, a:focus, a:active
   outline: 0
   box-shadow: none
   border-color: $silver
+.btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus, button.active.focus, button.active:focus, button.focus, button:active.focus, button:active:focus, button:focus
+  outline: 0  
 .en-text
     font-family: MontserratMedium
 .dark-text
@@ -151,7 +154,7 @@ form.centered
     height: 75px
     border-top-left-radius: 85px
     border-top-right-radius: 85px
-    border: 10px solid $silver
+    border: 5px solid $light-silver
     border-bottom: 0
 .gradient-bg
     width: 70px
