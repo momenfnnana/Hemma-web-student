@@ -5,6 +5,22 @@ $black: #000000
 $red: #f66271
 $silver: #d7d7d7
 
+.section-card
+  border-bottom: none
+.section-card
+    .card-header
+        background-color: #7f72a7
+        cursor: pointer
+        padding-left: 20px
+        padding-right: 20px
+        width: 100%
+        height: 45px
+        display: flex
+        align-items: center
+        h6
+          font-size: 12px
+     
+     
 .u-position-absolute
   position: absolute
 
@@ -18,32 +34,35 @@ $silver: #d7d7d7
   position: relative
 
 .accordion__title
-  background-color: #7f72a7
+  background-color: #FBFBFB
   cursor: pointer
-  padding-left: 25px
-  padding-right: 25px
+  padding-left: 20px
+  padding-right: 20px
   width: 100%
   border: none
-  border-top-right-radius: 2.5px
-  border-top-left-radius: 2.5px
-  height: 50px
+  height: 45px
   display: flex
   align-items: center
+  border-bottom: 0.5px solid #dbdbdb
+  &:focus, &:active
+    outline: 0
+    box-shadow: none
 
 .accordion__body
-  padding-left: 25px
-  padding-right: 25px
   display: block
   animation: fadein 0.35s ease-in
   background: #FBFBFB
-  border: solid 0.5px #dbdbdb
   border-top: none
-  height: 50px
   display: flex
   align-items: center
-.accordion__body:last-child
-  border-bottom-right-radius: 2.5px
-  border-bottom-left-radius: 2.5px
+  .list-group-item, .list-group-flush .list-group-item:last-child
+    border: 1px solid #dbdbdb
+    border-left: none
+    border-right: none
+  ul>li
+    font-size: 11px
+    
+       
 
 .accordion__body--hidden
   display: none

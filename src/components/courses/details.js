@@ -14,7 +14,8 @@ export class CourseDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      details: []
+      details: [],
+      checked: false
     };
   }
 
@@ -34,22 +35,103 @@ export class CourseDetails extends Component {
 
   renderFeatures() {
     const features = this.state.details.features;
+    if (features) {
+      return features.map(feature => (
+        <React.Fragment>
+          <div className="col-6 align-items-center pb-2" key={feature.id}>
+            <p className="small dark-text mb-0">
+              <img
+                src={feature.icon}
+                className="mr-2 contain-img"
+                height="15"
+                width="15"
+              />
+              {feature.descriptionAr}
+            </p>
+          </div>
+        </React.Fragment>
+      ));
+    }
+  }
 
-    // return features.map(feature => (
-    //   <React.Fragment>
-    //     <div className="col-6 align-items-center pb-2" key={feature.id}>
-    //       <p className="small dark-text mb-0">
-    //         <img
-    //           src={feature.icon}
-    //           className="mr-2 contain-img"
-    //           height="15"
-    //           width="15"
-    //         />
-    //         {feature.descriptionAr}
-    //       </p>
-    //     </div>
-    //   </React.Fragment>
-    // ));
+  renderSections() {
+    const sections = this.state.details.sections;
+    if (sections) {
+      return sections.map(section => (
+        <div className="row mt-3">
+          <div className="col-12">
+            <div className="card section-card" key={section.id}>
+              <div className="card-header border-bottom-0">
+                <h6 className="text-white small mb-0 ">{section.nameAr}</h6>
+              </div>
+              {this.renderChapters(section.chapters)}
+            </div>
+          </div>
+        </div>
+      ));
+    }
+  }
+
+  renderChapters(chapters) {
+    if (chapters) {
+      return chapters.map(chapter => (
+        <Accordion>
+          <AccordionItem>
+            <AccordionItemTitle>
+              <h6 className="dark-text mb-0 small dark-text">
+                {chapter.nameAr}
+              </h6>
+            </AccordionItemTitle>
+            <AccordionItemBody>
+              <ul className="list-group list-group-flush flex-fill">
+                {this.renderLectures(chapter.lectures)}
+              </ul>
+            </AccordionItemBody>
+          </AccordionItem>
+        </Accordion>
+      ));
+    }
+  }
+
+  renderLectures(lectures) {
+    if (lectures) {
+      return lectures.map(lecture => (
+        <li className="list-group-item bg-transparent small dark-silver-text light-font-text">
+          <div className="row">
+            <div className="col-6">
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/play.png"}
+                className="mr-2"
+                height="15"
+              />
+              {lecture.nameAr}
+            </div>
+            <div className="col-6 d-flex justify-content-end">
+              {lecture.scheduledAt}
+
+              {lectures.status == "Live" || "Scheduled" || "Recorded" ? (
+                <img
+                  src={
+                    this.state.checked
+                      ? process.env.PUBLIC_URL + "/assets/images/blue-check.png"
+                      : process.env.PUBLIC_URL + "/assets/images/check.png"
+                  }
+                  className="ml-2"
+                  height="15"
+                  onClick={() => this.setState({ checked: true })}
+                />
+              ) : (
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/check.png"}
+                  className="ml-2"
+                  height="15"
+                />
+              )}
+            </div>
+          </div>
+        </li>
+      ));
+    }
   }
 
   render() {
@@ -160,33 +242,7 @@ export class CourseDetails extends Component {
                 </div>
 
                 <div className="row">{this.renderFeatures()}</div>
-
-                <div className="row mt-3">
-                  <div className="col-12">
-                    <Accordion>
-                      <AccordionItem expanded={true}>
-                        <AccordionItemTitle>
-                          <h6 className="text-white small mb-0">الجزء الكمي</h6>
-                        </AccordionItemTitle>
-                        <AccordionItemBody>
-                          <h6 className="dark-text small mb-0">
-                            - النسبة والتناسب
-                          </h6>
-                        </AccordionItemBody>
-                        <AccordionItemBody>
-                          <h6 className="dark-text small mb-0">
-                            - النسبة والتناسب
-                          </h6>
-                        </AccordionItemBody>
-                        <AccordionItemBody>
-                          <h6 className="dark-text small mb-0">
-                            - النسبة والتناسب
-                          </h6>
-                        </AccordionItemBody>
-                      </AccordionItem>
-                    </Accordion>
-                  </div>
-                </div>
+                {this.renderSections()}
               </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ export class Card extends Component {
     return (
       <React.Fragment>
         <Link to={`/course/details/${course.id}`} key={course.id}>
-          <div className="card shadow-sm border-0 m-2" dir="rtl">
+          <div className="card course-card shadow-sm border-0 m-2" dir="rtl">
             <img
               className="card-img-top"
               key={course.id}
