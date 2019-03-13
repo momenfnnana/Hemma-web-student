@@ -3,7 +3,6 @@ import "./styles.sass";
 import {
   Carousel,
   CarouselItem,
-  CarouselControl,
   CarouselIndicators,
   CarouselCaption
 } from "reactstrap";

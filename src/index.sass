@@ -37,7 +37,13 @@ a:hover, a:focus, a:active
     font-family: MontserratMedium
 .dark-text
     color: $dark-blue
-
+.line-through-text
+    text-decoration: line-through    
+.br-left-0
+    border-top-left-radius: 0px !important
+    border-bottom-left-radius: 0px !important
+.justify-content-evenly
+    justify-content: space-evenly    
 .light-text
     color: $light-blue
 .mid-text
@@ -46,13 +52,17 @@ a:hover, a:focus, a:active
     color: $dark-silver
 .dark-bg
     background: $dark-blue
+.light-bg
+    background-color: $light-blue     
 .light-font-text
     font-family: GessLight
 .cover-img
     object-fit: cover
     object-position: left
 .contain-img
-    object-fit: contain        
+    object-fit: contain
+.smaller
+    font-size: 65%            
 .underlined-tabs
     li
         width: 100px
@@ -119,6 +129,13 @@ form.centered
     color: $dark-blue
     height: 40px
     font-size: 13px
+.dark-btn
+    border-radius: 50px
+    border: 1px solid $dark-blue
+    color: $white
+    height: 40px
+    font-size: 13px
+    background-color: $dark-blue    
 .light-outline-btn
     border-radius: 50px
     border: 1px solid $light-blue

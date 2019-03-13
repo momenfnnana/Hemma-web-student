@@ -19,6 +19,7 @@ import { CategoryDetails } from "./components/categories/details";
 import { Courses } from "./components/account/courses";
 import { CourseDetails } from "./components/courses/details";
 import { EditAccount } from "./components/account/edit-account";
+import { Cart } from "./components/cart/cart";
 
 const rootReducer = combineReducers({
   form: formReducer
@@ -47,6 +48,7 @@ class App extends Component {
                 <Route path="/account/courses" component={Courses} />
                 <Route path="/account/edit" component={EditAccount} />
                 <Route path="/course/details/:id" component={CourseDetails} />
+                <Route path="/cart" component={Cart} />
               </div>
             </BrowserRouter>
           </div>
