@@ -69,6 +69,8 @@ class LoginComponent extends Component {
             .catch(error => {
               console.log(error);
             });
+        } else {
+          this.props.history.push("/");
         }
       })
       .catch(error => {

@@ -43,6 +43,7 @@ export class Footer extends Component {
                           "/assets/images/snapchat-dark.png"
                         }
                         height="15"
+                        alt="Snapchat"
                       />
                     </a>
                   </li>
@@ -54,6 +55,7 @@ export class Footer extends Component {
                           "/assets/images/instagram-dark.png"
                         }
                         height="15"
+                        alt="Instgram"
                       />
                     </a>
                   </li>
@@ -65,6 +67,7 @@ export class Footer extends Component {
                           "/assets/images/twitter-dark.png"
                         }
                         height="15"
+                        alt="Twitter"
                       />
                     </a>
                   </li>
@@ -76,6 +79,7 @@ export class Footer extends Component {
                           "/assets/images/youtube-dark.png"
                         }
                         height="15"
+                        alt="Youtube"
                       />
                     </a>
                   </li>

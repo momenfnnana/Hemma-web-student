@@ -5,6 +5,8 @@ $black: #000000
 $red: #f66271
 $silver: #d7d7d7
 
+.clickable
+  cursor: pointer
 .top-header
     height: 60px
     display: flex
@@ -32,7 +34,6 @@ $silver: #d7d7d7
 
         .navbar-nav
             .nav-item
-                width: 120px
                 text-align: center
                 border: 1px solid transparent
 
@@ -53,8 +54,9 @@ $silver: #d7d7d7
             .nav-link
                 color: $dark-blue
                 font-size: 14px
-
-            .nav-item:last-child
+            .nav-link.light-text
+                color: $light-blue 
+            .nav-item.rounded-nav-item
                 border: 1px solid $light-blue
                 border-radius: 50px
                 &:hover:after, &.active:after
@@ -62,5 +64,22 @@ $silver: #d7d7d7
 
                 .nav-link
                     color: $light-blue
+            .dropdown-menu
+               min-width: 7rem
+               border: 1px solid #dbdbdb
+               padding: 0
+            .dropdown-item>a
+                font-size: 11px
+            .dropdown-item:first-child
+                border-bottom: 0.5px solid #dbdbdb
+            .dropdown-item:focus, .dropdown-item:hover
+                background-color: $white
+                .nav-link
+                  color: $light-blue
+                  margin-right: 5px
+                  transition: all ease-out 0.3s
+                          
+ 
+     
 
          

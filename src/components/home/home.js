@@ -6,6 +6,8 @@ import {
   CarouselIndicators,
   CarouselCaption
 } from "reactstrap";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const items = [
   {
@@ -14,24 +16,12 @@ const items = [
     caption:
       "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
   }
-  // {
-  //   id: 2,
-  //   altText: "Slide 2",
-  //   caption:
-  //     "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
-  // },
-  // {
-  //   id: 3,
-  //   altText: "Slide 3",
-  //   caption:
-  //     "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
-  // }
 ];
 
 export class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { activeIndex: 0 };
+    this.state = { activeIndex: 0, categories: [] };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
@@ -68,6 +58,42 @@ export class Home extends Component {
   goToIndex(newIndex) {
     if (this.animating) return;
     this.setState({ activeIndex: newIndex });
+  }
+
+  componentDidMount() {
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/categories")
+      .then(response => {
+        this.setState({ categories: response.data.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  renderCategories() {
+    const cats = this.state.categories;
+    return cats.map(cat => (
+      <React.Fragment>
+        <div className="pt-5 pb-2 col-md-3">
+          <Link to={`/categories/details/${cat.id}`} key={cat.id}>
+            <div
+              key={cat.id}
+              className="half-circle-border d-flex flex-column align-items-center mx-auto"
+            >
+              <img
+                key={cat.id}
+                src={cat.icon}
+                height="45"
+                width="45"
+                className="mt-3 mb-2"
+              />
+              <h6 className="dark-text small text-center">{cat.nameAr}</h6>
+            </div>
+          </Link>
+        </div>
+      </React.Fragment>
+    ));
   }
 
   render() {
@@ -107,99 +133,7 @@ export class Home extends Component {
 
         <section className="categories-section padder">
           <div className="container">
-            <div className="row">
-              <div className="col-md-6 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-              <div className="col-md-6 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-              <div className="col-md-4 pt-5 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-              <div className="col-md-4 pt-5 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-              <div className="col-md-4 pt-5 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-              <div className="col-md-6 pt-5 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-              <div className="col-md-6 pt-5 pb-2">
-                <div className="half-circle-border d-flex flex-column align-items-center mx-auto">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/brain.png"}
-                    height="45"
-                    width="45"
-                    className="mt-3 mb-2"
-                  />
-                  <h6 className="dark-text small text-center">
-                    كفايات المعلمين والمعلمات
-                  </h6>
-                </div>
-              </div>
-            </div>
+            <div className="row">{this.renderCategories()}</div>
           </div>
         </section>
 
@@ -213,10 +147,6 @@ export class Home extends Component {
                 />
               </div>
               <div className="col-md-4 d-flex flex-column">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/cloud.png"}
-                  className="contain-img align-self-end w-75"
-                />
                 <h5 className="dark-text">بث مباشر</h5>
                 <p className="dark-text light-font-text small w-75">
                   اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
