@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import { MdLockOutline } from "react-icons/md";
-import { inputField } from "../shared/inputs/inputField";
+import { phoneField } from "../../shared/inputs/phoneField";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
@@ -21,22 +20,21 @@ const validate = values => {
   return errors;
 };
 
-class resetPasswordComponent extends Component {
+class forgotPasswordComponent extends Component {
   myFormHandler = values => {
     let data = {
       countryCode: values.phone.countryCode,
-      phoneNumber: values.phone.phoneNumber,
-      token: values.token,
-      password: values.password
+      phoneNumber: values.phone.phoneNumber
     };
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/auth/password/reset/phone/set_new",
+        "https://api.staging.hemma.sa/api/v1/auth/password/reset/phone/send_token",
         data
       )
       .then(response => {
-        swal("تنبيه", "لقد تم تغيير كلمة المرور بنجاح", "error", {
-          button: "متابعة"
+        this.props.history.push({
+          pathname: "/verify/identity",
+          userInfo: data
         });
       })
       .catch(error => {
@@ -51,12 +49,22 @@ class resetPasswordComponent extends Component {
               button: "متابعة"
             });
             break;
-          case "InvalidConfirmationToken":
+          case "TooManyFailedAttempts":
+            swal(
+              "عفواً",
+              "لقد استنفذت عدد المرات الممكن استعادة حسابك بها ",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
+          case "TokenIssuanceInRefractoryPeriod":
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
               button: "متابعة"
             });
             break;
-          case "VerificationTokenExpired":
+          case "FailedToSend":
             swal("عفواً", "حصل خطأ ما", "error", {
               button: "متابعة"
             });
@@ -73,40 +81,29 @@ class resetPasswordComponent extends Component {
         <div className="row align-items-center h-100">
           <div className="col-md-6 col-12">
             <img
-              src={
-                process.env.PUBLIC_URL + "/assets/images/identity-artwork.png"
-              }
+              src={process.env.PUBLIC_URL + "/assets/images/verify-artwork.png"}
               width="100%"
             />
           </div>
           <div className="col-md-6 col-12">
             <div className="text-center mb-3">
-              <h6 className="light-text small">تم التحقق من الرمز</h6>
-              <h6 className="dark-text small">قم بتعيين كلمة مرور جديدة</h6>
+              <h6 className="light-text small">نسيت كلمة المرور؟</h6>
+              <h6 className="dark-text small">
+                ادخل رقم جوالك لارسال رمز التحقق{" "}
+              </h6>
             </div>
             <form
               className="centered"
               onSubmit={handleSubmit(this.myFormHandler)}
             >
               <Field
-                name="password"
-                type="password"
-                component={inputField}
-                className="form-control border-left-0 pl-0 ltr-input"
-                placeholder="كلمة المرور"
-              >
-                <MdLockOutline />
-              </Field>
-
-              <Field
-                name="password"
-                type="password"
-                component={inputField}
-                className="form-control border-left-0 pl-0 ltr-input"
-                placeholder="تأكيد كلمة المرور"
-              >
-                <MdLockOutline />
-              </Field>
+                fieldName="phone"
+                name="phone"
+                component={phoneField}
+                containerClassName="intl-tel-input"
+                inputClassName="form-control"
+                defaultCountry="sa"
+              />
 
               <button
                 type="submit"
@@ -125,15 +122,15 @@ class resetPasswordComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.resetPassword && state.form.resetPassword.values
+    formValues: state.form.forgotPassword && state.form.forgotPassword.values
   };
 }
 
-resetPasswordComponent = reduxForm({
-  form: "resetPassword",
+forgotPasswordComponent = reduxForm({
+  form: "forgotPassword",
   validate
-})(resetPasswordComponent);
+})(forgotPasswordComponent);
 
-resetPasswordComponent = connect(mapStateToProps)(resetPasswordComponent);
+forgotPasswordComponent = connect(mapStateToProps)(forgotPasswordComponent);
 
-export const resetPassword = withRouter(resetPasswordComponent);
+export const forgotPassword = withRouter(forgotPasswordComponent);

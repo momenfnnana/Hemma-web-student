@@ -2,10 +2,83 @@ import React, { Component } from "react";
 import "./styles.sass";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
+import { FaAngleRight } from "react-icons/fa";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
+import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 
-export class Footer extends Component {
-  state = {};
+const validate = values => {
+  const errors = {};
+  if (
+    !values.phone ||
+    !values.phone.phoneNumber ||
+    values.phone.phoneNumber.trim() === ""
+  ) {
+    errors.phone = "يجب تعبئة هذه الخانة";
+  } else if (values.phone.phoneNumber.length < 8) {
+    errors.phone = "ادخل رقم هاتف صحيح";
+  }
+  return errors;
+};
+
+class FooterComponent extends Component {
   render() {
+    const renderPhoneField = props => {
+      let inputClass = props.inputClassName;
+      let containerClass = props.containerClassName;
+      let countryCode = props.defaultCountry;
+      let inputName = props.fieldName;
+      let wrapperClass = "input-group mb-3";
+      if (props.meta.touched && props.meta.error) {
+        wrapperClass += " input-error";
+      } else if (props.meta.touched && props.meta.valid) {
+        wrapperClass += " input-success";
+      }
+
+      const handleBlur = (valid, value, country) => {
+        props.input.onBlur({
+          phoneNumber: value,
+          countryCode: country.iso2
+        });
+      };
+
+      const handleChange = (valid, value, country) => {
+        props.input.onChange({
+          phoneNumber: value,
+          countryCode: country.iso2
+        });
+      };
+
+      return (
+        <React.Fragment>
+          <div className={wrapperClass}>
+            <div className="input-group-prepend">
+              <button
+                type="button"
+                className="btn position-absolute br-5 phone-button"
+              >
+                <FaAngleRight color="#FFF" />
+              </button>
+            </div>
+            <IntlTelInput
+              {...props.IntlTelInput}
+              type={props.type}
+              fieldName={inputName}
+              containerClassName={containerClass}
+              inputClassName={inputClass}
+              defaultCountry={countryCode}
+              onPhoneNumberBlur={handleBlur}
+              onPhoneNumberChange={handleChange}
+            />
+            {props.meta.touched && props.meta.error && (
+              <small className="w-100">{props.meta.error}</small>
+            )}
+          </div>
+        </React.Fragment>
+      );
+    };
+
     return (
       <div className="container">
         <div className="footer pt-4 pb-4">
@@ -89,11 +162,14 @@ export class Footer extends Component {
             <div className="col-md-4 col-12 d-flex flex-column">
               <p className="light-font-text small dark-text w-75">
                 قم بترك بيانات التواصل الخاصة بك وسوف نقوم بارسال اشعارات حول
-                الدورات المجانية{" "}
+                الدورات المجانية
               </p>
               <form>
-                <div className="input-group w-75">
-                  <IntlTelInput
+                <div className="d-flex flex-row w-75">
+                  <Field
+                    fieldName="phone"
+                    name="phone"
+                    component={renderPhoneField}
                     containerClassName="intl-tel-input"
                     inputClassName="form-control"
                     defaultCountry="sa"
@@ -107,3 +183,18 @@ export class Footer extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    formValues: state.form.Footer && state.form.Footer.values
+  };
+}
+
+FooterComponent = reduxForm({
+  form: "Footer",
+  validate
+})(FooterComponent);
+
+FooterComponent = connect(mapStateToProps)(FooterComponent);
+
+export const Footer = withRouter(FooterComponent);

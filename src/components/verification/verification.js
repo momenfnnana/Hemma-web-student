@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { VerificationField } from "../shared/inputs/verificationField";
+import { Link } from "react-router-dom";
 
 const validate = values => {
   const errors = {};
@@ -90,14 +91,14 @@ class VerificationComponent extends Component {
               <a href="" className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
               </a>
-              <a href="" className="light-text">
+              <a href="" className="light-text small">
                 إعادة إرسال
               </a>{" "}
             </div>
             <div className="text-center pt-1">
-              <a href="" className="dark-text small light-text">
+              <Link to="/" className="dark-text small light-text">
                 تخطى تأكيد الحساب{" "}
-              </a>
+              </Link>
             </div>
           </div>
         </div>

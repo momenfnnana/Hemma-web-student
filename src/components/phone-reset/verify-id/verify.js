@@ -3,7 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
-import { VerificationField } from "../shared/inputs/verificationField";
+import { VerificationField } from "../../shared/inputs/verificationField";
 
 const validate = values => {
   const errors = {};
@@ -35,9 +35,10 @@ const validate = values => {
 
 class VerifyIdComponent extends Component {
   myFormHandler = values => {
+    const { userInfo } = this.props.location;
     let data = {
-      countryCode: values.phone.countryCode,
-      phoneNumber: values.phone.phoneNumber,
+      countryCode: userInfo.countryCode,
+      phoneNumber: userInfo.phoneNumber,
       token: values.token
     };
     axios
@@ -46,14 +47,46 @@ class VerifyIdComponent extends Component {
         data
       )
       .then(response => {
-        console.log(response);
+        this.props.history.push({
+          pathname: "/reset-password",
+          userData: data
+        });
       })
       .catch(error => {
-        console.log(error);
+        switch (error.response.data && error.response.data.error) {
+          case "ValidationError":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "UserNotFound":
+            swal("عفواً", "هذا المستخدم غير موجود", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "InvalidConfirmationToken":
+            swal("عفواً", "الرمز المدخل غير صحيح", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "VerificationTokenExpired":
+            swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "FailedToSend":
+            swal("عفواً", "حصل خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
+          default:
+            console.log("other error");
+        }
       });
   };
 
   render() {
+    const { userInfo } = this.props.location;
     const { handleSubmit, submitting } = this.props;
     return (
       <div className="container pt-5 pb-5">
@@ -70,8 +103,8 @@ class VerifyIdComponent extends Component {
             <div className="text-center mb-3">
               <h6 className="light-text">التحقق من الهوية</h6>
               <h6 className="dark-text w-50 small mx-auto">
-                أدخل رمز التحقق المكون من ستة خانات والمرسل على
-                الرقم*************250
+                أدخل رمز التحقق المكون من ستة خانات والمرسل على الرقم{" "}
+                <span className="en-text">{userInfo.phoneNumber}</span>
               </h6>
             </div>
 
@@ -92,7 +125,7 @@ class VerifyIdComponent extends Component {
               <a href="" className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
               </a>
-              <a href="" className="light-text">
+              <a href="" className="light-text small">
                 إعادة إرسال
               </a>{" "}
             </div>

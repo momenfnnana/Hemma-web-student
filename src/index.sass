@@ -22,6 +22,7 @@ $dark-silver: #a9acb4
 html,body 
     font-family: "GessMedium" 
     direction: rtl
+    height: 100%
 /*General styles
 a:hover, a:focus, a:active
   text-decoration: none
@@ -32,7 +33,10 @@ a:hover, a:focus, a:active
   box-shadow: none
   border-color: $silver
 .btn.active.focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn:active:focus, .btn:focus, button.active.focus, button.active:focus, button.focus, button:active.focus, button:active:focus, button:focus
-  outline: 0  
+  outline: 0
+  box-shadow: none
+.br-5
+    border-radius: 5px !important   
 .en-text
     font-family: MontserratMedium
 .dark-text
@@ -129,23 +133,44 @@ form.centered
     color: $dark-blue
     height: 40px
     font-size: 13px
+    &:hover, &:focus
+        background-color: $dark-blue
+        color: $white
+        transition: background-color ease-out 0.3s
 .dark-btn
     border-radius: 50px
     border: 1px solid $dark-blue
     color: $white
     height: 40px
     font-size: 13px
-    background-color: $dark-blue    
+    background-color: $dark-blue
+    &:hover, &:focus
+        background-color: $white
+        border: 1px solid $dark-blue
+        color: $dark-blue    
 .light-outline-btn
     border-radius: 50px
     border: 1px solid $light-blue
     color: $light-blue
     height: 40px
-    font-size: 13px  
+    font-size: 13px
+    &:hover, &:focus
+        background-color: $light-blue
+        color: $white
+        transition: background-color ease-out 0.3s  
 .intl-tel-input
     direction: ltr
     width: 100%
     font-family: MontserratMedium
+.phone-button
+    width: 32px
+    height: 32px
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-right: 3px
+    align-self: center
+    background-color: #6c53bf
 .react-code-input
     direction: ltr
     input
@@ -189,7 +214,6 @@ form.centered
    float: right !important
 .slick-prev:before, .slick-next:before
    color: $dark-blue
-.footer
-    margin-top: 200px 
+
 
     

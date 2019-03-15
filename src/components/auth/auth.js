@@ -53,19 +53,16 @@ export class Auth extends Component {
                 </NavLink>
               </li>
             </ul>
-
             <Route
               exact
               path="/auth/login"
               render={props => <Login {...props} />}
             />
-
             <Route
               exact
               path="/auth/register"
               render={props => <Register {...props} />}
             />
-
             <div className="pt-4 pb-4">
               <p className="text-center dark-text circle-border">أو</p>
             </div>
@@ -121,11 +118,13 @@ export class Auth extends Component {
                 </a>
               </li>
             </ul>
-            <div className="text-center pt-4">
-              <a href="" className="dark-text small">
-                نسيت كلمة المرور؟
-              </a>
-            </div>
+            {this.props.location.pathname === "/auth/login" ? (
+              <div className="text-center pt-4">
+                <NavLink to="/forgot-password" className="dark-text small">
+                  نسيت كلمة المرور؟
+                </NavLink>
+              </div>
+            ) : null}
           </div>
         </div>
       </div>

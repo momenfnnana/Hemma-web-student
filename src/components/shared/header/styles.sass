@@ -59,8 +59,14 @@ $silver: #d7d7d7
             .nav-item.rounded-nav-item
                 border: 1px solid $light-blue
                 border-radius: 50px
+                color: $dark-blue
                 &:hover:after, &.active:after
                    transform: scaleX(0)
+                &:hover, &:focus
+                   background-color: $light-blue
+                   transition: background-color ease-out 0.3s
+                   a
+                       color: $white    
 
                 .nav-link
                     color: $light-blue
