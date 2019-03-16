@@ -6,7 +6,8 @@ $black: #000000
 $red: #f66271 
 $silver: #dbdbdb
 $light-silver: #f2f2f2 
-$dark-silver: #a9acb4 
+$dark-silver: #a9acb4
+$off-white: #fefefe 
 @font-face 
     font-family: GessLight 
     src: url("/assets/fonts/GESSLight.otf") 
@@ -36,7 +37,13 @@ a:hover, a:focus, a:active
   outline: 0
   box-shadow: none
 .br-5
-    border-radius: 5px !important   
+    border-radius: 5px !important
+.radius-top-0
+    border-top-right-radius: 0px !important
+    border-top-left-radius: 0px !important
+.radius-bottom-0
+    border-bottom-left-radius: 0px !important
+    border-bottom-right-radius: 0px !important           
 .en-text
     font-family: MontserratMedium
 .dark-text
@@ -50,6 +57,8 @@ a:hover, a:focus, a:active
     justify-content: space-evenly    
 .light-text
     color: $light-blue
+.red-text
+    color: $red    
 .mid-text
     color: $mid-blue    
 .dark-silver-text
@@ -57,7 +66,9 @@ a:hover, a:focus, a:active
 .dark-bg
     background: $dark-blue
 .light-bg
-    background-color: $light-blue     
+    background-color: $light-blue
+.off-white-bg
+    background-color: $off-white          
 .light-font-text
     font-family: GessLight
 .cover-img
@@ -86,19 +97,26 @@ a:hover, a:focus, a:active
     li>a:hover:after, li>a.active:after
             transform: scaleX(1)
             ransform-origin: 0 50%    
-
+          
 form
     .input-group>.custom-select:not(:last-child), .input-group>.form-control:not(:last-child)
         border-top-left-radius: 5px
         border-bottom-left-radius: 5px
-    input.form-control::placeholder
+    input.form-control::placeholder, textarea.form-control::placeholder
         color: $silver
+        font-size: 12px
     input.form-control
         color: $dark-blue
         height: 40px
         border-radius: 5px
         border: 1px solid $silver
         font-size: 13px
+    select.form-control
+        color: $silver
+        height: 40px
+        border-radius: 5px
+        border: 1px solid $silver
+        font-size: 12px        
     .input-group-text
         background-color: $white
         border: 1px solid $silver
@@ -111,7 +129,7 @@ form
         font-family: MontserratMedium
     input.ltr-input::-webkit-input-placeholder
         direction: rtl
-        font-family: GessMedium 
+        font-family: GessMedium
     small
         color: $red
         font-size: 10px
@@ -187,9 +205,7 @@ form.centered
         border-radius: 4px !important
 
 .swal-title, .swal-text
-    color: $dark-blue
-.alice-carousel__stage-item
-    margin: 10px !important        
+    color: $dark-blue      
 
 .half-circle-border
     width: 150px
@@ -210,10 +226,10 @@ form.centered
 .box-layout
    border: 1px solid $silver
    border-radius: 5px
-.slick-track
-   float: right !important
 .slick-prev:before, .slick-next:before
    color: $dark-blue
-
-
+.footer
+    margin-top: 100px
+.ball-clip-rotate > div
+    margin: 0px
     

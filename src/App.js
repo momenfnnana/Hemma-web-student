@@ -22,6 +22,7 @@ import { Cart } from "./components/cart/cart";
 import { forgotPassword } from "./components/phone-reset/forgot-password/forgot-password";
 import { VerifyId } from "./components/phone-reset/verify-id/verify";
 import { resetPassword } from "./components/phone-reset/reset-password/reset-password";
+import { AccountReset } from "./components/account/reset-password";
 
 const rootReducer = combineReducers({
   form: formReducer
@@ -34,7 +35,13 @@ class App extends Component {
     return (
       <Provider store={store}>
         <React.Fragment>
-          <div>
+          <div
+          // style={{
+          //   backgroundImage: "url(./assets/images/home-bg.svg)",
+          //   backgroundRepeat: "no-repeat",
+          //   backgroundSize: "50%"
+          // }}
+          >
             <BrowserRouter>
               <div>
                 <Header />
@@ -52,6 +59,10 @@ class App extends Component {
                 />
                 <Route path="/account/courses" component={Courses} />
                 <Route path="/account/edit" component={EditAccount} />
+                <Route
+                  path="/account/reset-password"
+                  component={AccountReset}
+                />
                 <Route path="/course/details/:id" component={CourseDetails} />
                 <Route path="/cart" component={Cart} />
                 <Footer />

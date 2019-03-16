@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { VerificationField } from "../shared/inputs/verificationField";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 const validate = values => {
   const errors = {};
@@ -49,9 +49,34 @@ class VerificationComponent extends Component {
       })
       .then(response => {
         localStorage.setItem("verifiedToken", response.data.data.token);
+        this.props.history.push("/");
       })
       .catch(error => {
-        console.log(error);
+        switch (error.response.data && error.response.data.error) {
+          case "ValidationError":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "AlreadyVerified":
+            swal("عفواً", "تم توثيق الحساب سابقاً", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "InvalidConfirmationToken":
+            swal("عفواً", "الرمز المدخل خاطئ", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "VerificationTokenExpired":
+            swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          default:
+            console.log("other error");
+        }
       });
   };
 
@@ -68,8 +93,8 @@ class VerificationComponent extends Component {
           </div>
           <div className="col-md-6 col-12">
             <div className="text-center mb-3">
-              <h6 className="light-text">تأكيد حسابك</h6>
-              <h6 className="dark-text">
+              <h6 className="light-text small">تأكيد حسابك</h6>
+              <h6 className="dark-text small">
                 أدخل رمز التحقق الذي أرسلناه إلى جوالك
               </h6>
             </div>
@@ -120,4 +145,4 @@ VerificationComponent = reduxForm({
 
 VerificationComponent = connect(mapStateToProps)(VerificationComponent);
 
-export const Verification = VerificationComponent;
+export const Verification = withRouter(VerificationComponent);

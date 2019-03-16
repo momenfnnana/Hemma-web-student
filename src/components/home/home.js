@@ -137,30 +137,32 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="journey-section section-padder">
+        <section className="journey-section pt-5">
           <div className="container">
-            <div className="row">
+            <div className="row d-flex h-100 align-items-center">
               <div className="col-md-8">
                 <img
-                  src={process.env.PUBLIC_URL + "/assets/images/map.svg"}
+                  src={process.env.PUBLIC_URL + "/assets/images/map.png"}
                   width="100%"
                 />
               </div>
               <div className="col-md-4 d-flex flex-column">
-                <h5 className="dark-text">بث مباشر</h5>
-                <p className="dark-text light-font-text small w-75">
-                  اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
-                  العالم، وتعتبرُ من إحدى اللّغات المُعتمدة في الأمم المُتّحدة،
-                  كما إنها تشكّلُ اللّغة الأولى في مناطق بلاد الشّام، وشبه
-                  الجزيرة العربيّة، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ
-                  للّغة العربيّة.
-                </p>
+                <div>
+                  <h5 className="dark-text mt-0">بث مباشر</h5>
+                  <p className="dark-text light-font-text small w-75">
+                    اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
+                    العالم، وتعتبرُ من إحدى اللّغات المُعتمدة في الأمم
+                    المُتّحدة، كما إنها تشكّلُ اللّغة الأولى في مناطق بلاد
+                    الشّام، وشبه الجزيرة العربيّة، وشمال أفريقيا، وساهم هذا
+                    الانتشار الواسعُ للّغة العربيّة.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="courses-section pt-5">
+        {/* <section className="courses-section pt-5">
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
@@ -174,7 +176,7 @@ export class Home extends Component {
               <div className="col-md-12" />
             </div>
           </div>
-        </section>
+        </section> */}
 
         <section className="testimonials-section pt-5">
           <div className="container">
@@ -217,7 +219,7 @@ export class Home extends Component {
                   src={
                     process.env.PUBLIC_URL + "/assets/images/testimonials.svg"
                   }
-                  className="contain-img w-50"
+                  className="contain-img w-75"
                 />
                 <h6 className="light-text mb-1">عندك استفسار؟</h6>
                 <h6 className="dark-text small mt-0">

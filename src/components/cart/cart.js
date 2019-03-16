@@ -8,6 +8,7 @@ export class Cart extends Component {
     this.state = {
       items: [],
       cart: [],
+      coupons: [],
       isInputDisabled: true
     };
   }
@@ -22,6 +23,7 @@ export class Cart extends Component {
       .then(response => {
         this.setState({ cart: response.data.data });
         this.setState({ items: response.data.data.items });
+        this.setState({ coupons: response.data.data.coupons });
       })
       .catch(error => {
         console.log(error);
@@ -79,13 +81,37 @@ export class Cart extends Component {
                   <span className="en-text">{item.price}</span> ريال
                 </h6>
                 {item.discountedPrice ? (
-                  <h6 className="light-text text-center mb-0 dark-silver-text line-through-text">
+                  <h6 className="mb-0 dark-silver-text line-through-text">
                     <span className="en-text">{item.discountedPrice}</span> ريال
                   </h6>
                 ) : null}
               </div>
             </div>
           </div>
+        </div>
+      </React.Fragment>
+    ));
+  }
+
+  renderCoupons() {
+    const coupons = this.state.coupons;
+    return coupons.map(coupon => (
+      <React.Fragment>
+        <div
+          className="d-flex flex-row justify-content-between align-items-center mb-2"
+          key={coupon.id}
+        >
+          <label className="red-text smaller mb-0 clickable">
+            إزالة الكوبون{" "}
+          </label>
+          <h6 className="dark-silver-text mb-0 d-flex align-items-center">
+            <span className="en-text mr-1">{coupon.key}</span>{" "}
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/check-mark.png"}
+              className="contain-img"
+              height="15"
+            />
+          </h6>
         </div>
       </React.Fragment>
     ));
@@ -103,19 +129,19 @@ export class Cart extends Component {
             </div>
             <div className="row">
               <div className="col-md-4">
-                <div className="silver-bg box-layout w-100 mt-3">
+                <div className="silver-bg box-layout w-100 mt-3 radius-bottom-0">
                   <div className="pb-0 p-4 ">
                     <h6 className="dark-text small">السعر الكلي</h6>
                     <div className="d-flex flex-row align-items-center justify-content-between">
                       <h4 className="light-text mt-2">
-                        <span className="en-text">{this.state.cart.total}</span>
+                        <span className="en-text">{this.state.cart.total}</span>{" "}
                         ريال
                       </h4>
 
                       <h4 className="dark-silver-text mt-2 mx-auto line-through-text">
                         <span className="en-text">
                           {this.state.cart.totalAfterDiscount}
-                        </span>
+                        </span>{" "}
                         ريال
                       </h4>
                     </div>
@@ -134,18 +160,55 @@ export class Cart extends Component {
                           className="form-control small ltr-input br-left-0"
                           placeholder="أدخل الرمز"
                         />
-                        <div className="input-group-append">
+                        <div className="input-group-append w-25">
                           <button
-                            className="btn text-white light-bg small light-font-text"
+                            className="btn text-white light-bg small light-font-text w-100"
                             type="button"
                           >
                             تفعيل
                           </button>
                         </div>
                       </div>
+                      {this.renderCoupons()}
                     </form>
                   </div>
                 </div>
+
+                <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
+                  <div className="p-4">
+                    <div className="d-flex flex-row align-items-center mb-3">
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/images/box.png"}
+                        className="contain-img mr-2"
+                        height="30"
+                      />
+                      <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
+                    </div>
+                    <form>
+                      <div className="form-group">
+                        <input
+                          className="form-control small"
+                          placeholder="اسم المستلم"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <select className="form-control">
+                          <option selected disabled>
+                            اختر المدينة
+                          </option>
+                        </select>
+                      </div>
+                      <div className="form-group mb-0">
+                        <textarea
+                          className="form-control small"
+                          placeholder="عنوان التوصيل"
+                          rows="6"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
                 <button className="btn light-outline-btn mt-4 w-100">
                   متابعة
                 </button>

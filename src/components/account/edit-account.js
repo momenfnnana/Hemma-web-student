@@ -7,7 +7,7 @@ import { MdLockOutline } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
 import jwt from "jsonwebtoken";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
 
@@ -93,10 +93,15 @@ class EditAccountComponent extends Component {
                     >
                       <MdLockOutline />
                     </Field>
-
+                    <Link
+                      to="/account/reset-password"
+                      className="light-text smaller"
+                    >
+                      تعديل كلمة المرور
+                    </Link>
                     <button
                       type="submit"
-                      className="btn dark-outline-btn w-100"
+                      className="btn dark-outline-btn w-100 mt-3"
                     >
                       حفظ التعديلات{" "}
                     </button>

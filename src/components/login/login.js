@@ -8,6 +8,8 @@ import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
 import jwt from "jsonwebtoken";
 import { withRouter } from "react-router-dom";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const validate = values => {
   const errors = {};
@@ -38,12 +40,16 @@ const validate = values => {
 };
 
 class LoginComponent extends Component {
+  state = {
+    loading: false
+  };
   myFormHandler = values => {
     let data = {
       countryCode: values.phone.countryCode,
       phoneNumber: values.phone.phoneNumber,
       password: values.password
     };
+    this.setState({ loading: true });
     axios
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
       .then(response => {
@@ -53,6 +59,7 @@ class LoginComponent extends Component {
         let token = localStorage.getItem("token");
         let jwtToken = jwt.decode(token);
         localStorage.setItem("jwtToken", jwtToken);
+        this.setState({ loading: false });
         if (jwtToken.phoneConfirmed == "False") {
           let headers = {
             Authorization: `Bearer ${token}`
@@ -74,6 +81,7 @@ class LoginComponent extends Component {
         }
       })
       .catch(error => {
+        this.setState({ loading: false });
         switch (error.response.data && error.response.data.error) {
           case "InvalidCredentials":
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
@@ -112,10 +120,14 @@ class LoginComponent extends Component {
 
         <button
           type="submit"
-          className="btn dark-outline-btn w-100"
+          className="btn dark-outline-btn w-100 justify-content-center d-flex align-items-center"
           disabled={submitting}
         >
-          تسجيل الدخول
+          {this.state.loading == true ? (
+            <Loader type="ball-clip-rotate" />
+          ) : (
+            "تسجيل الدخول"
+          )}
         </button>
       </form>
     );
