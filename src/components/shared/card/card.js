@@ -24,7 +24,20 @@ export class Card extends Component {
               <h6 className="card-title dark-text" key={course.id}>
                 {course.nameAr}
               </h6>
+              <p className="dark-text smaller">
+                مايكر التي لوريم انه الأحرف مرجع عندما لوريم للنص ستينيّات مايكر
+                التي لوريم انه الأحرف مرجع عندما لوريم للنص ستينيّات
+              </p>
               <ul className="list-inline mb-2">
+                <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/male.png"}
+                    height="15"
+                    width="15"
+                    className="mr-1 contain-img"
+                  />
+                  <span>أ. طلال محمد</span>
+                </li>
                 <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
@@ -32,7 +45,8 @@ export class Card extends Component {
                     width="12"
                     className="mr-1"
                   />
-                  <span className="en-text">{course.durationInHours}</span> ساعة
+                  <span className="en-text mr-1">{course.durationInHours}</span>{" "}
+                  ساعة
                 </li>
                 <li className="list-inline-item light-font-text small dark-text en-text d-inline-flex align-items-center">
                   <img
@@ -48,6 +62,11 @@ export class Card extends Component {
               <h6 className="dark-text float-right mt-0 mb-0">
                 <span className="en-text">{course.price}</span> ريال
               </h6>
+            </div>
+            <div className="card-footer">
+              <button type="submit" className="btn light-outline-btn w-100">
+                اشترك الآن
+              </button>
             </div>
           </div>
         </Link>
