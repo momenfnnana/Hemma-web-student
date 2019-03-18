@@ -13,7 +13,7 @@ export class Categories extends Component {
 
   componentDidMount() {
     axios
-      .get("https://api.staging.hemma.sa/api/v1/categories")
+      .get("https://api.staging.hemma.sa/api/v1/categories?limit=40")
       .then(response => {
         this.setState({ categories: response.data.data.data });
       })

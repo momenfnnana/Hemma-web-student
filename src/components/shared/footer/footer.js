@@ -80,8 +80,8 @@ class FooterComponent extends Component {
     };
 
     return (
-      <div className="container">
-        <div className="footer pt-4 pb-4">
+      <div className="footer">
+        <div className="container top-border pt-4 pb-4">
           <div className="row">
             <div className="col-md-8 col-12">
               <ul className="list-inline mb-1">

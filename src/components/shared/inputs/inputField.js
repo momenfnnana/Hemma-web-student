@@ -20,6 +20,7 @@ export class inputField extends Component {
             type={this.props.type}
             className={inputClass}
             placeholder={this.props.placeholder}
+            value={this.props.value}
           />
           {this.props.meta.touched && this.props.meta.error && (
             <small className="w-100">{this.props.meta.error}</small>

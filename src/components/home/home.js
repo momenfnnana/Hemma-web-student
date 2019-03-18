@@ -8,6 +8,10 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Card } from "../shared/card/card";
 
 const items = [
   {
@@ -21,7 +25,7 @@ const items = [
 export class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { activeIndex: 0, categories: [] };
+    this.state = { activeIndex: 0, categories: [], courses: [] };
     this.next = this.next.bind(this);
     this.previous = this.previous.bind(this);
     this.goToIndex = this.goToIndex.bind(this);
@@ -69,6 +73,21 @@ export class Home extends Component {
       .catch(error => {
         console.log(error);
       });
+
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/courses/recent")
+      .then(response => {
+        this.setState({ courses: response.data.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  renderCourses() {
+    return this.state.courses.map(course => (
+      <Card key={course.id} course={course} />
+    ));
   }
 
   renderCategories() {
@@ -98,6 +117,38 @@ export class Home extends Component {
 
   render() {
     const { activeIndex } = this.state;
+    var settings = {
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 3,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: false
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            initialSlide: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    };
 
     const slides = items.map(item => {
       return (
@@ -131,13 +182,13 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="categories-section padder">
+        <section className="categories-section section-padder">
           <div className="container">
             <div className="row">{this.renderCategories()}</div>
           </div>
         </section>
 
-        <section className="journey-section pt-5">
+        <section className="journey-section section-padder">
           <div className="container">
             <div className="row d-flex h-100 align-items-center">
               <div className="col-md-8">
@@ -162,7 +213,7 @@ export class Home extends Component {
           </div>
         </section>
 
-        {/* <section className="courses-section pt-5">
+        <section className="courses-section section-padder">
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
@@ -173,12 +224,14 @@ export class Home extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-md-12" />
+              <div className="col-md-12">
+                <Slider {...settings}>{this.renderCourses()}</Slider>
+              </div>
             </div>
           </div>
-        </section> */}
+        </section>
 
-        <section className="testimonials-section pt-5">
+        <section className="testimonials-section section-padder pt-5">
           <div className="container">
             <div className="row d-flex justify-content-center align-items-center">
               <div className="col-md-2">
@@ -214,7 +267,7 @@ export class Home extends Component {
                   </Carousel>
                 </div>
               </div>
-              <div className="col-md-5">
+              {/* <div className="col-md-5">
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/testimonials.svg"
@@ -225,7 +278,7 @@ export class Home extends Component {
                 <h6 className="dark-text small mt-0">
                   إحنا موجودين، نعين ونعاون
                 </h6>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>

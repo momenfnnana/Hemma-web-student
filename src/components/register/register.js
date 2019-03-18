@@ -7,6 +7,9 @@ import { FaRegUser, FaRegEnvelope } from "react-icons/fa";
 import { MdLockOutline } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
+import jwt from "jsonwebtoken";
 
 const validate = values => {
   const errors = {};
@@ -62,6 +65,9 @@ const validate = values => {
 };
 
 class RegisterComponent extends Component {
+  state = {
+    loading: false
+  };
   myFormHandler = values => {
     let data = {
       countryCode: values.phone.countryCode,
@@ -71,10 +77,56 @@ class RegisterComponent extends Component {
       name: values.username,
       gender: values.gender
     };
+    this.setState({ loading: true });
     axios
       .post("https://api.staging.hemma.sa/api/v1/auth/register", data)
       .then(response => {
-        console.log("got response ", response);
+        axios
+          .post(
+            "https://api.staging.hemma.sa/api/v1/auth/login_with_phone",
+            data
+          )
+          .then(response => {
+            localStorage.setItem("token", response.data.data.token);
+          })
+          .then(res => {
+            let token = localStorage.getItem("token");
+            let jwtToken = jwt.decode(token);
+            localStorage.setItem("jwtToken", jwtToken);
+            this.setState({ loading: false });
+            if (jwtToken.phoneConfirmed == "False") {
+              let headers = {
+                Authorization: `Bearer ${token}`
+              };
+              axios
+                .post(
+                  "https://api.staging.hemma.sa/api/v1/auth/phone/send_token",
+                  null,
+                  { headers }
+                )
+                .then(response => {
+                  this.props.history.push("/verify");
+                })
+                .catch(error => {
+                  console.log(error);
+                });
+            } else {
+              this.props.history.push("/");
+            }
+          })
+          .catch(error => {
+            this.setState({ loading: false });
+            switch (error.response.data && error.response.data.error) {
+              case "InvalidCredentials":
+                swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+                  button: "متابعة"
+                });
+                break;
+
+              default:
+                console.log("other error");
+            }
+          });
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
@@ -186,7 +238,11 @@ class RegisterComponent extends Component {
           className="btn dark-outline-btn w-100"
           disabled={submitting}
         >
-          تسجيل
+          {this.state.loading == true ? (
+            <Loader type="ball-clip-rotate" />
+          ) : (
+            "تسجيل"
+          )}
         </button>
       </form>
     );

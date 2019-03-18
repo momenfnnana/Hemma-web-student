@@ -42,7 +42,24 @@ const validate = values => {
 class EditAccountComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      details: []
+    };
+  }
+
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -72,6 +89,7 @@ class EditAccountComponent extends Component {
                       component={inputField}
                       className="form-control border-left-0 pl-0"
                       placeholder="الاسم الكامل"
+                      value={this.state.details.name}
                     >
                       <FaRegUser />
                     </Field>
@@ -82,17 +100,9 @@ class EditAccountComponent extends Component {
                       containerClassName="intl-tel-input"
                       inputClassName="form-control"
                       defaultCountry="sa"
+                      disabled={true}
+                      value={this.state.details.phoneNumber}
                     />
-
-                    <Field
-                      name="password"
-                      type="password"
-                      component={inputField}
-                      className="form-control border-left-0 pl-0 ltr-input"
-                      placeholder="كلمة المرور"
-                    >
-                      <MdLockOutline />
-                    </Field>
                     <Link
                       to="/account/reset-password"
                       className="light-text smaller"

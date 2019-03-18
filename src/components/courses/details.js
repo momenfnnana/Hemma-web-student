@@ -9,6 +9,7 @@ import {
   AccordionItemTitle,
   AccordionItemBody
 } from "react-accessible-accordion";
+import swal from "@sweetalert/with-react";
 
 export class CourseDetails extends Component {
   constructor(props) {
@@ -27,6 +28,28 @@ export class CourseDetails extends Component {
       .get(`https://api.staging.hemma.sa/api/v1/courses/${params.id}`)
       .then(response => {
         this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  addToCart(id) {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      type: "Course",
+      itemId: id,
+      installment: 0
+    };
+    axios
+      .post("https://api.staging.hemma.sa/api/v1/cart/items", data, { headers })
+      .then(response => {
+        swal("تنبيه", "تم إضافة الدورة إلى سلة التسوق بنجاح", "success", {
+          button: "متابعة"
+        });
       })
       .catch(error => {
         console.log(error);
@@ -141,7 +164,7 @@ export class CourseDetails extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-4">
-                <div className="white-bg box-layout w-100 p-2 pb-4 mb-4 d-flex flex-column">
+                <div className="white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
                   <img
                     src={this.state.details.bannerUrl}
                     height="180"
@@ -161,12 +184,13 @@ export class CourseDetails extends Component {
                     <button
                       type="button"
                       className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
+                      onClick={() => this.addToCart(this.state.details.id)}
                     >
                       اشترك الآن
                     </button>
                     <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
                     <ul className="list-unstyled">
-                      <li className="small dark-text mb-2">
+                      <li className="smaller dark-text mb-2">
                         <img
                           src={
                             process.env.PUBLIC_URL + "/assets/images/clock.png"
@@ -176,7 +200,7 @@ export class CourseDetails extends Component {
                         />
                         {this.state.details.durationTextAr} تدريبية
                       </li>
-                      <li className="small dark-text mb-2">
+                      <li className="smaller dark-text mb-2">
                         <img
                           src={
                             process.env.PUBLIC_URL +
@@ -187,7 +211,7 @@ export class CourseDetails extends Component {
                         />{" "}
                         مدة صلاحية الدورة {this.state.details.validityTextAr}
                       </li>
-                      <li className="small dark-text mb-2">
+                      <li className="smaller dark-text mb-2">
                         <img
                           src={
                             process.env.PUBLIC_URL +
@@ -198,7 +222,7 @@ export class CourseDetails extends Component {
                         />{" "}
                         تبدأ في تاريخ {this.state.details.startsAt}
                       </li>
-                      <li className="small dark-text mb-2">
+                      <li className="smaller dark-text mb-2">
                         <img
                           src={
                             process.env.PUBLIC_URL +
@@ -209,7 +233,7 @@ export class CourseDetails extends Component {
                         />{" "}
                         يومي {this.state.details.scheduleTextAr}
                       </li>
-                      <li className="small dark-text mb-2">
+                      <li className="smaller dark-text mb-2">
                         <img
                           src={
                             process.env.PUBLIC_URL + "/assets/images/diary.png"

@@ -14,6 +14,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
+import { FaShoppingCart } from "react-icons/fa";
 
 export class Header extends Component {
   constructor(props) {
@@ -144,7 +145,7 @@ export class Header extends Component {
                             process.env.PUBLIC_URL +
                             "/assets/images/user-circle.png"
                           }
-                          height="22"
+                          height="18"
                           className="mr-2"
                         />
                         ساره صلاح
@@ -169,6 +170,15 @@ export class Header extends Component {
                         </DropdownItem>
                       </DropdownMenu>
                     </UncontrolledDropdown>
+                    <NavItem>
+                      <NavLink
+                        className="nav-link"
+                        activeClassName="active"
+                        to="/cart"
+                      >
+                        <FaShoppingCart size={18} />
+                      </NavLink>
+                    </NavItem>
                   </Nav>
                 )}
               </Collapse>

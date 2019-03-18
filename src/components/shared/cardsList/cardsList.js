@@ -22,7 +22,6 @@ export class CardsList extends Component {
       )
       .then(response => {
         this.setState({ courses: response.data.data.data });
-        console.log(this.state.courses);
       })
       .catch(error => {
         console.log(error);

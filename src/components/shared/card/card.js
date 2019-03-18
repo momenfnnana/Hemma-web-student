@@ -3,6 +3,27 @@ import "./styles.sass";
 import { Link } from "react-router-dom";
 
 export class Card extends Component {
+  addToCart(id) {
+    console.log(id);
+    // let token = localStorage.getItem("token");
+    // let headers = {
+    //   Authorization: `Bearer ${token}`
+    // };
+    // let data = {
+    //   type: "Course",
+    //   itemId: id,
+    //   installment: 0
+    // };
+    // axios
+    //   .post("https://api.staging.hemma.sa/api/v1/cart/items", data, { headers })
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+  }
+
   render() {
     const course = this.props.course;
     var date = new Date(course.startsAt);
@@ -21,13 +42,10 @@ export class Card extends Component {
               alt="Course image"
             />
             <div className="card-body">
-              <h6 className="card-title dark-text" key={course.id}>
+              <h6 className="card-title dark-text small" key={course.id}>
                 {course.nameAr}
               </h6>
-              <p className="dark-text smaller">
-                مايكر التي لوريم انه الأحرف مرجع عندما لوريم للنص ستينيّات مايكر
-                التي لوريم انه الأحرف مرجع عندما لوريم للنص ستينيّات
-              </p>
+              <p className="dark-text smaller">{course.descriptionAr}</p>
               <ul className="list-inline mb-2">
                 <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
                   <img
@@ -63,11 +81,15 @@ export class Card extends Component {
                 <span className="en-text">{course.price}</span> ريال
               </h6>
             </div>
-            <div className="card-footer">
-              <button type="submit" className="btn light-outline-btn w-100">
+            {/* <div className="card-footer">
+              <button
+                type="submit"
+                className="btn light-outline-btn w-100"
+                onClick={() => this.addToCart(course.id)}
+              >
                 اشترك الآن
               </button>
-            </div>
+            </div> */}
           </div>
         </Link>
       </React.Fragment>

@@ -69,10 +69,10 @@ export class Auth extends Component {
             <ul className="list-inline mb-0 text-center">
               <li className="list-inline-item">
                 <GoogleLogin
-                  clientId="658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com"
+                  clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
                   render={renderProps => (
                     <button
-                      className="transparent-bg border-0 p-0"
+                      className="transparent-bg border-0 p-0 clickable"
                       onClick={renderProps.onClick}
                     >
                       {" "}
