@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 
-export class phoneField extends Component {
+export class editPhoneField extends Component {
   render() {
     let inputClass = this.props.inputClassName;
     let containerClass = this.props.containerClassName;

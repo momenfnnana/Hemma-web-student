@@ -15,6 +15,7 @@ import {
   DropdownItem
 } from "reactstrap";
 import { FaShoppingCart } from "react-icons/fa";
+import axios from "axios";
 
 export class Header extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ export class Header extends Component {
     this.state = {
       isAuthenticated: false,
       isPhoneConfirmed: false,
-      isOpen: false
+      isOpen: false,
+      details: []
     };
   }
 
@@ -46,6 +48,18 @@ export class Header extends Component {
     } else {
       this.setState({ isPhoneConfirmed: false });
     }
+
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   logout() {
@@ -148,7 +162,7 @@ export class Header extends Component {
                           height="18"
                           className="mr-2"
                         />
-                        ساره صلاح
+                        {this.state.details.name}
                       </DropdownToggle>
                       <DropdownMenu>
                         <DropdownItem className="p-0">

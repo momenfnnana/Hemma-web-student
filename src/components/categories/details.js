@@ -85,7 +85,7 @@ export class CategoryDetails extends Component {
 
   renderPublications() {
     return this.state.publications.map(publication => (
-      <div className="publication-img" key={publication.id}>
+      <div className="publication-img clickable" key={publication.id}>
         <img
           src={publication.thumbnailUrl}
           width="100%"

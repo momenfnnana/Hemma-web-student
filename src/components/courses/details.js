@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { FaGraduationCap } from "react-icons/fa";
-import { IoIosClockOutline } from "react-icons/io";
 import "./styles.sass";
 import {
   Accordion,

@@ -8,7 +8,8 @@ export class Courses extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      tooltipOpen: false
+      tooltipOpen: false,
+      details: []
     };
   }
 
@@ -16,6 +17,21 @@ export class Courses extends Component {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
     });
+  }
+
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
@@ -35,12 +51,12 @@ export class Courses extends Component {
                     height="110"
                     className="mb-3"
                   />
-                  <h6 className="dark-text mb-1">إبراهيم أحمد</h6>
+                  <h6 className="dark-text mb-1">{this.state.details.name}</h6>
                   <p className="dark-text en-text small mb-0">
-                    Raihan-s6h@hotmail.com
+                    {this.state.details.email}
                   </p>
                   <p className="dark-text en-text small mb-1" dir="ltr">
-                    +962759514752{" "}
+                    0{this.state.details.phoneNumber}
                   </p>
                   <a href="" className="light-text text-underline small">
                     تعديل الملف الشخصي

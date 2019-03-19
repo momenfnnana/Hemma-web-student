@@ -31,6 +31,10 @@ export class Card extends Component {
     var month = date.getMonth();
     var year = date.getFullYear();
     var courseDate = day + "-" + month + "-" + year;
+
+    var desc = course.descriptionAr;
+    if (desc.length > 10) desc = desc.substring(0, 100) + "...";
+
     return (
       <React.Fragment>
         <Link to={`/course/details/${course.id}`} key={course.id}>
@@ -45,7 +49,7 @@ export class Card extends Component {
               <h6 className="card-title dark-text small" key={course.id}>
                 {course.nameAr}
               </h6>
-              <p className="dark-text smaller">{course.descriptionAr}</p>
+              <p className="dark-text smaller">{desc}</p>
               <ul className="list-inline mb-2">
                 <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
                   <img

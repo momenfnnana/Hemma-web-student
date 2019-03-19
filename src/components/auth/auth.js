@@ -91,12 +91,12 @@ export class Auth extends Component {
               </li>
               <li className="list-inline-item">
                 <FacebookLogin
-                  appId="1088597931155576"
+                  appId="381989645718539"
                   autoLoad
                   callback={responseFacebook}
                   render={renderProps => (
                     <button
-                      className="transparent-bg border-0 p-0"
+                      className="transparent-bg border-0 p-0 clickable"
                       onClick={renderProps.onClick}
                     >
                       <img

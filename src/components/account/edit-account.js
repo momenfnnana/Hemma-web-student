@@ -1,40 +1,18 @@
 import React, { Component } from "react";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, Fields } from "redux-form";
 import { connect } from "react-redux";
-import swal from "@sweetalert/with-react";
 import axios from "axios";
-import { MdLockOutline } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
-import { phoneField } from "../shared/inputs/phoneField";
-import jwt from "jsonwebtoken";
+import { editPhoneField } from "../shared/inputs/editPhoneField";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
+import { getProfile } from "../../actions";
 
 const validate = values => {
   const errors = {};
-  if (
-    !values.phone ||
-    !values.phone.phoneNumber ||
-    values.phone.phoneNumber.trim() === ""
-  ) {
+  if (values.username) {
     errors.phone = "يجب تعبئة هذه الخانة";
-  } else if (values.phone.phoneNumber.length < 8) {
-    errors.phone = "ادخل رقم هاتف صحيح";
-  }
-  if (!values.password) {
-    errors.password = "يجب تعبئة هذه الخانة";
-  } else if (values.password.length < 8) {
-    errors.password = "كلمة المرور يجب أن لا تقل عن ٨ أحرف";
-  } else if (values.password.length > 24) {
-    errors.password = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-      values.password
-    )
-  ) {
-    errors.password =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
   }
   return errors;
 };
@@ -48,18 +26,7 @@ class EditAccountComponent extends Component {
   }
 
   componentDidMount() {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
-      .then(response => {
-        this.setState({ details: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.props.getProfile();
   }
 
   render() {
@@ -84,24 +51,23 @@ class EditAccountComponent extends Component {
                   />
                   <form className="w-25">
                     <Field
-                      name="username"
+                      name="name"
                       type="text"
                       component={inputField}
                       className="form-control border-left-0 pl-0"
                       placeholder="الاسم الكامل"
-                      value={this.state.details.name}
                     >
                       <FaRegUser />
                     </Field>
                     <Field
-                      fieldName="phone"
-                      name="phone"
-                      component={phoneField}
+                      fieldName="phoneNumber"
+                      name="phoneNumber"
+                      // names={["phoneNumber", "countryCode"]}
+                      component={editPhoneField}
                       containerClassName="intl-tel-input"
                       inputClassName="form-control"
                       defaultCountry="sa"
                       disabled={true}
-                      value={this.state.details.phoneNumber}
                     />
                     <Link
                       to="/account/reset-password"
@@ -128,15 +94,20 @@ class EditAccountComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.EditAccount && state.form.EditAccount.values
+    initialValues: state.profile,
+    entireState: state
   };
 }
 
 EditAccountComponent = reduxForm({
   form: "EditAccount",
+  enableReinitialize: true,
   validate
 })(EditAccountComponent);
 
-EditAccountComponent = connect(mapStateToProps)(EditAccountComponent);
+EditAccountComponent = connect(
+  mapStateToProps,
+  { getProfile }
+)(EditAccountComponent);
 
 export const EditAccount = withRouter(EditAccountComponent);

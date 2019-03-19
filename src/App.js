@@ -8,7 +8,7 @@ import { Auth } from "./components/auth/auth";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
 import { reducer as formReducer } from "redux-form";
 import { Provider } from "react-redux";
 import { Verification } from "./components/verification/verification";
@@ -23,12 +23,10 @@ import { forgotPassword } from "./components/phone-reset/forgot-password/forgot-
 import { VerifyId } from "./components/phone-reset/verify-id/verify";
 import { resetPassword } from "./components/phone-reset/reset-password/reset-password";
 import { AccountReset } from "./components/account/reset-password";
+import { hemmaReducer } from "./reducers";
+import ReduxPromise from "redux-promise";
 
-const rootReducer = combineReducers({
-  form: formReducer
-});
-
-const store = createStore(rootReducer);
+const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
 class App extends Component {
   render() {

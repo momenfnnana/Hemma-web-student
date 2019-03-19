@@ -108,13 +108,13 @@ export class Cart extends Component {
       });
   }
 
-  deleteCoupon(id) {
+  deleteCoupon(key) {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
     axios
-      .post(`https://api.staging.hemma.sa/api/v1/cart/coupons/${id}`, {
+      .delete(`https://api.staging.hemma.sa/api/v1/cart/coupons/${key}`, {
         headers
       })
       .then(response => {
@@ -204,7 +204,6 @@ export class Cart extends Component {
 
   renderCoupons() {
     const coupons = this.state.cart.coupons || [];
-
     return coupons.map(coupon => (
       <React.Fragment>
         <div
@@ -213,7 +212,7 @@ export class Cart extends Component {
         >
           <label
             className="red-text smaller mb-0 clickable"
-            onClick={() => this.deleteCoupon(coupon.id)}
+            onClick={() => this.deleteCoupon(coupon.key)}
           >
             إزالة الكوبون{" "}
           </label>

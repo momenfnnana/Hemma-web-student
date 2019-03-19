@@ -92,24 +92,26 @@ export class Home extends Component {
 
   renderCategories() {
     const cats = this.state.categories;
-    return cats.map(cat => (
+    return cats.map((cat, i) => (
       <React.Fragment>
-        <div className="pt-5 pb-2 col-md-3">
-          <Link to={`/categories/details/${cat.id}`} key={cat.id}>
-            <div
-              key={cat.id}
-              className="half-circle-border d-flex flex-column align-items-center mx-auto"
-            >
-              <img
+        <div className="row">
+          <div className="pt-5 pb-2 col-md-3">
+            <Link to={`/categories/details/${cat.id}`} key={cat.id}>
+              <div
                 key={cat.id}
-                src={cat.icon}
-                height="45"
-                width="45"
-                className="mt-3 mb-2"
-              />
-              <h6 className="dark-text small text-center">{cat.nameAr}</h6>
-            </div>
-          </Link>
+                className="half-circle-border d-flex flex-column align-items-center mx-auto"
+              >
+                <img
+                  key={cat.id}
+                  src={cat.icon}
+                  height="45"
+                  width="45"
+                  className="mt-3 mb-2"
+                />
+                <h6 className="dark-text small text-center">{cat.nameAr}</h6>
+              </div>
+            </Link>
+          </div>
         </div>
       </React.Fragment>
     ));
@@ -183,9 +185,7 @@ export class Home extends Component {
         </section>
 
         <section className="categories-section section-padder">
-          <div className="container">
-            <div className="row">{this.renderCategories()}</div>
-          </div>
+          <div className="container">{this.renderCategories()}</div>
         </section>
 
         <section className="journey-section section-padder">
