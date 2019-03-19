@@ -54,6 +54,7 @@ class LoginComponent extends Component {
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
       .then(response => {
         localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("deviceId", response.data.data.deviceId);
       })
       .then(res => {
         let token = localStorage.getItem("token");

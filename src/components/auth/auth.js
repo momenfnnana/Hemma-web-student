@@ -5,16 +5,56 @@ import { Register } from "../register/register";
 import { NavLink, Route } from "react-router-dom";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { GoogleLogin } from "react-google-login";
-
-const responseFacebook = response => {
-  console.log(response);
-};
-
-const responseGoogle = response => {
-  console.log(response);
-};
+import axios from "axios";
+import jwt from "jsonwebtoken";
 
 export class Auth extends Component {
+  responseGoogle = response => {
+    let deviceId = localStorage.getItem("deviceId");
+    let data = {
+      accessToken: response.accessToken,
+      deviceId: deviceId
+    };
+    axios
+      .post("https://api.staging.hemma.sa/api/v1/auth/login_with_google", data)
+      .then(response => {
+        localStorage.setItem("token", response.data.data.token);
+      })
+      .then(res => {
+        console.log(res);
+        this.props.history.push("/");
+      })
+      .catch(error => {
+        console.log(error);
+        this.props.history.push("/auth/register");
+      });
+  };
+
+  responseFacebook = response => {
+    console.log(response);
+    // let deviceId = localStorage.getItem("deviceId");
+    // let data = {
+    //   accessToken: response.accessToken,
+    //   deviceId: deviceId
+    // };
+    // axios
+    //   .post(
+    //     "https://api.staging.hemma.sa/api/v1/auth/login_with_facebook",
+    //     data
+    //   )
+    //   .then(response => {
+    //     localStorage.setItem("token", response.data.data.token);
+    //   })
+    //   .then(res => {
+    //     console.log(res);
+    //     this.props.history.push("/");
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     this.props.history.push("/auth/register");
+    //   });
+  };
+
   render() {
     return (
       <div className="container pt-5 pb-5">
@@ -85,15 +125,15 @@ export class Auth extends Component {
                       />
                     </button>
                   )}
-                  onSuccess={responseGoogle}
-                  onFailure={responseGoogle}
+                  onSuccess={this.responseGoogle}
+                  onFailure={this.responseGoogle}
                 />
               </li>
               <li className="list-inline-item">
                 <FacebookLogin
                   appId="381989645718539"
                   autoLoad
-                  callback={responseFacebook}
+                  callback={this.responseFacebook}
                   render={renderProps => (
                     <button
                       className="transparent-bg border-0 p-0 clickable"

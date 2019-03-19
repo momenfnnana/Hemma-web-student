@@ -45,7 +45,42 @@ class AccountResetComponent extends Component {
     this.state = {};
   }
 
+  myFormHandler = values => {
+    let token = localStorage.getItem("token");
+
+    let data = {
+      oldPassword: values.oldPassword,
+      newPassword: values.newPassword
+    };
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .post("https://api.staging.hemma.sa/api/v1/auth/password/change", data, {
+        headers
+      })
+      .then(response => {
+        swal("تنبيه", "تم تغيير كلمة المرور بنجاح", "success", {
+          button: "متابعة"
+        });
+      })
+      .catch(error => {
+        switch (error.response.data && error.response.data.error) {
+          case "InvalidCredentials":
+            swal("عفواً", "كلمة المرور الحالية خاطئة", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          default:
+            console.log("other error");
+        }
+      });
+  };
+
   render() {
+    const { handleSubmit, submitting } = this.props;
+
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -61,7 +96,10 @@ class AccountResetComponent extends Component {
                   <h6 className="dark-text small mb-4">
                     قم بتعيين كلمة مرور جديدة
                   </h6>
-                  <form className="w-25">
+                  <form
+                    className="w-25"
+                    onSubmit={handleSubmit(this.myFormHandler)}
+                  >
                     <Field
                       name="oldPassword"
                       type="password"
