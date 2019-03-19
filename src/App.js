@@ -8,8 +8,7 @@ import { Auth } from "./components/auth/auth";
 
 import { BrowserRouter, Route } from "react-router-dom";
 
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { reducer as formReducer } from "redux-form";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import { Verification } from "./components/verification/verification";
 import { Categories } from "./components/categories/list";
@@ -25,6 +24,7 @@ import { resetPassword } from "./components/phone-reset/reset-password/reset-pas
 import { AccountReset } from "./components/account/reset-password";
 import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
+import { Checkout } from "./components/checkout/checkout";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -62,7 +62,8 @@ class App extends Component {
                   component={AccountReset}
                 />
                 <Route path="/course/details/:id" component={CourseDetails} />
-                <Route path="/cart" component={Cart} />
+                <Route exact path="/cart" component={Cart} />
+                <Route path="/cart/checkout" component={Checkout} />
                 <Footer />
               </div>
             </BrowserRouter>

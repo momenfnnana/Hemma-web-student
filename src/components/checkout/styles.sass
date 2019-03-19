@@ -1,0 +1,37 @@
+$dark-blue: #4b3a85 
+$light-blue: #2bc3cc
+$mid-blue: #6c53bf 
+$white: #FFF 
+$black: #000000 
+$red: #f66271 
+$silver: #dbdbdb
+$light-silver: #f2f2f2 
+$dark-silver: #a9acb4
+$off-white: #fefefe 
+
+@font-face 
+    font-family: GessLight 
+    src: url("/assets/fonts/GESSLight.otf") 
+
+.nav-tabs
+    border-bottom: none
+    border-radius: 20px
+    border: 1px solid $light-blue
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover
+    color: $white
+    background-color: transparent
+    border: 1px solid $light-blue
+    background-color: $light-blue
+    border-radius: 20px
+    font-size: 13px
+.nav-tabs
+    .nav-item
+        width: 50%
+        text-align: center
+        font-family: GessLight
+        font-size: 13px
+        color: $light-blue
+        cursor: pointer
+        .nav-link
+            &:hover
+                border: 1px solid transparent     
