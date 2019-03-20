@@ -132,7 +132,7 @@ export class Auth extends Component {
               <li className="list-inline-item">
                 <FacebookLogin
                   appId="381989645718539"
-                  callback={this.responseFacebook}
+                  onClick={this.responseFacebook}
                   autoLoad={false}
                   fields="name,email,picture"
                   render={renderProps => (

@@ -6,7 +6,7 @@ import { Footer } from "./components/shared/footer/footer";
 
 import { Auth } from "./components/auth/auth";
 
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, withRouter } from "react-router-dom";
 
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -28,20 +28,43 @@ import { Checkout } from "./components/checkout/checkout";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
+class AppBackground extends Component {
+  render() {
+    const path = this.props.location.pathname;
+    let img = null;
+
+    if (path === "/") {
+      img = "home-bg.svg";
+    } else if (path.startsWith("/categories/details")) {
+      img = "bg.png";
+    }
+
+    if (!img) return <div>{this.props.children}</div>;
+
+    return (
+      <div
+        style={{
+          backgroundImage: `url(/assets/images/${img})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "50%"
+        }}
+      >
+        {this.props.children}
+      </div>
+    );
+  }
+}
+
+AppBackground = withRouter(AppBackground);
+
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
         <React.Fragment>
-          <div
-          // style={{
-          //   backgroundImage: "url(./assets/images/home-bg.svg)",
-          //   backgroundRepeat: "no-repeat",
-          //   backgroundSize: "50%"
-          // }}
-          >
+          <div>
             <BrowserRouter>
-              <div>
+              <AppBackground>
                 <Header />
                 <Route path="/auth" component={Auth} />
 
@@ -65,7 +88,7 @@ class App extends Component {
                 <Route exact path="/cart" component={Cart} />
                 <Route path="/cart/checkout" component={Checkout} />
                 <Footer />
-              </div>
+              </AppBackground>
             </BrowserRouter>
           </div>
         </React.Fragment>

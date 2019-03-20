@@ -6,7 +6,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
-import { Link } from "react-router-dom";
+import swal from "@sweetalert/with-react";
 
 export class Cart extends Component {
   constructor(props) {
@@ -30,6 +30,7 @@ export class Cart extends Component {
       .get("https://api.staging.hemma.sa/api/v1/cart", { headers })
       .then(response => {
         this.setState({ cart: response.data.data });
+        console.log(this.state.cart);
       })
       .catch(error => {
         console.log(error);
@@ -104,7 +105,9 @@ export class Cart extends Component {
         this.setState({ cart: response.data.data });
       })
       .catch(error => {
-        console.log(error);
+        swal("عفواً", "يرجى التحقق من صحة الكوبون المدخل", "error", {
+          button: "متابعة"
+        });
       });
   }
 
@@ -178,7 +181,7 @@ export class Cart extends Component {
                 <input
                   disabled={this.state.isInputDisabled}
                   type="text"
-                  className="form-control form-control-sm mx-sm-3 unset-height text-center"
+                  className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
                   value={item.price}
                 />
               </div>

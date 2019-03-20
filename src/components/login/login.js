@@ -53,7 +53,6 @@ class LoginComponent extends Component {
     axios
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
       .then(response => {
-        console.log(response);
         localStorage.setItem("token", response.data.data.token);
       })
       .then(res => {

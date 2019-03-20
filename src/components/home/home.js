@@ -92,29 +92,37 @@ export class Home extends Component {
 
   renderCategories() {
     const cats = this.state.categories;
-    return cats.map((cat, i) => (
+    return (
       <React.Fragment>
         <div className="row">
-          <div className="pt-5 pb-2 col-md-3">
-            <Link to={`/categories/details/${cat.id}`} key={cat.id}>
-              <div
-                key={cat.id}
-                className="half-circle-border d-flex flex-column align-items-center mx-auto"
-              >
-                <img
-                  key={cat.id}
-                  src={cat.icon}
-                  height="45"
-                  width="45"
-                  className="mt-3 mb-2"
-                />
-                <h6 className="dark-text small text-center">{cat.nameAr}</h6>
+          {cats.map((cat, i) => {
+            const mod = i % 5;
+            const col = mod === 0 || mod === 1 ? "col-md-6" : "col-md-4";
+            return (
+              <div className={`pt-5 pb-5 ${col}`}>
+                <Link to={`/categories/details/${cat.id}`} key={cat.id}>
+                  <div
+                    key={cat.id}
+                    className="half-circle-border d-flex flex-column align-items-center mx-auto"
+                  >
+                    <img
+                      key={cat.id}
+                      src={cat.icon}
+                      height="45"
+                      width="45"
+                      className="mt-3 mb-2"
+                    />
+                    <h6 className="dark-text small text-center">
+                      {cat.nameAr}
+                    </h6>
+                  </div>
+                </Link>
               </div>
-            </Link>
-          </div>
+            );
+          })}
         </div>
       </React.Fragment>
-    ));
+    );
   }
 
   render() {
@@ -184,7 +192,7 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="categories-section section-padder">
+        <section className="categories-section">
           <div className="container">{this.renderCategories()}</div>
         </section>
 

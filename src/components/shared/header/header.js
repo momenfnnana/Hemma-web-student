@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { NavLink, Route } from "react-router-dom";
+import { NavLink, Route, withRouter } from "react-router-dom";
 import jwt from "jsonwebtoken";
 import {
   Collapse,
@@ -17,7 +17,7 @@ import {
 import { FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
 
-export class Header extends Component {
+class HeaderComponent extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -25,7 +25,7 @@ export class Header extends Component {
       isAuthenticated: false,
       isPhoneConfirmed: false,
       isOpen: false,
-      details: []
+      details: null
     };
   }
 
@@ -35,19 +35,33 @@ export class Header extends Component {
     });
   }
 
-  componentDidMount() {
-    let token = localStorage.getItem("token");
-    let jwtToken = jwt.decode(token);
+  componentDidMount() {}
 
+  getUser() {
+    let token = localStorage.getItem("token");
+
+    if (!token) {
+      if (!this.state.isAuthenticated) return;
+      this.setState({
+        isAuthenticated: false,
+        isPhoneConfirmed: false,
+        details: null
+      });
+    }
+
+    if (this.state.isAuthenticated) return;
+
+    let jwtToken = jwt.decode(token);
     if (token) {
       this.setState({ isAuthenticated: true });
     } else this.setState({ isAuthenticated: false });
-
     if (jwtToken && jwtToken.phoneConfirmed == "True") {
       this.setState({ isPhoneConfirmed: true });
     } else {
       this.setState({ isPhoneConfirmed: false });
     }
+
+    if (this.state.details) return;
 
     let headers = {
       Authorization: `Bearer ${token}`
@@ -68,6 +82,7 @@ export class Header extends Component {
   }
 
   render() {
+    this.getUser();
     return (
       <React.Fragment>
         {this.state.isPhoneConfirmed == true ||
@@ -162,7 +177,7 @@ export class Header extends Component {
                           height="18"
                           className="mr-2"
                         />
-                        {this.state.details.name}
+                        {this.state.details ? this.state.details.name : ""}
                       </DropdownToggle>
                       <DropdownMenu>
                         <DropdownItem className="p-0">
@@ -203,3 +218,5 @@ export class Header extends Component {
     );
   }
 }
+
+export const Header = withRouter(HeaderComponent);
