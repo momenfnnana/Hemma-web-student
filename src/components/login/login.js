@@ -53,13 +53,14 @@ class LoginComponent extends Component {
     axios
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_phone", data)
       .then(response => {
+        console.log(response);
         localStorage.setItem("token", response.data.data.token);
-        localStorage.setItem("deviceId", response.data.data.deviceId);
       })
       .then(res => {
         let token = localStorage.getItem("token");
         let jwtToken = jwt.decode(token);
         localStorage.setItem("jwtToken", jwtToken);
+        localStorage.setItem("deviceId", jwtToken.deviceId);
         this.setState({ loading: false });
         if (jwtToken.phoneConfirmed == "False") {
           let headers = {

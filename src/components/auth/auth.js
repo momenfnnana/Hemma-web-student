@@ -6,53 +6,53 @@ import { NavLink, Route } from "react-router-dom";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { GoogleLogin } from "react-google-login";
 import axios from "axios";
-import jwt from "jsonwebtoken";
+import swal from "@sweetalert/with-react";
 
 export class Auth extends Component {
   responseGoogle = response => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
     };
     axios
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_google", data)
       .then(response => {
         localStorage.setItem("token", response.data.data.token);
-      })
-      .then(res => {
-        console.log(res);
         this.props.history.push("/");
       })
       .catch(error => {
-        console.log(error);
+        swal("عفواً", "هذا المستخدم غير موجود", "error", {
+          button: "متابعة"
+        });
+
         this.props.history.push("/auth/register");
       });
   };
 
   responseFacebook = response => {
-    console.log(response);
-    // let deviceId = localStorage.getItem("deviceId");
-    // let data = {
-    //   accessToken: response.accessToken,
-    //   deviceId: deviceId
-    // };
-    // axios
-    //   .post(
-    //     "https://api.staging.hemma.sa/api/v1/auth/login_with_facebook",
-    //     data
-    //   )
-    //   .then(response => {
-    //     localStorage.setItem("token", response.data.data.token);
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //     this.props.history.push("/");
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     this.props.history.push("/auth/register");
-    //   });
+    let deviceId = localStorage.getItem("deviceId");
+    let data = {
+      accessToken: response.accessToken,
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+    };
+    axios
+      .post(
+        "https://api.staging.hemma.sa/api/v1/auth/login_with_facebook",
+        data
+      )
+      .then(response => {
+        console.log(response);
+        localStorage.setItem("token", response.data.data.token);
+        this.props.history.push("/");
+      })
+      .catch(error => {
+        console.log(error);
+        swal("عفواً", "هذا المستخدم غير موجود", "error", {
+          button: "متابعة"
+        });
+        this.props.history.push("/auth/register");
+      });
   };
 
   render() {
@@ -132,8 +132,9 @@ export class Auth extends Component {
               <li className="list-inline-item">
                 <FacebookLogin
                   appId="381989645718539"
-                  autoLoad
                   callback={this.responseFacebook}
+                  autoLoad={false}
+                  fields="name,email,picture"
                   render={renderProps => (
                     <button
                       className="transparent-bg border-0 p-0 clickable"
