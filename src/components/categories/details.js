@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { FaGraduationCap } from "react-icons/fa";
-import { CardsList } from "../shared/cardsList/cardsList";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Card } from "../shared/card/card";
+import { CardsList } from "../shared/cardsList/cardsList";
 import "./styles.sass";
 import { PublicationDetails } from "../publication/publication";
 
@@ -16,6 +17,7 @@ export class CategoryDetails extends Component {
       lectures: [],
       content: [],
       publications: [],
+      courses: [],
       selectedPublicationId: null,
       modalIsOpen: false
     };
@@ -81,6 +83,15 @@ export class CategoryDetails extends Component {
       .catch(error => {
         console.log(error);
       });
+
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/courses/recent")
+      .then(response => {
+        this.setState({ courses: response.data.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   renderPublications() {
@@ -128,31 +139,20 @@ export class CategoryDetails extends Component {
     ));
   }
 
-  // renderFreeContent() {
-  //   return this.state.content.map(content => (
-  //     <div className="card" dir="rtl">
-  //       <img
-  //         className="card-img-top"
-  //         key={content.id}
-  //         src={content.bannerUrl}
-  //         alt="Course image"
-  //       />
-  //       <div className="card-body">
-  //         <h6 className="card-title dark-text" key={content.id}>
-  //           {content.nameAr}
-  //         </h6>
-  //       </div>
-  //     </div>
-  //   ));
-  // }
+  renderFreeContent() {
+    return this.state.courses.map(course => (
+      <Card key={course.id} course={course} />
+    ));
+  }
 
   render() {
     var customSettings = {
       infinite: false,
       slidesToShow: 1,
       slidesToScroll: 1,
-      autoplay: true,
+      autoplay: false,
       autoplaySpeed: 2000,
+      arrows: false,
       responsive: [
         {
           breakpoint: 1024,
@@ -254,8 +254,8 @@ export class CategoryDetails extends Component {
               </div>
             </div>
 
-            <div className="row pt-5 pb-3 no-gutters">
-              <div className="col-9">
+            <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
+              <div className="col-8">
                 <div
                   className="gradient-bg w-100 d-flex align-items-center justify-content-center"
                   style={{ height: 180 }}
@@ -282,8 +282,8 @@ export class CategoryDetails extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-3">
-                {/* <Slider {...customSettings}>{this.renderFreeContent()}</Slider> */}
+              <div className="col-4 negative-margin">
+                <Slider {...customSettings}>{this.renderFreeContent()}</Slider>
               </div>
             </div>
 

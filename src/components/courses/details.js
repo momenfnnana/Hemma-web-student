@@ -60,12 +60,12 @@ export class CourseDetails extends Component {
       return features.map(feature => (
         <React.Fragment>
           <div className="col-6 align-items-center pb-2" key={feature.id}>
-            <p className="small dark-text mb-0">
+            <p className="small dark-text mb-0 w-75">
               <img
                 src={feature.icon}
                 className="mr-2 contain-img"
-                height="15"
-                width="15"
+                height="25"
+                width="25"
               />
               {feature.descriptionAr}
             </p>

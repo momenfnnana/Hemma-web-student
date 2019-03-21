@@ -35,8 +35,6 @@ class HeaderComponent extends Component {
     });
   }
 
-  componentDidMount() {}
-
   getUser() {
     let token = localStorage.getItem("token");
 
@@ -79,6 +77,7 @@ class HeaderComponent extends Component {
   logout() {
     localStorage.removeItem("token");
     this.setState({ isAuthenticated: false });
+    this.props.history.push("/");
   }
 
   render() {
@@ -120,7 +119,19 @@ class HeaderComponent extends Component {
                   <Nav className="ml-auto" navbar>
                     <NavItem>
                       <NavLink
-                        className="nav-link"
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
                         activeClassName="active"
                         to="/categories"
                       >
@@ -129,16 +140,54 @@ class HeaderComponent extends Component {
                     </NavItem>
                     <NavItem>
                       <NavLink
-                        className="nav-link"
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
                         activeClassName="active"
                         to="/auth/login"
                       >
                         تسجيل الدخول
                       </NavLink>
                     </NavItem>
-                    <NavItem className="nav-item rounded-nav-item pl-2 pr-2">
+                    <NavItem
+                      className={
+                        "nav-item rounded-nav-item pl-2 pr-2 " +
+                        (this.props.location.pathname == "/" ||
+                        this.props.location.pathname.startsWith(
+                          "/categories/details"
+                        ) ||
+                        this.props.location.pathname.startsWith(
+                          "/course/details"
+                        ) ||
+                        this.props.location.pathname == "/categories"
+                          ? "text-white"
+                          : "dark-text")
+                      }
+                    >
                       <NavLink
-                        className="nav-link"
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
                         activeClassName="active"
                         to="/auth/register"
                       >
@@ -150,7 +199,20 @@ class HeaderComponent extends Component {
                   <Nav className="ml-auto" navbar>
                     <NavItem>
                       <NavLink
-                        className="nav-link"
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname.startsWith("/account") ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
                         activeClassName="active"
                         to="/categories"
                       >
@@ -160,7 +222,20 @@ class HeaderComponent extends Component {
 
                     <NavItem>
                       <NavLink
-                        className="nav-link"
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname.startsWith("/account") ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
                         activeClassName="active"
                         to="/account/courses"
                       >
@@ -168,11 +243,39 @@ class HeaderComponent extends Component {
                       </NavLink>
                     </NavItem>
                     <UncontrolledDropdown nav inNavbar>
-                      <DropdownToggle className="light-text" nav>
+                      <DropdownToggle
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname.startsWith("/account") ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
+                        nav
+                      >
                         <img
                           src={
                             process.env.PUBLIC_URL +
-                            "/assets/images/user-circle.png"
+                            (this.props.location.pathname == "/" ||
+                            this.props.location.pathname.startsWith(
+                              "/categories/details"
+                            ) ||
+                            this.props.location.pathname.startsWith(
+                              "/course/details"
+                            ) ||
+                            this.props.location.pathname.startsWith(
+                              "/account"
+                            ) ||
+                            this.props.location.pathname == "/categories"
+                              ? "/assets/images/white-user.png"
+                              : "/assets/images/user-circle.png")
                           }
                           height="18"
                           className="mr-2"
@@ -182,7 +285,7 @@ class HeaderComponent extends Component {
                       <DropdownMenu>
                         <DropdownItem className="p-0">
                           <NavLink
-                            className="nav-link"
+                            className="nav-link dark-text"
                             activeClassName="active"
                             to="/account/edit"
                           >
@@ -191,7 +294,7 @@ class HeaderComponent extends Component {
                         </DropdownItem>
                         <DropdownItem className="p-0">
                           <a
-                            className="nav-link clickable"
+                            className="nav-link clickable dark-text"
                             onClick={() => this.logout()}
                           >
                             تسجيل الخروج
@@ -201,7 +304,20 @@ class HeaderComponent extends Component {
                     </UncontrolledDropdown>
                     <NavItem>
                       <NavLink
-                        className="nav-link"
+                        className={
+                          "nav-link " +
+                          (this.props.location.pathname == "/" ||
+                          this.props.location.pathname.startsWith(
+                            "/categories/details"
+                          ) ||
+                          this.props.location.pathname.startsWith(
+                            "/course/details"
+                          ) ||
+                          this.props.location.pathname.startsWith("/account") ||
+                          this.props.location.pathname == "/categories"
+                            ? "text-white"
+                            : "dark-text")
+                        }
                         activeClassName="active"
                         to="/cart"
                       >

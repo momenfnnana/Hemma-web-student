@@ -15,6 +15,7 @@ export class Auth extends Component {
       accessToken: response.accessToken,
       deviceId: deviceId && deviceId != "undefined" ? deviceId : null
     };
+    if (!response.accessToken) return;
     axios
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_google", data)
       .then(response => {
@@ -36,6 +37,7 @@ export class Auth extends Component {
       accessToken: response.accessToken,
       deviceId: deviceId && deviceId != "undefined" ? deviceId : null
     };
+    if (!response.accessToken) return;
     axios
       .post(
         "https://api.staging.hemma.sa/api/v1/auth/login_with_facebook",
@@ -115,7 +117,6 @@ export class Auth extends Component {
                       className="transparent-bg border-0 p-0 clickable"
                       onClick={renderProps.onClick}
                     >
-                      {" "}
                       <img
                         src={
                           process.env.PUBLIC_URL +

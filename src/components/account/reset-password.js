@@ -92,7 +92,7 @@ class AccountResetComponent extends Component {
             </div>
             <div className="row mt-3">
               <div className="col-md-12">
-                <div className="white-bg box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
+                <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
                   <h6 className="dark-text small mb-4">
                     قم بتعيين كلمة مرور جديدة
                   </h6>
@@ -129,10 +129,7 @@ class AccountResetComponent extends Component {
                       <MdLockOutline />
                     </Field>
 
-                    <button
-                      type="submit"
-                      className="btn dark-outline-btn w-100"
-                    >
+                    <button className="btn dark-outline-btn w-100">
                       حفظ التعديلات{" "}
                     </button>
                   </form>

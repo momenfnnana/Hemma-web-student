@@ -47,7 +47,7 @@ a:hover, a:focus, a:active
 .en-text
     font-family: MontserratMedium
 .dark-text
-    color: $dark-blue
+    color: $dark-blue !important
 .line-through-text
     text-decoration: line-through    
 .br-left-0
@@ -79,7 +79,11 @@ a:hover, a:focus, a:active
 .contain-img
     object-fit: contain
 .smaller
-    font-size: 65%            
+    font-size: 65%
+.light-border
+    border: 1px solid $light-blue !important 
+.white-border
+    border: 1px solid $white !important                    
 .underlined-tabs
     li
         width: 100px
@@ -234,4 +238,5 @@ a.btn
    color: $dark-blue
 .ball-clip-rotate > div
     margin: 0px
- 
+.slick-list > .slick-track 
+    margin-right: 0 

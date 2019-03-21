@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import "./styles.sass";
 import { Tooltip } from "reactstrap";
+import { Link } from "react-router-dom";
 
 export class Courses extends Component {
   constructor(props) {
@@ -58,9 +59,12 @@ export class Courses extends Component {
                   <p className="dark-text en-text small mb-1" dir="ltr">
                     0{this.state.details.phoneNumber}
                   </p>
-                  <a href="" className="light-text text-underline small">
+                  <Link
+                    to="/account/edit"
+                    className="light-text text-underline small"
+                  >
                     تعديل الملف الشخصي
-                  </a>
+                  </Link>
                 </div>
               </div>
               <div className="col-md-8">

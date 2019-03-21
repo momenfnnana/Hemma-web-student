@@ -32,11 +32,20 @@ class AppBackground extends Component {
   render() {
     const path = this.props.location.pathname;
     let img = null;
+    let imgSize = null;
 
     if (path === "/") {
       img = "home-bg.svg";
-    } else if (path.startsWith("/categories/details")) {
+      imgSize = "50%";
+    } else if (
+      path.startsWith("/categories/details") ||
+      path.startsWith("/account")
+    ) {
+      img = "header-bg.png";
+      imgSize = "90%";
+    } else if (path.startsWith("/course/details") || path == "/categories") {
       img = "bg.png";
+      imgSize = "50%";
     }
 
     if (!img) return <div>{this.props.children}</div>;
@@ -46,7 +55,7 @@ class AppBackground extends Component {
         style={{
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
-          backgroundSize: "50%"
+          backgroundSize: imgSize
         }}
       >
         {this.props.children}

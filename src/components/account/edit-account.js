@@ -41,7 +41,7 @@ class EditAccountComponent extends Component {
             </div>
             <div className="row mt-3">
               <div className="col-md-12">
-                <div className="white-bg box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
+                <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
                   <img
                     src={
                       process.env.PUBLIC_URL + "/assets/images/profile-img.png"
