@@ -26,6 +26,8 @@ import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
 import { Checkout } from "./components/checkout/checkout";
 
+import ScrollToTop from "./components/shared/scroll-to-top/ScrollToTop";
+
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
 class AppBackground extends Component {
@@ -52,6 +54,7 @@ class AppBackground extends Component {
 
     return (
       <div
+        className="wrapper-bg"
         style={{
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
@@ -73,31 +76,33 @@ class App extends Component {
         <React.Fragment>
           <div>
             <BrowserRouter>
-              <AppBackground>
-                <Header />
-                <Route path="/auth" component={Auth} />
+              <ScrollToTop>
+                <AppBackground>
+                  <Header />
+                  <Route path="/auth" component={Auth} />
 
-                <Route path="/" exact component={Home} />
-                <Route exact path="/verify" component={Verification} />
-                <Route path="/verify/identity" component={VerifyId} />
-                <Route path="/forgot-password" component={forgotPassword} />
-                <Route path="/reset-password" component={resetPassword} />
-                <Route exact path="/categories" component={Categories} />
-                <Route
-                  path="/categories/details/:id"
-                  component={CategoryDetails}
-                />
-                <Route path="/account/courses" component={Courses} />
-                <Route path="/account/edit" component={EditAccount} />
-                <Route
-                  path="/account/reset-password"
-                  component={AccountReset}
-                />
-                <Route path="/course/details/:id" component={CourseDetails} />
-                <Route exact path="/cart" component={Cart} />
-                <Route path="/cart/checkout" component={Checkout} />
-                <Footer />
-              </AppBackground>
+                  <Route path="/" exact component={Home} />
+                  <Route exact path="/verify" component={Verification} />
+                  <Route path="/verify/identity" component={VerifyId} />
+                  <Route path="/forgot-password" component={forgotPassword} />
+                  <Route path="/reset-password" component={resetPassword} />
+                  <Route exact path="/categories" component={Categories} />
+                  <Route
+                    path="/categories/details/:id"
+                    component={CategoryDetails}
+                  />
+                  <Route path="/account/courses" component={Courses} />
+                  <Route path="/account/edit" component={EditAccount} />
+                  <Route
+                    path="/account/reset-password"
+                    component={AccountReset}
+                  />
+                  <Route path="/course/details/:id" component={CourseDetails} />
+                  <Route exact path="/cart" component={Cart} />
+                  <Route path="/cart/checkout" component={Checkout} />
+                  <Footer />
+                </AppBackground>
+              </ScrollToTop>
             </BrowserRouter>
           </div>
         </React.Fragment>

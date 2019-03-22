@@ -88,8 +88,10 @@ export class Courses extends Component {
                         width="100"
                       />
                       <div className="media-body mt-2">
-                        <h6 class="mt-0 dark-text">دورة القدرات للجامعيين</h6>
-                        <span class="badge blue-status light-font-text">
+                        <h6 className="mt-0 dark-text">
+                          دورة القدرات للجامعيين
+                        </h6>
+                        <span className="badge blue-status light-font-text">
                           سارية
                         </span>
                       </div>
@@ -104,7 +106,7 @@ export class Courses extends Component {
                   <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
                     <div className="media w-75">
                       <img
-                        class="mr-3 rounded cover-img"
+                        className="mr-3 rounded cover-img"
                         src={
                           process.env.PUBLIC_URL + "/assets/images/course2.png"
                         }
@@ -112,10 +114,12 @@ export class Courses extends Component {
                         width="100"
                       />
                       <div className="media-body mt-2">
-                        <h6 class="mt-0 dark-text">دورة القدرات للجامعيين</h6>
+                        <h6 className="mt-0 dark-text">
+                          دورة القدرات للجامعيين
+                        </h6>
 
                         <span
-                          class="badge yellow-status light-font-text tooltip-on-hover"
+                          className="badge yellow-status light-font-text tooltip-on-hover"
                           id="status-tooltip"
                         >
                           قيد المراجعة

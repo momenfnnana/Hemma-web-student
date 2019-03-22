@@ -8,6 +8,7 @@ import {
   AccordionItemBody
 } from "react-accessible-accordion";
 import swal from "@sweetalert/with-react";
+import ReactPlayer from "react-player";
 
 export class CourseDetails extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ export class CourseDetails extends Component {
     axios
       .get(`https://api.staging.hemma.sa/api/v1/courses/${params.id}`)
       .then(response => {
+        console.log(response.data.data);
         this.setState({ details: response.data.data });
       })
       .catch(error => {
@@ -163,12 +165,22 @@ export class CourseDetails extends Component {
             <div className="row">
               <div className="col-md-4">
                 <div className="white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
-                  <img
-                    src={this.state.details.bannerUrl}
-                    height="180"
-                    width="100%"
-                    className="mb-3 rounded cover-img"
-                  />
+                  {this.state.details.videoUrl ? (
+                    <ReactPlayer
+                      url={this.state.details.videoUrl}
+                      playing={false}
+                      controls={true}
+                      width="100%"
+                      height="180"
+                    />
+                  ) : (
+                    <img
+                      src={this.state.details.bannerUrl}
+                      height="180"
+                      width="100%"
+                      className="mb-3 rounded cover-img"
+                    />
+                  )}
                   <div className="container">
                     <div className="d-inline-flex align-items-center">
                       <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
@@ -244,7 +256,15 @@ export class CourseDetails extends Component {
                     </ul>
                   </div>
                 </div>
-                <div className="silver-bg box-layout w-100 p-3 d-inline-flex align-items-center justify-content-center">
+                <div
+                  className="silver-bg box-layout w-100 p-3 d-inline-flex align-items-center justify-content-center mb-2 clickable"
+                  onClick={() =>
+                    window.open(
+                      `${this.state.details.schedulePosterUrl}`,
+                      "_blank"
+                    )
+                  }
+                >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/download.png"}
                     className="mr-2"

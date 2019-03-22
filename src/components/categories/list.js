@@ -36,7 +36,6 @@ export class Categories extends Component {
             </Link>
           </div>
         </div>
-
         <div className="row pt-4">
           <div className="col-12">
             <CardsList catId={cat.id} />

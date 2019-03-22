@@ -236,7 +236,26 @@ a.btn
    border-radius: 5px
 .slick-prev:before, .slick-next:before
    color: $dark-blue
+.slick-list > .slick-track 
+    margin-right: 0    
 .ball-clip-rotate > div
     margin: 0px
-.slick-list > .slick-track 
-    margin-right: 0 
+
+   
+@media only screen and (max-width: 767px)
+    .w-25, .w-75
+        width: 100% !important 
+    .wrapper-bg
+        background-size: 75% !important
+    .navbar-light .navbar-toggler
+        border-color: $white
+    .hero-section
+        margin-top: 150px
+        h2
+            font-size: 1.5rem           
+    .categories-section
+        padding-top: 0px
+        background-size: 50%
+    .section-padder
+        padding-top: 50px
+        padding-bottom: 30px            

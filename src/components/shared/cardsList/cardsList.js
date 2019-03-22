@@ -41,6 +41,7 @@ export class CardsList extends Component {
       slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 2000,
+      centerMode: true,
       responsive: [
         {
           breakpoint: 1024,

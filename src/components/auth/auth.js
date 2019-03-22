@@ -5,6 +5,7 @@ import { Register } from "../register/register";
 import { NavLink, Route } from "react-router-dom";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { GoogleLogin } from "react-google-login";
+import TwitterLogin from "react-twitter-auth";
 import axios from "axios";
 import swal from "@sweetalert/with-react";
 
@@ -133,7 +134,7 @@ export class Auth extends Component {
               <li className="list-inline-item">
                 <FacebookLogin
                   appId="381989645718539"
-                  onClick={this.responseFacebook}
+                  callback={this.responseFacebook}
                   autoLoad={false}
                   fields="name,email,picture"
                   render={renderProps => (
@@ -152,12 +153,19 @@ export class Auth extends Component {
                 />
               </li>
               <li className="list-inline-item">
-                <a href="">
+                <TwitterLogin
+                  loginUrl="http://localhost:4000/api/v1/auth/twitter"
+                  onFailure={this.onFailed}
+                  onSuccess={this.onSuccess}
+                  requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
+                  showIcon={true}
+                  className="transparent-bg border-0 p-0 clickable"
+                >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/twitter.png"}
                     height="35"
                   />
-                </a>
+                </TwitterLogin>
               </li>
             </ul>
             {this.props.location.pathname === "/auth/login" ? (

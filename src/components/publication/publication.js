@@ -21,6 +21,8 @@ export class PublicationDetails extends Component {
       axios
         .get(`https://api.staging.hemma.sa/api/v1/publications/${nextProps.id}`)
         .then(response => {
+          console.log(response.data.data);
+
           this.setState({ publication: response.data.data });
         })
         .catch(error => {
@@ -86,13 +88,21 @@ export class PublicationDetails extends Component {
                 <p className="light-font-text small mb-5">
                   {this.state.publication.descriptionAr}
                 </p>
-                <button className="btn light-outline-btn w-50">
+                <button
+                  onClick={() =>
+                    window.open(
+                      `${this.state.publication.purchaseUrl}`,
+                      "_blank"
+                    )
+                  }
+                  className="btn light-outline-btn w-50"
+                >
                   شراء الكتاب
                 </button>
               </div>
               <div className="col-6">
                 <Document
-                  file={this.state.publication.previewUrl}
+                  file="https://hemma.ams3.cdn.digitaloceanspaces.com/pdf/demo.pdf"
                   onLoadSuccess={this.onDocumentLoadSuccess}
                 >
                   <Page pageNumber={pageNumber} />

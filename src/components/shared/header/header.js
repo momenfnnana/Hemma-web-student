@@ -110,8 +110,10 @@ class HeaderComponent extends Component {
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="70"
                 />
-                <span />
-                <h5 className="dark-text">سلسلة بالبيد التعليمية</h5>
+                <span className="d-none d-sm-block" />
+                <h5 className="dark-text d-none d-sm-block">
+                  سلسلة بالبيد التعليمية
+                </h5>
               </NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
@@ -170,8 +172,8 @@ class HeaderComponent extends Component {
                           "/course/details"
                         ) ||
                         this.props.location.pathname == "/categories"
-                          ? "text-white"
-                          : "dark-text")
+                          ? "white-border"
+                          : "light-border")
                       }
                     >
                       <NavLink
@@ -186,7 +188,7 @@ class HeaderComponent extends Component {
                           ) ||
                           this.props.location.pathname == "/categories"
                             ? "text-white"
-                            : "dark-text")
+                            : "light-text")
                         }
                         activeClassName="active"
                         to="/auth/register"
@@ -256,7 +258,7 @@ class HeaderComponent extends Component {
                           this.props.location.pathname.startsWith("/account") ||
                           this.props.location.pathname == "/categories"
                             ? "text-white"
-                            : "dark-text")
+                            : "light-text")
                         }
                         nav
                       >
