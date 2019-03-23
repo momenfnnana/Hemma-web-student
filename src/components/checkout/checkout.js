@@ -20,8 +20,23 @@ import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import { MdEventNote } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
-import { phoneField } from "../shared/inputs/phoneField";
 import { withRouter } from "react-router-dom";
+
+const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
+
+const FileInput = ({
+  input: { value: omitValue, onChange, onBlur, ...inputProps },
+  meta: omitMeta,
+  ...props
+}) => (
+  <input
+    onChange={adaptFileEventToValue(onChange)}
+    onBlur={adaptFileEventToValue(onBlur)}
+    type="file"
+    {...inputProps}
+    {...props}
+  />
+);
 
 class CheckoutComponent extends Component {
   constructor(props) {
@@ -41,7 +56,62 @@ class CheckoutComponent extends Component {
     }
   }
 
+  myFormHandler = values => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data"
+    };
+    let data = new FormData();
+    let imageFile = values.bankDoc;
+    data.append("file", imageFile);
+
+    axios
+      .post(
+        "https://api.staging.hemma.sa/api/v1/payments/bank_transfers/uploads",
+        data,
+        {
+          headers
+        }
+      )
+      .then(response => {
+        let token = localStorage.getItem("token");
+        let headers = {
+          Authorization: `Bearer ${token}`
+        };
+        let data = {
+          url: response.data.data.url,
+          bankName: values.bankName,
+          accountName: values.accountName,
+          amount: 20000,
+          date: values.date
+        };
+
+        axios
+          .post(
+            "https://api.staging.hemma.sa/api/v1/cart/checkout_with_bank_transfer",
+            data,
+            {
+              headers
+            }
+          )
+          .then(response => {
+            swal("تنبيه", "تمت عملية الدفع بنجاح", "success", {
+              button: "متابعة"
+            });
+            this.props.history.push("/account/courses");
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
+    const { handleSubmit, submitting } = this.props;
     return (
       <React.Fragment>
         <section className="cart-section">
@@ -159,140 +229,140 @@ class CheckoutComponent extends Component {
                 </div>
               </div>
               <div className="col-md-8 mt-3">
-                <div className="row">
-                  <div className="col-12">
-                    <Nav tabs className="w-50 mx-auto">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeTab === "1"
-                          })}
-                          onClick={() => {
-                            this.toggle("1");
-                          }}
-                        >
-                          تحويل بنكي{" "}
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeTab === "2"
-                          })}
-                          onClick={() => {
-                            this.toggle("2");
-                          }}
-                        >
-                          بطاقة إئتمانية{" "}
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                    <TabContent activeTab={this.state.activeTab}>
-                      <TabPane tabId="1">
-                        <div className="row mt-5">
-                          <div className="col-12 text-center">
-                            <ul className="list-inline">
-                              <li className="list-inline-item mr-3">
-                                <a href="">
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/ncb.png"
-                                    }
-                                    height="25"
-                                    alt="Bank"
-                                  />
-                                </a>
-                              </li>
-                              <li className="list-inline-item mr-3">
-                                <a href="">
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/rajhi.png"
-                                    }
-                                    height="25"
-                                    alt="Bank"
-                                  />
-                                </a>
-                              </li>
-                              <li className="list-inline-item mr-3">
-                                <a href="">
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/aljazera.png"
-                                    }
-                                    height="25"
-                                    alt="Bank"
-                                  />
-                                </a>
-                              </li>
-                              <li className="list-inline-item mr-3">
-                                <a href="">
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/sabb.png"
-                                    }
-                                    height="25"
-                                    alt="Bank"
-                                  />
-                                </a>
-                              </li>
-                            </ul>
+                <form onSubmit={handleSubmit(this.myFormHandler)}>
+                  <div className="row">
+                    <div className="col-12">
+                      <Nav tabs className="w-50 mx-auto">
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              active: this.state.activeTab === "1"
+                            })}
+                            onClick={() => {
+                              this.toggle("1");
+                            }}
+                          >
+                            تحويل بنكي{" "}
+                          </NavLink>
+                        </NavItem>
+                        <NavItem>
+                          <NavLink
+                            className={classnames({
+                              active: this.state.activeTab === "2"
+                            })}
+                            onClick={() => {
+                              this.toggle("2");
+                            }}
+                          >
+                            بطاقة إئتمانية{" "}
+                          </NavLink>
+                        </NavItem>
+                      </Nav>
+                      <TabContent activeTab={this.state.activeTab}>
+                        <TabPane tabId="1">
+                          <div className="row mt-5">
+                            <div className="col-12 text-center">
+                              <ul className="list-inline">
+                                <li className="list-inline-item mr-3">
+                                  <a href="">
+                                    <img
+                                      src={
+                                        process.env.PUBLIC_URL +
+                                        "/assets/images/ncb.png"
+                                      }
+                                      height="25"
+                                      alt="Bank"
+                                    />
+                                  </a>
+                                </li>
+                                <li className="list-inline-item mr-3">
+                                  <a href="">
+                                    <img
+                                      src={
+                                        process.env.PUBLIC_URL +
+                                        "/assets/images/rajhi.png"
+                                      }
+                                      height="25"
+                                      alt="Bank"
+                                    />
+                                  </a>
+                                </li>
+                                <li className="list-inline-item mr-3">
+                                  <a href="">
+                                    <img
+                                      src={
+                                        process.env.PUBLIC_URL +
+                                        "/assets/images/aljazera.png"
+                                      }
+                                      height="25"
+                                      alt="Bank"
+                                    />
+                                  </a>
+                                </li>
+                                <li className="list-inline-item mr-3">
+                                  <a href="">
+                                    <img
+                                      src={
+                                        process.env.PUBLIC_URL +
+                                        "/assets/images/sabb.png"
+                                      }
+                                      height="25"
+                                      alt="Bank"
+                                    />
+                                  </a>
+                                </li>
+                              </ul>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row mt-4">
-                          <div className="col-12">
-                            <div className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded">
-                              <div className="row">
-                                <div className="col-md-6">
-                                  <h6 className="small dark-text mb-1">
-                                    رقم حسابنا البنكي (آيبان)
-                                  </h6>
-                                  <p className="small dark-silver-text en-text">
-                                    SA85 8000 0296 6080 1000 8459
-                                  </p>
+                          <div className="row mt-4">
+                            <div className="col-12">
+                              <div className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded">
+                                <div className="row">
+                                  <div className="col-md-6">
+                                    <h6 className="small dark-text mb-1">
+                                      رقم حسابنا البنكي (آيبان)
+                                    </h6>
+                                    <p className="small dark-silver-text en-text">
+                                      SA85 8000 0296 6080 1000 8459
+                                    </p>
 
-                                  <h6 className="small dark-text mb-1">
-                                    رقم حسابنا البنكي{" "}
-                                  </h6>
-                                  <p className="small dark-silver-text en-text">
-                                    296608010008459
-                                  </p>
+                                    <h6 className="small dark-text mb-1">
+                                      رقم حسابنا البنكي{" "}
+                                    </h6>
+                                    <p className="small dark-silver-text en-text">
+                                      296608010008459
+                                    </p>
 
-                                  <h6 className="small dark-text mb-1">
-                                    حسابنا باسم
-                                  </h6>
-                                  <p className="small dark-silver-text mb-0">
-                                    منصة همة التعليمية
-                                  </p>
-                                </div>
-                                <div className="col-md-6 text-center align-self-center">
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/sabb.png"
-                                    }
-                                    className="contain-img"
-                                    height="30"
-                                  />
+                                    <h6 className="small dark-text mb-1">
+                                      حسابنا باسم
+                                    </h6>
+                                    <p className="small dark-silver-text mb-0">
+                                      منصة همة التعليمية
+                                    </p>
+                                  </div>
+                                  <div className="col-md-6 text-center align-self-center">
+                                    <img
+                                      src={
+                                        process.env.PUBLIC_URL +
+                                        "/assets/images/sabb.png"
+                                      }
+                                      className="contain-img"
+                                      height="30"
+                                    />
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row mt-4">
-                          <div className="col-12 text-center">
-                            <h5 className="light-font-text dark-text">
-                              بعد إتمام التحويل ادخل رقم الحوالة
-                            </h5>
+                          <div className="row mt-4">
+                            <div className="col-12 text-center">
+                              <h5 className="light-font-text dark-text">
+                                بعد إتمام التحويل ادخل رقم الحوالة
+                              </h5>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row mt-4">
-                          <div className="col-md-6 ">
-                            <form>
+                          <div className="row mt-4">
+                            <div className="col-md-6 ">
                               <Field
                                 name="bankName"
                                 type="text"
@@ -301,7 +371,7 @@ class CheckoutComponent extends Component {
                                 placeholder="اسم البنك"
                               />
                               <Field
-                                name="bankAccount"
+                                name="accountName"
                                 type="text"
                                 component={inputField}
                                 className="form-control border-left-0 pl-0"
@@ -313,55 +383,67 @@ class CheckoutComponent extends Component {
                               </label>
 
                               <Field
-                                name="transferDate"
+                                name="date"
                                 type="date"
                                 component={inputField}
                                 className="form-control border-left-0 pl-0 en-text"
                               >
                                 <MdEventNote />
                               </Field>
-                            </form>
-                            <h6 className="dark-silver-text smaller">
-                              ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
-                            </h6>
-                          </div>
-                          <div className="col-md-6">
-                            <div
-                              className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded align-items-center justify-content-center d-flex flex-column"
-                              style={{ height: 200 }}
-                            >
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/assets/images/camera.png"
-                                }
-                                className="contain-img"
-                                height="40"
+                              <h6 className="dark-silver-text smaller">
+                                ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
+                              </h6>
+                            </div>
+
+                            <div className="col-md-6">
+                              <Field
+                                component={FileInput}
+                                name="bankDoc"
+                                className="d-none"
+                                id="uploadImage"
                               />
-                              <p className="dark-silver-text light-font-text mt-3 small">
-                                أرفق صورة للحوالة
-                              </p>
+                              <label
+                                for="uploadImage"
+                                className="clickable w-100"
+                              >
+                                <div
+                                  className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded align-items-center justify-content-center d-flex flex-column"
+                                  style={{ height: 200 }}
+                                >
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/camera.png"
+                                    }
+                                    className="contain-img"
+                                    height="40"
+                                  />
+                                  <p className="dark-silver-text light-font-text mt-3 small">
+                                    أرفق صورة للحوالة
+                                  </p>
+                                </div>
+                              </label>
                             </div>
                           </div>
-                        </div>
-                      </TabPane>
-                      <TabPane tabId="2">
-                        <Row>
-                          <Col sm="12">
-                            <h4>Tab 2 Contents</h4>
-                          </Col>
-                        </Row>
-                      </TabPane>
-                    </TabContent>
+                        </TabPane>
+                        <TabPane tabId="2">
+                          <Row>
+                            <Col sm="12">
+                              <h4>Tab 2 Contents</h4>
+                            </Col>
+                          </Row>
+                        </TabPane>
+                      </TabContent>
+                    </div>
                   </div>
-                </div>
-                <div className="row">
-                  <div className="col-12 text-center">
-                    <button className="btn light-outline-btn mt-5 w-25">
-                      إتمام الدفع
-                    </button>
+                  <div className="row">
+                    <div className="col-12 text-center">
+                      <button className="btn light-outline-btn mt-5 w-25">
+                        إتمام الدفع
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
             </div>
           </div>

@@ -10,7 +10,8 @@ export class Courses extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       tooltipOpen: false,
-      details: []
+      details: [],
+      courses: []
     };
   }
 
@@ -33,6 +34,45 @@ export class Courses extends Component {
       .catch(error => {
         console.log(error);
       });
+
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/courses/purchased", { headers })
+      .then(response => {
+        this.setState({ courses: response.data.data.data });
+        console.log(this.state.courses);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  renderCourses() {
+    const courses = this.state.courses || [];
+    return courses.map(course => (
+      <React.Fragment>
+        <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
+          <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
+            <div className="media w-75">
+              <img
+                className="mr-3 rounded cover-img"
+                src={course.bannerUrl}
+                height="100"
+                width="100"
+              />
+              <div className="media-body mt-2">
+                <h6 className="mt-0 dark-text">{course.nameAr} </h6>
+                <span className="badge blue-status light-font-text">سارية</span>
+              </div>
+            </div>
+            <div className="seperator" />
+            <div className="">
+              <h6 className="dark-text mb-0 small">الحالة المالية</h6>
+              <p className="dark-silver-text small mb-0">مسددة </p>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
   }
 
   render() {
@@ -69,41 +109,17 @@ export class Courses extends Component {
               </div>
               <div className="col-md-8">
                 <h3 className="dark-text">قائمة دوراتي</h3>
-                <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
-                  {/* <p className="dark-text">
+                {/* <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4"> */}
+                {/* <p className="dark-text">
                     لسا ما سجلت بدوره معانا؟ يشرفنا انضمامك لنا!
                   </p>
                   <button type="button" className="btn light-outline-btn w-25">
                     أختر دورتك الآن
                   </button> */}
 
-                  <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
-                    <div className="media w-75">
-                      <img
-                        className="mr-3 rounded cover-img"
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        height="100"
-                        width="100"
-                      />
-                      <div className="media-body mt-2">
-                        <h6 className="mt-0 dark-text">
-                          دورة القدرات للجامعيين
-                        </h6>
-                        <span className="badge blue-status light-font-text">
-                          سارية
-                        </span>
-                      </div>
-                    </div>
-                    <div className="seperator" />
-                    <div className="">
-                      <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-                      <p className="dark-silver-text small mb-0">مسددة </p>
-                    </div>
-                  </div>
+                {this.renderCourses()}
 
-                  <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
+                {/* <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
                     <div className="media w-75">
                       <img
                         className="mr-3 rounded cover-img"
@@ -165,8 +181,8 @@ export class Courses extends Component {
                         مسددة جزئيا{" "}
                       </p>
                     </div>
-                  </div>
-                </div>
+                  </div> */}
+                {/* </div> */}
               </div>
             </div>
           </div>

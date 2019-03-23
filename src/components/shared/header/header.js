@@ -37,7 +37,6 @@ class HeaderComponent extends Component {
 
   getUser() {
     let token = localStorage.getItem("token");
-
     if (!token) {
       if (!this.state.isAuthenticated) return;
       this.setState({

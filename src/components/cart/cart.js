@@ -7,6 +7,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
 import swal from "@sweetalert/with-react";
+import { Link } from "react-router-dom";
 
 export class Cart extends Component {
   constructor(props) {
@@ -366,9 +367,12 @@ export class Cart extends Component {
                   </div>
                 )}
 
-                <button className="btn light-outline-btn mt-4 w-100">
+                <Link
+                  to="/cart/checkout"
+                  className="btn light-outline-btn mt-4 w-100 "
+                >
                   متابعة
-                </button>
+                </Link>
               </div>
               <div className="col-md-8 mt-3">
                 {/* {this.state.cart && this.state.cart.length > 0 ? ( */}
