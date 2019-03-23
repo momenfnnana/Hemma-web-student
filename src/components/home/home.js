@@ -100,7 +100,7 @@ export class Home extends Component {
             const col =
               mod === 0 || mod === 1 ? "col-lg-6 col-6" : "col-lg-4 col-6";
             return (
-              <div className={`mt-5 mb-5 ${col}`}>
+              <div className={`mt-5 mb-3 ${col}`}>
                 <Link to={`/categories/details/${cat.id}`} key={cat.id}>
                   <div
                     key={cat.id}

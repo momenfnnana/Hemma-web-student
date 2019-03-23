@@ -60,7 +60,6 @@ const validate = values => {
   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = "يرجى إدخال البريد الإلكتروني بصيغة صحيحة";
   }
-
   return errors;
 };
 

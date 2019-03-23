@@ -45,7 +45,7 @@ export class editPhoneField extends Component {
             value={this.props.input.value}
           />
           {this.props.meta.touched && this.props.meta.error && (
-            <small className="w-100">{this.props.meta.error}</small>
+            <small className="w-100 smaller">{this.props.meta.error}</small>
           )}
         </div>
       </React.Fragment>
