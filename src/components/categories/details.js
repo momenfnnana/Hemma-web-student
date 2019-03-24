@@ -96,15 +96,22 @@ export class CategoryDetails extends Component {
 
   renderPublications() {
     return this.state.publications.map(publication => (
-      <div className="publication-img clickable" key={publication.id}>
-        <img src={publication.thumbnailUrl} width="100%" />
-        <div
-          class="publication-overlay"
-          onClick={() => this.openModal(publication.id)}
-        >
-          <img src={process.env.PUBLIC_URL + "/assets/images/eye.png"} />
+      <React.Fragment>
+        <div className="publication-img" key={publication.id}>
+          <img src={publication.thumbnailUrl} width="100%" />
+          <div class="publication-overlay">
+            <img src={process.env.PUBLIC_URL + "/assets/images/eye.png"} />
+          </div>
+          <div className="text-center purchase-btn">
+            <button
+              className="btn light-outline-btn w-50 align-self-center"
+              onClick={() => this.openModal(publication.id)}
+            >
+              اطلب الآن
+            </button>
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     ));
   }
 

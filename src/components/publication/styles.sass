@@ -1,22 +1,25 @@
+.publication-overlay 
+    position: absolute
+    right: 0
+    left: 0
+    bottom: 0
+    top: 16px
+    background-color: rgba(0, 0, 0, 0.5)
+    z-index: 10
+    height: 76%
+    width: 80%
+    display: flex
+    align-items: center
+    justify-content: center
+    opacity: 0
+    border-radius: 8px
+    margin: 0 auto
+.purchase-btn
+    opacity: 0  
 .publication-img
   position: relative
   &:hover
-      .publication-overlay
+      .publication-overlay, .purchase-btn
           opacity: 1
           transition: opacity ease-out 0.3s
-.publication-overlay 
-  position: absolute
-  right: 0
-  left: 0
-  bottom: 0
-  top: 16px
-  background-color: rgba(0, 0, 0, 0.5)
-  z-index: 10
-  height: 84%
-  width: 80%
-  display: flex
-  align-items: center
-  justify-content: center
-  opacity: 0
-  border-radius: 8px
-  margin: 0 auto
+     
