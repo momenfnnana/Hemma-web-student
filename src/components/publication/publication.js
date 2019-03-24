@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Modal from "react-modal";
 import { Page, pdfjs, Document } from "react-pdf";
+import "./styles.sass";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
