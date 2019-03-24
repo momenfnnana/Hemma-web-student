@@ -44,8 +44,14 @@ class CheckoutComponent extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: "1"
+      activeTab: "1",
+      file: null
     };
+  }
+  onFileInputChange(file) {
+    this.setState({
+      file: URL.createObjectURL(file)
+    });
   }
 
   toggle(tab) {
@@ -401,6 +407,7 @@ class CheckoutComponent extends Component {
                                 name="bankDoc"
                                 className="d-none"
                                 id="uploadImage"
+                                onChange={this.onFileInputChange.bind(this)}
                               />
                               <label
                                 for="uploadImage"
@@ -408,19 +415,34 @@ class CheckoutComponent extends Component {
                               >
                                 <div
                                   className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded align-items-center justify-content-center d-flex flex-column"
-                                  style={{ height: 200 }}
+                                  style={{ minHeight: 200 }}
                                 >
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/camera.png"
-                                    }
-                                    className="contain-img"
-                                    height="40"
-                                  />
-                                  <p className="dark-silver-text light-font-text mt-3 small">
-                                    أرفق صورة للحوالة
-                                  </p>
+                                  {this.state.file ? (
+                                    <img
+                                      src={
+                                        this.state.file ||
+                                        process.env.PUBLIC_URL +
+                                          "/assets/images/camera.png"
+                                      }
+                                      className="contain-img"
+                                      width="100%"
+                                    />
+                                  ) : (
+                                    <React.Fragment>
+                                      <img
+                                        src={
+                                          process.env.PUBLIC_URL +
+                                          "/assets/images/camera.png"
+                                        }
+                                        className="contain-img"
+                                        height="40"
+                                      />
+
+                                      <p className="dark-silver-text light-font-text mt-3 small">
+                                        أرفق صورة للحوالة
+                                      </p>
+                                    </React.Fragment>
+                                  )}
                                 </div>
                               </label>
                             </div>

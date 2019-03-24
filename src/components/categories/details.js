@@ -238,21 +238,26 @@ export class CategoryDetails extends Component {
                 <CardsList catId={params.id} />
               </div>
             </div>
-            <div className="row pt-5 pb-3">
-              <div className="col-md-4">
-                <h3 className="dark-text mt-3">إننا حابين نفيدكم قدمنا لكم</h3>
-                <h3 className="light-text">محاضرات مجانية</h3>
-                <p className="dark-silver-text small">
-                  نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
-                  المزيد
-                </p>
+
+            {this.state.content && this.state.content.length > 0 ? (
+              <div className="row pt-5 pb-3">
+                <div className="col-md-4">
+                  <h3 className="dark-text mt-3">
+                    إننا حابين نفيدكم قدمنا لكم
+                  </h3>
+                  <h3 className="light-text">محاضرات مجانية</h3>
+                  <p className="dark-silver-text small">
+                    نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
+                    المزيد
+                  </p>
+                </div>
+                <div className="col-md-8">
+                  <form>
+                    <ul className="list-group">{this.renderLectures()}</ul>
+                  </form>
+                </div>
               </div>
-              <div className="col-md-8">
-                <form>
-                  <ul className="list-group">{this.renderLectures()}</ul>
-                </form>
-              </div>
-            </div>
+            ) : null}
 
             <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
               <div className="col-8">
@@ -287,23 +292,25 @@ export class CategoryDetails extends Component {
               </div>
             </div>
 
-            <div className="row pt-5">
-              <div className="col-12 text-center">
-                <h3 className="dark-text">إصداراتنا</h3>
-                <p className="dark-silver-text">
-                  احصل على آخر إصداراتنا في القدرات والتحصيلي
-                </p>
-              </div>
+            {this.state.publications && this.state.publications.length > 0 ? (
+              <div className="row pt-5">
+                <div className="col-12 text-center">
+                  <h3 className="dark-text">إصداراتنا</h3>
+                  <p className="dark-silver-text">
+                    احصل على آخر إصداراتنا في القدرات والتحصيلي
+                  </p>
+                </div>
 
-              <div className="col-12">
-                <Slider {...settings}>{this.renderPublications()}</Slider>
-                <PublicationDetails
-                  id={this.state.selectedPublicationId}
-                  modalIsOpen={this.state.modalIsOpen}
-                  onClose={this.closeModal}
-                />
+                <div className="col-12">
+                  <Slider {...settings}>{this.renderPublications()}</Slider>
+                  <PublicationDetails
+                    id={this.state.selectedPublicationId}
+                    modalIsOpen={this.state.modalIsOpen}
+                    onClose={this.closeModal}
+                  />
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
         </section>
       </React.Fragment>

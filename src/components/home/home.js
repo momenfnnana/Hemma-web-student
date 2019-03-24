@@ -110,7 +110,6 @@ export class Home extends Component {
                       key={cat.id}
                       src={cat.icon}
                       height="45"
-                      width="45"
                       className="mt-3 mb-2"
                     />
                     <h6 className="dark-text small text-center">
