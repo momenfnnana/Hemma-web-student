@@ -35,6 +35,10 @@ export class Card extends Component {
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
+    const instructor = course.instructors.map(instructor => (
+      <span key={instructor.id}>{instructor.name}</span>
+    ));
+
     return (
       <React.Fragment>
         <Link to={`/course/details/${course.id}`} key={course.id}>
@@ -58,7 +62,7 @@ export class Card extends Component {
                     width="15"
                     className="mr-1 contain-img"
                   />
-                  <span>أ. طلال محمد</span>
+                  <span>{instructor}</span>
                 </li>
                 <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
                   <img

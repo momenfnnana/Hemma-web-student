@@ -8,17 +8,26 @@ import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
 import swal from "@sweetalert/with-react";
 import { Link } from "react-router-dom";
+import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import { inputField } from "../shared/inputs/inputField";
+import { selectField } from "../shared/inputs/selectField";
+import { withRouter } from "react-router-dom";
+import { textareaField } from "../shared/inputs/textareaField";
 
-export class Cart extends Component {
+class CartComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cart: [],
       courses: [],
-      isInputDisabled: true,
-      checked: false,
+      checked: [],
       showAddressInfo: false,
-      validCoupon: null
+      validCoupon: null,
+      installmentInput: null,
+      cities: [],
+      isVisible: false,
+      isInputDisabled: []
     };
   }
 
@@ -31,7 +40,6 @@ export class Cart extends Component {
       .get("https://api.staging.hemma.sa/api/v1/cart", { headers })
       .then(response => {
         this.setState({ cart: response.data.data });
-        console.log(this.state.cart);
       })
       .catch(error => {
         console.log(error);
@@ -41,6 +49,15 @@ export class Cart extends Component {
       .get("https://api.staging.hemma.sa/api/v1/courses/recent")
       .then(response => {
         this.setState({ courses: response.data.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    axios
+      .get("https://api.staging.hemma.sa/api/v1/cart/shipping_cities")
+      .then(response => {
+        this.setState({ cities: response.data.data });
       })
       .catch(error => {
         console.log(error);
@@ -69,22 +86,61 @@ export class Cart extends Component {
     let headers = {
       Authorization: `Bearer ${token}`
     };
+    const item = this.state.cart.items.find(x => x.id === id);
     let data = {
-      installment: 0,
-      packageOption: this.state.checked
+      packageOption: !item.packageOption
     };
     axios
       .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
         headers
       })
       .then(response => {
-        this.setState({ checked: true, cart: response.data.data });
-        console.log(response);
+        const checked = this.state.checked.filter(val => val !== id);
+        if (item.packageOption) {
+          checked.push(id);
+        }
+        this.setState({
+          checked,
+          cart: response.data.data
+        });
       })
       .catch(error => {
         console.log(error);
       });
   }
+
+  handleChange = (id, event) => {
+    console.log("wee ", event.target.value);
+    this.setState({ itemPrice: event.target.value });
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      installment: event.target.value
+    };
+    axios
+      .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
+        headers
+      })
+      .then(response => {
+        this.setState({
+          cart: response.data.data
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  changeDisableState = (id, i) => {
+    const item = this.state.cart.items.find(x => x.id === id);
+    let isInputDisabled = this.state.isInputDisabled;
+    isInputDisabled[i] = !isInputDisabled[i];
+    // if (item.canBePaidInInstallments == true) {
+    this.setState({ isInputDisabled });
+    // }
+  };
 
   onChangeText(event) {
     this.setState({ validCoupon: event.target.value });
@@ -136,10 +192,18 @@ export class Cart extends Component {
     ));
   }
 
+  renderCities() {
+    return this.state.cities.map(city => (
+      <option key={city.id} value={city.nameAr}>
+        {city.nameAr}
+      </option>
+    ));
+  }
+
   renderItems() {
     const items = this.state.cart.items || [];
 
-    return items.map(item => (
+    return items.map((item, i) => (
       <React.Fragment>
         <div
           className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3"
@@ -158,44 +222,74 @@ export class Cart extends Component {
               width="100"
             />
             <div className="media-body mt-2">
-              <h6 className="mt-0 dark-text">{item.nameAr}</h6>
+              <h6 className="mt-0 dark-text">
+                {item.nameAr}{" "}
+                {item.packageOption ? (
+                  <span className="smaller red-text">
+                    ( سعر الملزمة:{" "}
+                    <span className="en-text">{item.packageOptionPrice}</span>{" "}
+                    ر.س. )
+                  </span>
+                ) : null}
+              </h6>
 
               {item.packageOption == undefined ? null : (
-                <div className="form-check">
+                <div className="form-check mb-1">
                   <input
                     className="form-check-input"
                     type="checkbox"
                     value=""
                     onClick={() => this.updateCart(item.id)}
+                    checked={item.packageOption}
                   />
                   <label className="form-check-label smaller dark-silver-text">
                     أرغب في الحصول على ملزمة مطبوعة
                   </label>
                 </div>
               )}
+              <div className="form-check mb-1">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value=""
+                  onClick={() => this.changeDisableState(item.id, i)}
+                />
+                <label className="form-check-label smaller dark-silver-text">
+                  سداد بالأقساط
+                </label>
+              </div>
+
+              {this.state.isVisible == true ? (
+                <p className="red-text smaller light-font-text mt-1">
+                  {item.canBePaidInInstallments == true
+                    ? "قم بتحديد القيمة التي ترغب في سدادها"
+                    : "نعتذر لا يمكن سدادها بالأقساط"}
+                </p>
+              ) : null}
             </div>
           </div>
-          <div>
-            <form className="form-inline mb-3">
-              <div className="form-group">
-                <label className="dark-text smaller">قيمة القسط</label>
-                <input
-                  disabled={this.state.isInputDisabled}
-                  type="text"
-                  className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
-                  value={item.price}
-                />
-              </div>
+          <div className="w-25">
+            <form className="mb-2 d-flex flex-row align-items-center">
+              <label className="dark-text smaller mb-0">قيمة القسط</label>
+              <input
+                disabled={!this.state.isInputDisabled[i]}
+                type="text"
+                className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
+                value={item.price}
+                name="itemPrice"
+                onChange={event => this.handleChange(item.id, event)}
+              />
             </form>
-            <div className="d-flex flex-row justify-content-between">
+            <div className="d-flex flex-row justify-content-between align-items-center">
               <label className="dark-text smaller mb-0">سعر الاشتراك</label>
               <div className="d-flex flex-column mx-auto">
                 <h6 className="light-text text-center mb-0">
                   <span className="en-text">{item.price}</span> ريال
                 </h6>
-                {item.discountedPrice == undefined ? null : (
-                  <h6 className="mb-0 dark-silver-text line-through-text">
-                    <span className="en-text">{item.discountedPrice}</span> ريال
+                {item.priceBeforeDiscount == undefined ? null : (
+                  <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
+                    <span className="en-text">{item.priceBeforeDiscount}</span>{" "}
+                    ريال
                   </h6>
                 )}
               </div>
@@ -233,7 +327,23 @@ export class Cart extends Component {
     ));
   }
 
+  myFormHandler = values => {
+    let shippingInfo = {
+      recipient: values.recipient,
+      // city: values.city,
+      address: values.address
+    };
+
+    this.props.history.push({
+      pathname: "/cart/checkout",
+      cartInfo: this.state.cart,
+      shippingInfo: shippingInfo
+    });
+  };
+
   render() {
+    const { handleSubmit, submitting } = this.props;
+
     var settings = {
       infinite: false,
       slidesToShow: 3,
@@ -278,7 +388,7 @@ export class Cart extends Component {
             <div className="row">
               <div className="col-md-4">
                 <div className="silver-bg box-layout w-100 mt-3 radius-bottom-0">
-                  <div className="pb-0 p-4 ">
+                  <div className="pb-0 p-4">
                     <h6 className="dark-text small">السعر الكلي</h6>
                     <div className="d-flex flex-row align-items-center justify-content-between">
                       <h4 className="light-text mt-2">
@@ -286,11 +396,10 @@ export class Cart extends Component {
                         ريال
                       </h4>
 
-                      {this.state.cart.totalAfterDiscount ==
-                      undefined ? null : (
-                        <h4 className="dark-silver-text mt-2 mx-auto line-through-text">
+                      {this.state.cart.total == undefined ? null : (
+                        <h4 className="dark-silver-text mt-2 mx-auto line-through-text align-items-center d-flex">
                           <span className="en-text">
-                            {this.state.cart.totalAfterDiscount}
+                            {this.state.cart.totalBeforeDiscount * 0.1}
                           </span>{" "}
                           ريال
                         </h4>
@@ -301,6 +410,27 @@ export class Cart extends Component {
                       ملاحظة: السعر شامل الضريبة
                     </h6>
                   </div>
+                  {this.state.cart.payingInInstallments == true ? (
+                    <div className="pb-0 p-4">
+                      <h6 className="dark-text smaller">
+                        المبلغ المطلوب سداده
+                      </h6>
+                      <h5 className="dark-text mt-2">
+                        <span className="en-text">
+                          {this.state.cart.installment}
+                        </span>{" "}
+                        ريال
+                      </h5>
+
+                      <h6 className="dark-text smaller">القيمة المتبقية</h6>
+                      <h5 className="dark-text mt-2">
+                        <span className="en-text">
+                          {this.state.cart.amountRemaining}
+                        </span>{" "}
+                        ريال
+                      </h5>
+                    </div>
+                  ) : null}
                   <hr />
                   <div className="pl-4 pr-4 pb-3 pt-2">
                     <form>
@@ -328,68 +458,71 @@ export class Cart extends Component {
                   </div>
                 </div>
 
-                {this.state.cart.requireShippingAddress == false ? null : (
-                  <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
-                    <div className="p-4">
-                      <div className="d-flex flex-row align-items-center mb-3">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/box.png"
-                          }
-                          className="contain-img mr-2"
-                          height="30"
-                        />
-                        <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
-                      </div>
-                      <form>
+                <form onSubmit={handleSubmit(this.myFormHandler)}>
+                  {this.state.cart.requireShippingAddress == true ? (
+                    <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
+                      <div className="p-4">
+                        <div className="d-flex flex-row align-items-center mb-3">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL + "/assets/images/box.png"
+                            }
+                            className="contain-img mr-2"
+                            height="30"
+                          />
+                          <h6 className="dark-text small mb-0">
+                            بيانات التوصيل
+                          </h6>
+                        </div>
                         <div className="form-group">
-                          <input
-                            className="form-control small"
+                          <Field
+                            name="recipient"
+                            type="text"
+                            component={inputField}
+                            className="form-control border-left-0 pl-0"
                             placeholder="اسم المستلم"
                           />
                         </div>
                         <div className="form-group">
-                          <select className="form-control">
+                          <select
+                            name="city"
+                            // component={selectField}
+                            className="form-control"
+                          >
                             <option selected disabled>
                               اختر المدينة
                             </option>
+                            {this.renderCities()}
                           </select>
                         </div>
                         <div className="form-group mb-0">
-                          <textarea
+                          <Field
                             className="form-control small"
                             placeholder="عنوان التوصيل"
                             rows="6"
+                            name="address"
+                            component={textareaField}
                           />
                         </div>
-                      </form>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  ) : null}
 
-                <Link
-                  to="/cart/checkout"
-                  className="btn light-outline-btn mt-4 w-100 "
-                >
-                  متابعة
-                </Link>
+                  <button className="btn light-outline-btn mt-4 w-100 ">
+                    متابعة
+                  </button>
+                </form>
               </div>
               <div className="col-md-8 mt-3">
-                {/* {this.state.cart && this.state.cart.length > 0 ? ( */}
-                <div className="row">
-                  <div className="col-12">
-                    <h6 className="dark-text">قائمة الدورات</h6>
-                    {this.renderItems()}
-                    <button
-                      className="btn dark-btn circle float-right pl-4 pr-4"
-                      onClick={() => this.setState({ isInputDisabled: false })}
-                    >
-                      تسديد بالأقساط؟
-                    </button>
+                {this.state.cart.items && this.state.cart.items.length > 0 ? (
+                  <div className="row">
+                    <div className="col-12">
+                      <h6 className="dark-text">قائمة الدورات</h6>
+                      {this.renderItems()}
+                    </div>
                   </div>
-                </div>
-                {/* ) : ( */}
-                {/* <div className="row">
+                ) : (
+                  <div className="row">
                     <div className="col-12 justify-content-center align-items-center d-flex flex-column">
                       <img
                         src={
@@ -407,8 +540,8 @@ export class Cart extends Component {
                         احجز دورتك
                       </Link>
                     </div>
-                  </div> */}
-                {/* )} */}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -432,3 +565,18 @@ export class Cart extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    formValues: state.form.Cart && state.form.Cart.values
+  };
+}
+
+CartComponent = reduxForm({
+  form: "Cart"
+  // validate
+})(CartComponent);
+
+CartComponent = connect(mapStateToProps)(CartComponent);
+
+export const Cart = withRouter(CartComponent);

@@ -13,18 +13,21 @@ $off-white: #fefefe
     font-family: GessLight 
     src: url("/assets/fonts/GESSLight.otf") 
 
-.nav-tabs
+.custom-tabs
     border-bottom: none
-    border-radius: 20px
+    border-radius: 5px
     border: 1px solid $light-blue
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .nav-tabs .nav-link.active:hover
+.custom-tabs .nav-item.show .nav-link, .custom-tabs .nav-link.active, .custom-tabs .nav-link.active:hover
     color: $white
     background-color: transparent
     border: 1px solid $light-blue
     background-color: $light-blue
-    border-radius: 20px
+    border-top-right-radius: 3px
+    border-bottom-right-radius: 3px
+    border-top-left-radius: 0px
+    border-bottom-left-radius: 0px
     font-size: 13px
-.nav-tabs
+.custom-tabs
     .nav-item
         width: 50%
         text-align: center
@@ -34,4 +37,30 @@ $off-white: #fefefe
         cursor: pointer
         .nav-link
             &:hover
-                border: 1px solid transparent     
+                border: 1px solid transparent
+
+.bank-tabs
+    border-bottom: none
+    border-radius: 0px
+    border: none
+.bank-tabs .nav-item.show .nav-link, .bank-tabs .nav-link.active, .bank-tabs .nav-link.active:hover
+    background-color: transparent
+    border: 1px solid transparent
+    background-color: transparent
+    border-radius: 0px
+.bank-tabs
+    .nav-item
+        width: 50%
+        text-align: center
+        cursor: pointer
+        .nav-link
+            &:hover
+                border: 1px solid transparent        
+
+.tag-img
+    top: 6px
+    left: -8px                
+.text-position
+    position: absolute
+    top: 11px
+    left: 2px

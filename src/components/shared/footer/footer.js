@@ -142,53 +142,56 @@ class FooterComponent extends Component {
               <div className="d-inline-flex align-items-center">
                 <p className="light-text small mb-0">خلينا على تواصل</p>
                 <ul className="list-inline pl-3 mb-0">
-                  <li className="list-inline-item">
-                    <a href="">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/snapchat-dark.png"
-                        }
-                        height="15"
-                        alt="Snapchat"
-                      />
-                    </a>
+                  <li
+                    className="list-inline-item clickable"
+                    onClick={() =>
+                      window.open(
+                        "https://www.snapchat.com/add/HemmaEdu",
+                        "_blank"
+                      )
+                    }
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/snapchat-dark.png"
+                      }
+                      height="15"
+                      alt="Snapchat"
+                    />
                   </li>
-                  <li className="list-inline-item">
-                    <a href="">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/instagram-dark.png"
-                        }
-                        height="15"
-                        alt="Instgram"
-                      />
-                    </a>
+                  <li
+                    className="list-inline-item clickable"
+                    onClick={() =>
+                      window.open(
+                        "https://www.instagram.com/hemmaedu/",
+                        "_blank"
+                      )
+                    }
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/instagram-dark.png"
+                      }
+                      height="15"
+                      alt="Instgram"
+                    />
                   </li>
-                  <li className="list-inline-item">
-                    <a href="">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/twitter-dark.png"
-                        }
-                        height="15"
-                        alt="Twitter"
-                      />
-                    </a>
-                  </li>
-                  <li className="list-inline-item">
-                    <a href="">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/youtube-dark.png"
-                        }
-                        height="15"
-                        alt="Youtube"
-                      />
-                    </a>
+                  <li
+                    className="list-inline-item clickable"
+                    onClick={() =>
+                      window.open("https://twitter.com/HemmaEdu", "_blank")
+                    }
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/twitter-dark.png"
+                      }
+                      height="15"
+                      alt="Twitter"
+                    />
                   </li>
                 </ul>
               </div>

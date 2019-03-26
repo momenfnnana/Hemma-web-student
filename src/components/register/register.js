@@ -32,7 +32,7 @@ const validate = values => {
   } else if (values.password.length > 24) {
     errors.password = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
   } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
       values.password
     )
   ) {
@@ -46,7 +46,7 @@ const validate = values => {
   } else if (values.confirmPassword.length > 24) {
     errors.confirmPassword = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
   } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
+    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
       values.confirmPassword
     )
   ) {

@@ -22,8 +22,6 @@ export class PublicationDetails extends Component {
       axios
         .get(`https://api.staging.hemma.sa/api/v1/publications/${nextProps.id}`)
         .then(response => {
-          console.log(response.data.data);
-
           this.setState({ publication: response.data.data });
         })
         .catch(error => {

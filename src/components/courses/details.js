@@ -26,7 +26,6 @@ export class CourseDetails extends Component {
     axios
       .get(`https://api.staging.hemma.sa/api/v1/courses/${params.id}`)
       .then(response => {
-        console.log(response.data.data);
         this.setState({ details: response.data.data });
       })
       .catch(error => {
@@ -52,7 +51,26 @@ export class CourseDetails extends Component {
         });
       })
       .catch(error => {
-        console.log(error);
+        switch (error.response.data && error.response.data.error) {
+          case "Duplicate":
+            swal("عفواً", "هذه الدورة مضافة سابقاً إلى سلة التسوق", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "BadRequest":
+            swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "ItemAlreadyPurchased":
+            swal("عفواً", "هذه الدورة موجودة ضمن قائمة دوراتك", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          default:
+            console.log("other error");
+        }
       });
   }
 
@@ -243,16 +261,26 @@ export class CourseDetails extends Component {
                         />{" "}
                         يومي {this.state.details.scheduleTextAr}
                       </li>
-                      <li className="smaller dark-text mb-2">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/diary.png"
-                          }
-                          className="mr-2"
-                          height="20"
-                        />{" "}
-                        سعر الملزمة 200 ريال
-                      </li>
+                      {this.state.details &&
+                      this.state.details.companionBook ? (
+                        <li className="smaller dark-text mb-2">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/diary.png"
+                            }
+                            className="mr-2"
+                            height="20"
+                          />{" "}
+                          سعر الملزمة{" "}
+                          <span className="en-text">
+                            {this.state.details &&
+                              this.state.details.companionBook &&
+                              this.state.details.companionBook.price}
+                          </span>{" "}
+                          ريال
+                        </li>
+                      ) : null}
                     </ul>
                   </div>
                 </div>
