@@ -90,13 +90,14 @@ class VerifyIdComponent extends Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <div className="container pt-5 pb-5">
-        <div className="row align-items-center h-100">
+        <div
+          className="row align-items-center justify-content-center"
+          style={{ height: 550 }}
+        >
           <div className="col-md-6 col-12">
             <img
-              src={
-                process.env.PUBLIC_URL + "/assets/images/identity-artwork.png"
-              }
-              width="100%"
+              src={process.env.PUBLIC_URL + "/assets/images/verify-artwork.png"}
+              height="350"
             />
           </div>
           <div className="col-md-6 col-12">

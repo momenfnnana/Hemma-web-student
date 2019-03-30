@@ -140,7 +140,7 @@ class FooterComponent extends Component {
               </p>
 
               <div className="d-inline-flex align-items-center">
-                <p className="light-text small mb-0">خلينا على تواصل</p>
+                <p className="mid-text small mb-0">خلينا على تواصل</p>
                 <ul className="list-inline pl-3 mb-0">
                   <li
                     className="list-inline-item clickable"

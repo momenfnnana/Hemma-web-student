@@ -227,7 +227,7 @@ export class CategoryDetails extends Component {
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-4 text-center">
+              <div className="col-md-12 text-center">
                 <div className="half-circle-border d-flex justify-content-center align-items-center mx-auto">
                   <img
                     src={this.state.details.icon}
@@ -237,7 +237,7 @@ export class CategoryDetails extends Component {
                   />
                 </div>
                 <h5 className="dark-text mt-3">{this.state.details.nameAr}</h5>
-                <p className="dark-text mt-2 small">
+                <p className="dark-text mt-2 small w-40 mx-auto">
                   {this.state.details.descriptionAr}
                 </p>
               </div>

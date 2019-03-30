@@ -284,133 +284,84 @@ class CheckoutComponent extends Component {
                       <TabContent activeTab={this.state.activeTab}>
                         <TabPane tabId="1">
                           <div className="row mt-4">
-                            <div className="col-12 text-center">
-                              <Nav tabs className="bank-tabs w-50 mx-auto">
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: this.state.activeBank === "1"
-                                    })}
-                                    onClick={() => {
-                                      this.toggle("1");
-                                    }}
-                                  >
-                                    <img
-                                      src={
-                                        process.env.PUBLIC_URL +
-                                        "/assets/images/ncb.png"
-                                      }
-                                      width="100%"
-                                      className="contain-img"
-                                      alt="NCB Bank"
-                                    />
-                                  </NavLink>
-                                </NavItem>
-                                <NavItem>
-                                  <NavLink
-                                    className={classnames({
-                                      active: this.state.activeBank === "2"
-                                    })}
-                                    onClick={() => {
-                                      this.toggle("2");
-                                    }}
-                                  >
-                                    <img
-                                      src={
-                                        process.env.PUBLIC_URL +
-                                        "/assets/images/rajhi.png"
-                                      }
-                                      width="100%"
-                                      className="contain-img"
-                                      alt="Rajhi Bank"
-                                    />
-                                  </NavLink>
-                                </NavItem>
-                              </Nav>
+                            <div className="col-md-1" />
+                            <div className="col-md-5">
+                              <div className="box-layout green-box">
+                                <div className="box-header p-3 text-center bg-white">
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/ncb.png"
+                                    }
+                                    height="40"
+                                    className="contain-img"
+                                    alt="NCB Bank"
+                                  />
+                                </div>
+                                <div className="box-body silver-bg text-center p-3">
+                                  <h6 className="small dark-text mb-1">
+                                    رقم حسابنا البنكي (آيبان)
+                                  </h6>
+                                  <p className="small dark-silver-text en-text">
+                                    SA171 00000 10172 38800 0105
+                                  </p>
+
+                                  <h6 className="small dark-text mb-1">
+                                    رقم حسابنا البنكي{" "}
+                                  </h6>
+                                  <p className="small dark-silver-text en-text">
+                                    10172388000105
+                                  </p>
+
+                                  <h6 className="small dark-text mb-1">
+                                    حسابنا باسم
+                                  </h6>
+                                  <p className="small dark-silver-text mb-0">
+                                    سعيد عبدالله سعيد بالبيد
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                          <div className="row mt-4">
-                            <div className="col-12">
-                              <TabContent activeTab={this.state.activeBank}>
-                                <TabPane tabId="1">
-                                  <div className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded">
-                                    <div className="row">
-                                      <div className="col-md-6">
-                                        <h6 className="small dark-text mb-1">
-                                          رقم حسابنا البنكي (آيبان)
-                                        </h6>
-                                        <p className="small dark-silver-text en-text">
-                                          SA171 00000 10172 38800 0105
-                                        </p>
+                            <div className="col-md-5">
+                              <div className="box-layout blue-box">
+                                <div className="box-header p-3 text-center">
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/rajhi.png"
+                                    }
+                                    height="40"
+                                    className="contain-img"
+                                    alt="Rajhi Bank"
+                                  />
+                                </div>
+                                <div className="box-body silver-bg text-center p-3">
+                                  <h6 className="small dark-text mb-1">
+                                    رقم حسابنا البنكي (آيبان)
+                                  </h6>
+                                  <p className="small dark-silver-text en-text">
+                                    SA728 00005 10608 01002 4183
+                                  </p>
 
-                                        <h6 className="small dark-text mb-1">
-                                          رقم حسابنا البنكي{" "}
-                                        </h6>
-                                        <p className="small dark-silver-text en-text">
-                                          10172388000105
-                                        </p>
+                                  <h6 className="small dark-text mb-1">
+                                    رقم حسابنا البنكي{" "}
+                                  </h6>
+                                  <p className="small dark-silver-text en-text">
+                                    510608010024183
+                                  </p>
 
-                                        <h6 className="small dark-text mb-1">
-                                          حسابنا باسم
-                                        </h6>
-                                        <p className="small dark-silver-text mb-0">
-                                          سعيد عبدالله سعيد بالبيد
-                                        </p>
-                                      </div>
-                                      <div className="col-md-6 text-center align-self-center">
-                                        <img
-                                          src={
-                                            process.env.PUBLIC_URL +
-                                            "/assets/images/ncb.png"
-                                          }
-                                          className="contain-img"
-                                          height="55"
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </TabPane>
-                                <TabPane tabId="2">
-                                  <div className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded">
-                                    <div className="row">
-                                      <div className="col-md-6">
-                                        <h6 className="small dark-text mb-1">
-                                          رقم حسابنا البنكي (آيبان)
-                                        </h6>
-                                        <p className="small dark-silver-text en-text">
-                                          SA728 00005 10608 01002 4183
-                                        </p>
-
-                                        <h6 className="small dark-text mb-1">
-                                          رقم حسابنا البنكي{" "}
-                                        </h6>
-                                        <p className="small dark-silver-text en-text">
-                                          510608010024183
-                                        </p>
-
-                                        <h6 className="small dark-text mb-1">
-                                          حسابنا باسم
-                                        </h6>
-                                        <p className="small dark-silver-text mb-0">
-                                          سعيد عبدالله سعيد بالبيد
-                                        </p>
-                                      </div>
-                                      <div className="col-md-6 text-center align-self-center">
-                                        <img
-                                          src={
-                                            process.env.PUBLIC_URL +
-                                            "/assets/images/rajhi.png"
-                                          }
-                                          className="contain-img"
-                                          height="55"
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                </TabPane>
-                              </TabContent>
+                                  <h6 className="small dark-text mb-1">
+                                    حسابنا باسم
+                                  </h6>
+                                  <p className="small dark-silver-text mb-0">
+                                    سعيد عبدالله سعيد بالبيد
+                                  </p>
+                                </div>
+                              </div>
                             </div>
+                            <div className="col-md-1" />
                           </div>
+
                           <div className="row mt-4">
                             <div className="col-12 text-center">
                               <h5 className="light-font-text dark-text">
@@ -456,9 +407,7 @@ class CheckoutComponent extends Component {
                               <h6 className="dark-silver-text smaller">
                                 ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
                               </h6>
-                            </div>
 
-                            <div className="col-md-6">
                               <Field
                                 component={FileInput}
                                 name="bankDoc"
@@ -503,6 +452,18 @@ class CheckoutComponent extends Component {
                                 </div>
                               </label>
                             </div>
+
+                            <div className="col-md-6 text-center">
+                              <img
+                                src={
+                                  this.state.file ||
+                                  process.env.PUBLIC_URL +
+                                    "/assets/images/transfer.png"
+                                }
+                                className="contain-img"
+                                height="400"
+                              />
+                            </div>
                           </div>
                         </TabPane>
                         <TabPane tabId="2">
@@ -513,7 +474,7 @@ class CheckoutComponent extends Component {
                       </TabContent>
                     </div>
                   </div>
-                  <div className="row">
+                  <div className="row mb-5">
                     <div className="col-12 text-center">
                       <button className="btn light-outline-btn mt-5 w-25">
                         إتمام الدفع

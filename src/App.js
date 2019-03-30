@@ -35,19 +35,30 @@ class AppBackground extends Component {
     const path = this.props.location.pathname;
     let img = null;
     let imgSize = null;
+    let imgPosition = null;
 
     if (path === "/") {
-      img = "home-bg.svg";
-      imgSize = "50%";
+      img = "home-bg.png";
+      imgSize = "100%";
+      imgPosition = "center top";
     } else if (
-      path.startsWith("/categories/details") ||
-      path.startsWith("/account")
+      path.startsWith("/categories") ||
+      path.startsWith("/course") ||
+      path.startsWith("/account") ||
+      path.startsWith("/cart")
     ) {
-      img = "header-bg.png";
-      imgSize = "90%";
-    } else if (path.startsWith("/course/details") || path == "/categories") {
-      img = "bg.png";
-      imgSize = "50%";
+      img = "pages-bg.png";
+      imgSize = "100%";
+      imgPosition = "center top";
+    } else if (
+      path.startsWith("/auth") ||
+      path.startsWith("/verify") ||
+      path.startsWith("/forgot-password") ||
+      path.startsWith("/reset-password")
+    ) {
+      img = "auth-bg.png";
+      imgSize = "100%";
+      imgPosition = "center bottom";
     }
 
     if (!img) return <div>{this.props.children}</div>;
@@ -58,7 +69,8 @@ class AppBackground extends Component {
         style={{
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
-          backgroundSize: imgSize
+          backgroundSize: imgSize,
+          backgroundPosition: imgPosition
         }}
       >
         {this.props.children}

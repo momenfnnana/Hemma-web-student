@@ -68,25 +68,20 @@ export class PublicationDetails extends Component {
           <div className="container pt-3">
             <div className="row">
               <div className="col-6">
-                <h6 className="light-text">تفاصيل الكتاب</h6>
-                <h5 className="dark-text">{this.state.publication.nameAr}</h5>
-                <ul className="mb-2 mt-2 list-unstyled">
-                  <li className="small light-font-text mb-0">
-                    <span className="mid-text">المؤلف: </span>
-                    {this.state.publication.publisherNameAr}
-                  </li>
-                  <li className="small light-font-text mb-0">
-                    <span className="mid-text">عدد الصفحات: </span>
-                    <span>{this.state.publication.pageCount} صفحة</span>
-                  </li>
-                  <li className="small light-font-text mb-0">
-                    <span className="mid-text">السعر: </span>
-                    {this.state.publication.price} ريال
-                  </li>
-                </ul>
-                <p className="light-font-text small mb-5">
-                  {this.state.publication.descriptionAr}
-                </p>
+                <h5 className="dark-text small">
+                  {this.state.publication.nameAr}
+                </h5>
+                <div className="d-flex flex-row">
+                  <h5 className="dark-text small"> السعر: </h5>
+                  <h5 className="mid-text small">
+                    <span className="en-text mid-text">
+                      {this.state.publication.price}
+                    </span>{" "}
+                    ريال
+                  </h5>
+                </div>
+              </div>
+              <div className="col-6">
                 <button
                   onClick={() =>
                     window.open(
@@ -94,12 +89,14 @@ export class PublicationDetails extends Component {
                       "_blank"
                     )
                   }
-                  className="btn light-outline-btn w-50"
+                  className="btn light-outline-btn w-50 float-right"
                 >
                   شراء الكتاب
                 </button>
               </div>
-              <div className="col-6">
+            </div>
+            <div className="row">
+              <div className="col-12">
                 <Document
                   file="https://hemma.ams3.cdn.digitaloceanspaces.com/pdf/demo.pdf"
                   onLoadSuccess={this.onDocumentLoadSuccess}

@@ -179,58 +179,58 @@ export class Home extends Component {
 
     return (
       <React.Fragment>
-        <section className="hero-section pb-5">
+        <section className="hero-section">
           <div className="container">
-            <div className="row pt-5">
-              <div className="col-md-12 d-inline-flex align-items-center pt-5">
-                <h2 className="dark-text mb-0 w-25 pt-5 ml-5">
+            <div className="row h-100 d-flex align-items-center">
+              <div className="col-md-4">
+                <h2 className="dark-text">
                   <span className="light-text">هدفنا،</span> درجات عالية مو
                   إجتياز وبس!
                 </h2>
+              </div>
+              <div className="col-md-8 d-flex align-items-center justify-content-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                  }
+                  width="100%"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="categories-section">
+        <section className="categories-section pt-5 pb-5">
           <div className="container">{this.renderCategories()}</div>
         </section>
 
         <section className="journey-section section-padder">
           <div className="container">
             <div className="row d-flex h-100 align-items-center">
-              <div className="col-md-8">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/map.png"}
-                  width="100%"
-                />
-              </div>
-              <div className="col-md-4 d-flex flex-column">
+              <div className="col-md-6 d-flex flex-column">
                 <div>
                   <h5 className="dark-text mt-0">بث مباشر</h5>
                   <p className="dark-text light-font-text small w-75">
-                    اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
-                    العالم، وتعتبرُ من إحدى اللّغات المُعتمدة في الأمم
-                    المُتّحدة، كما إنها تشكّلُ اللّغة الأولى في مناطق بلاد
-                    الشّام، وشبه الجزيرة العربيّة، وشمال أفريقيا، وساهم هذا
-                    الانتشار الواسعُ للّغة العربيّة.
+                    لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
+                    إصدار ليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
+                    بل مستخدماً. لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                    توزيعاَ قرون إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع
+                    مقاطع هذا هذا بل مستخدماً.
                   </p>
                 </div>
+              </div>
+              <div className="col-md-6">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/features.png"}
+                  width="100%"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="courses-section section-padder">
+        <section className="courses-section">
           <div className="container">
-            <div className="row">
-              <div className="col-md-12 text-center">
-                <h4 className="dark-text">أحدث الدورات</h4>
-                <p className="dark-silver-text">
-                  لا تفوت فرصة الاشتراك بأحدث دوراتنا
-                </p>
-              </div>
-            </div>
             <div className="row">
               <div className="col-md-12">
                 <Slider {...settings}>{this.renderCourses()}</Slider>
@@ -239,7 +239,7 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="testimonials-section section-padder pt-5">
+        <section className="testimonials-section">
           <div className="container">
             <div className="row d-flex justify-content-center align-items-center">
               <div className="col-md-2">
@@ -275,18 +275,12 @@ export class Home extends Component {
                   </Carousel>
                 </div>
               </div>
-              {/* <div className="col-md-5">
+              <div className="col-md-5">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/testimonials.svg"
-                  }
-                  className="contain-img w-75"
+                  src={process.env.PUBLIC_URL + "/assets/images/faq.png"}
+                  className="contain-img w-75 float-right"
                 />
-                <h6 className="light-text mb-1">عندك استفسار؟</h6>
-                <h6 className="dark-text small mt-0">
-                  إحنا موجودين، نعين ونعاون
-                </h6>
-              </div> */}
+              </div>
             </div>
           </div>
         </section>

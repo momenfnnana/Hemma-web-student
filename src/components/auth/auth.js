@@ -61,16 +61,14 @@ export class Auth extends Component {
   render() {
     return (
       <div className="container pt-5 pb-5">
-        <div className="row align-items-center h-100">
+        <div
+          className="row align-items-center justify-content-center"
+          style={{ height: 550 }}
+        >
           <div className="col-md-6 col-12">
             <img
-              src={
-                this.props.location.pathname === "/auth/login"
-                  ? process.env.PUBLIC_URL + "/assets/images/login-artwork.png"
-                  : process.env.PUBLIC_URL +
-                    "/assets/images/register-artwork.png"
-              }
-              width="100%"
+              src={process.env.PUBLIC_URL + "/assets/images/login-artwork.png"}
+              height="350"
             />
           </div>
           <div className="col-md-6 col-12">

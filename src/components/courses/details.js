@@ -69,7 +69,10 @@ export class CourseDetails extends Component {
             break;
 
           default:
-            console.log("other error");
+            swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
+              button: "متابعة"
+            });
+            break;
         }
       });
   }
@@ -285,7 +288,7 @@ export class CourseDetails extends Component {
                   </div>
                 </div>
                 <div
-                  className="silver-bg box-layout w-100 p-3 d-inline-flex align-items-center justify-content-center mb-2 clickable"
+                  className="light-bg border-0 box-layout w-100 p-3 d-inline-flex align-items-center justify-content-center mb-2 clickable"
                   onClick={() =>
                     window.open(
                       `${this.state.details.schedulePosterUrl}`,
@@ -294,11 +297,15 @@ export class CourseDetails extends Component {
                   }
                 >
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/download.png"}
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/file-white.png"
+                    }
                     className="mr-2"
-                    height="20"
+                    height="25"
                   />{" "}
-                  <h6 className="dark-text mb-0 mt-0">تنزيل جدول الدورة</h6>
+                  <h6 className="text-white mb-0 mt-0 light-font-text">
+                    تنزيل جدول الدورة
+                  </h6>
                 </div>
               </div>
               <div className="col-md-8">

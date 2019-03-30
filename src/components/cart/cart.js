@@ -14,6 +14,7 @@ import { inputField } from "../shared/inputs/inputField";
 import { selectField } from "../shared/inputs/selectField";
 import { withRouter } from "react-router-dom";
 import { textareaField } from "../shared/inputs/textareaField";
+import { Agreement } from "../agreement/agreement";
 
 class CartComponent extends Component {
   constructor(props) {
@@ -32,6 +33,15 @@ class CartComponent extends Component {
       minimum: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal(id) {
+    this.setState({ modalIsOpen: true });
+  }
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   componentDidMount() {
@@ -370,7 +380,7 @@ class CartComponent extends Component {
       // city: values.city,
       address: values.address
     };
-
+    // this.openModal();
     this.props.history.push({
       pathname: "/cart/checkout",
       cartInfo: this.state.cart,
@@ -379,7 +389,7 @@ class CartComponent extends Component {
   };
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit } = this.props;
 
     var settings = {
       infinite: false,
@@ -482,13 +492,24 @@ class CartComponent extends Component {
                           value={this.state.validCoupon}
                         />
                         <div className="input-group-append w-25">
-                          <button
-                            className="btn text-white light-bg small light-font-text w-100"
-                            type="button"
-                            onClick={() => this.addCoupon()}
-                          >
-                            تفعيل
-                          </button>
+                          {this.state.cart.items &&
+                          this.state.cart.items.length > 0 ? (
+                            <button
+                              className="btn text-white light-bg small light-font-text w-100"
+                              type="button"
+                              onClick={() => this.addCoupon()}
+                            >
+                              تفعيل
+                            </button>
+                          ) : (
+                            <button
+                              className="btn text-white light-bg small light-font-text w-100"
+                              type="button"
+                              disabled={true}
+                            >
+                              تفعيل
+                            </button>
+                          )}
                         </div>
                       </div>
                       {this.renderCoupons()}
@@ -546,9 +567,22 @@ class CartComponent extends Component {
                     </div>
                   ) : null}
 
-                  <button className="btn light-outline-btn mt-4 w-100 ">
-                    متابعة
-                  </button>
+                  {this.state.cart.items && this.state.cart.items.length > 0 ? (
+                    <button className="btn light-outline-btn mt-4 w-100">
+                      متابعة
+                    </button>
+                  ) : (
+                    <button
+                      className="btn light-outline-btn mt-4 w-100"
+                      disabled={true}
+                    >
+                      متابعة
+                    </button>
+                  )}
+                  <Agreement
+                    modalIsOpen={this.state.modalIsOpen}
+                    onClose={this.closeModal}
+                  />
                 </form>
               </div>
               <div className="col-md-8 mt-3">
