@@ -39,6 +39,7 @@ export class Courses extends Component {
       .get("https://api.staging.hemma.sa/api/v1/courses/purchased", { headers })
       .then(response => {
         this.setState({ courses: response.data.data.data });
+        console.log(this.state.courses);
       })
       .catch(error => {
         console.log(error);
@@ -49,25 +50,23 @@ export class Courses extends Component {
     const courses = this.state.courses || [];
     return courses.map(course => (
       <React.Fragment>
-        <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
-          <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
-            <div className="media w-75">
-              <img
-                className="mr-3 rounded cover-img"
-                src={course.bannerUrl}
-                height="100"
-                width="100"
-              />
-              <div className="media-body mt-2">
-                <h6 className="mt-0 dark-text">{course.nameAr} </h6>
-                <span className="badge blue-status light-font-text">سارية</span>
-              </div>
+        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
+          <div className="media w-75">
+            <img
+              className="mr-3 rounded cover-img"
+              src={course.bannerUrl}
+              height="100"
+              width="100"
+            />
+            <div className="media-body mt-2">
+              <h6 className="mt-0 dark-text">{course.nameAr} </h6>
+              <span className="badge blue-status light-font-text">سارية</span>
             </div>
-            <div className="seperator" />
-            <div className="">
-              <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-              <p className="dark-silver-text small mb-0">مسددة </p>
-            </div>
+          </div>
+          <div className="seperator" />
+          <div className="">
+            <h6 className="dark-text mb-0 small">الحالة المالية</h6>
+            <p className="dark-silver-text small mb-0">مسددة </p>
           </div>
         </div>
       </React.Fragment>
@@ -108,15 +107,30 @@ export class Courses extends Component {
               </div>
               <div className="col-md-8">
                 <h3 className="dark-text">قائمة دوراتي</h3>
-                {/* <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4"> */}
-                {/* <p className="dark-text">
-                    لسا ما سجلت بدوره معانا؟ يشرفنا انضمامك لنا!
-                  </p>
-                  <button type="button" className="btn light-outline-btn w-25">
-                    أختر دورتك الآن
-                  </button> */}
 
-                {this.renderCourses()}
+                {this.state.courses == undefined ||
+                this.state.courses.length == 0 ? (
+                  <React.Fragment>
+                    <div
+                      className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                      style={{ height: 300 }}
+                    >
+                      <p className="dark-text mt-0">
+                        لسا ما سجلت بدوره معانا؟ يشرفنا انضمامك لنا!
+                      </p>
+                      <button
+                        type="button"
+                        className="btn light-outline-btn w-25"
+                      >
+                        أختر دورتك الآن
+                      </button>{" "}
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
+                    {this.renderCourses()}
+                  </div>
+                )}
 
                 {/* <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
                     <div className="media w-75">

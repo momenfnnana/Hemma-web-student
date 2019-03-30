@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Field, reduxForm, Fields } from "redux-form";
 import { connect } from "react-redux";
+import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { inputField } from "../shared/inputs/inputField";
 import { editPhoneField } from "../shared/inputs/editPhoneField";
@@ -29,7 +30,39 @@ class EditAccountComponent extends Component {
     this.props.getProfile();
   }
 
+  myFormHandler = values => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      name: values.name
+    };
+    axios
+      .put("https://api.staging.hemma.sa/api/v1/users/me", data, {
+        headers
+      })
+      .then(response => {
+        swal("تنبيه", "تم تعديل بياناتك بنجاح", "success", {
+          button: "متابعة"
+        });
+      })
+      .catch(error => {
+        switch (error.response.data && error.response.data.error) {
+          case "ValidationError":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          default:
+            console.log("other error");
+        }
+      });
+  };
+
   render() {
+    const { handleSubmit, submitting } = this.props;
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -49,7 +82,10 @@ class EditAccountComponent extends Component {
                     height="110"
                     className="mb-4"
                   />
-                  <form className="w-25">
+                  <form
+                    className="w-25"
+                    onSubmit={handleSubmit(this.myFormHandler)}
+                  >
                     <Field
                       name="name"
                       type="text"
@@ -78,6 +114,7 @@ class EditAccountComponent extends Component {
                     <button
                       type="submit"
                       className="btn dark-outline-btn w-100 mt-3"
+                      disabled={submitting}
                     >
                       حفظ التعديلات{" "}
                     </button>

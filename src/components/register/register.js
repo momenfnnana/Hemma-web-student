@@ -57,9 +57,9 @@ const validate = values => {
     errors.password = "كلمة المرور غير متطابقة";
     errors.confirmPassword = "كلمة المرور غير متطابقة";
   }
-  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = "يرجى إدخال البريد الإلكتروني بصيغة صحيحة";
-  }
+  // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+  //   errors.email = "يرجى إدخال البريد الإلكتروني بصيغة صحيحة";
+  // }
   return errors;
 };
 

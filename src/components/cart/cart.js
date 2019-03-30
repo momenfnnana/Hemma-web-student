@@ -27,8 +27,11 @@ class CartComponent extends Component {
       installmentInput: null,
       cities: [],
       isVisible: false,
-      isInputDisabled: []
+      isInputDisabled: [],
+      price: false,
+      minimum: false
     };
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -109,21 +112,20 @@ class CartComponent extends Component {
       });
   }
 
-  handleChange = (id, event) => {
-    console.log("wee ", event.target.value);
-    this.setState({ itemPrice: event.target.value });
+  confirmInstallment(id) {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
     let data = {
-      installment: event.target.value
+      installment: "5000"
     };
     axios
       .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
         headers
       })
       .then(response => {
+        console.log(response);
         this.setState({
           cart: response.data.data
         });
@@ -131,6 +133,18 @@ class CartComponent extends Component {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  handleChange = (id, event) => {
+    this.setState({ itemPrice: event.target.value });
+    const item = this.state.cart.items.find(x => x.id === id);
+    const itemPrice = item.price;
+    const minimumInstallment = item.minimumInstallment;
+    if (event.target.value > itemPrice) {
+      this.setState({ price: true });
+    } else if (event.target.value > minimumInstallment) {
+      this.setState({ minimum: true });
+    }
   };
 
   changeDisableState = (id, i) => {
@@ -247,7 +261,8 @@ class CartComponent extends Component {
                   </label>
                 </div>
               )}
-              <div className="form-check mb-1">
+
+              {/* <div className="form-check mb-1">
                 <input
                   className="form-check-input"
                   type="checkbox"
@@ -257,7 +272,29 @@ class CartComponent extends Component {
                 <label className="form-check-label smaller dark-silver-text">
                   سداد بالأقساط
                 </label>
-              </div>
+              </div> */}
+
+              {!this.state.isInputDisabled[i] ? (
+                <span
+                  className="badge blue-status light-font-text clickable"
+                  onClick={() => this.changeDisableState(item.id, i)}
+                >
+                  سداد بالأقساط؟
+                </span>
+              ) : (
+                <span
+                  className="badge blue-status light-font-text clickable"
+                  onClick={() => this.confirmInstallment(item.id)}
+                >
+                  اعتمد القسط
+                </span>
+              )}
+
+              {this.state.minimum ? (
+                <p className="red-text smaller light-font-text mt-1">
+                  القيمة أكبر من الحد الأقصى المسموح
+                </p>
+              ) : null}
 
               {this.state.isVisible == true ? (
                 <p className="red-text smaller light-font-text mt-1">
@@ -396,10 +433,11 @@ class CartComponent extends Component {
                         ريال
                       </h4>
 
-                      {this.state.cart.total == undefined ? null : (
+                      {this.state.cart.totalBeforeDiscount ==
+                      undefined ? null : (
                         <h4 className="dark-silver-text mt-2 mx-auto line-through-text align-items-center d-flex">
                           <span className="en-text">
-                            {this.state.cart.totalBeforeDiscount * 0.1}
+                            {this.state.cart.totalBeforeDiscount / 100}
                           </span>{" "}
                           ريال
                         </h4>
