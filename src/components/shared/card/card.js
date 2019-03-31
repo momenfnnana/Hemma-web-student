@@ -49,21 +49,20 @@ export class Card extends Component {
               src={course.bannerUrl}
               alt="Course image"
             />
-            <div className="card-body">
-              <h6 className="card-title dark-text small" key={course.id}>
+            <div className="card-body pb-1">
+              <h6 className="card-title small mid-text" key={course.id}>
                 {course.nameAr}
               </h6>
-              <p className="dark-text smaller">{desc}</p>
-              <ul className="list-inline mb-2">
-                <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/male.png"}
-                    height="15"
-                    width="15"
-                    className="mr-1 contain-img"
-                  />
-                  <span>{instructor}</span>
-                </li>
+              <div className="list-inline-item light-font-text small light-text d-inline-flex align-items-center mb-2">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/blue-male.png"}
+                  height="15"
+                  width="15"
+                  className="mr-1 contain-img"
+                />
+                <span>{instructor}</span>
+              </div>
+              <ul className="list-inline mb-1">
                 <li className="list-inline-item light-font-text small dark-text mr-4 d-inline-flex align-items-center">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
@@ -83,13 +82,15 @@ export class Card extends Component {
                   />
                   <span className="en-text">{courseDate}</span>
                 </li>
+                <li className="list-inline-item light-font-text small dark-text d-inline-flex align-items-center float-right">
+                  <span className="en-text mr-1">{course.price}</span> ريال
+                </li>
               </ul>
-
-              <h6 className="dark-text float-right mt-0 mb-0">
-                <span className="en-text">{course.price}</span> ريال
-              </h6>
             </div>
-            {/* <div className="card-footer">
+            {/* <div className="card-footer pb-3">
+              <p className="dark-text light-font-text smaller mb-0 text-center">
+                {desc}
+              </p>
               <button
                 type="submit"
                 className="btn light-outline-btn w-100"

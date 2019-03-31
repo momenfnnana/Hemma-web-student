@@ -65,6 +65,8 @@ a:hover, a:focus, a:active
     color: $mid-blue !important    
 .dark-silver-text
     color: $dark-silver
+.silver-text
+    color: $silver    
 .dark-bg
     background: $dark-blue
 .light-bg
@@ -249,19 +251,29 @@ a.btn
 
    
 @media only screen and (max-width: 767px)
-    .w-25, .w-75
+    .w-25, .w-75, .w-40
         width: 100% !important 
-    .wrapper-bg
-        background-size: 75% !important
     .navbar-light .navbar-toggler
         border-color: $white
     .hero-section
-        margin-top: 150px
+        margin-top: 50px
+        margin-bottom: 25px
         h2
-            font-size: 1.5rem           
+            font-size: 1.5rem
+            text-align: center
+            margin-bottom: 25px
+    .testimonials-section
+        padding-top: 60px
+        margin-bottom: 70px                   
     .categories-section
         padding-top: 0px
         background-size: 50%
     .section-padder
         padding-top: 50px
-        padding-bottom: 30px            
+        padding-bottom: 30px
+    .custom-tag
+        min-height: 220px !important
+    .slick-prev, .slick-next
+        display: none !important
+    form.centered
+        width: 70%                        

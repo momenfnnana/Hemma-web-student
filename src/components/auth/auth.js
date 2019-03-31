@@ -63,15 +63,15 @@ export class Auth extends Component {
       <div className="container pt-5 pb-5">
         <div
           className="row align-items-center justify-content-center"
-          style={{ height: 550 }}
+          style={{ minHeight: 550 }}
         >
-          <div className="col-md-6 col-12">
+          <div className="col-md-6 col-12 order-md-1 order-2">
             <img
               src={process.env.PUBLIC_URL + "/assets/images/login-artwork.png"}
-              height="350"
+              width="100%"
             />
           </div>
-          <div className="col-md-6 col-12">
+          <div className="col-md-6 col-12 order-md-2 order-1">
             <ul className="list-inline underlined-tabs mb-4 text-center">
               <li className="list-inline-item small">
                 <NavLink
@@ -113,7 +113,7 @@ export class Auth extends Component {
                   clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
                   render={renderProps => (
                     <button
-                      className="transparent-bg border-0 p-0 clickable"
+                      className="bg-transparent border-0 p-0 clickable"
                       onClick={renderProps.onClick}
                     >
                       <img
@@ -137,7 +137,7 @@ export class Auth extends Component {
                   fields="name,email,picture"
                   render={renderProps => (
                     <button
-                      className="transparent-bg border-0 p-0 clickable"
+                      className="bg-transparent border-0 p-0 clickable"
                       onClick={renderProps.onClick}
                     >
                       <img
@@ -157,7 +157,7 @@ export class Auth extends Component {
                   onSuccess={this.onSuccess}
                   requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
                   showIcon={true}
-                  className="transparent-bg border-0 p-0 clickable"
+                  className="bg-transparent border-0 p-0 clickable"
                 >
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/twitter.png"}

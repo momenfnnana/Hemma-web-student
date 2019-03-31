@@ -19,6 +19,24 @@ const items = [
     altText: "Slide 1",
     caption:
       "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+  },
+  {
+    id: 2,
+    altText: "Slide 2",
+    caption:
+      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+  },
+  {
+    id: 3,
+    altText: "Slide 3",
+    caption:
+      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+  },
+  {
+    id: 4,
+    altText: "Slide 4",
+    caption:
+      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
   }
 ];
 
@@ -94,11 +112,10 @@ export class Home extends Component {
     const cats = this.state.categories;
     return (
       <React.Fragment>
-        <div className="row">
+        <div className="row w-75 mx-auto">
           {cats.map((cat, i) => {
-            const mod = i % 5;
-            const col =
-              mod === 0 || mod === 1 ? "col-lg-6 col-6" : "col-lg-4 col-6";
+            const mod = i % 7;
+            const col = mod < 4 ? "col-lg-3 col-6" : "col-lg-4 col-6";
             return (
               <div className={`mt-5 mb-3 ${col}`}>
                 <Link to={`/categories/details/${cat.id}`} key={cat.id}>
@@ -170,7 +187,7 @@ export class Home extends Component {
           onExited={this.onExited}
         >
           <CarouselCaption
-            className="dark-text small light-font-text"
+            className="dark-text small light-font-text d-block"
             captionText={item.caption}
           />
         </CarouselItem>
@@ -200,7 +217,7 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="categories-section pt-5 pb-5">
+        <section className="categories-section">
           <div className="container">{this.renderCategories()}</div>
         </section>
 
@@ -221,7 +238,7 @@ export class Home extends Component {
               </div>
               <div className="col-md-6">
                 <img
-                  src={process.env.PUBLIC_URL + "/assets/images/features.png"}
+                  src={process.env.PUBLIC_URL + "/assets/images/features.svg"}
                   width="100%"
                 />
               </div>
@@ -242,14 +259,14 @@ export class Home extends Component {
         <section className="testimonials-section">
           <div className="container">
             <div className="row d-flex justify-content-center align-items-center">
-              <div className="col-md-2">
+              <div className="col-md-2 d-none d-md-block order-md-1">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
                   className="contain-img"
                   width="100%"
                 />
               </div>
-              <div className="col-md-5">
+              <div className="col-md-5 order-2">
                 <h4 className="dark-text mb-3">قالوا عنا..</h4>
 
                 <div>
@@ -275,7 +292,7 @@ export class Home extends Component {
                   </Carousel>
                 </div>
               </div>
-              <div className="col-md-5">
+              <div className="col-md-5 order-1 order-md-3">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/faq.png"}
                   className="contain-img w-75 float-right"

@@ -91,7 +91,7 @@ class LoginComponent extends Component {
             break;
 
           default:
-            console.log("other error");
+            console.log(error);
         }
       });
   };

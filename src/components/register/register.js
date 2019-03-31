@@ -123,7 +123,7 @@ class RegisterComponent extends Component {
                 break;
 
               default:
-                console.log("other error");
+                console.log(error);
             }
           });
       })
@@ -136,7 +136,7 @@ class RegisterComponent extends Component {
             break;
 
           default:
-            console.log("other error");
+            console.log(error);
         }
       });
   };

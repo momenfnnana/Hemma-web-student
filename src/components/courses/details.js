@@ -319,7 +319,28 @@ export class CourseDetails extends Component {
                 </div>
 
                 <div className="row">{this.renderFeatures()}</div>
-                {this.renderSections()}
+                {this.state.details.sections == undefined ||
+                this.state.details.sections == 0 ? (
+                  <React.Fragment>
+                    <div
+                      className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                      style={{ height: 250 }}
+                    >
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/event.png"
+                        }
+                        className="mb-3"
+                        height="60"
+                      />{" "}
+                      <p className="silver-text">
+                        سيتم عرض جدول الدورة فور توفره{" "}
+                      </p>
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  this.renderSections()
+                )}
               </div>
             </div>
           </div>

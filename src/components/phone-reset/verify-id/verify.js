@@ -92,15 +92,15 @@ class VerifyIdComponent extends Component {
       <div className="container pt-5 pb-5">
         <div
           className="row align-items-center justify-content-center"
-          style={{ height: 550 }}
+          style={{ minHeight: 550 }}
         >
-          <div className="col-md-6 col-12">
+          <div className="col-md-6 col-12 order-md-1 order-2">
             <img
               src={process.env.PUBLIC_URL + "/assets/images/verify-artwork.png"}
-              height="350"
+              width="100%"
             />
           </div>
-          <div className="col-md-6 col-12">
+          <div className="col-md-6 col-12 order-md-2 order-1">
             <div className="text-center mb-3">
               <h6 className="light-text">التحقق من الهوية</h6>
               <h6 className="dark-text w-50 small mx-auto">

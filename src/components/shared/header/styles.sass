@@ -4,6 +4,7 @@ $white: #FFF
 $black: #000000
 $red: #f66271
 $silver: #d7d7d7
+$mid-blue: #6c53bf 
 
 .clickable
   cursor: pointer
@@ -40,7 +41,7 @@ $silver: #d7d7d7
                 &:after
                     display: block
                     content: ""
-                    border-bottom: 2px solid $dark-blue
+                    border-bottom: 2px solid $mid-blue
                     transform: scaleX(0)
                     transition: transform 250ms ease-in-out
                     transform-origin: 100% 50%
@@ -59,13 +60,13 @@ $silver: #d7d7d7
             .nav-item.rounded-nav-item
                 border-radius: 50px
                 color: $dark-blue
-                // &:hover:after, &.active:after
-                //    transform: scaleX(0)
-                // &:hover, &:focus
-                //    background-color: $light-blue
-                //    transition: background-color ease-out 0.3s
-                //    a
-                //        color: $white    
+                &:hover:after, &.active:after
+                   transform: scaleX(0)
+                &:hover, &:focus
+                   background-color: $light-blue
+                   transition: background-color ease-out 0.3s
+                   a
+                       color: $white    
 
                 .nav-link
                     color: $light-blue
