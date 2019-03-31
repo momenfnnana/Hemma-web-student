@@ -112,12 +112,10 @@ export class Home extends Component {
     const cats = this.state.categories;
     return (
       <React.Fragment>
-        <div className="row w-75 mx-auto">
+        <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
-            const mod = i % 7;
-            const col = mod < 4 ? "col-lg-3 col-6" : "col-lg-4 col-6";
             return (
-              <div className={`mt-5 mb-3 ${col}`}>
+              <div className="mt-5 mb-3 col-lg-3 col-6">
                 <Link to={`/categories/details/${cat.id}`} key={cat.id}>
                   <div
                     key={cat.id}
@@ -238,7 +236,7 @@ export class Home extends Component {
               </div>
               <div className="col-md-6">
                 <img
-                  src={process.env.PUBLIC_URL + "/assets/images/features.svg"}
+                  src={process.env.PUBLIC_URL + "/assets/images/features.png"}
                   width="100%"
                 />
               </div>

@@ -19,7 +19,10 @@ $off-white: #fefefe
     src: url("/assets/fonts/GESSBold.otf") 
 @font-face 
     font-family: MontserratMedium 
-    src: url("/assets/fonts/MontserratMedium.ttf")     
+    src: url("/assets/fonts/MontserratMedium.ttf")
+@font-face 
+    font-family: MontserratRegular
+    src: url("/assets/fonts/MontserratRegular.ttf")          
 html,body 
     font-family: "GessMedium" 
     direction: rtl
@@ -248,7 +251,17 @@ a.btn
 .intl-tel-input .selected-flag:focus
     outline: 0
     box-shadow: none
-
+.disabled-input
+    .input-group-prepend
+        .input-group-text
+            background-color: #e9ecef
+.rdtOpen .rdtPicker
+    font-family: MontserratRegular
+.rdt
+    direction: ltr    
+    input
+        direction: ltr 
+        font-family: MontserratRegular 
    
 @media only screen and (max-width: 767px)
     .w-25, .w-75, .w-40
@@ -276,4 +289,7 @@ a.btn
     .slick-prev, .slick-next
         display: none !important
     form.centered
-        width: 70%                        
+        width: 70%
+    .artwork-img
+        height: unset
+        width: 100%                            

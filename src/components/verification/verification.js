@@ -91,7 +91,8 @@ class VerificationComponent extends Component {
           <div className="col-md-6 col-12 order-md-1 order-2">
             <img
               src={process.env.PUBLIC_URL + "/assets/images/verify-artwork.png"}
-              width="100%"
+              height="350"
+              className="artwork-img"
             />
           </div>
           <div className="col-md-6 col-12 order-md-2 order-1">

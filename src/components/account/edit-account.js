@@ -9,11 +9,12 @@ import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
 import { getProfile } from "../../actions";
+import { FaRegEnvelope } from "react-icons/fa";
 
 const validate = values => {
   const errors = {};
-  if (values.username) {
-    errors.phone = "يجب تعبئة هذه الخانة";
+  if (values.name) {
+    errors.name = "يجب تعبئة هذه الخانة";
   }
   return errors;
 };
@@ -105,6 +106,60 @@ class EditAccountComponent extends Component {
                       defaultCountry="sa"
                       disabled={true}
                     />
+
+                    <label className="pr-2 dark-silver-text">أنا: </label>
+                    <div className="form-check form-check-inline mb-3">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        value="0"
+                        component="input"
+                        disabled={true}
+                      />
+                      <label className="form-check-label dark-text small">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/images/male.png"
+                          }
+                          width="100%"
+                          className="mr-1"
+                          width="12"
+                        />
+                        ذكر
+                      </label>
+                    </div>
+                    <div className="form-check form-check-inline mb-3">
+                      <Field
+                        className="form-check-input"
+                        type="radio"
+                        name="gender"
+                        value="1"
+                        component="input"
+                        disabled={true}
+                      />
+                      <label className="form-check-label dark-text small">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/images/female.png"
+                          }
+                          width="100%"
+                          className="mr-1"
+                          width="12"
+                        />
+                        أنثى
+                      </label>
+                    </div>
+                    <Field
+                      name="email"
+                      type="email"
+                      component={inputField}
+                      className="form-control border-left-0 pl-0 ltr-input"
+                      placeholder="البريد الإلكتروني"
+                      disabled={true}
+                    >
+                      <FaRegEnvelope />
+                    </Field>
                     <Link
                       to="/account/reset-password"
                       className="light-text smaller"

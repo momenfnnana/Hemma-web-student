@@ -21,6 +21,8 @@ import swal from "@sweetalert/with-react";
 import { MdEventNote } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { withRouter } from "react-router-dom";
+import * as Datetime from "react-datetime";
+import "react-datetime/css/react-datetime.css";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -218,27 +220,31 @@ class CheckoutComponent extends Component {
                   <div className="p-4 pb-0">{this.renderItems()}</div>
                 </div>
                 <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
-                  <div className="silver-bg p-3 d-flex flex-row align-items-center ">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/box.png"}
-                      className="contain-img mr-2"
-                      height="30"
-                    />
-                    <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
-                  </div>
-                  <div className="pt-4 pb-4">
-                    <ul className="list-unstyled pl-4 pr-4">
-                      <li className="dark-silver-text small">
-                        اسم المستلم: {this.state.shippingInfo.recipient}
-                      </li>
-                      <li className="dark-silver-text small">
-                        المدينة: {this.state.shippingInfo.city}
-                      </li>
-                      <li className="dark-silver-text small">
-                        العنوان: {this.state.shippingInfo.address}
-                      </li>
-                    </ul>
-                    <hr />
+                  <React.Fragment>
+                    <div className="silver-bg p-3 d-flex flex-row align-items-center ">
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/images/box.png"}
+                        className="contain-img mr-2"
+                        height="30"
+                      />
+                      <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
+                    </div>
+                    <div className="pt-4">
+                      <ul className="list-unstyled pl-4 pr-4 mb-0">
+                        <li className="dark-silver-text small">
+                          اسم المستلم: {this.state.shippingInfo.recipient}
+                        </li>
+                        <li className="dark-silver-text small">
+                          المدينة: {this.state.shippingInfo.city}
+                        </li>
+                        <li className="dark-silver-text small">
+                          العنوان: {this.state.shippingInfo.address}
+                        </li>
+                      </ul>
+                      <hr />
+                    </div>
+                  </React.Fragment>
+                  <div className="pt-2 pb-3">
                     <div className="pl-4 pr-4 pt-2 pb-1 d-flex flex-row align-items-center">
                       <h6 className="mid-text mb-0 mt-0 mr-3">المبلغ الكلي</h6>
                       <h4 className="dark-text mb-0 mt-0">
@@ -364,7 +370,7 @@ class CheckoutComponent extends Component {
 
                           <div className="row mt-4">
                             <div className="col-12 text-center">
-                              <h5 className="light-font-text dark-text">
+                              <h5 className="light-font-text dark-text mt-2">
                                 بعد إتمام التحويل ادخل رقم الحوالة
                               </h5>
                             </div>
@@ -395,16 +401,8 @@ class CheckoutComponent extends Component {
                               <label className="dark-text small mb-2">
                                 وقت وتاريخ الحوالة
                               </label>
-
-                              <Field
-                                name="date"
-                                type="date"
-                                component={inputField}
-                                className="form-control border-left-0 pl-0 en-text"
-                              >
-                                <MdEventNote />
-                              </Field>
-                              <h6 className="dark-silver-text smaller">
+                              <Datetime value={new Date()} />
+                              <h6 className="dark-silver-text smaller mt-2">
                                 ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
                               </h6>
 
@@ -456,9 +454,8 @@ class CheckoutComponent extends Component {
                             <div className="col-md-6 text-center">
                               <img
                                 src={
-                                  this.state.file ||
                                   process.env.PUBLIC_URL +
-                                    "/assets/images/transfer.png"
+                                  "/assets/images/transfer.png"
                                 }
                                 className="contain-img"
                                 height="400"

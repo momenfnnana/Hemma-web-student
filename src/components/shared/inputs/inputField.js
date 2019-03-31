@@ -8,6 +8,8 @@ export class inputField extends Component {
       wrapperClass += " input-error";
     } else if (this.props.meta.touched && this.props.meta.valid) {
       wrapperClass += " input-success";
+    } else if (this.props.disabled) {
+      wrapperClass += " disabled-input";
     }
     return (
       <React.Fragment>
@@ -21,6 +23,7 @@ export class inputField extends Component {
             className={inputClass}
             placeholder={this.props.placeholder}
             value={this.props.input.value}
+            disabled={this.props.disabled}
           />
           {this.props.meta.touched && this.props.meta.error && (
             <small className="w-100 smaller">{this.props.meta.error}</small>
