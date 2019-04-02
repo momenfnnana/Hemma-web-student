@@ -21,8 +21,8 @@ import swal from "@sweetalert/with-react";
 import { MdEventNote } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { withRouter } from "react-router-dom";
-import * as Datetime from "react-datetime";
-import "react-datetime/css/react-datetime.css";
+import { dateTimeField } from "../shared/inputs/dateTimeField";
+import { selectField } from "../shared/inputs/selectField";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -39,6 +39,21 @@ const FileInput = ({
     {...props}
   />
 );
+
+// const validate = values => {
+//   const errors = {};
+//   if (!values.bankName) {
+//     errors.bankName = "يجب تعبئة هذه الخانة";
+//   } else if (!values.accountName) {
+//     errors.accountName = "يجب تعبئة هذه الخانة";
+//   } else if (!values.amount) {
+//     errors.amount = "يجب تعبئة هذه الخانة";
+//   } else if (!values.date) {
+//     errors.date = "يجب تعبئة هذه الخانة";
+//   }
+
+//   return errors;
+// };
 
 class CheckoutComponent extends Component {
   constructor(props) {
@@ -62,7 +77,6 @@ class CheckoutComponent extends Component {
 
   renderItems() {
     const items = this.state.cart.items || [];
-
     return items.map(item => (
       <React.Fragment>
         <div className="media" key={item.itemId}>
@@ -220,30 +234,35 @@ class CheckoutComponent extends Component {
                   <div className="p-4 pb-0">{this.renderItems()}</div>
                 </div>
                 <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
-                  <React.Fragment>
-                    <div className="silver-bg p-3 d-flex flex-row align-items-center ">
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/images/box.png"}
-                        className="contain-img mr-2"
-                        height="30"
-                      />
-                      <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
-                    </div>
-                    <div className="pt-4">
-                      <ul className="list-unstyled pl-4 pr-4 mb-0">
-                        <li className="dark-silver-text small">
-                          اسم المستلم: {this.state.shippingInfo.recipient}
-                        </li>
-                        <li className="dark-silver-text small">
-                          المدينة: {this.state.shippingInfo.city}
-                        </li>
-                        <li className="dark-silver-text small">
-                          العنوان: {this.state.shippingInfo.address}
-                        </li>
-                      </ul>
-                      <hr />
-                    </div>
-                  </React.Fragment>
+                  {this.state.cart.requireShippingAddress == true ? (
+                    <React.Fragment>
+                      <div className="silver-bg p-3 d-flex flex-row align-items-center ">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/images/box.png"
+                          }
+                          className="contain-img mr-2"
+                          height="30"
+                        />
+                        <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
+                      </div>
+                      <div className="pt-4">
+                        <ul className="list-unstyled pl-4 pr-4 mb-0">
+                          <li className="dark-silver-text small">
+                            اسم المستلم: {this.state.shippingInfo.recipient}
+                          </li>
+                          <li className="dark-silver-text small">
+                            المدينة: {this.state.shippingInfo.city}
+                          </li>
+                          <li className="dark-silver-text small">
+                            العنوان: {this.state.shippingInfo.address}
+                          </li>
+                        </ul>
+                        <hr />
+                      </div>
+                    </React.Fragment>
+                  ) : null}
+
                   <div className="pt-2 pb-3">
                     <div className="pl-4 pr-4 pt-2 pb-1 d-flex flex-row align-items-center">
                       <h6 className="mid-text mb-0 mt-0 mr-3">المبلغ الكلي</h6>
@@ -382,8 +401,20 @@ class CheckoutComponent extends Component {
                                 type="text"
                                 component={inputField}
                                 className="form-control border-left-0 pl-0"
-                                placeholder="اسم البنك"
+                                placeholder="اسم البنك المحول منه"
                               />
+
+                              <div className="form-group">
+                                <select
+                                  // component={selectField}
+                                  className="form-control"
+                                >
+                                  <option selected disabled>
+                                    البنك المحول إليه
+                                  </option>
+                                </select>
+                              </div>
+
                               <Field
                                 name="accountName"
                                 type="text"
@@ -401,7 +432,11 @@ class CheckoutComponent extends Component {
                               <label className="dark-text small mb-2">
                                 وقت وتاريخ الحوالة
                               </label>
-                              <Datetime value={new Date()} />
+                              <Field
+                                component={dateTimeField}
+                                name="date"
+                                defaultValue={new Date()}
+                              />
                               <h6 className="dark-silver-text smaller mt-2">
                                 ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
                               </h6>
@@ -496,7 +531,7 @@ function mapStateToProps(state) {
 
 CheckoutComponent = reduxForm({
   form: "Checkout"
-  //   validate
+  // validate
 })(CheckoutComponent);
 
 CheckoutComponent = connect(mapStateToProps)(CheckoutComponent);

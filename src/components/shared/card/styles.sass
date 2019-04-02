@@ -18,4 +18,41 @@
 .course-card:hover
    .card-footer
       display: block
-      transition: display ease-out 0.3s    
+      animation: fadein 2s
+      -moz-animation: fadein 2s
+      -webkit-animation: fadein 2s
+      -o-animation: fadein 2s
+   .card-img-top
+      height: 140px
+      transition: height ease-out 0.3s
+
+@keyframes fadein
+  from
+    display: none
+
+  to
+    display: block
+
+
+@-moz-keyframes fadein
+  from
+    display: none
+
+  to
+    display: block
+
+
+@-webkit-keyframes fadein
+  from
+    display: none
+
+  to
+    display: block
+
+
+@-o-keyframes fadein
+  from
+    display: none
+
+  to
+    display: block          

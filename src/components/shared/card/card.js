@@ -93,18 +93,11 @@ export class Card extends Component {
                 </li>
               </ul>
             </div>
-            {/* <div className="card-footer pb-3">
+            <div className="card-footer pb-3">
               <p className="dark-text light-font-text smaller mb-0 text-center">
                 {desc}
               </p>
-              <button
-                type="submit"
-                className="btn light-outline-btn w-100"
-                onClick={() => this.addToCart(course.id)}
-              >
-                اشترك الآن
-              </button>
-            </div> */}
+            </div>
           </div>
         </Link>
       </React.Fragment>

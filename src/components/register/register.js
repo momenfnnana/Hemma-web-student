@@ -11,58 +11,32 @@ import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import jwt from "jsonwebtoken";
 
-const validate = values => {
-  const errors = {};
-  if (!values.username) {
-    errors.username = "يجب تعبئة هذه الخانة";
-  }
-  if (
-    !values.phone ||
-    !values.phone.phoneNumber ||
-    values.phone.phoneNumber.trim() === ""
-  ) {
-    errors.phone = "يجب تعبئة هذه الخانة";
-  } else if (values.phone.phoneNumber.length < 8) {
-    errors.phone = "ادخل رقم هاتف صحيح";
-  }
-  if (!values.password) {
-    errors.password = "يجب تعبئة هذه الخانة";
-  } else if (values.password.length < 8) {
-    errors.password = "كلمة المرور يجب أن لا تقل عن ٨ أحرف";
-  } else if (values.password.length > 24) {
-    errors.password = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
-      values.password
-    )
-  ) {
-    errors.password =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
-  }
-  if (!values.confirmPassword) {
-    errors.confirmPassword = "يجب تعبئة هذه الخانة";
-  } else if (values.confirmPassword.length < 8) {
-    errors.confirmPassword = "كلمة المرور يجب أن لا تقل عن ٨ أحرف";
-  } else if (values.confirmPassword.length > 24) {
-    errors.confirmPassword = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
-      values.confirmPassword
-    )
-  ) {
-    errors.confirmPassword =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
-  }
-  if (values.password !== values.confirmPassword) {
-    errors.password = "كلمة المرور غير متطابقة";
-    errors.confirmPassword = "كلمة المرور غير متطابقة";
-  }
-  // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-  //   errors.email = "يرجى إدخال البريد الإلكتروني بصيغة صحيحة";
-  // }
-  return errors;
-};
-
+const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
+const maxLength = max => value =>
+  value && value.length > max
+    ? `كلمة المرور يجب أن لا تزيد عن ${max} خانات`
+    : undefined;
+const maxLength10 = maxLength(10);
+export const minLength = min => value =>
+  value && value.length < min
+    ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
+    : undefined;
+export const minLength4 = minLength(4);
+// const nameValue = value =>
+//   value && !/^[a-zA-Z]{2,40}(?: +[a-zA-Z]{2,40})+$/.test(value)
+//     ? "الاسم يجب أن يحتوي على مقطعين على الأقل"
+//     : undefined;
+const passwordValue = value =>
+  value &&
+  !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{4,})/.test(value)
+    ? "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام"
+    : undefined;
+const emailValue = value =>
+  value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
+    ? "يرجى إدخال البريد الإلكتروني بصيغة صحيحة"
+    : undefined;
+const passwordsMatch = (value, allValues) =>
+  value !== allValues.password ? "كلمة المرور غير متطابقة" : undefined;
 class RegisterComponent extends Component {
   state = {
     loading: false
@@ -128,6 +102,7 @@ class RegisterComponent extends Component {
           });
       })
       .catch(error => {
+        this.setState({ loading: false });
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
             swal("عفواً", "هذا المستخدم مسجل سابقاً", "error", {
@@ -151,6 +126,7 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0"
           placeholder="الاسم الكامل"
+          validate={required}
         >
           <FaRegUser />
         </Field>
@@ -163,6 +139,7 @@ class RegisterComponent extends Component {
             name="gender"
             value="0"
             component="input"
+            validate={required}
           />
           <label className="form-check-label dark-text small">
             <img
@@ -181,6 +158,7 @@ class RegisterComponent extends Component {
             name="gender"
             value="1"
             component="input"
+            validate={required}
           />
           <label className="form-check-label dark-text small">
             <img
@@ -200,6 +178,7 @@ class RegisterComponent extends Component {
           containerClassName="intl-tel-input"
           inputClassName="form-control"
           defaultCountry="sa"
+          validate={required}
         />
 
         <Field
@@ -208,6 +187,13 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0 ltr-input"
           placeholder="كلمة المرور"
+          validate={[
+            required,
+            maxLength10,
+            minLength4,
+            passwordValue,
+            passwordsMatch
+          ]}
         >
           <MdLockOutline />
         </Field>
@@ -218,6 +204,13 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0 ltr-input"
           placeholder="تأكيد كلمة المرور"
+          validate={[
+            required,
+            maxLength10,
+            minLength4,
+            passwordValue,
+            passwordsMatch
+          ]}
         >
           <MdLockOutline />
         </Field>
@@ -228,6 +221,7 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0 ltr-input"
           placeholder="البريد الإلكتروني"
+          validate={emailValue}
         >
           <FaRegEnvelope />
         </Field>
@@ -255,8 +249,7 @@ function mapStateToProps(state) {
 }
 
 RegisterComponent = reduxForm({
-  form: "Register",
-  validate
+  form: "Register"
 })(RegisterComponent);
 
 RegisterComponent = connect(mapStateToProps)(RegisterComponent);

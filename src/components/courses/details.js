@@ -49,6 +49,7 @@ export class CourseDetails extends Component {
         swal("تنبيه", "تم إضافة الدورة إلى سلة التسوق بنجاح", "success", {
           button: "متابعة"
         });
+        this.props.history.push("/cart");
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
