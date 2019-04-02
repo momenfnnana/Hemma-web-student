@@ -5,9 +5,9 @@ import { Register } from "../register/register";
 import { NavLink, Route } from "react-router-dom";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { GoogleLogin } from "react-google-login";
-import TwitterLogin from "react-twitter-auth";
 import axios from "axios";
 import swal from "@sweetalert/with-react";
+import { loginWithTwitter } from "./firebase";
 
 export class Auth extends Component {
   responseGoogle = response => {
@@ -56,6 +56,20 @@ export class Auth extends Component {
         });
         this.props.history.push("/auth/register");
       });
+  };
+
+  twitterLogin = async () => {
+      loginWithTwitter()
+        .then(token => {
+          localStorage.setItem("token", token);
+          this.props.history.push("/");
+        })
+        .catch(error => {
+          swal("عفواً", "هذا المستخدم غير موجود", "error", {
+            button: "متابعة"
+          });
+          this.props.history.push("/auth/register");
+        });
   };
 
   render() {
@@ -152,19 +166,11 @@ export class Auth extends Component {
                 />
               </li>
               <li className="list-inline-item">
-                <TwitterLogin
-                  loginUrl="http://localhost:4000/api/v1/auth/twitter"
-                  onFailure={this.onFailed}
-                  onSuccess={this.onSuccess}
-                  requestTokenUrl="http://localhost:4000/api/v1/auth/twitter/reverse"
-                  showIcon={true}
-                  className="bg-transparent border-0 p-0 clickable"
-                >
                   <img
+                    onClick={this.twitterLogin}
                     src={process.env.PUBLIC_URL + "/assets/images/twitter.png"}
                     height="35"
                   />
-                </TwitterLogin>
               </li>
             </ul>
             {this.props.location.pathname === "/auth/login" ? (
