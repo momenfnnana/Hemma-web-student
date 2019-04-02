@@ -9,22 +9,19 @@
         min-height: 30px
         margin-bottom: 5px
    .card-body>p
-      min-height: 30px     
-   .card-footer
-      background-color: #FFF
-      border-top: none
-      padding: 0px 20px 20px 20px
-      display: none
+      min-height: 30px
+      display: none     
 .course-card:hover
-   .card-footer
-      display: block
-      animation: fadein 2s
-      -moz-animation: fadein 2s
-      -webkit-animation: fadein 2s
-      -o-animation: fadein 2s
-   .card-img-top
-      height: 140px
-      transition: height ease-out 0.3s
+   .card-body
+     margin-top: -30px
+     transition: margin-top ease-out 0.3s
+     p
+        display: block
+        animation: fadein 2s
+        -moz-animation: fadein 2s
+        -webkit-animation: fadein 2s
+        -o-animation: fadein 2s
+      
 
 @keyframes fadein
   from

@@ -49,7 +49,7 @@ export class Card extends Component {
               src={course.bannerUrl}
               alt="Course image"
             />
-            <div className="card-body pb-1">
+            <div className="card-body bg-white pb-1">
               <h6 className="card-title small mid-text" key={course.id}>
                 {course.nameAr}
               </h6>
@@ -92,11 +92,16 @@ export class Card extends Component {
                   <span className="en-text mr-1">{course.price}</span> ريال
                 </li>
               </ul>
-            </div>
-            <div className="card-footer pb-3">
-              <p className="dark-text light-font-text smaller mb-0 text-center">
-                {desc}
-              </p>
+
+              {course.instructors == undefined || course.instructors == 0 ? (
+                <p className="dark-text light-font-text smaller mb-0 text-center mt-3">
+                  {desc}
+                </p>
+              ) : (
+                <p className="dark-text light-font-text smaller mb-0 text-center">
+                  {desc}
+                </p>
+              )}
             </div>
           </div>
         </Link>
