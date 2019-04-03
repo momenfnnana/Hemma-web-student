@@ -59,17 +59,17 @@ export class Auth extends Component {
   };
 
   twitterLogin = async () => {
-      loginWithTwitter()
-        .then(token => {
-          localStorage.setItem("token", token);
-          this.props.history.push("/");
-        })
-        .catch(error => {
-          swal("عفواً", "هذا المستخدم غير موجود", "error", {
-            button: "متابعة"
-          });
-          this.props.history.push("/auth/register");
+    loginWithTwitter()
+      .then(token => {
+        localStorage.setItem("token", token);
+        this.props.history.push("/");
+      })
+      .catch(error => {
+        swal("عفواً", "هذا المستخدم غير موجود", "error", {
+          button: "متابعة"
         });
+        this.props.history.push("/auth/register");
+      });
   };
 
   render() {
@@ -119,66 +119,72 @@ export class Auth extends Component {
               path="/auth/register"
               render={props => <Register {...props} />}
             />
-            <div className="pt-4 pb-4">
-              <p className="text-center dark-text circle-border">أو</p>
-            </div>
-            <ul className="list-inline mb-0 text-center">
-              <li className="list-inline-item">
-                <GoogleLogin
-                  clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
-                  render={renderProps => (
-                    <button
-                      className="bg-transparent border-0 p-0 clickable"
-                      onClick={renderProps.onClick}
-                    >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/google-plus.png"
-                        }
-                        height="35"
-                      />
-                    </button>
-                  )}
-                  onSuccess={this.responseGoogle}
-                  onFailure={this.responseGoogle}
-                />
-              </li>
-              <li className="list-inline-item">
-                <FacebookLogin
-                  appId="381989645718539"
-                  callback={this.responseFacebook}
-                  autoLoad={false}
-                  fields="name,email,picture"
-                  render={renderProps => (
-                    <button
-                      className="bg-transparent border-0 p-0 clickable"
-                      onClick={renderProps.onClick}
-                    >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/facebook.png"
-                        }
-                        height="35"
-                      />
-                    </button>
-                  )}
-                />
-              </li>
-              <li className="list-inline-item">
-                  <img
-                    onClick={this.twitterLogin}
-                    src={process.env.PUBLIC_URL + "/assets/images/twitter.png"}
-                    height="35"
-                  />
-              </li>
-            </ul>
             {this.props.location.pathname === "/auth/login" ? (
-              <div className="text-center pt-4">
-                <NavLink to="/forgot-password" className="dark-text small">
-                  نسيت كلمة المرور؟
-                </NavLink>
-              </div>
+              <React.Fragment>
+                <div className="pt-4 pb-4">
+                  <p className="text-center dark-text circle-border">أو</p>
+                </div>
+                <ul className="list-inline mb-0 text-center">
+                  <li className="list-inline-item">
+                    <GoogleLogin
+                      clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
+                      render={renderProps => (
+                        <button
+                          className="bg-transparent border-0 p-0 clickable"
+                          onClick={renderProps.onClick}
+                        >
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/google-plus.png"
+                            }
+                            height="35"
+                          />
+                        </button>
+                      )}
+                      onSuccess={this.responseGoogle}
+                      onFailure={this.responseGoogle}
+                    />
+                  </li>
+                  <li className="list-inline-item">
+                    <FacebookLogin
+                      appId="381989645718539"
+                      callback={this.responseFacebook}
+                      autoLoad={false}
+                      fields="name,email,picture"
+                      render={renderProps => (
+                        <button
+                          className="bg-transparent border-0 p-0 clickable"
+                          onClick={renderProps.onClick}
+                        >
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/facebook.png"
+                            }
+                            height="35"
+                          />
+                        </button>
+                      )}
+                    />
+                  </li>
+                  <li className="list-inline-item">
+                    <img
+                      onClick={this.twitterLogin}
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/twitter.png"
+                      }
+                      height="35"
+                      className="clickable"
+                    />
+                  </li>
+                </ul>
+                <div className="text-center pt-4">
+                  <NavLink to="/forgot-password" className="dark-text small">
+                    نسيت كلمة المرور؟
+                  </NavLink>
+                </div>
+              </React.Fragment>
             ) : null}
           </div>
         </div>

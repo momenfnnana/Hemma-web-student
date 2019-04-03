@@ -35,6 +35,23 @@ class HeaderComponent extends Component {
     });
   }
 
+  // verifyUser() {
+  //   let token = localStorage.getItem("token");
+  //   let headers = {
+  //     Authorization: `Bearer ${token}`
+  //   };
+  //   axios
+  //     .post("https://api.staging.hemma.sa/api/v1/auth/phone/send_token", null, {
+  //       headers
+  //     })
+  //     .then(response => {
+  //       this.props.history.push("/verify");
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }
+
   getUser() {
     let token = localStorage.getItem("token");
     if (!token) {
@@ -91,9 +108,12 @@ class HeaderComponent extends Component {
                 <div className="col-12 text-center">
                   <p className="text-white light-font-text">
                     لم تقم بتأكيد رقم الهاتف، يجب أن تقوم بتأكيده{" "}
-                    <a href="" className="light-text text-decoration-none">
+                    <span
+                      // onClick={this.verifyUser()}
+                      className="light-text text-decoration-none clickable"
+                    >
                       اضغط هنا
-                    </a>
+                    </span>
                   </p>
                 </div>
               </div>

@@ -24,17 +24,6 @@ const validate = values => {
   }
   if (!values.password) {
     errors.password = "يجب تعبئة هذه الخانة";
-  } else if (values.password.length < 4) {
-    errors.password = "كلمة المرور يجب أن لا تقل عن 4 أحرف";
-  } else if (values.password.length > 10) {
-    errors.password = "كلمة المرور يجب أن لا تزيد عن 10 حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{4,})/.test(
-      values.password
-    )
-  ) {
-    errors.password =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
   }
   return errors;
 };

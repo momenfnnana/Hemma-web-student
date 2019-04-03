@@ -22,14 +22,9 @@ export const minLength = min => value =>
     ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
     : undefined;
 export const minLength4 = minLength(4);
-// const nameValue = value =>
-//   value && !/^[a-zA-Z]{2,40}(?: +[a-zA-Z]{2,40})+$/.test(value)
-//     ? "الاسم يجب أن يحتوي على مقطعين على الأقل"
-//     : undefined;
-const passwordValue = value =>
-  value &&
-  !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{4,})/.test(value)
-    ? "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام"
+const nameValue = value =>
+  value && !/^[\u0621-\u064A\w]{2,}(\s[\u0621-\u064A\w]{2,})+$/.test(value)
+    ? "الاسم يجب أن يحتوي على مقطعين على الأقل"
     : undefined;
 const emailValue = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
@@ -126,7 +121,7 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0"
           placeholder="الاسم الكامل"
-          validate={required}
+          validate={[required, nameValue]}
         >
           <FaRegUser />
         </Field>
@@ -187,13 +182,7 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0 ltr-input"
           placeholder="كلمة المرور"
-          validate={[
-            required,
-            maxLength10,
-            minLength4,
-            passwordValue,
-            passwordsMatch
-          ]}
+          validate={[required, maxLength10, minLength4, passwordsMatch]}
         >
           <MdLockOutline />
         </Field>
@@ -204,13 +193,7 @@ class RegisterComponent extends Component {
           component={inputField}
           className="form-control border-left-0 pl-0 ltr-input"
           placeholder="تأكيد كلمة المرور"
-          validate={[
-            required,
-            maxLength10,
-            minLength4,
-            passwordValue,
-            passwordsMatch
-          ]}
+          validate={[required, maxLength10, minLength4, passwordsMatch]}
         >
           <MdLockOutline />
         </Field>
