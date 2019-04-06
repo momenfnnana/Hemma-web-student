@@ -17,14 +17,13 @@ import { CategoryDetails } from "./components/categories/details";
 import { Courses } from "./components/account/courses";
 import { CourseDetails } from "./components/courses/details";
 import { EditAccount } from "./components/account/edit-account";
-import { Cart } from "./components/cart/cart";
 import { forgotPassword } from "./components/phone-reset/forgot-password/forgot-password";
 import { VerifyId } from "./components/phone-reset/verify-id/verify";
 import { resetPassword } from "./components/phone-reset/reset-password/reset-password";
 import { AccountReset } from "./components/account/reset-password";
 import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
-import { Checkout } from "./components/checkout/checkout";
+import { Cart, Checkout } from "./components/new-cart";
 
 import ScrollToTop from "./components/shared/scroll-to-top/ScrollToTop";
 

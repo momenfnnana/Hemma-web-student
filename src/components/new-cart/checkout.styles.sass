@@ -1,0 +1,83 @@
+$dark-blue: #4b3a85 
+$light-blue: #2bc3cc
+$mid-blue: #6c53bf 
+$white: #FFF 
+$black: #000000 
+$red: #f66271 
+$silver: #dbdbdb
+$light-silver: #f2f2f2 
+$dark-silver: #a9acb4
+$off-white: #fefefe 
+
+@font-face 
+    font-family: GessLight 
+    src: url("/assets/fonts/GESSLight.otf") 
+
+.custom-tabs
+    border-bottom: none
+    border-radius: 5px
+    border: 1px solid $light-blue
+.custom-tabs .nav-item.show .nav-link, .custom-tabs .nav-link.active, .custom-tabs .nav-link.active:hover
+    color: $white
+    background-color: transparent
+    border: 1px solid $light-blue
+    background-color: $light-blue
+    border-top-right-radius: 3px
+    border-bottom-right-radius: 3px
+    border-top-left-radius: 0px
+    border-bottom-left-radius: 0px
+    font-size: 13px
+.custom-tabs
+    .nav-item
+        width: 50%
+        text-align: center
+        font-family: GessLight
+        font-size: 13px
+        color: $light-blue
+        cursor: pointer
+        .nav-link
+            &:hover
+                border: 1px solid transparent
+
+.bank-tabs
+    border-bottom: none
+    border-radius: 0px
+    border: none
+.bank-tabs .nav-item.show .nav-link, .bank-tabs .nav-link.active, .bank-tabs .nav-link.active:hover
+    background-color: transparent
+    border: 1px solid transparent
+    background-color: transparent
+    border-radius: 0px
+.bank-tabs
+    .nav-item
+        width: 50%
+        text-align: center
+        cursor: pointer
+        .nav-link
+            &:hover
+                border: 1px solid transparent        
+
+.tag-img
+    top: 6px
+    left: -8px                
+.text-position
+    position: absolute
+    top: 11px
+    left: 2px
+.green-box
+    border: 2px solid #009956 !important
+    .box-header
+        border-bottom: 2px solid #009956
+        border-top-right-radius: 5px
+        border-top-left-radius: 5px
+    .box-body
+        border-bottom-left-radius: 5px
+        border-bottom-right-radius: 5px    
+.blue-box
+    border: 2px solid #1b429a !important
+    .box-header
+        border-bottom: 2px solid #1b429a
+        background-color: #1b429a
+    .box-body
+        border-bottom-left-radius: 5px
+        border-bottom-right-radius: 5px         
