@@ -222,7 +222,7 @@ class FooterComponent extends Component {
                 <div className="d-flex flex-row w-75 align-items-center">
                   <img
                     src={
-                      process.env.PUBLIC_URL + "/assets/images/square-check.png"
+                      process.env.PUBLIC_URL + "/assets/images/red-check.png"
                     }
                     height="30"
                     alt="Success"

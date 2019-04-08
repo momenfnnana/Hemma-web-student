@@ -9,13 +9,15 @@ import {
 } from "react-accessible-accordion";
 import swal from "@sweetalert/with-react";
 import ReactPlayer from "react-player";
+import StarRatingComponent from "react-star-rating-component";
 
 export class CourseDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
       details: [],
-      checked: false
+      checked: false,
+      rating: 3
     };
   }
 
@@ -134,6 +136,45 @@ export class CourseDetails extends Component {
             </AccordionItemBody>
           </AccordionItem>
         </Accordion>
+      ));
+    }
+  }
+
+  renderInstructors() {
+    const { rating } = this.state;
+    const instructors = this.state.details.instructors;
+
+    if (instructors) {
+      return instructors.map(instructor => (
+        <div className="silver-bg border-bottom d-flex align-items-center h-55 pl-3 pr-3">
+          <div>
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/female-circle.png"}
+              className="mr-2"
+              height="25"
+            />
+          </div>
+
+          <div className="d-flex align-items-center flex-column">
+            <h6 className="mid-text smaller mb-0 mt-0">{instructor.name}</h6>
+            <StarRatingComponent
+              starCount={5}
+              value={rating}
+              starColor={"#ffe552"}
+              emptyStarColor={"#a9acb4"}
+              editing={false}
+            />
+          </div>
+
+          <div className="d-flex justify-content-end flex-fill align-items-center">
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/diary.png"}
+              className="mr-2"
+              height="18"
+            />
+            <h6 className="dark-text smaller mb-1 mt-0">مدرس مادة الأحياء</h6>
+          </div>
+        </div>
       ));
     }
   }
@@ -280,7 +321,7 @@ export class CourseDetails extends Component {
                           <span className="en-text">
                             {this.state.details &&
                               this.state.details.companionBook &&
-                              this.state.details.companionBook.price}
+                              this.state.details.companionBook.price / 100}
                           </span>{" "}
                           ريال
                         </li>
@@ -289,7 +330,7 @@ export class CourseDetails extends Component {
                   </div>
                 </div>
                 <div
-                  className="light-bg border-0 box-layout w-100 p-3 d-inline-flex align-items-center justify-content-center mb-2 clickable"
+                  className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
                   onClick={() =>
                     window.open(
                       `${this.state.details.schedulePosterUrl}`,
@@ -308,6 +349,26 @@ export class CourseDetails extends Component {
                     تنزيل جدول الدورة
                   </h6>
                 </div>
+
+                {this.state.details.instructors == undefined ||
+                this.state.details.instructors == 0 ? null : (
+                  <div class="white-bg box-layout w-100 radius-bottom-0 border-bottom-0">
+                    <div class="d-flex align-items-center p-3">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/instructors.png"
+                        }
+                        className="mr-2"
+                        height="20"
+                      />
+                      <h6 class="dark-text small mb-0">المدربين</h6>
+                    </div>
+                    <hr className="mt-0 mb-0" />
+
+                    <div>{this.renderInstructors()}</div>
+                  </div>
+                )}
               </div>
               <div className="col-md-8">
                 <div className="row">
