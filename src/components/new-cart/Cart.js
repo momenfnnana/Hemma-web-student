@@ -39,7 +39,6 @@ class CartComponent extends Component {
     const cart = this.props.cart;
     const items = cart && cart.items;
     const { busy } = this.state;
-    console.log("cart is ", cart);
     return (
       <Fragment>
         <section className="cart-section">

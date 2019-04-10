@@ -116,6 +116,7 @@ export class CategoryDetails extends Component {
       <li
         key={lecture.id}
         className="list-group-item d-flex justify-content-between align-items-center"
+        dir="rtl"
       >
         <div className="media">
           <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
@@ -215,6 +216,41 @@ export class CategoryDetails extends Component {
         }
       ]
     };
+
+    var verticalCarousel = {
+      infinite: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: false,
+      autoplaySpeed: 2000,
+      arrows: true,
+      vertical: true,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: false
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            initialSlide: 1
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    };
     const {
       match: { params }
     } = this.props;
@@ -257,15 +293,13 @@ export class CategoryDetails extends Component {
                   </p>
                 </div>
                 <div className="col-md-8">
-                  <form>
-                    <ul className="list-group">{this.renderLectures()}</ul>
-                  </form>
+                  <Slider {...verticalCarousel}>{this.renderLectures()}</Slider>
                 </div>
               </div>
             ) : null}
 
             <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
-              <div className="col-8">
+              <div className="col-md-8 col-12">
                 <div
                   className="gradient-bg w-100 d-flex align-items-center justify-content-center"
                   style={{ height: 180 }}
@@ -292,7 +326,7 @@ export class CategoryDetails extends Component {
                   </div>
                 </div>
               </div>
-              <div className="col-4 negative-margin">
+              <div className="col-md-4 col-12 negative-margin">
                 <Slider {...customSettings}>{this.renderFreeContent()}</Slider>
               </div>
             </div>

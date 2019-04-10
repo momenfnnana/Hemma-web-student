@@ -39,7 +39,6 @@ export class Courses extends Component {
       .get("https://api.staging.hemma.sa/api/v1/courses/purchased", { headers })
       .then(response => {
         this.setState({ courses: response.data.data.data });
-        console.log(this.state.courses);
       })
       .catch(error => {
         console.log(error);

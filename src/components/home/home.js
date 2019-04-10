@@ -12,6 +12,10 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
+import SliderDes from "../features-slider/slider-des";
+import data from "../features-slider/data";
 
 const items = [
   {
@@ -37,6 +41,33 @@ const items = [
     altText: "Slide 4",
     caption:
       "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+  }
+];
+
+const images = [
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/live-stream.png",
+    description: <SliderDes data={data.features[0]} />
+  },
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/recorded.png",
+    description: <SliderDes data={data.features[1]} />
+  },
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/challenge.png",
+    description: <SliderDes data={data.features[2]} />
+  },
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/discussions.png",
+    description: <SliderDes data={data.features[3]} />
+  },
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
+    description: <SliderDes data={data.features[4]} />
+  },
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/go.png",
+    description: <SliderDes data={data.features[5]} />
   }
 ];
 
@@ -222,29 +253,25 @@ export class Home extends Component {
         <section className="journey-section section-padder">
           <div className="container">
             <div className="row d-flex h-100 align-items-center">
-              <div className="col-md-6 d-flex flex-column">
-                <div>
-                  <h5 className="dark-text mt-0">بث مباشر</h5>
-                  <p className="dark-text light-font-text small w-75">
-                    لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدار ليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً. لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                    توزيعاَ قرون إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع
-                    مقاطع هذا هذا بل مستخدماً.
-                  </p>
+              <div className="col-md-12">
+                <div className="featureSlider" id="featureSection">
+                  <div className="featureDesWrapper">
+                    <ImageGallery
+                      items={images}
+                      originalClass="feature-img"
+                      showPlayButton={false}
+                      showFullscreenButton={false}
+                      showNav={false}
+                      isRTL={true}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-md-6">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/features.png"}
-                  width="100%"
-                />
               </div>
             </div>
           </div>
         </section>
 
-        <section className="courses-section">
+        <section className="courses-section pt-5">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -254,7 +281,7 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="testimonials-section">
+        <section className="features-section">
           <div className="container">
             <div className="row d-flex justify-content-center align-items-center">
               <div className="col-md-2 d-none d-md-block order-md-1">

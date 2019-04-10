@@ -45,7 +45,6 @@ export class Auth extends Component {
         data
       )
       .then(response => {
-        console.log(response);
         localStorage.setItem("token", response.data.data.token);
         this.props.history.push("/");
       })

@@ -135,7 +135,6 @@ class CartComponent extends Component {
         headers
       })
       .then(response => {
-        console.log(response);
         this.setState({
           cart: response.data.data
         });
@@ -203,7 +202,6 @@ class CartComponent extends Component {
       })
       .then(response => {
         this.setState({ cart: response.data.data });
-        console.log(response);
       })
       .catch(error => {
         console.log(error);

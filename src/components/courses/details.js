@@ -10,15 +10,24 @@ import {
 import swal from "@sweetalert/with-react";
 import ReactPlayer from "react-player";
 import StarRatingComponent from "react-star-rating-component";
+import Modal from "react-modal";
 
 export class CourseDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      details: [],
-      checked: false,
-      rating: 3
-    };
+
+    this.state = { details: [], checked: false, rating: 3, modalIsOpen: false };
+
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
+
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   componentDidMount() {
@@ -221,6 +230,23 @@ export class CourseDetails extends Component {
   }
 
   render() {
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "50%",
+        height: "50%",
+        borderWidth: 0
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 2
+      }
+    };
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -228,22 +254,40 @@ export class CourseDetails extends Component {
             <div className="row">
               <div className="col-md-4">
                 <div className="white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
-                  {this.state.details.videoUrl ? (
-                    <ReactPlayer
-                      url={this.state.details.videoUrl}
-                      playing={false}
-                      controls={true}
-                      width="100%"
-                      height="180"
-                    />
-                  ) : (
+                  <div className="position-relative">
                     <img
                       src={this.state.details.bannerUrl}
                       height="180"
                       width="100%"
                       className="mb-3 rounded cover-img"
                     />
-                  )}
+                    {this.state.details.videoUrl ? (
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/play-button.png"
+                        }
+                        height="50"
+                        className="position-absolute play-btn clickable"
+                        onClick={this.openModal}
+                      />
+                    ) : null}
+                  </div>
+                  <Modal
+                    style={customStyles}
+                    ariaHideApp={false}
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                  >
+                    <ReactPlayer
+                      url={this.state.details.videoUrl}
+                      playing={true}
+                      controls={true}
+                      width="100%"
+                      height="100%"
+                    />
+                  </Modal>
+
                   <div className="container">
                     <div className="d-inline-flex align-items-center">
                       <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
