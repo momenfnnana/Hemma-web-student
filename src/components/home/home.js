@@ -261,7 +261,7 @@ export class Home extends Component {
                       originalClass="feature-img"
                       showPlayButton={false}
                       showFullscreenButton={false}
-                      showNav={false}
+                      showNav={true}
                       isRTL={true}
                     />
                   </div>

@@ -42,17 +42,22 @@ $off-white: #fefefe
     flex-direction: column-reverse
     > span
       display: flex
-      .image-gallery-left-nav
-        position: relative
-        top: 0
-        transform: none
-        margin-top: 0
-      .image-gallery-right-nav
-        position: relative
-        top: 0
-        transform: none
-        margin-top: 0
-        margin-left: 10px
+    .image-gallery-left-nav, .image-gallery-right-nav
+      top: -20px
+      font-size: 1.5em
+      padding: 0px 15px
+    .image-gallery-fullscreen-button::before, .image-gallery-play-button::before, .image-gallery-left-nav::before, .image-gallery-right-nav::before
+      text-shadow: none
+      color: #4b3a85
+    .image-gallery-left-nav
+      right: 20px
+      left: unset
+      &:before
+        content: "\f2ca"
+    .image-gallery-right-nav
+      right: -15px
+      &:before
+        content: "\f30f"        
     .image-gallery-swipe .image-gallery-slide .image-gallery-description
       background: transparent
       bottom: 0px

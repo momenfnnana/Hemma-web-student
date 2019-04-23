@@ -117,12 +117,12 @@ export class Courses extends Component {
                       <p className="dark-text mt-0">
                         لسا ما سجلت بدوره معانا؟ يشرفنا انضمامك لنا!
                       </p>
-                      <button
-                        type="button"
+                      <Link
+                        to="/categories"
                         className="btn light-outline-btn w-25"
                       >
                         أختر دورتك الآن
-                      </button>{" "}
+                      </Link>{" "}
                     </div>
                   </React.Fragment>
                 ) : (

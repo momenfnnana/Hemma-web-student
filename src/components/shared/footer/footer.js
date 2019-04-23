@@ -129,11 +129,11 @@ class FooterComponent extends Component {
                     الأسئلة المتكررة
                   </a>
                 </li>
-                <li className="list-inline-item light-font-text small">
+                {/* <li className="list-inline-item light-font-text small">
                   <a href="" className="dark-text">
                     انضم كأستاذ
                   </a>
-                </li>
+                </li> */}
               </ul>
               <p className="light-font-text small dark-text">
                 جميع الحقوق محفوظة © 2018

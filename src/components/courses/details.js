@@ -255,23 +255,33 @@ export class CourseDetails extends Component {
               <div className="col-md-4">
                 <div className="white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
                   <div className="position-relative">
-                    <img
-                      src={this.state.details.bannerUrl}
-                      height="180"
-                      width="100%"
-                      className="mb-3 rounded cover-img"
-                    />
                     {this.state.details.videoUrl ? (
+                      <React.Fragment>
+                        <ReactPlayer
+                          url={this.state.details.videoUrl}
+                          playing={false}
+                          controls={false}
+                          width="100%"
+                          height="100%"
+                        />
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/play-button.png"
+                          }
+                          height="50"
+                          className="position-absolute play-btn clickable"
+                          onClick={this.openModal}
+                        />
+                      </React.Fragment>
+                    ) : (
                       <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/play-button.png"
-                        }
-                        height="50"
-                        className="position-absolute play-btn clickable"
-                        onClick={this.openModal}
+                        src={this.state.details.bannerUrl}
+                        height="180"
+                        width="100%"
+                        className="mb-3 rounded cover-img"
                       />
-                    ) : null}
+                    )}
                   </div>
                   <Modal
                     style={customStyles}
