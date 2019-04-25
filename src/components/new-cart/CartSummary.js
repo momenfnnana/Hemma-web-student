@@ -181,7 +181,7 @@ class CartSummaryComponent extends Component {
 
     return (
       <Fragment>
-        <div className="silver-bg box-layout w-100 mt-3 radius-bottom-0">
+        <div className="light-silver-bg box-layout w-100 mt-3 radius-bottom-0">
           {this.renderDetails()}
           <hr />
           {this.renderCouponSection()}

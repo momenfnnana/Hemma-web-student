@@ -6,6 +6,8 @@ export class dateTimeField extends Component {
   render() {
     let inputName = this.props.name;
     let inputValue = this.props.defaultValue;
+    let formatTime = this.props.timeFormat;
+    let formatDate = this.props.dateFormat;
     let wrapperClass = "input-group mb-3";
     if (this.props.meta.touched && this.props.meta.error) {
       wrapperClass += " input-error";
@@ -19,6 +21,8 @@ export class dateTimeField extends Component {
           {...this.props.inputProps}
           defaultValue={inputValue}
           name={inputName}
+          timeFormat={formatTime}
+          dateFormat={formatDate}
         />
 
         {this.props.meta.touched && this.props.meta.error && (

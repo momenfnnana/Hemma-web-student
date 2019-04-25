@@ -2,20 +2,30 @@ import "./cart.styles.sass";
 
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import { getCart, addCoupon, removeCoupon } from "../../actions";
 import { CartSummary } from "./CartSummary";
 import { CartItemsList } from "./CartItemsList";
 import { RecentCoursesSlider } from "./RecentCoursesSlider";
 import { EmptyCartPrompt } from "./EmptyCartPrompt";
+import { AgreementForm } from "./Agreement";
 
 class CartComponent extends Component {
   state = {
-    busy: true
+    busy: true,
+    modalIsOpen: false
   };
+
+  openModal(id) {
+    this.setState({ modalIsOpen: true });
+  }
+  closeModal() {
+    this.setState({ modalIsOpen: false });
+  }
 
   constructor(props) {
     super(props);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
@@ -52,13 +62,13 @@ class CartComponent extends Component {
             <div className="row">
               <div className="col-md-4">
                 <CartSummary />
-                <Link
-                  to={!items || items.length === 0 ? "#" : "/cart/checkout"}
+                <button
                   className="btn light-outline-btn mt-4 w-100"
                   disabled={!items || items.length === 0}
+                  onClick={() => this.openModal()}
                 >
                   متابعة
-                </Link>
+                </button>
               </div>
               <div className="col-md-8 mt-3">
                 {items && items.length === 0 ? (
@@ -68,6 +78,10 @@ class CartComponent extends Component {
                 )}
               </div>
             </div>
+            <AgreementForm
+              modalIsOpen={this.state.modalIsOpen}
+              onClose={this.closeModal}
+            />
           </div>
         </section>
 

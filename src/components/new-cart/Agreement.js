@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 import axios from "axios";
 import Modal from "react-modal";
+import { connect } from "react-redux";
+import { Field, reduxForm } from "redux-form";
+import { Link } from "react-router-dom";
 
-export class Agreement extends Component {
+class AgreementFormComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       publication: {},
       numPages: null,
-      pageNumber: 1
+      pageNumber: 1,
+      checked: false
     };
   }
 
@@ -103,7 +107,12 @@ export class Agreement extends Component {
             </div>
             <div className="row mt-4 text-center">
               <div className="col-12">
-                <button className="btn light-outline-btn w-50">متابعة</button>
+                <Link
+                  to="/cart/checkout"
+                  className="btn light-outline-btn w-50"
+                >
+                  متابعة
+                </Link>
               </div>
             </div>
           </div>
@@ -112,3 +121,14 @@ export class Agreement extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    cart: state.cart,
+    formValues: state.form.cart && state.form.cart.values
+  };
+}
+
+export const AgreementForm = connect(mapStateToProps)(
+  reduxForm({ form: "cart", destroyOnUnmount: false })(AgreementFormComponent)
+);

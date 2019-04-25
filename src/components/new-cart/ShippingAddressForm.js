@@ -4,7 +4,6 @@ import { Field, reduxForm } from "redux-form";
 import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
 import { textareaField } from "../shared/inputs/textareaField";
-import { Agreement } from "../agreement/agreement";
 import { Api } from "../../api";
 import { selectField } from "../../components/shared/inputs/selectField";
 
