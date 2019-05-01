@@ -9,6 +9,8 @@ import { checkoutWithBankTransfer } from "../../actions";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
+const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
+
 const FileInput = ({
   input: { value: omitValue, onChange, onBlur, ...inputProps },
   meta: omitMeta,
@@ -48,6 +50,7 @@ class BankPaymentComponent extends Component {
    * Handle submitting bank transfer payment form
    */
   onSubmit(event) {
+    console.log(event);
     event.preventDefault();
     const values = this.props.formValues;
 
@@ -73,14 +76,8 @@ class BankPaymentComponent extends Component {
         switch (
           error.response && error.response.data && error.response.data.error
         ) {
-          case "Duplicate":
-            swal("عفواً", "تم الشراء سابقاً", "error", {
-              button: "متابعة"
-            });
-            break;
-
           default:
-            swal("عفواً", "حدث خطأ ما", "error", {
+            swal("عفواً", "يجب عليك إرفاق صورة للحوالة", "error", {
               button: "متابعة"
             });
             break;
@@ -169,6 +166,7 @@ class BankPaymentComponent extends Component {
               component={inputField}
               className="form-control border-left-0 pl-0"
               placeholder="اسم صاحب الحساب المحول منه"
+              validate={required}
             />
             <Field
               name="bankName"
@@ -176,16 +174,23 @@ class BankPaymentComponent extends Component {
               component={inputField}
               className="form-control border-left-0 pl-0"
               placeholder="اسم البنك المحول منه"
+              validate={required}
             />
 
             <div className="form-group">
               <select
                 // component={selectField}
                 className="form-control"
+                validate={required}
               >
                 <option selected disabled>
                   البنك المحول إليه
                 </option>
+                <option>تحويل مباشر من حساب في مصرف الراجحي أو الأهلي</option>
+                <option>إيداع نقدي لحسابنا في الراجحي</option>
+                <option>إيداع نقدي لحسابنا في الأهلي</option>
+                <option>تحويل من بنك آخر لحسابنا في الراجحي</option>
+                <option>تحويل من بنك آخر لحسابنا في الأهلي</option>
               </select>
             </div>
 
@@ -195,6 +200,7 @@ class BankPaymentComponent extends Component {
               component={inputField}
               className="form-control border-left-0 pl-0"
               placeholder="اسم الحساب البنكي"
+              validate={required}
             />
             <Field
               name="amount"
@@ -202,6 +208,7 @@ class BankPaymentComponent extends Component {
               component={inputField}
               className="form-control border-left-0 pl-0"
               placeholder="القيمة المحولة"
+              validate={required}
             />
             <label className="dark-text small mb-2">وقت وتاريخ الحوالة</label>
             <div className="d-inline-flex flex-row">

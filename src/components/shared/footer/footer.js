@@ -118,25 +118,25 @@ class FooterComponent extends Component {
         <div className="container top-border pt-4 pb-4">
           <div className="row">
             <div className="col-md-8 col-12">
-              <ul className="list-inline mb-1">
+              {/* <ul className="list-inline mb-1">
                 <li className="list-inline-item light-font-text small">
                   <a href="" className="dark-text">
                     تعرف علينا
                   </a>
                 </li>
-                <li className="list-inline-item light-font-text small">
+             <li className="list-inline-item light-font-text small">
                   <a href="" className="dark-text">
                     الأسئلة المتكررة
                   </a>
                 </li>
-                {/* <li className="list-inline-item light-font-text small">
+               <li className="list-inline-item light-font-text small">
                   <a href="" className="dark-text">
                     انضم كأستاذ
                   </a>
-                </li> */}
-              </ul>
+                </li> 
+              </ul> */}
               <p className="light-font-text small dark-text">
-                جميع الحقوق محفوظة © 2018
+                جميع الحقوق محفوظة © 2019
               </p>
 
               <div className="d-inline-flex align-items-center">

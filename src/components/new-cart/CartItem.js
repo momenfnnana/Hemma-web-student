@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { MdClose } from "react-icons/md";
 import { formatPrice } from "./helpers";
-import { Tooltip } from "reactstrap";
 
 export class CartItem extends Component {
   state = {
@@ -21,13 +20,6 @@ export class CartItem extends Component {
     this.onUpdateInstallmentInput = this.onUpdateInstallmentInput.bind(this);
     this.getInstallmentInputValue = this.getInstallmentInputValue.bind(this);
     this.onPayFullAmount = this.onPayFullAmount.bind(this);
-    this.toggle = this.toggle.bind(this);
-  }
-
-  toggle() {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -177,18 +169,19 @@ export class CartItem extends Component {
                   </label>
                 </div>
               )}
-              <span
-                className="badge blue-status light-font-text clickable tooltip-on-hover"
-                onClick={this.onToggleEditInstallment}
-                disabled={!item.canBePaidInInstallments}
-                id="installment-tooltip"
-              >
-                {this.state.editingInstallment
-                  ? "اعتمد القسط"
-                  : item.installment
-                  ? "تعديل القسط"
-                  : "سداد بالأقساط؟"}
-              </span>
+              {item.canBePaidInInstallments ? (
+                <span
+                  className="badge blue-status light-font-text clickable"
+                  onClick={this.onToggleEditInstallment}
+                  disabled={!item.canBePaidInInstallments}
+                >
+                  {this.state.editingInstallment
+                    ? "اعتمد القسط"
+                    : item.installment
+                    ? "تعديل القسط"
+                    : "سداد بالأقساط؟"}
+                </span>
+              ) : null}
               {item.installment && (
                 <span
                   className="badge blue-status light-font-text clickable ml-1"
@@ -197,34 +190,20 @@ export class CartItem extends Component {
                   تسديد بالكامل
                 </span>
               )}
-              {this.state.editingInstallment && (
-                <p className="red-text smaller light-font-text mt-1 mb-0">
-                  {item.canBePaidInInstallments == true
-                    ? "قم بتحديد القيمة التي ترغب في سدادها"
-                    : "نعتذر لا يمكن سدادها بالأقساط"}
-                </p>
-              )}
-
-              <Tooltip
-                placement="right"
-                isOpen={this.state.tooltipOpen}
-                target="installment-tooltip"
-                toggle={this.toggle}
-                placement="bottom"
-                style={{
-                  backgroundColor: "#f2fdfe",
-                  color: "#4b3a85"
-                }}
-              >
-                <p className="light-font-text small mb-1 mt-1">
-                  نعتذر لا يمكن سدادها بالأقساط
-                </p>
-              </Tooltip>
             </div>
           </div>
           <div className="w-25">
             <form className="mb-2 d-flex flex-row align-items-center">
-              <label className="dark-text smaller mb-0">قيمة القسط</label>
+              <div className="flex-column">
+                <label className="dark-text smaller mb-0">قيمة القسط</label>
+                {this.state.editingInstallment && (
+                  <p className="red-text smaller light-font-text mb-0">
+                    {item.canBePaidInInstallments == true
+                      ? " حدد قيمة القسط"
+                      : null}
+                  </p>
+                )}
+              </div>
               <input
                 disabled={!this.state.editingInstallment}
                 type="number"
