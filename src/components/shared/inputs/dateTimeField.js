@@ -8,7 +8,7 @@ export class dateTimeField extends Component {
     let inputValue = this.props.defaultValue;
     let formatTime = this.props.timeFormat;
     let formatDate = this.props.dateFormat;
-    let wrapperClass = "input-group mb-3";
+    let wrapperClass = "input-group";
     if (this.props.meta.touched && this.props.meta.error) {
       wrapperClass += " input-error";
     } else if (this.props.meta.touched && this.props.meta.valid) {
@@ -17,17 +17,19 @@ export class dateTimeField extends Component {
 
     return (
       <React.Fragment>
-        <Datetime
-          {...this.props.inputProps}
-          defaultValue={inputValue}
-          name={inputName}
-          timeFormat={formatTime}
-          dateFormat={formatDate}
-        />
+        <div className={wrapperClass}>
+          <Datetime
+            {...this.props.inputProps}
+            defaultValue={inputValue}
+            name={inputName}
+            timeFormat={formatTime}
+            dateFormat={formatDate}
+          />
 
-        {this.props.meta.touched && this.props.meta.error && (
-          <small className="w-100 smaller">{this.props.meta.error}</small>
-        )}
+          {this.props.meta.touched && this.props.meta.error && (
+            <small className="w-100 smaller">{this.props.meta.error}</small>
+          )}
+        </div>
       </React.Fragment>
     );
   }

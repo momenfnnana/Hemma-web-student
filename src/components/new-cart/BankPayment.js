@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import swal from "@sweetalert/with-react";
 import { inputField } from "../shared/inputs/inputField";
+import { selectField } from "../shared/inputs/selectField";
 import { withRouter } from "react-router-dom";
 import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { checkoutWithBankTransfer } from "../../actions";
@@ -33,7 +34,6 @@ class BankPaymentComponent extends Component {
   constructor(props) {
     super(props);
     this.onFileInputChange = this.onFileInputChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   /**
@@ -49,11 +49,7 @@ class BankPaymentComponent extends Component {
   /**
    * Handle submitting bank transfer payment form
    */
-  onSubmit(event) {
-    console.log(event);
-    event.preventDefault();
-    const values = this.props.formValues;
-
+  myFormHandler = values => {
     const data = {
       bankName: values.bankName,
       accountName: values.accountName,
@@ -83,11 +79,12 @@ class BankPaymentComponent extends Component {
             break;
         }
       });
-  }
+  };
 
   render() {
+    const { handleSubmit, submitting } = this.props;
     return (
-      <form onSubmit={this.onSubmit}>
+      <form onSubmit={handleSubmit(this.myFormHandler)}>
         <div className="row mt-4">
           <div className="col-md-1" />
           <div className="col-md-5">
@@ -168,6 +165,7 @@ class BankPaymentComponent extends Component {
               placeholder="اسم صاحب الحساب المحول منه"
               validate={required}
             />
+
             <Field
               name="bankName"
               type="text"
@@ -177,22 +175,19 @@ class BankPaymentComponent extends Component {
               validate={required}
             />
 
-            <div className="form-group">
-              <select
-                // component={selectField}
-                className="form-control"
-                validate={required}
-              >
-                <option selected disabled>
-                  البنك المحول إليه
-                </option>
-                <option>تحويل مباشر من حساب في مصرف الراجحي أو الأهلي</option>
-                <option>إيداع نقدي لحسابنا في الراجحي</option>
-                <option>إيداع نقدي لحسابنا في الأهلي</option>
-                <option>تحويل من بنك آخر لحسابنا في الراجحي</option>
-                <option>تحويل من بنك آخر لحسابنا في الأهلي</option>
-              </select>
-            </div>
+            <Field
+              component={selectField}
+              className="form-control"
+              // validate={required}
+              name="BankTo"
+            >
+              <option selected disabled>
+                البنك المحول إليه
+              </option>
+              <option value="1">بنك الراجحي</option>
+              <option value="2">البنك الأهلي</option>
+              <option value="3">بنك آخر</option>
+            </Field>
 
             <Field
               name="accountName"
@@ -282,7 +277,10 @@ class BankPaymentComponent extends Component {
         </div>
         <div className="row mb-5">
           <div className="col-12 text-center">
-            <button className="btn light-outline-btn mt-5 w-25">
+            <button
+              className="btn light-outline-btn mt-5 w-25"
+              disabled={submitting}
+            >
               إتمام الدفع
             </button>
           </div>
@@ -294,6 +292,7 @@ class BankPaymentComponent extends Component {
 
 function mapStateToProps(state) {
   return {
+    cart: state.cart,
     formValues: state.form.cart && state.form.cart.values
   };
 }

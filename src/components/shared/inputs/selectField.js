@@ -3,7 +3,7 @@ import React, { Component } from "react";
 export class selectField extends Component {
   render() {
     let inputClass = this.props.className;
-    let wrapperClass = "input-group mb-3";
+    let wrapperClass = "form-group mb-3";
     if (this.props.meta.touched && this.props.meta.error) {
       wrapperClass += " input-error";
     } else if (this.props.meta.touched && this.props.meta.valid) {
@@ -11,12 +11,14 @@ export class selectField extends Component {
     }
     return (
       <React.Fragment>
-        <select {...this.props.select} className={inputClass}>
-          <option>{this.props.children}</option>
-        </select>
-        {this.props.meta.touched && this.props.meta.error && (
-          <small className="w-100 smaller">{this.props.meta.error}</small>
-        )}
+        <div className={wrapperClass}>
+          <select {...this.props.select} className={inputClass}>
+            {this.props.children}
+          </select>
+          {this.props.meta.touched && this.props.meta.error && (
+            <small className="w-100 smaller">{this.props.meta.error}</small>
+          )}
+        </div>
       </React.Fragment>
     );
   }
