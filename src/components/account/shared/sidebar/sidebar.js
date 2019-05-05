@@ -1,9 +1,6 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import "./styles.sass";
-import { AccountNavbar } from "../navbar/navbar";
-import AccountBreadcrumb from "../breadcrumb/breadcrumb";
-import { Lecture } from "../lecture/lecture";
+import { NavLink } from "react-router-dom";
 
 export class Sidebar extends Component {
   render() {
@@ -48,86 +45,109 @@ export class Sidebar extends Component {
           </div>
           <div className="sidebar-list">
             <ul className="list-unstyled mb-0">
-              <li className="dark-text small active">
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/images/course-schedule.png"
-                  }
-                  height="18"
-                  width="18"
-                  className="mr-2 contain-img"
-                />
-                جدول الدورة
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to="/subscriptions/details/schedule"
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-schedule.png"
+                    }
+                    height="18"
+                    width="18"
+                    className="mr-2 contain-img"
+                  />
+                  جدول الدورة
+                </NavLink>
               </li>
-              <li className="dark-text small">
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/images/course-recorded.png"
-                  }
-                  height="22"
-                  width="22"
-                  className="mr-2 contain-img"
-                />
-                المحاضرات المسجلة
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to="/subscriptions/details/recorded-lectures"
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-recorded.png"
+                    }
+                    height="22"
+                    width="22"
+                    className="mr-2 contain-img"
+                  />
+                  المحاضرات المسجلة
+                </NavLink>
               </li>
-              <li className="dark-text small">
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/images/course-discussions.png"
-                  }
-                  height="24"
-                  width="24"
-                  className="mr-2 contain-img"
-                />
-                المناقشات
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-discussions.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  المناقشات
+                </NavLink>
               </li>
-              <li className="dark-text small">
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/images/course-challenge.png"
-                  }
-                  height="24"
-                  width="24"
-                  className="mr-2 contain-img"
-                />
-                التحديات
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-challenge.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  التحديات
+                </NavLink>
               </li>
-              <li className="dark-text small">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/course-booklet.png"
-                  }
-                  height="20"
-                  width="20"
-                  className="mr-2 contain-img"
-                />
-                الملزمة
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-booklet.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الملزمة
+                </NavLink>
               </li>
-              <li className="dark-text small">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/course-exam.png"
-                  }
-                  height="20"
-                  width="20"
-                  className="mr-2 contain-img"
-                />
-                الامتحانات الإلكترونية
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الامتحانات الإلكترونية
+                </NavLink>
               </li>
-              <li className="dark-text small">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/course-chat.png"
-                  }
-                  height="20"
-                  width="20"
-                  className="mr-2 contain-img"
-                />
-                الدردشة
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/course-chat.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الدردشة
+                </NavLink>
               </li>
             </ul>
           </div>

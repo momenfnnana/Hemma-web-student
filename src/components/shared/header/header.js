@@ -122,8 +122,15 @@ class HeaderComponent extends Component {
         )}
 
         <div className="header">
-          <div className="container">
-            <Navbar className="navbar navbar-expand-lg navbar-light bg-transparent">
+          <Navbar
+            className={
+              "navbar navbar-expand-lg navbar-light bg-transparent " +
+              (this.props.location.pathname.startsWith("/subscriptions/details")
+                ? "shadow-sm"
+                : "null")
+            }
+          >
+            <div className="container">
               <NavbarBrand href="/">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
@@ -232,8 +239,8 @@ class HeaderComponent extends Component {
                   </Nav>
                 )}
               </Collapse>
-            </Navbar>
-          </div>
+            </div>
+          </Navbar>
         </div>
       </React.Fragment>
     );

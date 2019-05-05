@@ -6,7 +6,7 @@ import { Footer } from "./components/shared/footer/footer";
 
 import { Auth } from "./components/auth/auth";
 
-import { BrowserRouter, Route, withRouter } from "react-router-dom";
+import { BrowserRouter, Route, withRouter, Switch } from "react-router-dom";
 
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -27,6 +27,9 @@ import { Cart, Checkout } from "./components/new-cart";
 import ScrollToTop from "./components/shared/scroll-to-top/ScrollToTop";
 import { SubscriptionDetails } from "./components/account/subscriptions/subscription-details";
 import { Subscriptions } from "./components/account/subscriptions/subscriptions";
+import { Schedule } from "./components/account/subscriptions/schedule";
+import { RecordedLectures } from "./components/account/subscriptions/recorded-lectures";
+import { RecordedVideos } from "./components/account/subscriptions/recorded-videos";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -90,12 +93,8 @@ class App extends Component {
             <BrowserRouter>
               <ScrollToTop>
                 <AppBackground>
-                  {/* <Header /> */}
+                  <Header />
                   <Route path="/auth" component={Auth} />
-                  <Route
-                    path="/subscriptions/details"
-                    component={SubscriptionDetails}
-                  />
                   <Route path="/" exact component={Home} />
                   <Route exact path="/verify" component={Verification} />
                   <Route path="/verify/identity" component={VerifyId} />
@@ -115,7 +114,31 @@ class App extends Component {
                   <Route path="/course/details/:id" component={CourseDetails} />
                   <Route exact path="/cart" component={Cart} />
                   <Route path="/cart/checkout" component={Checkout} />
-                  {/* <Footer /> */}
+
+                  <Route
+                    path="/subscriptions"
+                    exact
+                    component={Subscriptions}
+                  />
+                  <Switch>
+                    <Route
+                      path="/subscriptions/details"
+                      component={SubscriptionDetails}
+                    />
+                    <Route
+                      path="/subscriptions/details/schedule"
+                      component={Schedule}
+                    />
+                    <Route
+                      path="/subscriptions/details/recorded-lectures"
+                      component={RecordedLectures}
+                    />
+                    <Route
+                      path="/subscriptions/details/recorded-videos"
+                      component={RecordedVideos}
+                    />
+                  </Switch>
+                  <Footer />
                 </AppBackground>
               </ScrollToTop>
             </BrowserRouter>

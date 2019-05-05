@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./styles.sass";
+import { Link } from "react-router-dom";
 
 export class RecordedLectures extends Component {
   render() {
@@ -20,224 +21,254 @@ export class RecordedLectures extends Component {
               </div>
               <div className="row mb-4">
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
               <div className="row">
@@ -247,92 +278,104 @@ export class RecordedLectures extends Component {
               </div>
               <div className="row">
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
                 <div className="col-md-4">
-                  <div className="card card-sm shadow-sm border-0">
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Course image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-center flex-column">
-                      <h6 className="card-title small mid-text pb-2">
-                        المحاضرة الأولى
-                      </h6>
-                      <ul className="list-inline mb-0 d-flex align-items-center">
-                        <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text mr-1">2:30</span>
-                          ساعة
-                        </li>
-                        <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            height="12"
-                            width="12"
-                            className="mr-1"
-                          />
-                          <span className="en-text">13-12-2018</span>
-                        </li>
-                      </ul>
+                  <Link
+                    className="dark-text small"
+                    to="/subscriptions/details/recorded-videos"
+                  >
+                    <div className="card card-sm shadow-sm border-0">
+                      <header className="card-thumb">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course1.png"
+                          }
+                          alt="Course image"
+                        />
+                      </header>
+                      <div className="card-body d-flex justify-content-center flex-column">
+                        <h6 className="card-title small mid-text pb-2">
+                          المحاضرة الأولى
+                        </h6>
+                        <ul className="list-inline mb-0 d-flex align-items-center">
+                          <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/calendar.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text mr-1">2:30</span>
+                            ساعة
+                          </li>
+                          <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/quarters.png"
+                              }
+                              height="12"
+                              width="12"
+                              className="mr-1"
+                            />
+                            <span className="en-text">13-12-2018</span>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>

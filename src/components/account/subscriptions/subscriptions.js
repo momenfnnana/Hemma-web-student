@@ -48,25 +48,27 @@ export class Subscriptions extends Component {
     const courses = this.state.courses || [];
     return courses.map(course => (
       <React.Fragment>
-        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
-          <div className="media w-75">
-            <img
-              className="mr-3 rounded cover-img"
-              src={course.bannerUrl}
-              height="100"
-              width="100"
-            />
-            <div className="media-body mt-2">
-              <h6 className="mt-0 dark-text">{course.nameAr} </h6>
-              <span className="badge blue-status light-font-text">سارية</span>
+        <Link to="/subscriptions/details/schedule">
+          <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
+            <div className="media w-75">
+              <img
+                className="mr-3 rounded cover-img"
+                src={course.bannerUrl}
+                height="100"
+                width="100"
+              />
+              <div className="media-body mt-2">
+                <h6 className="mt-0 dark-text">{course.nameAr} </h6>
+                <span className="badge blue-status light-font-text">سارية</span>
+              </div>
+            </div>
+            <div className="seperator" />
+            <div className="">
+              <h6 className="dark-text mb-0 small">الحالة المالية</h6>
+              <p className="dark-silver-text small mb-0">مسددة </p>
             </div>
           </div>
-          <div className="seperator" />
-          <div className="">
-            <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-            <p className="dark-silver-text small mb-0">مسددة </p>
-          </div>
-        </div>
+        </Link>
       </React.Fragment>
     ));
   }
