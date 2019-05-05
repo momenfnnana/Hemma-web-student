@@ -3,12 +3,12 @@ import { Field, reduxForm, Fields } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
-import { inputField } from "../shared/inputs/inputField";
-import { editPhoneField } from "../shared/inputs/editPhoneField";
+import { inputField } from "../../shared/inputs/inputField";
+import { editPhoneField } from "../../shared/inputs/editPhoneField";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
-import { getProfile } from "../../actions";
+import { getProfile } from "../../../actions";
 import { FaRegEnvelope } from "react-icons/fa";
 
 const validate = values => {

@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./styles.sass";
 import { Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
 
-export class Courses extends Component {
+export class Subscriptions extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);

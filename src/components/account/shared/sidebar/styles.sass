@@ -1,0 +1,53 @@
+$dark-blue: #4b3a85
+$light-blue: #2bc3cc
+$white: #FFF
+$black: #000000
+$red: #f66271
+$silver: #d7d7d7
+$mid-blue: #6c53bf 
+
+.sidebar
+    background-color: #FFF
+    border-radius: 10px
+    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.06)
+    border: solid 1px #dfdfdf
+    .header
+        border-bottom: 1px solid #dbdbdb
+        padding: 20px
+    .bordered-list
+        border: 1px solid #dbdbdb
+        border-radius: 25px
+        padding: 0 10px 0px 15px
+        li:first-child
+            border-left: 1px solid #dbdbdb
+            padding-left: 8px
+    .sidebar-list
+        padding-top: 25px
+        padding-bottom: 20px
+        ul>li
+            margin-bottom: 15px
+            padding-right: 15px
+            height: 30px
+            display: flex
+            align-items: center
+            &.active
+                border-right: 3px solid $light-blue
+            &:last-child
+                margin-bottom: 0px
+    .separator
+        width: 90%
+        border-top: 1px solid #dbdbdb             
+    .footer
+        padding: 20px
+        border-bottom: 1px solid #dbdbdb
+    .settings
+        padding: 15px
+        span
+            height: 15px
+            border-left: 0.5px solid #a9acb4
+            border-right: 0.5px solid #a9acb4
+            margin-left: 22px
+            margin-right: 20px
+        h6
+            color: #a9acb4
+

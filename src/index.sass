@@ -156,7 +156,12 @@ form
     .input-success>.input-group-prepend>.input-group-text, .input-success>input.form-control, .input-success>.intl-tel-input>input, .input-success>select.form-control
         border: 1px solid $light-blue
         svg
-            color: $light-blue             
+            color: $light-blue
+input
+  &[type='number']
+    -moz-appearance: textfield
+  &::-webkit-outer-spin-button, &::-webkit-inner-spin-button
+    -webkit-appearance: none                         
 form.centered
     margin: 0 auto
     width: 50%
@@ -193,6 +198,16 @@ a.btn
         background-color: $light-blue
         color: $white
         transition: background-color ease-out 0.3s  
+.silver-outline-btn
+    border-radius: 50px
+    border: 1px solid #fbfbfb
+    color: #fbfbfb
+    height: 40px
+    font-size: 13px
+    &:hover, &:focus
+        background-color: #fbfbfb
+        color: $dark-blue
+        transition: background-color ease-out 0.3s         
 .intl-tel-input
     direction: ltr
     width: 100%
@@ -237,7 +252,12 @@ a.btn
     height: 70px
     opacity: 0.7
     border-radius: 13.5px
-    background-image: linear-gradient(145deg, #2bc3cc, #6141cc)    
+    background-image: linear-gradient(145deg, #2bc3cc, #6141cc)
+.silver-box-bg
+    width: 70px
+    height: 70px
+    border-radius: 13.5px
+    background-color: #fbfbfb       
 .unset-height
     height: unset !important
  

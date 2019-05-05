@@ -51,7 +51,7 @@ class BankPaymentComponent extends Component {
    */
   myFormHandler = values => {
     const data = {
-      bankName: values.bankName,
+      bankName: "الراجحي",
       accountName: values.accountName,
       amount: values.amount,
       date: values.date,
@@ -158,6 +158,19 @@ class BankPaymentComponent extends Component {
         <div className="row mt-4">
           <div className="col-md-6 ">
             <Field
+              component={selectField}
+              className="form-control"
+              // validate={required}
+              name="bankName"
+            >
+              <option selected disabled>
+                البنك المحول منه
+              </option>
+              <option value="1">من بنك الراجحي</option>
+              <option value="2">من البنك الأهلي</option>
+              <option value="3">من بنك آخر</option>
+            </Field>
+            <Field
               name="senderName"
               type="text"
               component={inputField}
@@ -165,16 +178,14 @@ class BankPaymentComponent extends Component {
               placeholder="اسم صاحب الحساب المحول منه"
               validate={required}
             />
-
             <Field
-              name="bankName"
-              type="text"
+              name="accountName"
+              type="number"
               component={inputField}
-              className="form-control border-left-0 pl-0"
-              placeholder="اسم البنك المحول منه"
+              className="form-control border-left-0 pl-0 ltr-input"
+              placeholder="رقم الحساب المحول منه"
               validate={required}
             />
-
             <Field
               component={selectField}
               className="form-control"
@@ -184,24 +195,16 @@ class BankPaymentComponent extends Component {
               <option selected disabled>
                 البنك المحول إليه
               </option>
-              <option value="1">بنك الراجحي</option>
-              <option value="2">البنك الأهلي</option>
-              <option value="3">بنك آخر</option>
+              <option value="1">إلى بنك الراجحي</option>
+              <option value="2">إلى البنك الأهلي</option>
+              <option value="3">إلى بنك آخر</option>
             </Field>
 
             <Field
-              name="accountName"
-              type="text"
-              component={inputField}
-              className="form-control border-left-0 pl-0"
-              placeholder="اسم الحساب البنكي"
-              validate={required}
-            />
-            <Field
               name="amount"
-              type="text"
+              type="number"
               component={inputField}
-              className="form-control border-left-0 pl-0"
+              className="form-control border-left-0 pl-0 ltr-input"
               placeholder="القيمة المحولة"
               validate={required}
             />
