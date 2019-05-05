@@ -93,7 +93,7 @@ class App extends Component {
                   {/* <Header /> */}
                   <Route path="/auth" component={Auth} />
                   <Route
-                    path="subscriptions/details"
+                    path="/subscriptions/details"
                     component={SubscriptionDetails}
                   />
                   <Route path="/" exact component={Home} />

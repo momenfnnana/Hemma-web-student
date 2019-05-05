@@ -5,6 +5,7 @@ import { Lecture } from "../shared/lecture/lecture";
 import { Schedule } from "./schedule";
 import AccountBreadcrumb from "../shared/breadcrumb/breadcrumb";
 import { Instructors } from "../shared/instructors/instructors";
+import { RecordedLectures } from "./recorded-lectures";
 
 export class SubscriptionDetails extends Component {
   render() {
@@ -25,7 +26,7 @@ export class SubscriptionDetails extends Component {
                   <Lecture />
                 </div>
               </div>
-              <Schedule />
+              <RecordedLectures />
             </div>
           </div>
         </div>
