@@ -6,6 +6,7 @@ import { Schedule } from "./schedule";
 import AccountBreadcrumb from "../shared/breadcrumb/breadcrumb";
 import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./recorded-lectures";
+import { RecordedVideos } from "./recorded-videos";
 
 export class SubscriptionDetails extends Component {
   render() {
@@ -26,7 +27,7 @@ export class SubscriptionDetails extends Component {
                   <Lecture />
                 </div>
               </div>
-              <RecordedLectures />
+              <RecordedVideos />
             </div>
           </div>
         </div>
