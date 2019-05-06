@@ -110,7 +110,11 @@ export class Sidebar extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink className="dark-text small" to="#">
+                <NavLink
+                  className="dark-text small"
+                  to="/subscriptions/details/booklet"
+                  activeClassName="active"
+                >
                   <img
                     src={
                       process.env.PUBLIC_URL +

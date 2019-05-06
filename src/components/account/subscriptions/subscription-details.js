@@ -6,6 +6,7 @@ import AccountBreadcrumb from "../shared/breadcrumb/breadcrumb";
 import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./recorded-lectures";
 import { RecordedVideos } from "./recorded-videos";
+import { Booklet } from "./booklet";
 
 export class SubscriptionDetails extends Component {
   render() {
@@ -13,11 +14,11 @@ export class SubscriptionDetails extends Component {
       <React.Fragment>
         <div className="container mt-5 pb-5">
           <div className="row">
-            <div className="col-4">
+            <div className="col-3">
               <Sidebar />
               <Instructors />
             </div>
-            <div className="col-8">
+            <div className="col-9">
               <div className="row no-gutters">
                 <div className="col-12">
                   <AccountBreadcrumb />
@@ -36,6 +37,10 @@ export class SubscriptionDetails extends Component {
                   "/subscriptions/details/recorded-videos"
                 ) ? (
                 <RecordedVideos />
+              ) : this.props.location.pathname.startsWith(
+                  "/subscriptions/details/booklet"
+                ) ? (
+                <Booklet />
               ) : null}
             </div>
           </div>

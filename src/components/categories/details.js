@@ -103,7 +103,7 @@ export class CategoryDetails extends Component {
           onClick={() => this.openModal(publication.id)}
         >
           <img src={publication.thumbnailUrl} width="100%" />
-          <div class="publication-overlay">
+          <div className="publication-overlay">
             <img src={process.env.PUBLIC_URL + "/assets/images/eye.png"} />
           </div>
         </div>

@@ -30,6 +30,7 @@ import { Subscriptions } from "./components/account/subscriptions/subscriptions"
 import { Schedule } from "./components/account/subscriptions/schedule";
 import { RecordedLectures } from "./components/account/subscriptions/recorded-lectures";
 import { RecordedVideos } from "./components/account/subscriptions/recorded-videos";
+import { Booklet } from "./components/account/subscriptions/booklet";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -105,7 +106,6 @@ class App extends Component {
                     path="/categories/details/:id"
                     component={CategoryDetails}
                   />
-                  <Route path="/account/courses" component={Subscriptions} />
                   <Route path="/account/edit" component={EditAccount} />
                   <Route
                     path="/account/reset-password"
@@ -116,7 +116,7 @@ class App extends Component {
                   <Route path="/cart/checkout" component={Checkout} />
 
                   <Route
-                    path="/subscriptions"
+                    path="/account/subscriptions"
                     exact
                     component={Subscriptions}
                   />
@@ -136,6 +136,10 @@ class App extends Component {
                     <Route
                       path="/subscriptions/details/recorded-videos"
                       component={RecordedVideos}
+                    />
+                    <Route
+                      path="/subscriptions/details/booklet"
+                      component={Booklet}
                     />
                   </Switch>
                   <Footer />

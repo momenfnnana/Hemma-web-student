@@ -66,7 +66,7 @@ class BankPaymentComponent extends Component {
         swal("تنبيه", "تمت عملية الدفع بنجاح", "success", {
           button: "متابعة"
         });
-        this.props.history.push("/account/courses");
+        this.props.history.push("/account/subscriptions");
       })
       .catch(error => {
         switch (

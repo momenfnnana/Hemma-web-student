@@ -406,8 +406,8 @@ export class CourseDetails extends Component {
 
                 {this.state.details.instructors == undefined ||
                 this.state.details.instructors == 0 ? null : (
-                  <div class="white-bg box-layout w-100 radius-bottom-0 border-bottom-0">
-                    <div class="d-flex align-items-center p-3">
+                  <div className="white-bg box-layout w-100 radius-bottom-0 border-bottom-0">
+                    <div className="d-flex align-items-center p-3">
                       <img
                         src={
                           process.env.PUBLIC_URL +
@@ -416,7 +416,7 @@ export class CourseDetails extends Component {
                         className="mr-2"
                         height="20"
                       />
-                      <h6 class="dark-text small mb-0">المدربين</h6>
+                      <h6 className="dark-text small mb-0">المدربين</h6>
                     </div>
                     <hr className="mt-0 mb-0" />
 

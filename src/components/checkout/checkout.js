@@ -180,7 +180,7 @@ class CheckoutComponent extends Component {
             swal("تنبيه", "تمت عملية الدفع بنجاح", "success", {
               button: "متابعة"
             });
-            this.props.history.push("/account/courses");
+            this.props.history.push("/account/subscriptions");
           })
           .catch(error => {
             switch (error.response.data && error.response.data.error) {
