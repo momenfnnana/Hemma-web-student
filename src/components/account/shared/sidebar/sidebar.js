@@ -14,7 +14,7 @@ export class Sidebar extends Component {
                 height="70"
                 className="mr-3 contain-img"
               />
-              <div className="d-flex flex-column">
+              <div className="d-flex flex-column align-items-center">
                 <h6 className="dark-text mb-0">إبراهيم أحمد</h6>
                 <div className="d-inline-flex">
                   <ul className="list-inline list-unstyled mt-2 mb-0 bordered-list">
