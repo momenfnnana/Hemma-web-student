@@ -31,6 +31,7 @@ import { Schedule } from "./components/account/subscriptions/schedule";
 import { RecordedLectures } from "./components/account/subscriptions/recorded-lectures";
 import { RecordedVideos } from "./components/account/subscriptions/recorded-videos";
 import { Booklet } from "./components/account/subscriptions/booklet";
+import { LiveStream } from "./components/account/subscriptions/live-stream";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -142,6 +143,7 @@ class App extends Component {
                       component={Booklet}
                     />
                   </Switch>
+                  <Route path="/live-stream" component={LiveStream} />
                   <Footer />
                 </AppBackground>
               </ScrollToTop>

@@ -26,3 +26,89 @@
 .light-hr
   border-top: 1px solid #ddd6f2
  
+.chat-collapse
+  border: 1px solid #dfdfdf
+  border-radius: 5px
+  background-color: #fbfbfb
+  margin-bottom: 15px
+  .tab-content
+    border-top: 1px solid #dfdfdf
+    padding: 10px 0px 0px 0px
+    height: 300px
+    position: relative
+    .chat-item
+      padding-right: 15px
+      padding-left: 15px
+      height: 40px
+      &:hover
+        background-color: #f4f4f4
+        cursor: pointer
+        transition: all ease-out 0.3s
+        .chat-img
+          opacity: 1
+      .chat-img
+        opacity: 0   
+.chat-tabs
+  li
+    .nav-link
+      border: none
+      color: #a9acb4
+      font-size: 12px
+      text-align: center
+      cursor: pointer
+      background-color: #fbfbfb
+      &.active
+        background-color: #a9acb4
+        color: #FFF  
+    &:first-child
+      border-top-left-radius: 0px
+      
+.speech-bubble
+  background: #f7f7f7
+  -webkit-border-radius: 4px
+  border-radius: 4px
+  max-width: 100%
+  padding: 15px
+  position: relative
+  margin-top: 20px
+  border: solid 1px #dbdbdb
+  p
+    color: #a9acb4
+    font-size: 9px
+  &::before
+    border-left: 15px solid transparent
+    border-bottom: 15px solid #f7f7f7
+    top: -15px
+    content: ""
+    position: absolute
+    right: 10px
+
+.chat-input
+  position: absolute
+  bottom: 0
+  right: 0
+  left: 0
+  background-color: #fbfbfb
+  border-top: 1px solid #dfdfdf
+  border-bottom-left-radius: 5px
+  border-bottom-right-radius: 5px
+  height: 45px
+  .circle-btn
+    height: 30px
+    width: 35px
+    background-color: #2bc3cc
+    border-top-right-radius: unset
+    border-bottom-right-radius: unset
+    border-radius: 50%
+    padding: 0px
+    img
+      transform: rotate(180deg)
+
+.list-item
+  padding-right: 15px
+  padding-left: 15px
+  height: 40px
+  &:hover
+    background-color: #f4f4f4
+    cursor: pointer
+    transition: all ease-out 0.3s

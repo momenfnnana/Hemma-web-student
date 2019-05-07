@@ -46,7 +46,13 @@ a:hover, a:focus, a:active
 .w-40
     width: 40% !important
 .h-55
-    height: 55px        
+    height: 55px
+.h-45
+    height: 45px 
+.h-40
+    height: 40px        
+.h-80
+    height: 80px            
 .radius-top-0
     border-top-right-radius: 0px !important
     border-top-left-radius: 0px !important
@@ -73,9 +79,13 @@ a:hover, a:focus, a:active
 .dark-silver-text
     color: $dark-silver
 .silver-text
-    color: $silver    
+    color: $silver
+.light-silver-text
+    color: #fbfbfb        
 .dark-bg
     background: $dark-blue
+.mid-bg
+    background: $mid-blue    
 .light-bg
     background-color: $light-blue
 .silver-bg
@@ -209,7 +219,15 @@ a.btn
     &:hover, &:focus
         background-color: $light-blue
         color: $white
-        transition: background-color ease-out 0.3s          
+        transition: background-color ease-out 0.3s
+.red-border-btn
+    border: 1px solid $red
+    color: $red
+    font-size: 11px
+    &:hover, &:focus
+        background-color: $red
+        color: $white
+        transition: background-color ease-out 0.3s                   
 .silver-outline-btn
     border-radius: 50px
     border: 1px solid #fbfbfb
@@ -248,6 +266,12 @@ a.btn
         padding-left: 0px !important
         margin: 4px !important
         border-radius: 4px !important
+.vertical-separator
+    height: 25px
+    background-color: #dbdbdb
+    width: 1px
+    margin-right: 10px
+    margin-left: 10px
 
 .swal-title, .swal-text
     color: $dark-blue      

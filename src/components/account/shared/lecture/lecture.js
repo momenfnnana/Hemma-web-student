@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { FaGraduationCap } from "react-icons/fa";
 import "./styles.sass";
+import { Link } from "react-router-dom";
 
 export class Lecture extends Component {
   render() {
@@ -30,12 +31,12 @@ export class Lecture extends Component {
             </div>
           </div>
           <div className="w-25 d-flex justify-content-end">
-            <button
-              type="submit"
+            <Link
+              to="/live-stream"
               className="btn silver-outline-btn unset-height w-50"
             >
               انضم
-            </button>
+            </Link>
           </div>
         </div>
       </React.Fragment>
