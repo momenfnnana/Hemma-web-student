@@ -68,7 +68,7 @@ class LoginComponent extends Component {
               this.props.history.push("/verify");
             })
             .catch(error => {
-              console.log(error);
+              this.props.history.push("/");
             });
         } else {
           this.props.history.push("/");

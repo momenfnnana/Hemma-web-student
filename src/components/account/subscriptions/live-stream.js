@@ -1,37 +1,40 @@
 import React, { Component } from "react";
 import "./styles.sass";
 import StarRatingComponent from "react-star-rating-component";
-import {
-  Collapse,
-  Button,
-  CardBody,
-  Card,
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  CardTitle,
-  CardText,
-  Row,
-  Col,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  Input
-} from "reactstrap";
+import { TabContent, TabPane, Nav, NavItem, NavLink, Input } from "reactstrap";
 import classnames from "classnames";
+import {
+  CollapsibleComponent,
+  CollapsibleHead,
+  CollapsibleContent
+} from "react-collapsible-component";
+import Modal from "react-modal";
 
 export class LiveStream extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { rating: 3, collapse: true, activeTab: "1" };
+    this.state = {
+      rating: 3,
+      activeTab: "1",
+      modalIsOpen: false,
+      showRating: false
+    };
     this.toggle = this.toggle.bind(this);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
+  }
+
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  }
+
+  closeModal() {
+    this.setState({ modalIsOpen: false });
   }
 
   toggle(tab) {
@@ -44,7 +47,26 @@ export class LiveStream extends Component {
 
   render() {
     const { rating } = this.state;
-
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "35%",
+        height: "20%",
+        borderWidth: 0,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 2
+      }
+    };
     return (
       <React.Fragment>
         <section className="header pt-3 pb-3 h-80 d-flex align-items-center">
@@ -92,7 +114,10 @@ export class LiveStream extends Component {
                         height="20"
                       />
                     </li>
-                    <li className="list-inline-item small ml-2 red-text">
+                    <li
+                      className="list-inline-item small ml-2 red-text clickable"
+                      onClick={this.openModal}
+                    >
                       <img
                         src={
                           process.env.PUBLIC_URL + "/assets/images/logout.png"
@@ -103,6 +128,72 @@ export class LiveStream extends Component {
                       خروج
                     </li>
                   </ul>
+
+                  <Modal
+                    isOpen={this.state.modalIsOpen}
+                    style={customStyles}
+                    contentLabel="Logout Modal"
+                  >
+                    {this.state.showRating == true ? null : (
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-12 text-center">
+                            <h6 className="dark-text mb-4">
+                              هل أنت متأكد من أنك تريد الخروج؟
+                            </h6>
+                            <button
+                              type="button"
+                              className="btn light-outline-btn w-25 mr-2 unset-height"
+                              onClick={() =>
+                                this.setState({ showRating: true })
+                              }
+                            >
+                              نعم
+                            </button>
+                            <button
+                              type="button"
+                              className="btn dark-outline-btn w-25 unset-height"
+                              onClick={this.closeModal}
+                            >
+                              لا
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {this.state.showRating == true ? (
+                      <div className="container">
+                        <div className="row">
+                          <div className="col-12 text-center">
+                            <h6 className="dark-text">تقييم الحصة </h6>
+                            <p className="dark-text light-font-text small mb-2">
+                              كم تقييم الحصة من 5؟ (التقييم سري)
+                            </p>
+                            <div className="d-flex justify-content-center mb-3">
+                              <StarRatingComponent
+                                starCount={5}
+                                value={rating}
+                                starColor={"#ffe552"}
+                                emptyStarColor={"#a9acb4"}
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              className="btn light-outline-btn w-40 mr-2 unset-height"
+                              onClick={() =>
+                                this.props.history.push(
+                                  "/subscriptions/details/schedule"
+                                )
+                              }
+                            >
+                              أرسل التقييم
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </Modal>
                 </div>
               </div>
             </div>
@@ -113,49 +204,177 @@ export class LiveStream extends Component {
           <div className="container">
             <div className="row">
               <div className="col-3">
-                <div className="w-100 rounded h-45 mid-bg clickable mb-2 d-flex align-items-center pr-2 pl-3">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/light-chat.png"
-                    }
-                    className="mr-2 contain-img"
-                    height="20"
-                  />
-                  <h6 className="light-silver-text small mt-0 mb-0">دردشة</h6>
-                </div>
-                <Collapse
-                  className="chat-collapse"
-                  isOpen={this.state.collapse}
-                >
-                  <Nav tabs className="chat-tabs border-0">
-                    <NavItem className="w-50 mb-0">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "1"
-                        })}
-                        onClick={() => {
-                          this.toggle("1");
-                        }}
-                      >
-                        الطلاب
-                      </NavLink>
-                    </NavItem>
-                    <NavItem className="w-50 mb-0">
-                      <NavLink
-                        className={classnames({
-                          active: this.state.activeTab === "2"
-                        })}
-                        onClick={() => {
-                          this.toggle("2");
-                        }}
-                      >
-                        المشرفين
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                  <TabContent activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                      <div className="pl-3 pr-3 pt-2">
+                <CollapsibleComponent>
+                  <CollapsibleHead className="rounded h-45 d-flex align-items-center">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/light-chat.png"
+                      }
+                      className="mr-2 contain-img"
+                      height="20"
+                    />
+                    <h6 className="light-silver-text small mt-0 mb-0">دردشة</h6>
+                  </CollapsibleHead>
+                  <CollapsibleContent
+                    className="chat-collapse"
+                    isExpanded={true}
+                  >
+                    <Nav tabs className="chat-tabs border-0">
+                      <NavItem className="w-50 mb-0">
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activeTab === "1"
+                          })}
+                          onClick={() => {
+                            this.toggle("1");
+                          }}
+                        >
+                          الطلاب
+                        </NavLink>
+                      </NavItem>
+                      <NavItem className="w-50 mb-0">
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activeTab === "2"
+                          })}
+                          onClick={() => {
+                            this.toggle("2");
+                          }}
+                        >
+                          المشرفين
+                        </NavLink>
+                      </NavItem>
+                    </Nav>
+                    <TabContent activeTab={this.state.activeTab}>
+                      <TabPane tabId="1">
+                        <div className="pl-3 pr-3 pt-2">
+                          <div className="d-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/user-circle.png"
+                              }
+                              className="mr-2"
+                              height="20"
+                            />
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+
+                          <div class="speech-bubble">
+                            <p className="light-font-text mt-0 mb-0">
+                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
+                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="chat-input d-flex align-items-center justify-content-between">
+                          <Input
+                            placeholder="شارك أصدقاءك"
+                            className="form-control border-0 bg-transparent light-font-text smaller dark-silver-text"
+                          />
+                          <button type="button" className="btn circle-btn mr-2">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/send-button.png"
+                              }
+                              height="12"
+                              className="contain-img"
+                            />
+                          </button>
+                        </div>
+                      </TabPane>
+                      <TabPane tabId="2">
+                        <div className="d-flex align-items-center justify-content-between chat-item">
+                          <div className="d-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/user-circle.png"
+                              }
+                              className="mr-2"
+                              height="20"
+                            />
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/dark-chat.png"
+                            }
+                            className="chat-img"
+                            height="15"
+                          />
+                        </div>
+                        <div className="d-flex align-items-center justify-content-between chat-item">
+                          <div className="d-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/user-circle.png"
+                              }
+                              className="mr-2"
+                              height="20"
+                            />
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              رهام سعيد
+                            </h6>
+                          </div>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/dark-chat.png"
+                            }
+                            className="chat-img"
+                            height="15"
+                          />
+                        </div>
+                        <div className="d-flex align-items-center justify-content-between chat-item">
+                          <div className="d-flex align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/user-circle.png"
+                              }
+                              className="mr-2"
+                              height="20"
+                            />
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              إبتسام اسماعيل
+                            </h6>
+                          </div>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/dark-chat.png"
+                            }
+                            className="chat-img"
+                            height="15"
+                          />
+                        </div>
+                      </TabPane>
+                    </TabContent>
+                  </CollapsibleContent>
+
+                  <CollapsibleHead className="rounded h-45 d-flex align-items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/trophy.png"}
+                      className="mr-2 contain-img"
+                      height="20"
+                    />
+                    <h6 className="light-silver-text small mt-0 mb-0">
+                      لوحة الشرف
+                    </h6>
+                  </CollapsibleHead>
+                  <CollapsibleContent>
+                    <div className="box-layout pt-3 pb-3">
+                      <div className="d-flex align-items-center justify-content-between list-item">
                         <div className="d-flex align-items-center">
                           <img
                             src={
@@ -166,38 +385,22 @@ export class LiveStream extends Component {
                             height="20"
                           />
                           <h6 className="mid-text smaller mt-0 mb-0">
-                            محمد أحمد
+                            عمر الشريف
                           </h6>
                         </div>
-
-                        <div class="speech-bubble">
-                          <p className="light-font-text mt-0 mb-0">
-                            لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                            توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                            وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="chat-input d-flex align-items-center justify-content-between">
-                        <Input
-                          placeholder="شارك أصدقاءك"
-                          className="form-control border-0 bg-transparent light-font-text smaller dark-silver-text"
-                        />
-                        <button type="button" className="btn circle-btn mr-2">
+                        <div className="d-flex align-items-center">
+                          <span className="en-text dark-text small">20</span>
                           <img
                             src={
                               process.env.PUBLIC_URL +
-                              "/assets/images/send-button.png"
+                              "/assets/images/coins.png"
                             }
-                            height="12"
-                            className="contain-img"
+                            height="15"
+                            className="ml-2"
                           />
-                        </button>
+                        </div>
                       </div>
-                    </TabPane>
-                    <TabPane tabId="2">
-                      <div className="d-flex align-items-center justify-content-between chat-item">
+                      <div className="d-flex align-items-center justify-content-between list-item">
                         <div className="d-flex align-items-center">
                           <img
                             src={
@@ -208,19 +411,22 @@ export class LiveStream extends Component {
                             height="20"
                           />
                           <h6 className="mid-text smaller mt-0 mb-0">
-                            محمد أحمد
+                            عمر الشريف
                           </h6>
                         </div>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/dark-chat.png"
-                          }
-                          className="chat-img"
-                          height="15"
-                        />
+                        <div className="d-flex align-items-center">
+                          <span className="en-text dark-text small">20</span>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/coins.png"
+                            }
+                            height="15"
+                            className="ml-2"
+                          />
+                        </div>
                       </div>
-                      <div className="d-flex align-items-center justify-content-between chat-item">
+                      <div className="d-flex align-items-center justify-content-between list-item">
                         <div className="d-flex align-items-center">
                           <img
                             src={
@@ -231,147 +437,33 @@ export class LiveStream extends Component {
                             height="20"
                           />
                           <h6 className="mid-text smaller mt-0 mb-0">
-                            رهام سعيد
+                            عمر الشريف
                           </h6>
                         </div>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/dark-chat.png"
-                          }
-                          className="chat-img"
-                          height="15"
-                        />
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between chat-item">
                         <div className="d-flex align-items-center">
+                          <span className="en-text dark-text small">20</span>
                           <img
                             src={
                               process.env.PUBLIC_URL +
-                              "/assets/images/user-circle.png"
+                              "/assets/images/coins.png"
                             }
-                            className="mr-2"
-                            height="20"
+                            height="15"
+                            className="ml-2"
                           />
-                          <h6 className="mid-text smaller mt-0 mb-0">
-                            إبتسام اسماعيل
-                          </h6>
                         </div>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/dark-chat.png"
-                          }
-                          className="chat-img"
-                          height="15"
-                        />
-                      </div>
-                    </TabPane>
-                  </TabContent>
-                </Collapse>
-
-                <div className="w-100 rounded h-45 mid-bg clickable mb-2 d-flex align-items-center pr-2 pl-3">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/trophy.png"}
-                    className="mr-2 contain-img"
-                    height="20"
-                  />
-                  <h6 className="light-silver-text small mt-0 mb-0">
-                    لوحة الشرف
-                  </h6>
-                </div>
-
-                <Collapse
-                  className="chat-collapse"
-                  isOpen={this.state.collapse}
-                >
-                  <div className="pt-3 pb-3">
-                    <div className="d-flex align-items-center justify-content-between list-item">
-                      <div className="d-flex align-items-center">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/user-circle.png"
-                          }
-                          className="mr-2"
-                          height="20"
-                        />
-                        <h6 className="mid-text smaller mt-0 mb-0">
-                          عمر الشريف
-                        </h6>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <span className="en-text dark-text small">20</span>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/coins.png"
-                          }
-                          height="15"
-                          className="ml-2"
-                        />
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-between list-item">
-                      <div className="d-flex align-items-center">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/user-circle.png"
-                          }
-                          className="mr-2"
-                          height="20"
-                        />
-                        <h6 className="mid-text smaller mt-0 mb-0">
-                          عمر الشريف
-                        </h6>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <span className="en-text dark-text small">20</span>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/coins.png"
-                          }
-                          height="15"
-                          className="ml-2"
-                        />
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center justify-content-between list-item">
-                      <div className="d-flex align-items-center">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/user-circle.png"
-                          }
-                          className="mr-2"
-                          height="20"
-                        />
-                        <h6 className="mid-text smaller mt-0 mb-0">
-                          عمر الشريف
-                        </h6>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <span className="en-text dark-text small">20</span>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/coins.png"
-                          }
-                          height="15"
-                          className="ml-2"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </Collapse>
+                  </CollapsibleContent>
+                </CollapsibleComponent>
 
-                <div className="w-100 rounded h-45 mid-bg clickable mb-2 d-flex align-items-center pr-2 pl-3">
+                <CollapsibleHead className="rounded h-45 d-flex align-items-center">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/trophy.png"}
                     className="mr-2 contain-img"
                     height="20"
                   />
                   <h6 className="light-silver-text small mt-0 mb-0">الأسئلة</h6>
-                </div>
+                </CollapsibleHead>
               </div>
               <div className="col-9">
                 <div className="box-layout p-4 mb-3">

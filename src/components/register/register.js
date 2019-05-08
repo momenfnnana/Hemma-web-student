@@ -10,6 +10,7 @@ import { phoneField } from "../shared/inputs/phoneField";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import jwt from "jsonwebtoken";
+import { RadioField } from "../shared/inputs/RadioFeild";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const maxLength = max => value =>
@@ -127,46 +128,19 @@ class RegisterComponent extends Component {
           <FaRegUser />
         </Field>
 
-        <label className="pr-2 dark-silver-text">أنا: </label>
-        <div className="form-check form-check-inline mb-3">
-          <Field
-            className="form-check-input"
-            type="radio"
-            name="gender"
-            value="0"
-            component="input"
-            validate={required}
-          />
-          <label className="form-check-label dark-text small">
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/male.png"}
-              width="100%"
-              className="mr-1"
-              width="12"
-            />
-            ذكر
-          </label>
-        </div>
-        <div className="form-check form-check-inline mb-3">
-          <Field
-            className="form-check-input"
-            type="radio"
-            name="gender"
-            value="1"
-            component="input"
-            validate={required}
-          />
-          <label className="form-check-label dark-text small">
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/female.png"}
-              width="100%"
-              className="mr-1"
-              width="12"
-            />
-            أنثى
-          </label>
-        </div>
+        <div className="mb-3">
+          <label className="pr-2 dark-silver-text mb-0">أنا: </label>
 
+          <Field
+            component={RadioField}
+            name="gender"
+            validate={required}
+            options={[
+              { title: "ذكر", value: "male" },
+              { title: "أنثى", value: "female" }
+            ]}
+          />
+        </div>
         <Field
           fieldName="phone"
           name="phone"

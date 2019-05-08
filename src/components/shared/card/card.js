@@ -53,7 +53,7 @@ export class Card extends Component {
                     width="12"
                     className="mr-1"
                   />
-                  <span className="en-text mr-1">{course.durationInHours}</span>{" "}
+                  <span className="en-text mr-1">{course.durationInHours}</span>
                   ساعة
                 </li>
                 <li className="list-inline-item light-font-text small dark-text en-text d-inline-flex align-items-center">
@@ -66,7 +66,8 @@ export class Card extends Component {
                   <span className="en-text">{courseDate}</span>
                 </li>
                 <li className="list-inline-item light-font-text small dark-text d-inline-flex align-items-center float-right">
-                  <span className="en-text mr-1">{course.price}</span> ريال
+                  <span className="en-text mr-1">{course.price / 100}</span>
+                  ريال
                 </li>
               </ul>
             </div>
