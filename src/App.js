@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.sass";
+import jwtDecode from "jwt-decode";
 
 import { Header } from "./components/shared/header/header";
 import { Footer } from "./components/shared/footer/footer";
@@ -88,6 +89,14 @@ class AppBackground extends Component {
 AppBackground = withRouter(AppBackground);
 
 class App extends Component {
+  state = {};
+  componentDidMount() {
+    try {
+      const jwt = localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      this.setState({ user });
+    } catch (ex) {}
+  }
   render() {
     return (
       <Provider store={store}>
@@ -96,7 +105,7 @@ class App extends Component {
             <BrowserRouter>
               <ScrollToTop>
                 <AppBackground>
-                  <Header />
+                  <Header user={this.state.user} />
                   <Route path="/auth" component={Auth} />
                   <Route path="/" exact component={Home} />
                   <Route exact path="/verify" component={Verification} />

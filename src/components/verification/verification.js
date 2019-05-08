@@ -48,8 +48,8 @@ class VerificationComponent extends Component {
         headers
       })
       .then(response => {
-        localStorage.setItem("verifiedToken", response.data.data.token);
-        this.props.history.push("/");
+        localStorage.setItem("token", response.data.data.token);
+        window.location = "/";
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {

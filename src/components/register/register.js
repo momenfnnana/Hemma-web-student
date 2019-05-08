@@ -78,10 +78,10 @@ class RegisterComponent extends Component {
                   this.props.history.push("/verify");
                 })
                 .catch(error => {
-                  this.props.history.push("/");
+                  window.location = "/";
                 });
             } else {
-              this.props.history.push("/");
+              window.location = "/";
             }
           })
           .catch(error => {

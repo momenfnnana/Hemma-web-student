@@ -22,8 +22,6 @@ class HeaderComponent extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isAuthenticated: false,
-      isPhoneConfirmed: false,
       isOpen: false,
       details: null
     };
@@ -35,73 +33,51 @@ class HeaderComponent extends Component {
     });
   }
 
-  // verifyUser() {
-  //   let token = localStorage.getItem("token");
-  //   let headers = {
-  //     Authorization: `Bearer ${token}`
-  //   };
-  //   axios
-  //     .post("https://api.staging.hemma.sa/api/v1/auth/phone/send_token", null, {
-  //       headers
-  //     })
-  //     .then(response => {
-  //       this.props.history.push("/verify");
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // }
+  logout() {
+    localStorage.removeItem("token");
+    window.location = "/";
+  }
 
-  getUser() {
+  componentDidMount() {
+    try {
+      let token = localStorage.getItem("token");
+      if (token) {
+        let headers = {
+          Authorization: `Bearer ${token}`
+        };
+        axios
+          .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+          .then(response => {
+            this.setState({ details: response.data.data });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+    } catch (ex) {}
+  }
+
+  verifyUser = () => {
     let token = localStorage.getItem("token");
-    if (!token) {
-      if (!this.state.isAuthenticated) return;
-      this.setState({
-        isAuthenticated: false,
-        isPhoneConfirmed: false,
-        details: null
-      });
-    }
-
-    if (this.state.isAuthenticated) return;
-
-    let jwtToken = jwt.decode(token);
-    if (token) {
-      this.setState({ isAuthenticated: true });
-    } else this.setState({ isAuthenticated: false });
-    if (jwtToken && jwtToken.phoneConfirmed == "True") {
-      this.setState({ isPhoneConfirmed: true });
-    } else {
-      this.setState({ isPhoneConfirmed: false });
-    }
-
-    if (this.state.details) return;
-
     let headers = {
       Authorization: `Bearer ${token}`
     };
     axios
-      .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+      .post("https://api.staging.hemma.sa/api/v1/auth/phone/send_token", null, {
+        headers
+      })
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.props.history.push("/verify");
       })
       .catch(error => {
         console.log(error);
       });
-  }
-
-  logout() {
-    localStorage.removeItem("token");
-    this.setState({ isAuthenticated: false });
-    this.props.history.push("/");
-  }
+  };
 
   render() {
-    this.getUser();
     return (
       <React.Fragment>
-        {this.state.isPhoneConfirmed == true ||
-        this.state.isAuthenticated == false ? null : (
+        {this.props.user && this.props.user.phoneConfirmed == "False" ? (
           <div className="top-header dark-bg">
             <div className="container">
               <div className="row">
@@ -109,8 +85,8 @@ class HeaderComponent extends Component {
                   <p className="text-white light-font-text">
                     لم تقم بتأكيد رقم الهاتف، يجب أن تقوم بتأكيده{" "}
                     <span
-                      // onClick={this.verifyUser()}
                       className="light-text text-decoration-none clickable"
+                      onClick={this.verifyUser}
                     >
                       اضغط هنا
                     </span>
@@ -119,7 +95,7 @@ class HeaderComponent extends Component {
               </div>
             </div>
           </div>
-        )}
+        ) : null}
 
         <div className="header">
           <Navbar
@@ -143,101 +119,106 @@ class HeaderComponent extends Component {
               </NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
-                {this.state.isAuthenticated == false ? (
-                  <Nav className="ml-auto" navbar>
-                    <NavItem>
-                      <NavLink
-                        className={"nav-link mid-text"}
-                        activeClassName="active"
-                        to="/categories"
+                <Nav className="ml-auto" navbar>
+                  {!this.props.user && (
+                    <React.Fragment>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link mid-text"}
+                          activeClassName="active"
+                          to="/categories"
+                        >
+                          الدورات الحالية
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link mid-text"}
+                          activeClassName="active"
+                          to="/auth/login"
+                        >
+                          تسجيل الدخول
+                        </NavLink>
+                      </NavItem>
+                      <NavItem
+                        className={
+                          "nav-item rounded-nav-item pl-2 pr-2 light-border"
+                        }
                       >
-                        الدورات الحالية
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={"nav-link mid-text"}
-                        activeClassName="active"
-                        to="/auth/login"
-                      >
-                        تسجيل الدخول
-                      </NavLink>
-                    </NavItem>
-                    <NavItem
-                      className={
-                        "nav-item rounded-nav-item pl-2 pr-2 light-border"
-                      }
-                    >
-                      <NavLink
-                        className={"nav-link light-text"}
-                        activeClassName="active"
-                        to="/auth/register"
-                      >
-                        إنشاء حساب
-                      </NavLink>
-                    </NavItem>
-                  </Nav>
-                ) : (
-                  <Nav className="ml-auto" navbar>
-                    <NavItem>
-                      <NavLink
-                        className={"nav-link mid-text"}
-                        activeClassName="active"
-                        to="/cart"
-                      >
-                        <img src={"/assets/images/cart.png"} height="18" />
-                      </NavLink>
-                    </NavItem>
-                    <NavItem>
-                      <NavLink
-                        className={"nav-link mid-text"}
-                        activeClassName="active"
-                        to="/categories"
-                      >
-                        الدورات الحالية
-                      </NavLink>
-                    </NavItem>
+                        <NavLink
+                          className={"nav-link light-text"}
+                          activeClassName="active"
+                          to="/auth/register"
+                        >
+                          إنشاء حساب
+                        </NavLink>
+                      </NavItem>
+                    </React.Fragment>
+                  )}
 
-                    <NavItem>
-                      <NavLink
-                        className={"nav-link mid-text"}
-                        activeClassName="active"
-                        to="/account/subscriptions"
-                      >
-                        دوراتي
-                      </NavLink>
-                    </NavItem>
-                    <UncontrolledDropdown nav inNavbar>
-                      <DropdownToggle className={"nav-link mid-text"} nav>
-                        <img
-                          src={"/assets/images/user-circle.png"}
-                          height="18"
-                          className="mr-2"
-                        />
-                        {this.state.details ? this.state.details.name : ""}
-                      </DropdownToggle>
-                      <DropdownMenu>
-                        <DropdownItem className="p-0">
-                          <NavLink
-                            className="nav-link mid-text"
-                            activeClassName="active"
-                            to="/account/edit"
-                          >
-                            تعديل الملف
-                          </NavLink>
-                        </DropdownItem>
-                        <DropdownItem className="p-0">
-                          <a
-                            className="nav-link clickable mid-text"
-                            onClick={() => this.logout()}
-                          >
-                            تسجيل الخروج
-                          </a>
-                        </DropdownItem>
-                      </DropdownMenu>
-                    </UncontrolledDropdown>
-                  </Nav>
-                )}
+                  {this.props.user && (
+                    <React.Fragment>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link mid-text"}
+                          activeClassName="active"
+                          to="/cart"
+                        >
+                          <img src={"/assets/images/cart.png"} height="18" />
+                        </NavLink>
+                      </NavItem>
+
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link mid-text"}
+                          activeClassName="active"
+                          to="/categories"
+                        >
+                          الدورات الحالية
+                        </NavLink>
+                      </NavItem>
+
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link mid-text"}
+                          activeClassName="active"
+                          to="/account/subscriptions"
+                        >
+                          دوراتي
+                        </NavLink>
+                      </NavItem>
+                      <UncontrolledDropdown nav inNavbar>
+                        <DropdownToggle className={"nav-link mid-text"} nav>
+                          <img
+                            src={"/assets/images/user-circle.png"}
+                            height="18"
+                            className="mr-2"
+                          />
+                          {this.state.details ? this.state.details.name : ""}
+                        </DropdownToggle>
+                        <DropdownMenu>
+                          <DropdownItem className="p-0">
+                            <NavLink
+                              className="nav-link mid-text"
+                              activeClassName="active"
+                              to="/account/edit"
+                            >
+                              تعديل الملف
+                            </NavLink>
+                          </DropdownItem>
+                          <DropdownItem className="p-0">
+                            <a
+                              className="nav-link clickable mid-text"
+                              onClick={() => this.logout()}
+                            >
+                              تسجيل الخروج
+                            </a>
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </UncontrolledDropdown>
+                    </React.Fragment>
+                  )}
+                </Nav>
               </Collapse>
             </div>
           </Navbar>

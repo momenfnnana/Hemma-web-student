@@ -21,7 +21,7 @@ export class Auth extends Component {
       .post("https://api.staging.hemma.sa/api/v1/auth/login_with_google", data)
       .then(response => {
         localStorage.setItem("token", response.data.data.token);
-        this.props.history.push("/");
+        window.location = "/";
       })
       .catch(error => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
@@ -46,7 +46,7 @@ export class Auth extends Component {
       )
       .then(response => {
         localStorage.setItem("token", response.data.data.token);
-        this.props.history.push("/");
+        window.location = "/";
       })
       .catch(error => {
         console.log(error);
@@ -61,7 +61,7 @@ export class Auth extends Component {
     loginWithTwitter()
       .then(token => {
         localStorage.setItem("token", token);
-        this.props.history.push("/");
+        window.location = "/";
       })
       .catch(error => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
