@@ -157,18 +157,25 @@ export class Sidebar extends Component {
           </div>
           <hr className="separator mt-0 mb-0" />
           <div className="footer d-flex align-items-center">
-            <div className="d-inline-flex align-items-center">
-              <img
-                src={
-                  process.env.PUBLIC_URL + "/assets/images/course-payments.png"
-                }
-                height="30"
-                className="mr-2 contain-img"
-              />
-              <h6 className="dark-text small mb-0">
-                المدفوعات واسترجاع الرسوم
-              </h6>
-            </div>
+            <NavLink
+              to="/subscriptions/details/transactions/list"
+              activeClassName="active"
+              className="d-flex align-items-center"
+            >
+              <div className="d-inline-flex align-items-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL +
+                    "/assets/images/course-payments.png"
+                  }
+                  height="30"
+                  className="mr-2 contain-img"
+                />
+                <h6 className="dark-text small mb-0">
+                  المدفوعات واسترجاع الرسوم
+                </h6>
+              </div>
+            </NavLink>
           </div>
           <div className="settings d-flex align-items-center justify-content-center">
             <div className="d-inline-flex align-items-center">

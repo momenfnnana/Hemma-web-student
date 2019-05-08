@@ -7,6 +7,7 @@ import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./recorded-lectures";
 import { RecordedVideos } from "./recorded-videos";
 import { Booklet } from "./booklet";
+import { TransactionsList } from "./transactions/transactions-list";
 
 export class SubscriptionDetails extends Component {
   render() {
@@ -16,13 +17,21 @@ export class SubscriptionDetails extends Component {
           <div className="row">
             <div className="col-3">
               <Sidebar />
-              <Instructors />
+              {this.props.location.pathname.startsWith(
+                "/subscriptions/details/transactions/list"
+              ) ? null : (
+                <Instructors />
+              )}
             </div>
             <div className="col-9">
               <div className="row no-gutters">
                 <div className="col-12">
                   <AccountBreadcrumb />
-                  <Lecture />
+                  {this.props.location.pathname.startsWith(
+                    "/subscriptions/details/transactions/list"
+                  ) ? null : (
+                    <Lecture />
+                  )}
                 </div>
               </div>
               {this.props.location.pathname.startsWith(
@@ -41,6 +50,10 @@ export class SubscriptionDetails extends Component {
                   "/subscriptions/details/booklet"
                 ) ? (
                 <Booklet />
+              ) : this.props.location.pathname.startsWith(
+                  "/subscriptions/details/transactions/list"
+                ) ? (
+                <TransactionsList />
               ) : null}
             </div>
           </div>
