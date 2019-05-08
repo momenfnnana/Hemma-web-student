@@ -1,7 +1,24 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
+import { RefundComponent } from "./refund/RefundForm";
 
 export class TransactionsList extends Component {
+  state = {
+    modalIsOpen: false
+  };
+
+  openModal() {
+    this.setState({ modalIsOpen: true });
+  }
+  closeModal() {
+    this.setState({ modalIsOpen: false });
+  }
+
+  constructor(props) {
+    super(props);
+    this.openModal = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+  }
   render() {
     return (
       <React.Fragment>
@@ -15,6 +32,7 @@ export class TransactionsList extends Component {
                 <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
+                  onClick={() => this.openModal()}
                 >
                   <img
                     src={
@@ -27,6 +45,10 @@ export class TransactionsList extends Component {
                   />
                   استرجاع الرسوم
                 </button>
+                <RefundComponent
+                  modalIsOpen={this.state.modalIsOpen}
+                  onClose={this.closeModal}
+                />
                 <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
