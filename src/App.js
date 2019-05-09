@@ -34,6 +34,7 @@ import { RecordedVideos } from "./components/account/subscriptions/recorded-vide
 import { Booklet } from "./components/account/subscriptions/booklet";
 import { LiveStream } from "./components/account/subscriptions/live-stream";
 import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
+import { ChatComponent } from "./components/account/subscriptions/chat";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -155,6 +156,10 @@ class App extends Component {
                     <Route
                       path="/subscriptions/details/transactions/list"
                       component={TransactionsList}
+                    />
+                    <Route
+                      path="/subscriptions/details/chat"
+                      component={ChatComponent}
                     />
                   </Switch>
                   <Route path="/live-stream" component={LiveStream} />

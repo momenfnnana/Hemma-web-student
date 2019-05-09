@@ -141,7 +141,11 @@ export class Sidebar extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink className="dark-text small" to="#">
+                <NavLink
+                  to="/subscriptions/details/chat"
+                  activeClassName="active"
+                  className="dark-text small"
+                >
                   <img
                     src={
                       process.env.PUBLIC_URL + "/assets/images/course-chat.png"
