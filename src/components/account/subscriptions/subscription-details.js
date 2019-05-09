@@ -15,7 +15,7 @@ export class SubscriptionDetails extends Component {
       <React.Fragment>
         <div className="container mt-5 pb-5">
           <div className="row">
-            <div className="col-3">
+            <div className="col-md-3 col-12">
               <Sidebar />
               {this.props.location.pathname.startsWith(
                 "/subscriptions/details/transactions/list"
@@ -23,7 +23,7 @@ export class SubscriptionDetails extends Component {
                 <Instructors />
               )}
             </div>
-            <div className="col-9">
+            <div className="col-md-9 col-12">
               <div className="row no-gutters">
                 <div className="col-12">
                   <AccountBreadcrumb />

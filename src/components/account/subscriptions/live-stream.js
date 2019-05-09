@@ -72,129 +72,122 @@ export class LiveStream extends Component {
         <section className="header pt-3 pb-3 h-80 d-flex align-items-center">
           <div className="container">
             <div className="row">
-              <div className="col-12 d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-center">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/female-circle.png"
-                    }
-                    className="mr-2"
-                    height="25"
+              <div className="col-md-4 col-6 d-flex align-items-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/female-circle.png"
+                  }
+                  className="mr-2"
+                  height="25"
+                />
+                <div className="d-flex justify-content-center flex-column">
+                  <h6 className="mid-text smaller mb-1 mt-0">طلال أحمد</h6>
+                  <StarRatingComponent
+                    starCount={5}
+                    value={rating}
+                    starColor={"#ffe552"}
+                    emptyStarColor={"#a9acb4"}
+                    editing={false}
                   />
-                  <div className="d-flex justify-content-center flex-column">
-                    <h6 className="mid-text smaller mb-1 mt-0">طلال أحمد</h6>
-                    <StarRatingComponent
-                      starCount={5}
-                      value={rating}
-                      starColor={"#ffe552"}
-                      emptyStarColor={"#a9acb4"}
-                      editing={false}
+                </div>
+                <div className="light-bg rounded ml-2">
+                  <p className="text-white small en-text mb-0 pt-1 pb-1 pl-2 pr-2">
+                    10:54
+                  </p>
+                </div>
+              </div>
+              <div className="col-md-4 col-6 d-flex align-items-center justify-content-center">
+                <h5 className="dark-text mt-0 mb-0">النسبة والتناسب</h5>
+              </div>
+              <div className="col-md-4 col-12 d-flex align-items-center justify-content-end responsive-margin">
+                <ul className="list-inline mb-0 d-flex align-items-center">
+                  <li className="list-inline-item small mt-0 dark-text">
+                    <span className="en-text">250</span>
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/user-circle.png"
+                      }
+                      className="ml-2"
+                      height="20"
                     />
-                  </div>
-                  <div className="light-bg rounded ml-2">
-                    <p className="text-white small en-text mb-0 pt-1 pb-1 pl-2 pr-2">
-                      10:54
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <h5 className="dark-text mt-0 mb-0">النسبة والتناسب</h5>
-                </div>
-                <div>
-                  <ul className="list-inline mb-0 d-flex align-items-center">
-                    <li className="list-inline-item small mt-0 dark-text">
-                      <span className="en-text">250</span>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/user-circle.png"
-                        }
-                        className="ml-2"
-                        height="20"
-                      />
-                    </li>
-                    <li
-                      className="list-inline-item small ml-2 red-text clickable"
-                      onClick={this.openModal}
-                    >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/logout.png"
-                        }
-                        className="mr-2"
-                        height="15"
-                      />
-                      خروج
-                    </li>
-                  </ul>
-
-                  <Modal
-                    isOpen={this.state.modalIsOpen}
-                    style={customStyles}
-                    contentLabel="Logout Modal"
+                  </li>
+                  <li
+                    className="list-inline-item small ml-2 red-text clickable"
+                    onClick={this.openModal}
                   >
-                    {this.state.showRating == true ? null : (
-                      <div className="container">
-                        <div className="row">
-                          <div className="col-12 text-center">
-                            <h6 className="dark-text mb-4">
-                              هل أنت متأكد من أنك تريد الخروج؟
-                            </h6>
-                            <button
-                              type="button"
-                              className="btn light-outline-btn w-25 mr-2 unset-height"
-                              onClick={() =>
-                                this.setState({ showRating: true })
-                              }
-                            >
-                              نعم
-                            </button>
-                            <button
-                              type="button"
-                              className="btn dark-outline-btn w-25 unset-height"
-                              onClick={this.closeModal}
-                            >
-                              لا
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/logout.png"}
+                      className="mr-2"
+                      height="15"
+                    />
+                    خروج
+                  </li>
+                </ul>
 
-                    {this.state.showRating == true ? (
-                      <div className="container">
-                        <div className="row">
-                          <div className="col-12 text-center">
-                            <h6 className="dark-text">تقييم الحصة </h6>
-                            <p className="dark-text light-font-text small mb-2">
-                              كم تقييم الحصة من 5؟ (التقييم سري)
-                            </p>
-                            <div className="d-flex justify-content-center mb-3">
-                              <StarRatingComponent
-                                starCount={5}
-                                value={rating}
-                                starColor={"#ffe552"}
-                                emptyStarColor={"#a9acb4"}
-                              />
-                            </div>
-                            <button
-                              type="button"
-                              className="btn light-outline-btn w-40 mr-2 unset-height"
-                              onClick={() =>
-                                this.props.history.push(
-                                  "/subscriptions/details/schedule"
-                                )
-                              }
-                            >
-                              أرسل التقييم
-                            </button>
-                          </div>
+                <Modal
+                  isOpen={this.state.modalIsOpen}
+                  style={customStyles}
+                  contentLabel="Logout Modal"
+                >
+                  {this.state.showRating == true ? null : (
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-12 text-center">
+                          <h6 className="dark-text mb-4">
+                            هل أنت متأكد من أنك تريد الخروج؟
+                          </h6>
+                          <button
+                            type="button"
+                            className="btn light-outline-btn w-25 mr-2 unset-height"
+                            onClick={() => this.setState({ showRating: true })}
+                          >
+                            نعم
+                          </button>
+                          <button
+                            type="button"
+                            className="btn dark-outline-btn w-25 unset-height"
+                            onClick={this.closeModal}
+                          >
+                            لا
+                          </button>
                         </div>
                       </div>
-                    ) : null}
-                  </Modal>
-                </div>
+                    </div>
+                  )}
+
+                  {this.state.showRating == true ? (
+                    <div className="container">
+                      <div className="row">
+                        <div className="col-12 text-center">
+                          <h6 className="dark-text">تقييم الحصة </h6>
+                          <p className="dark-text light-font-text small mb-2">
+                            كم تقييم الحصة من 5؟ (التقييم سري)
+                          </p>
+                          <div className="d-flex justify-content-center mb-3">
+                            <StarRatingComponent
+                              starCount={5}
+                              value={rating}
+                              starColor={"#ffe552"}
+                              emptyStarColor={"#a9acb4"}
+                            />
+                          </div>
+                          <button
+                            type="button"
+                            className="btn light-outline-btn w-40 mr-2 unset-height"
+                            onClick={() =>
+                              this.props.history.push(
+                                "/subscriptions/details/schedule"
+                              )
+                            }
+                          >
+                            أرسل التقييم
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : null}
+                </Modal>
               </div>
             </div>
           </div>
@@ -203,7 +196,7 @@ export class LiveStream extends Component {
         <section className="page-content pt-3 pb-5">
           <div className="container">
             <div className="row">
-              <div className="col-3">
+              <div className="col-md-3 col-12">
                 <CollapsibleComponent>
                   <CollapsibleHead className="rounded h-45 d-flex align-items-center">
                     <img
@@ -465,7 +458,7 @@ export class LiveStream extends Component {
                   <h6 className="light-silver-text small mt-0 mb-0">الأسئلة</h6>
                 </CollapsibleHead>
               </div>
-              <div className="col-9">
+              <div className="col-md-9 col-12">
                 <div className="box-layout p-4 mb-3">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/capture.png"}
@@ -475,8 +468,8 @@ export class LiveStream extends Component {
                   />
                 </div>
 
-                <div className="d-flex align-items-center justify-content-between">
-                  <div className="d-flex align-items-center">
+                <div className="row d-flex align-items-center justify-content-between">
+                  <div className="col-md-6 col-12 d-flex align-items-center">
                     <div className="btn d-flex align-items-center light-silver-bg border mr-2 h-40 border">
                       <div className="d-flex align-items-center">
                         <img
@@ -518,7 +511,7 @@ export class LiveStream extends Component {
                     </button>
                   </div>
 
-                  <div>
+                  <div className="col-md-6 col-12 d-flex align-items-center justify-content-end responsive-margin">
                     <button type="button" className="btn blue-border-btn mr-2">
                       مفهوم
                     </button>

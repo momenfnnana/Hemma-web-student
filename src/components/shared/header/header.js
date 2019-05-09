@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { NavLink, Route, withRouter } from "react-router-dom";
+import { NavLink, Link, withRouter } from "react-router-dom";
 import jwt from "jsonwebtoken";
 import {
   Collapse,
@@ -107,15 +107,17 @@ class HeaderComponent extends Component {
             }
           >
             <div className="container">
-              <NavbarBrand href="/">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                  height="70"
-                />
-                <span className="d-none d-sm-block" />
-                <h5 className="dark-text d-none d-sm-block">
-                  سلسلة بالبيد التعليمية
-                </h5>
+              <NavbarBrand>
+                <Link to="/">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                    height="70"
+                  />
+                  <span className="d-none d-sm-block" />
+                  <h5 className="dark-text d-none d-sm-block">
+                    سلسلة بالبيد التعليمية
+                  </h5>
+                </Link>
               </NavbarBrand>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>

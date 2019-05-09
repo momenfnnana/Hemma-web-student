@@ -129,7 +129,7 @@ export class CartItem extends Component {
     }
     return (
       <Fragment>
-        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3">
+        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item">
           <div className="media w-75 position-relative">
             <MdClose
               color="#dbdbdb"

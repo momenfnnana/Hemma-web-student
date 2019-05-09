@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { RefundComponent } from "./refund/RefundForm";
+import "./styles.sass";
 
 export class TransactionsList extends Component {
   state = {
@@ -24,7 +25,7 @@ export class TransactionsList extends Component {
       <React.Fragment>
         <div className="row mb-4 no-gutters">
           <div className="col-12">
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between align-items-center responsive-col">
               <h6 className="dark-text small mb-0 mt-0">
                 المدفوعات واسترجاع الرسوم
               </h6>
