@@ -107,18 +107,16 @@ class HeaderComponent extends Component {
             }
           >
             <div className="container">
-              <NavbarBrand>
-                <Link to="/">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                    height="70"
-                  />
-                  <span className="d-none d-sm-block" />
-                  <h5 className="dark-text d-none d-sm-block">
-                    سلسلة بالبيد التعليمية
-                  </h5>
-                </Link>
-              </NavbarBrand>
+              <Link to="/" className="navbar-brand">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                  height="70"
+                />
+                <span className="d-none d-sm-block" />
+                <h5 className="dark-text d-none d-sm-block">
+                  سلسلة بالبيد التعليمية
+                </h5>
+              </Link>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>

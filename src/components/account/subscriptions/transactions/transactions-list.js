@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { RefundComponent } from "./refund/RefundForm";
 import "./styles.sass";
+import { WrongTransactionComponent } from "./wrong-transaction/WrongTransaction";
+import { NewInstallmentComponent } from "./installment/NewInstallment";
 
 export class TransactionsList extends Component {
   state = {
@@ -33,7 +35,6 @@ export class TransactionsList extends Component {
                 <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
-                  onClick={() => this.openModal()}
                 >
                   <img
                     src={
@@ -65,7 +66,15 @@ export class TransactionsList extends Component {
                   />
                   تحويل بنكي خاطيء
                 </button>
-                <button type="button" className="btn border mid-text smaller">
+                <WrongTransactionComponent
+                  modalIsOpen={this.state.modalIsOpen}
+                  onClose={this.closeModal}
+                />
+                <button
+                  type="button"
+                  className="btn border mid-text smaller"
+                  onClick={() => this.openModal()}
+                >
                   <img
                     src={
                       process.env.PUBLIC_URL + "/assets/images/installment.png"
@@ -76,6 +85,10 @@ export class TransactionsList extends Component {
                   />
                   طلب سداد قسط
                 </button>
+                <NewInstallmentComponent
+                  modalIsOpen={this.state.modalIsOpen}
+                  onClose={this.closeModal}
+                />
               </div>
             </div>
           </div>
@@ -83,8 +96,8 @@ export class TransactionsList extends Component {
 
         <div className="row no-gutters">
           <div className="col-12">
-            <div className="box-layout shadow-sm box-height">
-              <Table>
+            <div className="box-layout shadow-sm">
+              <Table className="mb-0">
                 <thead className="silver-bg">
                   <tr className="text-center">
                     <th className="w-25 dark-silver-text small border-0">
