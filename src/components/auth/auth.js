@@ -8,6 +8,7 @@ import { GoogleLogin } from "react-google-login";
 import axios from "axios";
 import swal from "@sweetalert/with-react";
 import { loginWithTwitter } from "./firebase";
+import { apiBaseUrl } from "../../api";
 
 export class Auth extends Component {
   responseGoogle = response => {
@@ -18,7 +19,7 @@ export class Auth extends Component {
     };
     if (!response.accessToken) return;
     axios
-      .post("https://api.staging.hemma.sa/api/v1/auth/login_with_google", data)
+      .post(`${apiBaseUrl}/auth/login_with_google`, data)
       .then(response => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
@@ -41,7 +42,7 @@ export class Auth extends Component {
     if (!response.accessToken) return;
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/auth/login_with_facebook",
+        `${apiBaseUrl}/auth/login_with_facebook`,
         data
       )
       .then(response => {

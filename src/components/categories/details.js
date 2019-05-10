@@ -8,6 +8,7 @@ import { Card } from "../shared/card/card";
 import { CardsList } from "../shared/cardsList/cardsList";
 import "./styles.sass";
 import { PublicationDetails } from "../publication/publication";
+import { apiBaseUrl } from "../../api/helpers";
 
 export class CategoryDetails extends Component {
   constructor(props) {
@@ -85,7 +86,7 @@ export class CategoryDetails extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/courses/recent")
+      .get(`${apiBaseUrl}/courses/recent`)
       .then(response => {
         this.setState({ courses: response.data.data.data });
       })

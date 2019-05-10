@@ -15,6 +15,7 @@ import { selectField } from "../shared/inputs/selectField";
 import { withRouter } from "react-router-dom";
 import { textareaField } from "../shared/inputs/textareaField";
 import { Agreement } from "../agreement/agreement";
+import { apiBaseUrl } from "../../api/helpers";
 
 class CartComponent extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class CartComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .get("https://api.staging.hemma.sa/api/v1/cart", { headers })
+      .get(`${apiBaseUrl}/cart`, { headers })
       .then(response => {
         this.setState({ cart: response.data.data });
       })
@@ -59,7 +60,7 @@ class CartComponent extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/courses/recent")
+      .get(`${apiBaseUrl}/courses/recent`)
       .then(response => {
         this.setState({ courses: response.data.data.data });
       })
@@ -68,7 +69,7 @@ class CartComponent extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/cart/shipping_cities")
+      .get(`${apiBaseUrl}/cart/shipping_cities`)
       .then(response => {
         this.setState({ cities: response.data.data });
       })
@@ -178,7 +179,7 @@ class CartComponent extends Component {
       coupon: this.state.validCoupon
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/cart/coupons", data, {
+      .post(`${apiBaseUrl}/cart/coupons`, data, {
         headers
       })
       .then(response => {

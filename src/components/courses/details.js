@@ -11,6 +11,7 @@ import swal from "@sweetalert/with-react";
 import ReactPlayer from "react-player";
 import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
+import { apiBaseUrl } from "../../api/helpers";
 
 export class CourseDetails extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ export class CourseDetails extends Component {
       installment: 0
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/cart/items", data, { headers })
+      .post(`${apiBaseUrl}/cart/items`, data, { headers })
       .then(response => {
         swal("تنبيه", "تم إضافة الدورة إلى سلة التسوق بنجاح", "success", {
           button: "متابعة"

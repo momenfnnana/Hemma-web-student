@@ -6,6 +6,7 @@ import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { FaRegEnvelope } from "react-icons/fa";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -28,7 +29,7 @@ class forgotPasswordComponent extends Component {
     };
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/auth/password/reset/email/send_token",
+        `${apiBaseUrl}/auth/password/reset/email/send_token`,
         data
       )
       .then(response => {

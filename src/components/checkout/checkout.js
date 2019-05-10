@@ -23,6 +23,7 @@ import { inputField } from "../shared/inputs/inputField";
 import { withRouter } from "react-router-dom";
 import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { selectField } from "../shared/inputs/selectField";
+import { apiBaseUrl } from "../../api/helpers";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -146,7 +147,7 @@ class CheckoutComponent extends Component {
 
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/payments/bank_transfers/uploads",
+        `${apiBaseUrl}/payments/bank_transfers/uploads`,
         data,
         {
           headers
@@ -170,7 +171,7 @@ class CheckoutComponent extends Component {
 
         axios
           .post(
-            "https://api.staging.hemma.sa/api/v1/cart/checkout_with_bank_transfer",
+            `${apiBaseUrl}/cart/checkout_with_bank_transfer`,
             data,
             {
               headers
