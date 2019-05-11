@@ -8,7 +8,7 @@ import { GoogleLogin } from "react-google-login";
 import axios from "axios";
 import swal from "@sweetalert/with-react";
 import { loginWithTwitter } from "./firebase";
-import { apiBaseUrl } from "../../api";
+import { apiBaseUrl } from "../../api/helpers";
 
 export class Auth extends Component {
   responseGoogle = response => {

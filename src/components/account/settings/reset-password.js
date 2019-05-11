@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
-import { apiBaseUrl } from "../../../api";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};

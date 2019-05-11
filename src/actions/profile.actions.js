@@ -1,5 +1,5 @@
 import axios from "axios";
-import { apiBaseUrl } from "../api";
+import { apiBaseUrl } from "../api/helpers";
 
 export const GET_PROFILE = "getProfile";
 
