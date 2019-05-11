@@ -116,7 +116,7 @@ class FooterComponent extends Component {
     return (
       <div className="footer">
         <div className="container top-border pt-4 pb-4">
-          <div className="row">
+          <div className="row h-100 d-flex align-items-start">
             <div className="col-md-8 col-12">
               {/* <ul className="list-inline mb-1">
                 <li className="list-inline-item light-font-text small">
@@ -135,13 +135,13 @@ class FooterComponent extends Component {
                   </a>
                 </li> 
               </ul> */}
-              <p className="light-font-text small dark-text">
-                جميع الحقوق محفوظة © 2019
+              <p className="light-font-text small dark-text mb-1 mt-0">
+                جميع الحقوق محفوظة <span className="en-text">© 2019</span>
               </p>
 
               <div className="d-inline-flex align-items-center">
                 <p className="mid-text small mb-0">خلينا على تواصل</p>
-                <ul className="list-inline pl-3 mb-0">
+                <ul className="list-inline pl-2 mb-0">
                   <li
                     className="list-inline-item clickable"
                     onClick={() =>
@@ -196,7 +196,7 @@ class FooterComponent extends Component {
                 </ul>
               </div>
             </div>
-            <div className="col-md-4 col-12 d-flex flex-column">
+            <div className="col-md-4 col-12 d-flex flex-column justify-content-end">
               <p className="light-font-text small dark-text w-75">
                 قم بترك بيانات التواصل الخاصة بك وسوف نقوم بارسال اشعارات حول
                 الدورات المجانية
