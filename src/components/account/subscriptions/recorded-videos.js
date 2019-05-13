@@ -1,10 +1,58 @@
 import React, { Component } from "react";
 import "./styles.sass";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
-import ReactPlayer from "react-player";
+import Vimeo from "@u-wave/react-vimeo";
+
+const videos = [
+  { id: 315172826, name: "الدرس الأول" },
+  { id: 315172826, name: "الدرس الثاني" },
+  { id: 315172826, name: "الدرس الثالث" }
+];
 
 export class RecordedVideos extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      videoIndex: 0,
+      volume: 1,
+      paused: false
+    };
+
+    this.handlePause = this.handlePause.bind(this);
+    this.handlePlayerPause = this.handlePlayerPause.bind(this);
+    this.handlePlayerPlay = this.handlePlayerPlay.bind(this);
+    this.handleVolume = this.handleVolume.bind(this);
+  }
+
+  selectVideo(index) {
+    this.setState({ videoIndex: index });
+  }
+
+  handlePause(event) {
+    this.setState({
+      paused: event.target.checked
+    });
+  }
+
+  handlePlayerPause() {
+    this.setState({ paused: true });
+  }
+
+  handlePlayerPlay() {
+    this.setState({ paused: false });
+  }
+
+  handleVolume(event) {
+    this.setState({
+      volume: parseFloat(event.target.value)
+    });
+  }
+
   render() {
+    const { videoIndex, paused, volume } = this.state;
+
+    const video = videos[videoIndex];
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -23,74 +71,38 @@ export class RecordedVideos extends Component {
                   <div className="chapter pl-3">
                     <h6 className="smaller light-purple-text">الفصل الأول</h6>
                     <h6 className="text-white">النسبة والتناسب</h6>
-                    <div className="custom-control custom-radio mt-3">
-                      <input
-                        type="radio"
-                        className="custom-control-input"
-                        name="radio-stacked"
-                        required
-                      />
-                      <div className="d-flex flex-column">
-                        <label className="custom-control-label light-purple-text small">
-                          الدرس الأول
-                        </label>
-                        <span className="smaller light-purple-text">
-                          <span className="en-text">45</span> دقيقة
-                        </span>
+
+                    {videos.map((choice, index) => (
+                      <div className="custom-control custom-radio mt-3">
+                        <a
+                          href={`#!/video/${index}`}
+                          className={`collection-item ${
+                            video === choice ? "active" : ""
+                          }`}
+                          onClick={() => this.selectVideo(index)}
+                        >
+                          <div className="d-flex flex-column">
+                            <label className="custom-control-label light-purple-text small">
+                              {choice.name}
+                            </label>
+                            <span className="smaller light-purple-text">
+                              <span className="en-text">45</span> دقيقة
+                            </span>
+                          </div>
+                        </a>
                       </div>
-                    </div>
-                    <div className="custom-control custom-radio mt-3">
-                      <input
-                        type="radio"
-                        className="custom-control-input"
-                        name="radio-stacked"
-                        required
-                      />
-                      <div className="d-flex flex-column">
-                        <label className="custom-control-label light-purple-text small">
-                          الدرس الثاني
-                        </label>
-                        <span className="smaller light-purple-text">
-                          <span className="en-text">45</span> دقيقة
-                        </span>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                   <hr className="light-hr" />
-                  <div className="chapter pl-3">
-                    <h6 className="smaller light-purple-text">الفصل الثاني</h6>
-                    <h6 className="text-white">النسبة والتناسب</h6>
-                    <div className="custom-control custom-radio mt-3">
-                      <input
-                        type="radio"
-                        className="custom-control-input"
-                        name="radio-stacked"
-                        required
-                      />
-                      <div className="d-flex flex-column">
-                        <label className="custom-control-label light-purple-text small">
-                          الدرس الأول
-                        </label>
-                        <span className="smaller light-purple-text">
-                          <span className="en-text">45</span> دقيقة
-                        </span>
-                      </div>
-                    </div>
-                    <div className="custom-control custom-radio mt-3">
-                      <input
-                        type="radio"
-                        className="custom-control-input"
-                        name="radio-stacked"
-                        required
-                      />
-                    </div>
-                  </div>
                 </div>
                 <div className="col-9">
-                  <ReactPlayer
-                    url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
-                    height="100%"
-                    width="100%"
+                  <Vimeo
+                    video={video.id}
+                    className="recorded-video"
+                    volume={volume}
+                    paused={paused}
+                    onPause={this.handlePlayerPause}
+                    onPlay={this.handlePlayerPlay}
                   />
                 </div>
               </div>

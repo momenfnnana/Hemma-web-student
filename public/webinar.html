@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://dmogdx0jrul3u.cloudfront.net/1.4.2/css/bootstrap.css"
+    />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="https://dmogdx0jrul3u.cloudfront.net/1.4.2/css/react-select.css"
+    />
+  </head>
+  <body>
+    <!-- <nav id="nav-tool" class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">MyMeetingApp</a>
+        </div>
+        <div id="navbar">
+          <form class="navbar-form navbar-right" id="meeting_form">
+            <div class="form-group">
+              <input
+                type="text"
+                name="display_name"
+                id="display_name"
+                value="JSSDK1.4.2#CDN"
+                placeholder="Name"
+                class="form-control"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="text"
+                name="meeting_number"
+                id="meeting_number"
+                value=""
+                placeholder="Meeting Number"
+                class="form-control"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary" id="join_meeting">
+              Join
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav> -->
+
+    <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/react.min.js"></script>
+    <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/react-dom.min.js"></script>
+    <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/redux.min.js"></script>
+    <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/redux-thunk.min.js"></script>
+    <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/jquery.min.js"></script>
+    <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/lodash.min.js"></script>
+
+    <script src="https://source.zoom.us/zoom-meeting-1.4.2.min.js"></script>
+    <script>
+      (function() {
+        ZoomMtg.preLoadWasm();
+
+        ZoomMtg.prepareJssdk();
+
+        var API_KEY = "XVBrKHpORYeclaC7w7_ZTA";
+
+        /**
+         * NEVER PUT YOUR ACTUAL API SECRET IN CLIENT SIDE CODE, THIS IS JUST FOR QUICK PROTOTYPING
+         * The below generateSignature should be done server side as not to expose your api secret in public
+         * You can find an eaxmple in here: https://marketplace.zoom.us/docs/sdk/native-sdks/Web-Client-SDK/tutorial/generate-signature
+         */
+        var API_SECRET = "PH13GVIwolIm47pc7QxebkihLdG9EN7sQ2AK";
+
+        var meetConfig = {
+          apiKey: API_KEY,
+          apiSecret: API_SECRET,
+          meetingNumber: "154874412",
+          userName: "username",
+          passWord: "",
+          leaveUrl: "https://zoom.us",
+          role: 0
+        };
+
+        var signature = ZoomMtg.generateSignature({
+          meetingNumber: meetConfig.meetingNumber,
+          apiKey: meetConfig.apiKey,
+          apiSecret: meetConfig.apiSecret,
+          role: meetConfig.role,
+          success: function(res) {
+            console.log(res.result);
+          }
+        });
+
+        ZoomMtg.init({
+          leaveUrl: "http://staging.hemma.sa",
+          isSupportAV: true,
+          success: function() {
+            ZoomMtg.join({
+              meetingNumber: meetConfig.meetingNumber,
+              userName: meetConfig.userName,
+              signature: signature,
+              apiKey: meetConfig.apiKey,
+              userEmail: "email@gmail.com",
+              passWord: meetConfig.passWord,
+              success: function(res) {
+                console.log("join meeting success");
+              },
+              error: function(res) {
+                console.log(res);
+              }
+            });
+          },
+          error: function(res) {
+            console.log(res);
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

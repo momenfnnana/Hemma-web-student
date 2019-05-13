@@ -459,12 +459,13 @@ export class LiveStream extends Component {
                 </CollapsibleHead>
               </div>
               <div className="col-md-9 col-12">
-                <div className="box-layout p-4 mb-3">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/capture.png"}
-                    className="cover-img"
+                <div className="box-layout mb-3">
+                  <iframe
+                    src="http://localhost:3000/webinar.html"
                     width="100%"
-                    height="100%"
+                    height="600"
+                    frameBorder="0"
+                    className="mb-0 rounded"
                   />
                 </div>
 
