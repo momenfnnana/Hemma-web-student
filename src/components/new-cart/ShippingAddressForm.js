@@ -5,6 +5,7 @@ import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
 import { textareaField } from "../shared/inputs/textareaField";
 import { Api } from "../../api";
+import { withRouter } from "react-router-dom";
 import { selectField } from "../../components/shared/inputs/selectField";
 
 class ShippingAddressFormComponent extends Component {
@@ -36,13 +37,13 @@ class ShippingAddressFormComponent extends Component {
   render() {
     const cart = this.props.cart;
 
-    if (!cart || !cart.requireShippingAddress) {
-      return null;
-    }
+    // if (!cart || !cart.requireShippingAddress) {
+    //   return null;
+    // }
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
+        <div className="off-white-bg w-100 border-top-0 border-bottom radius-top-0">
           <div className="p-4">
             <div className="d-flex flex-row align-items-center mb-3">
               <img
@@ -107,7 +108,8 @@ function mapStateToProps(state) {
 }
 
 export const ShippingAddressForm = connect(mapStateToProps)(
-  reduxForm({ form: "cart", destroyOnUnmount: false })(
-    ShippingAddressFormComponent
-  )
+  reduxForm({
+    form: "cart",
+    destroyOnUnmount: false
+  })(withRouter(ShippingAddressFormComponent))
 );

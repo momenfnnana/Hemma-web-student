@@ -186,8 +186,6 @@ class CartSummaryComponent extends Component {
           <hr />
           {this.renderCouponSection()}
         </div>
-
-        {cart && cart.requireShippingAddress && <ShippingAddressForm />}
       </Fragment>
     );
   }

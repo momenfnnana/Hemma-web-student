@@ -8,6 +8,7 @@ import { MiniCartItemsList } from "./MiniCartItemsList";
 import { ShippingAddressDisplay } from "./ShippingAddressDisplay";
 import { formatPrice } from "./helpers";
 import { PaymentTabs } from "./PaymentTabs";
+import { ShippingAddressForm } from "./ShippingAddressForm";
 
 class CheckoutComponent extends Component {
   state = {
@@ -54,7 +55,12 @@ class CheckoutComponent extends Component {
                 <MiniCartItemsList />
 
                 <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
-                  <ShippingAddressDisplay />
+                  {/* {cart && cart.requireShippingAddress && (
+                    <ShippingAddressForm />
+                  )} */}
+
+                  <ShippingAddressForm />
+
                   <div className="pt-2 pb-3">
                     <div className="pl-4 pr-4 pt-2 pb-1 d-flex flex-row align-items-center">
                       <h6 className="mid-text mb-0 mt-0 mr-3">المبلغ الكلي</h6>
