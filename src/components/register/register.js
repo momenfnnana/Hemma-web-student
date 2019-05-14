@@ -24,8 +24,7 @@ export const minLength = min => value =>
     : undefined;
 export const minLength4 = minLength(4);
 const nameValue = value =>
-  value &&
-  !/^[\u0621-\u064Aa-zA-Z]{2,}(\s[\u0621-\u064Aa-zA-Z]{2,})+$/.test(value)
+  value && !/^[\u0621-\u064A\w]{2,}(\s[\u0621-\u064A\w]{2,})+\s*$/.test(value)
     ? "الاسم يجب أن يحتوي على مقطعين على الأقل"
     : undefined;
 const emailValue = value =>

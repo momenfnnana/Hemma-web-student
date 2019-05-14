@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Test</title>
+    <title>Webinar</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       type="text/css"
@@ -17,43 +17,6 @@
     />
   </head>
   <body>
-    <!-- <nav id="nav-tool" class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">MyMeetingApp</a>
-        </div>
-        <div id="navbar">
-          <form class="navbar-form navbar-right" id="meeting_form">
-            <div class="form-group">
-              <input
-                type="text"
-                name="display_name"
-                id="display_name"
-                value="JSSDK1.4.2#CDN"
-                placeholder="Name"
-                class="form-control"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <input
-                type="text"
-                name="meeting_number"
-                id="meeting_number"
-                value=""
-                placeholder="Meeting Number"
-                class="form-control"
-                required
-              />
-            </div>
-            <button type="submit" class="btn btn-primary" id="join_meeting">
-              Join
-            </button>
-          </form>
-        </div>
-      </div>
-    </nav> -->
-
     <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/react.min.js"></script>
     <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/react-dom.min.js"></script>
     <script src="https://dmogdx0jrul3u.cloudfront.net/1.4.2/lib/vendor/redux.min.js"></script>
@@ -80,7 +43,7 @@
         var meetConfig = {
           apiKey: API_KEY,
           apiSecret: API_SECRET,
-          meetingNumber: "154874412",
+          meetingNumber: "815670413",
           userName: "username",
           passWord: "",
           leaveUrl: "https://zoom.us",
@@ -98,7 +61,7 @@
         });
 
         ZoomMtg.init({
-          leaveUrl: "http://staging.hemma.sa",
+          leaveUrl: "http://staging.hemma.sa/leave-meeting.html",
           isSupportAV: true,
           success: function() {
             ZoomMtg.join({

@@ -101,17 +101,6 @@ export class LiveStream extends Component {
               </div>
               <div className="col-md-4 col-12 d-flex align-items-center justify-content-end responsive-margin">
                 <ul className="list-inline mb-0 d-flex align-items-center">
-                  <li className="list-inline-item small mt-0 dark-text">
-                    <span className="en-text">250</span>
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/user-circle.png"
-                      }
-                      className="ml-2"
-                      height="20"
-                    />
-                  </li>
                   <li
                     className="list-inline-item small ml-2 red-text clickable"
                     onClick={this.openModal}
@@ -240,16 +229,73 @@ export class LiveStream extends Component {
                     </Nav>
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="1">
-                        <div className="pl-3 pr-3 pt-2">
+                        <div className="chat-box pl-3 pr-3 pt-2">
                           <div className="d-flex align-items-center">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/user-circle.png"
-                              }
-                              className="mr-2"
-                              height="20"
-                            />
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+
+                          <div class="speech-bubble">
+                            <p className="light-font-text mt-0 mb-0">
+                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
+                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
+                            </p>
+                          </div>
+                          <div className="d-flex align-items-center">
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+
+                          <div class="speech-bubble">
+                            <p className="light-font-text mt-0 mb-0">
+                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
+                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
+                            </p>
+                          </div>
+                          <div className="d-flex align-items-center">
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+
+                          <div class="speech-bubble">
+                            <p className="light-font-text mt-0 mb-0">
+                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
+                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
+                            </p>
+                          </div>
+                          <div className="d-flex align-items-center">
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+
+                          <div class="speech-bubble">
+                            <p className="light-font-text mt-0 mb-0">
+                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
+                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
+                            </p>
+                          </div>
+                          <div className="d-flex align-items-center">
+                            <h6 className="mid-text smaller mt-0 mb-0">
+                              محمد أحمد
+                            </h6>
+                          </div>
+
+                          <div class="speech-bubble">
+                            <p className="light-font-text mt-0 mb-0">
+                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
+                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
+                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
+                            </p>
+                          </div>
+                          <div className="d-flex align-items-center">
                             <h6 className="mid-text smaller mt-0 mb-0">
                               محمد أحمد
                             </h6>
@@ -461,7 +507,7 @@ export class LiveStream extends Component {
               <div className="col-md-9 col-12">
                 <div className="box-layout mb-3">
                   <iframe
-                    src="http://localhost:3000/webinar.html"
+                    src="http://staging.hemma.sa/webinar.html"
                     width="100%"
                     height="600"
                     frameBorder="0"
@@ -503,8 +549,7 @@ export class LiveStream extends Component {
                     >
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/microphone.png"
+                          process.env.PUBLIC_URL + "/assets/images/sound-on.png"
                         }
                         className="contain-img"
                         height="18"
