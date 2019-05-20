@@ -3,6 +3,7 @@ import axios from "axios";
 import Modal from "react-modal";
 import { Page, pdfjs, Document } from "react-pdf";
 import "./styles.sass";
+import { apiBaseUrl } from "../../api/helpers";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${
   pdfjs.version
 }/pdf.worker.js`;
@@ -20,7 +21,7 @@ export class PublicationDetails extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
       axios
-        .get(`https://api.staging.hemma.sa/api/v1/publications/${nextProps.id}`)
+        .get(`${apiBaseUrl}/publications/${nextProps.id}`)
         .then(response => {
           this.setState({ publication: response.data.data });
         })
@@ -75,7 +76,7 @@ export class PublicationDetails extends Component {
                   <h5 className="dark-text small"> السعر: </h5>
                   <h5 className="mid-text small">
                     <span className="en-text mid-text">
-                      {this.state.publication.price}
+                      {this.state.publication.price && this.state.publication.price.toFixed(2) }
                     </span>{" "}
                     ريال
                   </h5>

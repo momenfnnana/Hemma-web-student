@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
+import { apiBaseUrl } from "../../../api/helpers";
 
 export class Subscriptions extends Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export class Subscriptions extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+      .get(`${apiBaseUrl}/users/me`, { headers })
       .then(response => {
         this.setState({ details: response.data.data });
       })
@@ -35,7 +36,7 @@ export class Subscriptions extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/courses/purchased", { headers })
+      .get(`${apiBaseUrl}/courses/purchased`, { headers })
       .then(response => {
         this.setState({ courses: response.data.data.data });
       })

@@ -23,6 +23,7 @@ import { inputField } from "../shared/inputs/inputField";
 import { withRouter } from "react-router-dom";
 import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { selectField } from "../shared/inputs/selectField";
+import { apiBaseUrl } from "../../api/helpers";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -102,7 +103,7 @@ class CheckoutComponent extends Component {
             <div className="mt-0 d-inline-flex flex-row justify-content-between align-items-center float-right">
               <p className="dark-text small mr-2 mb-0">قيمة الدفع</p>
               <p className="light-text mb-0">
-                <span className="en-text">{item.price} </span>ريال
+                <span className="en-text">{item.price && item.price.toFixed(2)} </span>ريال
               </p>
             </div>
           </div>
@@ -146,7 +147,7 @@ class CheckoutComponent extends Component {
 
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/payments/bank_transfers/uploads",
+        `${apiBaseUrl}/payments/bank_transfers/uploads`,
         data,
         {
           headers
@@ -170,7 +171,7 @@ class CheckoutComponent extends Component {
 
         axios
           .post(
-            "https://api.staging.hemma.sa/api/v1/cart/checkout_with_bank_transfer",
+            `${apiBaseUrl}/cart/checkout_with_bank_transfer`,
             data,
             {
               headers

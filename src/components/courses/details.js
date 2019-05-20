@@ -11,6 +11,7 @@ import swal from "@sweetalert/with-react";
 import ReactPlayer from "react-player";
 import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
+import { apiBaseUrl } from "../../api/helpers";
 
 export class CourseDetails extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ export class CourseDetails extends Component {
       match: { params }
     } = this.props;
     axios
-      .get(`https://api.staging.hemma.sa/api/v1/courses/${params.id}`)
+      .get(`${apiBaseUrl}/courses/${params.id}`)
       .then(response => {
         this.setState({ details: response.data.data });
       })
@@ -55,7 +56,7 @@ export class CourseDetails extends Component {
       installment: 0
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/cart/items", data, { headers })
+      .post(`${apiBaseUrl}/cart/items`, data, { headers })
       .then(response => {
         swal("تنبيه", "تم إضافة الدورة إلى سلة التسوق بنجاح", "success", {
           button: "متابعة"
@@ -303,7 +304,8 @@ export class CourseDetails extends Component {
                       <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
                       <h4 className="mid-text">
                         <span className="en-text">
-                          {this.state.details.price / 100}
+                          {this.state.details.price &&
+                            this.state.details.price.toFixed(2)}
                         </span>{" "}
                         ريال
                       </h4>
@@ -375,7 +377,8 @@ export class CourseDetails extends Component {
                           <span className="en-text">
                             {this.state.details &&
                               this.state.details.companionBook &&
-                              this.state.details.companionBook.price / 100}
+                              this.state.details.companionBook.price &&
+                              this.state.details.companionBook.price.toFixed(2)}
                           </span>{" "}
                           ريال
                         </li>

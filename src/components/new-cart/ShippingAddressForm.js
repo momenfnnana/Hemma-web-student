@@ -28,7 +28,7 @@ class ShippingAddressFormComponent extends Component {
    */
   renderCities() {
     return this.state.shippingCities.map(city => (
-      <option key={city.id} value={city.nameAr}>
+      <option key={city.id} value={city.id}>
         {city.nameAr}
       </option>
     ));
@@ -37,9 +37,9 @@ class ShippingAddressFormComponent extends Component {
   render() {
     const cart = this.props.cart;
 
-    // if (!cart || !cart.requireShippingAddress) {
-    //   return null;
-    // }
+    if (!cart || !cart.requireShippingAddress) {
+      return null;
+    }
 
     return (
       <form onSubmit={this.handleSubmit}>
@@ -55,7 +55,7 @@ class ShippingAddressFormComponent extends Component {
             </div>
             <div className="form-group">
               <Field
-                name="recipient"
+                name="shippingRecipient"
                 type="text"
                 component={inputField}
                 className="form-control border-left-0 pl-0"
@@ -64,8 +64,8 @@ class ShippingAddressFormComponent extends Component {
             </div>
             <div className="form-group">
               <Field
-                fieldName="phone"
-                name="phone"
+                fieldName="shippingPhone"
+                name="shippingPhone"
                 component={phoneField}
                 containerClassName="intl-tel-input"
                 inputClassName="form-control"
@@ -73,23 +73,30 @@ class ShippingAddressFormComponent extends Component {
               />
             </div>
             <div className="form-group">
-              <select
-                name="city"
+              {/* <select
+                name="shippingCityId"
                 // component={selectField}
                 className="form-control"
+              >
+              </select> */}
+              <Field
+                component={selectField}
+                className="form-control"
+                // validate={required}
+                name="shippingCityId"
               >
                 <option selected disabled>
                   اختر المدينة
                 </option>
                 {this.renderCities()}
-              </select>
+              </Field>
             </div>
             <div className="form-group mb-0">
               <Field
                 className="form-control small"
                 placeholder="عنوان التوصيل"
                 rows="6"
-                name="address"
+                name="shippingAddress"
                 component={textareaField}
               />
             </div>

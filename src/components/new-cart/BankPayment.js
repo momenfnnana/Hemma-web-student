@@ -51,13 +51,16 @@ class BankPaymentComponent extends Component {
    */
   myFormHandler = values => {
     const data = {
-      bankName: "الراجحي",
-      accountName: values.accountName,
+      originBankName: values.originBankName,
+      destinationBankName: values.destinationBankName,
+      accountHolderName: values.accountHolderName,
+      accountNumber: values.accountNumber,
       amount: values.amount,
-      date: values.date,
-      shippingRecipient: values.recipient,
-      // shippingCityId: this.state.shippingInfo.city,
-      shippingAddress: values.address
+      date: values.date ? values.date.utc().toISOString() : new Date(Date.UTC()),
+      shippingRecipient: values.shippingRecipient,
+      shippingCityId: values.shippingCityId,
+      shippingAddress: values.shippingAddress,
+      shippingPhone: values.shippingPhone && values.shippingPhone.phoneNumber
     };
 
     this.props
@@ -161,17 +164,17 @@ class BankPaymentComponent extends Component {
               component={selectField}
               className="form-control"
               // validate={required}
-              name="bankName"
+              name="originBankName"
             >
               <option selected disabled>
                 البنك المحول منه
               </option>
-              <option value="1">من بنك الراجحي</option>
-              <option value="2">من البنك الأهلي</option>
-              <option value="3">من بنك آخر</option>
+              <option value="الراجحي">من بنك الراجحي</option>
+              <option value="الأهلي">من البنك الأهلي</option>
+              <option value="بنك اخر">من بنك آخر</option>
             </Field>
             <Field
-              name="senderName"
+              name="accountHolderName"
               type="text"
               component={inputField}
               className="form-control border-left-0 pl-0"
@@ -179,7 +182,7 @@ class BankPaymentComponent extends Component {
               validate={required}
             />
             <Field
-              name="accountName"
+              name="accountNumber"
               type="number"
               component={inputField}
               className="form-control border-left-0 pl-0 ltr-input"
@@ -190,14 +193,13 @@ class BankPaymentComponent extends Component {
               component={selectField}
               className="form-control"
               // validate={required}
-              name="BankTo"
+              name="destinationBankName"
             >
               <option selected disabled>
                 البنك المحول إليه
               </option>
-              <option value="1">إلى بنك الراجحي</option>
-              <option value="2">إلى البنك الأهلي</option>
-              <option value="3">إلى بنك آخر</option>
+              <option value="الراجحي">إلى بنك الراجحي</option>
+              <option value="الأهلي">إلى البنك الأهلي</option>
             </Field>
 
             <Field

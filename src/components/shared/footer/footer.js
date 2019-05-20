@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -83,7 +84,7 @@ class FooterComponent extends Component {
     };
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/newsletters/subscriptions",
+        `${apiBaseUrl}/newsletters/subscriptions`,
         data
       )
       .then(response => {
@@ -133,7 +134,7 @@ class FooterComponent extends Component {
                   <a href="" className="dark-text">
                     انضم كأستاذ
                   </a>
-                </li> 
+                </li>
               </ul> */}
               <p className="light-font-text small dark-text mb-1 mt-0">
                 جميع الحقوق محفوظة <span className="en-text">© 2019</span>

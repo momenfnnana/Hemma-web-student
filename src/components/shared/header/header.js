@@ -16,6 +16,7 @@ import {
 } from "reactstrap";
 import { FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
+import { apiBaseUrl } from "../../../api/helpers";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class HeaderComponent extends Component {
           Authorization: `Bearer ${token}`
         };
         axios
-          .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+          .get(`${apiBaseUrl}/users/me`, { headers })
           .then(response => {
             this.setState({ details: response.data.data });
           })
@@ -63,7 +64,7 @@ class HeaderComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/auth/phone/send_token", null, {
+      .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
         headers
       })
       .then(response => {

@@ -3,6 +3,7 @@ import axios from "axios";
 import { CardsList } from "../shared/cardsList/cardsList";
 import { Link } from "react-router-dom";
 import ContentLoader from "react-content-loader";
+import { apiBaseUrl } from "../../api/helpers";
 
 const MyLoader = props => (
   <ContentLoader
@@ -30,7 +31,7 @@ export class Categories extends Component {
   componentDidMount() {
     this.setState({ loading: true });
     axios
-      .get("https://api.staging.hemma.sa/api/v1/categories?limit=40")
+      .get(`${apiBaseUrl}/categories?limit=40`)
       .then(response => {
         this.setState({ categories: response.data.data.data });
         setTimeout(

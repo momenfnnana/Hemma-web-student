@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../card/card";
 import ContentLoader from "react-content-loader";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const MyLoader = props => (
   <ContentLoader
@@ -40,7 +41,7 @@ export class CardsList extends Component {
     this.setState({ loading: true });
     axios
       .get(
-        "https://api.staging.hemma.sa/api/v1/categories/" +
+        `${apiBaseUrl}/categories/` +
           this.props.catId +
           "/courses?featuredOnly=true"
       )

@@ -16,6 +16,7 @@ import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
 import SliderDes from "../features-slider/slider-des";
 import data from "../features-slider/data";
+import { apiBaseUrl } from "../../api/helpers";
 
 const items = [
   {
@@ -115,7 +116,7 @@ export class Home extends Component {
 
   componentDidMount() {
     axios
-      .get("https://api.staging.hemma.sa/api/v1/categories")
+      .get(`${apiBaseUrl}/categories`)
       .then(response => {
         this.setState({ categories: response.data.data.data });
       })
@@ -124,7 +125,7 @@ export class Home extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/courses/recent")
+      .get(`${apiBaseUrl}/courses/recent`)
       .then(response => {
         this.setState({ courses: response.data.data.data });
       })

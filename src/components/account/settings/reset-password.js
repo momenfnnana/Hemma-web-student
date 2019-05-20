@@ -10,6 +10,7 @@ import jwt from "jsonwebtoken";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -56,7 +57,7 @@ class AccountResetComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/auth/password/change", data, {
+      .post(`${apiBaseUrl}/auth/password/change`, data, {
         headers
       })
       .then(response => {

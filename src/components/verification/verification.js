@@ -5,6 +5,7 @@ import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { VerificationField } from "../shared/inputs/verificationField";
 import { Link, withRouter } from "react-router-dom";
+import { apiBaseUrl } from "../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -44,7 +45,7 @@ class VerificationComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/auth/phone/verify", data, {
+      .post(`${apiBaseUrl}/auth/phone/verify`, data, {
         headers
       })
       .then(response => {

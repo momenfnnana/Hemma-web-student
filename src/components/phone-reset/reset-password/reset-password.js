@@ -6,6 +6,7 @@ import { inputField } from "../../shared/inputs/inputField";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -41,7 +42,7 @@ class resetPasswordComponent extends Component {
     };
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/auth/password/reset/phone/set_new",
+        `${apiBaseUrl}/auth/password/reset/phone/set_new`,
         data
       )
       .then(response => {
