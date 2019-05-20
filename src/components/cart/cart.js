@@ -15,6 +15,7 @@ import { selectField } from "../shared/inputs/selectField";
 import { withRouter } from "react-router-dom";
 import { textareaField } from "../shared/inputs/textareaField";
 import { Agreement } from "../agreement/agreement";
+import { apiBaseUrl } from "../../api/helpers";
 
 class CartComponent extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class CartComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .get("https://api.staging.hemma.sa/api/v1/cart", { headers })
+      .get(`${apiBaseUrl}/cart`, { headers })
       .then(response => {
         this.setState({ cart: response.data.data });
       })
@@ -59,7 +60,7 @@ class CartComponent extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/courses/recent")
+      .get(`${apiBaseUrl}/courses/recent`)
       .then(response => {
         this.setState({ courses: response.data.data.data });
       })
@@ -68,7 +69,7 @@ class CartComponent extends Component {
       });
 
     axios
-      .get("https://api.staging.hemma.sa/api/v1/cart/shipping_cities")
+      .get(`${apiBaseUrl}/cart/shipping_cities`)
       .then(response => {
         this.setState({ cities: response.data.data });
       })
@@ -83,7 +84,7 @@ class CartComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .delete(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, {
+      .delete(`${apiBaseUrl}/cart/items/${id}`, {
         headers
       })
       .then(response => {
@@ -104,7 +105,7 @@ class CartComponent extends Component {
       packageOption: !item.packageOption
     };
     axios
-      .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
+      .put(`${apiBaseUrl}/cart/items/${id}`, data, {
         headers
       })
       .then(response => {
@@ -131,7 +132,7 @@ class CartComponent extends Component {
       installment: "5000"
     };
     axios
-      .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
+      .put(`${apiBaseUrl}/cart/items/${id}`, data, {
         headers
       })
       .then(response => {
@@ -178,7 +179,7 @@ class CartComponent extends Component {
       coupon: this.state.validCoupon
     };
     axios
-      .post("https://api.staging.hemma.sa/api/v1/cart/coupons", data, {
+      .post(`${apiBaseUrl}/cart/coupons`, data, {
         headers
       })
       .then(response => {
@@ -197,7 +198,7 @@ class CartComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .delete(`https://api.staging.hemma.sa/api/v1/cart/coupons/${key}`, {
+      .delete(`${apiBaseUrl}/cart/coupons/${key}`, {
         headers
       })
       .then(response => {
@@ -320,7 +321,7 @@ class CartComponent extends Component {
                 disabled={!this.state.isInputDisabled[i]}
                 type="text"
                 className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
-                value={item.price}
+                value={item.price && item.price.toFixed(2)}
                 name="itemPrice"
                 onChange={event => this.handleChange(item.id, event)}
               />
@@ -329,11 +330,11 @@ class CartComponent extends Component {
               <label className="dark-text smaller mb-0">سعر الاشتراك</label>
               <div className="d-flex flex-column mx-auto">
                 <h6 className="light-text text-center mb-0">
-                  <span className="en-text">{item.price}</span> ريال
+                  <span className="en-text">{item.price && item.price.toFixed(2)}</span> ريال
                 </h6>
                 {item.priceBeforeDiscount == undefined ? null : (
                   <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
-                    <span className="en-text">{item.priceBeforeDiscount}</span>{" "}
+                    <span className="en-text">{item.priceBeforeDiscount && item.priceBeforeDiscount.toFixed(2)}</span>{" "}
                     ريال
                   </h6>
                 )}
@@ -445,7 +446,7 @@ class CartComponent extends Component {
                       undefined ? null : (
                         <h4 className="dark-silver-text mt-2 mx-auto line-through-text align-items-center d-flex">
                           <span className="en-text">
-                            {this.state.cart.totalBeforeDiscount / 100}
+                            {this.state.cart.totalBeforeDiscount}
                           </span>{" "}
                           ريال
                         </h4>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { apiBaseUrl } from "../api/helpers";
 
 export const GET_PROFILE = "getProfile";
 
@@ -8,7 +9,7 @@ export const getProfile = () => {
     Authorization: `Bearer ${token}`
   };
   const request = axios
-    .get("https://api.staging.hemma.sa/api/v1/users/me", { headers })
+    .get(`${apiBaseUrl}/users/me`, { headers })
     .then(response => response.data.data);
 
   return {

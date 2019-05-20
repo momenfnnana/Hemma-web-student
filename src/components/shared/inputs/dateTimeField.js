@@ -19,7 +19,7 @@ export class dateTimeField extends Component {
       <React.Fragment>
         <div className={wrapperClass}>
           <Datetime
-            {...this.props.inputProps}
+            {...this.props.input}
             defaultValue={inputValue}
             name={inputName}
             timeFormat={formatTime}

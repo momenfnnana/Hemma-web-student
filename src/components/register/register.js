@@ -11,6 +11,7 @@ import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import jwt from "jsonwebtoken";
 import { RadioField } from "../shared/inputs/RadioFeild";
+import { apiBaseUrl } from "../../api/helpers";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const maxLength = max => value =>
@@ -48,11 +49,11 @@ class RegisterComponent extends Component {
     };
     this.setState({ loading: true });
     axios
-      .post("https://api.staging.hemma.sa/api/v1/auth/register", data)
+      .post(`${apiBaseUrl}/auth/register`, data)
       .then(response => {
         axios
           .post(
-            "https://api.staging.hemma.sa/api/v1/auth/login_with_phone",
+            `${apiBaseUrl}/auth/login_with_phone`,
             data
           )
           .then(response => {
@@ -69,7 +70,7 @@ class RegisterComponent extends Component {
               };
               axios
                 .post(
-                  "https://api.staging.hemma.sa/api/v1/auth/phone/send_token",
+                  `${apiBaseUrl}/auth/phone/send_token`,
                   null,
                   { headers }
                 )

@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { VerificationField } from "../../shared/inputs/verificationField";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -43,7 +44,7 @@ class VerifyIdComponent extends Component {
     };
     axios
       .post(
-        "https://api.staging.hemma.sa/api/v1/auth/password/reset/phone/check_token",
+        `${apiBaseUrl}/auth/password/reset/phone/check_token`,
         data
       )
       .then(response => {

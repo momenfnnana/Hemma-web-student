@@ -10,6 +10,7 @@ import "./styles.sass";
 import { FaRegUser } from "react-icons/fa";
 import { getProfile } from "../../../actions";
 import { FaRegEnvelope } from "react-icons/fa";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
@@ -46,7 +47,7 @@ class EditAccountComponent extends Component {
       name: values.name
     };
     axios
-      .put("https://api.staging.hemma.sa/api/v1/users/me", data, {
+      .put(`${apiBaseUrl}/users/me`, data, {
         headers
       })
       .then(response => {

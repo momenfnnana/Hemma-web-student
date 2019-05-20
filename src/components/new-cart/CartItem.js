@@ -68,13 +68,13 @@ export class CartItem extends Component {
       this.setState({
         editingInstallment: true,
         tempInstallment:
-          this.props.item.minimumInstallment / 100 ||
-          this.props.item.price / 100 ||
+          this.props.item.minimumInstallment ||
+          this.props.item.price ||
           0
       });
     } else {
       // disable input and submit installment
-      this.onSetInstallment(this.state.tempInstallment * 100);
+      this.onSetInstallment(this.state.tempInstallment);
 
       this.setState({
         editingInstallment: false,
