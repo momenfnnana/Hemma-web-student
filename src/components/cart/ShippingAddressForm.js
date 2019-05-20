@@ -8,6 +8,8 @@ import { Api } from "../../api";
 import { withRouter } from "react-router-dom";
 import { selectField } from "../../components/shared/inputs/selectField";
 
+const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
+
 class ShippingAddressFormComponent extends Component {
   state = {
     shippingCities: []
@@ -17,10 +19,6 @@ class ShippingAddressFormComponent extends Component {
     Api.cart
       .getShippingCities()
       .then(cities => this.setState({ shippingCities: cities }));
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
   }
 
   /**
@@ -42,7 +40,7 @@ class ShippingAddressFormComponent extends Component {
     }
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form>
         <div className="off-white-bg w-100 border-top-0 border-bottom radius-top-0">
           <div className="p-4">
             <div className="d-flex flex-row align-items-center mb-3">
@@ -60,6 +58,7 @@ class ShippingAddressFormComponent extends Component {
                 component={inputField}
                 className="form-control border-left-0 pl-0"
                 placeholder="اسم المستلم"
+                validate={required}
               />
             </div>
             <div className="form-group">
@@ -70,19 +69,14 @@ class ShippingAddressFormComponent extends Component {
                 containerClassName="intl-tel-input"
                 inputClassName="form-control"
                 defaultCountry="sa"
+                validate={required}
               />
             </div>
             <div className="form-group">
-              {/* <select
-                name="shippingCityId"
-                // component={selectField}
-                className="form-control"
-              >
-              </select> */}
               <Field
                 component={selectField}
                 className="form-control"
-                // validate={required}
+                validate={required}
                 name="shippingCityId"
               >
                 <option selected disabled>
@@ -98,6 +92,7 @@ class ShippingAddressFormComponent extends Component {
                 rows="6"
                 name="shippingAddress"
                 component={textareaField}
+                validate={required}
               />
             </div>
           </div>

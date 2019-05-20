@@ -35,9 +35,28 @@ const emailValue = value =>
 const passwordsMatch = (value, allValues) =>
   value !== allValues.password ? "كلمة المرور غير متطابقة" : undefined;
 class RegisterComponent extends Component {
-  state = {
-    loading: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hidden: true,
+      hiddenPw: true,
+      password: "",
+      confirmPassword: "",
+      loading: false
+    };
+    this.togglePasswordShow = this.togglePasswordShow.bind(this);
+    this.toggleConfirmPasswordShow = this.toggleConfirmPasswordShow.bind(this);
+  }
+
+  togglePasswordShow() {
+    this.setState({ hidden: !this.state.hidden });
+  }
+
+  toggleConfirmPasswordShow() {
+    this.setState({ hiddenPw: !this.state.hiddenPw });
+  }
+
   myFormHandler = values => {
     let data = {
       countryCode: values.phone.countryCode,
@@ -52,10 +71,7 @@ class RegisterComponent extends Component {
       .post(`${apiBaseUrl}/auth/register`, data)
       .then(response => {
         axios
-          .post(
-            `${apiBaseUrl}/auth/login_with_phone`,
-            data
-          )
+          .post(`${apiBaseUrl}/auth/login_with_phone`, data)
           .then(response => {
             localStorage.setItem("token", response.data.data.token);
           })
@@ -69,11 +85,7 @@ class RegisterComponent extends Component {
                 Authorization: `Bearer ${token}`
               };
               axios
-                .post(
-                  `${apiBaseUrl}/auth/phone/send_token`,
-                  null,
-                  { headers }
-                )
+                .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
                 .then(response => {
                   this.props.history.push("/verify");
                 })
@@ -151,27 +163,66 @@ class RegisterComponent extends Component {
           validate={required}
         />
 
-        <Field
-          name="password"
-          type="password"
-          component={inputField}
-          className="form-control border-left-0 pl-0 ltr-input"
-          placeholder="كلمة المرور"
-          validate={[required, maxLength10, minLength4, passwordsMatch]}
-        >
-          <MdLockOutline />
-        </Field>
+        <div className="position-relative">
+          <Field
+            name="password"
+            type={this.state.hidden ? "text" : "password"}
+            component={inputField}
+            className="form-control border-left-0 pl-0 ltr-input pw-input"
+            placeholder="كلمة المرور"
+            validate={[required, maxLength10, minLength4, passwordsMatch]}
+          >
+            <MdLockOutline />
+          </Field>
+          {this.state.hidden ? (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+              width="100%"
+              width="20"
+              className="position-absolute left-input-icon"
+              onClick={this.togglePasswordShow}
+            />
+          ) : (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+              width="100%"
+              width="20"
+              className="position-absolute left-input-icon custom-top"
+              onClick={this.togglePasswordShow}
+            />
+          )}
+        </div>
 
-        <Field
-          name="confirmPassword"
-          type="password"
-          component={inputField}
-          className="form-control border-left-0 pl-0 ltr-input"
-          placeholder="تأكيد كلمة المرور"
-          validate={[required, maxLength10, minLength4, passwordsMatch]}
-        >
-          <MdLockOutline />
-        </Field>
+        <div className="position-relative">
+          <Field
+            name="confirmPassword"
+            type="password"
+            type={this.state.hiddenPw ? "text" : "password"}
+            component={inputField}
+            className="form-control border-left-0 pl-0 ltr-input pw-input"
+            placeholder="تأكيد كلمة المرور"
+            validate={[required, maxLength10, minLength4, passwordsMatch]}
+          >
+            <MdLockOutline />
+          </Field>
+          {this.state.hiddenPw ? (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+              width="100%"
+              width="20"
+              className="position-absolute left-input-icon"
+              onClick={this.toggleConfirmPasswordShow}
+            />
+          ) : (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+              width="100%"
+              width="20"
+              className="position-absolute left-input-icon custom-top"
+              onClick={this.toggleConfirmPasswordShow}
+            />
+          )}
+        </div>
 
         <Field
           name="email"

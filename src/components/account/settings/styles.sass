@@ -30,6 +30,20 @@ $yellow: #ffe552
 .bs-tooltip-auto[x-placement^=bottom] .arrow::before, .bs-tooltip-bottom .arrow::before
     border-bottom-color: #f2fdfe
 .bs-tooltip-auto[x-placement^=top] .arrow::before, .bs-tooltip-top .arrow::before
-    border-top-color: #f2fdfe    
+    border-top-color: #f2fdfe
+.bs-tooltip-auto[x-placement^=top] .arrow::before, .bs-tooltip-right .arrow::before
+    border-right-color: #f2fdfe
+.bs-tooltip-auto[x-placement^=top] .arrow::before, .bs-tooltip-left .arrow::before
+    border-left-color: #f2fdfe                
 .tooltip.show
     opacity: 1    
+.right-input-icon
+  top: 10px
+  right: 10px
+  z-index: 10
+.left-input-icon
+  top: 10px
+  left: 10px
+  z-index: 10
+.left-input-icon.custom-top
+  top: 14px  

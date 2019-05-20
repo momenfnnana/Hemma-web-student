@@ -18,7 +18,7 @@ const Chat = require("twilio-chat");
 const accessToken = localStorage.getItem("chatToken");
 
 Chat.Client.create(accessToken).then(client => {
-  console.log(client);
+  // console.log(client);
 });
 
 export class LiveStream extends Component {

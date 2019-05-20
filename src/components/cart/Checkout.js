@@ -1,35 +1,25 @@
-import "./cart.styles.sass";
+import "./checkout.styles.sass";
 
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { getCart, addCoupon, removeCoupon } from "../../actions";
-import { CartSummary } from "./CartSummary";
-import { CartItemsList } from "./CartItemsList";
+import { getCart } from "../../actions";
 import { RecentCoursesSlider } from "./RecentCoursesSlider";
-import { EmptyCartPrompt } from "./EmptyCartPrompt";
-import { AgreementForm } from "./Agreement";
+import { MiniCartItemsList } from "./MiniCartItemsList";
+import { ShippingAddressDisplay } from "./ShippingAddressDisplay";
+import { formatPrice } from "./helpers";
+import { PaymentTabs } from "./PaymentTabs";
+import { ShippingAddressForm } from "./ShippingAddressForm";
 
-class CartComponent extends Component {
+class CheckoutComponent extends Component {
   state = {
-    busy: true,
-    modalIsOpen: false
+    busy: true
   };
-
-  openModal(id) {
-    this.setState({ modalIsOpen: true });
-  }
-  closeModal() {
-    this.setState({ modalIsOpen: false });
-  }
 
   constructor(props) {
     super(props);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
   }
 
   componentDidMount() {
-    // Fetch the cart again every time the user access the cart page
     this.props
       .getCart()
       .then(result => {
@@ -49,39 +39,46 @@ class CartComponent extends Component {
     const cart = this.props.cart;
     const items = cart && cart.items;
     const { busy } = this.state;
+
     return (
       <Fragment>
         <section className="cart-section">
           <div className="container">
             <div className="row pt-5">
               <div className="col-12">
-                <h3 className="dark-text">سلة الشراء</h3>
+                <h3 className="dark-text">تأكيد الإشتراك</h3>
               </div>
             </div>
 
-            <div className="row">
+            <div className="row mt-4">
               <div className="col-md-4">
-                <CartSummary />
-                <button
-                  className="btn light-outline-btn mt-4 w-100"
-                  disabled={!items || items.length === 0}
-                  onClick={() => this.openModal()}
-                >
-                  متابعة
-                </button>
+                <MiniCartItemsList />
+
+                <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
+                  {cart && cart.requireShippingAddress && (
+                    <ShippingAddressForm />
+                  )}
+
+                  <div className="pt-2 pb-3">
+                    <div className="pl-4 pr-4 pt-2 pb-1 d-flex flex-row align-items-center">
+                      <h6 className="mid-text mb-0 mt-0 mr-3">المبلغ الكلي</h6>
+                      <h4 className="dark-text mb-0 mt-0">
+                        <span className="en-text">
+                          {formatPrice(
+                            cart && (cart.installment || cart.total)
+                          )}
+                        </span>{" "}
+                        ريال
+                      </h4>
+                    </div>
+                  </div>
+                </div>
               </div>
+
               <div className="col-md-8 mt-3">
-                {items && items.length === 0 ? (
-                  <EmptyCartPrompt />
-                ) : (
-                  <CartItemsList />
-                )}
+                <PaymentTabs />
               </div>
             </div>
-            <AgreementForm
-              modalIsOpen={this.state.modalIsOpen}
-              onClose={this.closeModal}
-            />
           </div>
         </section>
 
@@ -109,12 +106,10 @@ function mapStateToProps(state) {
 }
 
 const actionCreators = {
-  getCart,
-  addCoupon,
-  removeCoupon
+  getCart
 };
 
-export const Cart = connect(
+export const Checkout = connect(
   mapStateToProps,
   actionCreators
-)(CartComponent);
+)(CheckoutComponent);

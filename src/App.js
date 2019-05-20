@@ -24,7 +24,7 @@ import { resetPassword } from "./components/phone-reset/reset-password/reset-pas
 import { AccountReset } from "./components/account/settings/reset-password";
 import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
-import { Cart, Checkout } from "./components/new-cart";
+import { Cart, Checkout } from "./components/cart";
 
 import ScrollToTop from "./components/shared/scroll-to-top/ScrollToTop";
 import { SubscriptionDetails } from "./components/account/subscriptions/subscription-details";
@@ -105,7 +105,6 @@ class App extends Component {
     await axios
       .post("https://twilio-chat-app.herokuapp.com/token", data)
       .then(response => {
-        localStorage.setItem("identity", response.data.identity);
         localStorage.setItem("chatToken", response.data.token);
       })
       .catch(error => {

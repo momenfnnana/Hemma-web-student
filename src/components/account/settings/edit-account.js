@@ -11,6 +11,7 @@ import { FaRegUser } from "react-icons/fa";
 import { getProfile } from "../../../actions";
 import { FaRegEnvelope } from "react-icons/fa";
 import { apiBaseUrl } from "../../../api/helpers";
+import { Tooltip } from "reactstrap";
 
 const validate = values => {
   const errors = {};
@@ -29,9 +30,25 @@ const validate = values => {
 class EditAccountComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.togglePhone = this.togglePhone.bind(this);
+    this.toggleEmail = this.toggleEmail.bind(this);
     this.state = {
-      details: []
+      phoneTooltip: false,
+      emailTooltip: false
     };
+  }
+
+  togglePhone() {
+    this.setState({
+      phoneTooltip: !this.state.phoneTooltip
+    });
+  }
+
+  toggleEmail() {
+    this.setState({
+      emailTooltip: !this.state.emailTooltip
+    });
   }
 
   componentDidMount() {
@@ -71,6 +88,18 @@ class EditAccountComponent extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
+    let female;
+    if ((this.props.initialValues.gender = "Female")) {
+      female = true;
+    } else {
+      female = false;
+    }
+    let male;
+    if ((this.props.initialValues.gender = "Male")) {
+      male = true;
+    } else {
+      male = false;
+    }
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -103,16 +132,51 @@ class EditAccountComponent extends Component {
                     >
                       <FaRegUser />
                     </Field>
-                    <Field
-                      fieldName="phoneNumber"
-                      name="phoneNumber"
-                      // names={["phoneNumber", "countryCode"]}
-                      component={editPhoneField}
-                      containerClassName="intl-tel-input"
-                      inputClassName="form-control"
-                      defaultCountry="sa"
-                      disabled={true}
-                    />
+
+                    <div className="position-relative">
+                      <Field
+                        fieldName="phoneNumber"
+                        name="phoneNumber"
+                        // names={["phoneNumber", "countryCode"]}
+                        component={editPhoneField}
+                        containerClassName="intl-tel-input"
+                        inputClassName="form-control"
+                        defaultCountry="sa"
+                        disabled={true}
+                      />
+                      {this.props.initialValues.phoneNumberConfirmed ==
+                      false ? (
+                        <React.Fragment>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/not-verified.png"
+                            }
+                            width="100%"
+                            width="20"
+                            className="position-absolute right-input-icon"
+                            id="phone-tooltip"
+                          />
+                          <Tooltip
+                            placement="right"
+                            isOpen={this.state.phoneTooltip}
+                            target="phone-tooltip"
+                            toggle={this.togglePhone}
+                            style={{
+                              backgroundColor: "#f2fdfe",
+                              color: "#4b3a85",
+                              height: 35,
+                              display: "flex",
+                              alignItems: "center"
+                            }}
+                          >
+                            <h6 className="light-font-text small mb-0">
+                              رقم الهاتف غير محقق
+                            </h6>
+                          </Tooltip>
+                        </React.Fragment>
+                      ) : null}
+                    </div>
 
                     <label className="pr-2 dark-silver-text">أنا: </label>
                     <div className="form-check form-check-inline mb-3">
@@ -123,6 +187,7 @@ class EditAccountComponent extends Component {
                         value="0"
                         component="input"
                         disabled={true}
+                        checked={male}
                       />
                       <label className="form-check-label dark-text small">
                         <img
@@ -144,6 +209,7 @@ class EditAccountComponent extends Component {
                         value="1"
                         component="input"
                         disabled={true}
+                        checked={female}
                       />
                       <label className="form-check-label dark-text small">
                         <img
@@ -157,16 +223,49 @@ class EditAccountComponent extends Component {
                         أنثى
                       </label>
                     </div>
-                    <Field
-                      name="email"
-                      type="email"
-                      component={inputField}
-                      className="form-control border-left-0 pl-0 ltr-input"
-                      placeholder="البريد الإلكتروني"
-                      disabled={true}
-                    >
-                      <FaRegEnvelope />
-                    </Field>
+                    <div className="position-relative">
+                      <Field
+                        name="email"
+                        type="email"
+                        component={inputField}
+                        className="form-control border-left-0 pl-0 ltr-input"
+                        placeholder="البريد الإلكتروني"
+                        disabled={true}
+                      >
+                        <FaRegEnvelope />
+                      </Field>
+                      {this.props.initialValues.emailConfirmed == false ? (
+                        <React.Fragment>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/not-verified.png"
+                            }
+                            width="100%"
+                            width="20"
+                            className="position-absolute left-input-icon"
+                            id="email-tooltip"
+                          />
+                          <Tooltip
+                            placement="left"
+                            isOpen={this.state.emailTooltip}
+                            target="email-tooltip"
+                            toggle={this.toggleEmail}
+                            style={{
+                              backgroundColor: "#f2fdfe",
+                              color: "#4b3a85",
+                              height: 35,
+                              display: "flex",
+                              alignItems: "center"
+                            }}
+                          >
+                            <h6 className="light-font-text small mb-0">
+                              البريد الإلكتروني غير محقق
+                            </h6>
+                          </Tooltip>
+                        </React.Fragment>
+                      ) : null}
+                    </div>
                     <Link
                       to="/account/reset-password"
                       className="light-text smaller"

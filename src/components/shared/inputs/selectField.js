@@ -9,12 +9,15 @@ export class selectField extends Component {
     } else if (this.props.meta.touched && this.props.meta.valid) {
       wrapperClass += " input-success";
     }
+    console.log(this.props.input);
     return (
       <React.Fragment>
         <div className={wrapperClass}>
-          <select {...this.props.input}
+          <select
+            {...this.props.input}
             value={this.props.input.value}
-            className={inputClass}>
+            className={inputClass}
+          >
             {this.props.children}
           </select>
           {this.props.meta.touched && this.props.meta.error && (

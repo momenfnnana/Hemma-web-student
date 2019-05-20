@@ -34,9 +34,21 @@ const validate = values => {
 };
 
 class LoginComponent extends Component {
-  state = {
-    loading: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      hidden: true,
+      password: "",
+      loading: false
+    };
+    this.togglePasswordShow = this.togglePasswordShow.bind(this);
+  }
+
+  togglePasswordShow() {
+    this.setState({ hidden: !this.state.hidden });
+  }
+
   myFormHandler = values => {
     let data = {
       countryCode: values.phone.countryCode,
@@ -60,11 +72,7 @@ class LoginComponent extends Component {
             Authorization: `Bearer ${token}`
           };
           axios
-            .post(
-              `${apiBaseUrl}/auth/phone/send_token`,
-              null,
-              { headers }
-            )
+            .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
             .then(response => {
               this.props.history.push("/verify");
             })
@@ -103,15 +111,34 @@ class LoginComponent extends Component {
           defaultCountry="sa"
         />
 
-        <Field
-          name="password"
-          type="password"
-          component={inputField}
-          className="form-control border-left-0 pl-0 ltr-input"
-          placeholder="كلمة المرور"
-        >
-          <MdLockOutline />
-        </Field>
+        <div className="position-relative">
+          <Field
+            name="password"
+            type={this.state.hidden ? "text" : "password"}
+            component={inputField}
+            className="form-control border-left-0 pl-0 ltr-input pw-input"
+            placeholder="كلمة المرور"
+          >
+            <MdLockOutline />
+          </Field>
+          {this.state.hidden ? (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+              width="100%"
+              width="20"
+              className="position-absolute left-input-icon"
+              onClick={this.togglePasswordShow}
+            />
+          ) : (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+              width="100%"
+              width="20"
+              className="position-absolute left-input-icon custom-top"
+              onClick={this.togglePasswordShow}
+            />
+          )}
+        </div>
 
         <button
           type="submit"

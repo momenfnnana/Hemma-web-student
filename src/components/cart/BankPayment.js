@@ -56,7 +56,9 @@ class BankPaymentComponent extends Component {
       accountHolderName: values.accountHolderName,
       accountNumber: values.accountNumber,
       amount: values.amount,
-      date: values.date ? values.date.utc().toISOString() : new Date(Date.UTC()),
+      date: values.date
+        ? values.date.utc().toISOString()
+        : new Date(Date.UTC()),
       shippingRecipient: values.shippingRecipient,
       shippingCityId: values.shippingCityId,
       shippingAddress: values.shippingAddress,
@@ -163,7 +165,7 @@ class BankPaymentComponent extends Component {
             <Field
               component={selectField}
               className="form-control"
-              // validate={required}
+              validate={required}
               name="originBankName"
             >
               <option selected disabled>
@@ -192,7 +194,7 @@ class BankPaymentComponent extends Component {
             <Field
               component={selectField}
               className="form-control"
-              // validate={required}
+              validate={required}
               name="destinationBankName"
             >
               <option selected disabled>

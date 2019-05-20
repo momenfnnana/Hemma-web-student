@@ -11,17 +11,19 @@ export class textareaField extends Component {
     }
     return (
       <React.Fragment>
-        <textarea
-          {...this.props.input}
-          type={this.props.type}
-          className={inputClass}
-          placeholder={this.props.placeholder}
-          value={this.props.input.value}
-          rows={this.props.rows}
-        />
-        {this.props.meta.touched && this.props.meta.error && (
-          <small className="w-100 smaller">{this.props.meta.error}</small>
-        )}
+        <div className={wrapperClass}>
+          <textarea
+            {...this.props.input}
+            type={this.props.type}
+            className={inputClass}
+            placeholder={this.props.placeholder}
+            value={this.props.input.value}
+            rows={this.props.rows}
+          />
+          {this.props.meta.touched && this.props.meta.error && (
+            <small className="w-100 smaller">{this.props.meta.error}</small>
+          )}
+        </div>
       </React.Fragment>
     );
   }

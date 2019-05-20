@@ -46,38 +46,34 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
-    axios
-      .get(
-        `${apiBaseUrl}/categories/${
-          params.id
-        }/free-lectures`
-      )
-      .then(response => {
-        this.setState({ lectures: response.data.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // axios
+    //   .get(
+    //     `${apiBaseUrl}/categories/${
+    //       params.id
+    //     }/free-lectures`
+    //   )
+    //   .then(response => {
+    //     this.setState({ lectures: response.data.data.data });
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+
+    // axios
+    //   .get(
+    //     `${apiBaseUrl}/categories/${
+    //       params.id
+    //     }/free-content`
+    //   )
+    //   .then(response => {
+    //     this.setState({ content: response.data.data.data });
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
 
     axios
-      .get(
-        `${apiBaseUrl}/categories/${
-          params.id
-        }/free-content`
-      )
-      .then(response => {
-        this.setState({ content: response.data.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    axios
-      .get(
-        `${apiBaseUrl}/categories/${
-          params.id
-        }/publications`
-      )
+      .get(`${apiBaseUrl}/categories/${params.id}/publications`)
       .then(response => {
         this.setState({ publications: response.data.data.data });
       })
@@ -85,14 +81,14 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
-    axios
-      .get(`${apiBaseUrl}/courses/recent`)
-      .then(response => {
-        this.setState({ courses: response.data.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // axios
+    //   .get(`${apiBaseUrl}/courses/recent`)
+    //   .then(response => {
+    //     this.setState({ courses: response.data.data.data });
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   }
 
   renderPublications() {
@@ -112,80 +108,80 @@ export class CategoryDetails extends Component {
     ));
   }
 
-  renderLectures() {
-    return this.state.lectures.map(lecture => (
-      <li
-        key={lecture.id}
-        className="list-group-item d-flex justify-content-between align-items-center"
-        dir="rtl"
-      >
-        <div className="media">
-          <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
-            <FaGraduationCap className="text-white" size="34" />
-          </div>
-          <div className="media-body mt-2">
-            <h6 className="dark-text mb-0">{lecture.nameAr}</h6>
-            <ul className="list-inline mt-2">
-              <li className="list-inline-item small mt-0">
-                <p href="" className="light-text">
-                  أ. طلال محمد{" "}
-                </p>
-              </li>
-              <li className="list-inline-item light-font-text small mt-0 ml-2">
-                <div className="dark-bg pl-4 pr-4 pt-1 pb-1 rounded">
-                  <p className="text-white en-text mb-0">10:54</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <button type="submit" className="btn light-outline-btn unset-height">
-          انضم
-        </button>
-      </li>
-    ));
-  }
+  // renderLectures() {
+  //   return this.state.lectures.map(lecture => (
+  //     <li
+  //       key={lecture.id}
+  //       className="list-group-item d-flex justify-content-between align-items-center"
+  //       dir="rtl"
+  //     >
+  //       <div className="media">
+  //         <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
+  //           <FaGraduationCap className="text-white" size="34" />
+  //         </div>
+  //         <div className="media-body mt-2">
+  //           <h6 className="dark-text mb-0">{lecture.nameAr}</h6>
+  //           <ul className="list-inline mt-2">
+  //             <li className="list-inline-item small mt-0">
+  //               <p href="" className="light-text">
+  //                 أ. طلال محمد{" "}
+  //               </p>
+  //             </li>
+  //             <li className="list-inline-item light-font-text small mt-0 ml-2">
+  //               <div className="dark-bg pl-4 pr-4 pt-1 pb-1 rounded">
+  //                 <p className="text-white en-text mb-0">10:54</p>
+  //               </div>
+  //             </li>
+  //           </ul>
+  //         </div>
+  //       </div>
+  //       <button type="submit" className="btn light-outline-btn unset-height">
+  //         انضم
+  //       </button>
+  //     </li>
+  //   ));
+  // }
 
-  renderFreeContent() {
-    return this.state.courses.map(course => (
-      <Card key={course.id} course={course} />
-    ));
-  }
+  // renderFreeContent() {
+  //   return this.state.courses.map(course => (
+  //     <Card key={course.id} course={course} />
+  //   ));
+  // }
 
   render() {
-    var customSettings = {
-      infinite: false,
-      slidesToShow: 1,
-      slidesToScroll: 1,
-      autoplay: false,
-      autoplaySpeed: 2000,
-      arrows: false,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: false
-          }
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            initialSlide: 1
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    };
+    // var customSettings = {
+    //   infinite: false,
+    //   slidesToShow: 1,
+    //   slidesToScroll: 1,
+    //   autoplay: false,
+    //   autoplaySpeed: 2000,
+    //   arrows: false,
+    //   responsive: [
+    //     {
+    //       breakpoint: 1024,
+    //       settings: {
+    //         slidesToShow: 1,
+    //         slidesToScroll: 1,
+    //         infinite: false
+    //       }
+    //     },
+    //     {
+    //       breakpoint: 600,
+    //       settings: {
+    //         slidesToShow: 1,
+    //         slidesToScroll: 1,
+    //         initialSlide: 1
+    //       }
+    //     },
+    //     {
+    //       breakpoint: 480,
+    //       settings: {
+    //         slidesToShow: 1,
+    //         slidesToScroll: 1
+    //       }
+    //     }
+    //   ]
+    // };
 
     var settings = {
       infinite: false,
@@ -218,40 +214,41 @@ export class CategoryDetails extends Component {
       ]
     };
 
-    var verticalCarousel = {
-      infinite: false,
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      autoplay: false,
-      autoplaySpeed: 2000,
-      arrows: true,
-      vertical: true,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            infinite: false
-          }
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            initialSlide: 1
-          }
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
-    };
+    // var verticalCarousel = {
+    //   infinite: false,
+    //   slidesToShow: 3,
+    //   slidesToScroll: 1,
+    //   autoplay: false,
+    //   autoplaySpeed: 2000,
+    //   arrows: true,
+    //   vertical: true,
+    //   responsive: [
+    //     {
+    //       breakpoint: 1024,
+    //       settings: {
+    //         slidesToShow: 1,
+    //         slidesToScroll: 1,
+    //         infinite: false
+    //       }
+    //     },
+    //     {
+    //       breakpoint: 600,
+    //       settings: {
+    //         slidesToShow: 1,
+    //         slidesToScroll: 1,
+    //         initialSlide: 1
+    //       }
+    //     },
+    //     {
+    //       breakpoint: 480,
+    //       settings: {
+    //         slidesToShow: 1,
+    //         slidesToScroll: 1
+    //       }
+    //     }
+    //   ]
+    // };
+
     const {
       match: { params }
     } = this.props;
@@ -281,7 +278,7 @@ export class CategoryDetails extends Component {
               </div>
             </div>
 
-            {this.state.content && this.state.content.length > 0 ? (
+            {/* {this.state.content && this.state.content.length > 0 ? (
               <div className="row pt-5 pb-3">
                 <div className="col-md-4">
                   <h3 className="dark-text mt-3">
@@ -297,9 +294,9 @@ export class CategoryDetails extends Component {
                   <Slider {...verticalCarousel}>{this.renderLectures()}</Slider>
                 </div>
               </div>
-            ) : null}
+            ) : null} */}
 
-            <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
+            {/* <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
               <div className="col-md-8 col-12">
                 <div
                   className="gradient-bg w-100 d-flex align-items-center justify-content-center"
@@ -330,7 +327,7 @@ export class CategoryDetails extends Component {
               <div className="col-md-4 col-12 negative-margin">
                 <Slider {...customSettings}>{this.renderFreeContent()}</Slider>
               </div>
-            </div>
+            </div> */}
 
             {this.state.publications && this.state.publications.length > 0 ? (
               <div className="row pt-5">
