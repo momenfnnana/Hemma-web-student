@@ -103,7 +103,7 @@ class CheckoutComponent extends Component {
             <div className="mt-0 d-inline-flex flex-row justify-content-between align-items-center float-right">
               <p className="dark-text small mr-2 mb-0">قيمة الدفع</p>
               <p className="light-text mb-0">
-                <span className="en-text">{item.price} </span>ريال
+                <span className="en-text">{item.price && item.price.toFixed(2)} </span>ريال
               </p>
             </div>
           </div>

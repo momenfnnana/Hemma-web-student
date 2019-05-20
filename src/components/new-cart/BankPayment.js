@@ -57,7 +57,7 @@ class BankPaymentComponent extends Component {
       accountNumber: values.accountNumber,
       amount: values.amount,
       date: values.date ? values.date.utc().toISOString() : new Date(Date.UTC()),
-      shippingRecipient: values.shippingRecient,
+      shippingRecipient: values.shippingRecipient,
       shippingCityId: values.shippingCityId,
       shippingAddress: values.shippingAddress,
       shippingPhone: values.shippingPhone && values.shippingPhone.phoneNumber

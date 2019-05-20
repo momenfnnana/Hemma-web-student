@@ -8,8 +8,5 @@ export function formatPrice(price) {
     if (price === null || price === undefined) {
         return "";
     }
-
-    if (price % 100 === 0) return (price / 100).toString();
-
-    return (price / 100).toFixed(2);
+    return price.toFixed(2);
 }

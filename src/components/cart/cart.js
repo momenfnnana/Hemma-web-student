@@ -321,7 +321,7 @@ class CartComponent extends Component {
                 disabled={!this.state.isInputDisabled[i]}
                 type="text"
                 className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
-                value={item.price}
+                value={item.price && item.price.toFixed(2)}
                 name="itemPrice"
                 onChange={event => this.handleChange(item.id, event)}
               />
@@ -330,11 +330,11 @@ class CartComponent extends Component {
               <label className="dark-text smaller mb-0">سعر الاشتراك</label>
               <div className="d-flex flex-column mx-auto">
                 <h6 className="light-text text-center mb-0">
-                  <span className="en-text">{item.price}</span> ريال
+                  <span className="en-text">{item.price && item.price.toFixed(2)}</span> ريال
                 </h6>
                 {item.priceBeforeDiscount == undefined ? null : (
                   <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
-                    <span className="en-text">{item.priceBeforeDiscount}</span>{" "}
+                    <span className="en-text">{item.priceBeforeDiscount && item.priceBeforeDiscount.toFixed(2)}</span>{" "}
                     ريال
                   </h6>
                 )}
@@ -446,7 +446,7 @@ class CartComponent extends Component {
                       undefined ? null : (
                         <h4 className="dark-silver-text mt-2 mx-auto line-through-text align-items-center d-flex">
                           <span className="en-text">
-                            {this.state.cart.totalBeforeDiscount / 100}
+                            {this.state.cart.totalBeforeDiscount}
                           </span>{" "}
                           ريال
                         </h4>

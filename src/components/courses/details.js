@@ -304,7 +304,7 @@ export class CourseDetails extends Component {
                       <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
                       <h4 className="mid-text">
                         <span className="en-text">
-                          {this.state.details.price}
+                          {this.state.details.price && this.state.details.price.toFixed(2)}
                         </span>{" "}
                         ريال
                       </h4>
@@ -376,7 +376,7 @@ export class CourseDetails extends Component {
                           <span className="en-text">
                             {this.state.details &&
                               this.state.details.companionBook &&
-                              this.state.details.companionBook.price / 100}
+                              this.state.details.companionBook.price && this.state.details.companionBook.price.toFixed(2)}
                           </span>{" "}
                           ريال
                         </li>
