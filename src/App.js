@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.sass";
 import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 import { Header } from "./components/shared/header/header";
 import { Footer } from "./components/shared/footer/footer";
@@ -91,12 +92,25 @@ AppBackground = withRouter(AppBackground);
 
 class App extends Component {
   state = {};
-  componentDidMount() {
+  async componentDidMount() {
     try {
-      const jwt = localStorage.getItem("token");
+      const jwt = await localStorage.getItem("token");
       const user = jwtDecode(jwt);
       this.setState({ user });
     } catch (ex) {}
+
+    let data = {
+      id: this.state.user && this.state.user.uid
+    };
+    await axios
+      .post("https://twilio-chat-app.herokuapp.com/token", data)
+      .then(response => {
+        localStorage.setItem("identity", response.data.identity);
+        localStorage.setItem("chatToken", response.data.token);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   render() {
     return (

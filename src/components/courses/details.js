@@ -303,7 +303,7 @@ export class CourseDetails extends Component {
                       <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
                       <h4 className="mid-text">
                         <span className="en-text">
-                          {this.state.details.price}
+                          {this.state.details.price / 100}
                         </span>{" "}
                         ريال
                       </h4>

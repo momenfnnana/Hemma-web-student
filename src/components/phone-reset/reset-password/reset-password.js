@@ -11,31 +11,17 @@ const validate = values => {
   const errors = {};
   if (!values.password) {
     errors.password = "يجب تعبئة هذه الخانة";
-  } else if (values.password.length < 8) {
-    errors.password = "كلمة المرور يجب أن لا تقل عن ٨ أحرف";
-  } else if (values.password.length > 24) {
-    errors.password = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-      values.password
-    )
-  ) {
-    errors.password =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
+  } else if (values.password.length < 4) {
+    errors.password = "كلمة المرور يجب أن لا تقل عن 4 أحرف";
+  } else if (values.password.length > 10) {
+    errors.password = "كلمة المرور يجب أن لا تزيد عن 10 أحرف";
   }
   if (!values.confirmPassword) {
     errors.confirmPassword = "يجب تعبئة هذه الخانة";
-  } else if (values.confirmPassword.length < 8) {
-    errors.confirmPassword = "كلمة المرور يجب أن لا تقل عن ٨ أحرف";
-  } else if (values.confirmPassword.length > 24) {
-    errors.confirmPassword = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-      values.confirmPassword
-    )
-  ) {
-    errors.confirmPassword =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
+  } else if (values.confirmPassword.length < 4) {
+    errors.confirmPassword = "كلمة المرور يجب أن لا تقل عن 4 أحرف";
+  } else if (values.confirmPassword.length > 10) {
+    errors.confirmPassword = "كلمة المرور يجب أن لا تزيد عن 10 حرف";
   }
   if (values.password !== values.confirmPassword) {
     errors.password = "كلمة المرور غير متطابقة";
@@ -86,7 +72,7 @@ class resetPasswordComponent extends Component {
             });
             break;
           default:
-            console.log("other error");
+            console.log(error);
         }
       });
   };

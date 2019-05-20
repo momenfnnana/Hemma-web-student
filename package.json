@@ -50,6 +50,7 @@
     "redux-thunk": "^2.3.0",
     "slick-carousel": "^1.8.1",
     "sweetalert": "^2.1.2",
+    "twilio-chat": "^3.2.3",
     "zoomus-jssdk": "^1.4.2"
   },
   "scripts": {

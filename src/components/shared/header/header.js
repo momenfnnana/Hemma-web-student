@@ -38,9 +38,9 @@ class HeaderComponent extends Component {
     window.location = "/";
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     try {
-      let token = localStorage.getItem("token");
+      let token = await localStorage.getItem("token");
       if (token) {
         let headers = {
           Authorization: `Bearer ${token}`

@@ -10,6 +10,17 @@ import {
 } from "react-collapsible-component";
 import Modal from "react-modal";
 
+const Chat = require("twilio-chat");
+
+// Make a secure request to your backend to retrieve an access token.
+// Use an authentication mechanism to prevent token exposure to 3rd parties.
+
+const accessToken = localStorage.getItem("chatToken");
+
+Chat.Client.create(accessToken).then(client => {
+  console.log(client);
+});
+
 export class LiveStream extends Component {
   constructor(props) {
     super(props);
@@ -88,6 +99,7 @@ export class LiveStream extends Component {
                     starColor={"#ffe552"}
                     emptyStarColor={"#a9acb4"}
                     editing={false}
+                    name="rate"
                   />
                 </div>
                 <div className="light-bg rounded ml-2">
@@ -236,7 +248,7 @@ export class LiveStream extends Component {
                             </h6>
                           </div>
 
-                          <div class="speech-bubble">
+                          <div className="speech-bubble">
                             <p className="light-font-text mt-0 mb-0">
                               لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
                               توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
@@ -249,7 +261,7 @@ export class LiveStream extends Component {
                             </h6>
                           </div>
 
-                          <div class="speech-bubble">
+                          <div className="speech-bubble">
                             <p className="light-font-text mt-0 mb-0">
                               لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
                               توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
@@ -262,7 +274,7 @@ export class LiveStream extends Component {
                             </h6>
                           </div>
 
-                          <div class="speech-bubble">
+                          <div className="speech-bubble">
                             <p className="light-font-text mt-0 mb-0">
                               لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
                               توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
@@ -275,7 +287,7 @@ export class LiveStream extends Component {
                             </h6>
                           </div>
 
-                          <div class="speech-bubble">
+                          <div className="speech-bubble">
                             <p className="light-font-text mt-0 mb-0">
                               لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
                               توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
@@ -288,7 +300,7 @@ export class LiveStream extends Component {
                             </h6>
                           </div>
 
-                          <div class="speech-bubble">
+                          <div className="speech-bubble">
                             <p className="light-font-text mt-0 mb-0">
                               لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
                               توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
@@ -301,7 +313,7 @@ export class LiveStream extends Component {
                             </h6>
                           </div>
 
-                          <div class="speech-bubble">
+                          <div className="speech-bubble">
                             <p className="light-font-text mt-0 mb-0">
                               لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
                               توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل

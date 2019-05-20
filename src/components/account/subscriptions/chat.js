@@ -23,7 +23,7 @@ export class ChatComponent extends Component {
               <h6 className="light-text small h-55 d-flex align-items-center mb-1 mt-1">
                 <FaCircle size={9} className="mr-1" /> دردشة للجميع
               </h6>
-              <div class="media chat-item pb-3 d-flex align-items-center">
+              <div className="media chat-item pb-3 d-flex align-items-center">
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/user-circle.png"
@@ -32,15 +32,15 @@ export class ChatComponent extends Component {
                   height="27"
                   className="contain-img mr-2"
                 />
-                <div class="media-body">
-                  <h6 class="small mid-text mb-1">أحمد طه</h6>
+                <div className="media-body">
+                  <h6 className="small mid-text mb-1">أحمد طه</h6>
                   <h6 className="dark-silver-text smaller mb-0">مشرف</h6>
                 </div>
                 <h6 className="smaller dark-silver-text en-text mb-0 align-self-start">
                   May, 9
                 </h6>
               </div>
-              <div class="media chat-item pb-3 d-flex align-items-center">
+              <div className="media chat-item pb-3 d-flex align-items-center">
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/user-circle.png"
@@ -49,8 +49,8 @@ export class ChatComponent extends Component {
                   height="27"
                   className="contain-img mr-2"
                 />
-                <div class="media-body">
-                  <h6 class="small mid-text mb-1">محمد عيسى</h6>
+                <div className="media-body">
+                  <h6 className="small mid-text mb-1">محمد عيسى</h6>
                   <h6 className="dark-silver-text smaller mb-0">مدرب</h6>
                 </div>
                 <h6 className="smaller dark-silver-text en-text mb-0 align-self-start">
@@ -63,14 +63,16 @@ export class ChatComponent extends Component {
                 <h6 className="dark-text small mb-0">دردشة للجميع</h6>
               </div>
               <div className="chat-window">
-                <div class="chat-history">
+                <div className="chat-history">
                   <ul className="list-unstyled">
-                    <li class="clearfix">
-                      <div class="message-data">
-                        <span class="message-data-name small">محمد أحمد</span>
+                    <li className="clearfix">
+                      <div className="message-data">
+                        <span className="message-data-name small">
+                          محمد أحمد
+                        </span>
                       </div>
                       <div className="d-flex justify-content-end mb-3">
-                        <div class="message other-message mid-text light-font-text">
+                        <div className="message other-message mid-text light-font-text">
                           اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً
                           في العالم، وتعتبرُ من إحدى اللّغات المُعتمدة في الأمم
                           المُتّحدة، كما إنها تشكّلُ.
@@ -87,12 +89,14 @@ export class ChatComponent extends Component {
                       </div>
                     </li>
 
-                    <li class="clearfix">
-                      <div class="message-data">
-                        <span class="message-data-name small">فارس حمودة</span>
+                    <li className="clearfix">
+                      <div className="message-data">
+                        <span className="message-data-name small">
+                          فارس حمودة
+                        </span>
                       </div>
                       <div className="d-flex justify-content-end mb-4">
-                        <div class="message other-message mid-text light-font-text">
+                        <div className="message other-message mid-text light-font-text">
                           اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً
                           في المُتّحدة، كما إنها تشكّلُ.
                         </div>
@@ -109,14 +113,14 @@ export class ChatComponent extends Component {
                     </li>
 
                     <li>
-                      <div class="message my-message text-white light-font-text mb-3">
+                      <div className="message my-message text-white light-font-text mb-3">
                         اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
                         المُتّحدة، كما إنها تشكّلُ.
                       </div>
                     </li>
 
                     <li>
-                      <div class="message my-message text-white light-font-text mb-3">
+                      <div className="message my-message text-white light-font-text mb-3">
                         اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
                         المُتّحدة، كما إنها تشكّلُ. اللّغة العربيّة من اللّغات
                         العالميّة الأكثر انتشاراً في المُتّحدة، كما إنها تشكّلُ.
@@ -125,7 +129,7 @@ export class ChatComponent extends Component {
                   </ul>
                 </div>
 
-                <div class="chat-message">
+                <div className="chat-message">
                   <div className="input-chat">
                     <input
                       placeholder="اكتب هنا"
