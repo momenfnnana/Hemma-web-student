@@ -38,7 +38,7 @@ export class CategoryDetails extends Component {
       match: { params }
     } = this.props;
     axios
-      .get(`https://api.staging.hemma.sa/api/v1/categories/${params.id}`)
+      .get(`${apiBaseUrl}/categories/${params.id}`)
       .then(response => {
         this.setState({ details: response.data.data });
       })
@@ -48,7 +48,7 @@ export class CategoryDetails extends Component {
 
     axios
       .get(
-        `https://api.staging.hemma.sa/api/v1/categories/${
+        `${apiBaseUrl}/categories/${
           params.id
         }/free-lectures`
       )
@@ -61,7 +61,7 @@ export class CategoryDetails extends Component {
 
     axios
       .get(
-        `https://api.staging.hemma.sa/api/v1/categories/${
+        `${apiBaseUrl}/categories/${
           params.id
         }/free-content`
       )
@@ -74,7 +74,7 @@ export class CategoryDetails extends Component {
 
     axios
       .get(
-        `https://api.staging.hemma.sa/api/v1/categories/${
+        `${apiBaseUrl}/categories/${
           params.id
         }/publications`
       )

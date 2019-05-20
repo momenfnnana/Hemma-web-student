@@ -84,7 +84,7 @@ class CartComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .delete(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, {
+      .delete(`${apiBaseUrl}/cart/items/${id}`, {
         headers
       })
       .then(response => {
@@ -105,7 +105,7 @@ class CartComponent extends Component {
       packageOption: !item.packageOption
     };
     axios
-      .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
+      .put(`${apiBaseUrl}/cart/items/${id}`, data, {
         headers
       })
       .then(response => {
@@ -132,7 +132,7 @@ class CartComponent extends Component {
       installment: "5000"
     };
     axios
-      .put(`https://api.staging.hemma.sa/api/v1/cart/items/${id}`, data, {
+      .put(`${apiBaseUrl}/cart/items/${id}`, data, {
         headers
       })
       .then(response => {
@@ -198,7 +198,7 @@ class CartComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .delete(`https://api.staging.hemma.sa/api/v1/cart/coupons/${key}`, {
+      .delete(`${apiBaseUrl}/cart/coupons/${key}`, {
         headers
       })
       .then(response => {

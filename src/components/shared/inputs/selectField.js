@@ -12,7 +12,9 @@ export class selectField extends Component {
     return (
       <React.Fragment>
         <div className={wrapperClass}>
-          <select {...this.props.select} className={inputClass}>
+          <select {...this.props.input}
+            value={this.props.input.value}
+            className={inputClass}>
             {this.props.children}
           </select>
           {this.props.meta.touched && this.props.meta.error && (

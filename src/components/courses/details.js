@@ -36,7 +36,7 @@ export class CourseDetails extends Component {
       match: { params }
     } = this.props;
     axios
-      .get(`https://api.staging.hemma.sa/api/v1/courses/${params.id}`)
+      .get(`${apiBaseUrl}/courses/${params.id}`)
       .then(response => {
         this.setState({ details: response.data.data });
       })
