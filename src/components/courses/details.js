@@ -58,9 +58,6 @@ export class CourseDetails extends Component {
     axios
       .post(`${apiBaseUrl}/cart/items`, data, { headers })
       .then(response => {
-        swal("تنبيه", "تم إضافة الدورة إلى سلة التسوق بنجاح", "success", {
-          button: "متابعة"
-        });
         this.props.history.push("/cart");
       })
       .catch(error => {
@@ -96,13 +93,8 @@ export class CourseDetails extends Component {
       return features.map(feature => (
         <React.Fragment>
           <div className="col-6 align-items-center pb-2" key={feature.id}>
-            <p className="small dark-text mb-0 w-75">
-              <img
-                src={feature.icon}
-                className="mr-2 contain-img"
-                height="25"
-                width="25"
-              />
+            <p className="small dark-text mb-0 w-75  d-flex align-items-center">
+              <i className={`mr-2 font-16 fas fa-${feature.icon}`} />
               {feature.descriptionAr}
             </p>
           </div>

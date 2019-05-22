@@ -7,6 +7,8 @@ import { selectField } from "../shared/inputs/selectField";
 import { withRouter } from "react-router-dom";
 import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { checkoutWithBankTransfer } from "../../actions";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -28,7 +30,9 @@ const FileInput = ({
 
 class BankPaymentComponent extends Component {
   state = {
-    file: null
+    file: null,
+    loading: false,
+    disabled: false
   };
 
   constructor(props) {
@@ -64,16 +68,16 @@ class BankPaymentComponent extends Component {
       shippingAddress: values.shippingAddress,
       shippingPhone: values.shippingPhone && values.shippingPhone.phoneNumber
     };
+    this.setState({ loading: true, disabled: true });
 
     this.props
       .checkoutWithBankTransfer(values.bankDoc, data)
       .then(() => {
-        swal("تنبيه", "تمت عملية الدفع بنجاح", "success", {
-          button: "متابعة"
-        });
+        this.setState({ loading: false, disabled: false });
         this.props.history.push("/account/subscriptions");
       })
       .catch(error => {
+        this.setState({ loading: false, disabled: false });
         switch (
           error.response && error.response.data && error.response.data.error
         ) {
@@ -218,16 +222,16 @@ class BankPaymentComponent extends Component {
                 <Field
                   component={dateTimeField}
                   name="date"
-                  defaultValue={new Date()}
                   dateFormat={false}
+                  validate={required}
                 />
               </div>
               <div>
                 <Field
                   component={dateTimeField}
                   name="date"
-                  defaultValue={new Date()}
                   timeFormat={false}
+                  validate={required}
                 />
               </div>
             </div>
@@ -242,6 +246,7 @@ class BankPaymentComponent extends Component {
               className="d-none"
               id="uploadImage"
               onChange={this.onFileInputChange}
+              validate={required}
             />
             <label htmlFor="uploadImage" className="clickable w-100">
               <div
@@ -286,9 +291,13 @@ class BankPaymentComponent extends Component {
           <div className="col-12 text-center">
             <button
               className="btn light-outline-btn mt-5 w-25"
-              disabled={submitting}
+              disabled={this.state.disabled}
             >
-              إتمام الدفع
+              {this.state.loading == true ? (
+                <Loader type="ball-clip-rotate" />
+              ) : (
+                "إتمام الدفع"
+              )}
             </button>
           </div>
         </div>

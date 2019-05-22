@@ -3,6 +3,7 @@ import axios from "axios";
 import { Tooltip } from "reactstrap";
 import { Link } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
+import swal from "@sweetalert/with-react";
 
 export class Subscriptions extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export class Subscriptions extends Component {
     this.state = {
       tooltipOpen: false,
       details: [],
-      courses: []
+      subscriptions: []
     };
   }
 
@@ -38,7 +39,8 @@ export class Subscriptions extends Component {
     axios
       .get(`${apiBaseUrl}/courses/purchased`, { headers })
       .then(response => {
-        this.setState({ courses: response.data.data.data });
+        this.setState({ subscriptions: response.data.data.data });
+        console.log(this.state.subscriptions);
       })
       .catch(error => {
         console.log(error);
@@ -46,30 +48,55 @@ export class Subscriptions extends Component {
   }
 
   renderCourses() {
-    const courses = this.state.courses || [];
-    return courses.map(course => (
+    const subscriptions = this.state.subscriptions || [];
+    return subscriptions.map(subscription => (
       <React.Fragment>
-        <Link to="/subscriptions/details/schedule">
-          <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">
-            <div className="media w-75">
-              <img
-                className="mr-3 rounded cover-img"
-                src={course.bannerUrl}
-                height="100"
-                width="100"
-              />
-              <div className="media-body mt-2">
-                <h6 className="mt-0 dark-text">{course.nameAr} </h6>
-                <span className="badge blue-status light-font-text">سارية</span>
-              </div>
-            </div>
-            <div className="seperator" />
-            <div className="">
-              <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-              <p className="dark-silver-text small mb-0">مسددة </p>
+        {/* <Link to="/subscriptions/details/schedule"> */}
+        <div
+          className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 clickable"
+          onClick={() =>
+            swal("عفواً", "تفاصيل الدورة غير متاحة حالياً", "error", {
+              button: "متابعة"
+            })
+          }
+        >
+          <div className="media w-75">
+            <img
+              className="mr-3 rounded cover-img"
+              src={subscription.course.bannerUrl}
+              height="100"
+              width="100"
+            />
+            <div className="media-body mt-2">
+              <h6 className="mt-0 dark-text">{subscription.course.nameAr} </h6>
+              <span className="badge blue-status light-font-text">
+                {subscription.subscriptionStatus == "Cancelled"
+                  ? "ملغية"
+                  : subscription.subscriptionStatus == "Expired"
+                  ? "منتهية"
+                  : subscription.subscriptionStatus == "Active"
+                  ? "سارية"
+                  : "سارية"}
+              </span>
             </div>
           </div>
-        </Link>
+          <div className="seperator" />
+          <div className="">
+            <h6 className="dark-text mb-0 small">الحالة المالية</h6>
+            <p className="dark-silver-text small mb-0">
+              {subscription.cumulativePaymentStatus == "Unpaid"
+                ? "غير مسدد"
+                : subscription.cumulativePaymentStatus == "PartiallyPaid"
+                ? "مسدد جزئياً"
+                : subscription.cumulativePaymentStatus == "FullyPaid"
+                ? "مسدد"
+                : subscription.cumulativePaymentStatus == "Pending"
+                ? "قيد المراجعة"
+                : null}
+            </p>
+          </div>
+        </div>
+        {/* </Link> */}
       </React.Fragment>
     ));
   }
@@ -109,8 +136,8 @@ export class Subscriptions extends Component {
               <div className="col-md-8">
                 <h3 className="dark-text">قائمة دوراتي</h3>
 
-                {this.state.courses == undefined ||
-                this.state.courses.length == 0 ? (
+                {this.state.subscriptions == undefined ||
+                this.state.subscriptions.length == 0 ? (
                   <React.Fragment>
                     <div
                       className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"

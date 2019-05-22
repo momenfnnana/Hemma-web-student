@@ -41,10 +41,7 @@ export class Auth extends Component {
     };
     if (!response.accessToken) return;
     axios
-      .post(
-        `${apiBaseUrl}/auth/login_with_facebook`,
-        data
-      )
+      .post(`${apiBaseUrl}/auth/login_with_facebook`, data)
       .then(response => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";

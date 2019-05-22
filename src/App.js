@@ -8,7 +8,13 @@ import { Footer } from "./components/shared/footer/footer";
 
 import { Auth } from "./components/auth/auth";
 
-import { BrowserRouter, Route, withRouter, Switch } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  withRouter,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
 import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
@@ -36,6 +42,7 @@ import { Booklet } from "./components/account/subscriptions/booklet";
 import { LiveStream } from "./components/account/subscriptions/live-stream";
 import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
 import { ChatComponent } from "./components/account/subscriptions/chat";
+import NotFound from "./components/shared/not-found/not-found";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -120,33 +127,35 @@ class App extends Component {
               <ScrollToTop>
                 <AppBackground>
                   <Header user={this.state.user} />
-                  <Route path="/auth" component={Auth} />
-                  <Route path="/" exact component={Home} />
-                  <Route exact path="/verify" component={Verification} />
-                  <Route path="/verify/identity" component={VerifyId} />
-                  <Route path="/forgot-password" component={forgotPassword} />
-                  <Route path="/reset-password" component={resetPassword} />
-                  <Route exact path="/categories" component={Categories} />
-                  <Route
-                    path="/categories/details/:id"
-                    component={CategoryDetails}
-                  />
-                  <Route path="/account/edit" component={EditAccount} />
-                  <Route
-                    path="/account/reset-password"
-                    component={AccountReset}
-                  />
-                  <Route path="/course/details/:id" component={CourseDetails} />
-                  <Route exact path="/cart" component={Cart} />
-                  <Route path="/cart/checkout" component={Checkout} />
-
-                  <Route
-                    path="/account/subscriptions"
-                    exact
-                    component={Subscriptions}
-                  />
                   <Switch>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/auth" component={Auth} />
+                    <Route path="/verify" component={Verification} />
+                    <Route path="/verify/identity" component={VerifyId} />
+                    <Route path="/forgot-password" component={forgotPassword} />
+                    <Route path="/reset-password" component={resetPassword} />
+                    <Route path="/categories" exact component={Categories} />
                     <Route
+                      path="/categories/details/:id"
+                      component={CategoryDetails}
+                    />
+                    <Route path="/account/edit" component={EditAccount} />
+                    <Route
+                      path="/account/reset-password"
+                      component={AccountReset}
+                    />
+                    <Route
+                      path="/course/details/:id"
+                      component={CourseDetails}
+                    />
+                    <Route path="/cart" exact component={Cart} />
+                    <Route path="/cart/checkout" component={Checkout} />
+
+                    <Route
+                      path="/account/subscriptions"
+                      component={Subscriptions}
+                    />
+                    {/* <Route
                       path="/subscriptions/details"
                       component={SubscriptionDetails}
                     />
@@ -174,8 +183,11 @@ class App extends Component {
                       path="/subscriptions/details/chat"
                       component={ChatComponent}
                     />
+                    <Route path="/live-stream" component={LiveStream} />*/}
+                    <Route path="/not-found" component={NotFound} />
+                    <Redirect from="/" exact to="/home" />
+                    <Redirect to="/not-found" />
                   </Switch>
-                  <Route path="/live-stream" component={LiveStream} />
                   <Footer />
                 </AppBackground>
               </ScrollToTop>

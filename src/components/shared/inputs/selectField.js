@@ -9,7 +9,6 @@ export class selectField extends Component {
     } else if (this.props.meta.touched && this.props.meta.valid) {
       wrapperClass += " input-success";
     }
-    console.log(this.props.input);
     return (
       <React.Fragment>
         <div className={wrapperClass}>

@@ -24,6 +24,7 @@ export class dateTimeField extends Component {
             name={inputName}
             timeFormat={formatTime}
             dateFormat={formatDate}
+            inputProps={{ placeholder: "N/A" }}
           />
 
           {this.props.meta.touched && this.props.meta.error && (

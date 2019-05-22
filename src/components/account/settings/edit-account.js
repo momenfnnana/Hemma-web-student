@@ -88,18 +88,7 @@ class EditAccountComponent extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
-    let female;
-    if ((this.props.initialValues.gender = "Female")) {
-      female = true;
-    } else {
-      female = false;
-    }
-    let male;
-    if ((this.props.initialValues.gender = "Male")) {
-      male = true;
-    } else {
-      male = false;
-    }
+
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -184,10 +173,10 @@ class EditAccountComponent extends Component {
                         className="form-check-input"
                         type="radio"
                         name="gender"
-                        value="0"
+                        value={this.props.initialValues.gender}
                         component="input"
                         disabled={true}
-                        checked={male}
+                        checked={(this.props.initialValues.gender = "Male")}
                       />
                       <label className="form-check-label dark-text small">
                         <img
@@ -206,10 +195,10 @@ class EditAccountComponent extends Component {
                         className="form-check-input"
                         type="radio"
                         name="gender"
-                        value="1"
+                        value={this.props.initialValues.gender}
                         component="input"
                         disabled={true}
-                        checked={female}
+                        checked={(this.props.initialValues.gender = "Female")}
                       />
                       <label className="form-check-label dark-text small">
                         <img
