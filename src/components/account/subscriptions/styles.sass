@@ -48,7 +48,11 @@
     .chat-box
       height: 360px
       overflow-y: scroll
-      padding-bottom: 50px       
+      padding-bottom: 50px
+      -ms-overflow-style: none
+      scrollbar-width: none
+    .chat-box::-webkit-scrollbar 
+      display: none  
 .chat-tabs
   li
     .nav-link

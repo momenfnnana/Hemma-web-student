@@ -32,29 +32,21 @@ const emailValue = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "يرجى إدخال البريد الإلكتروني بصيغة صحيحة"
     : undefined;
-const passwordsMatch = (value, allValues) =>
-  value !== allValues.password ? "كلمة المرور غير متطابقة" : undefined;
+
 class RegisterComponent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       hidden: true,
-      hiddenPw: true,
       password: "",
-      confirmPassword: "",
       loading: false
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
-    this.toggleConfirmPasswordShow = this.toggleConfirmPasswordShow.bind(this);
   }
 
   togglePasswordShow() {
     this.setState({ hidden: !this.state.hidden });
-  }
-
-  toggleConfirmPasswordShow() {
-    this.setState({ hiddenPw: !this.state.hiddenPw });
   }
 
   myFormHandler = values => {
@@ -170,7 +162,7 @@ class RegisterComponent extends Component {
             component={inputField}
             className="form-control border-left-0 pl-0 ltr-input pw-input"
             placeholder="كلمة المرور"
-            validate={[required, maxLength10, minLength4, passwordsMatch]}
+            validate={[required, maxLength10, minLength4]}
           >
             <MdLockOutline />
           </Field>
@@ -189,37 +181,6 @@ class RegisterComponent extends Component {
               width="20"
               className="position-absolute left-input-icon custom-top"
               onClick={this.togglePasswordShow}
-            />
-          )}
-        </div>
-
-        <div className="position-relative">
-          <Field
-            name="confirmPassword"
-            type="password"
-            type={this.state.hiddenPw ? "text" : "password"}
-            component={inputField}
-            className="form-control border-left-0 pl-0 ltr-input pw-input"
-            placeholder="تأكيد كلمة المرور"
-            validate={[required, maxLength10, minLength4, passwordsMatch]}
-          >
-            <MdLockOutline />
-          </Field>
-          {this.state.hiddenPw ? (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
-              width="100%"
-              width="20"
-              className="position-absolute left-input-icon"
-              onClick={this.toggleConfirmPasswordShow}
-            />
-          ) : (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-              width="100%"
-              width="20"
-              className="position-absolute left-input-icon custom-top"
-              onClick={this.toggleConfirmPasswordShow}
             />
           )}
         </div>

@@ -17,10 +17,6 @@ const Chat = require("twilio-chat");
 
 const accessToken = localStorage.getItem("chatToken");
 
-Chat.Client.create(accessToken).then(client => {
-  // console.log(client);
-});
-
 export class LiveStream extends Component {
   constructor(props) {
     super(props);
@@ -29,12 +25,68 @@ export class LiveStream extends Component {
       rating: 3,
       activeTab: "1",
       modalIsOpen: false,
-      showRating: false
+      showRating: false,
+      newMessage: "",
+      messages: []
     };
     this.toggle = this.toggle.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.channel = "general";
   }
+
+  async componentDidMount() {
+    await Chat.Client.create(accessToken).then(client => {
+      client
+        .getChannelByUniqueName("general")
+        .then(channel => {
+          // if (accessToken) {
+          //   console.log("Member already exists.");
+          // } else {
+          client.on("channelJoined", function(channel) {
+            console.log("Joined channel " + channel.friendlyName);
+          });
+
+          channel.join().catch(function(err) {
+            console.error(
+              "Couldn't join channel " +
+                channel.friendlyName +
+                " because " +
+                err
+            );
+          });
+          // }
+
+          channel.getMessages().then(messages => {
+            const totalMessages = messages.items.length;
+            for (let i = 0; i < totalMessages; i++) {
+              const channelMessages = messages.items;
+              this.setState({ messages: channelMessages });
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
+  }
+
+  onMessageChanged = event => {
+    this.setState({ newMessage: event.target.value });
+  };
+
+  sendMessage = event => {
+    event.preventDefault();
+    const message = this.state.newMessage;
+    this.setState({ newMessage: "" });
+    Chat.Client.create(accessToken).then(client => {
+      client.getChannelByUniqueName("general").then(channel => {
+        channel.sendMessage(message);
+        channel.getMessages().then(this.messagesLoaded);
+        channel.on("messageAdded", this.messageAdded);
+      });
+    });
+  };
 
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
@@ -54,6 +106,39 @@ export class LiveStream extends Component {
         activeTab: tab
       });
     }
+  }
+
+  newMessageAdded = div => {
+    if (div) {
+      div.scrollIntoView();
+    }
+  };
+
+  messagesLoaded = messagePage => {
+    this.setState({ messages: messagePage.items });
+  };
+
+  messageAdded = message => {
+    this.setState((prevState, props) => ({
+      messages: [...prevState.messages, message]
+    }));
+  };
+
+  renderMessages() {
+    const messages = this.state.messages;
+    return messages.map(message => (
+      <React.Fragment>
+        <div className="chat-message" ref={this.newMessageAdded}>
+          <div className="d-flex align-items-center">
+            <h6 className="mid-text smaller mt-0 mb-0">اسم المستخدم</h6>
+          </div>
+
+          <div className="speech-bubble">
+            <p className="light-font-text mt-0 mb-0">{message.body}</p>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
   }
 
   render() {
@@ -242,92 +327,23 @@ export class LiveStream extends Component {
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="1">
                         <div className="chat-box pl-3 pr-3 pt-2">
-                          <div className="d-flex align-items-center">
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
-                          </div>
-
-                          <div className="speech-bubble">
-                            <p className="light-font-text mt-0 mb-0">
-                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                            </p>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
-                          </div>
-
-                          <div className="speech-bubble">
-                            <p className="light-font-text mt-0 mb-0">
-                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                            </p>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
-                          </div>
-
-                          <div className="speech-bubble">
-                            <p className="light-font-text mt-0 mb-0">
-                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                            </p>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
-                          </div>
-
-                          <div className="speech-bubble">
-                            <p className="light-font-text mt-0 mb-0">
-                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                            </p>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
-                          </div>
-
-                          <div className="speech-bubble">
-                            <p className="light-font-text mt-0 mb-0">
-                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                            </p>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
-                          </div>
-
-                          <div className="speech-bubble">
-                            <p className="light-font-text mt-0 mb-0">
-                              لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                              توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص ما الشكل
-                              وليس مقاطع مقاطع هذا هذا بل مستخدماً.
-                            </p>
-                          </div>
+                          {this.renderMessages()}
                         </div>
 
-                        <div className="chat-input d-flex align-items-center justify-content-between">
+                        <form
+                          className="chat-input d-flex align-items-center justify-content-between"
+                          onSubmit={this.sendMessage}
+                        >
                           <Input
                             placeholder="شارك أصدقاءك"
+                            type="text"
+                            name="message"
+                            id="message"
+                            onChange={this.onMessageChanged}
+                            value={this.state.newMessage}
                             className="form-control border-0 bg-transparent light-font-text smaller dark-silver-text"
                           />
-                          <button type="button" className="btn circle-btn mr-2">
+                          <button className="btn circle-btn mr-2">
                             <img
                               src={
                                 process.env.PUBLIC_URL +
@@ -337,7 +353,7 @@ export class LiveStream extends Component {
                               className="contain-img"
                             />
                           </button>
-                        </div>
+                        </form>
                       </TabPane>
                       <TabPane tabId="2">
                         <div className="d-flex align-items-center justify-content-between chat-item">
@@ -519,7 +535,7 @@ export class LiveStream extends Component {
               <div className="col-md-9 col-12">
                 <div className="box-layout mb-3">
                   <iframe
-                    src="http://staging.hemma.sa/webinar.html"
+                    src="http://localhost:3000/webinar.html"
                     width="100%"
                     height="600"
                     frameBorder="0"
