@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Tooltip } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
 import swal from "@sweetalert/with-react";
+import { connect } from "react-redux";
+import { getProfile } from "../../../actions";
 
-export class Subscriptions extends Component {
+export class SubscriptionsComponent extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
@@ -23,6 +25,7 @@ export class Subscriptions extends Component {
   }
 
   componentDidMount() {
+    this.props.getProfile();
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -40,7 +43,6 @@ export class Subscriptions extends Component {
       .get(`${apiBaseUrl}/courses/purchased`, { headers })
       .then(response => {
         this.setState({ subscriptions: response.data.data.data });
-        console.log(this.state.subscriptions);
       })
       .catch(error => {
         console.log(error);
@@ -103,7 +105,12 @@ export class Subscriptions extends Component {
 
   render() {
     const classes = "tooltip-inner";
-
+    let avatarImg;
+    if (this.props.initialValues.gender == "Male") {
+      avatarImg = process.env.PUBLIC_URL + "/assets/images/male-avatar.png";
+    } else if (this.props.initialValues.gender == "Female") {
+      avatarImg = process.env.PUBLIC_URL + "/assets/images/female-avatar.png";
+    }
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -111,13 +118,7 @@ export class Subscriptions extends Component {
             <div className="row">
               <div className="col-md-4">
                 <div className="white-bg box-layout w-100 p-4 d-flex align-items-center justify-content-center flex-column">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/profile-img.png"
-                    }
-                    height="110"
-                    className="mb-3"
-                  />
+                  <img src={avatarImg} height="110" className="mb-3" />
                   <h6 className="dark-text mb-1">{this.state.details.name}</h6>
                   <p className="dark-text en-text small mb-0">
                     {this.state.details.email}
@@ -232,3 +233,17 @@ export class Subscriptions extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    initialValues: state.profile,
+    entireState: state
+  };
+}
+
+SubscriptionsComponent = connect(
+  mapStateToProps,
+  { getProfile }
+)(SubscriptionsComponent);
+
+export const Subscriptions = withRouter(SubscriptionsComponent);

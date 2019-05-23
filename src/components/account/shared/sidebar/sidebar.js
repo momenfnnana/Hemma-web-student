@@ -10,7 +10,7 @@ export class Sidebar extends Component {
           <div className="header">
             <div className="d-inline-flex align-items-center">
               <img
-                src={process.env.PUBLIC_URL + "/assets/images/profile-img.png"}
+                src={process.env.PUBLIC_URL + "/assets/images/male-avatar.png"}
                 height="70"
                 className="mr-3 contain-img"
               />

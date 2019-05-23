@@ -88,6 +88,12 @@ class EditAccountComponent extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
+    let avatarImg;
+    if (this.props.initialValues.gender == "Male") {
+      avatarImg = process.env.PUBLIC_URL + "/assets/images/male-avatar.png";
+    } else if (this.props.initialValues.gender == "Female") {
+      avatarImg = process.env.PUBLIC_URL + "/assets/images/female-avatar.png";
+    }
 
     return (
       <React.Fragment>
@@ -101,13 +107,8 @@ class EditAccountComponent extends Component {
             <div className="row mt-3">
               <div className="col-md-12">
                 <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/profile-img.png"
-                    }
-                    height="110"
-                    className="mb-4"
-                  />
+                  <img src={avatarImg} height="110" className="mb-4" />
+
                   <form
                     className="w-25"
                     onSubmit={handleSubmit(this.myFormHandler)}

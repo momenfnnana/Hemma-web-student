@@ -42,7 +42,7 @@ import { Booklet } from "./components/account/subscriptions/booklet";
 import { LiveStream } from "./components/account/subscriptions/live-stream";
 import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
 import { ChatComponent } from "./components/account/subscriptions/chat";
-import NotFound from "./components/shared/not-found/not-found";
+import { NotFound } from "./components/shared/not-found/not-found";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
