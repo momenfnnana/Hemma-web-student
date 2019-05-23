@@ -41,10 +41,10 @@ import { RecordedVideos } from "./components/account/subscriptions/recorded-vide
 import { Booklet } from "./components/account/subscriptions/booklet";
 import { LiveStream } from "./components/account/subscriptions/live-stream";
 import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
-import { ChatComponent } from "./components/account/subscriptions/chat";
 import NotFound from "./components/shared/not-found/not-found";
 
 import requireAuth from "./components/shared/authentication/require-auth";
+import { UsersChatComponent } from "./components/account/subscriptions/chat";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -161,7 +161,7 @@ class App extends Component {
                       path="/account/subscriptions"
                       component={requireAuth(Subscriptions)}
                     />
-                    {/* <Route
+                    <Route
                       path="/subscriptions/details"
                       component={SubscriptionDetails}
                     />
@@ -187,9 +187,9 @@ class App extends Component {
                     />
                     <Route
                       path="/subscriptions/details/chat"
-                      component={ChatComponent}
+                      component={UsersChatComponent}
                     />
-                    <Route path="/live-stream" component={LiveStream} />*/}
+                    <Route path="/live-stream" component={LiveStream} />
                     <Route path="/not-found" component={NotFound} />
                     <Redirect from="/" exact to="/home" />
                     <Redirect to="/not-found" />

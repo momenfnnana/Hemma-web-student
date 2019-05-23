@@ -8,7 +8,7 @@ import { RecordedLectures } from "./recorded-lectures";
 import { RecordedVideos } from "./recorded-videos";
 import { Booklet } from "./booklet";
 import { TransactionsList } from "./transactions/transactions-list";
-import { Chat, ChatComponent } from "./chat";
+import { UsersChatComponent } from "./chat";
 
 export class SubscriptionDetails extends Component {
   render() {
@@ -58,7 +58,7 @@ export class SubscriptionDetails extends Component {
               ) : this.props.location.pathname.startsWith(
                   "/subscriptions/details/chat"
                 ) ? (
-                <ChatComponent />
+                <UsersChatComponent />
               ) : null}
             </div>
           </div>

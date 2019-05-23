@@ -1,8 +1,116 @@
 import React, { Component } from "react";
 import "./styles.sass";
 import { FaCircle } from "react-icons/fa";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { getProfile } from "../../../actions";
 
-export class ChatComponent extends Component {
+const Chat = require("twilio-chat");
+
+// Make a secure request to your backend to retrieve an access token.
+// Use an authentication mechanism to prevent token exposure to 3rd parties.
+
+const accessToken = localStorage.getItem("chatToken");
+
+export class UsersChatComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      newMessage: "",
+      messages: []
+    };
+
+    this.channel = "FristPrivateChannel";
+  }
+  async componentDidMount() {
+    this.props.getProfile();
+    let myIdentity = "07e3258b-447a-4b1d-b7a1-fbd7849ed852";
+    let senderIdentity = "1740fe16-836f-4d99-8f62-8f42ab765540";
+
+    await Chat.Client.create(accessToken).then(client => {
+      let privateChannel = client.getChannelByUniqueName(
+        myIdentity + "_" + senderIdentity
+      );
+
+      if (privateChannel) {
+        channel.getMessages().then(messages => {
+          const totalMessages = messages.items.length;
+          for (let i = 0; i < totalMessages; i++) {
+            const channelMessages = messages.items;
+            this.setState({ messages: channelMessages });
+          }
+        });
+      } else {
+        client
+          .createChannel({
+            uniqueName: myIdentity + "_" + senderIdentity
+          })
+          .then(function(channel) {
+            console.log("Created private channel:");
+            console.log(channel);
+          });
+      }
+    });
+  }
+
+  onMessageChanged = event => {
+    this.setState({ newMessage: event.target.value });
+  };
+
+  sendMessage = event => {
+    event.preventDefault();
+    const message = this.state.newMessage;
+    this.setState({ newMessage: "" });
+    Chat.Client.create(accessToken).then(client => {
+      client.getChannelByUniqueName("general").then(channel => {
+        channel.sendMessage(message);
+        channel.getMessages().then(this.messagesLoaded);
+        channel.on("messageAdded", this.messageAdded);
+      });
+    });
+  };
+
+  newMessageAdded = li => {
+    if (li) {
+      li.scrollIntoView();
+    }
+  };
+
+  messagesLoaded = messagePage => {
+    this.setState({ messages: messagePage.items });
+  };
+
+  messageAdded = message => {
+    this.setState((prevState, props) => ({
+      messages: [...prevState.messages, message]
+    }));
+  };
+
+  renderMessages() {
+    const messages = this.state.messages;
+    return messages.map(message => (
+      <React.Fragment>
+        <li className="clearfix" ref={this.newMessageAdded}>
+          <div className="message-data">
+            <span className="message-data-name small">محمد أحمد</span>
+          </div>
+          <div className="d-flex justify-content-end mb-3">
+            <div className="message other-message mid-text light-font-text">
+              {message.body}
+            </div>
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
+              alt="Chat img"
+              height="27"
+              className="contain-img ml-2 align-self-end"
+            />
+          </div>
+        </li>
+      </React.Fragment>
+    ));
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -65,67 +173,14 @@ export class ChatComponent extends Component {
               <div className="chat-window">
                 <div className="chat-history">
                   <ul className="list-unstyled">
-                    <li className="clearfix">
-                      <div className="message-data">
-                        <span className="message-data-name small">
-                          محمد أحمد
-                        </span>
-                      </div>
-                      <div className="d-flex justify-content-end mb-3">
-                        <div className="message other-message mid-text light-font-text">
-                          اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً
-                          في العالم، وتعتبرُ من إحدى اللّغات المُعتمدة في الأمم
-                          المُتّحدة، كما إنها تشكّلُ.
-                        </div>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/user-circle.png"
-                          }
-                          alt="Chat img"
-                          height="27"
-                          className="contain-img ml-2 align-self-end"
-                        />
-                      </div>
-                    </li>
+                    {this.renderMessages()}
 
-                    <li className="clearfix">
-                      <div className="message-data">
-                        <span className="message-data-name small">
-                          فارس حمودة
-                        </span>
-                      </div>
-                      <div className="d-flex justify-content-end mb-4">
-                        <div className="message other-message mid-text light-font-text">
-                          اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً
-                          في المُتّحدة، كما إنها تشكّلُ.
-                        </div>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/user-circle.png"
-                          }
-                          alt="Chat img"
-                          height="27"
-                          className="contain-img ml-2 align-self-end"
-                        />
-                      </div>
-                    </li>
-
-                    <li>
+                    {/* <li>
                       <div className="message my-message text-white light-font-text mb-3">
                         اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
                         المُتّحدة، كما إنها تشكّلُ.
                       </div>
-                    </li>
-
-                    <li>
-                      <div className="message my-message text-white light-font-text mb-3">
-                        اللّغة العربيّة من اللّغات العالميّة الأكثر انتشاراً في
-                        المُتّحدة، كما إنها تشكّلُ. اللّغة العربيّة من اللّغات
-                        العالميّة الأكثر انتشاراً في المُتّحدة، كما إنها تشكّلُ.
-                      </div>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
 
@@ -182,3 +237,17 @@ export class ChatComponent extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    initialValues: state.profile,
+    entireState: state
+  };
+}
+
+UsersChatComponent = connect(
+  mapStateToProps,
+  { getProfile }
+)(UsersChatComponent);
+
+export const UsersChat = withRouter(UsersChatComponent);

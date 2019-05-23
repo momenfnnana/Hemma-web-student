@@ -9,6 +9,9 @@ import {
   CollapsibleContent
 } from "react-collapsible-component";
 import Modal from "react-modal";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { getProfile } from "../../../actions";
 
 const Chat = require("twilio-chat");
 
@@ -17,7 +20,7 @@ const Chat = require("twilio-chat");
 
 const accessToken = localStorage.getItem("chatToken");
 
-export class LiveStream extends Component {
+export class LiveStreamComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -36,6 +39,8 @@ export class LiveStream extends Component {
   }
 
   async componentDidMount() {
+    this.props.getProfile();
+
     await Chat.Client.create(accessToken).then(client => {
       client
         .getChannelByUniqueName("general")
@@ -130,7 +135,9 @@ export class LiveStream extends Component {
       <React.Fragment>
         <div className="chat-message" ref={this.newMessageAdded}>
           <div className="d-flex align-items-center">
-            <h6 className="mid-text smaller mt-0 mb-0">اسم المستخدم</h6>
+            <h6 className="mid-text smaller mt-0 mb-0">
+              {this.props.initialValues.name}
+            </h6>
           </div>
 
           <div className="speech-bubble">
@@ -602,3 +609,17 @@ export class LiveStream extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    initialValues: state.profile,
+    entireState: state
+  };
+}
+
+LiveStreamComponent = connect(
+  mapStateToProps,
+  { getProfile }
+)(LiveStreamComponent);
+
+export const LiveStream = withRouter(LiveStreamComponent);
