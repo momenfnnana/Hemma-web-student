@@ -111,15 +111,15 @@ class BankPaymentComponent extends Component {
                   رقم حسابنا البنكي (آيبان)
                 </h6>
                 <p className="small dark-silver-text en-text">
-                  SA171 00000 10172 38800 0105
+                  SA821 00000 22300 00011 6300
                 </p>
 
                 <h6 className="small dark-text mb-1">رقم حسابنا البنكي </h6>
-                <p className="small dark-silver-text en-text">10172388000105</p>
+                <p className="small dark-silver-text en-text">22300000116300</p>
 
                 <h6 className="small dark-text mb-1">حسابنا باسم</h6>
                 <p className="small dark-silver-text mb-0">
-                  سعيد عبدالله سعيد بالبيد
+                  مؤسسة همة التعليمية لتقنية المعلومات
                 </p>
               </div>
             </div>
@@ -139,17 +139,17 @@ class BankPaymentComponent extends Component {
                   رقم حسابنا البنكي (آيبان)
                 </h6>
                 <p className="small dark-silver-text en-text">
-                  SA728 00005 10608 01002 4183
+                  SA04 8000 0510 6080 1058 8880
                 </p>
 
                 <h6 className="small dark-text mb-1">رقم حسابنا البنكي </h6>
                 <p className="small dark-silver-text en-text">
-                  510608010024183
+                  510608010588880
                 </p>
 
                 <h6 className="small dark-text mb-1">حسابنا باسم</h6>
                 <p className="small dark-silver-text mb-0">
-                  سعيد عبدالله سعيد بالبيد
+                  مؤسسة همة التعليمية لتقنية المعلومات
                 </p>
               </div>
             </div>
