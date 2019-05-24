@@ -12,8 +12,18 @@ class AgreementFormComponent extends Component {
       publication: {},
       numPages: null,
       pageNumber: 1,
+      option: "",
+      isDisabled: true,
       checked: false
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange() {
+    this.setState({ checked: !this.state.checked });
+    if (this.state.checked) {
+      this.setState({ isDisabled: true });
+    } else this.setState({ isDisabled: false });
   }
 
   render() {
@@ -43,7 +53,6 @@ class AgreementFormComponent extends Component {
           isOpen={this.props.modalIsOpen}
           onRequestClose={this.props.onClose}
         >
-          {/* <button onClick={this.props.onClose}>close</button> */}
           <div className="container pt-3">
             <div className="row">
               <div className="col-12">
@@ -53,44 +62,36 @@ class AgreementFormComponent extends Component {
             <div className="row">
               <div className="col-12">
                 <div className="silver-bg p-3 rounded mt-3">
-                  <h6 className="dark-text small">قيود استخدام مواد الموقع</h6>
+                  <h6 className="dark-text small">شروط الاشتراك في الدورة</h6>
                   <p className="light-font-text dark-text smaller">
-                    لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدار ليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً. لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                    توزيعاَ قرون إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع
-                    مقاطع هذا هذا بل مستخدماً. لصفحة وليس مقاطع النشر دليل
-                    المقروء صار. ألدوس توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص
-                    ما الشكل وليس مقاطع مقاطع هذا هذا بل مستخدماً. لصفحة وليس
-                    مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً.
+                    ١- الدورة لشخص واحد فقط لانسمح بنظام (القطه) او الاشتراك
+                    بحساب واحد
                   </p>
-                  <h6 className="dark-text small">قيود استخدام مواد الموقع</h6>
                   <p className="light-font-text dark-text smaller">
-                    لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدار ليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً. لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                    توزيعاَ قرون إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع
-                    مقاطع هذا هذا بل مستخدماً. لصفحة وليس مقاطع النشر دليل
-                    المقروء صار. ألدوس توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص
-                    ما الشكل وليس مقاطع مقاطع هذا هذا بل مستخدماً. لصفحة وليس
-                    مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً.
+                    ٢- لايُسمح لأي مشترك دخول الحساب في أكثر من جهاز ( في حال تم
+                    ذلك يُحذف الحساب تلقائي)
                   </p>
-                  <h6 className="dark-text small">قيود استخدام مواد الموقع</h6>
                   <p className="light-font-text dark-text smaller">
-                    لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدار ليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً. لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس
-                    توزيعاَ قرون إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع
-                    مقاطع هذا هذا بل مستخدماً. لصفحة وليس مقاطع النشر دليل
-                    المقروء صار. ألدوس توزيعاَ قرون إصدار ليتراسيت. أيضاً للنص
-                    ما الشكل وليس مقاطع مقاطع هذا هذا بل مستخدماً. لصفحة وليس
-                    مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ قرون
-                    إصدارليتراسيت. أيضاً للنص ما الشكل وليس مقاطع مقاطع هذا هذا
-                    بل مستخدماً.
+                    ٣- الدورة online تتطلب وجود اتصال ممتاز ، ولانتحمل مسوؤلية
+                    غير ذلك
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٤-لانسمح بتسجيل المحاضرات او حفظها .
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٥-الدورة بنظام الاشتراك وتبقى لفترة محددة.
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٦-لايمكن استرجاع الرسوم بعد بداية الدورة ، وفي حال تم طلب
+                    الملزمة قبل بداية الدورة لايمكن استرجاع رسوم الدورة والملزمة
+                    .
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٧- الملزمة مخصصة للمشترك في الدورة فقط ولايسمح بنشرها او
+                    بيعها او الاستفادة منها مادياً
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٨- طلب الدورة والاشتراك بها تعني موافقتك على الشروط.
                   </p>
                 </div>
               </div>
@@ -98,7 +99,12 @@ class AgreementFormComponent extends Component {
             <div className="row mt-1">
               <div className="col-12">
                 <div className="form-check mb-1">
-                  <input className="form-check-input" type="checkbox" />
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    onChange={event => this.handleChange(event)}
+                    checked={this.state.checked}
+                  />
                   <label className="form-check-label smaller dark-text">
                     أوافق على الشروط والأحكام{" "}
                   </label>
@@ -107,12 +113,22 @@ class AgreementFormComponent extends Component {
             </div>
             <div className="row mt-4 text-center">
               <div className="col-12">
-                <Link
-                  to="/cart/checkout"
-                  className="btn light-outline-btn w-50"
-                >
-                  متابعة
-                </Link>
+                {this.state.isDisabled == true ? (
+                  <button
+                    to="/cart/checkout"
+                    className="btn light-outline-btn w-50"
+                    disabled
+                  >
+                    متابعة
+                  </button>
+                ) : (
+                  <Link
+                    to="/cart/checkout"
+                    className="btn light-outline-btn w-50"
+                  >
+                    متابعة
+                  </Link>
+                )}
               </div>
             </div>
           </div>

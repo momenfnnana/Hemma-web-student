@@ -23,25 +23,28 @@ const items = [
     id: 1,
     altText: "Slide 1",
     caption:
-      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+      "كل الشكر لسلسلة بالبيد التعليمية سلسلة تعتني بالمشتركين وتهتم لحل كل عقبة تعترضهم فشكراً لكم."
   },
   {
     id: 2,
     altText: "Slide 2",
-    caption:
-      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+    caption: "تستاهلون كل خير فعلاً دورة متكاملة وقوية"
   },
   {
     id: 3,
     altText: "Slide 3",
-    caption:
-      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+    caption: "سلسلة بالبيد ما شاء الله مجهود رائع وتنظيم مرتب والملزمة كنز عظيم"
   },
   {
     id: 4,
     altText: "Slide 4",
+    caption: "شكراً سلسلة بالبيد الله يوفق جميع القائمين عليها يا رب"
+  },
+  {
+    id: 5,
+    altText: "Slide 5",
     caption:
-      "اللغة العربية من اللغات العالمية الأكثر انتشاراً في العالم، وتعتبرُ من إحدى اللغات المُعتمدة في الأمم المُتحدة، كما إنها تشكل اللغة الأولى في مناطق بلاد الشّام، وشبه الجزيرة العربية، وشمال أفريقيا، وساهم هذا الانتشار الواسعُ للغة العربية في تصنيفها كواحدة من اللّغاتِ التي يسعى."
+      "أولا الشكر لله ثم لسلسلة بالبيد المعطاة المتميزة شكرا لكم من القلب شكراً لثقتنا التي لم تخيب بالله ثم جهودكم شكرا لكل ما قدمتوه الحمدالله نجحنا وصنعنا الفرق و القادم أفضل"
   }
 ];
 
@@ -61,15 +64,15 @@ const images = [
   {
     thumbnail: process.env.PUBLIC_URL + "/assets/images/discussions.png",
     description: <SliderDes data={data.features[3]} />
-  },
-  {
-    thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
-    description: <SliderDes data={data.features[4]} />
-  },
-  {
-    thumbnail: process.env.PUBLIC_URL + "/assets/images/go.png",
-    description: <SliderDes data={data.features[5]} />
   }
+  // {
+  //   thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
+  //   description: <SliderDes data={data.features[4]} />
+  // },
+  // {
+  //   thumbnail: process.env.PUBLIC_URL + "/assets/images/go.png",
+  //   description: <SliderDes data={data.features[5]} />
+  // }
 ];
 
 export class Home extends Component {
@@ -217,7 +220,7 @@ export class Home extends Component {
           onExited={this.onExited}
         >
           <CarouselCaption
-            className="dark-text small light-font-text d-block"
+            className="dark-text small light-font-text d-block mt-0 d-flex align-items-center justify-content-center"
             captionText={item.caption}
           />
         </CarouselItem>
@@ -229,12 +232,7 @@ export class Home extends Component {
         <section className="hero-section">
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
-              <div className="col-md-4">
-                <h2 className="dark-text">
-                  <span className="light-text">هدفنا،</span> درجات عالية مو
-                  إجتياز وبس!
-                </h2>
-              </div>
+              <div className="col-md-4" />
               <div className="col-md-8 d-flex align-items-center justify-content-center">
                 <img
                   src={
@@ -301,8 +299,7 @@ export class Home extends Component {
                     width: 100%;
                     height: 180px;
                     border-radius: 11px;
-                    background-color: #dff1f5;
-                      }`}
+                    background-color: #dff1f5;}`}
                   </style>
                   <Carousel
                     activeIndex={activeIndex}
