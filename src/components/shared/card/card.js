@@ -68,7 +68,7 @@ export class Card extends Component {
                 </li>
                 <li className="list-inline-item light-font-text small dark-text d-inline-flex align-items-center float-right">
                   <span className="en-text mr-1">
-                    {course.price && course.price.toFixed(2)}
+                    {course.price && parseFloat(course.price.toFixed(2))}
                   </span>
                   ريال
                 </li>

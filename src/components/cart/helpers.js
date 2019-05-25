@@ -5,8 +5,8 @@
  * @returns {string}
  */
 export function formatPrice(price) {
-    if (price === null || price === undefined) {
-        return "";
-    }
-    return price.toFixed(2);
+  if (price === null || price === undefined) {
+    return "";
+  }
+  return parseFloat(price.toFixed(2));
 }

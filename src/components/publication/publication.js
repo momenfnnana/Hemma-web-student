@@ -76,7 +76,8 @@ export class PublicationDetails extends Component {
                   <h5 className="dark-text small"> السعر: </h5>
                   <h5 className="mid-text small">
                     <span className="en-text mid-text">
-                      {this.state.publication.price && this.state.publication.price.toFixed(2) }
+                      {this.state.publication.price &&
+                        parseFloat(this.state.publication.price.toFixed(2))}
                     </span>{" "}
                     ريال
                   </h5>
