@@ -240,6 +240,13 @@ export class CourseDetails extends Component {
         zIndex: 2
       }
     };
+
+    var date = new Date(this.state.details.startsAt);
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+    var courseDate = day + "-" + month + "-" + year;
+
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -311,49 +318,65 @@ export class CourseDetails extends Component {
                     </button>
                     <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
                     <ul className="list-unstyled">
-                      <li className="smaller dark-text mb-2">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/clock.png"
-                          }
-                          className="mr-2"
-                          height="15"
-                        />
-                        {this.state.details.durationTextAr} تدريبية
-                      </li>
-                      <li className="smaller dark-text mb-2">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/quarters.png"
-                          }
-                          className="mr-2"
-                          height="15"
-                        />{" "}
-                        مدة صلاحية الدورة {this.state.details.validityTextAr}
-                      </li>
-                      <li className="smaller dark-text mb-2">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/calendar.png"
-                          }
-                          className="mr-2"
-                          height="15"
-                        />{" "}
-                        تبدأ في تاريخ {this.state.details.startsAt}
-                      </li>
-                      <li className="smaller dark-text mb-2">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/calendar.png"
-                          }
-                          className="mr-2"
-                          height="15"
-                        />{" "}
-                        يومي {this.state.details.scheduleTextAr}
-                      </li>
+                      {this.state.details &&
+                      this.state.details.durationTextAr ? (
+                        <li className="smaller dark-text mb-2">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/clock.png"
+                            }
+                            className="mr-2"
+                            height="15"
+                          />
+                          {this.state.details.durationTextAr}
+                        </li>
+                      ) : null}
+
+                      {this.state.details &&
+                      this.state.details.validityTextAr ? (
+                        <li className="smaller dark-text mb-2">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/quarters.png"
+                            }
+                            className="mr-2"
+                            height="15"
+                          />{" "}
+                          {this.state.details.validityTextAr}
+                        </li>
+                      ) : null}
+
+                      {courseDate ? (
+                        <li className="smaller dark-text mb-2">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/calendar.png"
+                            }
+                            className="mr-2"
+                            height="15"
+                          />{" "}
+                          {courseDate}
+                        </li>
+                      ) : null}
+
+                      {this.state.details &&
+                      this.state.details.scheduleTextAr ? (
+                        <li className="smaller dark-text mb-2">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/calendar.png"
+                            }
+                            className="mr-2"
+                            height="15"
+                          />{" "}
+                          {this.state.details.scheduleTextAr}
+                        </li>
+                      ) : null}
+
                       {this.state.details &&
                       this.state.details.companionBook ? (
                         <li className="smaller dark-text mb-2">

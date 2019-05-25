@@ -7,7 +7,7 @@ export class Card extends Component {
     const course = this.props.course;
     var date = new Date(course.startsAt);
     var day = date.getDate();
-    var month = date.getMonth();
+    var month = date.getMonth() + 1;
     var year = date.getFullYear();
     var courseDate = day + "-" + month + "-" + year;
 
