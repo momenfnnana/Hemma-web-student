@@ -320,7 +320,7 @@ export class CourseDetails extends Component {
                     <ul className="list-unstyled">
                       {this.state.details &&
                       this.state.details.durationTextAr ? (
-                        <li className="smaller dark-text mb-2">
+                        <li className="small dark-text mb-2">
                           <img
                             src={
                               process.env.PUBLIC_URL +
@@ -329,13 +329,15 @@ export class CourseDetails extends Component {
                             className="mr-2"
                             height="15"
                           />
-                          {this.state.details.durationTextAr}
+                          <span className="en-text">
+                            {this.state.details.durationTextAr}
+                          </span>
                         </li>
                       ) : null}
 
                       {this.state.details &&
                       this.state.details.validityTextAr ? (
-                        <li className="smaller dark-text mb-2">
+                        <li className="small dark-text mb-2">
                           <img
                             src={
                               process.env.PUBLIC_URL +
@@ -344,12 +346,14 @@ export class CourseDetails extends Component {
                             className="mr-2"
                             height="15"
                           />{" "}
-                          {this.state.details.validityTextAr}
+                          <span className="en-text">
+                            {this.state.details.validityTextAr}
+                          </span>
                         </li>
                       ) : null}
 
                       {courseDate ? (
-                        <li className="smaller dark-text mb-2">
+                        <li className="small dark-text mb-2">
                           <img
                             src={
                               process.env.PUBLIC_URL +
@@ -358,13 +362,13 @@ export class CourseDetails extends Component {
                             className="mr-2"
                             height="15"
                           />{" "}
-                          {courseDate}
+                          <span className="en-text">{courseDate}</span>
                         </li>
                       ) : null}
 
                       {this.state.details &&
                       this.state.details.scheduleTextAr ? (
-                        <li className="smaller dark-text mb-2">
+                        <li className="small dark-text mb-2">
                           <img
                             src={
                               process.env.PUBLIC_URL +
@@ -379,16 +383,15 @@ export class CourseDetails extends Component {
 
                       {this.state.details &&
                       this.state.details.companionBook ? (
-                        <li className="smaller dark-text mb-2">
+                        <li className="small dark-text mb-2">
                           <img
                             src={
                               process.env.PUBLIC_URL +
                               "/assets/images/diary.png"
                             }
                             className="mr-2"
-                            height="20"
+                            height="18"
                           />{" "}
-                          سعر الملزمة{" "}
                           <span className="en-text">
                             {this.state.details &&
                               this.state.details.companionBook &&
