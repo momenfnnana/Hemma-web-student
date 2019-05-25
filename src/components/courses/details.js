@@ -92,7 +92,10 @@ export class CourseDetails extends Component {
     if (features) {
       return features.map(feature => (
         <React.Fragment>
-          <div className="col-6 align-items-center pb-2" key={feature.id}>
+          <div
+            className="col-md-6 col-12 align-items-center pb-2"
+            key={feature.id}
+          >
             <p className="small dark-text mb-0 w-75  d-flex align-items-center">
               <i className={`mr-2 font-16 fas fa-${feature.icon}`} />
               {feature.descriptionAr}
@@ -329,9 +332,7 @@ export class CourseDetails extends Component {
                             className="mr-2"
                             height="15"
                           />
-                          <span className="en-text">
-                            {this.state.details.durationTextAr}
-                          </span>
+                          {this.state.details.durationTextAr}
                         </li>
                       ) : null}
 
@@ -346,9 +347,7 @@ export class CourseDetails extends Component {
                             className="mr-2"
                             height="15"
                           />{" "}
-                          <span className="en-text">
-                            {this.state.details.validityTextAr}
-                          </span>
+                          {this.state.details.validityTextAr}
                         </li>
                       ) : null}
 

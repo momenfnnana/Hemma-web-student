@@ -26,19 +26,11 @@ export class SubscriptionsComponent extends Component {
 
   componentDidMount() {
     this.props.getProfile();
+
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    axios
-      .get(`${apiBaseUrl}/users/me`, { headers })
-      .then(response => {
-        this.setState({ details: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
     axios
       .get(`${apiBaseUrl}/courses/purchased`, { headers })
       .then(response => {
@@ -111,6 +103,7 @@ export class SubscriptionsComponent extends Component {
     } else if (this.props.initialValues.gender == "Female") {
       avatarImg = process.env.PUBLIC_URL + "/assets/images/female-avatar.png";
     }
+
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -119,12 +112,14 @@ export class SubscriptionsComponent extends Component {
               <div className="col-md-4">
                 <div className="white-bg box-layout w-100 p-4 d-flex align-items-center justify-content-center flex-column">
                   <img src={avatarImg} height="110" className="mb-3" />
-                  <h6 className="dark-text mb-1">{this.state.details.name}</h6>
+                  <h6 className="dark-text mb-1">
+                    {this.props.initialValues.name}
+                  </h6>
                   <p className="dark-text en-text small mb-0">
-                    {this.state.details.email}
+                    {this.props.initialValues.email}
                   </p>
                   <p className="dark-text en-text small mb-1" dir="ltr">
-                    0{this.state.details.phoneNumber}
+                    {this.props.initialValues.phoneNumber}
                   </p>
                   <Link
                     to="/account/edit"

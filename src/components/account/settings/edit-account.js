@@ -53,6 +53,7 @@ class EditAccountComponent extends Component {
 
   componentDidMount() {
     this.props.getProfile();
+    console.log(this.props.getProfile());
   }
 
   myFormHandler = values => {
@@ -289,8 +290,9 @@ function mapStateToProps(state) {
 
 EditAccountComponent = reduxForm({
   form: "EditAccount",
+  validate,
   enableReinitialize: true,
-  validate
+  destroyOnUnmount: true
 })(EditAccountComponent);
 
 EditAccountComponent = connect(

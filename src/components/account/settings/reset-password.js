@@ -14,28 +14,15 @@ import { apiBaseUrl } from "../../../api/helpers";
 
 const validate = values => {
   const errors = {};
-  if (
-    !values.phone ||
-    !values.phone.phoneNumber ||
-    values.phone.phoneNumber.trim() === ""
-  ) {
-    errors.phone = "يجب تعبئة هذه الخانة";
-  } else if (values.phone.phoneNumber.length < 8) {
-    errors.phone = "ادخل رقم هاتف صحيح";
+  if (!values.oldPassword) {
+    errors.oldPassword = "يجب تعبئة هذه الخانة";
   }
-  if (!values.password) {
-    errors.password = "يجب تعبئة هذه الخانة";
-  } else if (values.password.length < 8) {
-    errors.password = "كلمة المرور يجب أن لا تقل عن ٨ أحرف";
-  } else if (values.password.length > 24) {
-    errors.password = "كلمة المرور يجب أن لا تزيد عن ٢٤ حرف";
-  } else if (
-    !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/.test(
-      values.password
-    )
-  ) {
-    errors.password =
-      "كلمة المرور يجب أن تحتوي على أحرف كبيرة، أحرف صغيرة، رموز، و أرقام";
+  if (!values.newPassword) {
+    errors.newPassword = "يجب تعبئة هذه الخانة";
+  } else if (values.newPassword.length < 4) {
+    errors.newPassword = "كلمة المرور يجب أن لا تقل عن 4 أحرف";
+  } else if (values.newPassword.length > 10) {
+    errors.newPassword = "كلمة المرور يجب أن لا تزيد عن 10 حرف";
   }
   return errors;
 };
@@ -116,16 +103,6 @@ class AccountResetComponent extends Component {
                       component={inputField}
                       className="form-control border-left-0 pl-0 ltr-input"
                       placeholder="كلمة المرور الجديدة"
-                    >
-                      <MdLockOutline />
-                    </Field>
-
-                    <Field
-                      name="confirmPassword"
-                      type="password"
-                      component={inputField}
-                      className="form-control border-left-0 pl-0 ltr-input"
-                      placeholder="تأكيد كلمة المرور"
                     >
                       <MdLockOutline />
                     </Field>

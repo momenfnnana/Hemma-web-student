@@ -126,9 +126,12 @@ class VerificationComponent extends Component {
               </a>{" "}
             </div>
             <div className="text-center pt-1">
-              <Link to="/" className="dark-text small light-text">
+              <h5
+                onClick={() => (window.location = "/")}
+                className="dark-text small light-text clickable"
+              >
                 تخطى تأكيد الحساب{" "}
-              </Link>
+              </h5>
             </div>
           </div>
         </div>
