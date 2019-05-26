@@ -43,8 +43,10 @@ function extractTokenInfo(token) {
     };
   }
   // decode token
-  let decodedToken = jwtDecode(token);
-  return {
-    phoneNumberConfirmed: decodedToken.phoneNumberConfirmed
-  };
+  try {
+    let decodedToken = jwtDecode(token);
+    return {
+      phoneNumberConfirmed: decodedToken.phoneNumberConfirmed
+    };
+  } catch (ex) {}
 }
