@@ -16,6 +16,7 @@ import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
+import { signOutAction } from "../../../actions/login.actions";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -33,10 +34,10 @@ class HeaderComponent extends Component {
     });
   }
 
-  logout() {
-    localStorage.removeItem("token");
-    window.location = "/";
-  }
+  logout = () => {
+    this.props.signOutAction();
+    this.props.history.push("/");
+  };
 
   async componentDidMount() {
     this.props.getProfile();
@@ -193,7 +194,7 @@ class HeaderComponent extends Component {
                           <DropdownItem className="p-0">
                             <a
                               className="nav-link clickable mid-text"
-                              onClick={() => this.logout()}
+                              onClick={this.logout}
                             >
                               تسجيل الخروج
                             </a>
@@ -222,7 +223,7 @@ function mapStateToProps(state) {
 
 HeaderComponent = connect(
   mapStateToProps,
-  { getProfile }
+  { getProfile, signOutAction }
 )(HeaderComponent);
 
 export const Header = withRouter(HeaderComponent);

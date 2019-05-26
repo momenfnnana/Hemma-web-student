@@ -29,7 +29,6 @@ export const authReducer = (state = null, action) => {
       };
     case UNAUTHENTICATED:
       // remove the token
-      // localStorage.removeItem("token");
       return { ...state, token: null, authenticated: false };
     case AUTHENTICATION_ERROR:
       return { ...state, error: action.payload };

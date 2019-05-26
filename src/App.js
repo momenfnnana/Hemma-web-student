@@ -44,6 +44,8 @@ import { TransactionsList } from "./components/account/subscriptions/transaction
 import { ChatComponent } from "./components/account/subscriptions/chat";
 import NotFound from "./components/shared/not-found/not-found";
 
+import requireAuth from "./components/shared/authentication/require-auth";
+
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
 class AppBackground extends Component {
@@ -130,7 +132,11 @@ class App extends Component {
                   <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/auth" component={Auth} />
-                    <Route path="/verify" exact component={Verification} />
+                    <Route
+                      path="/verify"
+                      exact
+                      component={requireAuth(Verification)}
+                    />
                     <Route path="/verify/identity" component={VerifyId} />
                     <Route path="/forgot-password" component={forgotPassword} />
                     <Route path="/reset-password" component={resetPassword} />
@@ -139,7 +145,10 @@ class App extends Component {
                       path="/categories/details/:id"
                       component={CategoryDetails}
                     />
-                    <Route path="/account/edit" component={EditAccount} />
+                    <Route
+                      path="/account/edit"
+                      component={requireAuth(EditAccount)}
+                    />
                     <Route
                       path="/account/reset-password"
                       component={AccountReset}
@@ -148,12 +157,15 @@ class App extends Component {
                       path="/course/details/:id"
                       component={CourseDetails}
                     />
-                    <Route path="/cart" exact component={Cart} />
-                    <Route path="/cart/checkout" component={Checkout} />
+                    <Route path="/cart" exact component={requireAuth(Cart)} />
+                    <Route
+                      path="/cart/checkout"
+                      component={requireAuth(Checkout)}
+                    />
 
                     <Route
                       path="/account/subscriptions"
-                      component={Subscriptions}
+                      component={requireAuth(Subscriptions)}
                     />
                     {/* <Route
                       path="/subscriptions/details"

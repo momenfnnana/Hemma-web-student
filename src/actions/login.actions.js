@@ -11,3 +11,10 @@ export const loginAction = ({ countryCode, phoneNumber, password }) => {
     payload: Api.auth.login(countryCode, phoneNumber, password)
   };
 };
+
+export const signOutAction = () => {
+  localStorage.clear();
+  return {
+    type: UNAUTHENTICATED
+  };
+};
