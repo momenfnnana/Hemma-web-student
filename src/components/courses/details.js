@@ -17,7 +17,7 @@ export class CourseDetails extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { details: [], checked: false, rating: 3, modalIsOpen: false };
+    this.state = { details: [], checked: false, modalIsOpen: false };
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -146,39 +146,41 @@ export class CourseDetails extends Component {
   }
 
   renderInstructors() {
-    const { rating } = this.state;
+    // const { rating } = this.state;
     const instructors = this.state.details.instructors;
+
+    console.log(instructors);
 
     if (instructors) {
       return instructors.map(instructor => (
         <div className="silver-bg border-bottom d-flex align-items-center h-55 pl-3 pr-3">
-          <div>
+          {/* <div>
             <img
-              src={process.env.PUBLIC_URL + "/assets/images/female-circle.png"}
+              src={process.env.PUBLIC_URL + "/assets/images/male-circle.png"}
               className="mr-2"
               height="25"
             />
-          </div>
+          </div> */}
 
           <div className="d-flex align-items-center flex-column">
             <h6 className="mid-text smaller mb-0 mt-0">{instructor.name}</h6>
-            <StarRatingComponent
+            {/* <StarRatingComponent
               starCount={5}
               value={rating}
               starColor={"#ffe552"}
               emptyStarColor={"#a9acb4"}
               editing={false}
-            />
+            /> */}
           </div>
 
-          <div className="d-flex justify-content-end flex-fill align-items-center">
+          {/* <div className="d-flex justify-content-end flex-fill align-items-center">
             <img
               src={process.env.PUBLIC_URL + "/assets/images/diary.png"}
               className="mr-2"
               height="18"
             />
             <h6 className="dark-text smaller mb-1 mt-0">مدرس مادة الأحياء</h6>
-          </div>
+          </div> */}
         </div>
       ));
     }

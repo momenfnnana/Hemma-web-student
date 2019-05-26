@@ -113,13 +113,14 @@ export class SubscriptionsComponent extends Component {
                 <div className="white-bg box-layout w-100 p-4 d-flex align-items-center justify-content-center flex-column">
                   <img src={avatarImg} height="110" className="mb-3" />
                   <h6 className="dark-text mb-1">
-                    {this.props.initialValues.name}
+                    {this.props.initialValues && this.props.initialValues.name}
                   </h6>
                   <p className="dark-text en-text small mb-0">
-                    {this.props.initialValues.email}
+                    {this.props.initialValues && this.props.initialValues.email}
                   </p>
                   <p className="dark-text en-text small mb-1" dir="ltr">
-                    {this.props.initialValues.phoneNumber}
+                    {this.props.initialValues &&
+                      this.props.initialValues.phoneNumber}
                   </p>
                   <Link
                     to="/account/edit"

@@ -130,7 +130,7 @@ class App extends Component {
                   <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/auth" component={Auth} />
-                    <Route path="/verify" component={Verification} />
+                    <Route path="/verify" exact component={Verification} />
                     <Route path="/verify/identity" component={VerifyId} />
                     <Route path="/forgot-password" component={forgotPassword} />
                     <Route path="/reset-password" component={resetPassword} />

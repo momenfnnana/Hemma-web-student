@@ -81,6 +81,23 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
+    axios
+      .get(
+        `${apiBaseUrl}/categories/` + params.id + "/courses?featuredOnly=true"
+      )
+      .then(response => {
+        this.setState({ courses: response.data.data.data });
+        setTimeout(
+          function() {
+            this.setState({ loading: false });
+          }.bind(this),
+          800
+        );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     // axios
     //   .get(`${apiBaseUrl}/courses/recent`)
     //   .then(response => {
@@ -103,6 +120,16 @@ export class CategoryDetails extends Component {
           <div className="publication-overlay">
             <img src={process.env.PUBLIC_URL + "/assets/images/eye.png"} />
           </div>
+        </div>
+      </React.Fragment>
+    ));
+  }
+
+  renderCards() {
+    return this.state.courses.map(course => (
+      <React.Fragment>
+        <div className="col-4">
+          <Card key={course.id} course={course} />
         </div>
       </React.Fragment>
     ));
@@ -272,11 +299,7 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-            <div className="row pt-2 pb-5">
-              <div className="col-12">
-                <CardsList catId={params.id} />
-              </div>
-            </div>
+            <div className="row pt-2 pb-5">{this.renderCards()}</div>
 
             {/* {this.state.content && this.state.content.length > 0 ? (
               <div className="row pt-5 pb-3">

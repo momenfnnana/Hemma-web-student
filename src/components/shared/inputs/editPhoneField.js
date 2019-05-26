@@ -15,19 +15,19 @@ export class editPhoneField extends Component {
       wrapperClass += " input-success";
     }
 
-    const handleBlur = (valid, value, country) => {
-      this.props.input.onBlur({
-        phoneNumber: value,
-        countryCode: country.iso2
-      });
-    };
+    // const handleBlur = (valid, value, country) => {
+    //   this.props.input.onBlur({
+    //     phoneNumber: value,
+    //     countryCode: country.iso2
+    //   });
+    // };
 
-    const handleChange = (valid, value, country) => {
-      this.props.input.onChange({
-        phoneNumber: value,
-        countryCode: country.iso2
-      });
-    };
+    // const handleChange = (valid, value, country) => {
+    //   this.props.input.onChange({
+    //     phoneNumber: value,
+    //     countryCode: country.iso2
+    //   });
+    // };
     return (
       <React.Fragment>
         <div className={wrapperClass}>
@@ -38,8 +38,8 @@ export class editPhoneField extends Component {
             containerClassName={containerClass}
             inputClassName={inputClass}
             defaultCountry={countryCode}
-            onPhoneNumberBlur={handleBlur}
-            onPhoneNumberChange={handleChange}
+            // onPhoneNumberBlur={handleBlur}
+            // onPhoneNumberChange={handleChange}
             disabled={this.props.disabled}
             defaultValue={this.props.input.value}
             value={this.props.input.value}
