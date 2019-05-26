@@ -11,6 +11,7 @@ import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import { apiBaseUrl } from "../../api/helpers";
+import { loginAction } from "../../actions/login.actions";
 
 const validate = values => {
   const errors = {};
@@ -50,52 +51,60 @@ class LoginComponent extends Component {
   }
 
   myFormHandler = values => {
-    let data = {
+    const request = this.props.loginAction({
       countryCode: values.phone.countryCode,
       phoneNumber: values.phone.phoneNumber,
       password: values.password
-    };
-    this.setState({ loading: true });
-    axios
-      .post(`${apiBaseUrl}/auth/login_with_phone`, data)
-      .then(response => {
-        localStorage.setItem("token", response.data.data.token);
-      })
-      .then(res => {
-        let token = localStorage.getItem("token");
-        let jwtToken = jwt.decode(token);
-        localStorage.setItem("jwtToken", jwtToken);
-        localStorage.setItem("deviceId", jwtToken.deviceId);
-        this.setState({ loading: false });
-        if (jwtToken.phoneConfirmed == "False") {
-          let headers = {
-            Authorization: `Bearer ${token}`
-          };
-          axios
-            .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
-            .then(response => {
-              this.props.history.push("/verify");
-            })
-            .catch(error => {
-              window.location = "/";
-            });
-        } else {
-          window.location = "/";
-        }
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        switch (error.response.data && error.response.data.error) {
-          case "InvalidCredentials":
-            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-              button: "متابعة"
-            });
-            break;
+    });
 
-          default:
-            console.log(error);
-        }
-      });
+    request.then(action => this.props.history.push("/"));
+
+    // let data = {
+    //   countryCode: values.phone.countryCode,
+    //   phoneNumber: values.phone.phoneNumber,
+    //   password: values.password
+    // };
+    // this.setState({ loading: true });
+    // axios
+    //   .post(`${apiBaseUrl}/auth/login_with_phone`, data)
+    //   .then(response => {
+    //     localStorage.setItem("token", response.data.data.token);
+    //   })
+    //   .then(res => {
+    //     let token = localStorage.getItem("token");
+    //     let jwtToken = jwt.decode(token);
+    //     localStorage.setItem("jwtToken", jwtToken);
+    //     localStorage.setItem("deviceId", jwtToken.deviceId);
+    //     this.setState({ loading: false });
+    //     if (jwtToken.phoneConfirmed == "False") {
+    //       let headers = {
+    //         Authorization: `Bearer ${token}`
+    //       };
+    //       axios
+    //         .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
+    //         .then(response => {
+    //           this.props.history.push("/verify");
+    //         })
+    //         .catch(error => {
+    //           window.location = "/";
+    //         });
+    //     } else {
+    //       window.location = "/";
+    //     }
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false });
+    //     switch (error.response.data && error.response.data.error) {
+    //       case "InvalidCredentials":
+    //         swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+    //           button: "متابعة"
+    //         });
+    //         break;
+
+    //       default:
+    //         console.log(error);
+    //     }
+    //   });
   };
 
   render() {
@@ -167,6 +176,9 @@ LoginComponent = reduxForm({
   validate
 })(LoginComponent);
 
-LoginComponent = connect(mapStateToProps)(LoginComponent);
+LoginComponent = connect(
+  mapStateToProps,
+  { loginAction }
+)(LoginComponent);
 
 export const Login = withRouter(LoginComponent);

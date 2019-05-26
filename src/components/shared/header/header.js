@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import "./styles.sass";
 import { NavLink, Link, withRouter } from "react-router-dom";
-import jwt from "jsonwebtoken";
 import {
   Collapse,
   Navbar,
   NavbarToggler,
-  NavbarBrand,
   Nav,
   NavItem,
   UncontrolledDropdown,
@@ -14,9 +12,10 @@ import {
   DropdownMenu,
   DropdownItem
 } from "reactstrap";
-import { FaShoppingCart } from "react-icons/fa";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+import { connect } from "react-redux";
+import { getProfile } from "../../../actions";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -40,22 +39,7 @@ class HeaderComponent extends Component {
   }
 
   async componentDidMount() {
-    try {
-      let token = await localStorage.getItem("token");
-      if (token) {
-        let headers = {
-          Authorization: `Bearer ${token}`
-        };
-        axios
-          .get(`${apiBaseUrl}/users/me`, { headers })
-          .then(response => {
-            this.setState({ details: response.data.data });
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-    } catch (ex) {}
+    this.props.getProfile();
   }
 
   verifyUser = () => {
@@ -121,7 +105,7 @@ class HeaderComponent extends Component {
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
-                  {!this.props.user && (
+                  {!this.props.authenticated ? (
                     <React.Fragment>
                       <NavItem>
                         <NavLink
@@ -155,9 +139,7 @@ class HeaderComponent extends Component {
                         </NavLink>
                       </NavItem>
                     </React.Fragment>
-                  )}
-
-                  {this.props.user && (
+                  ) : (
                     <React.Fragment>
                       <NavItem>
                         <NavLink
@@ -195,7 +177,8 @@ class HeaderComponent extends Component {
                             height="18"
                             className="mr-2"
                           />
-                          {this.state.details ? this.state.details.name : ""}
+                          {this.props.initialValues &&
+                            this.props.initialValues.name}
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem className="p-0">
@@ -228,5 +211,18 @@ class HeaderComponent extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    initialValues: state.profile,
+    entireState: state
+  };
+}
+
+HeaderComponent = connect(
+  mapStateToProps,
+  { getProfile }
+)(HeaderComponent);
 
 export const Header = withRouter(HeaderComponent);
