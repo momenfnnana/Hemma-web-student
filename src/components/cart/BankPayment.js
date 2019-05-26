@@ -231,6 +231,7 @@ class BankPaymentComponent extends Component {
                   component={dateTimeField}
                   name="date"
                   timeFormat={false}
+                  dateFormat="DD-MM-YYYY"
                   validate={required}
                 />
               </div>
