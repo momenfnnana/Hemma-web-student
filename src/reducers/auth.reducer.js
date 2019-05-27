@@ -1,7 +1,8 @@
 import {
   AUTHENTICATED,
   UNAUTHENTICATED,
-  AUTHENTICATION_ERROR
+  AUTHENTICATION_ERROR,
+  GET_USER
 } from "../actions/login.actions";
 import jwtDecode from "jwt-decode";
 
@@ -29,7 +30,10 @@ export const authReducer = (state = null, action) => {
       };
     case UNAUTHENTICATED:
       // remove the token
+      localStorage.removeItem("token");
       return { ...state, token: null, authenticated: false };
+    case GET_USER:
+      return { ...state, user: action.payload };
     case AUTHENTICATION_ERROR:
       return { ...state, error: action.payload };
   }
@@ -46,7 +50,7 @@ function extractTokenInfo(token) {
   try {
     let decodedToken = jwtDecode(token);
     return {
-      phoneNumberConfirmed: decodedToken.phoneNumberConfirmed
+      phoneNumberConfirmed: decodedToken.phoneConfirmed === "True"
     };
   } catch (ex) {}
 }

@@ -12,5 +12,10 @@ export const AuthApiEndpoints = {
         phoneNumber,
         password
       })
+      .then(getDataFromResponse),
+
+  getUser: () =>
+    getAuthenticatedAxios()
+      .get("users/me", {})
       .then(getDataFromResponse)
 };

@@ -15,16 +15,14 @@ import {
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
-import { getProfile } from "../../../actions";
-import { signOutAction } from "../../../actions/login.actions";
+import { signOutAction, getUser } from "../../../actions/login.actions";
 
 class HeaderComponent extends Component {
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false,
-      details: null
+      isOpen: false
     };
   }
 
@@ -39,8 +37,8 @@ class HeaderComponent extends Component {
     this.props.history.push("/");
   };
 
-  async componentDidMount() {
-    this.props.getProfile();
+  componentDidMount() {
+    this.props.getUser();
   }
 
   verifyUser = () => {
@@ -61,9 +59,10 @@ class HeaderComponent extends Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <React.Fragment>
-        {this.props.user && this.props.user.phoneConfirmed == "False" ? (
+        {!this.props.phoneNumberConfirmed && this.props.authenticated ? (
           <div className="top-header dark-bg">
             <div className="container">
               <div className="row">
@@ -178,8 +177,7 @@ class HeaderComponent extends Component {
                             height="18"
                             className="mr-2"
                           />
-                          {this.props.initialValues &&
-                            this.props.initialValues.name}
+                          {/* {this.state.details.name} */}
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem className="p-0">
@@ -216,14 +214,14 @@ class HeaderComponent extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    initialValues: state.profile,
-    entireState: state
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
+    user: state.user
   };
 }
 
 HeaderComponent = connect(
   mapStateToProps,
-  { getProfile, signOutAction }
+  { signOutAction, getUser }
 )(HeaderComponent);
 
 export const Header = withRouter(HeaderComponent);

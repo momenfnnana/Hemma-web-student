@@ -102,12 +102,6 @@ AppBackground = withRouter(AppBackground);
 class App extends Component {
   state = {};
   async componentDidMount() {
-    try {
-      const jwt = await localStorage.getItem("token");
-      const user = jwtDecode(jwt);
-      this.setState({ user });
-    } catch (ex) {}
-
     let data = {
       id: this.state.user && this.state.user.uid
     };
@@ -128,7 +122,7 @@ class App extends Component {
             <BrowserRouter>
               <ScrollToTop>
                 <AppBackground>
-                  <Header user={this.state.user} />
+                  <Header />
                   <Switch>
                     <Route path="/" exact component={Home} />
                     <Route path="/auth" component={Auth} />
