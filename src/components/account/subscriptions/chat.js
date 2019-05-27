@@ -25,32 +25,26 @@ export class UsersChatComponent extends Component {
   }
   async componentDidMount() {
     this.props.getProfile();
-    let myIdentity = "07e3258b-447a-4b1d-b7a1-fbd7849ed852";
-    let senderIdentity = "1740fe16-836f-4d99-8f62-8f42ab765540";
+    let myIdentity = "user13";
+    let senderIdentity = "user13";
 
     await Chat.Client.create(accessToken).then(client => {
-      let privateChannel = client.getChannelByUniqueName(
-        myIdentity + "_" + senderIdentity
-      );
-
-      if (privateChannel) {
-        channel.getMessages().then(messages => {
-          const totalMessages = messages.items.length;
-          for (let i = 0; i < totalMessages; i++) {
-            const channelMessages = messages.items;
-            this.setState({ messages: channelMessages });
-          }
+      client
+        .getChannelByUniqueName(myIdentity + "_" + senderIdentity)
+        .then(channel => {
+          console.log(channel);
+        })
+        .catch(err => {
+          client
+            .createChannel({
+              isPrivate: true,
+              uniqueName: myIdentity + "_" + senderIdentity
+            })
+            .then(function joinChannel(channel) {
+              channel.join();
+              console.log("created and joined channel ", channel);
+            });
         });
-      } else {
-        client
-          .createChannel({
-            uniqueName: myIdentity + "_" + senderIdentity
-          })
-          .then(function(channel) {
-            console.log("Created private channel:");
-            console.log(channel);
-          });
-      }
     });
   }
 
