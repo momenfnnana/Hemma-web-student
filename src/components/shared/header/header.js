@@ -15,7 +15,8 @@ import {
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
-import { signOutAction, getUser } from "../../../actions/login.actions";
+import { signOutAction } from "../../../actions/login.actions";
+import { getUser } from "../../../actions/user.actions";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -37,10 +38,6 @@ class HeaderComponent extends Component {
     this.props.history.push("/");
   };
 
-  componentDidMount() {
-    this.props.getUser();
-  }
-
   verifyUser = () => {
     let token = localStorage.getItem("token");
     let headers = {
@@ -59,7 +56,11 @@ class HeaderComponent extends Component {
   };
 
   render() {
-    console.log(this.props);
+    try {
+      if (this.props.authenticated) {
+        this.props.getUser();
+      }
+    } catch (ex) {}
     return (
       <React.Fragment>
         {!this.props.phoneNumberConfirmed && this.props.authenticated ? (
@@ -177,7 +178,7 @@ class HeaderComponent extends Component {
                             height="18"
                             className="mr-2"
                           />
-                          {/* {this.state.details.name} */}
+                          {this.props.user && this.props.user.name}
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem className="p-0">
