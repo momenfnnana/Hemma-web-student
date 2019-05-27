@@ -12,5 +12,22 @@ export const AuthApiEndpoints = {
         phoneNumber,
         password
       })
+      .then(getDataFromResponse),
+
+  sendToken: () =>
+    getAuthenticatedAxios()
+      .post("auth/phone/send_token")
+      .then(getDataFromResponse),
+
+  signup: (countryCode, phoneNumber, email, password, name, gender) =>
+    getUnAuthenticatedAxios()
+      .post("auth/register", {
+        countryCode,
+        phoneNumber,
+        email,
+        password,
+        name,
+        gender
+      })
       .then(getDataFromResponse)
 };

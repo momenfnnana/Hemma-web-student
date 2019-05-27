@@ -12,6 +12,7 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import jwt from "jsonwebtoken";
 import { RadioField } from "../shared/inputs/RadioFeild";
 import { apiBaseUrl } from "../../api/helpers";
+import { signupUser } from "../../actions/signup.actions";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const maxLength = max => value =>
@@ -50,71 +51,84 @@ class RegisterComponent extends Component {
   }
 
   myFormHandler = values => {
-    let data = {
+    const request = this.props.signupUser({
       countryCode: values.phone.countryCode,
       phoneNumber: values.phone.phoneNumber,
       email: values.email,
       password: values.password,
       name: values.username,
       gender: values.gender
-    };
-    this.setState({ loading: true });
-    axios
-      .post(`${apiBaseUrl}/auth/register`, data)
-      .then(response => {
-        axios
-          .post(`${apiBaseUrl}/auth/login_with_phone`, data)
-          .then(response => {
-            localStorage.setItem("token", response.data.data.token);
-          })
-          .then(res => {
-            let token = localStorage.getItem("token");
-            let jwtToken = jwt.decode(token);
-            localStorage.setItem("jwtToken", jwtToken);
-            this.setState({ loading: false });
-            if (jwtToken.phoneConfirmed == "False") {
-              let headers = {
-                Authorization: `Bearer ${token}`
-              };
-              axios
-                .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
-                .then(response => {
-                  this.props.history.push("/verify");
-                })
-                .catch(error => {
-                  window.location = "/";
-                });
-            } else {
-              window.location = "/";
-            }
-          })
-          .catch(error => {
-            this.setState({ loading: false });
-            switch (error.response.data && error.response.data.error) {
-              case "InvalidCredentials":
-                swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-                  button: "متابعة"
-                });
-                break;
+    });
 
-              default:
-                console.log(error);
-            }
-          });
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        switch (error.response.data && error.response.data.error) {
-          case "Duplicate":
-            swal("عفواً", "هذا المستخدم مسجل سابقاً", "error", {
-              button: "متابعة"
-            });
-            break;
+    request.then(action => {
+      console.log(action);
+    });
 
-          default:
-            console.log(error);
-        }
-      });
+    // let data = {
+    //   countryCode: values.phone.countryCode,
+    //   phoneNumber: values.phone.phoneNumber,
+    //   email: values.email,
+    //   password: values.password,
+    //   name: values.username,
+    //   gender: values.gender
+    // };
+    // this.setState({ loading: true });
+    // axios
+    //   .post(`${apiBaseUrl}/auth/register`, data)
+    //   .then(response => {
+    //     axios
+    //       .post(`${apiBaseUrl}/auth/login_with_phone`, data)
+    //       .then(response => {
+    //         localStorage.setItem("token", response.data.data.token);
+    //       })
+    //       .then(res => {
+    //         let token = localStorage.getItem("token");
+    //         let jwtToken = jwt.decode(token);
+    //         localStorage.setItem("jwtToken", jwtToken);
+    //         this.setState({ loading: false });
+    //         if (jwtToken.phoneConfirmed == "False") {
+    //           let headers = {
+    //             Authorization: `Bearer ${token}`
+    //           };
+    //           axios
+    //             .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
+    //             .then(response => {
+    //               this.props.history.push("/verify");
+    //             })
+    //             .catch(error => {
+    //               window.location = "/";
+    //             });
+    //         } else {
+    //           window.location = "/";
+    //         }
+    //       })
+    //       .catch(error => {
+    //         this.setState({ loading: false });
+    //         switch (error.response.data && error.response.data.error) {
+    //           case "InvalidCredentials":
+    //             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+    //               button: "متابعة"
+    //             });
+    //             break;
+
+    //           default:
+    //             console.log(error);
+    //         }
+    //       });
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false });
+    //     switch (error.response.data && error.response.data.error) {
+    //       case "Duplicate":
+    //         swal("عفواً", "هذا المستخدم مسجل سابقاً", "error", {
+    //           button: "متابعة"
+    //         });
+    //         break;
+
+    //       default:
+    //         console.log(error);
+    //     }
+    //   });
   };
 
   render() {
@@ -222,6 +236,9 @@ RegisterComponent = reduxForm({
   form: "Register"
 })(RegisterComponent);
 
-RegisterComponent = connect(mapStateToProps)(RegisterComponent);
+RegisterComponent = connect(
+  mapStateToProps,
+  { signupUser }
+)(RegisterComponent);
 
 export const Register = RegisterComponent;

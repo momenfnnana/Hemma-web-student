@@ -11,7 +11,7 @@ import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import { apiBaseUrl } from "../../api/helpers";
-import { loginAction } from "../../actions/login.actions";
+import { loginAction, sendToken } from "../../actions/login.actions";
 
 const validate = values => {
   const errors = {};
@@ -57,14 +57,35 @@ class LoginComponent extends Component {
       password: values.password
     });
 
-    request.then(action => this.props.history.push("/"));
+    request
+      .then(action => {
+        if (!this.props.phoneNumberConfirmed) {
+          this.props
+            .sendToken()
+            .then(response => {
+              this.props.history.push("/verify");
+            })
+            .catch(error => {
+              this.props.history.push("/");
+            });
+        } else {
+          this.props.history.push("/");
+        }
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+        switch (error.response.data && error.response.data.error) {
+          case "InvalidCredentials":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+              button: "متابعة"
+            });
+            break;
 
-    // let data = {
-    //   countryCode: values.phone.countryCode,
-    //   phoneNumber: values.phone.phoneNumber,
-    //   password: values.password
-    // };
-    // this.setState({ loading: true });
+          default:
+            console.log(error);
+        }
+      });
+
     // axios
     //   .post(`${apiBaseUrl}/auth/login_with_phone`, data)
     //   .then(response => {
@@ -167,7 +188,8 @@ class LoginComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.Login && state.form.Login.values
+    formValues: state.form.Login && state.form.Login.values,
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed
   };
 }
 
@@ -178,7 +200,7 @@ LoginComponent = reduxForm({
 
 LoginComponent = connect(
   mapStateToProps,
-  { loginAction }
+  { loginAction, sendToken }
 )(LoginComponent);
 
 export const Login = withRouter(LoginComponent);
