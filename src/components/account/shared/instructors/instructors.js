@@ -42,6 +42,7 @@ export class Instructors extends Component {
             starColor={"#ffe552"}
             emptyStarColor={"#a9acb4"}
             editing={false}
+            name="rate"
           />
         </div>
       </div>

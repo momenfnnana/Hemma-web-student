@@ -263,6 +263,7 @@ export class LiveStreamComponent extends Component {
                               value={rating}
                               starColor={"#ffe552"}
                               emptyStarColor={"#a9acb4"}
+                              name="rate"
                             />
                           </div>
                           <button

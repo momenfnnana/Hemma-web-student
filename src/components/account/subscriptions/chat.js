@@ -6,11 +6,10 @@ import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
 
 const Chat = require("twilio-chat");
-
-// Make a secure request to your backend to retrieve an access token.
-// Use an authentication mechanism to prevent token exposure to 3rd parties.
-
 const accessToken = localStorage.getItem("chatToken");
+
+const myIdentity = "user15";
+const senderIdentity = "user15";
 
 export class UsersChatComponent extends Component {
   constructor(props) {
@@ -21,18 +20,24 @@ export class UsersChatComponent extends Component {
       messages: []
     };
 
-    this.channel = "FristPrivateChannel";
+    this.sendMessage = this.sendMessage.bind(this);
   }
   async componentDidMount() {
     this.props.getProfile();
-    let myIdentity = "user13";
-    let senderIdentity = "user13";
+    console.log(this.props);
 
     await Chat.Client.create(accessToken).then(client => {
       client
         .getChannelByUniqueName(myIdentity + "_" + senderIdentity)
         .then(channel => {
           console.log(channel);
+          channel.getMessages().then(messages => {
+            const totalMessages = messages.items.length;
+            for (let i = 0; i < totalMessages; i++) {
+              const channelMessages = messages.items;
+              this.setState({ messages: channelMessages });
+            }
+          });
         })
         .catch(err => {
           client
@@ -57,11 +62,13 @@ export class UsersChatComponent extends Component {
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
     Chat.Client.create(accessToken).then(client => {
-      client.getChannelByUniqueName("general").then(channel => {
-        channel.sendMessage(message);
-        channel.getMessages().then(this.messagesLoaded);
-        channel.on("messageAdded", this.messageAdded);
-      });
+      client
+        .getChannelByUniqueName(myIdentity + "_" + senderIdentity)
+        .then(channel => {
+          channel.sendMessage(message);
+          channel.getMessages().then(this.messagesLoaded);
+          channel.on("messageAdded", this.messageAdded);
+        });
     });
   };
 
@@ -87,7 +94,9 @@ export class UsersChatComponent extends Component {
       <React.Fragment>
         <li className="clearfix" ref={this.newMessageAdded}>
           <div className="message-data">
-            <span className="message-data-name small">محمد أحمد</span>
+            <span className="message-data-name small">
+              {this.props.initialValues.name}
+            </span>
           </div>
           <div className="d-flex justify-content-end mb-3">
             <div className="message other-message mid-text light-font-text">
@@ -179,49 +188,56 @@ export class UsersChatComponent extends Component {
                 </div>
 
                 <div className="chat-message">
-                  <div className="input-chat">
-                    <input
-                      placeholder="اكتب هنا"
-                      className="form-control light-font-text small"
-                    />
-                    <div className="options">
-                      <ul className="list-unstyled list-inline mb-0">
-                        <li className="list-inline-item">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/record.png"
-                            }
-                            alt="Record"
-                            height="20"
-                            className="contain-img"
-                          />
-                        </li>
-                        <li className="list-inline-item">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/attachment.png"
-                            }
-                            alt="Attach"
-                            height="20"
-                            className="contain-img"
-                          />
-                        </li>
-                        <li className="list-inline-item">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/emoji.png"
-                            }
-                            alt="Emojis"
-                            height="20"
-                            className="contain-img"
-                          />
-                        </li>
-                      </ul>
+                  <form onSubmit={this.sendMessage}>
+                    <div className="input-chat">
+                      <input
+                        placeholder="اكتب هنا"
+                        className="form-control light-font-text small"
+                        type="text"
+                        name="message"
+                        id="message"
+                        onChange={this.onMessageChanged}
+                        value={this.state.newMessage}
+                      />
+                      <div className="options">
+                        <ul className="list-unstyled list-inline mb-0">
+                          <li className="list-inline-item">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/record.png"
+                              }
+                              alt="Record"
+                              height="20"
+                              className="contain-img"
+                            />
+                          </li>
+                          <li className="list-inline-item">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/attachment.png"
+                              }
+                              alt="Attach"
+                              height="20"
+                              className="contain-img"
+                            />
+                          </li>
+                          <li className="list-inline-item">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/emoji.png"
+                              }
+                              alt="Emojis"
+                              height="20"
+                              className="contain-img"
+                            />
+                          </li>
+                        </ul>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
