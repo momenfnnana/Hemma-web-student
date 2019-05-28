@@ -12,6 +12,27 @@ export const loginAction = ({ countryCode, phoneNumber, password }) => {
   };
 };
 
+export const signupUser = ({
+  countryCode,
+  phoneNumber,
+  email,
+  password,
+  name,
+  gender
+}) => {
+  return {
+    type: UNAUTHENTICATED,
+    payload: Api.auth.signup(
+      countryCode,
+      phoneNumber,
+      email,
+      password,
+      name,
+      gender
+    )
+  };
+};
+
 export const signOutAction = () => {
   return {
     type: UNAUTHENTICATED

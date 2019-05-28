@@ -12,7 +12,11 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import jwt from "jsonwebtoken";
 import { RadioField } from "../shared/inputs/RadioFeild";
 import { apiBaseUrl } from "../../api/helpers";
-import { signupUser } from "../../actions/signup.actions";
+import {
+  loginAction,
+  signupUser,
+  sendToken
+} from "../../actions/login.actions";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const maxLength = max => value =>
@@ -61,7 +65,26 @@ class RegisterComponent extends Component {
     });
 
     request.then(action => {
-      console.log(action);
+      this.props
+        .loginAction({
+          countryCode: values.phone.countryCode,
+          phoneNumber: values.phone.phoneNumber,
+          password: values.password
+        })
+        .then(res => {
+          if (!this.props.phoneNumberConfirmed) {
+            this.props
+              .sendToken()
+              .then(response => {
+                this.props.history.push("/verify");
+              })
+              .catch(error => {
+                this.props.history.push("/");
+              });
+          } else {
+            this.props.history.push("/");
+          }
+        });
     });
 
     // let data = {
@@ -228,7 +251,9 @@ class RegisterComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.Register && state.form.Register.values
+    formValues: state.form.Register && state.form.Register.values,
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
+    authenticated: state.auth.authenticated
   };
 }
 
@@ -238,7 +263,7 @@ RegisterComponent = reduxForm({
 
 RegisterComponent = connect(
   mapStateToProps,
-  { signupUser }
+  { signupUser, loginAction, sendToken }
 )(RegisterComponent);
 
 export const Register = RegisterComponent;

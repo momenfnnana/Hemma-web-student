@@ -189,7 +189,8 @@ class LoginComponent extends Component {
 function mapStateToProps(state) {
   return {
     formValues: state.form.Login && state.form.Login.values,
-    phoneNumberConfirmed: state.auth.phoneNumberConfirmed
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
+    authenticated: state.auth.authenticated
   };
 }
 

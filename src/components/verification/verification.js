@@ -127,7 +127,7 @@ class VerificationComponent extends Component {
             </div>
             <div className="text-center pt-1">
               <h5
-                onClick={() => (window.location = "/")}
+                onClick={() => (this.props.history.push = "/")}
                 className="dark-text small light-text clickable"
               >
                 تخطى تأكيد الحساب{" "}

@@ -38,6 +38,18 @@ class HeaderComponent extends Component {
     this.props.history.push("/");
   };
 
+  componentDidMount() {
+    if (this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.authenticated && this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
+
   verifyUser = () => {
     let token = localStorage.getItem("token");
     let headers = {
@@ -56,11 +68,7 @@ class HeaderComponent extends Component {
   };
 
   render() {
-    try {
-      if (this.props.authenticated) {
-        this.props.getUser();
-      }
-    } catch (ex) {}
+    const user = this.props.user;
     return (
       <React.Fragment>
         {!this.props.phoneNumberConfirmed && this.props.authenticated ? (
@@ -178,7 +186,7 @@ class HeaderComponent extends Component {
                             height="18"
                             className="mr-2"
                           />
-                          {this.props.user && this.props.user.name}
+                          {user && user.name}
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem className="p-0">

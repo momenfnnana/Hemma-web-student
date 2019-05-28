@@ -4,7 +4,6 @@ import {
   AUTHENTICATION_ERROR,
   SEND_TOKEN
 } from "../actions/login.actions";
-import { SIGNUP_USER } from "../actions/signup.actions";
 
 import jwtDecode from "jwt-decode";
 
@@ -24,6 +23,7 @@ export const authReducer = (state = null, action) => {
     case AUTHENTICATED:
       // store the token
       localStorage.setItem("token", action.payload.token);
+      if (action.error) return state;
       return {
         ...state,
         ...extractTokenInfo(action.payload.token),
@@ -38,15 +38,6 @@ export const authReducer = (state = null, action) => {
       return { ...state, error: action.payload };
     case SEND_TOKEN:
       return { ...state, token: action.payload };
-    case SIGNUP_USER:
-      // store the token
-      localStorage.setItem("token", action.payload.token);
-      return {
-        ...state,
-        ...extractTokenInfo(action.payload.token),
-        token: action.payload.token,
-        authenticated: true
-      };
   }
   return state;
 };
