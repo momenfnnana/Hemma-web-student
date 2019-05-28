@@ -6,6 +6,8 @@ import axios from "axios";
 import { VerificationField } from "../shared/inputs/verificationField";
 import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const validate = values => {
   const errors = {};
@@ -36,6 +38,9 @@ const validate = values => {
 };
 
 class VerificationComponent extends Component {
+  state = {
+    loading: false
+  };
   myFormHandler = values => {
     let token = localStorage.getItem("token");
     let data = {
@@ -44,15 +49,18 @@ class VerificationComponent extends Component {
     let headers = {
       Authorization: `Bearer ${token}`
     };
+    this.setState({ loading: true });
     axios
       .post(`${apiBaseUrl}/auth/phone/verify`, data, {
         headers
       })
       .then(response => {
+        this.setState({ loading: false });
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
       .catch(error => {
+        this.setState({ loading: false });
         switch (error.response.data && error.response.data.error) {
           case "ValidationError":
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
@@ -113,7 +121,11 @@ class VerificationComponent extends Component {
               </div>
 
               <button type="submit" className="btn dark-outline-btn w-100">
-                تحقق من الرمز{" "}
+                {this.state.loading == true ? (
+                  <Loader type="ball-clip-rotate" />
+                ) : (
+                  "تحقق من الرمز"
+                )}
               </button>
             </form>
 
@@ -126,12 +138,9 @@ class VerificationComponent extends Component {
               </a>{" "}
             </div>
             <div className="text-center pt-1">
-              <h5
-                onClick={() => (this.props.history.push = "/")}
-                className="dark-text small light-text clickable"
-              >
+              <Link to="/" className="dark-text small light-text clickable">
                 تخطى تأكيد الحساب{" "}
-              </h5>
+              </Link>
             </div>
           </div>
         </div>

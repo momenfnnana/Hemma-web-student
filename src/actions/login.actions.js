@@ -12,6 +12,13 @@ export const loginAction = ({ countryCode, phoneNumber, password }) => {
   };
 };
 
+export const loginFailed = error => {
+  return {
+    type: AUTHENTICATION_ERROR,
+    error
+  };
+};
+
 export const signupUser = ({
   countryCode,
   phoneNumber,

@@ -213,6 +213,7 @@ class EditAccountComponent extends Component {
                         أنثى
                       </label>
                     </div>
+
                     <div className="position-relative">
                       <Field
                         name="email"

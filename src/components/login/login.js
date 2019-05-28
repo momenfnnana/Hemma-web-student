@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
-import axios from "axios";
 import { MdLockOutline } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
-import jwt from "jsonwebtoken";
 import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
-import { apiBaseUrl } from "../../api/helpers";
-import { loginAction, sendToken } from "../../actions/login.actions";
+import {
+  loginAction,
+  sendToken,
+  loginFailed
+} from "../../actions/login.actions";
 
 const validate = values => {
   const errors = {};
@@ -56,9 +57,11 @@ class LoginComponent extends Component {
       phoneNumber: values.phone.phoneNumber,
       password: values.password
     });
+    this.setState({ loading: true });
 
     request
       .then(action => {
+        this.setState({ loading: false });
         if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
@@ -74,6 +77,7 @@ class LoginComponent extends Component {
       })
       .catch(error => {
         this.setState({ loading: false });
+        this.props.loginFailed(error);
         switch (error.response.data && error.response.data.error) {
           case "InvalidCredentials":
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
@@ -85,47 +89,6 @@ class LoginComponent extends Component {
             console.log(error);
         }
       });
-
-    // axios
-    //   .post(`${apiBaseUrl}/auth/login_with_phone`, data)
-    //   .then(response => {
-    //     localStorage.setItem("token", response.data.data.token);
-    //   })
-    //   .then(res => {
-    //     let token = localStorage.getItem("token");
-    //     let jwtToken = jwt.decode(token);
-    //     localStorage.setItem("jwtToken", jwtToken);
-    //     localStorage.setItem("deviceId", jwtToken.deviceId);
-    //     this.setState({ loading: false });
-    //     if (jwtToken.phoneConfirmed == "False") {
-    //       let headers = {
-    //         Authorization: `Bearer ${token}`
-    //       };
-    //       axios
-    //         .post(`${apiBaseUrl}/auth/phone/send_token`, null, { headers })
-    //         .then(response => {
-    //           this.props.history.push("/verify");
-    //         })
-    //         .catch(error => {
-    //           window.location = "/";
-    //         });
-    //     } else {
-    //       window.location = "/";
-    //     }
-    //   })
-    //   .catch(error => {
-    //     this.setState({ loading: false });
-    //     switch (error.response.data && error.response.data.error) {
-    //       case "InvalidCredentials":
-    //         swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-    //           button: "متابعة"
-    //         });
-    //         break;
-
-    //       default:
-    //         console.log(error);
-    //     }
-    //   });
   };
 
   render() {
@@ -201,7 +164,7 @@ LoginComponent = reduxForm({
 
 LoginComponent = connect(
   mapStateToProps,
-  { loginAction, sendToken }
+  { loginAction, sendToken, loginFailed }
 )(LoginComponent);
 
 export const Login = withRouter(LoginComponent);

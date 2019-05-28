@@ -149,8 +149,6 @@ export class CourseDetails extends Component {
     // const { rating } = this.state;
     const instructors = this.state.details.instructors;
 
-    console.log(instructors);
-
     if (instructors) {
       return instructors.map(instructor => (
         <div className="silver-bg border-bottom d-flex align-items-center h-55 pl-3 pr-3">

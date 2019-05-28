@@ -8,7 +8,9 @@ export class CartItem extends Component {
     editingInstallment: false,
     // Holds the temporary installment value
     tempInstallment: null,
-    tooltipOpen: false
+    tooltipOpen: false,
+    installmentValdation: false,
+    priceValdation: false
   };
 
   constructor(props) {
@@ -68,9 +70,7 @@ export class CartItem extends Component {
       this.setState({
         editingInstallment: true,
         tempInstallment:
-          this.props.item.minimumInstallment ||
-          this.props.item.price ||
-          0
+          this.props.item.minimumInstallment || this.props.item.price || 0
       });
     } else {
       // disable input and submit installment
@@ -89,6 +89,17 @@ export class CartItem extends Component {
   onUpdateInstallmentInput(event) {
     const newValue = Number.parseInt(event.target.value);
     this.setState({ tempInstallment: newValue });
+    if (newValue < this.props.item.minimumInstallment) {
+      this.setState({ installmentValdation: true });
+    } else {
+      this.setState({ installmentValdation: false });
+    }
+
+    if (newValue > this.props.item.price) {
+      this.setState({ priceValdation: true });
+    } else {
+      this.setState({ priceValdation: false });
+    }
   }
 
   /**
@@ -132,8 +143,7 @@ export class CartItem extends Component {
         <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item">
           <div className="media w-75 position-relative">
             <MdClose
-              color="#dbdbdb"
-              className="close-btn clickable"
+              className="close-btn clickable red-text"
               onClick={this.onRemoveItem}
             />
             <img
@@ -198,8 +208,24 @@ export class CartItem extends Component {
                 <label className="dark-text smaller mb-0">قيمة القسط</label>
                 {this.state.editingInstallment && (
                   <p className="red-text smaller light-font-text mb-0">
-                    {item.canBePaidInInstallments == true
+                    {item.canBePaidInInstallments == true &&
+                    this.state.installmentValdation == false &&
+                    this.state.priceValdation == false
                       ? " حدد قيمة القسط"
+                      : null}
+                  </p>
+                )}
+                {this.state.editingInstallment && (
+                  <p className="red-text smaller light-font-text mb-0">
+                    {this.state.installmentValdation == true
+                      ? "القيمة أقل من الحد المسموح به"
+                      : null}
+                  </p>
+                )}{" "}
+                {this.state.editingInstallment && (
+                  <p className="red-text smaller light-font-text mb-0">
+                    {this.state.priceValdation == true
+                      ? "القيمة أعلى من الحد المسموح به"
                       : null}
                   </p>
                 )}
