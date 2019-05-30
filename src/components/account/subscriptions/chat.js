@@ -4,12 +4,14 @@ import { FaCircle } from "react-icons/fa";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
+import jwtDecode from "jwt-decode";
+import axios from "axios";
 
 const Chat = require("twilio-chat");
 const accessToken = localStorage.getItem("chatToken");
 
-const myIdentity = "user15";
-const senderIdentity = "user15";
+// const myIdentity = "8a381ee6-3051-471d-87b3-96cab630eed9";
+// const pairIdentity = "f175a950-1b89-4d03-866b-8f72f9f7a904";
 
 export class UsersChatComponent extends Component {
   constructor(props) {
@@ -17,20 +19,38 @@ export class UsersChatComponent extends Component {
 
     this.state = {
       newMessage: "",
-      messages: []
+      messages: [],
+      generalChannel: "",
+      privateChannel: ""
     };
 
     this.sendMessage = this.sendMessage.bind(this);
   }
+
   async componentDidMount() {
     this.props.getProfile();
-    console.log(this.props);
+  }
 
-    await Chat.Client.create(accessToken).then(client => {
+  async setPrivateChannel(pairIdentity) {
+    let token = localStorage.getItem("token");
+    let myIdentity = jwtDecode(token);
+    myIdentity = myIdentity.uid;
+    let privateChannelName =
+      myIdentity < pairIdentity
+        ? pairIdentity + "_" + myIdentity
+        : myIdentity + "_" + pairIdentity;
+    await this.setState({ privateChannel: privateChannelName });
+    this.initiateChat(pairIdentity);
+  }
+
+  async initiateChat(pairIdentity) {
+    Chat.Client.create(accessToken).then(client => {
       client
-        .getChannelByUniqueName(myIdentity + "_" + senderIdentity)
+        .getChannelByUniqueName("LastChannel2")
         .then(channel => {
-          console.log(channel);
+          channel.on("channelInvited", function(channel) {
+            channel.join();
+          });
           channel.getMessages().then(messages => {
             const totalMessages = messages.items.length;
             for (let i = 0; i < totalMessages; i++) {
@@ -42,12 +62,14 @@ export class UsersChatComponent extends Component {
         .catch(err => {
           client
             .createChannel({
-              isPrivate: true,
-              uniqueName: myIdentity + "_" + senderIdentity
+              uniqueName: "LastChannel2"
             })
             .then(function joinChannel(channel) {
               channel.join();
-              console.log("created and joined channel ", channel);
+              channel.invite(pairIdentity);
+            })
+            .catch(error => {
+              console.log(error);
             });
         });
     });
@@ -62,13 +84,11 @@ export class UsersChatComponent extends Component {
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
     Chat.Client.create(accessToken).then(client => {
-      client
-        .getChannelByUniqueName(myIdentity + "_" + senderIdentity)
-        .then(channel => {
-          channel.sendMessage(message);
-          channel.getMessages().then(this.messagesLoaded);
-          channel.on("messageAdded", this.messageAdded);
-        });
+      client.getChannelByUniqueName("LastChannel2").then(channel => {
+        channel.sendMessage(message);
+        channel.getMessages().then(this.messagesLoaded);
+        channel.on("messageAdded", this.messageAdded);
+      });
     });
   };
 
@@ -90,26 +110,37 @@ export class UsersChatComponent extends Component {
 
   renderMessages() {
     const messages = this.state.messages;
+    let token = localStorage.getItem("token");
+    let myIdentity = jwtDecode(token);
+    myIdentity = myIdentity.uid;
     return messages.map(message => (
       <React.Fragment>
-        <li className="clearfix" ref={this.newMessageAdded}>
-          <div className="message-data">
-            <span className="message-data-name small">
-              {this.props.initialValues.name}
-            </span>
-          </div>
-          <div className="d-flex justify-content-end mb-3">
-            <div className="message other-message mid-text light-font-text">
+        {message.author == myIdentity ? (
+          <li>
+            <div className="message my-message text-white light-font-text mb-3">
               {message.body}
             </div>
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
-              alt="Chat img"
-              height="27"
-              className="contain-img ml-2 align-self-end"
-            />
-          </div>
-        </li>
+          </li>
+        ) : (
+          <li className="clearfix" ref={this.newMessageAdded}>
+            <div className="message-data">
+              <span className="message-data-name small en-text">
+                {message.author}
+              </span>
+            </div>
+            <div className="d-flex justify-content-end mb-3">
+              <div className="message other-message mid-text light-font-text">
+                {message.body}
+              </div>
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
+                alt="Chat img"
+                height="27"
+                className="contain-img ml-2 align-self-end"
+              />
+            </div>
+          </li>
+        )}
       </React.Fragment>
     ));
   }
@@ -134,7 +165,12 @@ export class UsersChatComponent extends Component {
               <h6 className="light-text small h-55 d-flex align-items-center mb-1 mt-1">
                 <FaCircle size={9} className="mr-1" /> دردشة للجميع
               </h6>
-              <div className="media chat-item pb-3 d-flex align-items-center">
+              <div
+                className="media chat-item pb-3 d-flex align-items-center"
+                onClick={() =>
+                  this.setPrivateChannel("f175a950-1b89-4d03-866b-8f72f9f7a904")
+                }
+              >
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/user-circle.png"
@@ -144,14 +180,19 @@ export class UsersChatComponent extends Component {
                   className="contain-img mr-2"
                 />
                 <div className="media-body">
-                  <h6 className="small mid-text mb-1">أحمد طه</h6>
+                  <h6 className="small mid-text mb-1">أنس جوابرة</h6>
                   <h6 className="dark-silver-text smaller mb-0">مشرف</h6>
                 </div>
                 <h6 className="smaller dark-silver-text en-text mb-0 align-self-start">
                   May, 9
                 </h6>
               </div>
-              <div className="media chat-item pb-3 d-flex align-items-center">
+              <div
+                className="media chat-item pb-3 d-flex align-items-center"
+                onClick={() =>
+                  this.setPrivateChannel("8a381ee6-3051-471d-87b3-96cab630eed9")
+                }
+              >
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/user-circle.png"
@@ -161,7 +202,7 @@ export class UsersChatComponent extends Component {
                   className="contain-img mr-2"
                 />
                 <div className="media-body">
-                  <h6 className="small mid-text mb-1">محمد عيسى</h6>
+                  <h6 className="small mid-text mb-1">ساره أبو التين</h6>
                   <h6 className="dark-silver-text smaller mb-0">مدرب</h6>
                 </div>
                 <h6 className="smaller dark-silver-text en-text mb-0 align-self-start">
