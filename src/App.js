@@ -43,6 +43,7 @@ import { LiveStream } from "./components/account/subscriptions/live-stream";
 import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
 import NotFound from "./components/shared/not-found/not-found";
 import { apiBaseUrl } from "./api/helpers";
+import { SpeedUp } from "./components/account/subscriptions/speed-up";
 
 import requireAuth from "./components/shared/authentication/require-auth";
 import { UsersChatComponent } from "./components/account/subscriptions/chat";
@@ -200,6 +201,10 @@ class App extends Component {
                     <Route
                       path="/subscriptions/details/chat"
                       component={UsersChatComponent}
+                    />
+                    <Route
+                      path="/subscriptions/details/speed-up"
+                      component={SpeedUp}
                     />
                     <Route path="/live-stream" component={LiveStream} />
                     <Route path="/not-found" component={NotFound} />

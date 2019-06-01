@@ -9,6 +9,7 @@ import { RecordedVideos } from "./recorded-videos";
 import { Booklet } from "./booklet";
 import { TransactionsList } from "./transactions/transactions-list";
 import { UsersChatComponent } from "./chat";
+import { SpeedUp } from "./speed-up";
 
 export class SubscriptionDetails extends Component {
   render() {
@@ -59,6 +60,10 @@ export class SubscriptionDetails extends Component {
                   "/subscriptions/details/chat"
                 ) ? (
                 <UsersChatComponent />
+              ) : this.props.location.pathname.startsWith(
+                  "/subscriptions/details/speed-up"
+                ) ? (
+                <SpeedUp />
               ) : null}
             </div>
           </div>
