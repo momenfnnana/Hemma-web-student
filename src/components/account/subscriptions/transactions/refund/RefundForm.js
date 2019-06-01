@@ -28,14 +28,18 @@ export class RefundComponent extends Component {
         zIndex: 2
       }
     };
-    const { handleSubmit, submitting } = this.props;
-
+    const {
+      isRefundOpen,
+      closeRefundModal,
+      handleSubmit,
+      submitting
+    } = this.props;
     return (
       <React.Fragment>
         <Modal
           style={customStyles}
           ariaHideApp={false}
-          isOpen={this.props.showModal}
+          isOpen={isRefundOpen}
           onRequestClose={this.props.handleCloseModal}
         >
           <div className="container pt-4">

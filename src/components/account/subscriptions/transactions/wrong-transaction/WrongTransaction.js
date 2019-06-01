@@ -31,14 +31,19 @@ export class WrongTransactionComponent extends Component {
         zIndex: 2
       }
     };
-    const { handleSubmit, submitting } = this.props;
+    const {
+      isWrongTransactionOpen,
+      closeWrongTransactionModal,
+      handleSubmit,
+      submitting
+    } = this.props;
 
     return (
       <React.Fragment>
         <Modal
           style={customStyles}
           ariaHideApp={false}
-          isOpen={this.props.wrongTransactionModalIsOpen}
+          isOpen={isWrongTransactionOpen}
           onRequestClose={this.props.onClose}
         >
           {this.state.showContent == false ? (

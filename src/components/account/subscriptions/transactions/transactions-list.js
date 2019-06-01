@@ -7,21 +7,32 @@ import { NewInstallmentComponent } from "./installment/NewInstallment";
 
 export class TransactionsList extends Component {
   state = {
-    modalIsOpen: false
+    isInstallmentOpen: false,
+    isRefundOpen: false,
+    isWrongTransactionOpen: false
   };
 
-  openModal() {
-    this.setState({ modalIsOpen: true });
-  }
-  closeModal() {
-    this.setState({ modalIsOpen: false });
-  }
+  openRefundModal = () => {
+    this.setState({ isRefundOpen: true });
+  };
+  closeRefundModal = () => {
+    this.setState({ isRefundOpen: false });
+  };
 
-  constructor(props) {
-    super(props);
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
+  openInstallmentModal = () => {
+    this.setState({ isInstallmentOpen: true });
+  };
+  closeInstallmentModal = () => {
+    this.setState({ isInstallmentOpen: false });
+  };
+
+  openWrongTransactionModal = () => {
+    this.setState({ isWrongTransactionOpen: true });
+  };
+  closeWrongTransactionModal = () => {
+    this.setState({ isWrongTransactionOpen: false });
+  };
+
   render() {
     return (
       <React.Fragment>
@@ -35,6 +46,7 @@ export class TransactionsList extends Component {
                 <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
+                  onClick={this.openRefundModal}
                 >
                   <img
                     src={
@@ -47,13 +59,11 @@ export class TransactionsList extends Component {
                   />
                   استرجاع الرسوم
                 </button>
-                <RefundComponent
-                  modalIsOpen={this.state.modalIsOpen}
-                  onClose={this.closeModal}
-                />
+                <RefundComponent isRefundOpen={this.state.isRefundOpen} />
                 <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
+                  onClick={this.openWrongTransactionModal}
                 >
                   <img
                     src={
@@ -67,13 +77,12 @@ export class TransactionsList extends Component {
                   تحويل بنكي خاطيء
                 </button>
                 <WrongTransactionComponent
-                  modalIsOpen={this.state.modalIsOpen}
-                  onClose={this.closeModal}
+                  isWrongTransactionOpen={this.state.isWrongTransactionOpen}
                 />
                 <button
                   type="button"
                   className="btn border mid-text smaller"
-                  onClick={() => this.openModal()}
+                  onClick={this.openInstallmentModal}
                 >
                   <img
                     src={
@@ -86,8 +95,7 @@ export class TransactionsList extends Component {
                   طلب سداد قسط
                 </button>
                 <NewInstallmentComponent
-                  modalIsOpen={this.state.modalIsOpen}
-                  onClose={this.closeModal}
+                  isInstallmentOpen={this.state.isInstallmentOpen}
                 />
               </div>
             </div>

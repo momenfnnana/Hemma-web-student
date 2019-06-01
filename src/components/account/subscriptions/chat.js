@@ -46,7 +46,7 @@ export class UsersChatComponent extends Component {
   async initiateChat(pairIdentity) {
     Chat.Client.create(accessToken).then(client => {
       client
-        .getChannelByUniqueName("LastChannel2")
+        .getChannelByUniqueName(this.state.privateChannel)
         .then(channel => {
           channel.on("channelInvited", function(channel) {
             channel.join();
@@ -62,7 +62,7 @@ export class UsersChatComponent extends Component {
         .catch(err => {
           client
             .createChannel({
-              uniqueName: "LastChannel2"
+              uniqueName: this.state.privateChannel
             })
             .then(function joinChannel(channel) {
               channel.join();
@@ -84,7 +84,7 @@ export class UsersChatComponent extends Component {
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
     Chat.Client.create(accessToken).then(client => {
-      client.getChannelByUniqueName("LastChannel2").then(channel => {
+      client.getChannelByUniqueName(this.state.privateChannel).then(channel => {
         channel.sendMessage(message);
         channel.getMessages().then(this.messagesLoaded);
         channel.on("messageAdded", this.messageAdded);
@@ -166,9 +166,9 @@ export class UsersChatComponent extends Component {
                 <FaCircle size={9} className="mr-1" /> دردشة للجميع
               </h6>
               <div
-                className="media chat-item pb-3 d-flex align-items-center"
+                className="media chat-item pb-3 d-flex align-items-center clickable"
                 onClick={() =>
-                  this.setPrivateChannel("f175a950-1b89-4d03-866b-8f72f9f7a904")
+                  this.setPrivateChannel("39887e6a-5a3a-4128-9b23-90778d4a27b6")
                 }
               >
                 <img
@@ -188,9 +188,9 @@ export class UsersChatComponent extends Component {
                 </h6>
               </div>
               <div
-                className="media chat-item pb-3 d-flex align-items-center"
+                className="media chat-item pb-3 d-flex align-items-center clickable"
                 onClick={() =>
-                  this.setPrivateChannel("8a381ee6-3051-471d-87b3-96cab630eed9")
+                  this.setPrivateChannel("af6681dc-e256-4474-8d1d-760557c99cb8")
                 }
               >
                 <img

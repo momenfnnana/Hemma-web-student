@@ -19,7 +19,6 @@ const Chat = require("twilio-chat");
 // Use an authentication mechanism to prevent token exposure to 3rd parties.
 
 const accessToken = localStorage.getItem("chatToken");
-
 export class LiveStreamComponent extends Component {
   constructor(props) {
     super(props);
@@ -49,15 +48,12 @@ export class LiveStreamComponent extends Component {
           //   console.log("Member already exists.");
           // } else {
           client.on("channelJoined", function(channel) {
-            console.log("Joined channel " + channel.friendlyName);
+            console.log("Joined channel " + channel.uniqueName);
           });
 
           channel.join().catch(function(err) {
             console.error(
-              "Couldn't join channel " +
-                channel.friendlyName +
-                " because " +
-                err
+              "Couldn't join channel " + channel.uniqueName + " because " + err
             );
           });
           // }

@@ -28,15 +28,20 @@ export class NewInstallmentComponent extends Component {
         zIndex: 2
       }
     };
-    const { handleSubmit, submitting } = this.props;
+    const {
+      isInstallmentOpen,
+      closeInstallmentModal,
+      handleSubmit,
+      submitting
+    } = this.props;
 
     return (
       <React.Fragment>
         <Modal
           style={customStyles}
           ariaHideApp={false}
-          isOpen={this.props.modalIsOpen}
-          onRequestClose={this.props.onClose}
+          isOpen={isInstallmentOpen}
+          onRequestClose={closeInstallmentModal}
         >
           <div className="container h-100 d-flex align-items-center">
             <div className="row">

@@ -42,6 +42,7 @@ import { Booklet } from "./components/account/subscriptions/booklet";
 import { LiveStream } from "./components/account/subscriptions/live-stream";
 import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
 import NotFound from "./components/shared/not-found/not-found";
+import { apiBaseUrl } from "./api/helpers";
 
 import requireAuth from "./components/shared/authentication/require-auth";
 import { UsersChatComponent } from "./components/account/subscriptions/chat";
@@ -102,13 +103,24 @@ AppBackground = withRouter(AppBackground);
 class App extends Component {
   state = {};
   async componentDidMount() {
-    let data = {
-      id: this.state.user && this.state.user.uid
+    try {
+      const jwt = await localStorage.getItem("token");
+      const user = jwtDecode(jwt);
+      this.setState({ user });
+    } catch (ex) {}
+
+    let token = localStorage.getItem("token");
+    let data = {};
+    let headers = {
+      Authorization: `Bearer ${token}`
     };
     await axios
-      .post("https://twilio-chat-app.herokuapp.com/token", data)
+      .post(`${apiBaseUrl}/auth/twilio/token`, data, {
+        headers
+      })
       .then(response => {
-        localStorage.setItem("chatToken", response.data.token);
+        localStorage.setItem("chatToken", response.data.data.token);
+        console.log(response);
       })
       .catch(error => {
         console.log(error);
