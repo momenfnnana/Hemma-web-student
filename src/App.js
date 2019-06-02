@@ -99,15 +99,7 @@ class AppBackground extends Component {
 AppBackground = withRouter(AppBackground);
 
 export default class AppComponent extends Component {
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.authenticated && this.props.authenticated) {
-      this.props.getUser();
-    }
-  }
   async componentDidMount() {
-    if (this.props.authenticated) {
-      this.props.getUser();
-    }
     let token = localStorage.getItem("token");
     let data = {};
     let headers = {
@@ -168,7 +160,7 @@ export default class AppComponent extends Component {
                     />
                     <Route
                       path="/account/reset-password"
-                      component={AccountReset}
+                      component={requireAuth(AccountReset)}
                     />
                     <Route
                       path="/course/details/:id"
@@ -184,7 +176,7 @@ export default class AppComponent extends Component {
                       path="/account/subscriptions"
                       component={requireAuth(Subscriptions)}
                     />
-                    <Route
+                    {/* <Route
                       path="/subscriptions/details"
                       component={SubscriptionDetails}
                     />
@@ -216,7 +208,7 @@ export default class AppComponent extends Component {
                       path="/subscriptions/details/speed-up"
                       component={SpeedUp}
                     />
-                    <Route path="/live-stream" component={LiveStream} />
+                    <Route path="/live-stream" component={LiveStream} /> */}
                     <Route path="/not-found" component={NotFound} />
                     <Redirect from="/" exact to="/home" />
                     <Redirect to="/not-found" />
