@@ -61,6 +61,11 @@
         app_id: APP_ID
         //Website visitor so may not have any user related info
       });
+
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("openIntercom") === "true") {
+        window.Intercom("show");
+      }
     </script>
   </head>
   <body>
