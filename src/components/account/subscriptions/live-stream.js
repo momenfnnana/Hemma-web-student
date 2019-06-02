@@ -14,11 +14,8 @@ import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
 
 const Chat = require("twilio-chat");
-
-// Make a secure request to your backend to retrieve an access token.
-// Use an authentication mechanism to prevent token exposure to 3rd parties.
-
 const accessToken = localStorage.getItem("chatToken");
+
 export class LiveStreamComponent extends Component {
   constructor(props) {
     super(props);

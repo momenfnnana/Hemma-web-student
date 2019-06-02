@@ -1,13 +1,10 @@
 import React, { Component } from "react";
 import "./App.sass";
-import jwtDecode from "jwt-decode";
 import axios from "axios";
 
 import { Header } from "./components/shared/header/header";
 import { Footer } from "./components/shared/footer/footer";
-
 import { Auth } from "./components/auth/auth";
-
 import {
   BrowserRouter,
   Route,
@@ -44,9 +41,9 @@ import { TransactionsList } from "./components/account/subscriptions/transaction
 import NotFound from "./components/shared/not-found/not-found";
 import { apiBaseUrl } from "./api/helpers";
 import { SpeedUp } from "./components/account/subscriptions/speed-up";
-
-import requireAuth from "./components/shared/authentication/require-auth";
 import { UsersChatComponent } from "./components/account/subscriptions/chat";
+import requireAuth from "./components/shared/authentication/require-auth";
+import Intercom from "./Intercom";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -101,15 +98,16 @@ class AppBackground extends Component {
 
 AppBackground = withRouter(AppBackground);
 
-class App extends Component {
-  state = {};
+export default class AppComponent extends Component {
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.authenticated && this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
   async componentDidMount() {
-    try {
-      const jwt = await localStorage.getItem("token");
-      const user = jwtDecode(jwt);
-      this.setState({ user });
-    } catch (ex) {}
-
+    if (this.props.authenticated) {
+      this.props.getUser();
+    }
     let token = localStorage.getItem("token");
     let data = {};
     let headers = {
@@ -121,15 +119,27 @@ class App extends Component {
       })
       .then(response => {
         localStorage.setItem("chatToken", response.data.data.token);
-        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    await axios
+      .post(`${apiBaseUrl}/auth/intercom/token`, data, {
+        headers
+      })
+      .then(response => {
+        localStorage.setItem("intercomToken", response.data.data.token);
       })
       .catch(error => {
         console.log(error);
       });
   }
+
   render() {
     return (
       <Provider store={store}>
+        <Intercom />
         <React.Fragment>
           <div>
             <BrowserRouter>
@@ -221,5 +231,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;

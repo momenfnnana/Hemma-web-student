@@ -3,15 +3,10 @@ import "./styles.sass";
 import { FaCircle } from "react-icons/fa";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { getProfile } from "../../../actions";
-import jwtDecode from "jwt-decode";
-import axios from "axios";
+import { getUser } from "../../../actions/user.actions";
 
 const Chat = require("twilio-chat");
 const accessToken = localStorage.getItem("chatToken");
-
-// const myIdentity = "8a381ee6-3051-471d-87b3-96cab630eed9";
-// const pairIdentity = "f175a950-1b89-4d03-866b-8f72f9f7a904";
 
 export class UsersChatComponent extends Component {
   constructor(props) {
@@ -28,13 +23,19 @@ export class UsersChatComponent extends Component {
   }
 
   async componentDidMount() {
-    this.props.getProfile();
+    if (this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.authenticated && this.props.authenticated) {
+      this.props.getUser();
+    }
   }
 
   async setPrivateChannel(pairIdentity) {
-    let token = localStorage.getItem("token");
-    let myIdentity = jwtDecode(token);
-    myIdentity = myIdentity.uid;
+    let myIdentity = this.props.user && this.props.user.id;
     let privateChannelName =
       myIdentity < pairIdentity
         ? pairIdentity + "_" + myIdentity
@@ -110,9 +111,8 @@ export class UsersChatComponent extends Component {
 
   renderMessages() {
     const messages = this.state.messages;
-    let token = localStorage.getItem("token");
-    let myIdentity = jwtDecode(token);
-    myIdentity = myIdentity.uid;
+    let myIdentity = this.props.user && this.props.user.id;
+
     return messages.map(message => (
       <React.Fragment>
         {message.author == myIdentity ? (
@@ -291,14 +291,14 @@ export class UsersChatComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    initialValues: state.profile,
-    entireState: state
+    authenticated: state.auth.authenticated,
+    user: state.user
   };
 }
 
 UsersChatComponent = connect(
   mapStateToProps,
-  { getProfile }
+  { getUser }
 )(UsersChatComponent);
 
 export const UsersChat = withRouter(UsersChatComponent);
