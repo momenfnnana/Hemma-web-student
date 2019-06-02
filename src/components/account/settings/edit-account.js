@@ -11,13 +11,7 @@ import { FaRegUser } from "react-icons/fa";
 import { getProfile } from "../../../actions";
 import { FaRegEnvelope } from "react-icons/fa";
 import { apiBaseUrl } from "../../../api/helpers";
-import {
-  Tooltip,
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverBody
-} from "reactstrap";
+import { Tooltip } from "reactstrap";
 
 const validate = values => {
   const errors = {};
@@ -40,20 +34,20 @@ class EditAccountComponent extends Component {
     this.togglePhone = this.togglePhone.bind(this);
     this.toggleEmail = this.toggleEmail.bind(this);
     this.state = {
-      phonePopover: false,
-      emailPopover: false
+      phoneTooltip: false,
+      emailTooltip: false
     };
   }
 
   togglePhone() {
     this.setState({
-      phonePopover: !this.state.phonePopover
+      phoneTooltip: !this.state.phoneTooltip
     });
   }
 
   toggleEmail() {
     this.setState({
-      emailPopover: !this.state.emailPopover
+      emailTooltip: !this.state.emailTooltip
     });
   }
 
@@ -151,21 +145,25 @@ class EditAccountComponent extends Component {
                             width="100%"
                             width="20"
                             className="position-absolute right-input-icon"
-                            id="phone-popover"
+                            id="phone-tooltip"
                           />
-                          <Popover
+                          <Tooltip
                             placement="right"
-                            isOpen={this.state.popoverOpen}
-                            target="phone-popover"
+                            isOpen={this.state.phoneTooltip}
+                            target="phone-tooltip"
                             toggle={this.togglePhone}
+                            style={{
+                              backgroundColor: "#f2fdfe",
+                              color: "#4b3a85",
+                              height: 35,
+                              display: "flex",
+                              alignItems: "center"
+                            }}
                           >
-                            <PopoverHeader>Popover Title</PopoverHeader>
-                            <PopoverBody>
-                              Sed posuere consectetur est at lobortis. Aenean eu
-                              leo quam. Pellentesque ornare sem lacinia quam
-                              venenatis vestibulum.
-                            </PopoverBody>
-                          </Popover>
+                            <h6 className="light-font-text small mb-0">
+                              رقم الهاتف غير محقق
+                            </h6>
+                          </Tooltip>
                         </React.Fragment>
                       ) : null}
                     </div>
@@ -237,21 +235,25 @@ class EditAccountComponent extends Component {
                             width="100%"
                             width="20"
                             className="position-absolute left-input-icon"
-                            id="email-popover"
+                            id="email-tooltip"
                           />
-                          <Popover
+                          <Tooltip
                             placement="left"
-                            isOpen={this.state.emailPopover}
-                            target="email-popover"
+                            isOpen={this.state.emailTooltip}
+                            target="email-tooltip"
                             toggle={this.toggleEmail}
+                            style={{
+                              backgroundColor: "#f2fdfe",
+                              color: "#4b3a85",
+                              height: 35,
+                              display: "flex",
+                              alignItems: "center"
+                            }}
                           >
-                            <PopoverHeader>Popover Title</PopoverHeader>
-                            <PopoverBody>
-                              Sed posuere consectetur est at lobortis. Aenean eu
-                              leo quam. Pellentesque ornare sem lacinia quam
-                              venenatis vestibulum.
-                            </PopoverBody>
-                          </Popover>
+                            <h6 className="light-font-text small mb-0">
+                              البريد الإلكتروني غير محقق
+                            </h6>
+                          </Tooltip>
                         </React.Fragment>
                       ) : null}
                     </div>

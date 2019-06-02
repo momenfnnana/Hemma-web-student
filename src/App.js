@@ -105,16 +105,16 @@ export default class AppComponent extends Component {
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    await axios
-      .post(`${apiBaseUrl}/auth/twilio/token`, data, {
-        headers
-      })
-      .then(response => {
-        localStorage.setItem("chatToken", response.data.data.token);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    // await axios
+    //   .post(`${apiBaseUrl}/auth/twilio/token`, data, {
+    //     headers
+    //   })
+    //   .then(response => {
+    //     localStorage.setItem("chatToken", response.data.data.token);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
 
     await axios
       .post(`${apiBaseUrl}/auth/intercom/token`, data, {
