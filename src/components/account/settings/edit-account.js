@@ -18,6 +18,11 @@ import {
   PopoverHeader,
   PopoverBody
 } from "reactstrap";
+import { ResetEmail } from "./reset/email/EmailModal";
+import { emailField } from "../../shared/inputs/emailField";
+import { ResetPhone } from "./reset/phone/ResetPhone";
+import { EmailToken } from "./reset/email/EmailToken";
+import { PhoneToken } from "./reset/phone/PhoneToken";
 
 const validate = values => {
   const errors = {};
@@ -41,7 +46,11 @@ class EditAccountComponent extends Component {
     this.toggleEmail = this.toggleEmail.bind(this);
     this.state = {
       phonePopover: false,
-      emailPopover: false
+      emailPopover: false,
+      isResetEmailOpen: false,
+      isResetPhoneOpen: false,
+      isEmailTokenOpen: false,
+      isPhoneTokenOpen: false
     };
   }
 
@@ -56,6 +65,34 @@ class EditAccountComponent extends Component {
       emailPopover: !this.state.emailPopover
     });
   }
+
+  openEmailModal = () => {
+    this.setState({ isResetEmailOpen: true });
+  };
+  closeEmailModal = () => {
+    this.setState({ isResetEmailOpen: false });
+  };
+
+  openPhoneModal = () => {
+    this.setState({ isResetPhoneOpen: true });
+  };
+  closePhoneModal = () => {
+    this.setState({ isResetPhoneOpen: false });
+  };
+
+  openPhoneTokenModal = () => {
+    this.setState({ isPhoneTokenOpen: true, phonePopover: false });
+  };
+  closePhoneTokenModal = () => {
+    this.setState({ isPhoneTokenOpen: false });
+  };
+
+  openEmailTokenModal = () => {
+    this.setState({ isEmailTokenOpen: true, emailPopover: false });
+  };
+  closeEmailTokenModal = () => {
+    this.setState({ isEmailTokenOpen: false });
+  };
 
   componentDidMount() {
     this.props.getProfile();
@@ -92,6 +129,49 @@ class EditAccountComponent extends Component {
       });
   };
 
+  verifyEmail = values => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      email: values.email
+    };
+    axios
+      .post(`${apiBaseUrl}/auth/email/send_token`, data, {
+        headers
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({ isEmailTokenOpen: true, emailPopover: false });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  verifyPhone = values => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      countryCode: values.phoneNumber && values.phoneNumber.countryCode,
+      phoneNumber: values.phoneNumber && values.phoneNumber.phoneNumber
+    };
+    axios
+      .post(`${apiBaseUrl}/auth/phone/send_token`, data, {
+        headers
+      })
+      .then(response => {
+        console.log(response);
+        this.setState({ isPhoneTokenOpen: true, phonePopover: false });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
     let avatarImg;
@@ -116,7 +196,7 @@ class EditAccountComponent extends Component {
                   <img src={avatarImg} height="110" className="mb-4" />
 
                   <form
-                    className="w-25"
+                    className="w-32"
                     onSubmit={handleSubmit(this.myFormHandler)}
                   >
                     <Field
@@ -140,6 +220,14 @@ class EditAccountComponent extends Component {
                         defaultCountry="sa"
                         disabled={true}
                       />
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/images/edit.png"}
+                        width="20"
+                        width="20"
+                        className="position-absolute edit-input-icon clickable"
+                        onClick={this.openPhoneModal}
+                        onClose={this.closePhoneModal}
+                      />
                       {this.props.initialValues.phoneNumberConfirmed ==
                       false ? (
                         <React.Fragment>
@@ -148,22 +236,28 @@ class EditAccountComponent extends Component {
                               process.env.PUBLIC_URL +
                               "/assets/images/not-verified.png"
                             }
-                            width="100%"
+                            width="20"
                             width="20"
                             className="position-absolute right-input-icon"
                             id="phone-popover"
                           />
+
                           <Popover
                             placement="right"
-                            isOpen={this.state.popoverOpen}
+                            isOpen={this.state.phonePopover}
                             target="phone-popover"
                             toggle={this.togglePhone}
                           >
-                            <PopoverHeader>Popover Title</PopoverHeader>
-                            <PopoverBody>
-                              Sed posuere consectetur est at lobortis. Aenean eu
-                              leo quam. Pellentesque ornare sem lacinia quam
-                              venenatis vestibulum.
+                            <PopoverBody className="d-flex flex-column align-items-center justify-content-center">
+                              <h6 className="dark-text smaller">
+                                رقم الهاتف غير محقق
+                              </h6>
+                              <h6
+                                className="light-text smaller mb-0 clickable"
+                                onClick={this.verifyPhone}
+                              >
+                                <u>تأكيد رقم الهاتف</u>
+                              </h6>
                             </PopoverBody>
                           </Popover>
                         </React.Fragment>
@@ -220,47 +314,80 @@ class EditAccountComponent extends Component {
                       <Field
                         name="email"
                         type="email"
-                        component={inputField}
-                        className="form-control border-left-0 pl-0 ltr-input"
-                        placeholder="البريد الإلكتروني"
+                        component={emailField}
+                        className="form-control border-right-0 pr-0 pr-1 left-radius-0 ltr-input"
+                        // placeholder="البريد الإلكتروني"
                         disabled={true}
                       >
                         <FaRegEnvelope />
                       </Field>
-                      {this.props.initialValues.emailConfirmed == false ? (
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/images/edit.png"}
+                        width="20"
+                        width="20"
+                        className="position-absolute edit-input-icon clickable"
+                        onClick={this.openEmailModal}
+                      />
+                      {this.props.initialValues.emailConfirmed == false &&
+                      this.props.initialValues.email !== undefined ? (
                         <React.Fragment>
                           <img
                             src={
                               process.env.PUBLIC_URL +
                               "/assets/images/not-verified.png"
                             }
-                            width="100%"
                             width="20"
-                            className="position-absolute left-input-icon"
+                            width="20"
+                            className="position-absolute right-input-icon clickable"
                             id="email-popover"
                           />
+
                           <Popover
-                            placement="left"
+                            placement="right"
                             isOpen={this.state.emailPopover}
                             target="email-popover"
                             toggle={this.toggleEmail}
                           >
-                            <PopoverHeader>Popover Title</PopoverHeader>
-                            <PopoverBody>
-                              Sed posuere consectetur est at lobortis. Aenean eu
-                              leo quam. Pellentesque ornare sem lacinia quam
-                              venenatis vestibulum.
+                            <PopoverBody className="d-flex flex-column align-items-center justify-content-center">
+                              <h6 className="dark-text smaller">
+                                البريد الإلكتروني غير محقق
+                              </h6>
+                              <h6
+                                className="light-text smaller mb-0 clickable"
+                                onClick={this.verifyEmail}
+                              >
+                                <u>تأكيد البريد الإلكتروني</u>
+                              </h6>
                             </PopoverBody>
                           </Popover>
                         </React.Fragment>
                       ) : null}
                     </div>
-                    <Link
-                      to="/account/reset-password"
-                      className="light-text smaller"
-                    >
-                      تعديل كلمة المرور
-                    </Link>
+                    <div className="d-flex align-items-center justify-content-center">
+                      <Link
+                        to="/account/reset-password"
+                        className="light-text small"
+                      >
+                        <u>تعديل كلمة المرور</u>
+                      </Link>
+                    </div>
+
+                    <ResetEmail
+                      isResetEmailOpen={this.state.isResetEmailOpen}
+                      closeResetEmailModal={this.closeEmailModal}
+                    />
+                    <ResetPhone
+                      isResetPhoneOpen={this.state.isResetPhoneOpen}
+                      closeResetPhoneModal={this.closePhoneModal}
+                    />
+                    <EmailToken
+                      isEmailTokenOpen={this.state.isEmailTokenOpen}
+                      closeEmailTokenModal={this.closeEmailTokenModal}
+                    />
+                    <PhoneToken
+                      isPhoneTokenOpen={this.state.isPhoneTokenOpen}
+                      closePhoneTokenModal={this.closePhoneTokenModal}
+                    />
                     <button
                       type="submit"
                       className="btn dark-outline-btn w-100 mt-3"
@@ -290,7 +417,8 @@ EditAccountComponent = reduxForm({
   form: "EditAccount",
   validate,
   enableReinitialize: true,
-  destroyOnUnmount: false
+  destroyOnUnmount: false,
+  fields: ["email"]
 })(EditAccountComponent);
 
 EditAccountComponent = connect(

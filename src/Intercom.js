@@ -7,8 +7,6 @@ const appId = "idpad6q3";
 
 class IntercomComponent extends Component {
   componentDidMount() {
-    console.log("rendering component");
-
     let w = window;
     let ic = w.Intercom;
     if (typeof ic === "function") {
@@ -44,14 +42,12 @@ class IntercomComponent extends Component {
       //Website visitor so may not have any user related info
     });
 
-    const url = new URL(window.location.href);
-    if (url.searchParams.get("support") != "null") {
+    if (window.location.href.indexOf("?support") > 0) {
       window.Intercom("show");
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("updated props", prevProps, this.props);
     if (!prevProps.user && this.props.user) {
       // user logged in
       window.Intercom("update", {
