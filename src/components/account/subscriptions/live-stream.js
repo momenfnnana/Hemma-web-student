@@ -128,9 +128,7 @@ export class LiveStreamComponent extends Component {
       <React.Fragment>
         <div className="chat-message" ref={this.newMessageAdded}>
           <div className="d-flex align-items-center">
-            <h6 className="mid-text smaller mt-0 mb-0">
-              {this.props.initialValues.name}
-            </h6>
+            <h6 className="mid-text smaller mt-0 mb-0">{message.author}</h6>
           </div>
 
           <div className="speech-bubble">

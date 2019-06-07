@@ -28,12 +28,42 @@ export class UsersChatComponent extends Component {
     if (this.props.authenticated) {
       this.props.getUser();
     }
+    await this.initiateGeneralChat();
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.authenticated && this.props.authenticated) {
       this.props.getUser();
     }
+  }
+
+  async initiateGeneralChat() {
+    await Chat.Client.create(accessToken).then(client => {
+      client
+        .getChannelByUniqueName("general")
+        .then(channel => {
+          client.on("channelJoined", function(channel) {
+            console.log("Joined channel " + channel.uniqueName);
+          });
+
+          channel.join().catch(function(err) {
+            console.error(
+              "Couldn't join channel " + channel.uniqueName + " because " + err
+            );
+          });
+
+          channel.getMessages().then(messages => {
+            const totalMessages = messages.items.length;
+            for (let i = 0; i < totalMessages; i++) {
+              const channelMessages = messages.items;
+              this.setState({ messages: channelMessages });
+            }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
   }
 
   async setPrivateChannel(pairIdentity) {
@@ -191,16 +221,21 @@ export class UsersChatComponent extends Component {
         </div>
         <div className="box-layout shadow-sm w-100">
           <div className="row no-gutters">
-            <div className="col-md-4 p-3 border-right">
-              <input
-                className="form-control small light-font-text"
-                placeholder="ابحث هنا"
-              />
-              <h6 className="light-text small h-55 d-flex align-items-center mb-1 mt-1">
+            <div className="chat-sidebar col-md-4 border-right">
+              <div className="p-3">
+                <input
+                  className="form-control small light-font-text"
+                  placeholder="ابحث هنا"
+                />
+              </div>
+              <h6
+                className="media chat-item pb-2 pt-2 d-flex align-items-center clickable light-text small"
+                onClick={() => this.initiateGeneralChat()}
+              >
                 <FaCircle size={9} className="mr-1" /> دردشة للجميع
               </h6>
               <div
-                className="media chat-item pb-3 d-flex align-items-center clickable"
+                className="media chat-item d-flex align-items-center clickable h-55 mb-1"
                 onClick={() =>
                   this.setPrivateChannel("6564b837-4d94-4f2e-b962-38366be16671")
                 }
@@ -217,12 +252,9 @@ export class UsersChatComponent extends Component {
                   <h6 className="small mid-text mb-1">أنس جوابرة</h6>
                   <h6 className="dark-silver-text smaller mb-0">مشرف</h6>
                 </div>
-                <h6 className="smaller dark-silver-text en-text mb-0 align-self-start">
-                  May, 9
-                </h6>
               </div>
               <div
-                className="media chat-item pb-3 d-flex align-items-center clickable"
+                className="media chat-item d-flex align-items-center clickable h-55 mb-1"
                 onClick={() =>
                   this.setPrivateChannel("1ba72576-7b7f-4c18-87a3-31df28a30ce4")
                 }
@@ -239,9 +271,6 @@ export class UsersChatComponent extends Component {
                   <h6 className="small mid-text mb-1">ساره أبو التين</h6>
                   <h6 className="dark-silver-text smaller mb-0">مدرب</h6>
                 </div>
-                <h6 className="smaller dark-silver-text en-text mb-0 align-self-start">
-                  May, 9
-                </h6>
               </div>
             </div>
             <div className="col-md-8">
