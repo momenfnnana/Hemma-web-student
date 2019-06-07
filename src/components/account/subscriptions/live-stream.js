@@ -536,7 +536,7 @@ export class LiveStreamComponent extends Component {
               <div className="col-md-9 col-12">
                 <div className="box-layout mb-3">
                   <iframe
-                    src="http://localhost:3000/webinar.html"
+                    src="https://staging.hemma.sa/webinar.html"
                     width="100%"
                     height="600"
                     frameBorder="0"

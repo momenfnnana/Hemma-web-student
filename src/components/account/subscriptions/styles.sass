@@ -162,18 +162,28 @@
     padding: 15px
     .input-chat
       position: relative
-      input
-        height: 50px
+      textarea
+        padding-right: 100px
+      .light-btn
+        position: absolute
+        top: 10px
+        left: 10px  
     .options
       position: absolute
       top: 14px
-      left: 5px
+      right: 5px
       li
         width: 20px
         margin-left: 10px
         text-align: center
 
-
+.emoji-mart-scroll
+  border-bottom: 0
+  margin-bottom: 6px
+  + .emoji-mart-bar
+    display: none
+.emoji-mart-search 
+  display: none     
 @media only screen and (max-width: 767px)                          
     .responsive-margin
       margin-top: 15px

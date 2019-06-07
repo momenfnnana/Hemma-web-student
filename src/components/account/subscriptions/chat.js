@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import "./styles.sass";
 import { FaCircle } from "react-icons/fa";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../actions/user.actions";
+import "emoji-mart/css/emoji-mart.css";
+import { Picker } from "emoji-mart";
+import "./styles.sass";
 
 const Chat = require("twilio-chat");
 const accessToken = localStorage.getItem("chatToken");
@@ -16,9 +18,9 @@ export class UsersChatComponent extends Component {
       newMessage: "",
       messages: [],
       generalChannel: "",
-      privateChannel: ""
+      privateChannel: "",
+      showEmojis: false
     };
-
     this.sendMessage = this.sendMessage.bind(this);
   }
 
@@ -36,11 +38,14 @@ export class UsersChatComponent extends Component {
 
   async setPrivateChannel(pairIdentity) {
     let myIdentity = this.props.user && this.props.user.id;
+    console.log("My identity is ", myIdentity);
     let privateChannelName =
       myIdentity < pairIdentity
         ? pairIdentity + "_" + myIdentity
         : myIdentity + "_" + pairIdentity;
     await this.setState({ privateChannel: privateChannelName });
+    console.log("Private channel is ", this.state.privateChannel);
+    console.log("Pair identity is ", pairIdentity);
     this.initiateChat(pairIdentity);
   }
 
@@ -49,7 +54,10 @@ export class UsersChatComponent extends Component {
       client
         .getChannelByUniqueName(this.state.privateChannel)
         .then(channel => {
+          console.log("Channel is ", channel);
+          channel.join();
           channel.on("channelInvited", function(channel) {
+            console.log("Joined channel ", channel);
             channel.join();
           });
           channel.getMessages().then(messages => {
@@ -61,6 +69,8 @@ export class UsersChatComponent extends Component {
           });
         })
         .catch(err => {
+          console.log("Error ", err);
+
           client
             .createChannel({
               uniqueName: this.state.privateChannel
@@ -68,9 +78,10 @@ export class UsersChatComponent extends Component {
             .then(function joinChannel(channel) {
               channel.join();
               channel.invite(pairIdentity);
+              console.log("Created hannel is ", channel);
             })
             .catch(error => {
-              console.log(error);
+              console.log("Creating error", error);
             });
         });
     });
@@ -78,6 +89,29 @@ export class UsersChatComponent extends Component {
 
   onMessageChanged = event => {
     this.setState({ newMessage: event.target.value });
+  };
+
+  showEmojis = () => {
+    this.setState(prevState => ({
+      showEmojis: !prevState.showEmojis
+    }));
+  };
+
+  addEmoji = e => {
+    if (e.unified.length <= 5) {
+      let emojiPic = String.fromCodePoint(`0x${e.unified}`);
+      this.setState({
+        newMessage: this.state.newMessage + emojiPic
+      });
+    } else {
+      let sym = e.unified.split("-");
+      let codesArray = [];
+      sym.forEach(el => codesArray.push("0x" + el));
+      let emojiPic = String.fromCodePoint(...codesArray);
+      this.setState({
+        newMessage: this.state.newMessage + emojiPic
+      });
+    }
   };
 
   sendMessage = event => {
@@ -168,7 +202,7 @@ export class UsersChatComponent extends Component {
               <div
                 className="media chat-item pb-3 d-flex align-items-center clickable"
                 onClick={() =>
-                  this.setPrivateChannel("39887e6a-5a3a-4128-9b23-90778d4a27b6")
+                  this.setPrivateChannel("6564b837-4d94-4f2e-b962-38366be16671")
                 }
               >
                 <img
@@ -190,7 +224,7 @@ export class UsersChatComponent extends Component {
               <div
                 className="media chat-item pb-3 d-flex align-items-center clickable"
                 onClick={() =>
-                  this.setPrivateChannel("af6681dc-e256-4474-8d1d-760557c99cb8")
+                  this.setPrivateChannel("1ba72576-7b7f-4c18-87a3-31df28a30ce4")
                 }
               >
                 <img
@@ -231,8 +265,7 @@ export class UsersChatComponent extends Component {
                 <div className="chat-message">
                   <form onSubmit={this.sendMessage}>
                     <div className="input-chat">
-                      <input
-                        placeholder="اكتب هنا"
+                      <textarea
                         className="form-control light-font-text small"
                         type="text"
                         name="message"
@@ -240,6 +273,9 @@ export class UsersChatComponent extends Component {
                         onChange={this.onMessageChanged}
                         value={this.state.newMessage}
                       />
+                      <button type="submit" className="btn light-btn">
+                        أرسل
+                      </button>
                       <div className="options">
                         <ul className="list-unstyled list-inline mb-0">
                           <li className="list-inline-item">
@@ -264,7 +300,10 @@ export class UsersChatComponent extends Component {
                               className="contain-img"
                             />
                           </li>
-                          <li className="list-inline-item">
+                          <li
+                            className="list-inline-item clickable"
+                            onClick={this.showEmojis}
+                          >
                             <img
                               src={
                                 process.env.PUBLIC_URL +
@@ -276,6 +315,16 @@ export class UsersChatComponent extends Component {
                             />
                           </li>
                         </ul>
+                        {this.state.showEmojis ? (
+                          <Picker
+                            style={{
+                              position: "absolute",
+                              bottom: "40px",
+                              right: "-5px"
+                            }}
+                            onSelect={this.addEmoji}
+                          />
+                        ) : null}
                       </div>
                     </div>
                   </form>
