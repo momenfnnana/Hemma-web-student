@@ -36,7 +36,7 @@ class AgreementFormComponent extends Component {
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
         width: "50%",
-        height: "65%",
+        height: "auto",
         borderWidth: 0
       },
       overlay: {
@@ -53,7 +53,7 @@ class AgreementFormComponent extends Component {
           isOpen={this.props.modalIsOpen}
           onRequestClose={this.props.onClose}
         >
-          <div className="container pt-3">
+          <div className="container pt-3 pb-3">
             <div className="row">
               <div className="col-12">
                 <h6 className="light-text">الشروط والأحكام</h6>
@@ -68,8 +68,7 @@ class AgreementFormComponent extends Component {
                     بحساب واحد
                   </p>
                   <p className="light-font-text dark-text smaller">
-                    ٢- لايُسمح لأي مشترك دخول الحساب في أكثر من جهاز ( في حال تم
-                    ذلك يُحذف الحساب تلقائي)
+                    ٢- يمنع دخول أكثر من شخص أو أكثر من مستفيد إلى الحساب
                   </p>
                   <p className="light-font-text dark-text smaller">
                     ٣- الدورة online تتطلب وجود اتصال ممتاز ، ولانتحمل مسوؤلية

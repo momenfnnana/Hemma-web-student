@@ -12,6 +12,8 @@ import ReactPlayer from "react-player";
 import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
 import { apiBaseUrl } from "../../api/helpers";
+var moment = require("moment-hijri");
+moment().format("iYYYY/iM/iD");
 
 export class CourseDetails extends Component {
   constructor(props) {
@@ -248,7 +250,8 @@ export class CourseDetails extends Component {
     var day = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
-    var courseDate = day + "-" + month + "-" + year;
+    var courseDate = year + "-" + month + "-" + day;
+    var hijriDate = moment(courseDate).format("iYYYY/iM/iD");
 
     return (
       <React.Fragment>
@@ -361,7 +364,7 @@ export class CourseDetails extends Component {
                             className="mr-2"
                             height="15"
                           />{" "}
-                          <span className="en-text">{courseDate}</span>
+                          <span className="en-text">{hijriDate}</span>
                         </li>
                       ) : null}
 

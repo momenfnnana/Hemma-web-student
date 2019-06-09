@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import "./styles.sass";
 import { Link } from "react-router-dom";
+var moment = require("moment-hijri");
+moment().format("iYYYY/iM/iD");
 
 export class Card extends Component {
   render() {
@@ -9,7 +11,8 @@ export class Card extends Component {
     var day = date.getDate();
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
-    var courseDate = day + "-" + month + "-" + year;
+    var courseDate = year + "-" + month + "-" + day;
+    var hijriDate = moment(courseDate).format("iYYYY/iM/iD");
 
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
@@ -64,7 +67,7 @@ export class Card extends Component {
                     width="12"
                     className="mr-1"
                   />
-                  <span className="en-text">{courseDate}</span>
+                  <span className="en-text">{hijriDate}</span>{" "}
                 </li>
                 <li className="list-inline-item light-font-text small dark-text d-inline-flex align-items-center float-right">
                   <span className="en-text mr-1">
