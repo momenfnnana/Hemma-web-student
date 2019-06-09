@@ -157,6 +157,19 @@ export class UsersChatComponent extends Component {
     });
   };
 
+  sendGeneralMessage = event => {
+    event.preventDefault();
+    const message = this.state.newMessage;
+    this.setState({ newMessage: "" });
+    Chat.Client.create(accessToken).then(client => {
+      client.getChannelByUniqueName("general").then(channel => {
+        channel.sendMessage(message);
+        channel.getMessages().then(this.messagesLoaded);
+        channel.on("messageAdded", this.messageAdded);
+      });
+    });
+  };
+
   newMessageAdded = li => {
     if (li) {
       li.scrollIntoView();
@@ -292,71 +305,139 @@ export class UsersChatComponent extends Component {
                 </div>
 
                 <div className="chat-message">
-                  <form onSubmit={this.sendMessage}>
-                    <div className="input-chat">
-                      <textarea
-                        className="form-control light-font-text small"
-                        type="text"
-                        name="message"
-                        id="message"
-                        onChange={this.onMessageChanged}
-                        value={this.state.newMessage}
-                      />
-                      <button type="submit" className="btn light-btn">
-                        أرسل
-                      </button>
-                      <div className="options">
-                        <ul className="list-unstyled list-inline mb-0">
-                          <li className="list-inline-item">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/record.png"
-                              }
-                              alt="Record"
-                              height="20"
-                              className="contain-img"
+                  {this.state.privateChannel == "" ? (
+                    <form onSubmit={this.sendGeneralMessage}>
+                      <div className="input-chat">
+                        <textarea
+                          className="form-control light-font-text small"
+                          type="text"
+                          name="message"
+                          id="message"
+                          onChange={this.onMessageChanged}
+                          value={this.state.newMessage}
+                        />
+                        <button type="submit" className="btn light-btn">
+                          أرسل
+                        </button>
+                        <div className="options">
+                          <ul className="list-unstyled list-inline mb-0">
+                            <li className="list-inline-item">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/record.png"
+                                }
+                                alt="Record"
+                                height="20"
+                                className="contain-img"
+                              />
+                            </li>
+                            <li className="list-inline-item">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/attachment.png"
+                                }
+                                alt="Attach"
+                                height="20"
+                                className="contain-img"
+                              />
+                            </li>
+                            <li
+                              className="list-inline-item clickable"
+                              onClick={this.showEmojis}
+                            >
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/emoji.png"
+                                }
+                                alt="Emojis"
+                                height="20"
+                                className="contain-img"
+                              />
+                            </li>
+                          </ul>
+                          {this.state.showEmojis ? (
+                            <Picker
+                              style={{
+                                position: "absolute",
+                                bottom: "40px",
+                                right: "-5px"
+                              }}
+                              onSelect={this.addEmoji}
                             />
-                          </li>
-                          <li className="list-inline-item">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/attachment.png"
-                              }
-                              alt="Attach"
-                              height="20"
-                              className="contain-img"
-                            />
-                          </li>
-                          <li
-                            className="list-inline-item clickable"
-                            onClick={this.showEmojis}
-                          >
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/emoji.png"
-                              }
-                              alt="Emojis"
-                              height="20"
-                              className="contain-img"
-                            />
-                          </li>
-                        </ul>
-                        {this.state.showEmojis ? (
-                          <Picker
-                            style={{
-                              position: "absolute",
-                              bottom: "40px",
-                              right: "-5px"
-                            }}
-                            onSelect={this.addEmoji}
-                          />
-                        ) : null}
+                          ) : null}
+                        </div>
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  ) : (
+                    <form onSubmit={this.sendMessage}>
+                      <div className="input-chat">
+                        <textarea
+                          className="form-control light-font-text small"
+                          type="text"
+                          name="message"
+                          id="message"
+                          onChange={this.onMessageChanged}
+                          value={this.state.newMessage}
+                        />
+                        <button type="submit" className="btn light-btn">
+                          أرسل
+                        </button>
+                        <div className="options">
+                          <ul className="list-unstyled list-inline mb-0">
+                            <li className="list-inline-item">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/record.png"
+                                }
+                                alt="Record"
+                                height="20"
+                                className="contain-img"
+                              />
+                            </li>
+                            <li className="list-inline-item">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/attachment.png"
+                                }
+                                alt="Attach"
+                                height="20"
+                                className="contain-img"
+                              />
+                            </li>
+                            <li
+                              className="list-inline-item clickable"
+                              onClick={this.showEmojis}
+                            >
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/emoji.png"
+                                }
+                                alt="Emojis"
+                                height="20"
+                                className="contain-img"
+                              />
+                            </li>
+                          </ul>
+                          {this.state.showEmojis ? (
+                            <Picker
+                              style={{
+                                position: "absolute",
+                                bottom: "40px",
+                                right: "-5px"
+                              }}
+                              onSelect={this.addEmoji}
+                            />
+                          ) : null}
+                        </div>
+                      </div>
+                    </form>
+                  )}
                 </div>
               </div>
             </div>
