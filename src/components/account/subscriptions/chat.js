@@ -3,9 +3,11 @@ import { FaCircle } from "react-icons/fa";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../actions/user.actions";
+import { getChatToken } from "../../../actions/twilio.actions";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker } from "emoji-mart";
 import "./styles.sass";
+import firebase from "firebase";
 
 const Chat = require("twilio-chat");
 const accessToken = localStorage.getItem("chatToken");
@@ -27,8 +29,8 @@ export class UsersChatComponent extends Component {
   async componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
+      this.props.getChatToken().then(() => this.initiateGeneralChat());
     }
-    await this.initiateGeneralChat();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -38,32 +40,63 @@ export class UsersChatComponent extends Component {
   }
 
   async initiateGeneralChat() {
-    await Chat.Client.create(accessToken).then(client => {
-      client
-        .getChannelByUniqueName("general")
-        .then(channel => {
-          client.on("channelJoined", function(channel) {
-            console.log("Joined channel " + channel.uniqueName);
-          });
+    const client = await this.props.twilio.chatClient;
+    client
+      .getChannelByUniqueName("general")
+      .then(channel => {
+        client.on("channelJoined", function(channel) {
+          console.log("Joined channel " + channel.uniqueName);
+        });
 
-          channel.join().catch(function(err) {
-            console.error(
-              "Couldn't join channel " + channel.uniqueName + " because " + err
-            );
-          });
+        channel.join().catch(function(err) {
+          console.error(
+            "Couldn't join channel " + channel.uniqueName + " because " + err
+          );
+        });
 
-          channel.getMessages().then(messages => {
-            const totalMessages = messages.items.length;
-            for (let i = 0; i < totalMessages; i++) {
-              const channelMessages = messages.items;
-              this.setState({ messages: channelMessages });
-            }
-          });
+        channel.getMessages().then(messages => {
+          const totalMessages = messages.items.length;
+          for (let i = 0; i < totalMessages; i++) {
+            const channelMessages = messages.items;
+            this.setState({ messages: channelMessages });
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    if (firebase && firebase.messaging()) {
+      // requesting permission to use push notifications
+      firebase
+        .messaging()
+        .requestPermission()
+        .then(() => {
+          // getting FCM token
+          firebase
+            .messaging()
+            .getToken()
+            .then(fcmToken => {
+              // continue with Step 7 here
+              // passing FCM token to the `chatClientInstance` to register for push notifications
+              client.setPushRegistrationId("fcm", fcmToken);
+
+              // registering event listener on new message from firebase to pass it to the Chat SDK for parsing
+              firebase.messaging().onMessage(payload => {
+                client.handlePushNotification(payload);
+              });
+              console.log("registering");
+            })
+            .catch(err => {
+              // can't get token
+            });
         })
         .catch(err => {
-          console.log(err);
+          // can't request permission or permission hasn't been granted to the web app by the user
         });
-    });
+    } else {
+      // no Firebase library imported or Firebase library wasn't correctly initialized
+    }
   }
 
   async setPrivateChannel(pairIdentity) {
@@ -80,7 +113,7 @@ export class UsersChatComponent extends Component {
   }
 
   async initiateChat(pairIdentity) {
-    Chat.Client.create(accessToken).then(client => {
+    this.props.twilio.chatClient.then(client => {
       client
         .getChannelByUniqueName(this.state.privateChannel)
         .then(channel => {
@@ -114,6 +147,38 @@ export class UsersChatComponent extends Component {
               console.log("Creating error", error);
             });
         });
+
+      if (firebase && firebase.messaging()) {
+        // requesting permission to use push notifications
+        firebase
+          .messaging()
+          .requestPermission()
+          .then(() => {
+            // getting FCM token
+            firebase
+              .messaging()
+              .getToken()
+              .then(fcmToken => {
+                // continue with Step 7 here
+                // passing FCM token to the `chatClientInstance` to register for push notifications
+                client.setPushRegistrationId("fcm", fcmToken);
+
+                // registering event listener on new message from firebase to pass it to the Chat SDK for parsing
+                firebase.messaging().onMessage(payload => {
+                  client.handlePushNotification(payload);
+                });
+                console.log("registering");
+              })
+              .catch(err => {
+                // can't get token
+              });
+          })
+          .catch(err => {
+            // can't request permission or permission hasn't been granted to the web app by the user
+          });
+      } else {
+        // no Firebase library imported or Firebase library wasn't correctly initialized
+      }
     });
   }
 
@@ -148,7 +213,7 @@ export class UsersChatComponent extends Component {
     event.preventDefault();
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
-    Chat.Client.create(accessToken).then(client => {
+    this.props.twilio.chatClient.then(client => {
       client.getChannelByUniqueName(this.state.privateChannel).then(channel => {
         channel.sendMessage(message);
         channel.getMessages().then(this.messagesLoaded);
@@ -161,7 +226,7 @@ export class UsersChatComponent extends Component {
     event.preventDefault();
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
-    Chat.Client.create(accessToken).then(client => {
+    this.props.twilio.chatClient.then(client => {
       client.getChannelByUniqueName("general").then(channel => {
         channel.sendMessage(message);
         channel.getMessages().then(this.messagesLoaded);
@@ -172,7 +237,7 @@ export class UsersChatComponent extends Component {
 
   newMessageAdded = li => {
     if (li) {
-      li.scrollIntoView();
+      li.scrollIntoView({ block: "nearest", inline: "start" });
     }
   };
 
@@ -250,7 +315,7 @@ export class UsersChatComponent extends Component {
               <div
                 className="media chat-item d-flex align-items-center clickable h-55 mb-1"
                 onClick={() =>
-                  this.setPrivateChannel("6564b837-4d94-4f2e-b962-38366be16671")
+                  this.setPrivateChannel("39887e6a-5a3a-4128-9b23-90778d4a27b6")
                 }
               >
                 <img
@@ -451,13 +516,14 @@ export class UsersChatComponent extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    user: state.user
+    user: state.user,
+    twilio: state.twilio
   };
 }
 
 UsersChatComponent = connect(
   mapStateToProps,
-  { getUser }
+  { getUser, getChatToken }
 )(UsersChatComponent);
 
 export const UsersChat = withRouter(UsersChatComponent);

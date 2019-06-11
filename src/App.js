@@ -44,6 +44,7 @@ import { SpeedUp } from "./components/account/subscriptions/speed-up";
 import { UsersChatComponent } from "./components/account/subscriptions/chat";
 import requireAuth from "./components/shared/authentication/require-auth";
 import Intercom from "./Intercom";
+import TwilioComponent from "./Twilio";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -99,31 +100,12 @@ class AppBackground extends Component {
 AppBackground = withRouter(AppBackground);
 
 export default class AppComponent extends Component {
-  componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.authenticated && this.props.authenticated) {
-      this.props.getUser();
-    }
-  }
   async componentDidMount() {
-    if (this.props.authenticated) {
-      this.props.getUser();
-    }
     let token = localStorage.getItem("token");
     let data = {};
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    await axios
-      .post(`${apiBaseUrl}/auth/twilio/token`, data, {
-        headers
-      })
-      .then(response => {
-        localStorage.setItem("chatToken", response.data.data.token);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
     await axios
       .post(`${apiBaseUrl}/auth/intercom/token`, data, {
         headers
@@ -140,6 +122,7 @@ export default class AppComponent extends Component {
     return (
       <Provider store={store}>
         <Intercom />
+        <TwilioComponent />
         <React.Fragment>
           <div>
             <BrowserRouter>
