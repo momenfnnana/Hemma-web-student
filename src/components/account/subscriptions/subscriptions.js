@@ -45,7 +45,7 @@ export class SubscriptionsComponent extends Component {
     const subscriptions = this.state.subscriptions || [];
     return subscriptions.map(subscription => (
       <React.Fragment>
-        <Link to="/subscriptions/details/schedule">
+        <Link to={`/subscriptions/${subscription.course.id}`}>
           <div
             className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 clickable"
             // onClick={() =>
@@ -62,9 +62,7 @@ export class SubscriptionsComponent extends Component {
                 width="100"
               />
               <div className="media-body mt-2">
-                <h6 className="mt-0 dark-text">
-                  {subscription.course.nameAr}{" "}
-                </h6>
+                <h6 className="mt-0 dark-text">{subscription.course.nameAr}</h6>
                 <span className="badge blue-status light-font-text">
                   {subscription.subscriptionStatus == "Cancelled"
                     ? "ملغية"

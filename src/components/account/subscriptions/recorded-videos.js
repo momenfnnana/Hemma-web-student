@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./styles.sass";
 import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
 import Vimeo from "@u-wave/react-vimeo";
+import axios from "axios";
+import { apiBaseUrl } from "../../../api/helpers";
 
 const videos = [
   { id: 315172826, name: "الدرس الأول" },
@@ -16,7 +18,8 @@ export class RecordedVideos extends Component {
     this.state = {
       videoIndex: 0,
       volume: 1,
-      paused: false
+      paused: false,
+      details: []
     };
 
     this.handlePause = this.handlePause.bind(this);
@@ -51,7 +54,6 @@ export class RecordedVideos extends Component {
 
   render() {
     const { videoIndex, paused, volume } = this.state;
-
     const video = videos[videoIndex];
     return (
       <React.Fragment>
@@ -67,7 +69,7 @@ export class RecordedVideos extends Component {
           <div className="col-12 mb-4">
             <div className="dark-bg rounded shadow-sm">
               <div className="row no-gutters">
-                <div className="col-3 pt-3 pb-4">
+                {/* <div className="col-3 pt-3 pb-4">
                   <div className="chapter pl-3">
                     <h6 className="smaller light-purple-text">الفصل الأول</h6>
                     <h6 className="text-white">النسبة والتناسب</h6>
@@ -94,8 +96,8 @@ export class RecordedVideos extends Component {
                     ))}
                   </div>
                   <hr className="light-hr" />
-                </div>
-                <div className="col-9">
+                </div> */}
+                <div className="col-12">
                   <Vimeo
                     video={video.id}
                     className="recorded-video"

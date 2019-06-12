@@ -1,9 +1,24 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { getUser } from "../../../../actions/user.actions";
 
-export class Sidebar extends Component {
+export class SidebarComponent extends Component {
+  componentDidMount() {
+    if (this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.authenticated && this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
   render() {
+    const user = this.props.user;
+
     return (
       <React.Fragment>
         <div className="sidebar mb-4">
@@ -15,7 +30,7 @@ export class Sidebar extends Component {
                 className="mr-3 contain-img"
               />
               <div className="d-flex flex-column align-items-center">
-                <h6 className="dark-text mb-0">إبراهيم أحمد</h6>
+                <h6 className="dark-text mb-0"> {user && user.name}</h6>
                 <div className="d-inline-flex">
                   <ul className="list-inline list-unstyled mt-2 mb-0 bordered-list">
                     <li className="list-inline-item">
@@ -48,7 +63,7 @@ export class Sidebar extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to="/subscriptions/details/schedule"
+                  to={`/subscriptions/${this.props.id}/schedule`}
                   activeClassName="active"
                 >
                   <img
@@ -66,7 +81,7 @@ export class Sidebar extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to="/subscriptions/details/recorded-lectures"
+                  to={`/subscriptions/${this.props.id}/recorded-lectures`}
                   activeClassName="active"
                 >
                   <img
@@ -112,7 +127,7 @@ export class Sidebar extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to="/subscriptions/details/booklet"
+                  to={`/subscriptions/${this.props.id}/booklet`}
                   activeClassName="active"
                 >
                   <img
@@ -142,7 +157,7 @@ export class Sidebar extends Component {
               </li>
               <li>
                 <NavLink
-                  to="/subscriptions/details/chat"
+                  to={`/subscriptions/${this.props.id}/chat`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -159,7 +174,7 @@ export class Sidebar extends Component {
               </li>
               <li>
                 <NavLink
-                  to="/subscriptions/details/transactions/list"
+                  to={`/subscriptions/${this.props.id}/transactions/list`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -177,7 +192,7 @@ export class Sidebar extends Component {
               </li>
               <li>
                 <NavLink
-                  to="/subscriptions/details/speed-up"
+                  to={`/subscriptions/${this.props.id}/speed-up`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -206,3 +221,16 @@ export class Sidebar extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+SidebarComponent = connect(
+  mapStateToProps,
+  { getUser }
+)(SidebarComponent);
+
+export const Sidebar = withRouter(SidebarComponent);

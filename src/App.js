@@ -32,16 +32,9 @@ import { Cart, Checkout } from "./components/cart";
 import ScrollToTop from "./components/shared/scroll-to-top/ScrollToTop";
 import { SubscriptionDetails } from "./components/account/subscriptions/subscription-details";
 import { Subscriptions } from "./components/account/subscriptions/subscriptions";
-import { Schedule } from "./components/account/subscriptions/schedule";
-import { RecordedLectures } from "./components/account/subscriptions/recorded-lectures";
-import { RecordedVideos } from "./components/account/subscriptions/recorded-videos";
-import { Booklet } from "./components/account/subscriptions/booklet";
 import { LiveStream } from "./components/account/subscriptions/live-stream";
-import { TransactionsList } from "./components/account/subscriptions/transactions/transactions-list";
 import NotFound from "./components/shared/not-found/not-found";
 import { apiBaseUrl } from "./api/helpers";
-import { SpeedUp } from "./components/account/subscriptions/speed-up";
-import { UsersChatComponent } from "./components/account/subscriptions/chat";
 import requireAuth from "./components/shared/authentication/require-auth";
 import Intercom from "./Intercom";
 import TwilioComponent from "./Twilio";
@@ -167,38 +160,16 @@ export default class AppComponent extends Component {
                       path="/account/subscriptions"
                       component={requireAuth(Subscriptions)}
                     />
-                    <Route
-                      path="/subscriptions/details"
-                      component={SubscriptionDetails}
+                    <Redirect
+                      exact
+                      from="/subscriptions/:id"
+                      to="/subscriptions/:id/schedule"
                     />
                     <Route
-                      path="/subscriptions/details/schedule"
-                      component={Schedule}
+                      path="/subscriptions/:id"
+                      component={requireAuth(SubscriptionDetails)}
                     />
-                    <Route
-                      path="/subscriptions/details/recorded-lectures"
-                      component={RecordedLectures}
-                    />
-                    <Route
-                      path="/subscriptions/details/recorded-videos"
-                      component={RecordedVideos}
-                    />
-                    <Route
-                      path="/subscriptions/details/booklet"
-                      component={Booklet}
-                    />
-                    <Route
-                      path="/subscriptions/details/transactions/list"
-                      component={TransactionsList}
-                    />
-                    <Route
-                      path="/subscriptions/details/chat"
-                      component={UsersChatComponent}
-                    />
-                    <Route
-                      path="/subscriptions/details/speed-up"
-                      component={SpeedUp}
-                    />
+
                     <Route path="/live-stream" component={LiveStream} />
                     <Route path="/not-found" component={NotFound} />
                     <Redirect from="/" exact to="/home" />
