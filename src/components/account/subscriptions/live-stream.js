@@ -11,7 +11,12 @@ import {
 import Modal from "react-modal";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { getProfile } from "../../../actions";
+import { getUser } from "../../../actions/user.actions";
+import { getChatToken } from "../../../actions/twilio.actions";
+import firebase from "firebase";
+import axios from "axios";
+import { apiBaseUrl } from "../../../api/helpers";
+import { FaArrowLeft, FaChevronRight } from "react-icons/fa";
 
 const Chat = require("twilio-chat");
 const accessToken = localStorage.getItem("chatToken");
@@ -26,46 +31,166 @@ export class LiveStreamComponent extends Component {
       modalIsOpen: false,
       showRating: false,
       newMessage: "",
-      messages: []
+      messages: [],
+      generalMessages: [],
+      generalChannel: "",
+      privateChannel: "",
+      toggleChat: false
     };
     this.toggle = this.toggle.bind(this);
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.channel = "general";
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   async componentDidMount() {
-    this.props.getProfile();
+    if (this.props.authenticated) {
+      this.props.getUser();
+      this.props.getChatToken().then(() => this.initiateGeneralChat());
+    }
+  }
 
-    await Chat.Client.create(accessToken).then(client => {
+  async initiateGeneralChat() {
+    const client = await this.props.twilio.chatClient;
+    client
+      .getChannelByUniqueName("general")
+      .then(channel => {
+        client.on("channelJoined", function(channel) {
+          console.log("Joined channel " + channel.friendlyName);
+        });
+
+        channel.join().catch(function(err) {
+          console.error(
+            "Couldn't join channel " + channel.friendlyName + " because " + err
+          );
+        });
+
+        channel.getMessages().then(messages => {
+          const totalMessages = messages.items.length;
+          for (let i = 0; i < totalMessages; i++) {
+            const channelMessages = messages.items;
+            this.setState({ generalMessages: channelMessages });
+            console.log("generalMessages", this.state.generalMessages);
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    if (firebase && firebase.messaging()) {
+      // requesting permission to use push notifications
+      firebase
+        .messaging()
+        .requestPermission()
+        .then(() => {
+          // getting FCM token
+          firebase
+            .messaging()
+            .getToken()
+            .then(fcmToken => {
+              // continue with Step 7 here
+              // passing FCM token to the `chatClientInstance` to register for push notifications
+              client.setPushRegistrationId("fcm", fcmToken);
+
+              // registering event listener on new message from firebase to pass it to the Chat SDK for parsing
+              firebase.messaging().onMessage(payload => {
+                client.handlePushNotification(payload);
+              });
+            })
+            .catch(err => {
+              // can't get token
+            });
+        })
+        .catch(err => {
+          // can't request permission or permission hasn't been granted to the web app by the user
+        });
+    } else {
+      // no Firebase library imported or Firebase library wasn't correctly initialized
+    }
+  }
+
+  async setPrivateChannel(pairIdentity) {
+    let myIdentity = this.props.user && this.props.user.id;
+    console.log("My identity is ", myIdentity);
+    let privateChannelName =
+      myIdentity < pairIdentity
+        ? pairIdentity + "_" + myIdentity
+        : myIdentity + "_" + pairIdentity;
+    await this.setState({ privateChannel: privateChannelName });
+    console.log("Private channel is ", this.state.privateChannel);
+    console.log("Pair identity is ", pairIdentity);
+    this.initiateChat(pairIdentity);
+  }
+
+  async initiateChat(pairIdentity) {
+    this.setState({ toggleChat: true });
+    this.props.twilio.chatClient.then(client => {
       client
-        .getChannelByUniqueName("general")
+        .getChannelByUniqueName(this.state.privateChannel)
         .then(channel => {
-          // if (accessToken) {
-          //   console.log("Member already exists.");
-          // } else {
-          client.on("channelJoined", function(channel) {
-            console.log("Joined channel " + channel.uniqueName);
+          console.log("Channel is ", channel);
+          channel.join();
+          channel.on("channelInvited", function(channel) {
+            console.log("Joined channel ", channel);
+            channel.join();
           });
-
-          channel.join().catch(function(err) {
-            console.error(
-              "Couldn't join channel " + channel.uniqueName + " because " + err
-            );
-          });
-          // }
-
           channel.getMessages().then(messages => {
             const totalMessages = messages.items.length;
             for (let i = 0; i < totalMessages; i++) {
               const channelMessages = messages.items;
               this.setState({ messages: channelMessages });
+              console.log("Messages", this.state.messages);
             }
           });
         })
         .catch(err => {
-          console.log(err);
+          console.log("Error ", err);
+
+          client
+            .createChannel({
+              uniqueName: this.state.privateChannel
+            })
+            .then(function joinChannel(channel) {
+              channel.join();
+              channel.invite(pairIdentity);
+              console.log("Created hannel is ", channel);
+            })
+            .catch(error => {
+              console.log("Creating error", error);
+            });
         });
+
+      if (firebase && firebase.messaging()) {
+        // requesting permission to use push notifications
+        firebase
+          .messaging()
+          .requestPermission()
+          .then(() => {
+            // getting FCM token
+            firebase
+              .messaging()
+              .getToken()
+              .then(fcmToken => {
+                // continue with Step 7 here
+                // passing FCM token to the `chatClientInstance` to register for push notifications
+                client.setPushRegistrationId("fcm", fcmToken);
+
+                // registering event listener on new message from firebase to pass it to the Chat SDK for parsing
+                firebase.messaging().onMessage(payload => {
+                  client.handlePushNotification(payload);
+                });
+              })
+              .catch(err => {
+                // can't get token
+              });
+          })
+          .catch(err => {
+            // can't request permission or permission hasn't been granted to the web app by the user
+          });
+      } else {
+        // no Firebase library imported or Firebase library wasn't correctly initialized
+      }
     });
   }
 
@@ -77,14 +202,93 @@ export class LiveStreamComponent extends Component {
     event.preventDefault();
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
-    Chat.Client.create(accessToken).then(client => {
-      client.getChannelByUniqueName("general").then(channel => {
+    this.props.twilio.chatClient.then(client => {
+      client.getChannelByUniqueName(this.state.privateChannel).then(channel => {
         channel.sendMessage(message);
         channel.getMessages().then(this.messagesLoaded);
         channel.on("messageAdded", this.messageAdded);
       });
     });
   };
+
+  sendGeneralMessage = event => {
+    event.preventDefault();
+    const message = this.state.newMessage;
+    this.setState({ newMessage: "" });
+    this.props.twilio.chatClient.then(client => {
+      client.getChannelByUniqueName("general").then(channel => {
+        channel.sendMessage(message);
+        channel.getMessages().then(this.messagesGeneralLoaded);
+        channel.on("messageAdded", this.messageGeneralAdded);
+      });
+    });
+  };
+
+  messagesGeneralLoaded = messagePage => {
+    this.setState({ generalMessages: messagePage.items });
+  };
+
+  messageGeneralAdded = message => {
+    this.setState((prevState, props) => ({
+      generalMessages: [...prevState.generalMessages, message]
+    }));
+  };
+
+  messagesLoaded = messagePage => {
+    this.setState({ messages: messagePage.items });
+  };
+
+  messageAdded = message => {
+    this.setState((prevState, props) => ({
+      messages: [...prevState.messages, message]
+    }));
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.authenticated && this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
+
+  newMessageAdded = div => {
+    if (div) {
+      div.scrollIntoView();
+    }
+  };
+
+  renderMessages() {
+    const messages = this.state.messages;
+    return messages.map(message => (
+      <React.Fragment>
+        <div className="chat-message" ref={this.newMessageAdded}>
+          <div className="d-flex align-items-center">
+            <h6 className="mid-text smaller mt-0 mb-0">{message.author}</h6>
+          </div>
+
+          <div className="speech-bubble">
+            <p className="light-font-text mt-0 mb-0">{message.body}</p>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
+  }
+
+  renderGeneralMessages() {
+    const messages = this.state.generalMessages;
+    return messages.map(message => (
+      <React.Fragment>
+        <div className="chat-message" ref={this.newMessageAdded}>
+          <div className="d-flex align-items-center">
+            <h6 className="mid-text smaller mt-0 mb-0">{message.author}</h6>
+          </div>
+
+          <div className="speech-bubble">
+            <p className="light-font-text mt-0 mb-0">{message.body}</p>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
+  }
 
   toggle() {
     this.setState(state => ({ collapse: !state.collapse }));
@@ -104,39 +308,6 @@ export class LiveStreamComponent extends Component {
         activeTab: tab
       });
     }
-  }
-
-  newMessageAdded = div => {
-    if (div) {
-      div.scrollIntoView();
-    }
-  };
-
-  messagesLoaded = messagePage => {
-    this.setState({ messages: messagePage.items });
-  };
-
-  messageAdded = message => {
-    this.setState((prevState, props) => ({
-      messages: [...prevState.messages, message]
-    }));
-  };
-
-  renderMessages() {
-    const messages = this.state.messages;
-    return messages.map(message => (
-      <React.Fragment>
-        <div className="chat-message" ref={this.newMessageAdded}>
-          <div className="d-flex align-items-center">
-            <h6 className="mid-text smaller mt-0 mb-0">{message.author}</h6>
-          </div>
-
-          <div className="speech-bubble">
-            <p className="light-font-text mt-0 mb-0">{message.body}</p>
-          </div>
-        </div>
-      </React.Fragment>
-    ));
   }
 
   render() {
@@ -326,12 +497,12 @@ export class LiveStreamComponent extends Component {
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="1">
                         <div className="chat-box pl-3 pr-3 pt-2">
-                          {this.renderMessages()}
+                          {this.renderGeneralMessages()}
                         </div>
 
                         <form
                           className="chat-input d-flex align-items-center justify-content-between"
-                          onSubmit={this.sendMessage}
+                          onSubmit={this.sendGeneralMessage}
                         >
                           <Input
                             placeholder="شارك أصدقاءك"
@@ -355,75 +526,84 @@ export class LiveStreamComponent extends Component {
                         </form>
                       </TabPane>
                       <TabPane tabId="2">
-                        <div className="d-flex align-items-center justify-content-between chat-item">
-                          <div className="d-flex align-items-center">
+                        {this.state.toggleChat == false ? (
+                          <div
+                            className="d-flex align-items-center justify-content-between chat-item clickable"
+                            onClick={() =>
+                              this.setPrivateChannel(
+                                "39887e6a-5a3a-4128-9b23-90778d4a27b6"
+                              )
+                            }
+                          >
+                            <div className="d-flex align-items-center">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/user-circle.png"
+                                }
+                                className="mr-2"
+                                height="20"
+                              />
+                              <h6 className="mid-text smaller mt-0 mb-0">
+                                محمد أحمد
+                              </h6>
+                            </div>
                             <img
                               src={
                                 process.env.PUBLIC_URL +
-                                "/assets/images/user-circle.png"
+                                "/assets/images/dark-chat.png"
                               }
-                              className="mr-2"
-                              height="20"
+                              className="chat-img"
+                              height="15"
                             />
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              محمد أحمد
-                            </h6>
                           </div>
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/dark-chat.png"
-                            }
-                            className="chat-img"
-                            height="15"
-                          />
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between chat-item">
-                          <div className="d-flex align-items-center">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/user-circle.png"
+                        ) : (
+                          <React.Fragment>
+                            <div className="chat-box pl-3 pr-3 pt-2">
+                              {this.renderMessages()}
+                            </div>
+
+                            <div
+                              className="chat-header d-flex align-items-center justify-content-start clickable"
+                              onClick={() =>
+                                this.setState({ toggleChat: false })
                               }
-                              className="mr-2"
-                              height="20"
-                            />
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              رهام سعيد
-                            </h6>
-                          </div>
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/dark-chat.png"
-                            }
-                            className="chat-img"
-                            height="15"
-                          />
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between chat-item">
-                          <div className="d-flex align-items-center">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/user-circle.png"
-                              }
-                              className="mr-2"
-                              height="20"
-                            />
-                            <h6 className="mid-text smaller mt-0 mb-0">
-                              إبتسام اسماعيل
-                            </h6>
-                          </div>
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/dark-chat.png"
-                            }
-                            className="chat-img"
-                            height="15"
-                          />
-                        </div>
+                            >
+                              <FaChevronRight
+                                className="mid-text mr-1"
+                                size="11"
+                              />
+                              <h6 className="mid-text smaller mt-0 mb-0">
+                                محمد أحمد
+                              </h6>
+                            </div>
+
+                            <form
+                              className="chat-input d-flex align-items-center justify-content-between"
+                              onSubmit={this.sendMessage}
+                            >
+                              <Input
+                                placeholder="شارك أصدقاءك"
+                                type="text"
+                                name="message"
+                                id="message"
+                                onChange={this.onMessageChanged}
+                                value={this.state.newMessage}
+                                className="form-control border-0 bg-transparent light-font-text smaller dark-silver-text"
+                              />
+                              <button className="btn circle-btn mr-2">
+                                <img
+                                  src={
+                                    process.env.PUBLIC_URL +
+                                    "/assets/images/send-button.png"
+                                  }
+                                  height="12"
+                                  className="contain-img"
+                                />
+                              </button>
+                            </form>
+                          </React.Fragment>
+                        )}
                       </TabPane>
                     </TabContent>
                   </CollapsibleContent>
@@ -604,14 +784,15 @@ export class LiveStreamComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    initialValues: state.profile,
-    entireState: state
+    authenticated: state.auth.authenticated,
+    user: state.user,
+    twilio: state.twilio
   };
 }
 
 LiveStreamComponent = connect(
   mapStateToProps,
-  { getProfile }
+  { getUser, getChatToken }
 )(LiveStreamComponent);
 
 export const LiveStream = withRouter(LiveStreamComponent);
