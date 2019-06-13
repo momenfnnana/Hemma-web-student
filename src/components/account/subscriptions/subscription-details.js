@@ -10,64 +10,107 @@ import { Booklet } from "./booklet";
 import { TransactionsList } from "./transactions/transactions-list";
 import { UsersChatComponent } from "./chat";
 import { SpeedUp } from "./speed-up";
+import axios from "axios";
+import { apiBaseUrl } from "../../../api/helpers";
+import { Route } from "react-router-dom";
+import { LiveStream } from "./live-stream";
 
 export class SubscriptionDetails extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      details: []
+    };
+  }
+
+  componentDidMount() {
+    const courseId = this.props.match.params.id;
+
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get(`${apiBaseUrl}/content/${courseId}`, { headers })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   render() {
+    const courseId = this.props.match.params.id;
     return (
       <React.Fragment>
-        <div className="container mt-5 pb-5">
-          <div className="row">
-            <div className="col-md-3 col-12">
-              <Sidebar />
-              {this.props.location.pathname.startsWith(
-                "/subscriptions/details/transactions/list"
-              ) ? null : (
-                <Instructors />
-              )}
-            </div>
-            <div className="col-md-9 col-12">
-              <div className="row no-gutters">
-                <div className="col-12">
-                  <AccountBreadcrumb />
-                  {this.props.location.pathname.startsWith(
-                    "/subscriptions/details/transactions/list"
-                  ) ? null : (
-                    <Lecture />
-                  )}
-                </div>
-              </div>
-              {this.props.location.pathname.startsWith(
-                "/subscriptions/details/schedule"
-              ) ? (
-                <Schedule />
-              ) : this.props.location.pathname.startsWith(
-                  "/subscriptions/details/recorded-lectures"
-                ) ? (
-                <RecordedLectures />
-              ) : this.props.location.pathname.startsWith(
-                  "/subscriptions/details/recorded-videos"
-                ) ? (
-                <RecordedVideos />
-              ) : this.props.location.pathname.startsWith(
-                  "/subscriptions/details/booklet"
-                ) ? (
-                <Booklet />
-              ) : this.props.location.pathname.startsWith(
+        {this.props.location.pathname.indexOf("live-stream") < 0 && (
+          <div className="container mt-5 pb-5">
+            <div className="row">
+              <div className="col-md-3 col-12">
+                <Sidebar id={courseId} />
+                {this.props.location.pathname.startsWith(
                   "/subscriptions/details/transactions/list"
-                ) ? (
-                <TransactionsList />
-              ) : this.props.location.pathname.startsWith(
-                  "/subscriptions/details/chat"
-                ) ? (
-                <UsersChatComponent />
-              ) : this.props.location.pathname.startsWith(
-                  "/subscriptions/details/speed-up"
-                ) ? (
-                <SpeedUp />
-              ) : null}
+                ) ? null : (
+                  <Instructors id={courseId} />
+                )}
+              </div>
+              <div className="col-md-9 col-12">
+                <div className="row no-gutters">
+                  <div className="col-12">
+                    {/* <AccountBreadcrumb /> */}
+                    {this.props.location.pathname.startsWith(
+                      "/subscriptions/details/transactions/list"
+                    ) ? null : (
+                      <Lecture id={courseId} />
+                    )}
+                  </div>
+                </div>
+
+                <Route
+                  path="/subscriptions/:id/schedule"
+                  component={Schedule}
+                />
+                {/* <Route
+                  path="/subscriptions/:id/recorded-lectures"
+                  component={RecordedLectures}
+                />
+                <Route
+                  path="/subscriptions/:id/recorded-videos"
+                  component={RecordedVideos}
+                />
+                <Route path="/subscriptions/:id/booklet" component={Booklet} />
+                <Route
+                  path="/subscriptions/:id/transactions/list"
+                  component={TransactionsList}
+                />
+                {this.state.details.chatChannelSid && (
+                  <Route
+                    path="/subscriptions/:id/chat"
+                    render={props => (
+                      <UsersChatComponent
+                        chatChannelSid={this.state.details.chatChannelSid}
+                        {...props}
+                      />
+                    )}
+                  />
+                )} */}
+                <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />
+              </div>
             </div>
           </div>
-        </div>
+        )}
+        {this.state.details.chatChannelSid && (
+          <Route
+            path="/subscriptions/:id/live-stream/:lectureId"
+            render={props => (
+              <LiveStream
+                chatChannelSid={this.state.details.chatChannelSid}
+                {...props}
+              />
+            )}
+          />
+        )}
       </React.Fragment>
     );
   }

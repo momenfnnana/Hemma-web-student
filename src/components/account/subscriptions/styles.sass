@@ -106,6 +106,16 @@
     img
       transform: rotate(180deg)
 
+.chat-header
+  position: absolute
+  top: 0
+  right: 0
+  left: 0
+  background-color: #fbfbfb
+  border-bottom: 1px solid #dfdfdf
+  height: 30px
+  padding-right: 10px
+
 .list-item
   padding-right: 15px
   padding-left: 15px
@@ -126,17 +136,12 @@
   padding: 0px !important
   margin-bottom: 15px  
 
-
 .chat-window
   .chat-history
     padding: 30px 15px 20px
     border-bottom: 2px solid white
     overflow-y: scroll
     height: 575px
-    -ms-overflow-style: none
-    scrollbar-width: none
-    &::-webkit-scrollbar 
-      display: none  
     .message-data
       text-align: left
       margin-bottom: 5px
@@ -162,18 +167,40 @@
     padding: 15px
     .input-chat
       position: relative
-      input
-        height: 50px
+      textarea
+        padding-right: 100px
+      .light-btn
+        position: absolute
+        top: 10px
+        left: 10px  
     .options
       position: absolute
       top: 14px
-      left: 5px
+      right: 5px
       li
         width: 20px
         margin-left: 10px
         text-align: center
 
+.emoji-mart-scroll
+  border-bottom: 0
+  margin-bottom: 6px
+  + .emoji-mart-bar
+    display: none
+.emoji-mart-search 
+  display: none
 
+.chat-sidebar
+  .chat-item
+    padding-left: 15px
+    padding-right: 15px
+    &:hover
+      background-color: #f7f7f7
+      transition: background-color ease-out 0.3s
+
+.recorded-video
+  iframe
+    width: 100%                 
 @media only screen and (max-width: 767px)                          
     .responsive-margin
       margin-top: 15px

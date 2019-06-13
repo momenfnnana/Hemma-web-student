@@ -1,22 +1,49 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { getUser } from "../../../../actions/user.actions";
 
-export class Sidebar extends Component {
+export class SidebarComponent extends Component {
+  componentDidMount() {
+    if (this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.authenticated && this.props.authenticated) {
+      this.props.getUser();
+    }
+  }
   render() {
+    const user = this.props.user;
     return (
       <React.Fragment>
         <div className="sidebar mb-4">
           <div className="header">
             <div className="d-inline-flex align-items-center">
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/male-avatar.png"}
-                height="70"
-                className="mr-3 contain-img"
-              />
+              {this.props.user && this.props.user.gender == "Male" ? (
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/male-avatar.png"
+                  }
+                  height="70"
+                  className="mr-3 contain-img"
+                />
+              ) : (
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/female-avatar.png"
+                  }
+                  height="70"
+                  className="mr-3 contain-img"
+                />
+              )}
+
               <div className="d-flex flex-column align-items-center">
-                <h6 className="dark-text mb-0">إبراهيم أحمد</h6>
-                <div className="d-inline-flex">
+                <h6 className="dark-text mb-0"> {user && user.name}</h6>
+                {/* <div className="d-inline-flex">
                   <ul className="list-inline list-unstyled mt-2 mb-0 bordered-list">
                     <li className="list-inline-item">
                       <span className="en-text mid-text smaller">20</span>
@@ -39,7 +66,7 @@ export class Sidebar extends Component {
                       />
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -48,7 +75,7 @@ export class Sidebar extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to="/subscriptions/details/schedule"
+                  to={`/subscriptions/${this.props.id}/schedule`}
                   activeClassName="active"
                 >
                   <img
@@ -63,10 +90,10 @@ export class Sidebar extends Component {
                   جدول الدورة
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className="dark-text small"
-                  to="/subscriptions/details/recorded-lectures"
+                  to={`/subscriptions/${this.props.id}/recorded-lectures`}
                   activeClassName="active"
                 >
                   <img
@@ -112,7 +139,7 @@ export class Sidebar extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to="/subscriptions/details/booklet"
+                  to={`/subscriptions/${this.props.id}/booklet`}
                   activeClassName="active"
                 >
                   <img
@@ -142,7 +169,7 @@ export class Sidebar extends Component {
               </li>
               <li>
                 <NavLink
-                  to="/subscriptions/details/chat"
+                  to={`/subscriptions/${this.props.id}/chat`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -159,7 +186,7 @@ export class Sidebar extends Component {
               </li>
               <li>
                 <NavLink
-                  to="/subscriptions/details/transactions/list"
+                  to={`/subscriptions/${this.props.id}/transactions/list`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -177,7 +204,7 @@ export class Sidebar extends Component {
               </li>
               <li>
                 <NavLink
-                  to="/subscriptions/details/speed-up"
+                  to={`/subscriptions/${this.props.id}/speed-up`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -189,10 +216,10 @@ export class Sidebar extends Component {
                   />
                   اختصر وقتك
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
           </div>
-          <hr className="separator mt-0 mb-0" />
+          {/* <hr className="separator mt-0 mb-0" />
 
           <div className="settings d-flex align-items-center justify-content-center">
             <div className="d-inline-flex align-items-center">
@@ -200,9 +227,22 @@ export class Sidebar extends Component {
               <span />
               <h6 className="small mb-0">تسجيل الخروج</h6>
             </div>
-          </div>
+          </div> */}
         </div>
       </React.Fragment>
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    user: state.user
+  };
+}
+
+SidebarComponent = connect(
+  mapStateToProps,
+  { getUser }
+)(SidebarComponent);
+
+export const Sidebar = withRouter(SidebarComponent);

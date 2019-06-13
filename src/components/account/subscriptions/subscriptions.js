@@ -45,52 +45,45 @@ export class SubscriptionsComponent extends Component {
     const subscriptions = this.state.subscriptions || [];
     return subscriptions.map(subscription => (
       <React.Fragment>
-        {/* <Link to="/subscriptions/details/schedule"> */}
-        <div
-          className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 clickable"
-          onClick={() =>
-            swal("عفواً", "تفاصيل الدورة غير متاحة حالياً", "error", {
-              button: "متابعة"
-            })
-          }
-        >
-          <div className="media w-75">
-            <img
-              className="mr-3 rounded cover-img"
-              src={subscription.course.bannerUrl}
-              height="100"
-              width="100"
-            />
-            <div className="media-body mt-2">
-              <h6 className="mt-0 dark-text">{subscription.course.nameAr} </h6>
-              <span className="badge blue-status light-font-text">
-                {subscription.subscriptionStatus == "Cancelled"
-                  ? "ملغية"
-                  : subscription.subscriptionStatus == "Expired"
-                  ? "منتهية"
-                  : subscription.subscriptionStatus == "Active"
-                  ? "سارية"
-                  : "سارية"}
-              </span>
+        <Link to={`/subscriptions/${subscription.course.id}`}>
+          <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 clickable">
+            <div className="media w-75">
+              <img
+                className="mr-3 rounded cover-img"
+                src={subscription.course.bannerUrl}
+                height="100"
+                width="100"
+              />
+              <div className="media-body mt-2">
+                <h6 className="mt-0 dark-text">{subscription.course.nameAr}</h6>
+                <span className="badge blue-status light-font-text">
+                  {subscription.subscriptionStatus == "Cancelled"
+                    ? "ملغية"
+                    : subscription.subscriptionStatus == "Expired"
+                    ? "منتهية"
+                    : subscription.subscriptionStatus == "Active"
+                    ? "سارية"
+                    : "سارية"}
+                </span>
+              </div>
+            </div>
+            <div className="seperator" />
+            <div className="">
+              <h6 className="dark-text mb-0 small">الحالة المالية</h6>
+              <p className="dark-silver-text small mb-0">
+                {subscription.cumulativePaymentStatus == "Unpaid"
+                  ? "غير مسدد"
+                  : subscription.cumulativePaymentStatus == "PartiallyPaid"
+                  ? "مسدد جزئياً"
+                  : subscription.cumulativePaymentStatus == "FullyPaid"
+                  ? "مسدد"
+                  : subscription.cumulativePaymentStatus == "Pending"
+                  ? "قيد المراجعة"
+                  : null}
+              </p>
             </div>
           </div>
-          <div className="seperator" />
-          <div className="">
-            <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-            <p className="dark-silver-text small mb-0">
-              {subscription.cumulativePaymentStatus == "Unpaid"
-                ? "غير مسدد"
-                : subscription.cumulativePaymentStatus == "PartiallyPaid"
-                ? "مسدد جزئياً"
-                : subscription.cumulativePaymentStatus == "FullyPaid"
-                ? "مسدد"
-                : subscription.cumulativePaymentStatus == "Pending"
-                ? "قيد المراجعة"
-                : null}
-            </p>
-          </div>
-        </div>
-        {/* </Link> */}
+        </Link>
       </React.Fragment>
     ));
   }
