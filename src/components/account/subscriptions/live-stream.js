@@ -656,7 +656,7 @@ export class LiveStreamComponent extends Component {
                 <div className="box-layout mb-3">
                   {this.state.details && this.state.details.broadcastUrl && (
                     <iframe
-                      src={`http://localhost:3000/webinar.html?id=${
+                      src={`https://hemma.sa/webinar.html?id=${
                         this.state.details.broadcastUrl
                       }`}
                       width="100%"
