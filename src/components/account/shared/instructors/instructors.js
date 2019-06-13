@@ -30,13 +30,13 @@ export class Instructors extends Component {
     if (instructors) {
       return instructors.map(instructor => (
         <div className="white-bg border-bottom d-flex align-items-center h-55 pl-3 pr-3">
-          <div>
+          {/* <div>
             <img
               src={process.env.PUBLIC_URL + "/assets/images/female-circle.png"}
               className="mr-2"
               height="25"
             />
-          </div>
+          </div> */}
 
           <div className="d-flex justify-content-center flex-column">
             <h6 className="mid-text smaller mb-1 mt-0">{instructor.name}</h6>
@@ -53,14 +53,16 @@ export class Instructors extends Component {
             </div>
           </div>
           <div className="d-flex justify-content-end flex-fill align-items-center">
-            <StarRatingComponent
-              starCount={5}
-              value={instructor.rating}
-              starColor={"#ffe552"}
-              emptyStarColor={"#a9acb4"}
-              editing={false}
-              name="rate"
-            />
+            {instructor.rating == 0 ? null : (
+              <StarRatingComponent
+                starCount={5}
+                value={instructor.rating}
+                starColor={"#ffe552"}
+                emptyStarColor={"#a9acb4"}
+                editing={false}
+                name="rate"
+              />
+            )}
           </div>
         </div>
       ));

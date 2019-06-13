@@ -26,6 +26,7 @@ export class Lecture extends Component {
       });
   }
   render() {
+    const lectureID = this.state.details.id;
     return (
       <React.Fragment>
         <div className="lecture-item w-100 d-flex align-items-center mb-4">
@@ -40,7 +41,9 @@ export class Lecture extends Component {
               <ul className="list-inline mt-2">
                 <li className="list-inline-item small mt-0">
                   <p className="text-white light-font-text mb-0">
-                    أ. طلال محمد{" "}
+                    {this.state.details &&
+                      this.state.details.instructor &&
+                      this.state.details.instructor.name}
                   </p>
                 </li>
                 {/* <li className="list-inline-item light-font-text small mt-0 ml-2">
@@ -54,7 +57,7 @@ export class Lecture extends Component {
           {this.state.details.status == "Live" ? (
             <div className="w-25 d-flex justify-content-end">
               <Link
-                to="/live-stream"
+                to={`/subscriptions/${this.props.id}/live-stream/${lectureID}`}
                 className="btn silver-outline-btn unset-height w-50"
               >
                 انضم

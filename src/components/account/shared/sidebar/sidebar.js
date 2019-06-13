@@ -18,20 +18,32 @@ export class SidebarComponent extends Component {
   }
   render() {
     const user = this.props.user;
-
     return (
       <React.Fragment>
         <div className="sidebar mb-4">
           <div className="header">
             <div className="d-inline-flex align-items-center">
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/male-avatar.png"}
-                height="70"
-                className="mr-3 contain-img"
-              />
+              {this.props.user && this.props.user.gender == "Male" ? (
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/male-avatar.png"
+                  }
+                  height="70"
+                  className="mr-3 contain-img"
+                />
+              ) : (
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/female-avatar.png"
+                  }
+                  height="70"
+                  className="mr-3 contain-img"
+                />
+              )}
+
               <div className="d-flex flex-column align-items-center">
                 <h6 className="dark-text mb-0"> {user && user.name}</h6>
-                <div className="d-inline-flex">
+                {/* <div className="d-inline-flex">
                   <ul className="list-inline list-unstyled mt-2 mb-0 bordered-list">
                     <li className="list-inline-item">
                       <span className="en-text mid-text smaller">20</span>
@@ -54,7 +66,7 @@ export class SidebarComponent extends Component {
                       />
                     </li>
                   </ul>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -78,7 +90,7 @@ export class SidebarComponent extends Component {
                   جدول الدورة
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className="dark-text small"
                   to={`/subscriptions/${this.props.id}/recorded-lectures`}
@@ -204,10 +216,10 @@ export class SidebarComponent extends Component {
                   />
                   اختصر وقتك
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
           </div>
-          <hr className="separator mt-0 mb-0" />
+          {/* <hr className="separator mt-0 mb-0" />
 
           <div className="settings d-flex align-items-center justify-content-center">
             <div className="d-inline-flex align-items-center">
@@ -215,7 +227,7 @@ export class SidebarComponent extends Component {
               <span />
               <h6 className="small mb-0">تسجيل الخروج</h6>
             </div>
-          </div>
+          </div> */}
         </div>
       </React.Fragment>
     );

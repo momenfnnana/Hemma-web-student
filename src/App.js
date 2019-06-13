@@ -169,8 +169,10 @@ export default class AppComponent extends Component {
                       path="/subscriptions/:id"
                       component={requireAuth(SubscriptionDetails)}
                     />
-
-                    <Route path="/live-stream" component={LiveStream} />
+                    <Route
+                      path="/live-stream/:id"
+                      component={requireAuth(SubscriptionDetails)}
+                    />
                     <Route path="/not-found" component={NotFound} />
                     <Redirect from="/" exact to="/home" />
                     <Redirect to="/not-found" />
