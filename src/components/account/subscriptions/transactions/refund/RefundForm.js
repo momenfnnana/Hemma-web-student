@@ -40,7 +40,8 @@ export class RefundComponent extends Component {
           style={customStyles}
           ariaHideApp={false}
           isOpen={isRefundOpen}
-          onRequestClose={this.props.handleCloseModal}
+          onRequestClose={closeRefundModal}
+          closeRefundModal={closeRefundModal}
         >
           <div className="container pt-4">
             <div className="row">

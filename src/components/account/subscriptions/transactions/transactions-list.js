@@ -34,6 +34,7 @@ export class TransactionsList extends Component {
   };
 
   render() {
+    const courseId = this.props.match.params.id;
     return (
       <React.Fragment>
         <div className="row mb-4 no-gutters">
@@ -59,7 +60,10 @@ export class TransactionsList extends Component {
                   />
                   استرجاع الرسوم
                 </button>
-                <RefundComponent isRefundOpen={this.state.isRefundOpen} />
+                <RefundComponent
+                  isRefundOpen={this.state.isRefundOpen}
+                  closeRefundModal={this.closeRefundModal}
+                />
                 <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
@@ -78,6 +82,7 @@ export class TransactionsList extends Component {
                 </button>
                 <WrongTransactionComponent
                   isWrongTransactionOpen={this.state.isWrongTransactionOpen}
+                  closeWrongTransactionModal={this.closeWrongTransactionModal}
                 />
                 <button
                   type="button"
@@ -96,6 +101,8 @@ export class TransactionsList extends Component {
                 </button>
                 <NewInstallmentComponent
                   isInstallmentOpen={this.state.isInstallmentOpen}
+                  closeInstallmentModal={this.closeInstallmentModal}
+                  courseId={courseId}
                 />
               </div>
             </div>

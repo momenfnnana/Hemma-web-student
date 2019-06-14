@@ -33,7 +33,7 @@ export class ResetPhoneComponent extends Component {
     }
   }
 
-  sbumitPhone = values => {
+  handleSubmit(values) {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -53,7 +53,7 @@ export class ResetPhoneComponent extends Component {
       .catch(error => {
         console.log(error);
       });
-  };
+  }
 
   render() {
     const customStyles = {
@@ -104,7 +104,11 @@ export class ResetPhoneComponent extends Component {
                 <h6 className="dark-text smaller mb-4 text-center">
                   يرجى تعبئة المعلومات التالية لاتمام العملية
                 </h6>
-                <form onSubmit={handleSubmit(this.sbumitPhone)}>
+                <form
+                  onSubmit={this.props.handleSubmit(
+                    this.handleSubmit.bind(this)
+                  )}
+                >
                   <Field
                     fieldName="phoneNumber"
                     name="phoneNumber"

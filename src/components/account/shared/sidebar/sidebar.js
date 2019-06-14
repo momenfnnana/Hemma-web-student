@@ -3,8 +3,12 @@ import "./styles.sass";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
+import { NewInstallmentComponent } from "../../subscriptions/transactions/installment/NewInstallment";
 
 export class SidebarComponent extends Component {
+  state = {
+    isInstallmentOpen: false
+  };
   componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
@@ -16,8 +20,18 @@ export class SidebarComponent extends Component {
       this.props.getUser();
     }
   }
+
+  openInstallmentModal = () => {
+    this.setState({ isInstallmentOpen: true });
+  };
+  closeInstallmentModal = () => {
+    this.setState({ isInstallmentOpen: false });
+  };
+
   render() {
     const user = this.props.user;
+    const courseId = this.props.match.params.id;
+
     return (
       <React.Fragment>
         <div className="sidebar mb-4">
@@ -90,7 +104,7 @@ export class SidebarComponent extends Component {
                   جدول الدورة
                 </NavLink>
               </li>
-              {/* <li>
+              <li>
                 <NavLink
                   className="dark-text small"
                   to={`/subscriptions/${this.props.id}/recorded-lectures`}
@@ -108,6 +122,39 @@ export class SidebarComponent extends Component {
                   المحاضرات المسجلة
                 </NavLink>
               </li>
+              <hr className="separator mt-0 mb-0" />
+              <div className="settings d-flex align-items-center justify-content-center">
+                <button
+                  className="btn light-btn small mb-0 w-100"
+                  onClick={this.openInstallmentModal}
+                >
+                  إكمال سداد قسط
+                </button>
+              </div>
+              <NewInstallmentComponent
+                isInstallmentOpen={this.state.isInstallmentOpen}
+                closeInstallmentModal={this.closeInstallmentModal}
+                courseId={courseId}
+              />
+              {/* <li>
+                <NavLink
+                  to={`/subscriptions/${this.props.id}/transactions/list`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-payments.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  المدفوعات واسترجاع الرسوم
+                </NavLink>
+              </li>
+            
               <li>
                 <NavLink className="dark-text small" to="#">
                   <img
@@ -184,24 +231,7 @@ export class SidebarComponent extends Component {
                   الدردشة
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to={`/subscriptions/${this.props.id}/transactions/list`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-payments.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  المدفوعات واسترجاع الرسوم
-                </NavLink>
-              </li>
+        
               <li>
                 <NavLink
                   to={`/subscriptions/${this.props.id}/speed-up`}
