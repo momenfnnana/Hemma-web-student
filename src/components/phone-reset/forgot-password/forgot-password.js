@@ -6,6 +6,8 @@ import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const validate = values => {
   const errors = {};
@@ -22,23 +24,32 @@ const validate = values => {
 };
 
 class forgotPasswordComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      disabled: false
+    };
+  }
   myFormHandler = values => {
     let data = {
       countryCode: values.phone.countryCode,
       phoneNumber: values.phone.phoneNumber
     };
+    this.setState({ loading: true, disabled: true });
+
     axios
-      .post(
-        `${apiBaseUrl}/auth/password/reset/phone/send_token`,
-        data
-      )
+      .post(`${apiBaseUrl}/auth/password/reset/phone/send_token`, data)
       .then(response => {
+        this.setState({ loading: false, disabled: false });
         this.props.history.push({
           pathname: "/verify/identity",
           userInfo: data
         });
       })
       .catch(error => {
+        this.setState({ loading: false, disabled: false });
         switch (error.response.data && error.response.data.error) {
           case "ValidationError":
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
@@ -113,9 +124,13 @@ class forgotPasswordComponent extends Component {
               <button
                 type="submit"
                 className="btn dark-outline-btn w-100"
-                disabled={submitting}
+                disabled={this.state.disabled}
               >
-                إرسال
+                {this.state.loading == true ? (
+                  <Loader type="ball-clip-rotate" />
+                ) : (
+                  "إرسال"
+                )}
               </button>
             </form>
           </div>

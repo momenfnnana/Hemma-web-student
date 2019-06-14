@@ -5,6 +5,8 @@ import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { VerificationField } from "../../shared/inputs/verificationField";
 import { apiBaseUrl } from "../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const validate = values => {
   const errors = {};
@@ -35,6 +37,14 @@ const validate = values => {
 };
 
 class VerifyIdComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      disabled: false
+    };
+  }
   myFormHandler = values => {
     const { userInfo } = this.props.location;
     let data = {
@@ -42,18 +52,18 @@ class VerifyIdComponent extends Component {
       phoneNumber: userInfo.phoneNumber,
       token: values.token
     };
+    this.setState({ loading: true, disabled: true });
     axios
-      .post(
-        `${apiBaseUrl}/auth/password/reset/phone/check_token`,
-        data
-      )
+      .post(`${apiBaseUrl}/auth/password/reset/phone/check_token`, data)
       .then(response => {
+        this.setState({ loading: false, disabled: false });
         this.props.history.push({
           pathname: "/reset-password",
           userData: data
         });
       })
       .catch(error => {
+        this.setState({ loading: false, disabled: false });
         switch (error.response.data && error.response.data.error) {
           case "ValidationError":
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
@@ -72,6 +82,56 @@ class VerifyIdComponent extends Component {
             break;
           case "VerificationTokenExpired":
             swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "FailedToSend":
+            swal("عفواً", "حصل خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
+          default:
+            console.log("other error");
+        }
+      });
+  };
+
+  resendCode = () => {
+    const { userInfo } = this.props.location;
+    let data = {
+      countryCode: userInfo.countryCode,
+      phoneNumber: userInfo.phoneNumber
+    };
+
+    axios
+      .post(`${apiBaseUrl}/auth/password/reset/phone/send_token`, data)
+      .then(response => {
+        console.log("sent");
+      })
+      .catch(error => {
+        switch (error.response.data && error.response.data.error) {
+          case "ValidationError":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "UserNotFound":
+            swal("عفواً", "هذا المستخدم غير موجود", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "TooManyFailedAttempts":
+            swal(
+              "عفواً",
+              "لقد استنفذت عدد المرات الممكن استعادة حسابك بها ",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
+          case "TokenIssuanceInRefractoryPeriod":
+            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
               button: "متابعة"
             });
             break;
@@ -119,18 +179,26 @@ class VerifyIdComponent extends Component {
                 <Field name="token" component={VerificationField} />
               </div>
 
-              <button type="submit" className="btn dark-outline-btn w-100">
-                تحقق من الرمز{" "}
+              <button
+                type="submit"
+                className="btn dark-outline-btn w-100"
+                disabled={this.state.disabled}
+              >
+                {this.state.loading == true ? (
+                  <Loader type="ball-clip-rotate" />
+                ) : (
+                  "تحقق من الرمز"
+                )}
               </button>
             </form>
 
             <div className="text-center pt-4">
-              <a href="" className="dark-text small">
+              <span href="" className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-              </a>
-              <a href="" className="light-text small">
+              </span>
+              <span className="light-text small" onClick={this.resendCode}>
                 إعادة إرسال
-              </a>{" "}
+              </span>
             </div>
           </div>
         </div>
