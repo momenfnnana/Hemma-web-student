@@ -72,19 +72,22 @@ export class Instructors extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="box-layout w-100 radius-bottom-0 border-bottom-0">
-          <div className="silver-bg d-flex align-items-center p-3">
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/instructors.png"}
-              className="mr-2"
-              height="20"
-            />
-            <h6 className="dark-text small mb-0">المدربين</h6>
-          </div>
-          <hr className="mt-0 mb-0" />
+        {this.state.instructors == undefined ||
+        this.state.instructors == 0 ? null : (
+          <div className="box-layout w-100 radius-bottom-0 border-bottom-0">
+            <div className="silver-bg d-flex align-items-center p-3">
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/instructors.png"}
+                className="mr-2"
+                height="20"
+              />
+              <h6 className="dark-text small mb-0">المدربين</h6>
+            </div>
+            <hr className="mt-0 mb-0" />
 
-          <div>{this.renderInstructors()}</div>
-        </div>
+            <div>{this.renderInstructors()}</div>
+          </div>
+        )}
       </React.Fragment>
     );
   }

@@ -27,10 +27,11 @@ export class Lecture extends Component {
   }
   render() {
     const lectureID = this.state.details.id;
+    const channelID = this.props.chatChannelSid;
+    const liveID = this.state.details.broadcastUrl;
     return (
       <React.Fragment>
-        <div className="lecture-item w-100 d-flex align-items-center mb-4">
-          <div className="media w-75">
+        {/* <div className="media w-75">
             <div className="silver-box-bg mr-4 d-flex align-items-center justify-content-center">
               <FaGraduationCap className="dark-text" size="34" />
             </div>
@@ -46,25 +47,33 @@ export class Lecture extends Component {
                       this.state.details.instructor.name}
                   </p>
                 </li>
-                {/* <li className="list-inline-item light-font-text small mt-0 ml-2">
+                <li className="list-inline-item light-font-text small mt-0 ml-2">
                   <div className="dark-bg pl-4 pr-4 pt-1 pb-1 rounded">
                     <p className="text-white en-text mb-0">10:54</p>
                   </div>
-                </li> */}
+                </li> 
               </ul>
             </div>
-          </div>
-          {this.state.details.status == "Live" ? (
-            <div className="w-25 d-flex justify-content-end">
-              <Link
-                to={`/subscriptions/${this.props.id}/live-stream/${lectureID}`}
-                className="btn silver-outline-btn unset-height w-50"
+          </div> */}
+        {this.state.details.status == "Live" ? (
+          <div className="lecture-item w-100 d-flex align-items-center mb-4">
+            <div className="w-100 d-flex justify-content-center">
+              <button
+                onClick={() => window.open(liveID, "_blank")}
+                className="btn silver-outline-btn unset-height w-25 mr-2"
               >
-                انضم
-              </Link>
+                انضم للبث المباشر
+              </button>
+
+              <button
+                onClick={() => window.open(channelID, "_blank")}
+                className="btn silver-outline-btn unset-height w-25 ml-2"
+              >
+                رابط تيليجرام
+              </button>
             </div>
-          ) : null}
-        </div>
+          </div>
+        ) : null}
       </React.Fragment>
     );
   }

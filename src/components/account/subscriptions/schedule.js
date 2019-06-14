@@ -183,7 +183,25 @@ export class Schedule extends Component {
           <div className="col-12">
             <h6 className="dark-text small mb-0 mt-0">جدول الدورة </h6>
           </div>
-          <div className="col-12">{this.renderSections()}</div>
+
+          {this.state.details.sections == undefined ||
+          this.state.details.sections == 0 ? (
+            <div className="col-12">
+              <div
+                className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                style={{ height: 250 }}
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/event.png"}
+                  className="mb-3"
+                  height="60"
+                />{" "}
+                <p className="silver-text">سيتم عرض جدول الدورة فور توفره </p>
+              </div>
+            </div>
+          ) : (
+            <div className="col-12">{this.renderSections()}</div>
+          )}
         </div>
       </React.Fragment>
     );

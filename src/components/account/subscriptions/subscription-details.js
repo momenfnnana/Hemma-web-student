@@ -59,10 +59,11 @@ export class SubscriptionDetails extends Component {
                 <div className="row no-gutters">
                   <div className="col-12">
                     {/* <AccountBreadcrumb /> */}
-                    {this.props.location.pathname.startsWith(
-                      "/subscriptions/details/transactions/list"
-                    ) ? null : (
-                      <Lecture id={courseId} />
+                    {this.state.details.chatChannelSid && (
+                      <Lecture
+                        id={courseId}
+                        chatChannelSid={this.state.details.chatChannelSid}
+                      />
                     )}
                   </div>
                 </div>
@@ -94,13 +95,13 @@ export class SubscriptionDetails extends Component {
                       />
                     )}
                   />
-                )} */}
-                <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />
+                )} 
+                <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />*/}
               </div>
             </div>
           </div>
         )}
-        {this.state.details.chatChannelSid && (
+        {/* {this.state.details.chatChannelSid && (
           <Route
             path="/subscriptions/:id/live-stream/:lectureId"
             render={props => (
@@ -110,7 +111,7 @@ export class SubscriptionDetails extends Component {
               />
             )}
           />
-        )}
+        )} */}
       </React.Fragment>
     );
   }
