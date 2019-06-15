@@ -9,6 +9,11 @@ import { withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import {
+  loginAction,
+  sendToken,
+  loginFailed
+} from "../../../actions/login.actions";
 
 const validate = values => {
   const errors = {};
@@ -52,15 +57,43 @@ class resetPasswordComponent extends Component {
       .post(`${apiBaseUrl}/auth/password/reset/phone/set_new`, data)
       .then(response => {
         this.setState({ loading: false, disabled: false });
-        this.props.history.push("/auth/login");
-        swal(
-          "تنبيه",
-          "لقد تم تغيير كلمة المرور بنجاح، يمكنك تسجيل الدخول إلى حسابك الآن",
-          "success",
-          {
-            button: "متابعة"
-          }
-        );
+        const request = this.props.loginAction({
+          countryCode: userData.countryCode,
+          phoneNumber: userData.phoneNumber,
+          password: values.password
+        });
+        this.setState({ loading: true });
+
+        request
+          .then(action => {
+            this.setState({ loading: false });
+            if (!this.props.phoneNumberConfirmed) {
+              this.props
+                .sendToken()
+                .then(response => {
+                  this.props.history.push("/verify");
+                })
+                .catch(error => {
+                  this.props.history.push("/account/subscriptions");
+                });
+            } else {
+              this.props.history.push("/account/subscriptions");
+            }
+          })
+          .catch(error => {
+            this.setState({ loading: false });
+            this.props.loginFailed(error);
+            switch (error.response.data && error.response.data.error) {
+              case "InvalidCredentials":
+                swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+                  button: "متابعة"
+                });
+                break;
+
+              default:
+                console.log(error);
+            }
+          });
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
@@ -166,7 +199,9 @@ class resetPasswordComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.resetPassword && state.form.resetPassword.values
+    formValues: state.form.resetPassword && state.form.resetPassword.values,
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
+    authenticated: state.auth.authenticated
   };
 }
 
@@ -175,6 +210,9 @@ resetPasswordComponent = reduxForm({
   validate
 })(resetPasswordComponent);
 
-resetPasswordComponent = connect(mapStateToProps)(resetPasswordComponent);
+resetPasswordComponent = connect(
+  mapStateToProps,
+  { loginAction, sendToken, loginFailed }
+)(resetPasswordComponent);
 
 export const resetPassword = withRouter(resetPasswordComponent);
