@@ -11,6 +11,34 @@ import { numberField } from "../../../../shared/inputs/numberField";
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 
 export class NewInstallmentComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      details: [],
+      // Idicates whether the installment value is in edit mode
+      editingInstallment: false,
+      // Holds the temporary installment value
+      tempInstallment: null,
+      tooltipOpen: false,
+      installmentValdation: false,
+      priceValdation: false
+    };
+    this.onUpdateInstallmentInput = this.onUpdateInstallmentInput.bind(this);
+  }
+
+  /**
+   * Handle updating the value of the installment input
+   */
+  onUpdateInstallmentInput(event) {
+    const newValue = Number.parseInt(event.target.value);
+    this.setState({ tempInstallment: newValue });
+    if (newValue > this.state.details.remainingAmount) {
+      this.setState({ installmentValdation: true });
+    } else {
+      this.setState({ installmentValdation: false });
+    }
+  }
   onSubmit(values) {
     let token = localStorage.getItem("token");
     let headers = {
@@ -24,10 +52,14 @@ export class NewInstallmentComponent extends Component {
     axios
       .post(`${apiBaseUrl}/cart/items`, data, { headers })
       .then(response => {
-        // this.props.history.push("/cart");
-        console.log(response.data);
+        this.props.closeInstallmentModal();
+        this.props.history.push("/cart");
+        swal("تنبيه", "تم اعتماد قيمة القسط بنجاح", "success", {
+          button: "متابعة"
+        });
       })
       .catch(error => {
+        this.props.closeInstallmentModal();
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
             swal("عفواً", "هذه الدورة مضافة سابقاً إلى سلة التسوق", "error", {
@@ -51,6 +83,24 @@ export class NewInstallmentComponent extends Component {
             });
             break;
         }
+      });
+  }
+
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    const courseId = this.props.courseId;
+    axios
+      .get(`${apiBaseUrl}/content/${courseId}/remaining_payment_details`, {
+        headers
+      })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -100,27 +150,44 @@ export class NewInstallmentComponent extends Component {
                     <label className="smaller dark-text mt-0 mb-0 mr-3">
                       القيمة التي تريد دفعها
                     </label>
-                    <Field
-                      type="number"
-                      className="form-control en-text w-100 mt-0 mb-0 text-center"
-                      placeholder="200"
-                      name="installment"
-                      component={numberField}
-                      validate={required}
-                    />
+
+                    <div>
+                      <Field
+                        type="number"
+                        className="form-control en-text w-100 mt-0 mb-0 text-center"
+                        placeholder="200"
+                        name="installment"
+                        component={numberField}
+                        validate={required}
+                        onChange={this.onUpdateInstallmentInput}
+                      />
+
+                      {this.state.installmentValdation == true ? (
+                        <small className="w-100 smaller">
+                          القيمة المدخلة أعلى من القيمة المتبقية{" "}
+                        </small>
+                      ) : null}
+                    </div>
+
                     <label className="small dark-text mt-0 mb-0 ml-3">
                       ريال
                     </label>
                   </div>
+
                   <div className="box-layout light-silver-bg d-flex align-items-center justify-content-center flex-column w-100 mt-2 mb-4 h-80">
                     <h6 className="dark-text small mb-1 mt-0">
                       القيمة المتبقية:{" "}
-                      <span className="light-text en-text">150</span>{" "}
+                      <span className="light-text en-text">
+                        {this.state.details &&
+                          this.state.details.remainingAmount}
+                      </span>{" "}
                       <span className="light-text"> ريال </span>
                     </h6>
                     <h6 className="dark-text small mb-0">
                       الوقت المتبقي لإتمام الدفعات:{" "}
-                      <span className="light-text en-text">3</span>{" "}
+                      <span className="light-text en-text">
+                        {this.state.details && this.state.details.remainingDays}
+                      </span>{" "}
                       <span className="light-text"> أيام </span>
                     </h6>
                   </div>
@@ -155,4 +222,4 @@ NewInstallmentComponent = reduxForm({
 
 NewInstallmentComponent = connect(mapStateToProps)(NewInstallmentComponent);
 
-export const Checkout = withRouter(NewInstallmentComponent);
+export const NewInstallment = withRouter(NewInstallmentComponent);

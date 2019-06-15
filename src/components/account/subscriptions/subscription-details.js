@@ -68,7 +68,7 @@ export class SubscriptionDetails extends Component {
                   component={RecordedLectures}
                 />
                 <Route
-                  path="/subscriptions/:id/recorded-videos"
+                  path="/subscriptions/:id/recorded-videos/:lectureId"
                   component={RecordedVideos}
                 />
                 {/* 

@@ -3,7 +3,7 @@ import { Table } from "reactstrap";
 import { RefundComponent } from "./refund/RefundForm";
 import "./styles.sass";
 import { WrongTransactionComponent } from "./wrong-transaction/WrongTransaction";
-import { NewInstallmentComponent } from "./installment/NewInstallment";
+import { NewInstallment } from "./installment/NewInstallment";
 
 export class TransactionsList extends Component {
   state = {
@@ -99,7 +99,7 @@ export class TransactionsList extends Component {
                   />
                   طلب سداد قسط
                 </button>
-                <NewInstallmentComponent
+                <NewInstallment
                   isInstallmentOpen={this.state.isInstallmentOpen}
                   closeInstallmentModal={this.closeInstallmentModal}
                   courseId={courseId}

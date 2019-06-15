@@ -3,7 +3,7 @@ import "./styles.sass";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
-import { NewInstallmentComponent } from "../../subscriptions/transactions/installment/NewInstallment";
+import { NewInstallment } from "../../subscriptions/transactions/installment/NewInstallment";
 
 export class SidebarComponent extends Component {
   state = {
@@ -131,7 +131,7 @@ export class SidebarComponent extends Component {
                   إكمال سداد قسط
                 </button>
               </div>
-              <NewInstallmentComponent
+              <NewInstallment
                 isInstallmentOpen={this.state.isInstallmentOpen}
                 closeInstallmentModal={this.closeInstallmentModal}
                 courseId={courseId}
