@@ -49,11 +49,7 @@ export class SubscriptionDetails extends Component {
             <div className="row">
               <div className="col-md-3 col-12">
                 <Sidebar id={courseId} />
-                {this.props.location.pathname.startsWith(
-                  "/subscriptions/details/transactions/list"
-                ) ? null : (
-                  <Instructors id={courseId} />
-                )}
+                <Instructors id={courseId} />
               </div>
               <div className="col-md-9 col-12">
                 <div className="row no-gutters">
@@ -72,19 +68,20 @@ export class SubscriptionDetails extends Component {
                   path="/subscriptions/:id/schedule"
                   component={Schedule}
                 />
-                {/* <Route
+                <Route
                   path="/subscriptions/:id/recorded-lectures"
                   component={RecordedLectures}
                 />
                 <Route
-                  path="/subscriptions/:id/recorded-videos"
+                  path="/subscriptions/:id/recorded-videos/:lectureId"
                   component={RecordedVideos}
                 />
-                <Route path="/subscriptions/:id/booklet" component={Booklet} />
+                {/* 
                 <Route
                   path="/subscriptions/:id/transactions/list"
                   component={TransactionsList}
                 />
+                <Route path="/subscriptions/:id/booklet" component={Booklet} />
                 {this.state.details.chatChannelSid && (
                   <Route
                     path="/subscriptions/:id/chat"

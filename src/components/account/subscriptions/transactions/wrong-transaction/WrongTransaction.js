@@ -44,7 +44,8 @@ export class WrongTransactionComponent extends Component {
           style={customStyles}
           ariaHideApp={false}
           isOpen={isWrongTransactionOpen}
-          onRequestClose={this.props.onClose}
+          onRequestClose={closeWrongTransactionModal}
+          closeWrongTransactionModal={closeWrongTransactionModal}
         >
           {this.state.showContent == false ? (
             <div className="container h-100 d-flex align-items-center">

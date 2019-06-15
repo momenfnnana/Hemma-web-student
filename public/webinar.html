@@ -57,7 +57,7 @@
           apiSecret: meetConfig.apiSecret,
           role: meetConfig.role,
           success: function(res) {
-            console.log(res.result);
+            // console.log(res.result);
           }
         });
 
@@ -73,15 +73,15 @@
               userEmail: "email@gmail.com",
               passWord: meetConfig.passWord,
               success: function(res) {
-                console.log("join meeting success");
+                // console.log("join meeting success");
               },
               error: function(res) {
-                console.log(res);
+                // console.log(res);
               }
             });
           },
           error: function(res) {
-            console.log(res);
+            // console.log(res);
           }
         });
       })();

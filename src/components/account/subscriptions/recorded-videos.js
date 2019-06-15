@@ -5,12 +5,6 @@ import Vimeo from "@u-wave/react-vimeo";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 
-const videos = [
-  { id: 315172826, name: "الدرس الأول" },
-  { id: 315172826, name: "الدرس الثاني" },
-  { id: 315172826, name: "الدرس الثالث" }
-];
-
 export class RecordedVideos extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +20,22 @@ export class RecordedVideos extends Component {
     this.handlePlayerPause = this.handlePlayerPause.bind(this);
     this.handlePlayerPlay = this.handlePlayerPlay.bind(this);
     this.handleVolume = this.handleVolume.bind(this);
+  }
+
+  componentDidMount() {
+    const lectureId = this.props.match.params.lectureId;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get(`${apiBaseUrl}/content/lectures/${lectureId}`, { headers })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   selectVideo(index) {
@@ -53,8 +63,8 @@ export class RecordedVideos extends Component {
   }
 
   render() {
-    const { videoIndex, paused, volume } = this.state;
-    const video = videos[videoIndex];
+    const { paused, volume } = this.state;
+    const videoId = this.state.details.recordingUrl;
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -98,14 +108,16 @@ export class RecordedVideos extends Component {
                   <hr className="light-hr" />
                 </div> */}
                 <div className="col-12">
-                  <Vimeo
-                    video={video.id}
-                    className="recorded-video"
-                    volume={volume}
-                    paused={paused}
-                    onPause={this.handlePlayerPause}
-                    onPlay={this.handlePlayerPlay}
-                  />
+                  {this.state.details && this.state.details.recordingUrl && (
+                    <Vimeo
+                      video={videoId}
+                      className="recorded-video"
+                      volume={volume}
+                      paused={paused}
+                      onPause={this.handlePlayerPause}
+                      onPlay={this.handlePlayerPlay}
+                    />
+                  )}
                 </div>
               </div>
             </div>

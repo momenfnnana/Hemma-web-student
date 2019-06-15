@@ -94,7 +94,6 @@ export class LiveStreamComponent extends Component {
       })
       .then(response => {
         this.setState({ details: response.data.data });
-        console.log(this.state.details);
       })
       .catch(error => {
         console.log(error);
