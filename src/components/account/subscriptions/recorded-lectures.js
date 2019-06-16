@@ -3,6 +3,8 @@ import "./styles.sass";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+var moment = require("moment-hijri");
+moment().format("iYYYY/iM/iD");
 
 export class RecordedLectures extends Component {
   constructor(props) {
@@ -59,53 +61,61 @@ export class RecordedLectures extends Component {
   renderLectures(lectures) {
     const courseId = this.props.match.params.id;
     if (lectures) {
-      return lectures.map(lecture => (
-        <div className="col-md-4">
-          <Link
-            className="dark-text small"
-            to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}
-          >
-            <div className="card card-sm shadow-sm border-0">
-              <header className="card-thumb">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
-                  alt="Course image"
-                />
-              </header>
-              <div className="card-body d-flex justify-content-center flex-column">
-                <h6 className="card-title small mid-text pb-2">
-                  {lecture.nameAr}
-                </h6>
-                <ul className="list-inline mb-0 d-flex align-items-center">
-                  <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/calendar.png"
-                      }
-                      height="12"
-                      width="12"
-                      className="mr-1"
-                    />
-                    <span className="en-text mr-1">{lecture.duration}</span>
-                    ساعة
-                  </li>
-                  <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/quarters.png"
-                      }
-                      height="12"
-                      width="12"
-                      className="mr-1"
-                    />
-                    <span className="en-text">{lecture.scheduledAt}</span>
-                  </li>
-                </ul>
+      return lectures.map(lecture => {
+        const scheduledAt = new Date(lecture.scheduledAt);
+        var day = scheduledAt.getDate();
+        var month = scheduledAt.getMonth() + 1;
+        var year = scheduledAt.getFullYear();
+        var scheduledDate = year + "-" + month + "-" + day;
+        var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+        return (
+          <div className="col-md-4">
+            <Link
+              className="dark-text small"
+              to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}
+            >
+              <div className="card card-sm shadow-sm border-0">
+                <header className="card-thumb">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
+                    alt="Course image"
+                  />
+                </header>
+                <div className="card-body d-flex justify-content-center flex-column">
+                  <h6 className="card-title small mid-text pb-2">
+                    {lecture.nameAr}
+                  </h6>
+                  <ul className="list-inline mb-0 d-flex align-items-center">
+                    <li className="list-inline-item light-font-text smaller dark-text d-inline-flex align-items-center">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/calendar.png"
+                        }
+                        height="12"
+                        width="12"
+                        className="mr-1"
+                      />
+                      <span className="en-text mr-1">{lecture.duration}</span>
+                      ساعة
+                    </li>
+                    <li className="list-inline-item light-font-text smaller dark-text en-text d-inline-flex align-items-center">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/quarters.png"
+                        }
+                        height="12"
+                        width="12"
+                        className="mr-1"
+                      />
+                      <span className="en-text">{hijriDate}</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-          </Link>
-        </div>
-      ));
+            </Link>
+          </div>
+        );
+      });
     }
   }
 

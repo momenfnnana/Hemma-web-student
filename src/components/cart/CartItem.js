@@ -134,7 +134,6 @@ export class CartItem extends Component {
 
   render() {
     const item = this.props.item;
-
     if (!item) {
       return null;
     }
@@ -179,27 +178,31 @@ export class CartItem extends Component {
                   </label>
                 </div>
               )}
-              {item.canBePaidInInstallments ? (
-                <span
-                  className="badge blue-status light-font-text clickable"
-                  onClick={this.onToggleEditInstallment}
-                  disabled={!item.canBePaidInInstallments}
-                >
-                  {this.state.editingInstallment
-                    ? "اعتمد القسط"
-                    : item.installment
-                    ? "تعديل القسط"
-                    : "سداد بالأقساط؟"}
-                </span>
+              {item.itemType == "Course" ? (
+                <React.Fragment>
+                  {item.canBePaidInInstallments ? (
+                    <span
+                      className="badge blue-status light-font-text clickable"
+                      onClick={this.onToggleEditInstallment}
+                      disabled={!item.canBePaidInInstallments}
+                    >
+                      {this.state.editingInstallment
+                        ? "اعتمد القسط"
+                        : item.installment
+                        ? "تعديل القسط"
+                        : "سداد بالأقساط؟"}
+                    </span>
+                  ) : null}
+                  {item.installment && (
+                    <span
+                      className="badge blue-status light-font-text clickable ml-1"
+                      onClick={this.onPayFullAmount}
+                    >
+                      تسديد بالكامل
+                    </span>
+                  )}
+                </React.Fragment>
               ) : null}
-              {item.installment && (
-                <span
-                  className="badge blue-status light-font-text clickable ml-1"
-                  onClick={this.onPayFullAmount}
-                >
-                  تسديد بالكامل
-                </span>
-              )}
             </div>
           </div>
           <div className="w-25">

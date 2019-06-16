@@ -10,6 +10,8 @@ import {
 } from "react-accessible-accordion";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+var moment = require("moment-hijri");
+moment().format("iYYYY/iM/iD");
 
 export class Schedule extends Component {
   constructor(props) {
@@ -90,44 +92,68 @@ export class Schedule extends Component {
     }
   }
 
-  renderLectures(lectures) {
-    if (lectures) {
-      return lectures.map(lecture => (
-        <li className="list-group-item bg-transparent small dark-silver-text light-font-text">
-          <div className="row">
-            <div className="col-6">
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/play.png"}
-                className="mr-2"
-                height="15"
-              />
-              {lecture.nameAr}
-            </div>
-            <div className="col-6 d-flex justify-content-end">
-              {lecture.scheduledAt}
-
-              {lectures.status == "Live" || "Scheduled" || "Recorded" ? (
-                <img
-                  src={
-                    this.state.checked
-                      ? process.env.PUBLIC_URL + "/assets/images/blue-check.png"
-                      : process.env.PUBLIC_URL + "/assets/images/check.png"
-                  }
-                  className="ml-2"
-                  height="15"
-                  onClick={() => this.setState({ checked: true })}
-                />
-              ) : (
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/check.png"}
-                  className="ml-2"
-                  height="15"
-                />
+  renderMessages() {
+    const messages = this.state.messages;
+    return messages.map(message => {
+      const user = this.getUser(message.author);
+      return (
+        <React.Fragment>
+          <div className="chat-message" ref={this.newMessageAdded}>
+            <div className="d-flex align-items-center">
+              {user && (
+                <h6 className="mid-text smaller mt-0 mb-0">{user.name}</h6>
               )}
             </div>
+
+            <div className="speech-bubble">
+              <p className="light-font-text mt-0 mb-0">{message.body}</p>
+            </div>
           </div>
-        </li>
-      ));
+        </React.Fragment>
+      );
+    });
+  }
+
+  renderLectures(lectures) {
+    if (lectures) {
+      return lectures.map(lecture => {
+        const scheduledAt = new Date(lecture.scheduledAt);
+        var day = scheduledAt.getDate();
+        var month = scheduledAt.getMonth() + 1;
+        var year = scheduledAt.getFullYear();
+        var scheduledDate = year + "-" + month + "-" + day;
+        var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+
+        return (
+          <li className="list-group-item bg-transparent small dark-silver-text light-font-text">
+            <div className="row">
+              <div className="col-6">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/play.png"}
+                  className="mr-2"
+                  height="15"
+                />
+                {lecture.nameAr}
+              </div>
+              <div className="col-6 d-flex justify-content-end align-items-center">
+                {lecture.status == "Live" ? (
+                  <h6 className="red-text small mb-0">
+                    مباشرة - <span className="en-text">{hijriDate}</span>
+                  </h6>
+                ) : lecture.status == "Scheduled" ? (
+                  <h6 className="dark-text small mb-0">
+                    مجدولة - <span className="en-text">{hijriDate}</span>
+                  </h6>
+                ) : lecture.status == "Recorded" ? (
+                  <h6 className="light-text small mb-0">
+                    مسجلة - <span className="en-text">{hijriDate}</span>
+                  </h6>
+                ) : null}
+              </div>
+            </div>
+          </li>
+        );
+      });
     }
   }
 

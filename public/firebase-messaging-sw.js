@@ -19,15 +19,11 @@ const messaging = firebase.messaging();
 // implement this optional method.
 // [START background_handler]
 messaging.setBackgroundMessageHandler(function(payload) {
-  console.log(
-    "[firebase-messaging-sw.js] Received background message ",
-    payload
-  );
   // Customize notification here
-  var notificationTitle = "Background Message Title";
+  var notificationTitle = "لديك رسالة جديدة";
   var notificationOptions = {
-    body: "Background Message body.",
-    icon: "/firebase-logo.png"
+    body: payload.data.twi_body,
+    icon: "/assets/images/logo.png"
   };
 
   return self.registration.showNotification(
