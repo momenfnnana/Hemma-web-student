@@ -18,7 +18,17 @@ export class Card extends Component {
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
     const instructor = course.instructors.map(instructor => (
-      <span key={instructor.id}>{instructor.name}</span>
+      <React.Fragment>
+        <img
+          src={process.env.PUBLIC_URL + "/assets/images/blue-male.png"}
+          height="15"
+          width="15"
+          className="mr-1 contain-img"
+        />
+        <span key={instructor.id} className="mr-3">
+          {instructor.name}
+        </span>
+      </React.Fragment>
     ));
     return (
       <React.Fragment>
@@ -35,15 +45,7 @@ export class Card extends Component {
               course.instructors == 0 ? null : (
                 <div className="card-subtitle">
                   <div className="list-inline-item light-font-text small light-text d-inline-flex align-items-center mb-2">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/blue-male.png"
-                      }
-                      height="15"
-                      width="15"
-                      className="mr-1 contain-img"
-                    />
-                    <span>{instructor}</span>
+                    {instructor}
                   </div>
                 </div>
               )}
