@@ -4,15 +4,33 @@ import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
 import { NewInstallment } from "../../subscriptions/transactions/installment/NewInstallment";
+import { apiBaseUrl } from "../../../../api/helpers";
+import axios from "axios";
 
 export class SidebarComponent extends Component {
   state = {
-    isInstallmentOpen: false
+    isInstallmentOpen: false,
+    details: []
   };
   componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
     }
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    const courseId = this.props.match.params.id;
+    axios
+      .get(`${apiBaseUrl}/content/${courseId}/remaining_payment_details`, {
+        headers
+      })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -122,15 +140,20 @@ export class SidebarComponent extends Component {
                   المحاضرات المسجلة
                 </NavLink>
               </li>
-              <hr className="separator mt-0 mb-0" />
-              <div className="settings d-flex align-items-center justify-content-center">
-                <button
-                  className="btn light-btn small mb-0 w-100"
-                  onClick={this.openInstallmentModal}
-                >
-                  إكمال سداد قسط
-                </button>
-              </div>
+              {this.state.details &&
+              this.state.details.remainingAmount == "0" ? null : (
+                <React.Fragment>
+                  <hr className="separator mt-0 mb-0" />
+                  <div className="settings d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn light-btn small mb-0 w-100"
+                      onClick={this.openInstallmentModal}
+                    >
+                      إكمال سداد قسط
+                    </button>
+                  </div>
+                </React.Fragment>
+              )}
               <NewInstallment
                 isInstallmentOpen={this.state.isInstallmentOpen}
                 closeInstallmentModal={this.closeInstallmentModal}

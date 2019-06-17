@@ -10,6 +10,7 @@ import {
 } from "react-accessible-accordion";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+import { Link } from "react-router-dom";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -75,7 +76,7 @@ export class Schedule extends Component {
     if (chapters) {
       return chapters.map(chapter => (
         <Accordion>
-          <AccordionItem>
+          <AccordionItem expanded={true}>
             <AccordionItemTitle>
               <h6 className="dark-text mb-0 small dark-text">
                 {chapter.nameAr}
@@ -115,46 +116,69 @@ export class Schedule extends Component {
   }
 
   renderLectures(lectures) {
+    const courseId = this.props.match.params.id;
+
     if (lectures) {
       return lectures.map(lecture => {
-        const scheduledAt = new Date(lecture.scheduledAt);
-        var day = scheduledAt.getDate();
-        var month = scheduledAt.getMonth() + 1;
-        var year = scheduledAt.getFullYear();
-        var scheduledDate = year + "-" + month + "-" + day;
-        var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
-
         return (
-          <li className="list-group-item bg-transparent small dark-silver-text light-font-text">
-            <div className="row">
-              <div className="col-6">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/play.png"}
-                  className="mr-2"
-                  height="15"
-                />
-                {lecture.nameAr}
+          <React.Fragment>
+            {lecture.status == "Recorded" ? (
+              <Link
+                to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}
+                className="list-group-item bg-transparent small dark-silver-text light-font-text"
+              >
+                {this.renderLecture(lecture)}
+              </Link>
+            ) : (
+              <div className="list-group-item bg-transparent small dark-silver-text light-font-text">
+                {this.renderLecture(lecture)}
               </div>
-              <div className="col-6 d-flex justify-content-end align-items-center">
-                {lecture.status == "Live" ? (
-                  <h6 className="red-text small mb-0">
-                    مباشرة - <span className="en-text">{hijriDate}</span>
-                  </h6>
-                ) : lecture.status == "Scheduled" ? (
-                  <h6 className="dark-text small mb-0">
-                    مجدولة - <span className="en-text">{hijriDate}</span>
-                  </h6>
-                ) : lecture.status == "Recorded" ? (
-                  <h6 className="light-text small mb-0">
-                    مسجلة - <span className="en-text">{hijriDate}</span>
-                  </h6>
-                ) : null}
-              </div>
-            </div>
-          </li>
+            )}
+          </React.Fragment>
         );
       });
     }
+  }
+
+  renderLecture(lecture) {
+    const scheduledAt = new Date(lecture.scheduledAt);
+    var day = scheduledAt.getDate();
+    var month = scheduledAt.getMonth() + 1;
+    var year = scheduledAt.getFullYear();
+    var scheduledDate = year + "-" + month + "-" + day;
+    var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+    return (
+      <div className="row">
+        <div className="col-6">
+          {lecture.status == "Recorded" && (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/play.png"}
+              className="mr-2"
+              height="15"
+            />
+          )}
+          {lecture.nameAr}
+        </div>
+        <div className="col-6 d-flex justify-content-end align-items-center">
+          {lecture.status == "Live" ? (
+            <div className="small mb-0 d-flex align-items-center">
+              <span className="en-text">{hijriDate}</span>{" "}
+              <span className="badge light-bg ml-2 text-white">مباشرة</span>
+            </div>
+          ) : lecture.status == "Scheduled" ? (
+            <div className="small mb-0 d-flex align-items-center">
+              <span className="en-text">{hijriDate}</span>{" "}
+              <span className="badge mid-bg ml-2 text-white">مجدولة</span>
+            </div>
+          ) : lecture.status == "Recorded" ? (
+            <div className="small mb-0 d-flex align-items-center">
+              <span className="en-text">{hijriDate}</span>{" "}
+              <span className="badge red-bg ml-2 text-white">مسجلة</span>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
   }
 
   render() {
