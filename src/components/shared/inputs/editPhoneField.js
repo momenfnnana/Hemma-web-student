@@ -15,35 +15,39 @@ export class editPhoneField extends Component {
       wrapperClass += " input-success";
     }
 
-    // const handleBlur = (valid, value, country) => {
-    //   this.props.input.onBlur({
-    //     phoneNumber: value,
-    //     countryCode: country.iso2
-    //   });
-    // };
+    const handleBlur = (valid, value, country) => {
+      this.props.input.onBlur({
+        phoneNumber: value,
+        countryCode: country.iso2
+      });
+    };
 
-    // const handleChange = (valid, value, country) => {
-    //   this.props.input.onChange({
-    //     phoneNumber: value,
-    //     countryCode: country.iso2
-    //   });
-    // };
+    const handleChange = (valid, value, country) => {
+      this.props.input.onChange({
+        phoneNumber: value,
+        countryCode: country.iso2
+      });
+    };
     return (
       <React.Fragment>
         <div className={wrapperClass}>
-          <IntlTelInput
-            {...this.props.IntlTelInput}
-            type={this.props.type}
-            fieldName={inputName}
-            containerClassName={containerClass}
-            inputClassName={inputClass}
-            defaultCountry={countryCode}
-            // onPhoneNumberBlur={handleBlur}
-            // onPhoneNumberChange={handleChange}
-            disabled={this.props.disabled}
-            defaultValue={this.props.input.value}
-            value={this.props.input.value}
-          />
+          {this.props.initialCountry && (
+            <IntlTelInput
+              {...this.props.IntlTelInput}
+              type={this.props.type}
+              fieldName={inputName}
+              containerClassName={containerClass}
+              inputClassName={inputClass}
+              defaultCountry={this.props.initialCountry}
+              onPhoneNumberBlur={handleBlur}
+              onPhoneNumberChange={handleChange}
+              disabled={this.props.disabled}
+              defaultValue={this.props.input.value}
+              value={
+                this.props.input.value.phoneNumber || this.props.input.value
+              }
+            />
+          )}
           {this.props.meta.touched && this.props.meta.error && (
             <small className="w-100 smaller">{this.props.meta.error}</small>
           )}

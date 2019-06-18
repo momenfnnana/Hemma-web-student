@@ -132,7 +132,7 @@ export class SubscriptionsComponent extends Component {
                       this.props.initialValues.phoneNumber}
                   </p>
                   <Link
-                    to="/account/edit"
+                    to="/account/update"
                     className="light-text text-underline small"
                   >
                     تعديل الملف الشخصي

@@ -74,7 +74,7 @@ class BankPaymentComponent extends Component {
       .checkoutWithBankTransfer(values.bankDoc, data)
       .then(() => {
         this.setState({ loading: false, disabled: false });
-        this.props.history.push("/account/subscriptions");
+        this.props.history.push("/subscriptions");
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
