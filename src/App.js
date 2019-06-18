@@ -137,14 +137,6 @@ export default class AppComponent extends Component {
                       component={CategoryDetails}
                     />
                     <Route
-                      path="/account/edit"
-                      component={requireAuth(EditAccount)}
-                    />
-                    <Route
-                      path="/account/reset-password"
-                      component={requireAuth(AccountReset)}
-                    />
-                    <Route
                       path="/course/details/:id"
                       component={CourseDetails}
                     />

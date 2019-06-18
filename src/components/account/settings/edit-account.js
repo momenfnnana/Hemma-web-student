@@ -43,15 +43,10 @@ class EditAccountComponent extends Component {
     this.togglePhone = this.togglePhone.bind(this);
     this.toggleEmail = this.toggleEmail.bind(this);
     this.state = {
-<<<<<<< HEAD
-      phoneTooltip: false,
-      emailTooltip: false
-=======
       phonePopover: false,
       emailPopover: false,
       isEmailTokenOpen: false,
       isPhoneTokenOpen: false
->>>>>>> staging
     };
   }
 
@@ -67,8 +62,6 @@ class EditAccountComponent extends Component {
     });
   }
 
-<<<<<<< HEAD
-=======
   openPhoneTokenModal = () => {
     this.setState({ isPhoneTokenOpen: true, phonePopover: false });
   };
@@ -83,7 +76,6 @@ class EditAccountComponent extends Component {
     this.setState({ isEmailTokenOpen: false });
   };
 
->>>>>>> staging
   componentDidMount() {
     this.props.getProfile();
 
@@ -135,8 +127,6 @@ class EditAccountComponent extends Component {
       });
   };
 
-<<<<<<< HEAD
-=======
   verifyEmail = values => {
     let token = localStorage.getItem("token");
     let headers = {
@@ -240,189 +230,10 @@ class EditAccountComponent extends Component {
       });
   };
 
->>>>>>> staging
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
       <React.Fragment>
-<<<<<<< HEAD
-        <section className="pt-5 pb-5">
-          <div className="container">
-            <div className="row">
-              <div className="col-12">
-                <h3 className="dark-text">الملف الشخصي</h3>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-md-12">
-                <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
-                  <img src={avatarImg} height="110" className="mb-4" />
-
-                  <form
-                    className="w-25"
-                    onSubmit={handleSubmit(this.myFormHandler)}
-                  >
-                    <Field
-                      name="name"
-                      type="text"
-                      component={inputField}
-                      className="form-control border-left-0 pl-0"
-                      placeholder="الاسم الكامل"
-                    >
-                      <FaRegUser />
-                    </Field>
-
-                    <div className="position-relative">
-                      <Field
-                        fieldName="phoneNumber"
-                        name="phoneNumber"
-                        // names={["phoneNumber", "countryCode"]}
-                        component={editPhoneField}
-                        containerClassName="intl-tel-input"
-                        inputClassName="form-control"
-                        defaultCountry="sa"
-                        disabled={true}
-                      />
-                      {this.props.initialValues.phoneNumberConfirmed ==
-                      false ? (
-                        <React.Fragment>
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/not-verified.png"
-                            }
-                            width="100%"
-                            width="20"
-                            className="position-absolute right-input-icon"
-                            id="phone-tooltip"
-                          />
-                          <Tooltip
-                            placement="right"
-                            isOpen={this.state.phoneTooltip}
-                            target="phone-tooltip"
-                            toggle={this.togglePhone}
-                            style={{
-                              backgroundColor: "#f2fdfe",
-                              color: "#4b3a85",
-                              height: 35,
-                              display: "flex",
-                              alignItems: "center"
-                            }}
-                          >
-                            <h6 className="light-font-text small mb-0">
-                              رقم الهاتف غير محقق
-                            </h6>
-                          </Tooltip>
-                        </React.Fragment>
-                      ) : null}
-                    </div>
-
-                    <label className="pr-2 dark-silver-text">أنا: </label>
-                    <div className="form-check form-check-inline mb-3">
-                      <Field
-                        className="form-check-input"
-                        type="radio"
-                        name="gender"
-                        value={this.props.initialValues.gender}
-                        component="input"
-                        disabled={true}
-                        checked={(this.props.initialValues.gender = "Male")}
-                      />
-                      <label className="form-check-label dark-text small">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/male.png"
-                          }
-                          width="100%"
-                          className="mr-1"
-                          width="12"
-                        />
-                        ذكر
-                      </label>
-                    </div>
-                    <div className="form-check form-check-inline mb-3">
-                      <Field
-                        className="form-check-input"
-                        type="radio"
-                        name="gender"
-                        value={this.props.initialValues.gender}
-                        component="input"
-                        disabled={true}
-                        checked={(this.props.initialValues.gender = "Female")}
-                      />
-                      <label className="form-check-label dark-text small">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/female.png"
-                          }
-                          width="100%"
-                          className="mr-1"
-                          width="12"
-                        />
-                        أنثى
-                      </label>
-                    </div>
-
-                    <div className="position-relative">
-                      <Field
-                        name="email"
-                        type="email"
-                        component={inputField}
-                        className="form-control border-left-0 pl-0 ltr-input"
-                        placeholder="البريد الإلكتروني"
-                        disabled={true}
-                      >
-                        <FaRegEnvelope />
-                      </Field>
-                      {this.props.initialValues.emailConfirmed == false ? (
-                        <React.Fragment>
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/not-verified.png"
-                            }
-                            width="100%"
-                            width="20"
-                            className="position-absolute left-input-icon"
-                            id="email-tooltip"
-                          />
-                          <Tooltip
-                            placement="left"
-                            isOpen={this.state.emailTooltip}
-                            target="email-tooltip"
-                            toggle={this.toggleEmail}
-                            style={{
-                              backgroundColor: "#f2fdfe",
-                              color: "#4b3a85",
-                              height: 35,
-                              display: "flex",
-                              alignItems: "center"
-                            }}
-                          >
-                            <h6 className="light-font-text small mb-0">
-                              البريد الإلكتروني غير محقق
-                            </h6>
-                          </Tooltip>
-                        </React.Fragment>
-                      ) : null}
-                    </div>
-                    <Link
-                      to="/account/reset-password"
-                      className="light-text smaller"
-                    >
-                      تعديل كلمة المرور
-                    </Link>
-                    <button
-                      type="submit"
-                      className="btn dark-outline-btn w-100 mt-3"
-                      disabled={submitting}
-                    >
-                      حفظ التعديلات{" "}
-                    </button>
-                  </form>
-                </div>
-              </div>
-=======
         <h3 className="dark-text">الملف الشخصي</h3>
         <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column mt-3">
           <form className="w-35" onSubmit={handleSubmit(this.myFormHandler)}>
@@ -574,7 +385,6 @@ class EditAccountComponent extends Component {
                   </Popover>
                 </React.Fragment>
               ) : null}
->>>>>>> staging
             </div>
 
             <EmailToken
