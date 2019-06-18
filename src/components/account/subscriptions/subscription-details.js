@@ -9,7 +9,7 @@ import { RecordedVideos } from "./recorded-videos";
 import { Booklet } from "./booklet";
 import { TransactionsList } from "./transactions/transactions-list";
 import { UsersChatComponent } from "./chat";
-import { SpeedUp } from "./speed-up";
+import { SpeedUp } from "./speed-up/speed-up";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { Route } from "react-router-dom";
@@ -76,6 +76,7 @@ export class SubscriptionDetails extends Component {
                   path="/subscriptions/:id/recorded-videos/:lectureId"
                   component={RecordedVideos}
                 />
+                <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />
                 {/* 
                 <Route
                   path="/subscriptions/:id/transactions/list"
@@ -93,7 +94,7 @@ export class SubscriptionDetails extends Component {
                     )}
                   />
                 )} 
-                <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />*/}
+               */}
               </div>
             </div>
           </div>

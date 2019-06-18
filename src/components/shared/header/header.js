@@ -174,7 +174,7 @@ class HeaderComponent extends Component {
                         <NavLink
                           className={"nav-link mid-text"}
                           activeClassName="active"
-                          to="/account/subscriptions"
+                          to="/subscriptions"
                         >
                           دوراتي
                         </NavLink>
@@ -193,7 +193,7 @@ class HeaderComponent extends Component {
                             <NavLink
                               className="nav-link mid-text"
                               activeClassName="active"
-                              to="/account/edit"
+                              to="/account/update"
                             >
                               تعديل الملف
                             </NavLink>

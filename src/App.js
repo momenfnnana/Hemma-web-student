@@ -20,11 +20,9 @@ import { Categories } from "./components/categories/list";
 import { Home } from "./components/home/home";
 import { CategoryDetails } from "./components/categories/details";
 import { CourseDetails } from "./components/courses/details";
-import { EditAccount } from "./components/account/settings/edit-account";
 import { forgotPassword } from "./components/phone-reset/forgot-password/forgot-password";
 import { VerifyId } from "./components/phone-reset/verify-id/verify";
 import { resetPassword } from "./components/phone-reset/reset-password/reset-password";
-import { AccountReset } from "./components/account/settings/reset-password";
 import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
 import { Cart, Checkout } from "./components/cart";
@@ -32,12 +30,12 @@ import { Cart, Checkout } from "./components/cart";
 import ScrollToTop from "./components/shared/scroll-to-top/ScrollToTop";
 import { SubscriptionDetails } from "./components/account/subscriptions/subscription-details";
 import { Subscriptions } from "./components/account/subscriptions/subscriptions";
-import { LiveStream } from "./components/account/subscriptions/live-stream";
 import NotFound from "./components/shared/not-found/not-found";
 import { apiBaseUrl } from "./api/helpers";
 import requireAuth from "./components/shared/authentication/require-auth";
 import Intercom from "./Intercom";
 import TwilioComponent from "./Twilio";
+import { Account } from "./components/account/settings/account";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -155,9 +153,11 @@ export default class AppComponent extends Component {
                       path="/cart/checkout"
                       component={requireAuth(Checkout)}
                     />
-
+                    <Redirect exact from="/account" to="/account/update" />
+                    <Route path="/account" component={requireAuth(Account)} />
                     <Route
-                      path="/account/subscriptions"
+                      path="/subscriptions"
+                      exact
                       component={requireAuth(Subscriptions)}
                     />
                     <Redirect
@@ -169,13 +169,13 @@ export default class AppComponent extends Component {
                       path="/subscriptions/:id"
                       component={requireAuth(SubscriptionDetails)}
                     />
-                    <Route
+                    {/* <Route
                       path="/live-stream/:id"
                       component={requireAuth(SubscriptionDetails)}
-                    />
-                    <Route path="/not-found" component={NotFound} />
+                    /> */}
+                    {/* <Route path="/not-found" component={NotFound} />
                     <Redirect from="/" exact to="/home" />
-                    <Redirect to="/not-found" />
+                    <Redirect to="/not-found" /> */}
                   </Switch>
                   <Footer />
                 </AppBackground>

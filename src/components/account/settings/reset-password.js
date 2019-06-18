@@ -27,7 +27,7 @@ const validate = values => {
   return errors;
 };
 
-class AccountResetComponent extends Component {
+class UpdatePasswordComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -71,54 +71,44 @@ class AccountResetComponent extends Component {
 
     return (
       <React.Fragment>
-        <section className="pt-5 pb-5">
-          <div className="container">
-            <div className="row">
-              <div className="col-12">
-                <h3 className="dark-text">الملف الشخصي</h3>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-md-12">
-                <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
-                  <h6 className="dark-text small mb-4">
-                    قم بتعيين كلمة مرور جديدة
-                  </h6>
-                  <form
-                    className="w-25"
-                    onSubmit={handleSubmit(this.myFormHandler)}
-                  >
-                    <Field
-                      name="oldPassword"
-                      type="password"
-                      component={inputField}
-                      className="form-control border-left-0 pl-0 ltr-input"
-                      placeholder="كلمة المرور الحالية"
-                    >
-                      <MdLockOutline />
-                    </Field>
-                    <Field
-                      name="newPassword"
-                      type="password"
-                      component={inputField}
-                      className="form-control border-left-0 pl-0 ltr-input"
-                      placeholder="كلمة المرور الجديدة"
-                    >
-                      <MdLockOutline />
-                    </Field>
+        <h3 className="dark-text">تغيير كلمة المرور</h3>
 
-                    <button className="btn dark-outline-btn w-100">
-                      حفظ التعديلات{" "}
-                    </button>
-                  </form>
-                  <Link to="/account/edit" className="light-text small mt-3">
-                    رجوع إلى الملف الشخصي{" "}
-                  </Link>
-                </div>
-              </div>
+        <div className="row mt-3">
+          <div className="col-md-12">
+            <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column">
+              <h6 className="dark-text small mb-4">
+                قم بتعيين كلمة مرور جديدة
+              </h6>
+              <form
+                className="w-35"
+                onSubmit={handleSubmit(this.myFormHandler)}
+              >
+                <Field
+                  name="oldPassword"
+                  type="password"
+                  component={inputField}
+                  className="form-control border-left-0 pl-0 ltr-input"
+                  placeholder="كلمة المرور الحالية"
+                >
+                  <MdLockOutline />
+                </Field>
+                <Field
+                  name="newPassword"
+                  type="password"
+                  component={inputField}
+                  className="form-control border-left-0 pl-0 ltr-input"
+                  placeholder="كلمة المرور الجديدة"
+                >
+                  <MdLockOutline />
+                </Field>
+
+                <button className="btn dark-outline-btn w-100 mt-3">
+                  حفظ التعديلات{" "}
+                </button>
+              </form>
             </div>
           </div>
-        </section>
+        </div>
       </React.Fragment>
     );
   }
@@ -126,15 +116,15 @@ class AccountResetComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.AccountReset && state.form.AccountReset.values
+    formValues: state.form.ResetPassword && state.form.ResetPassword.values
   };
 }
 
-AccountResetComponent = reduxForm({
-  form: "AccountReset",
+UpdatePasswordComponent = reduxForm({
+  form: "ResetPassword",
   validate
-})(AccountResetComponent);
+})(UpdatePasswordComponent);
 
-AccountResetComponent = connect(mapStateToProps)(AccountResetComponent);
+UpdatePasswordComponent = connect(mapStateToProps)(UpdatePasswordComponent);
 
-export const AccountReset = withRouter(AccountResetComponent);
+export const UpdatePassword = withRouter(UpdatePasswordComponent);

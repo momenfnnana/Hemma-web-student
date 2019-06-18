@@ -35,7 +35,7 @@ const validate = values => {
   return errors;
 };
 
-class UpdatePhoneComponent extends Component {
+class UpdateEmailComponent extends Component {
   componentDidMount() {
     this.props.getProfile();
   }
@@ -46,12 +46,11 @@ class UpdatePhoneComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     let data = {
-      countryCode: values.phoneNumber.countryCode,
-      phoneNumber: values.phoneNumber.phoneNumber,
+      email: values.email,
       password: values.password
     };
     axios
-      .put(`${apiBaseUrl}/auth/phone`, data, {
+      .put(`${apiBaseUrl}/auth/email`, data, {
         headers
       })
       .then(response => {
@@ -81,25 +80,18 @@ class UpdatePhoneComponent extends Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <React.Fragment>
-        <h3 className="dark-text">تعديل رقم الهاتف</h3>
+        <h3 className="dark-text">تعديل البريد الإلكتروني</h3>
         <div className="bg-white box-layout w-100 p-5 d-flex align-items-center justify-content-center flex-column mt-3">
           <form className="w-35" onSubmit={handleSubmit(this.myFormHandler)}>
             <Field
-              fieldName="phoneNumber"
-              name="phoneNumber"
-              props={{
-                initialCountry:
-                  this.props.initialValues &&
-                  this.props.initialValues.countryCode,
-                initialPhone:
-                  this.props.initialValues &&
-                  this.props.initialValues.phoneNumber
-              }}
-              component={editPhoneField}
-              containerClassName="intl-tel-input"
-              inputClassName="form-control"
-              defaultCountry="sa"
-            />
+              name="email"
+              type="email"
+              component={emailField}
+              className="form-control border-right-0 pr-0 pr-1 left-radius-0 ltr-input"
+              placeholder="البريد الإلكتروني"
+            >
+              <FaRegEnvelope />
+            </Field>
             <Field
               name="password"
               type="password"
@@ -131,17 +123,17 @@ function mapStateToProps(state) {
   };
 }
 
-UpdatePhoneComponent = reduxForm({
-  form: "ResetPhone",
+UpdateEmailComponent = reduxForm({
+  form: "ResetEmail",
   validate,
   enableReinitialize: true,
   destroyOnUnmount: false,
   fields: ["email"]
-})(UpdatePhoneComponent);
+})(UpdateEmailComponent);
 
-UpdatePhoneComponent = connect(
+UpdateEmailComponent = connect(
   mapStateToProps,
   { getProfile }
-)(UpdatePhoneComponent);
+)(UpdateEmailComponent);
 
-export const UpdatePhone = withRouter(UpdatePhoneComponent);
+export const UpdateEmail = withRouter(UpdateEmailComponent);
