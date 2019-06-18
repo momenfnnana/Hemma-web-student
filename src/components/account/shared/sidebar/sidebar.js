@@ -122,6 +122,22 @@ export class SidebarComponent extends Component {
                   المحاضرات المسجلة
                 </NavLink>
               </li>
+
+              <li>
+                <NavLink
+                  to={`/subscriptions/${this.props.id}/speed-up`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  اختصر وقتك
+                </NavLink>
+              </li>
               <hr className="separator mt-0 mb-0" />
               <div className="settings d-flex align-items-center justify-content-center">
                 <button
@@ -231,22 +247,7 @@ export class SidebarComponent extends Component {
                   الدردشة
                 </NavLink>
               </li>
-        
-              <li>
-                <NavLink
-                  to={`/subscriptions/${this.props.id}/speed-up`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  اختصر وقتك
-                </NavLink>
-              </li> */}
+        */}
             </ul>
           </div>
           {/* <hr className="separator mt-0 mb-0" />
