@@ -2,16 +2,48 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { inputField } from "../../../shared/inputs/inputField";
-import { textareaField } from "../../../shared/inputs/textareaField";
 import { withRouter } from "react-router-dom";
 import ReactPlayer from "react-player";
+import axios from "axios";
+import { apiBaseUrl } from "../../../../api/helpers";
+import { Page, pdfjs, Document } from "react-pdf";
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${
+  pdfjs.version
+}/pdf.worker.js`;
 
 export class SpeedUpModalComponent extends Component {
-  myFormHandler = values => {
-    console.log(values);
+  constructor(props) {
+    super(props);
+    this.state = {
+      file: {},
+      numPages: null,
+      pageNumber: 1
+    };
+  }
+  onDocumentLoadSuccess = ({ numPages }) => {
+    this.setState({ numPages });
   };
+  shouldComponentUpdate(nextProps, nextState) {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
+      axios
+        .get(`${apiBaseUrl}/content/speedups/${nextProps.id}`, { headers })
+        .then(response => {
+          this.setState({ file: response.data.data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    return true;
+  }
+
   render() {
+    const { pageNumber, numPages } = this.state;
+
     const customStyles = {
       content: {
         top: "50%",
@@ -36,6 +68,7 @@ export class SpeedUpModalComponent extends Component {
       handleSubmit,
       submitting
     } = this.props;
+    const file = this.state.file;
     return (
       <React.Fragment>
         <Modal
@@ -45,20 +78,40 @@ export class SpeedUpModalComponent extends Component {
           onRequestClose={closeSpeedUpModal}
           closeRefundModal={closeSpeedUpModal}
         >
-          <ReactPlayer
-            url="https://hemma.ams3.cdn.digitaloceanspaces.com/videos/videos/20a57d73-a232-417b-bcdd-e5bdef18cca0.mp4"
-            playing={false}
-            controls={false}
-            width="100%"
-            height="100%"
-          />
-
-          {/* <img
-            src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
-            alt="Speed up image"
-            width="100%"
-            height="auto"
-          /> */}
+          {file.type == "Image" ? (
+            <img src={file.url} alt="File" width="100%" height="auto" />
+          ) : file.type == "Pdf" ? (
+            <Document
+              file={file.url}
+              onLoadSuccess={this.onDocumentLoadSuccess}
+            >
+              <Page pageNumber={pageNumber} />
+            </Document>
+          ) : file.type == "Video" ? (
+            <ReactPlayer
+              url={file.url}
+              playing={true}
+              controls={true}
+              width="100%"
+              height="100%"
+            />
+          ) : (
+            <React.Fragment>
+              <div className="d-flex align-items-center flex-column pt-5 pb-5">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/file-outline.png"
+                  }
+                  alt="File"
+                  className="contain-img custom-img mx-auto"
+                  height="80"
+                />
+                <a href={file.url} target="_blank" className="light-text mt-3">
+                  <u>تحميل</u>
+                </a>
+              </div>
+            </React.Fragment>
+          )}
         </Modal>
       </React.Fragment>
     );
