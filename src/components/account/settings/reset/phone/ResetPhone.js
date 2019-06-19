@@ -23,19 +23,18 @@ import { MdLockOutline } from "react-icons/md";
 
 const validate = values => {
   const errors = {};
-  if (!values.name) {
-    errors.name = "يجب تعبئة هذه الخانة";
-  } else if (
-    !/^[\u0621-\u064Aa-zA-Z]{2,}(\s[\u0621-\u064Aa-zA-Z]{2,})+$/.test(
-      values.name
-    )
-  ) {
-    errors.name = "الاسم يجب أن يحتوي على مقطعين على الأقل";
+  if (!values.phoneNumber) {
+    errors.phoneNumber = "يجب تعبئة هذه الخانة";
+  } else if (!values.password) {
+    errors.password = "يجب تعبئة هذه الخانة";
   }
   return errors;
 };
 
 class UpdatePhoneComponent extends Component {
+  state = {
+    profile: ""
+  };
   componentDidMount() {
     this.props.getProfile();
   }
@@ -55,9 +54,11 @@ class UpdatePhoneComponent extends Component {
         headers
       })
       .then(response => {
+        localStorage.setItem("token", response.data.data.token);
         swal("تنبيه", "تم تعديل بياناتك بنجاح", "success", {
           button: "متابعة"
         });
+        window.location = "/account/update";
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
@@ -65,20 +66,43 @@ class UpdatePhoneComponent extends Component {
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
               button: "متابعة"
             });
+            break;
+          case "MustProvideNewValue":
+            swal("عفواً", "يرجى إدخال قيمة جديدة", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          case "InvalidCountry":
+            swal("عفواً", "يرجى التحقق من رمز الدولة", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          case "Duplicate":
+            swal("عفواً", "هذا الرقم مسجل مسبقاً", "error", {
+              button: "متابعة"
+            });
+            break;
+
           case "InvalidCredentials":
-            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+            swal("عفواً", "يرجى التحقق من كلمة المرور", "error", {
               button: "متابعة"
             });
             break;
 
           default:
-            console.log("other error");
+            swal("عفواً", "حدث خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
         }
       });
   };
 
   render() {
     const { handleSubmit, submitting } = this.props;
+
     return (
       <React.Fragment>
         <h3 className="dark-text">تعديل رقم الهاتف</h3>
@@ -99,6 +123,18 @@ class UpdatePhoneComponent extends Component {
               containerClassName="intl-tel-input"
               inputClassName="form-control"
               defaultCountry="sa"
+              onChangePhoneNumber={text =>
+                this.setState(state => {
+                  return {
+                    ...state,
+                    profile: {
+                      ...state.profile,
+                      phoneNumber: text
+                    }
+                  };
+                })
+              }
+              value={this.state.profile.phoneNumber}
             />
             <Field
               name="password"
@@ -134,9 +170,7 @@ function mapStateToProps(state) {
 UpdatePhoneComponent = reduxForm({
   form: "ResetPhone",
   validate,
-  enableReinitialize: true,
-  destroyOnUnmount: false,
-  fields: ["email"]
+  enableReinitialize: true
 })(UpdatePhoneComponent);
 
 UpdatePhoneComponent = connect(

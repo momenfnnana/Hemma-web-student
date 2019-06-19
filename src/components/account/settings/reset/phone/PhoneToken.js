@@ -45,7 +45,7 @@ export class PhoneTokenComponent extends Component {
         headers
       })
       .then(response => {
-        console.log(response);
+        localStorage.setItem("token", response.data.data.token);
       })
       .catch(error => {
         console.log(error);

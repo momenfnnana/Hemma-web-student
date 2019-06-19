@@ -52,13 +52,13 @@ class EditAccountComponent extends Component {
 
   togglePhone() {
     this.setState({
-      phoneTooltip: !this.state.phoneTooltip
+      phonePopover: !this.state.phonePopover
     });
   }
 
   toggleEmail() {
     this.setState({
-      emailTooltip: !this.state.emailTooltip
+      emailPopover: !this.state.emailPopover
     });
   }
 
@@ -78,8 +78,6 @@ class EditAccountComponent extends Component {
 
   componentDidMount() {
     this.props.getProfile();
-
-    console.log(this.props);
   }
 
   myFormHandler = values => {
@@ -105,6 +103,7 @@ class EditAccountComponent extends Component {
         swal("تنبيه", "تم تعديل بياناتك بنجاح", "success", {
           button: "متابعة"
         });
+        window.location = "/account/update";
       })
       .catch(error => {
         this.setState({
@@ -225,7 +224,10 @@ class EditAccountComponent extends Component {
             break;
 
           default:
-            console.log("other error");
+            swal("عفواً", "حدث خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
         }
       });
   };

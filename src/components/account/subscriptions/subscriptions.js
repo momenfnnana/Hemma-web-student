@@ -119,7 +119,7 @@ export class SubscriptionsComponent extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-4">
-                <div className="white-bg box-layout w-100 p-4 d-flex align-items-center justify-content-center flex-column">
+                <div className="white-bg box-layout w-100 p-4 d-flex align-items-center justify-content-center flex-column  mb-4">
                   <img src={avatarImg} height="110" className="mb-3" />
                   <h6 className="dark-text mb-1">
                     {this.props.initialValues && this.props.initialValues.name}

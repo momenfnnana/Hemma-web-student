@@ -51,6 +51,7 @@ class UpdatePasswordComponent extends Component {
         swal("تنبيه", "تم تغيير كلمة المرور بنجاح", "success", {
           button: "متابعة"
         });
+        this.props.history.push("/account/update");
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {

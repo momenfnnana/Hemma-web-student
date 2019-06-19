@@ -23,14 +23,10 @@ import { MdLockOutline } from "react-icons/md";
 
 const validate = values => {
   const errors = {};
-  if (!values.name) {
-    errors.name = "يجب تعبئة هذه الخانة";
-  } else if (
-    !/^[\u0621-\u064Aa-zA-Z]{2,}(\s[\u0621-\u064Aa-zA-Z]{2,})+$/.test(
-      values.name
-    )
-  ) {
-    errors.name = "الاسم يجب أن يحتوي على مقطعين على الأقل";
+  if (!values.email) {
+    errors.email = "يجب تعبئة هذه الخانة";
+  } else if (!values.password) {
+    errors.password = "يجب تعبئة هذه الخانة";
   }
   return errors;
 };
@@ -54,9 +50,11 @@ class UpdateEmailComponent extends Component {
         headers
       })
       .then(response => {
+        localStorage.setItem("token", response.data.data.token);
         swal("تنبيه", "تم تعديل بياناتك بنجاح", "success", {
           button: "متابعة"
         });
+        this.props.history.push("/account/update");
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
@@ -64,14 +62,31 @@ class UpdateEmailComponent extends Component {
             swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
               button: "متابعة"
             });
+            break;
+
           case "InvalidCredentials":
-            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+            swal("عفواً", "يرجى التحقق من كلمة المرور", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          case "MustProvideNewValue":
+            swal("عفواً", "يرجى إدخال قيمة جديدة", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          case "Duplicate":
+            swal("عفواً", "هذا البريد الإلكتروني مسجل مسبقاً", "error", {
               button: "متابعة"
             });
             break;
 
           default:
-            console.log("other error");
+            swal("عفواً", "حدث خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
         }
       });
   };

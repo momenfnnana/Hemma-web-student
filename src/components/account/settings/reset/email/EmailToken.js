@@ -11,10 +11,8 @@ import { VerificationField } from "../../../../shared/inputs/verificationField";
 
 const validate = values => {
   const errors = {};
-  if (!values.email) {
-    errors.email = "يجب تعبئة هذه الخانة";
-  } else if (!values.password) {
-    errors.password = "يجب تعبئة هذه الخانة";
+  if (!values.token) {
+    errors.token = "يجب تعبئة هذه الخانة";
   }
   return errors;
 };
@@ -45,7 +43,7 @@ export class EmailTokenComponent extends Component {
         headers
       })
       .then(response => {
-        console.log(response);
+        localStorage.setItem("token", response.data.data.token);
       })
       .catch(error => {
         console.log(error);

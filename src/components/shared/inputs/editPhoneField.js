@@ -3,6 +3,9 @@ import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 
 export class editPhoneField extends Component {
+  state = {
+    profile: ""
+  };
   render() {
     let inputClass = this.props.inputClassName;
     let containerClass = this.props.containerClassName;
@@ -22,12 +25,12 @@ export class editPhoneField extends Component {
       });
     };
 
-    const handleChange = (valid, value, country) => {
-      this.props.input.onChange({
-        phoneNumber: value,
-        countryCode: country.iso2
-      });
-    };
+    // const handleChange = (valid, value, country) => {
+    //   this.props.input.onChange({
+    //     phoneNumber: value,
+    //     countryCode: country.iso2
+    //   });
+    // };
     return (
       <React.Fragment>
         <div className={wrapperClass}>
@@ -40,12 +43,8 @@ export class editPhoneField extends Component {
               inputClassName={inputClass}
               defaultCountry={this.props.initialCountry}
               onPhoneNumberBlur={handleBlur}
-              onPhoneNumberChange={handleChange}
               disabled={this.props.disabled}
               defaultValue={this.props.input.value}
-              value={
-                this.props.input.value.phoneNumber || this.props.input.value
-              }
             />
           )}
           {this.props.meta.touched && this.props.meta.error && (
