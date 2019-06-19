@@ -72,12 +72,12 @@ export class SubscriptionDetails extends Component {
                   component={RecordedVideos}
                 />
                 <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />
+                <Route path="/subscriptions/:id/booklet" component={Booklet} />
                 {/* 
                 <Route
                   path="/subscriptions/:id/transactions/list"
                   component={TransactionsList}
                 />
-                <Route path="/subscriptions/:id/booklet" component={Booklet} />
                 {this.state.details.chatChannelSid && (
                   <Route
                     path="/subscriptions/:id/chat"

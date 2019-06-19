@@ -106,8 +106,13 @@ export class SpeedUpModalComponent extends Component {
                   className="contain-img custom-img mx-auto"
                   height="80"
                 />
-                <a href={file.url} target="_blank" className="light-text mt-3">
-                  <u>تحميل</u>
+                <h6 className="light-text mt-3">{file.title}</h6>
+                <a
+                  className="btn light-btn btn-sm pl-4 pr-4"
+                  href={file.url}
+                  target="_blank"
+                >
+                  تحميل
                 </a>
               </div>
             </React.Fragment>

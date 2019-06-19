@@ -138,6 +138,24 @@ export class SidebarComponent extends Component {
                   اختصر وقتك
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/booklet`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-booklet.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الملزمة
+                </NavLink>
+              </li>
               <hr className="separator mt-0 mb-0" />
               <div className="settings d-flex align-items-center justify-content-center">
                 <button
@@ -199,24 +217,7 @@ export class SidebarComponent extends Component {
                   التحديات
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/booklet`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-booklet.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  الملزمة
-                </NavLink>
-              </li>
+        
               <li>
                 <NavLink className="dark-text small" to="#">
                   <img
