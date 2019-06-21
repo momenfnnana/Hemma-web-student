@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import "./styles.sass";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
 import { NewInstallment } from "../../subscriptions/transactions/installment/NewInstallment";
+import "./styles.sass";
 
 export class SidebarComponent extends Component {
   state = {
@@ -156,6 +156,24 @@ export class SidebarComponent extends Component {
                   الملزمة
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/discussions`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-discussions.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  المناقشات
+                </NavLink>
+              </li>
               <hr className="separator mt-0 mb-0" />
               <div className="settings d-flex align-items-center justify-content-center">
                 <button
@@ -189,20 +207,7 @@ export class SidebarComponent extends Component {
                 </NavLink>
               </li>
             
-              <li>
-                <NavLink className="dark-text small" to="#">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-discussions.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  المناقشات
-                </NavLink>
-              </li>
+         
               <li>
                 <NavLink className="dark-text small" to="#">
                   <img
