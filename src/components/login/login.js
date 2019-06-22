@@ -13,6 +13,7 @@ import {
   sendToken,
   loginFailed
 } from "../../actions/login.actions";
+import axios from "axios";
 
 const validate = values => {
   const errors = {};
@@ -52,6 +53,19 @@ class LoginComponent extends Component {
   }
 
   myFormHandler = values => {
+    // let data = {
+    //   email: "mhayajneh4@terkwaz.com",
+    //   password: "123456"
+    // };
+    // axios
+    //   .post("https://staging.shopi.ws/api/login", data)
+    //   .then(response => {
+    //     console.log(response);
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+
     const request = this.props.loginAction({
       countryCode: values.phone.countryCode,
       phoneNumber: values.phone.phoneNumber,

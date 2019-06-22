@@ -4,6 +4,11 @@ import { CardsList } from "../shared/cardsList/cardsList";
 import { Link } from "react-router-dom";
 import ContentLoader from "react-content-loader";
 import { apiBaseUrl } from "../../api/helpers";
+import { MdSearch } from "react-icons/md";
+import { inputField } from "../shared/inputs/inputField";
+import { Field, reduxForm } from "redux-form";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
 const MyLoader = props => (
   <ContentLoader
@@ -19,7 +24,7 @@ const MyLoader = props => (
     <rect x="60" y="21" rx="4" ry="4" width="150" height="10" />
   </ContentLoader>
 );
-export class Categories extends Component {
+export class CategoriesComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -50,8 +55,8 @@ export class Categories extends Component {
     const cats = this.state.categories;
     return cats.map(cat => (
       <React.Fragment>
-        <div className="row pt-5">
-          <div className="col-12 d-inline-flex align-items-center">
+        <div className="row">
+          <div className="col-12 d-inline-flex align-items-center justify-content-between">
             {this.state.loading ? (
               <MyLoader style={{ height: 50 }} />
             ) : (
@@ -67,6 +72,13 @@ export class Categories extends Component {
                 </h5>
               </Link>
             )}
+            <Link
+              to={`/categories/details/${cat.id}`}
+              key={cat.id}
+              className="btn dark-btn unset-height unset-line-height br-5"
+            >
+              شاهد المزيد
+            </Link>
           </div>
         </div>
         <div className="row pt-4">
@@ -82,9 +94,40 @@ export class Categories extends Component {
     return (
       <React.Fragment>
         <section className="pt-3 pb-5">
-          <div className="container">{this.renderCategories()}</div>
+          <div className="container">
+            <div className="row pt-5 pb-3 w-50">
+              <div className="col-12">
+                <form>
+                  <Field
+                    name="search"
+                    type="text"
+                    component={inputField}
+                    className="form-control border-left-0 pl-0"
+                    placeholder="ابحث عن دورة.."
+                  >
+                    <MdSearch />
+                  </Field>
+                </form>
+              </div>
+            </div>
+
+            {this.renderCategories()}
+          </div>
         </section>
       </React.Fragment>
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    formValues: state.form.Search && state.form.Search.values
+  };
+}
+
+CategoriesComponent = reduxForm({
+  form: "Search"
+})(CategoriesComponent);
+
+CategoriesComponent = connect(mapStateToProps)(CategoriesComponent);
+
+export const Categories = withRouter(CategoriesComponent);
