@@ -84,11 +84,6 @@ export class SubscriptionDetails extends Component {
                   path="/subscriptions/:id/discussions/details"
                   component={DiscussionDetails}
                 />
-                {/* 
-                <Route
-                  path="/subscriptions/:id/transactions/list"
-                  component={TransactionsList}
-                />
                 {this.state.details.chatChannelSid && (
                   <Route
                     path="/subscriptions/:id/chat"
@@ -99,7 +94,13 @@ export class SubscriptionDetails extends Component {
                       />
                     )}
                   />
-                )} 
+                )}
+                {/* 
+                <Route
+                  path="/subscriptions/:id/transactions/list"
+                  component={TransactionsList}
+                />
+        
                */}
               </div>
             </div>

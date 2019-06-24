@@ -10,6 +10,7 @@ import "./styles.sass";
 import firebase from "firebase";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+// import { ReactMic } from "react-mic";
 
 export class UsersChatComponent extends Component {
   constructor(props) {
@@ -21,9 +22,33 @@ export class UsersChatComponent extends Component {
       privateChannel: "",
       showEmojis: false,
       instructors: []
+      // record: false
     };
     this.sendMessage = this.sendMessage.bind(this);
   }
+
+  // startRecording = () => {
+  //   this.setState({
+  //     record: true
+  //   });
+
+  //   console.log("Started recording");
+  // };
+
+  // stopRecording = () => {
+  //   this.setState({
+  //     record: false
+  //   });
+  //   console.log("Stopped recording");
+  // };
+
+  // onData(recordedBlob) {
+  //   console.log("chunk of real-time data is: ", recordedBlob);
+  // }
+
+  // onStop(recordedBlob) {
+  //   console.log("recordedBlob is: ", recordedBlob);
+  // }
 
   async componentDidMount() {
     if (this.props.authenticated) {
@@ -225,7 +250,9 @@ export class UsersChatComponent extends Component {
     this.setState({ newMessage: "" });
     this.props.twilio.chatClient.then(client => {
       client.getChannelByUniqueName(this.state.privateChannel).then(channel => {
+        console.log("Channel sending to ", channel);
         channel.sendMessage(message);
+        console.log("Messege sent ", message);
         channel.getMessages().then(this.messagesLoaded);
         channel.on("messageAdded", this.messageAdded);
       });
@@ -302,7 +329,7 @@ export class UsersChatComponent extends Component {
     if (instructors) {
       return instructors.map(instructor => (
         <div
-          className="media chat-item d-flex align-items-center clickable h-55 mb-1"
+          className="media chat-item d-flex align-items-center clickable h-55"
           onClick={() => this.setPrivateChannel(instructor.id)}
         >
           <img
@@ -312,8 +339,7 @@ export class UsersChatComponent extends Component {
             className="contain-img mr-2"
           />
           <div className="media-body">
-            <h6 className="small mid-text mb-1">{instructor.name}</h6>
-            <h6 className="dark-silver-text smaller mb-0">مشرف</h6>
+            <h6 className="small mid-text mb-0">{instructor.name}</h6>
           </div>
         </div>
       ));
@@ -345,6 +371,19 @@ export class UsersChatComponent extends Component {
               >
                 <FaCircle size={9} className="mr-1" /> دردشة للجميع
               </h6>
+              {/* <div>
+                <ReactMic
+                  record={this.state.record}
+                  onStop={this.onStop}
+                  onData={this.onData}
+                />
+                <button onClick={this.startRecording} type="button">
+                  Start
+                </button>
+                <button onClick={this.stopRecording} type="button">
+                  Stop
+                </button>
+              </div> */}
 
               {this.renderInstructors()}
             </div>

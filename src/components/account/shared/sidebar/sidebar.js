@@ -174,6 +174,23 @@ export class SidebarComponent extends Component {
                   المناقشات
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to={`/subscriptions/${this.props.id}/chat`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/course-chat.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الدردشة
+                </NavLink>
+              </li>
               <hr className="separator mt-0 mb-0" />
               <div className="settings d-flex align-items-center justify-content-center">
                 <button
@@ -236,23 +253,7 @@ export class SidebarComponent extends Component {
                   الامتحانات الإلكترونية
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to={`/subscriptions/${this.props.id}/chat`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/course-chat.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  الدردشة
-                </NavLink>
-              </li>
+         
         */}
             </ul>
           </div>
