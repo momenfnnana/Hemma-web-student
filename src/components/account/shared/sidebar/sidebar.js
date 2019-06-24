@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import "./styles.sass";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
 import { NewInstallment } from "../../subscriptions/transactions/installment/NewInstallment";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
+import "./styles.sass";
 
 export class SidebarComponent extends Component {
   state = {
@@ -160,50 +160,20 @@ export class SidebarComponent extends Component {
                 courseId={courseId}
               />
               {/* <li>
+
+              <li>
                 <NavLink
-                  to={`/subscriptions/${this.props.id}/transactions/list`}
+                  to={`/subscriptions/${this.props.id}/speed-up`}
                   activeClassName="active"
                   className="dark-text small"
                 >
                   <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-payments.png"
-                    }
+                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
                   />
-                  المدفوعات واسترجاع الرسوم
-                </NavLink>
-              </li>
-            
-              <li>
-                <NavLink className="dark-text small" to="#">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-discussions.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  المناقشات
-                </NavLink>
-              </li>
-              <li>
-                <NavLink className="dark-text small" to="#">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-challenge.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  التحديات
+                  اختصر وقتك
                 </NavLink>
               </li>
               <li>
@@ -225,16 +195,21 @@ export class SidebarComponent extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink className="dark-text small" to="#">
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/discussions`}
+                  activeClassName="active"
+                >
                   <img
                     src={
-                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-discussions.png"
                     }
-                    height="20"
-                    width="20"
+                    height="24"
+                    width="24"
                     className="mr-2 contain-img"
                   />
-                  الامتحانات الإلكترونية
+                  المناقشات
                 </NavLink>
               </li>
               <li>
@@ -254,6 +229,69 @@ export class SidebarComponent extends Component {
                   الدردشة
                 </NavLink>
               </li>
+              <hr className="separator mt-0 mb-0" />
+              <div className="settings d-flex align-items-center justify-content-center">
+                <button
+                  className="btn light-btn small mb-0 w-100"
+                  onClick={this.openInstallmentModal}
+                >
+                  إكمال سداد قسط
+                </button>
+              </div>
+              <NewInstallment
+                isInstallmentOpen={this.state.isInstallmentOpen}
+                closeInstallmentModal={this.closeInstallmentModal}
+                courseId={courseId}
+              />
+              {/* <li>
+                <NavLink
+                  to={`/subscriptions/${this.props.id}/transactions/list`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-payments.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  المدفوعات واسترجاع الرسوم
+                </NavLink>
+              </li>
+            
+         
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-challenge.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  التحديات
+                </NavLink>
+              </li>
+        
+              <li>
+                <NavLink className="dark-text small" to="#">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الامتحانات الإلكترونية
+                </NavLink>
+              </li>
+         
         */}
             </ul>
           </div>

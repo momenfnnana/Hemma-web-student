@@ -33,8 +33,11 @@
     "react-intercom": "^1.0.15",
     "react-intl-tel-input": "^7.0.1",
     "react-loaders": "^3.0.1",
+    "react-mic": "^12.4.1",
     "react-modal": "^3.8.1",
     "react-pdf": "^4.0.5",
+    "react-pdf-js": "^5.0.6",
+    "react-pdf-watermark": "^1.0.6",
     "react-player": "^1.9.3",
     "react-read-pdf": "^2.0.9",
     "react-redux": "^6.0.0",
@@ -46,7 +49,6 @@
     "react-to-print": "^2.1.2",
     "react-video-thumbnail": "^0.1.3",
     "reactstrap": "^7.1.0",
-    "recorder-js": "^1.0.7",
     "redux": "^4.0.1",
     "redux-form": "^8.1.0",
     "redux-promise": "^0.6.0",
@@ -70,5 +72,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/preset-stage-1": "^7.0.0"
+  }
 }

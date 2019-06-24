@@ -14,6 +14,8 @@ import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream";
+import { DiscussionsList } from "./discussions/discussions-list";
+import { DiscussionDetails } from "./discussions/discussion-details";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -77,12 +79,16 @@ export class SubscriptionDetails extends Component {
                   component={RecordedVideos}
                 />
                 <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />
-                {/* 
-                <Route
-                  path="/subscriptions/:id/transactions/list"
-                  component={TransactionsList}
-                />
                 <Route path="/subscriptions/:id/booklet" component={Booklet} />
+                <Route
+                  path="/subscriptions/:id/discussions"
+                  exact
+                  component={DiscussionsList}
+                />
+                <Route
+                  path="/subscriptions/:id/discussions/details"
+                  component={DiscussionDetails}
+                />
                 {this.state.details.chatChannelSid && (
                   <Route
                     path="/subscriptions/:id/chat"
@@ -93,7 +99,13 @@ export class SubscriptionDetails extends Component {
                       />
                     )}
                   />
-                )} 
+                )}
+                {/* 
+                <Route
+                  path="/subscriptions/:id/transactions/list"
+                  component={TransactionsList}
+                />
+        
                */}
               </div>
             </div>
