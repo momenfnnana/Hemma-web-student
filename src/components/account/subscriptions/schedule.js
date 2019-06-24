@@ -231,7 +231,9 @@ export class Schedule extends Component {
             <Slider {...settings}>{this.renderChallenges()}</Slider>
           </div> */}
           <div className="col-12">
-            <h6 className="dark-text small mb-0 mt-0">جدول الدورة </h6>
+            <h6 className="dark-text small mb-0 mt-0">
+              {this.props.courseName}
+            </h6>
           </div>
 
           {this.state.details.sections == undefined ||

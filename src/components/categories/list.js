@@ -55,7 +55,7 @@ export class CategoriesComponent extends Component {
     const cats = this.state.categories;
     return cats.map(cat => (
       <React.Fragment>
-        <div className="row">
+        <div className="row pt-5">
           <div className="col-12 d-inline-flex align-items-center justify-content-between">
             {this.state.loading ? (
               <MyLoader style={{ height: 50 }} />
@@ -95,7 +95,7 @@ export class CategoriesComponent extends Component {
       <React.Fragment>
         <section className="pt-3 pb-5">
           <div className="container">
-            <div className="row pt-5 pb-3 w-50">
+            {/* <div className="row pt-5 pb-3 w-50">
               <div className="col-12">
                 <form>
                   <Field
@@ -109,7 +109,7 @@ export class CategoriesComponent extends Component {
                   </Field>
                 </form>
               </div>
-            </div>
+            </div> */}
 
             {this.renderCategories()}
           </div>

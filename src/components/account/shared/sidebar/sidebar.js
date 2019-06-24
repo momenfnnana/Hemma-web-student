@@ -49,6 +49,7 @@ export class SidebarComponent extends Component {
   render() {
     const user = this.props.user;
     const courseId = this.props.match.params.id;
+    const channelID = this.props.chatChannelSid;
 
     return (
       <React.Fragment>
@@ -140,6 +141,45 @@ export class SidebarComponent extends Component {
                   المحاضرات المسجلة
                 </NavLink>
               </li>
+              {channelID && (
+                <React.Fragment>
+                  {channelID.startsWith("http") ? null : (
+                    <li>
+                      <NavLink
+                        to={`/subscriptions/${this.props.id}/chat`}
+                        activeClassName="active"
+                        className="dark-text small"
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/course-chat.png"
+                          }
+                          height="20"
+                          width="20"
+                          className="mr-2 contain-img"
+                        />
+                        الدردشة
+                      </NavLink>
+                    </li>
+                  )}
+                </React.Fragment>
+              )}
+              <li>
+                <NavLink
+                  to={`/subscriptions/${this.props.id}/speed-up`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  اختصر وقتك
+                </NavLink>
+              </li>
               {this.state.details &&
               this.state.details.remainingAmount == "0" ? null : (
                 <React.Fragment>
@@ -161,21 +201,7 @@ export class SidebarComponent extends Component {
               />
               {/* <li>
 
-              <li>
-                <NavLink
-                  to={`/subscriptions/${this.props.id}/speed-up`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  اختصر وقتك
-                </NavLink>
-              </li>
+      
               <li>
                 <NavLink
                   className="dark-text small"
@@ -212,23 +238,7 @@ export class SidebarComponent extends Component {
                   المناقشات
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  to={`/subscriptions/${this.props.id}/chat`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/course-chat.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  الدردشة
-                </NavLink>
-              </li>
+          
               <hr className="separator mt-0 mb-0" />
               <div className="settings d-flex align-items-center justify-content-center">
                 <button

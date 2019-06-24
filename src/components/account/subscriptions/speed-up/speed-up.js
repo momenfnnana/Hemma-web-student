@@ -92,65 +92,27 @@ export class SpeedUp extends Component {
             </div>
           </div>
           <div className="col-12">
-            <div className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4">
-              <div className="row mb-4">
-                {this.renderFiles()}
-                {/* <div className="col-md-4">
-                  <div
-                    className="card card-sm custom-height shadow-sm border-0 clickable"
-                    onClick={this.openSpeedUpModal}
-                  >
-                    <header className="card-thumb">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/course1.png"
-                        }
-                        alt="Speed up image"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-end align-items-center">
-                      <h6 className="card-title small en-text mb-0 p-0 dark-text">
-                        page.png
-                      </h6>
-                    </div>
-                  </div>
+            {this.state.files == undefined || this.state.files.length == 0 ? (
+              <React.Fragment>
+                <div
+                  className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center"
+                  style={{ height: 300 }}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/empty-files.png"
+                    }
+                    height="100"
+                    className="contain-img mb-3"
+                  />
+                  <p className="dark-text mt-0 mb-0">لا يوجد لديك ملفات </p>
                 </div>
-                <div className="col-md-4">
-                  <div className="card card-sm custom-height shadow-sm border-0">
-                    <header className="card-thumb d-flex align-items-center justify-content-center">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/video.png"
-                        }
-                        alt="Speed up image"
-                        className="contain-img custom-img mx-auto"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-end align-items-center">
-                      <h6 className="card-title small en-text mb-0 p-0 dark-text">
-                        page.mp4
-                      </h6>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <div className="card card-sm custom-height shadow-sm border-0">
-                    <header className="card-thumb d-flex align-items-center justify-content-center">
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/images/pdf.png"}
-                        alt="Speed up image"
-                        className="contain-img custom-img mx-auto"
-                      />
-                    </header>
-                    <div className="card-body d-flex justify-content-end align-items-center">
-                      <h6 className="card-title small en-text mb-0 p-0 dark-text">
-                        page.pdf
-                      </h6>
-                    </div>
-                  </div>
-                </div> */}
+              </React.Fragment>
+            ) : (
+              <div className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4">
+                <div className="row mb-4">{this.renderFiles()}</div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <SpeedUpModal

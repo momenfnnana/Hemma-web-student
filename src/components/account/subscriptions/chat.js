@@ -21,53 +21,54 @@ export class UsersChatComponent extends Component {
       generalChannel: "",
       privateChannel: "",
       showEmojis: false,
-      instructors: []
-      // record: false
+      instructors: [],
+      users: {}
     };
     this.sendMessage = this.sendMessage.bind(this);
   }
 
-  // startRecording = () => {
-  //   this.setState({
-  //     record: true
-  //   });
+  loadUsers() {
+    const newUsers = { ...this.state.users };
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
 
-  //   console.log("Started recording");
-  // };
+    for (let message of this.state.messages) {
+      const entry = newUsers[message.author];
+      if (!entry) {
+        // No previous request
+        const request = axios
+          .get(`${apiBaseUrl}/users/${message.author}`, { headers })
+          .then(response => response.data.data)
+          .then(user => {
+            const newState = { users: { ...this.state.users } };
+            newState.users[message.author] = user;
+            this.setState(newState);
+          });
+        newUsers[message.author] = request;
+        this.state.users[message.author] = request;
+      }
+    }
 
-  // stopRecording = () => {
-  //   this.setState({
-  //     record: false
-  //   });
-  //   console.log("Stopped recording");
-  // };
+    this.setState({ users: newUsers });
+  }
 
-  // onData(recordedBlob) {
-  //   console.log("chunk of real-time data is: ", recordedBlob);
-  // }
-
-  // onStop(recordedBlob) {
-  //   console.log("recordedBlob is: ", recordedBlob);
-  // }
+  getUser(id) {
+    const entry = this.state.users[id];
+    if (!entry || entry["then"]) {
+      return null;
+    } else {
+      // we have a user, yay
+      return entry;
+    }
+  }
 
   async componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
       this.props.getChatToken().then(() => this.initiateGeneralChat());
     }
-    const courseId = this.props.match.params.id;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .get(`${apiBaseUrl}/content/${courseId}/instructors`, { headers })
-      .then(response => {
-        this.setState({ instructors: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -135,88 +136,6 @@ export class UsersChatComponent extends Component {
     }
   }
 
-  async setPrivateChannel(pairIdentity) {
-    let myIdentity = this.props.user && this.props.user.id;
-    console.log("My identity is ", myIdentity);
-    let privateChannelName =
-      myIdentity < pairIdentity
-        ? pairIdentity + "_" + myIdentity
-        : myIdentity + "_" + pairIdentity;
-    await this.setState({ privateChannel: privateChannelName });
-    console.log("Private channel is ", this.state.privateChannel);
-    console.log("Pair identity is ", pairIdentity);
-    this.initiateChat(pairIdentity);
-  }
-
-  async initiateChat(pairIdentity) {
-    this.props.twilio.chatClient.then(client => {
-      client
-        .getChannelByUniqueName(this.state.privateChannel)
-        .then(channel => {
-          console.log("Channel is ", channel);
-          channel.join();
-          channel.on("channelInvited", function(channel) {
-            console.log("Joined channel ", channel);
-            channel.join();
-          });
-          channel.getMessages().then(messages => {
-            const totalMessages = messages.items.length;
-            for (let i = 0; i < totalMessages; i++) {
-              const channelMessages = messages.items;
-              this.setState({ messages: channelMessages });
-            }
-          });
-        })
-        .catch(err => {
-          console.log("Error ", err);
-
-          client
-            .createChannel({
-              uniqueName: this.state.privateChannel
-            })
-            .then(function joinChannel(channel) {
-              channel.join();
-              channel.invite(pairIdentity);
-              console.log("Created hannel is ", channel);
-            })
-            .catch(error => {
-              console.log("Creating error", error);
-            });
-        });
-
-      if (firebase && firebase.messaging()) {
-        // requesting permission to use push notifications
-        firebase
-          .messaging()
-          .requestPermission()
-          .then(() => {
-            // getting FCM token
-            firebase
-              .messaging()
-              .getToken()
-              .then(fcmToken => {
-                // continue with Step 7 here
-                // passing FCM token to the `chatClientInstance` to register for push notifications
-                client.setPushRegistrationId("fcm", fcmToken);
-
-                // registering event listener on new message from firebase to pass it to the Chat SDK for parsing
-                firebase.messaging().onMessage(payload => {
-                  client.handlePushNotification(payload);
-                });
-              })
-              .catch(err => {
-                // can't get token
-              });
-          })
-          .catch(err => {
-            // can't request permission or permission hasn't been granted to the web app by the user
-          });
-      } else {
-        // no Firebase library imported or Firebase library wasn't correctly initialized
-      }
-    });
-  }
-
   onMessageChanged = event => {
     this.setState({ newMessage: event.target.value });
   };
@@ -249,37 +168,11 @@ export class UsersChatComponent extends Component {
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
     this.props.twilio.chatClient.then(client => {
-      client.getChannelByUniqueName(this.state.privateChannel).then(channel => {
-        console.log("Channel sending to ", channel);
-        channel.sendMessage(message);
-        console.log("Messege sent ", message);
-        channel.getMessages().then(this.messagesLoaded);
-        channel.on("messageAdded", this.messageAdded);
-      });
-    });
-  };
-
-  sendGeneralMessage = event => {
-    event.preventDefault();
-    const message = this.state.newMessage;
-    this.setState({ newMessage: "" });
-    this.props.twilio.chatClient.then(client => {
       client.getChannelBySid(this.props.chatChannelSid).then(channel => {
         channel.sendMessage(message);
-        channel.getMessages().then(this.messagesLoaded);
         channel.on("messageAdded", this.messageAdded);
       });
     });
-  };
-
-  newMessageAdded = li => {
-    if (li) {
-      li.scrollIntoView();
-    }
-  };
-
-  messagesLoaded = messagePage => {
-    this.setState({ messages: messagePage.items });
   };
 
   messageAdded = message => {
@@ -288,63 +181,75 @@ export class UsersChatComponent extends Component {
     }));
   };
 
+  newMessageAdded = div => {
+    this.loadUsers();
+    if (div) {
+      div.scrollIntoView({ block: "nearest" });
+    }
+  };
+
   renderMessages() {
     const messages = this.state.messages;
     let myIdentity = this.props.user && this.props.user.id;
 
-    return messages.map(message => (
-      <React.Fragment>
-        {message.author == myIdentity ? (
-          <li>
-            <div className="message my-message text-white light-font-text mb-3">
-              {message.body}
-            </div>
-          </li>
-        ) : (
-          <li className="clearfix" ref={this.newMessageAdded}>
-            <div className="message-data">
-              <span className="message-data-name small en-text">
-                {message.author}
-              </span>
-            </div>
-            <div className="d-flex justify-content-end mb-3">
-              <div className="message other-message mid-text light-font-text">
+    return messages.map(message => {
+      const user = this.getUser(message.author);
+      return (
+        <React.Fragment>
+          {message.author == myIdentity ? (
+            <li>
+              <div className="message my-message text-white light-font-text mb-3">
                 {message.body}
               </div>
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
-                alt="Chat img"
-                height="27"
-                className="contain-img ml-2 align-self-end"
-              />
-            </div>
-          </li>
-        )}
-      </React.Fragment>
-    ));
+            </li>
+          ) : (
+            <li className="clearfix" ref={this.newMessageAdded}>
+              <div className="message-data">
+                {user && (
+                  <span className="message-data-name small">{user.name}</span>
+                )}
+              </div>
+              <div className="d-flex justify-content-end mb-3">
+                <div className="message other-message mid-text light-font-text">
+                  {message.body}
+                </div>
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/user-circle.png"
+                  }
+                  alt="Chat img"
+                  height="27"
+                  className="contain-img ml-2 align-self-start"
+                />
+              </div>
+            </li>
+          )}
+        </React.Fragment>
+      );
+    });
   }
 
-  renderInstructors() {
-    const instructors = this.state.instructors;
-    if (instructors) {
-      return instructors.map(instructor => (
-        <div
-          className="media chat-item d-flex align-items-center clickable h-55"
-          onClick={() => this.setPrivateChannel(instructor.id)}
-        >
-          <img
-            src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
-            alt="Chat img"
-            height="27"
-            className="contain-img mr-2"
-          />
-          <div className="media-body">
-            <h6 className="small mid-text mb-0">{instructor.name}</h6>
-          </div>
-        </div>
-      ));
-    }
-  }
+  // renderInstructors() {
+  //   const instructors = this.state.instructors;
+  //   if (instructors) {
+  //     return instructors.map(instructor => (
+  //       <div
+  //         className="media chat-item d-flex align-items-center clickable h-55"
+  //         onClick={() => this.setPrivateChannel(instructor.id)}
+  //       >
+  //         <img
+  //           src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
+  //           alt="Chat img"
+  //           height="27"
+  //           className="contain-img mr-2"
+  //         />
+  //         <div className="media-body">
+  //           <h6 className="small mid-text mb-0">{instructor.name}</h6>
+  //         </div>
+  //       </div>
+  //     ));
+  //   }
+  // }
 
   render() {
     return (
@@ -358,7 +263,7 @@ export class UsersChatComponent extends Component {
         </div>
         <div className="box-layout shadow-sm w-100">
           <div className="row no-gutters">
-            <div className="chat-sidebar col-md-4 border-right">
+            {/* <div className="chat-sidebar col-md-4 border-right">
               <div className="p-3">
                 <input
                   className="form-control small light-font-text"
@@ -371,23 +276,11 @@ export class UsersChatComponent extends Component {
               >
                 <FaCircle size={9} className="mr-1" /> دردشة للجميع
               </h6>
-              {/* <div>
-                <ReactMic
-                  record={this.state.record}
-                  onStop={this.onStop}
-                  onData={this.onData}
-                />
-                <button onClick={this.startRecording} type="button">
-                  Start
-                </button>
-                <button onClick={this.stopRecording} type="button">
-                  Stop
-                </button>
-              </div> */}
+   
 
               {this.renderInstructors()}
-            </div>
-            <div className="col-md-8">
+            </div> */}
+            <div className="col-md-12">
               <div className="chat-title border-bottom h-55 d-flex align-items-center justify-content-center">
                 <h6 className="dark-text small mb-0">دردشة للجميع</h6>
               </div>
@@ -406,23 +299,22 @@ export class UsersChatComponent extends Component {
                 </div>
 
                 <div className="chat-message">
-                  {this.state.privateChannel == "" ? (
-                    <form onSubmit={this.sendGeneralMessage}>
-                      <div className="input-chat">
-                        <textarea
-                          className="form-control light-font-text small"
-                          type="text"
-                          name="message"
-                          id="message"
-                          onChange={this.onMessageChanged}
-                          value={this.state.newMessage}
-                        />
-                        <button type="submit" className="btn light-btn">
-                          أرسل
-                        </button>
-                        <div className="options">
-                          <ul className="list-unstyled list-inline mb-0">
-                            <li className="list-inline-item">
+                  <form onSubmit={this.sendMessage}>
+                    <div className="input-chat">
+                      <textarea
+                        className="form-control light-font-text small"
+                        type="text"
+                        name="message"
+                        id="message"
+                        onChange={this.onMessageChanged}
+                        value={this.state.newMessage}
+                      />
+                      <button type="submit" className="btn light-btn">
+                        أرسل
+                      </button>
+                      <div className="options">
+                        <ul className="list-unstyled list-inline mb-0">
+                          {/* <li className="list-inline-item">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -443,102 +335,35 @@ export class UsersChatComponent extends Component {
                                 height="20"
                                 className="contain-img"
                               />
-                            </li>
-                            <li
-                              className="list-inline-item clickable"
-                              onClick={this.showEmojis}
-                            >
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/assets/images/emoji.png"
-                                }
-                                alt="Emojis"
-                                height="20"
-                                className="contain-img"
-                              />
-                            </li>
-                          </ul>
-                          {this.state.showEmojis ? (
-                            <Picker
-                              style={{
-                                position: "absolute",
-                                bottom: "40px",
-                                right: "-5px"
-                              }}
-                              onSelect={this.addEmoji}
+                            </li> */}
+                          <li
+                            className="list-inline-item clickable"
+                            onClick={this.showEmojis}
+                          >
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/emoji.png"
+                              }
+                              alt="Emojis"
+                              height="20"
+                              className="contain-img ml-2"
                             />
-                          ) : null}
-                        </div>
+                          </li>
+                        </ul>
+                        {this.state.showEmojis ? (
+                          <Picker
+                            style={{
+                              position: "absolute",
+                              bottom: "40px",
+                              right: "-5px"
+                            }}
+                            onSelect={this.addEmoji}
+                          />
+                        ) : null}
                       </div>
-                    </form>
-                  ) : (
-                    <form onSubmit={this.sendMessage}>
-                      <div className="input-chat">
-                        <textarea
-                          className="form-control light-font-text small"
-                          type="text"
-                          name="message"
-                          id="message"
-                          onChange={this.onMessageChanged}
-                          value={this.state.newMessage}
-                        />
-                        <button type="submit" className="btn light-btn">
-                          أرسل
-                        </button>
-                        <div className="options">
-                          <ul className="list-unstyled list-inline mb-0">
-                            <li className="list-inline-item">
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/assets/images/record.png"
-                                }
-                                alt="Record"
-                                height="20"
-                                className="contain-img"
-                              />
-                            </li>
-                            <li className="list-inline-item">
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/assets/images/attachment.png"
-                                }
-                                alt="Attach"
-                                height="20"
-                                className="contain-img"
-                              />
-                            </li>
-                            <li
-                              className="list-inline-item clickable"
-                              onClick={this.showEmojis}
-                            >
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/assets/images/emoji.png"
-                                }
-                                alt="Emojis"
-                                height="20"
-                                className="contain-img"
-                              />
-                            </li>
-                          </ul>
-                          {this.state.showEmojis ? (
-                            <Picker
-                              style={{
-                                position: "absolute",
-                                bottom: "40px",
-                                right: "-5px"
-                              }}
-                              onSelect={this.addEmoji}
-                            />
-                          ) : null}
-                        </div>
-                      </div>
-                    </form>
-                  )}
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>

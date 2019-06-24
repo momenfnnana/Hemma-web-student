@@ -44,13 +44,18 @@ export class SubscriptionDetails extends Component {
   }
   render() {
     const courseId = this.props.match.params.id;
+    const channelID = this.state.details.chatChannelSid;
+
     return (
       <React.Fragment>
         {this.props.location.pathname.indexOf("live-stream") < 0 && (
           <div className="container mt-5 pb-5">
             <div className="row">
               <div className="col-md-3 col-12">
-                <Sidebar id={courseId} />
+                <Sidebar
+                  id={courseId}
+                  chatChannelSid={this.state.details.chatChannelSid}
+                />
                 <Instructors id={courseId} />
               </div>
               <div className="col-md-9 col-12">
@@ -68,7 +73,12 @@ export class SubscriptionDetails extends Component {
 
                 <Route
                   path="/subscriptions/:id/schedule"
-                  component={Schedule}
+                  render={props => (
+                    <Schedule
+                      courseName={this.state.details.nameAr}
+                      {...props}
+                    />
+                  )}
                 />
                 <Route
                   path="/subscriptions/:id/recorded-lectures"
@@ -89,29 +99,27 @@ export class SubscriptionDetails extends Component {
                   path="/subscriptions/:id/discussions/details"
                   component={DiscussionDetails}
                 />
-                {this.state.details.chatChannelSid && (
-                  <Route
-                    path="/subscriptions/:id/chat"
-                    render={props => (
-                      <UsersChatComponent
-                        chatChannelSid={this.state.details.chatChannelSid}
-                        {...props}
+
+                {channelID && channelID.startsWith("http") ? null : (
+                  <React.Fragment>
+                    {this.state.details.chatChannelSid && (
+                      <Route
+                        path="/subscriptions/:id/chat"
+                        render={props => (
+                          <UsersChatComponent
+                            chatChannelSid={this.state.details.chatChannelSid}
+                            {...props}
+                          />
+                        )}
                       />
                     )}
-                  />
+                  </React.Fragment>
                 )}
-                {/* 
-                <Route
-                  path="/subscriptions/:id/transactions/list"
-                  component={TransactionsList}
-                />
-        
-               */}
               </div>
             </div>
           </div>
         )}
-        {/* {this.state.details.chatChannelSid && (
+        {this.state.details.chatChannelSid && (
           <Route
             path="/subscriptions/:id/live-stream/:lectureId"
             render={props => (
@@ -121,7 +129,7 @@ export class SubscriptionDetails extends Component {
               />
             )}
           />
-        )} */}
+        )}
       </React.Fragment>
     );
   }
