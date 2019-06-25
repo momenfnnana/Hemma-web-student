@@ -40,7 +40,6 @@ export class Lecture extends Component {
     var year = scheduledAt.getFullYear();
     var scheduledDate = year + "-" + month + "-" + day;
     var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
-    console.log(channelID);
     return (
       <React.Fragment>
         {!channelID.startsWith("http") ? (
