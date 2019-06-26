@@ -12,6 +12,10 @@ import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { ReactMic } from "react-mic";
 import { Field, reduxForm } from "redux-form";
+import ReactDOM from "react-dom";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -43,11 +47,45 @@ export class UsersChatComponent extends Component {
       blobObject: null,
       isRecording: false,
       isPaused: false,
-      file: null
+      file: null,
+      loading: false,
+      twilioMessages: []
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.onStop = this.onStop.bind(this);
     this.onFileInputChange = this.onFileInputChange.bind(this);
+    this.emojiPicker = React.createRef();
+    this.handleClick = this.handleClick.bind(this);
+    this.messageAdded = this.messageAdded.bind(this);
+    this.convertMessage = this.convertMessage.bind(this);
+  }
+
+  convertMessage(twilioMessage) {
+    let type;
+    if (twilioMessage.type === "text") {
+      type = "text";
+    } else {
+      type = twilioMessage.media.contentType.startsWith("image")
+        ? "image"
+        : "audio";
+    }
+
+    if (type !== "text") {
+      // get the URL
+      twilioMessage.media.getContentUrl().then(url => {
+        // Update the list of messages
+        const messages = [...this.state.messages];
+        messages.find(m => m.id === twilioMessage.sid).url = url;
+        this.setState({ messages: messages });
+      });
+    }
+
+    return {
+      id: twilioMessage.sid,
+      author: twilioMessage.author,
+      type: type,
+      body: type === "text" ? twilioMessage.body : null
+    };
   }
 
   onFileInputChange(file) {
@@ -74,7 +112,7 @@ export class UsersChatComponent extends Component {
 
   onStop(blobObject) {
     let data = new FormData();
-    data.append("file", blobObject);
+    data.append("file", blobObject.blob);
     this.props.twilio.chatClient.then(client => {
       if (this.state.activeChannel === "general") {
         client.getChannelBySid(this.props.chatChannelSid).then(channel => {
@@ -129,7 +167,28 @@ export class UsersChatComponent extends Component {
     }
   }
 
+  handleClick(event) {
+    try {
+      let node = ReactDOM.findDOMNode(this.emojiPicker.current);
+      if (!node.contains(event.target)) {
+        this.hideEmojiPicker();
+      }
+    } catch (error) {
+      return null;
+    }
+  }
+
+  hideEmojiPicker() {
+    this.setState({ showEmojis: false });
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClick, false);
+  }
+
   async componentDidMount() {
+    document.addEventListener("mousedown", this.handleClick, false);
+
     if (this.props.authenticated) {
       this.props.getUser();
       this.props.getChatToken().then(() => this.initiateGeneralChat());
@@ -156,10 +215,13 @@ export class UsersChatComponent extends Component {
   }
 
   async initiateGeneralChat() {
+    this.setState({ loading: true });
     const client = await this.props.twilio.chatClient;
     client
       .getChannelBySid(this.props.chatChannelSid)
       .then(channel => {
+        this.setState({ loading: false });
+
         client.on("channelJoined", function(channel) {
           console.log("Joined channel " + channel.friendlyName);
         });
@@ -169,14 +231,20 @@ export class UsersChatComponent extends Component {
             "Couldn't join channel " + channel.friendlyName + " because " + err
           );
         });
+        channel.getMessages().then(response => {
+          const channelMessages = response.items;
 
-        channel.getMessages().then(messages => {
-          const channelMessages = messages.items;
-          this.setState({ messages: channelMessages });
+          const messages = channelMessages.map(this.convertMessage);
+
+          this.setState({
+            messages: messages,
+            twilioMessages: channelMessages
+          });
         });
       })
       .catch(err => {
         console.log(err);
+        this.setState({ loading: false });
       });
 
     if (firebase && firebase.messaging()) {
@@ -269,8 +337,11 @@ export class UsersChatComponent extends Component {
     }
   };
 
-  messageAdded = message => {
+  messageAdded = twilioMessage => {
+    const message = this.convertMessage(twilioMessage);
+
     this.setState((prevState, props) => ({
+      twilioMessages: [...prevState.twilioMessages, twilioMessage],
       messages: [...prevState.messages, message]
     }));
   };
@@ -287,41 +358,54 @@ export class UsersChatComponent extends Component {
     let myIdentity = this.props.user && this.props.user.id;
     return messages.map(message => {
       const user = this.getUser(message.author);
-      // if (message.type == "media") {
-      //   message.media.getContentUrl().then(url => {
-      //     console.log(url, message);
-      //   });
-      // }
       return (
         <React.Fragment>
           {message.author == myIdentity ? (
-            <li>
-              {message.type == "media" ? (
-                <audio controls>
-                  <source src="" />
-                </audio>
-              ) : (
-                <div className="message my-message text-white light-font-text mb-3">
+            <li className="mb-3">
+              {message.type == "image" && (
+                <img
+                  src={message.url}
+                  alt="Chat img"
+                  height="200"
+                  className="contain-img"
+                />
+              )}
+              {message.type == "text" && (
+                <div className="message my-message text-white light-font-text">
                   {message.body}
                 </div>
               )}
+              {message.type == "audio" && message.url && (
+                <audio controls>
+                  <source src={message.url} />
+                </audio>
+              )}
             </li>
           ) : (
-            <li className="clearfix" ref={this.newMessageAdded}>
+            <li className="clearfix mb-3" ref={this.newMessageAdded}>
               <div className="message-data">
                 {user && (
                   <span className="message-data-name small">{user.name}</span>
                 )}
               </div>
-              <div className="d-flex justify-content-end mb-3">
-                {message.type == "media" ? (
-                  <audio controls>
-                    <source src="" />
-                  </audio>
-                ) : (
-                  <div className="message other-message mid-text light-font-text">
+              <div className="d-flex justify-content-end">
+                {message.type == "image" && (
+                  <img
+                    src={message.url}
+                    alt="Chat img"
+                    height="200"
+                    className="contain-img"
+                  />
+                )}
+                {message.type == "text" && (
+                  <div className="message my-message text-white light-font-text">
                     {message.body}
                   </div>
+                )}
+                {message.type == "audio" && message.url && (
+                  <audio controls>
+                    <source src={message.url} />
+                  </audio>
                 )}
                 <img
                   src={
@@ -464,9 +548,16 @@ export class UsersChatComponent extends Component {
                 <h6 className="dark-text small mb-0">دردشة للجميع</h6>
               </div>
               <div className="chat-window">
-                <div className="chat-history">
-                  <ul className="list-unstyled">{this.renderMessages()}</ul>
-                </div>
+                {this.state.loading ? (
+                  <div className="chat-history d-flex align-items-center justify-content-center">
+                    <Loader type="ball-spin-fade-loader" />
+                  </div>
+                ) : (
+                  <div className="chat-history ">
+                    <ul className="list-unstyled">{this.renderMessages()} </ul>
+                  </div>
+                )}
+
                 <div className="chat-message">
                   <form onSubmit={this.sendMessage}>
                     <div className="input-chat">
@@ -552,10 +643,11 @@ export class UsersChatComponent extends Component {
                           <Picker
                             style={{
                               position: "absolute",
-                              bottom: "40px",
+                              bottom: "50px",
                               right: "-5px"
                             }}
                             onSelect={this.addEmoji}
+                            ref={this.emojiPicker}
                           />
                         ) : null}
                       </div>

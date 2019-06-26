@@ -22,7 +22,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
   // Customize notification here
   var notificationTitle = "لديك رسالة جديدة";
   var notificationOptions = {
-    body: payload.data.twi_body,
+    body: payload.data && payload.data.twi_body,
     icon: "/assets/images/logo.png"
   };
 
