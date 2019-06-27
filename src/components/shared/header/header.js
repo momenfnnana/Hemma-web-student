@@ -156,7 +156,12 @@ class HeaderComponent extends Component {
                           activeClassName="active"
                           to="/cart"
                         >
-                          <img src={"/assets/images/cart.png"} height="18" />
+                          <img
+                            src={"/assets/images/cart.png"}
+                            height="18"
+                            className="mr-2"
+                          />
+                          سلة التسوق
                         </NavLink>
                       </NavItem>
 

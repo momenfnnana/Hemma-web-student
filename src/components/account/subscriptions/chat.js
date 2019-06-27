@@ -80,11 +80,16 @@ export class UsersChatComponent extends Component {
       });
     }
 
+    let time = twilioMessage.timestamp;
+    let messageTime =
+      time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear();
+
     return {
       id: twilioMessage.sid,
       author: twilioMessage.author,
       type: type,
-      body: type === "text" ? twilioMessage.body : null
+      body: type === "text" ? twilioMessage.body : null,
+      time: messageTime
     };
   }
 
@@ -250,7 +255,6 @@ export class UsersChatComponent extends Component {
         });
         channel.getMessages().then(response => {
           const channelMessages = response.items;
-
           const messages = channelMessages.map(this.convertMessage);
 
           this.setState({
@@ -379,6 +383,7 @@ export class UsersChatComponent extends Component {
   renderMessages() {
     const messages = this.state.messages;
     let myIdentity = this.props.user && this.props.user.id;
+
     return messages.map(message => {
       const user = this.getUser(message.author);
       return (
@@ -386,22 +391,44 @@ export class UsersChatComponent extends Component {
           {message.author == myIdentity ? (
             <li className="mb-3">
               {message.type == "image" && (
-                <img
-                  src={message.url}
-                  alt="Chat img"
-                  height="200"
-                  className="contain-img"
-                />
+                <div className="message my-message text-white light-font-text bg-transparent">
+                  <img
+                    src={message.url}
+                    alt="Chat img"
+                    height="200"
+                    className="contain-img"
+                  />
+                  <span
+                    className="en-text smaller silver-text"
+                    style={{ position: "absolute", left: 10, bottom: 5 }}
+                  >
+                    {message.time}
+                  </span>
+                </div>
               )}
               {message.type == "text" && (
                 <div className="message my-message text-white light-font-text">
-                  {message.body}
+                  {message.body}{" "}
+                  <span
+                    className="en-text smaller silver-text"
+                    style={{ position: "absolute", left: 10, bottom: 5 }}
+                  >
+                    {message.time}
+                  </span>
                 </div>
               )}
               {message.type == "audio" && message.url && (
-                <audio controls>
-                  <source src={message.url} />
-                </audio>
+                <div className="message my-message text-white light-font-text bg-transparent">
+                  <audio controls className="w-100">
+                    <source src={message.url} />
+                  </audio>
+                  <span
+                    className="en-text smaller silver-text"
+                    style={{ position: "absolute", left: 10, bottom: 5 }}
+                  >
+                    {message.time}
+                  </span>
+                </div>
               )}
             </li>
           ) : (
@@ -413,22 +440,44 @@ export class UsersChatComponent extends Component {
               </div>
               <div className="d-flex justify-content-end">
                 {message.type == "image" && (
-                  <img
-                    src={message.url}
-                    alt="Chat img"
-                    height="200"
-                    className="contain-img"
-                  />
+                  <div className="message other-message dark-text light-font-text bg-transparent">
+                    <img
+                      src={message.url}
+                      alt="Chat img"
+                      height="200"
+                      className="contain-img"
+                    />
+                    <span
+                      className="en-text smaller mid-text"
+                      style={{ position: "absolute", left: 10, bottom: 5 }}
+                    >
+                      {message.time}
+                    </span>
+                  </div>
                 )}
                 {message.type == "text" && (
-                  <div className="message my-message text-white light-font-text">
-                    {message.body}
+                  <div className="message other-message dark-text light-font-text">
+                    {message.body}{" "}
+                    <span
+                      className="en-text smaller mid-text"
+                      style={{ position: "absolute", left: 10, bottom: 5 }}
+                    >
+                      {message.time}
+                    </span>
                   </div>
                 )}
                 {message.type == "audio" && message.url && (
-                  <audio controls>
-                    <source src={message.url} />
-                  </audio>
+                  <div className="message other-message dark-text light-font-text bg-transparent">
+                    <audio controls className="w-100">
+                      <source src={message.url} />
+                    </audio>
+                    <span
+                      className="en-text smaller mid-text"
+                      style={{ position: "absolute", left: 10, bottom: 5 }}
+                    >
+                      {message.time}
+                    </span>
+                  </div>
                 )}
                 <img
                   src={
