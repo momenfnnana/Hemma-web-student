@@ -3,7 +3,9 @@ import axios from "axios";
 import Modal from "react-modal";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
+import swal from "@sweetalert/with-react";
+import { apiBaseUrl } from "../../api/helpers";
 
 class AgreementFormComponent extends Component {
   constructor(props) {
@@ -24,6 +26,41 @@ class AgreementFormComponent extends Component {
     if (this.state.checked) {
       this.setState({ isDisabled: true });
     } else this.setState({ isDisabled: false });
+  }
+
+  handleCartCheckout() {
+    const cart = this.props.cart;
+    const cartAmount = cart && cart.total;
+
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    if (cartAmount == 0) {
+      let data = {
+        url: "No_PAYMENT",
+        originBankName: "No_PAYMENT",
+        destinationBankName: "No_PAYMENT",
+        accountHolderName: "No_PAYMENT",
+        accountNumber: "No_PAYMENT",
+        amount: 0,
+        date: new Date()
+      };
+      axios
+        .post(`${apiBaseUrl}/cart/checkout_with_bank_transfer`, data, {
+          headers
+        })
+        .then(response => {
+          this.props.history.push("/subscriptions");
+        })
+        .catch(error => {
+          swal("عفواً", "خدث خطأ ما", "error", {
+            button: "متابعة"
+          });
+        });
+    } else {
+      this.props.history.push("/cart/checkout");
+    }
   }
 
   render() {
@@ -113,20 +150,16 @@ class AgreementFormComponent extends Component {
             <div className="row mt-4 text-center">
               <div className="col-12">
                 {this.state.isDisabled == true ? (
-                  <button
-                    to="/cart/checkout"
-                    className="btn light-outline-btn w-50"
-                    disabled
-                  >
+                  <button className="btn light-outline-btn w-50" disabled>
                     متابعة
                   </button>
                 ) : (
-                  <Link
-                    to="/cart/checkout"
+                  <button
                     className="btn light-outline-btn w-50"
+                    onClick={() => this.handleCartCheckout()}
                   >
                     متابعة
-                  </Link>
+                  </button>
                 )}
               </div>
             </div>
@@ -139,11 +172,10 @@ class AgreementFormComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    cart: state.cart,
-    formValues: state.form.cart && state.form.cart.values
+    cart: state.cart
   };
 }
 
-export const AgreementForm = connect(mapStateToProps)(
-  reduxForm({ form: "cart", destroyOnUnmount: false })(AgreementFormComponent)
-);
+AgreementFormComponent = connect(mapStateToProps)(AgreementFormComponent);
+
+export const AgreementForm = withRouter(AgreementFormComponent);

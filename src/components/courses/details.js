@@ -65,9 +65,7 @@ export class CourseDetails extends Component {
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
-            swal("عفواً", "هذه الدورة مضافة سابقاً إلى سلة التسوق", "error", {
-              button: "متابعة"
-            });
+            this.props.history.push("/cart");
             break;
           case "BadRequest":
             swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
@@ -75,9 +73,7 @@ export class CourseDetails extends Component {
             });
             break;
           case "ItemAlreadyPurchased":
-            swal("عفواً", "هذه الدورة موجودة ضمن قائمة دوراتك", "error", {
-              button: "متابعة"
-            });
+            this.props.history.push(`/subscriptions/${id}/schedule`);
             break;
 
           default:

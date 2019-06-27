@@ -92,6 +92,23 @@ export class UsersChatComponent extends Component {
     this.setState({
       file: URL.createObjectURL(file)
     });
+    let data = new FormData();
+    data.append("file", file);
+    this.props.twilio.chatClient.then(client => {
+      if (this.state.activeChannel === "general") {
+        client.getChannelBySid(this.props.chatChannelSid).then(channel => {
+          channel.sendMessage(data);
+          channel.on("messageAdded", this.messageAdded);
+        });
+      } else {
+        client
+          .getChannelByUniqueName(this.state.privateChannel)
+          .then(channel => {
+            channel.sendMessage(data);
+            channel.on("messageAdded", this.messageAdded);
+          });
+      }
+    });
   }
 
   startOrPauseRecording = () => {
@@ -298,27 +315,33 @@ export class UsersChatComponent extends Component {
 
   sendMessage = event => {
     event.preventDefault();
+    event.target.value = "";
     const message = this.state.newMessage;
     this.setState({ newMessage: "" });
-    if (this.state.file) {
-      let data = new FormData();
-      data.append("file", this.state.file);
-      this.props.twilio.chatClient.then(client => {
-        if (this.state.activeChannel === "general") {
-          client.getChannelBySid(this.props.chatChannelSid).then(channel => {
-            channel.sendMessage(data);
+    this.props.twilio.chatClient.then(client => {
+      if (this.state.activeChannel === "general") {
+        client.getChannelBySid(this.props.chatChannelSid).then(channel => {
+          channel.sendMessage(message);
+          channel.on("messageAdded", this.messageAdded);
+        });
+      } else {
+        client
+          .getChannelByUniqueName(this.state.privateChannel)
+          .then(channel => {
+            channel.sendMessage(message);
             channel.on("messageAdded", this.messageAdded);
           });
-        } else {
-          client
-            .getChannelByUniqueName(this.state.privateChannel)
-            .then(channel => {
-              channel.sendMessage(data);
-              channel.on("messageAdded", this.messageAdded);
-            });
-        }
-      });
-    } else {
+      }
+    });
+  };
+
+  handleSend = event => {
+    event.preventDefault();
+
+    if (event.key === "Enter") {
+      event.target.value = "";
+      const message = this.state.newMessage;
+      this.setState({ newMessage: "" });
       this.props.twilio.chatClient.then(client => {
         if (this.state.activeChannel === "general") {
           client.getChannelBySid(this.props.chatChannelSid).then(channel => {
@@ -553,9 +576,33 @@ export class UsersChatComponent extends Component {
                     <Loader type="ball-spin-fade-loader" />
                   </div>
                 ) : (
-                  <div className="chat-history ">
-                    <ul className="list-unstyled">{this.renderMessages()} </ul>
-                  </div>
+                  <React.Fragment>
+                    {this.state.messages == undefined ||
+                    this.state.messages.length == 0 ? (
+                      <React.Fragment>
+                        <div className="chat-history d-flex align-items-center justify-content-center flex-column">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/chatting.png"
+                            }
+                            alt="Record"
+                            height="60"
+                            className="contain-img mb-3"
+                          />
+                          <h6 className="silver-text">
+                            ارسل رسالة لبدأ المحادثة
+                          </h6>
+                        </div>
+                      </React.Fragment>
+                    ) : (
+                      <div className="chat-history">
+                        <ul className="list-unstyled">
+                          {this.renderMessages()}
+                        </ul>
+                      </div>
+                    )}
+                  </React.Fragment>
                 )}
 
                 <div className="chat-message">
@@ -568,6 +615,7 @@ export class UsersChatComponent extends Component {
                         id="message"
                         onChange={this.onMessageChanged}
                         value={this.state.newMessage}
+                        onKeyUp={this.handleSend}
                       />
                       <button type="submit" className="btn light-btn">
                         أرسل
