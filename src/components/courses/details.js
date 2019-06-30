@@ -12,6 +12,7 @@ import ReactPlayer from "react-player";
 import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
 import { apiBaseUrl } from "../../api/helpers";
+import { Link } from "react-router-dom";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -126,7 +127,7 @@ export class CourseDetails extends Component {
     if (chapters) {
       return chapters.map(chapter => (
         <Accordion>
-          <AccordionItem>
+          <AccordionItem expanded={true}>
             <AccordionItemTitle>
               <h6 className="dark-text mb-0 small dark-text">
                 {chapter.nameAr}
@@ -142,40 +143,44 @@ export class CourseDetails extends Component {
       ));
     }
   }
-
   renderInstructors() {
-    // const { rating } = this.state;
-    const instructors = this.state.details.instructors;
-
+    const instructors = this.state.details && this.state.details.instructors;
     if (instructors) {
       return instructors.map(instructor => (
-        <div className="silver-bg border-bottom d-flex align-items-center h-55 pl-3 pr-3">
+        <div className="white-bg border-bottom d-flex align-items-center mh-55 p-3">
           {/* <div>
             <img
-              src={process.env.PUBLIC_URL + "/assets/images/male-circle.png"}
+              src={process.env.PUBLIC_URL + "/assets/images/female-circle.png"}
               className="mr-2"
               height="25"
             />
           </div> */}
 
-          <div className="d-flex align-items-center flex-column">
-            <h6 className="mid-text smaller mb-0 mt-0">{instructor.name}</h6>
-            {/* <StarRatingComponent
-              starCount={5}
-              value={rating}
-              starColor={"#ffe552"}
-              emptyStarColor={"#a9acb4"}
-              editing={false}
-            /> */}
-          </div>
+          <div className="d-flex justify-content-center flex-column">
+            <h6 className="mid-text small mb-1 mt-0">{instructor.name}</h6>
 
+            {/* {instructor.sections.map(section => (
+              <div className="d-flex align-items-center">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/diary.png"}
+                  className="mr-2"
+                  height="11"
+                />
+                <h6 className="dark-text smaller mt-0 mb-1">{section}</h6>
+              </div>
+            ))} */}
+          </div>
           {/* <div className="d-flex justify-content-end flex-fill align-items-center">
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/diary.png"}
-              className="mr-2"
-              height="18"
-            />
-            <h6 className="dark-text smaller mb-1 mt-0">مدرس مادة الأحياء</h6>
+            {instructor.rating == 0 ? null : (
+              <StarRatingComponent
+                starCount={5}
+                value={instructor.rating}
+                starColor={"#ffe552"}
+                emptyStarColor={"#a9acb4"}
+                editing={false}
+                name="rate"
+              />
+            )}
           </div> */}
         </div>
       ));
@@ -183,44 +188,60 @@ export class CourseDetails extends Component {
   }
 
   renderLectures(lectures) {
-    if (lectures) {
-      return lectures.map(lecture => (
-        <li className="list-group-item bg-transparent small dark-silver-text light-font-text">
-          <div className="row">
-            <div className="col-6">
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/play.png"}
-                className="mr-2"
-                height="15"
-              />
-              {lecture.nameAr}
-            </div>
-            <div className="col-6 d-flex justify-content-end">
-              {lecture.scheduledAt}
+    const courseId = this.props.match.params.id;
 
-              {lectures.status == "Live" || "Scheduled" || "Recorded" ? (
-                <img
-                  src={
-                    this.state.checked
-                      ? process.env.PUBLIC_URL + "/assets/images/blue-check.png"
-                      : process.env.PUBLIC_URL + "/assets/images/check.png"
-                  }
-                  className="ml-2"
-                  height="15"
-                  onClick={() => this.setState({ checked: true })}
-                />
-              ) : (
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/check.png"}
-                  className="ml-2"
-                  height="15"
-                />
-              )}
+    if (lectures) {
+      return lectures.map(lecture => {
+        return (
+          <React.Fragment>
+            <div className="list-group-item bg-transparent small dark-silver-text light-font-text">
+              {this.renderLecture(lecture)}
             </div>
-          </div>
-        </li>
-      ));
+          </React.Fragment>
+        );
+      });
     }
+  }
+
+  renderLecture(lecture) {
+    const scheduledAt = new Date(lecture.scheduledAt);
+    var day = scheduledAt.getDate();
+    var month = scheduledAt.getMonth() + 1;
+    var year = scheduledAt.getFullYear();
+    var scheduledDate = year + "-" + month + "-" + day;
+    var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+    return (
+      <div className="row">
+        <div className="col-6">
+          {lecture.status == "Recorded" && (
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/play.png"}
+              className="mr-2"
+              height="15"
+            />
+          )}
+          {lecture.nameAr}
+        </div>
+        <div className="col-6 d-flex justify-content-end align-items-center">
+          {lecture.status == "Live" ? (
+            <div className="small mb-0 d-flex align-items-center">
+              <span className="en-text">{hijriDate}</span>{" "}
+              <span className="badge light-bg ml-2 text-white">مباشرة</span>
+            </div>
+          ) : lecture.status == "Scheduled" ? (
+            <div className="small mb-0 d-flex align-items-center">
+              <span className="en-text">{hijriDate}</span>{" "}
+              <span className="badge mid-bg ml-2 text-white">مجدولة</span>
+            </div>
+          ) : lecture.status == "Recorded" ? (
+            <div className="small mb-0 d-flex align-items-center">
+              <span className="en-text">{hijriDate}</span>{" "}
+              <span className="badge red-bg ml-2 text-white">مسجلة</span>
+            </div>
+          ) : null}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -429,8 +450,8 @@ export class CourseDetails extends Component {
 
                 {this.state.details.instructors == undefined ||
                 this.state.details.instructors == 0 ? null : (
-                  <div className="white-bg box-layout w-100 radius-bottom-0 border-bottom-0">
-                    <div className="d-flex align-items-center p-3">
+                  <div className="box-layout w-100 radius-bottom-0 border-bottom-0">
+                    <div className="silver-bg d-flex align-items-center p-3">
                       <img
                         src={
                           process.env.PUBLIC_URL +
