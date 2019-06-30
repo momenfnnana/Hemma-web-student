@@ -145,12 +145,28 @@ export class CartItem extends Component {
               className="close-btn clickable red-text"
               onClick={this.onRemoveItem}
             />
-            <img
-              className="mr-3 rounded cover-img"
-              src={item.imageUrl}
-              height="100"
-              width="100"
-            />
+            {item.itemType == "Booklet" ? (
+              <div
+                className="light-silver-bg rounded border d-flex align-items-center justify-content-center mr-3"
+                style={{ width: 100, height: 100 }}
+              >
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/course-booklet.png"
+                  }
+                  height="40"
+                  width="40"
+                  className="contain-img"
+                />
+              </div>
+            ) : (
+              <img
+                className="mr-3 rounded cover-img"
+                src={item.imageUrl}
+                height="100"
+                width="100"
+              />
+            )}
             <div className="media-body mt-2">
               <h6 className="mt-0 dark-text">
                 {item.nameAr}{" "}
@@ -206,59 +222,83 @@ export class CartItem extends Component {
             </div>
           </div>
           <div className="w-25">
-            <form className="mb-2 d-flex flex-row align-items-center">
-              <div className="flex-column">
-                <label className="dark-text smaller mb-0">قيمة القسط</label>
-                {this.state.editingInstallment && (
-                  <p className="red-text smaller light-font-text mb-0">
-                    {item.canBePaidInInstallments == true &&
-                    this.state.installmentValdation == false &&
-                    this.state.priceValdation == false
-                      ? " حدد قيمة القسط"
-                      : null}
-                  </p>
-                )}
-                {this.state.editingInstallment && (
-                  <p className="red-text smaller light-font-text mb-0">
-                    {this.state.installmentValdation == true
-                      ? "القيمة أقل من الحد المسموح به"
-                      : null}
-                  </p>
-                )}{" "}
-                {this.state.editingInstallment && (
-                  <p className="red-text smaller light-font-text mb-0">
-                    {this.state.priceValdation == true
-                      ? "القيمة أعلى من الحد المسموح به"
-                      : null}
-                  </p>
-                )}
-              </div>
-              <input
-                disabled={!this.state.editingInstallment}
-                type="number"
-                className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
-                value={this.getInstallmentInputValue()}
-                name="itemPrice"
-                onChange={this.onUpdateInstallmentInput}
-              />
-            </form>
-            <div className="d-flex flex-row justify-content-between align-items-center">
-              <label className="dark-text smaller mb-0">سعر الاشتراك</label>
-              <div className="d-flex flex-column mx-auto">
-                <h6 className="light-text text-center mb-0">
-                  <span className="en-text">{formatPrice(item.price)}</span>{" "}
-                  ريال
-                </h6>
-                {item.priceBeforeDiscount && (
-                  <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
-                    <span className="en-text">
-                      {formatPrice(item.priceBeforeDiscount)}
-                    </span>{" "}
-                    ريال
-                  </h6>
-                )}
-              </div>
-            </div>
+            {item.itemType == "Booklet" ? (
+              <React.Fragment>
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                  <label className="dark-text smaller mb-0">سعر الملزمة</label>
+                  <div className="d-flex flex-column mx-auto">
+                    <h6 className="light-text text-center mb-0">
+                      <span className="en-text">{formatPrice(item.price)}</span>{" "}
+                      ريال
+                    </h6>
+                    {item.priceBeforeDiscount && (
+                      <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
+                        <span className="en-text">
+                          {formatPrice(item.priceBeforeDiscount)}
+                        </span>{" "}
+                        ريال
+                      </h6>
+                    )}
+                  </div>
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <form className="mb-2 d-flex flex-row align-items-center">
+                  <div className="flex-column">
+                    <label className="dark-text smaller mb-0">قيمة القسط</label>
+                    {this.state.editingInstallment && (
+                      <p className="red-text smaller light-font-text mb-0">
+                        {item.canBePaidInInstallments == true &&
+                        this.state.installmentValdation == false &&
+                        this.state.priceValdation == false
+                          ? " حدد قيمة القسط"
+                          : null}
+                      </p>
+                    )}
+                    {this.state.editingInstallment && (
+                      <p className="red-text smaller light-font-text mb-0">
+                        {this.state.installmentValdation == true
+                          ? "القيمة أقل من الحد المسموح به"
+                          : null}
+                      </p>
+                    )}{" "}
+                    {this.state.editingInstallment && (
+                      <p className="red-text smaller light-font-text mb-0">
+                        {this.state.priceValdation == true
+                          ? "القيمة أعلى من الحد المسموح به"
+                          : null}
+                      </p>
+                    )}
+                  </div>
+                  <input
+                    disabled={!this.state.editingInstallment}
+                    type="number"
+                    className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
+                    value={this.getInstallmentInputValue()}
+                    name="itemPrice"
+                    onChange={this.onUpdateInstallmentInput}
+                  />
+                </form>
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                  <label className="dark-text smaller mb-0">سعر الاشتراك</label>
+                  <div className="d-flex flex-column mx-auto">
+                    <h6 className="light-text text-center mb-0">
+                      <span className="en-text">{formatPrice(item.price)}</span>{" "}
+                      ريال
+                    </h6>
+                    {item.priceBeforeDiscount && (
+                      <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
+                        <span className="en-text">
+                          {formatPrice(item.priceBeforeDiscount)}
+                        </span>{" "}
+                        ريال
+                      </h6>
+                    )}
+                  </div>
+                </div>
+              </React.Fragment>
+            )}
           </div>
         </div>
       </Fragment>

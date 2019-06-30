@@ -10,12 +10,12 @@ import { Booklet } from "./booklet";
 import { TransactionsList } from "./transactions/transactions-list";
 import { UsersChatComponent } from "./chat";
 import { SpeedUp } from "./speed-up/speed-up";
-import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
 import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream";
 import { DiscussionsList } from "./discussions/discussions-list";
 import { DiscussionDetails } from "./discussions/discussion-details";
+import axios from "axios";
+import { apiBaseUrl } from "../../../api/helpers";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -98,6 +98,18 @@ export class SubscriptionDetails extends Component {
                 <Route
                   path="/subscriptions/:id/discussions/details"
                   component={DiscussionDetails}
+                />
+
+                <Route
+                  path="/subscriptions/:id/transactions/list"
+                  render={props => (
+                    <TransactionsList
+                      remainingAmount={
+                        this.state.details && this.state.details.remainingAmount
+                      }
+                      {...props}
+                    />
+                  )}
                 />
 
                 {channelID && channelID.startsWith("http") ? null : (

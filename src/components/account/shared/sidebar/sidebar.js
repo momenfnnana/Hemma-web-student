@@ -180,28 +180,25 @@ export class SidebarComponent extends Component {
                   اختصر وقتك
                 </NavLink>
               </li>
-              {this.state.details &&
-              this.state.details.remainingAmount == "0" ? null : (
-                <React.Fragment>
-                  <hr className="separator mt-0 mb-0" />
-                  <div className="settings d-flex align-items-center justify-content-center">
-                    <button
-                      className="btn light-btn small mb-0 w-100"
-                      onClick={this.openInstallmentModal}
-                    >
-                      إكمال سداد قسط
-                    </button>
-                  </div>
-                </React.Fragment>
-              )}
-              <NewInstallment
-                isInstallmentOpen={this.state.isInstallmentOpen}
-                closeInstallmentModal={this.closeInstallmentModal}
-                courseId={courseId}
-              />
-              {/* <li>
+              <li>
+                <NavLink
+                  to={`/subscriptions/${this.props.id}/transactions/list`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-payments.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  المدفوعات واسترجاع الرسوم
+                </NavLink>
+              </li>
 
-      
               <li>
                 <NavLink
                   className="dark-text small"
@@ -220,6 +217,8 @@ export class SidebarComponent extends Component {
                   الملزمة
                 </NavLink>
               </li>
+
+              {/*             
               <li>
                 <NavLink
                   className="dark-text small"
@@ -238,41 +237,7 @@ export class SidebarComponent extends Component {
                   المناقشات
                 </NavLink>
               </li>
-          
-              <hr className="separator mt-0 mb-0" />
-              <div className="settings d-flex align-items-center justify-content-center">
-                <button
-                  className="btn light-btn small mb-0 w-100"
-                  onClick={this.openInstallmentModal}
-                >
-                  إكمال سداد قسط
-                </button>
-              </div>
-              <NewInstallment
-                isInstallmentOpen={this.state.isInstallmentOpen}
-                closeInstallmentModal={this.closeInstallmentModal}
-                courseId={courseId}
-              />
-              {/* <li>
-                <NavLink
-                  to={`/subscriptions/${this.props.id}/transactions/list`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-payments.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  المدفوعات واسترجاع الرسوم
-                </NavLink>
-              </li>
-            
-         
+              {/* 
               <li>
                 <NavLink className="dark-text small" to="#">
                   <img
@@ -301,7 +266,6 @@ export class SidebarComponent extends Component {
                   الامتحانات الإلكترونية
                 </NavLink>
               </li>
-         
         */}
             </ul>
           </div>

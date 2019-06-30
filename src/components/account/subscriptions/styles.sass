@@ -223,7 +223,31 @@
   border: 2px solid #9786d2 !important
   border-bottom-color: transparent !important   
 audio:focus
-  outline: none                                   
+  outline: none
+
+.watermark
+  position: absolute
+  top: 2.5%
+  color: #4b3a85      
+.pdf-wrapper
+  background-color: #434343
+  height: 60px
+  border-top-right-radius: .25rem!important                
+  border-top-left-radius: .25rem!important
+  padding-left: 20px
+  padding-right: 20px
+  position: -webkit-sticky
+  position: sticky
+  top: 0px
+  z-index: 15
+.react-pdf__Page
+  margin-bottom: 15px
+.react-pdf__Document
+  background-color: #434343
+.scrollable-box
+  height: 1000px
+  overflow-y: scroll
+  position: relative    
 @media only screen and (max-width: 767px)                          
     .responsive-margin
       margin-top: 15px

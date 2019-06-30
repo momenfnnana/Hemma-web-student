@@ -4,12 +4,17 @@ import { RefundComponent } from "./refund/RefundForm";
 import "./styles.sass";
 import { WrongTransactionComponent } from "./wrong-transaction/WrongTransaction";
 import { NewInstallment } from "./installment/NewInstallment";
+import axios from "axios";
+import { apiBaseUrl } from "../../../../api/helpers";
+var moment = require("moment-hijri");
+moment().format("iYYYY/iM/iD");
 
 export class TransactionsList extends Component {
   state = {
     isInstallmentOpen: false,
     isRefundOpen: false,
-    isWrongTransactionOpen: false
+    isWrongTransactionOpen: false,
+    details: []
   };
 
   openRefundModal = () => {
@@ -33,6 +38,56 @@ export class TransactionsList extends Component {
     this.setState({ isWrongTransactionOpen: false });
   };
 
+  componentDidMount() {
+    const courseId = this.props.match.params.id;
+
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get(`${apiBaseUrl}/content/${courseId}/transaction_history`, { headers })
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  renderTransaction() {
+    const transactions = this.state.details;
+
+    if (transactions) {
+      return transactions.map(transaction => {
+        const date = new Date(transaction.date);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var transactionDate = year + "-" + month + "-" + day;
+        var hijriDate = moment(transactionDate).format("iYYYY/iM/iD");
+
+        return (
+          <tr className="text-center">
+            <td scope="row" className="light-font-text dark-silver-text small">
+              {transaction.type}
+            </td>
+            <td className="en-text dark-silver-text small">
+              {transaction.amount}
+            </td>
+            <td className="dark-silver-text small">
+              {/* <span className="light-font-text">السبت</span>{" "} */}
+              <span className="en-text">{hijriDate}</span>
+            </td>
+            <td className="light-font-text dark-silver-text small">
+              {transaction.status}
+            </td>
+          </tr>
+        );
+      });
+    }
+  }
+
   render() {
     const courseId = this.props.match.params.id;
     return (
@@ -44,7 +99,7 @@ export class TransactionsList extends Component {
                 المدفوعات واسترجاع الرسوم
               </h6>
               <div>
-                <button
+                {/* <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
                   onClick={this.openRefundModal}
@@ -83,22 +138,27 @@ export class TransactionsList extends Component {
                 <WrongTransactionComponent
                   isWrongTransactionOpen={this.state.isWrongTransactionOpen}
                   closeWrongTransactionModal={this.closeWrongTransactionModal}
-                />
-                <button
-                  type="button"
-                  className="btn border mid-text smaller"
-                  onClick={this.openInstallmentModal}
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/installment.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  طلب سداد قسط
-                </button>
+                /> */}
+
+                {this.props && this.props.remainingAmount == "0" ? null : (
+                  <button
+                    type="button"
+                    className="btn border mid-text smaller"
+                    onClick={this.openInstallmentModal}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/installment.png"
+                      }
+                      height="20"
+                      width="20"
+                      className="mr-2 contain-img"
+                    />
+                    طلب سداد قسط
+                  </button>
+                )}
+
                 <NewInstallment
                   isInstallmentOpen={this.state.isInstallmentOpen}
                   closeInstallmentModal={this.closeInstallmentModal}
@@ -129,56 +189,7 @@ export class TransactionsList extends Component {
                     </th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr className="text-center">
-                    <td
-                      scope="row"
-                      className="light-font-text dark-silver-text small"
-                    >
-                      طلب استرجاع رسوم
-                    </td>
-                    <td className="en-text dark-silver-text small">200</td>
-                    <td className="dark-silver-text small">
-                      <span className="light-font-text">السبت</span>{" "}
-                      <span className="en-text">20-01-2019</span>
-                    </td>
-                    <td className="light-font-text dark-silver-text small">
-                      قيد المراجعة
-                    </td>
-                  </tr>
-                  <tr className="text-center">
-                    <td
-                      scope="row"
-                      className="light-font-text dark-silver-text small"
-                    >
-                      سداد قسط
-                    </td>
-                    <td className="en-text dark-silver-text small">400</td>
-                    <td className="dark-silver-text small">
-                      <span className="light-font-text">السبت</span>{" "}
-                      <span className="en-text">20-01-2019</span>
-                    </td>
-                    <td className="light-font-text dark-silver-text small">
-                      مرفوض
-                    </td>
-                  </tr>
-                  <tr className="text-center">
-                    <td
-                      scope="row"
-                      className="light-font-text dark-silver-text small"
-                    >
-                      تحويل مبلغ خاطيء
-                    </td>
-                    <td className="en-text dark-silver-text small">200</td>
-                    <td className="dark-silver-text small">
-                      <span className="light-font-text">السبت</span>{" "}
-                      <span className="en-text">20-01-2019</span>
-                    </td>
-                    <td className="light-font-text dark-silver-text small">
-                      تمت
-                    </td>
-                  </tr>
-                </tbody>
+                <tbody>{this.renderTransaction()}</tbody>
               </Table>
             </div>
           </div>
