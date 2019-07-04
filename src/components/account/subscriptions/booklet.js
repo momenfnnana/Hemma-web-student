@@ -163,55 +163,33 @@ export class BookletComponent extends Component {
           <div className="col-12">
             <div className="box-layout shadow-sm w-100 gray-box-border scrollable-box">
               <div className="pdf-wrapper d-flex align-items-center justify-content-between">
-                <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable">
-                  <FaChevronRight
-                    className="text-white"
-                    onClick={() =>
-                      this.setState(prevState => ({
-                        pageNumber: prevState.pageNumber + 1
-                      }))
-                    }
+                <p className="text-white en-text mb-0 d-flex align-items-center">
+                  {numPages} /{" "}
+                  <input
+                    type="text"
+                    className="form-control ml-1"
+                    value={pageNumber}
+                    onChange={this.changePageNumber}
+                    style={{ width: 40, height: 25, textAlign: "center" }}
                   />
-                </div>
-                <div className="d-flex align-items-center">
-                  <p className="text-white en-text mb-0 d-flex align-items-center">
-                    {numPages} /{" "}
-                    <input
-                      type="text"
-                      className="form-control ml-1"
-                      value={pageNumber}
-                      onChange={this.changePageNumber}
-                      style={{ width: 40, height: 25, textAlign: "center" }}
-                    />
-                  </p>
-                  {this.state.booklet && this.state.booklet.availableInPrint && (
-                    <ReactToPrint
-                      trigger={() => (
-                        <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/printer.png"
-                            }
-                            height="25"
-                            className="contain-img clickable"
-                          />
-                        </div>
-                      )}
-                      content={() => this.componentRef}
-                    />
-                  )}
-                </div>
-                <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable">
-                  <FaChevronLeft
-                    className="text-white"
-                    onClick={() =>
-                      this.setState(prevState => ({
-                        pageNumber: prevState.pageNumber - 1
-                      }))
-                    }
+                </p>
+                {this.state.booklet && this.state.booklet.availableInPrint && (
+                  <ReactToPrint
+                    trigger={() => (
+                      <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/printer.png"
+                          }
+                          height="25"
+                          className="contain-img clickable"
+                        />
+                      </div>
+                    )}
+                    content={() => this.componentRef}
                   />
-                </div>
+                )}
               </div>
               <div className="m-4">
                 <Document

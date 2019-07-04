@@ -16,6 +16,7 @@ import ReactDOM from "react-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -49,7 +50,8 @@ export class UsersChatComponent extends Component {
       isPaused: false,
       file: null,
       loading: false,
-      twilioMessages: []
+      twilioMessages: [],
+      paginator: []
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.onStop = this.onStop.bind(this);
@@ -58,6 +60,7 @@ export class UsersChatComponent extends Component {
     this.handleClick = this.handleClick.bind(this);
     this.messageAdded = this.messageAdded.bind(this);
     this.convertMessage = this.convertMessage.bind(this);
+    this.fetchMoreData = this.fetchMoreData.bind(this);
   }
 
   convertMessage(twilioMessage) {
@@ -253,13 +256,13 @@ export class UsersChatComponent extends Component {
             "Couldn't join channel " + channel.friendlyName + " because " + err
           );
         });
-        channel.getMessages().then(response => {
-          const channelMessages = response.items;
+        channel.getMessages(5).then(paginator => {
+          const channelMessages = paginator.items;
           const messages = channelMessages.map(this.convertMessage);
-
           this.setState({
             messages: messages,
-            twilioMessages: channelMessages
+            twilioMessages: channelMessages,
+            paginator: paginator
           });
         });
       })
@@ -586,6 +589,20 @@ export class UsersChatComponent extends Component {
     });
   }
 
+  fetchMoreData = () => {
+    const paginator = this.state.paginator;
+    if (paginator.hasPrevPage) {
+      paginator.prevPage().then(messages => {
+        const prevMessages = messages.items;
+        const loadedMessages = prevMessages.map(this.convertMessage);
+
+        this.setState((prevState, props) => ({
+          messages: [...prevState.messages, ...loadedMessages]
+        }));
+      });
+    }
+  };
+
   render() {
     const { isRecording, isPaused } = this.state;
 
@@ -646,9 +663,21 @@ export class UsersChatComponent extends Component {
                       </React.Fragment>
                     ) : (
                       <div className="chat-history">
-                        <ul className="list-unstyled">
+                        {/* <ul className="list-unstyled">
                           {this.renderMessages()}
-                        </ul>
+                        </ul> */}
+
+                        <InfiniteScroll
+                          dataLength={this.state.messages.length}
+                          next={this.fetchMoreData}
+                          hasMore={true}
+                          loader={<h4>Loading...</h4>}
+                          scrollableTarget="chat-history"
+                        >
+                          <ul className="list-unstyled">
+                            {this.renderMessages()}
+                          </ul>
+                        </InfiniteScroll>
                       </div>
                     )}
                   </React.Fragment>
