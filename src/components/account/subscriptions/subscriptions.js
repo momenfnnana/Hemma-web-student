@@ -77,10 +77,10 @@ export class SubscriptionsComponent extends Component {
                 {subscription.subscriptionStatus == "Cancelled"
                   ? "ملغية"
                   : subscription.subscriptionStatus == "Expired"
-                  ? "منتهية"
+                  ? "انتهى الاشتراك"
                   : subscription.subscriptionStatus == "Active"
-                  ? "سارية"
-                  : "سارية"}
+                  ? "مؤكدة"
+                  : "مؤكدة"}
               </span>
             </div>
           </div>
@@ -149,9 +149,7 @@ export class SubscriptionsComponent extends Component {
                       className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
                       style={{ height: 300 }}
                     >
-                      <p className="dark-text mt-0">
-                        لسا ما سجلت بدوره معانا؟ يشرفنا انضمامك لنا!
-                      </p>
+                      <p className="dark-text mt-0">يشرفنا انضمامك لنا!</p>
                       <Link
                         to="/categories"
                         className="btn light-outline-btn w-25"

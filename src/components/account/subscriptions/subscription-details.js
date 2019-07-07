@@ -17,6 +17,9 @@ import { DiscussionDetails } from "./discussions/discussion-details";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { ChallengesList } from "./challenges/challenges-list";
+import { ExamsList } from "./exams/exams-list";
+import { StartExam } from "./exams/start-exam";
+import { ExamDetails } from "./exams/exam-details";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -105,6 +108,18 @@ export class SubscriptionDetails extends Component {
                   component={ChallengesList}
                 />
                 <Route
+                  path="/subscriptions/:id/exams/list"
+                  component={ExamsList}
+                />
+                <Route
+                  path="/subscriptions/:id/exams/start"
+                  component={StartExam}
+                />
+                <Route
+                  path="/subscriptions/:id/exams/details"
+                  component={ExamDetails}
+                />
+                <Route
                   path="/subscriptions/:id/transactions/list"
                   render={props => (
                     <TransactionsList
@@ -115,7 +130,6 @@ export class SubscriptionDetails extends Component {
                     />
                   )}
                 />
-
                 {channelID && channelID.startsWith("http") ? null : (
                   <React.Fragment>
                     {this.state.details.chatChannelSid && (

@@ -141,6 +141,78 @@ export class SidebarComponent extends Component {
                   المحاضرات المسجلة
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/discussions`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-discussions.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  المناقشات
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/challenges`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-challenge.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  التحديات
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/booklet`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-booklet.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الملزمة
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/exams/list`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الاختبارات الإلكترونية
+                </NavLink>
+              </li>
               {channelID && (
                 <React.Fragment>
                   {channelID.startsWith("http") ? null : (
@@ -167,39 +239,6 @@ export class SidebarComponent extends Component {
               )}
               <li>
                 <NavLink
-                  to={`/subscriptions/${this.props.id}/speed-up`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  اختصر وقتك
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/challenges`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-challenge.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  التحديات
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to={`/subscriptions/${this.props.id}/transactions/list`}
                   activeClassName="active"
                   className="dark-text small"
@@ -216,62 +255,21 @@ export class SidebarComponent extends Component {
                   المدفوعات واسترجاع الرسوم
                 </NavLink>
               </li>
-
               <li>
                 <NavLink
-                  className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/booklet`}
+                  to={`/subscriptions/${this.props.id}/speed-up`}
                   activeClassName="active"
+                  className="dark-text small"
                 >
                   <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-booklet.png"
-                    }
+                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
                   />
-                  الملزمة
+                  اختصر وقتك
                 </NavLink>
               </li>
-
-              {/*             
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/discussions`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-discussions.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  المناقشات
-                </NavLink>
-              </li>
-              {/* 
-        
-        
-              <li>
-                <NavLink className="dark-text small" to="#">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  الامتحانات الإلكترونية
-                </NavLink>
-              </li>
-        */}
             </ul>
           </div>
           {/* <hr className="separator mt-0 mb-0" />
