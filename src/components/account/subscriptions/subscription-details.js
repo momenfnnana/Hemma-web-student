@@ -16,6 +16,7 @@ import { DiscussionsList } from "./discussions/discussions-list";
 import { DiscussionDetails } from "./discussions/discussion-details";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+import { ChallengesList } from "./challenges/challenges-list";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -99,7 +100,10 @@ export class SubscriptionDetails extends Component {
                   path="/subscriptions/:id/discussions/details"
                   component={DiscussionDetails}
                 />
-
+                <Route
+                  path="/subscriptions/:id/challenges"
+                  component={ChallengesList}
+                />
                 <Route
                   path="/subscriptions/:id/transactions/list"
                   render={props => (

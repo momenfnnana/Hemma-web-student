@@ -182,6 +182,24 @@ export class SidebarComponent extends Component {
               </li>
               <li>
                 <NavLink
+                  className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/challenges`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-challenge.png"
+                    }
+                    height="24"
+                    width="24"
+                    className="mr-2 contain-img"
+                  />
+                  التحديات
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to={`/subscriptions/${this.props.id}/transactions/list`}
                   activeClassName="active"
                   className="dark-text small"
@@ -238,20 +256,7 @@ export class SidebarComponent extends Component {
                 </NavLink>
               </li>
               {/* 
-              <li>
-                <NavLink className="dark-text small" to="#">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-challenge.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  التحديات
-                </NavLink>
-              </li>
+        
         
               <li>
                 <NavLink className="dark-text small" to="#">

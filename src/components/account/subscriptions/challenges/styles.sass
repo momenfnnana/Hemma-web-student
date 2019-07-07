@@ -1,0 +1,34 @@
+$dark-blue: #4b3a85 
+$light-blue: #2bc3cc
+$mid-blue: #6c53bf 
+$white: #FFF 
+$black: #000000 
+$red: #f66271 
+$silver: #dbdbdb
+$light-silver: #f2f2f2 
+$dark-silver: #a9acb4
+$off-white: #fefefe 
+
+.outline-tabs
+    border-bottom: none
+    border-radius: 5px
+    border: none
+.outline-tabs .nav-item.show .nav-link, .outline-tabs .nav-link.active, .outline-tabs .nav-link.active:hover
+    color: $light-blue
+    background-color: transparent
+    border: none
+    border-bottom: 3px solid $light-blue
+    background-color: $white
+    font-size: 13px
+.outline-tabs
+    .nav-item
+        width: 50%
+        text-align: center
+        font-family: GessLight
+        font-size: 13px
+        color: $dark-silver
+        cursor: pointer
+        .nav-link
+            &:hover
+                border-color: transparent
+                border-bottom: 3px solid transparent
