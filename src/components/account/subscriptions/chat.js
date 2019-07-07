@@ -597,7 +597,7 @@ export class UsersChatComponent extends Component {
         const loadedMessages = prevMessages.map(this.convertMessage);
 
         this.setState((prevState, props) => ({
-          messages: [...prevState.messages, ...loadedMessages]
+          messages: [...loadedMessages, ...prevState.messages]
         }));
       });
     }
@@ -672,7 +672,6 @@ export class UsersChatComponent extends Component {
                           next={this.fetchMoreData}
                           hasMore={true}
                           loader={<h4>Loading...</h4>}
-                          scrollableTarget="chat-history"
                         >
                           <ul className="list-unstyled">
                             {this.renderMessages()}
