@@ -1,12 +1,6 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import {
-  Tooltip,
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverBody
-} from "reactstrap";
+import { Tooltip, Button } from "reactstrap";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import ReactToPrint from "react-to-print";
@@ -25,19 +19,19 @@ export class BookletComponent extends Component {
     this.state = {
       numPages: null,
       pageNumber: 1,
-      popoverOpen: false,
+      tooltipOpen: false,
       booklet: []
     };
-    this.togglePopover = this.togglePopover.bind(this);
+    this.toggleTooltip = this.toggleTooltip.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.changePageNumber = this.changePageNumber.bind(this);
   }
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
   };
-  togglePopover() {
+  toggleTooltip() {
     this.setState({
-      popoverOpen: !this.state.popoverOpen
+      tooltipOpen: !this.state.tooltipOpen
     });
   }
 
@@ -127,36 +121,40 @@ export class BookletComponent extends Component {
               </h6>
 
               <div>
-                {this.state.booklet && this.state.booklet.canBePurchased && (
+                {this.state.booklet && this.state.booklet.canBePurchased ? (
                   <button
                     type="submit"
                     className="btn blue-border-btn"
-                    id="booklet-popover"
                     onClick={this.onSubmit}
                   >
                     طلب الملزمة مطبوعة
                   </button>
+                ) : (
+                  <React.Fragment>
+                    <button
+                      type="submit"
+                      className="btn blue-border-btn"
+                      id="booklet-popover"
+                      disabled={true}
+                    >
+                      طلب الملزمة مطبوعة
+                    </button>
+                    <Tooltip
+                      placement="bottom"
+                      isOpen={this.state.tooltipOpen}
+                      target="booklet-popover"
+                      toggle={this.toggleTooltip}
+                      style={{
+                        backgroundColor: "#f2fdfe",
+                        color: "#4b3a85"
+                      }}
+                    >
+                      <p className="light-font-text small mb-1 mt-2 dark-text">
+                        تم شراء الملزمة سابقاً
+                      </p>
+                    </Tooltip>
+                  </React.Fragment>
                 )}
-
-                {/* <Popover
-                  placement="bottom"
-                  isOpen={this.state.popoverOpen}
-                  target="booklet-popover"
-                  toggle={this.togglePopover}
-                  style={{
-                    backgroundColor: "#f2fdfe",
-                    color: "#4b3a85"
-                  }}
-                >
-                  <PopoverBody className="d-flex flex-column align-items-center justify-content-center">
-                    <p className="light-font-text small mb-1 mt-2 dark-text">
-                      لا يمكنك شراء الملزمة دون تسديد كامل الأقساط
-                    </p>
-                    <p className="small light-font-text mb-2 d-inline-flex align-items-center dark-text">
-                      <u> اكمل سداد الأقساط</u>
-                    </p>
-                  </PopoverBody>
-                </Popover>*/}
               </div>
             </div>
           </div>
@@ -201,11 +199,13 @@ export class BookletComponent extends Component {
                     <React.Fragment>
                       <Page key={`page_${index + 1}`} pageNumber={index + 1}>
                         <div className="watermark w-100 d-flex align-items-center justify-content-between">
-                          <h6 className="en-text mb-0">{user && user.id}</h6>
+                          <h6 className="en-text mb-0 small">
+                            {user && user.id}
+                          </h6>
 
-                          <h6 className="mb-0">{user && user.name}</h6>
+                          <h6 className="mb-0 small">{user && user.name}</h6>
 
-                          <h6 className="en-text mb-0">
+                          <h6 className="en-text mb-0 small">
                             0{user && user.phoneNumber}
                           </h6>
                         </div>

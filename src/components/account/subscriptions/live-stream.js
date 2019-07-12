@@ -654,15 +654,17 @@ export class LiveStreamComponent extends Component {
               <div className="col-md-9 col-12">
                 <div className="box-layout mb-3">
                   {this.state.details && this.state.details.broadcastUrl && (
-                    <iframe
-                      src={`https://hemma.sa/webinar.html?id=${
-                        this.state.details.broadcastUrl
-                      }`}
-                      width="100%"
-                      height="600"
-                      frameBorder="0"
-                      className="mb-0 rounded"
-                    />
+                    <div className="iframeWrapper">
+                      <iframe
+                        src={`https://hemma.sa/webinar.html?id=${
+                          this.state.details.broadcastUrl
+                        }`}
+                        width="100%"
+                        height="600"
+                        frameBorder="0"
+                        className="mb-0 rounded"
+                      />
+                    </div>
                   )}
                 </div>
 
