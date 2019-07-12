@@ -20,6 +20,7 @@ import { ChallengesList } from "./challenges/challenges-list";
 import { ExamsList } from "./exams/exams-list";
 import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
+import { ChallengeDetails } from "./challenges/challenge-details";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -105,7 +106,12 @@ export class SubscriptionDetails extends Component {
                 />
                 <Route
                   path="/subscriptions/:id/challenges"
+                  exact
                   component={ChallengesList}
+                />
+                <Route
+                  path="/subscriptions/:id/challenges/details"
+                  component={ChallengeDetails}
                 />
                 <Route
                   path="/subscriptions/:id/exams/list"
