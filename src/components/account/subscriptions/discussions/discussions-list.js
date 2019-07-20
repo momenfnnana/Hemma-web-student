@@ -45,29 +45,21 @@ export class DiscussionsList extends Component {
                 <div className="discussion-item d-flex align-items-center">
                   <div className="media w-90 d-flex align-items-center">
                     <div className="media-body">
-                      <h6 className="mt-0 mid-text smaller">النسبة والتناسب</h6>
                       <h6 className="dark-text">
                         سؤال سريع عن إحدى زوايا المثلث
                       </h6>
                       <div className="d-flex align-items-center">
                         <h6 className="dark-silver-text smaller mb-0 mr-3">
-                          بواسطة: ريحان شاهين
+                          من: <span className="en-text">15 - 3 -2019</span>
                         </h6>
-                        <h6 className="dark-silver-text smaller en-text mb-0">
-                          15 - 3 -2019
+                        <h6 className="dark-silver-text smaller mb-0">
+                          إلى: <span className="en-text">15 - 3 -2019</span>
                         </h6>
                       </div>
                     </div>
                   </div>
-                  <div className="seperator-md" />
                   <div className="w-10 d-flex flex-column align-items-center justify-content-center">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/chat.png"}
-                      height="20"
-                      width="20"
-                      className="contain-img mb-2"
-                    />
-                    <h6 className="dark-text en-text mb-0 small">23</h6>
+                    <span className="badge light-bg text-white">مفتوح</span>
                   </div>
                 </div>
               </Link>
@@ -75,87 +67,21 @@ export class DiscussionsList extends Component {
               <div className="discussion-item d-flex align-items-center">
                 <div className="media w-90 d-flex align-items-center">
                   <div className="media-body">
-                    <h6 className="mt-0 mid-text smaller">النسبة والتناسب</h6>
                     <h6 className="dark-text">
                       سؤال سريع عن إحدى زوايا المثلث
                     </h6>
                     <div className="d-flex align-items-center">
                       <h6 className="dark-silver-text smaller mb-0 mr-3">
-                        بواسطة: ريحان شاهين
+                        من: <span className="en-text">15 - 3 -2019</span>
                       </h6>
-                      <h6 className="dark-silver-text smaller en-text mb-0">
-                        15 - 3 -2019
-                      </h6>
-                    </div>
-                  </div>
-                </div>
-                <div className="seperator-md" />
-                <div className="w-10 d-flex flex-column align-items-center justify-content-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/chat.png"}
-                    height="20"
-                    width="20"
-                    className="contain-img mb-2"
-                  />
-                  <h6 className="dark-text en-text mb-0 small">23</h6>
-                </div>
-              </div>
-
-              <div className="discussion-item d-flex align-items-center">
-                <div className="media w-90 d-flex align-items-center">
-                  <div className="media-body">
-                    <h6 className="mt-0 mid-text smaller">النسبة والتناسب</h6>
-                    <h6 className="dark-text">
-                      سؤال سريع عن إحدى زوايا المثلث
-                    </h6>
-                    <div className="d-flex align-items-center">
-                      <h6 className="dark-silver-text smaller mb-0 mr-3">
-                        بواسطة: ريحان شاهين
-                      </h6>
-                      <h6 className="dark-silver-text smaller en-text mb-0">
-                        15 - 3 -2019
+                      <h6 className="dark-silver-text smaller mb-0">
+                        إلى: <span className="en-text">15 - 3 -2019</span>
                       </h6>
                     </div>
                   </div>
                 </div>
-                <div className="seperator-md" />
                 <div className="w-10 d-flex flex-column align-items-center justify-content-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/chat.png"}
-                    height="20"
-                    width="20"
-                    className="contain-img mb-2"
-                  />
-                  <h6 className="dark-text en-text mb-0 small">23</h6>
-                </div>
-              </div>
-
-              <div className="discussion-item d-flex align-items-center">
-                <div className="media w-90 d-flex align-items-center">
-                  <div className="media-body">
-                    <h6 className="mt-0 mid-text smaller">النسبة والتناسب</h6>
-                    <h6 className="dark-text">
-                      سؤال سريع عن إحدى زوايا المثلث
-                    </h6>
-                    <div className="d-flex align-items-center">
-                      <h6 className="dark-silver-text smaller mb-0 mr-3">
-                        بواسطة: ريحان شاهين
-                      </h6>
-                      <h6 className="dark-silver-text smaller en-text mb-0">
-                        15 - 3 -2019
-                      </h6>
-                    </div>
-                  </div>
-                  <span className="badge red-bg text-white">سؤال مهم</span>
-                </div>
-                <div className="seperator-md" />
-                <div className="w-10 d-flex flex-column align-items-center justify-content-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/comment.png"}
-                    width="20"
-                    className="contain-img mb-2"
-                  />
-                  <h6 className="light-text en-text mb-0 small">23</h6>
+                  <span className="badge red-bg text-white">مغلق</span>
                 </div>
               </div>
             </div>

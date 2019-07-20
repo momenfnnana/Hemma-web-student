@@ -17,7 +17,7 @@ export class DiscussionComponent extends Component {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        width: "50%",
+        width: "30%",
         height: "auto",
         borderWidth: 0,
         padding: 20
@@ -51,35 +51,43 @@ export class DiscussionComponent extends Component {
             </div>
 
             <form>
-              <Field
-                name="fileName"
-                type="text"
-                component={inputField}
-                className="form-control border-left-0 pl-0"
-                placeholder="العنوان"
-              />
+              <div className="row">
+                <div className="col-12">
+                  <Field
+                    name="fileName"
+                    type="text"
+                    component={inputField}
+                    className="form-control border-left-0 pl-0"
+                    placeholder="العنوان"
+                  />
+                </div>
 
-              <Field
-                component={textareaField}
-                className="form-control"
-                name="desc"
-                placeholder="الوصف"
-                rows="6"
-              />
+                <div className="col-md-6 col-12">
+                  <label className="dark-text small"> وقت البداية</label>
+                  <Field
+                    name="fileName"
+                    type="date"
+                    component={inputField}
+                    className="form-control border-left-0 pl-0"
+                  />
+                </div>
 
-              <Field
-                component={selectField}
-                className="form-control"
-                name="chapter"
-              >
-                <option selected disabled>
-                  اختر الفصل
-                </option>
-              </Field>
-              <div className="text-center">
-                <button className="btn light-outline-btn mt-3 w-50">
-                  إنشاء
-                </button>
+                <div className="col-md-6 col-12">
+                  <label className="dark-text small">وقت النهاية</label>
+
+                  <Field
+                    name="fileName"
+                    type="date"
+                    component={inputField}
+                    className="form-control border-left-0 pl-0"
+                  />
+                </div>
+
+                <div className="col-12 text-center">
+                  <button className="btn light-outline-btn mt-3 w-100">
+                    إنشاء
+                  </button>
+                </div>
               </div>
             </form>
           </div>

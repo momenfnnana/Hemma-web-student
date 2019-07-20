@@ -121,7 +121,9 @@ export class BookletComponent extends Component {
               </h6>
 
               <div>
-                {this.state.booklet && this.state.booklet.canBePurchased ? (
+                {this.state.booklet &&
+                this.state.booklet.canBePurchased &&
+                this.state.booklet.availableInPrint ? (
                   <button
                     type="submit"
                     className="btn blue-border-btn"
