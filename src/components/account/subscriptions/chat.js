@@ -256,7 +256,7 @@ export class UsersChatComponent extends Component {
             "Couldn't join channel " + channel.friendlyName + " because " + err
           );
         });
-        channel.getMessages(5).then(paginator => {
+        channel.getMessages().then(paginator => {
           const channelMessages = paginator.items;
           const messages = channelMessages.map(this.convertMessage);
           this.setState({
@@ -663,11 +663,11 @@ export class UsersChatComponent extends Component {
                       </React.Fragment>
                     ) : (
                       <div className="chat-history">
-                        {/* <ul className="list-unstyled">
+                        <ul className="list-unstyled">
                           {this.renderMessages()}
-                        </ul> */}
+                        </ul>
 
-                        <InfiniteScroll
+                        {/* <InfiniteScroll
                           dataLength={this.state.messages.length}
                           next={this.fetchMoreData}
                           hasMore={true}
@@ -676,7 +676,7 @@ export class UsersChatComponent extends Component {
                           <ul className="list-unstyled">
                             {this.renderMessages()}
                           </ul>
-                        </InfiniteScroll>
+                        </InfiniteScroll> */}
                       </div>
                     )}
                   </React.Fragment>

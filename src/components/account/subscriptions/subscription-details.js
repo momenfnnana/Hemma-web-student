@@ -100,10 +100,13 @@ export class SubscriptionDetails extends Component {
                   exact
                   component={DiscussionsList}
                 />
-                <Route
-                  path="/subscriptions/:id/discussions/details"
-                  component={DiscussionDetails}
-                />
+                {this.state.details.chatChannelSid && (
+                  <Route
+                    path="/subscriptions/:id/discussions/details"
+                    component={DiscussionDetails}
+                    chatChannelSid={this.state.details.chatChannelSid}
+                  />
+                )}
                 <Route
                   path="/subscriptions/:id/challenges"
                   exact

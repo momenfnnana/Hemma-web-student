@@ -1,20 +1,9 @@
 import React, { Component } from "react";
 import "./styles.sass";
 import { Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { DiscussionComponent } from "./create-discussion";
 import { Link } from "react-router-dom";
 
 export class DiscussionsList extends Component {
-  state = {
-    isDiscussionOpen: false
-  };
-
-  openDiscussionModal = () => {
-    this.setState({ isDiscussionOpen: true });
-  };
-  closeDiscussionModal = () => {
-    this.setState({ isDiscussionOpen: false });
-  };
   render() {
     const courseId = this.props.match.params.id;
     return (
@@ -23,17 +12,6 @@ export class DiscussionsList extends Component {
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center responsive-col">
               <h6 className="dark-text small mb-0 mt-0">المناقشات</h6>
-              <button
-                type="button"
-                className="btn light-btn pr-4 pl-4"
-                onClick={this.openDiscussionModal}
-              >
-                نقاش جديد
-              </button>
-              <DiscussionComponent
-                isDiscussionOpen={this.state.isDiscussionOpen}
-                closeDiscussion={this.closeDiscussionModal}
-              />
             </div>
           </div>
         </div>
@@ -87,7 +65,7 @@ export class DiscussionsList extends Component {
             </div>
           </div>
         </div>
-
+        {/* 
         <div className="row no-gutters mt-3">
           <div className="col-12 d-flex justify-content-end">
             <Pagination
@@ -117,7 +95,7 @@ export class DiscussionsList extends Component {
               </PaginationItem>
             </Pagination>
           </div>
-        </div>
+        </div> */}
       </React.Fragment>
     );
   }
