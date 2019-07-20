@@ -159,7 +159,7 @@ export class SidebarComponent extends Component {
                   المناقشات
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className="dark-text small"
                   to={`/subscriptions/${this.props.id}/challenges`}
@@ -176,7 +176,7 @@ export class SidebarComponent extends Component {
                   />
                   التحديات
                 </NavLink>
-              </li>
+              </li> */}
               <li>
                 <NavLink
                   className="dark-text small"
@@ -195,7 +195,7 @@ export class SidebarComponent extends Component {
                   الملزمة
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className="dark-text small"
                   to={`/subscriptions/${this.props.id}/exams/list`}
@@ -212,7 +212,7 @@ export class SidebarComponent extends Component {
                   />
                   الاختبارات الإلكترونية
                 </NavLink>
-              </li>
+              </li> */}
               {channelID && (
                 <React.Fragment>
                   {channelID.startsWith("http") ? null : (

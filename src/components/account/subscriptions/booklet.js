@@ -122,41 +122,16 @@ export class BookletComponent extends Component {
 
               <div>
                 {this.state.booklet &&
-                this.state.booklet.canBePurchased &&
-                this.state.booklet.availableInPrint ? (
-                  <button
-                    type="submit"
-                    className="btn blue-border-btn"
-                    onClick={this.onSubmit}
-                  >
-                    طلب الملزمة مطبوعة
-                  </button>
-                ) : (
-                  <React.Fragment>
+                  this.state.booklet.canBePurchased &&
+                  (this.state.booklet.availableInPrint && (
                     <button
                       type="submit"
                       className="btn blue-border-btn"
-                      id="booklet-popover"
-                      disabled={true}
+                      onClick={this.onSubmit}
                     >
                       طلب الملزمة مطبوعة
                     </button>
-                    <Tooltip
-                      placement="bottom"
-                      isOpen={this.state.tooltipOpen}
-                      target="booklet-popover"
-                      toggle={this.toggleTooltip}
-                      style={{
-                        backgroundColor: "#f2fdfe",
-                        color: "#4b3a85"
-                      }}
-                    >
-                      <p className="light-font-text small mb-1 mt-2 dark-text">
-                        تم شراء الملزمة سابقاً
-                      </p>
-                    </Tooltip>
-                  </React.Fragment>
-                )}
+                  ))}
               </div>
             </div>
           </div>
@@ -173,23 +148,20 @@ export class BookletComponent extends Component {
                     style={{ width: 40, height: 25, textAlign: "center" }}
                   />
                 </p>
-                {this.state.booklet && this.state.booklet.availableInPrint && (
-                  <ReactToPrint
-                    trigger={() => (
-                      <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/printer.png"
-                          }
-                          height="25"
-                          className="contain-img clickable"
-                        />
-                      </div>
-                    )}
-                    content={() => this.componentRef}
-                  />
-                )}
+                <ReactToPrint
+                  trigger={() => (
+                    <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/printer.png"
+                        }
+                        height="25"
+                        className="contain-img clickable"
+                      />
+                    </div>
+                  )}
+                  content={() => this.componentRef}
+                />
               </div>
               <div className="m-4">
                 <Document

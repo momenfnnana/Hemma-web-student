@@ -120,6 +120,27 @@ export class RecordedLectures extends Component {
   }
 
   render() {
-    return <React.Fragment>{this.renderSections()}</React.Fragment>;
+    return (
+      <React.Fragment>
+        {this.state.details.sections == undefined ||
+        this.state.details.sections.length == 0 ? (
+          <React.Fragment>
+            <div
+              className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center"
+              style={{ height: 300 }}
+            >
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/empty-videos.png"}
+                height="90"
+                className="contain-img mb-3"
+              />
+              <p className="dark-text mt-0 mb-0">لا يوجد محضارات مسجلة متاحة</p>
+            </div>
+          </React.Fragment>
+        ) : (
+          this.renderSections()
+        )}
+      </React.Fragment>
+    );
   }
 }
