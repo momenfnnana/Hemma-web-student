@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./styles.sass";
 import StarRatingComponent from "react-star-rating-component";
 import { TabContent, TabPane, Nav, NavItem, NavLink, Input } from "reactstrap";
 import classnames from "classnames";
@@ -16,6 +15,7 @@ import { getChatToken } from "../../../actions/twilio.actions";
 import firebase from "firebase";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+import "./styles.sass";
 
 export class LiveStreamComponent extends Component {
   constructor(props) {

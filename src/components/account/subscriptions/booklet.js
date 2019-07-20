@@ -114,107 +114,129 @@ export class BookletComponent extends Component {
     return (
       <React.Fragment>
         <div className="row no-gutters">
-          <div className="col-12 mb-4">
-            <div className="d-flex justify-content-between align-items-center">
-              <h6 className="dark-text small mb-0 mt-0">
-                {this.state.booklet && this.state.booklet.nameAr}
-              </h6>
-
-              <div>
-                {this.state.booklet && this.state.booklet.canBePurchased ? (
-                  <button
-                    type="submit"
-                    className="btn blue-border-btn"
-                    onClick={this.onSubmit}
-                  >
-                    طلب الملزمة مطبوعة
-                  </button>
-                ) : (
-                  <React.Fragment>
+          {this.state.booklet.url && (
+            <div className="col-12 mb-4">
+              <div className="d-flex justify-content-between align-items-center">
+                <h6 className="dark-text small mb-0 mt-0">
+                  {this.state.booklet && this.state.booklet.nameAr}
+                </h6>
+                <div>
+                  {this.state.booklet && this.state.booklet.canBePurchased ? (
                     <button
                       type="submit"
                       className="btn blue-border-btn"
-                      id="booklet-popover"
-                      disabled={true}
+                      onClick={this.onSubmit}
                     >
                       طلب الملزمة مطبوعة
                     </button>
-                    <Tooltip
-                      placement="bottom"
-                      isOpen={this.state.tooltipOpen}
-                      target="booklet-popover"
-                      toggle={this.toggleTooltip}
-                      style={{
-                        backgroundColor: "#f2fdfe",
-                        color: "#4b3a85"
-                      }}
-                    >
-                      <p className="light-font-text small mb-1 mt-2 dark-text">
-                        تم شراء الملزمة سابقاً
-                      </p>
-                    </Tooltip>
-                  </React.Fragment>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="col-12">
-            <div className="box-layout shadow-sm w-100 gray-box-border scrollable-box">
-              <div className="pdf-wrapper d-flex align-items-center justify-content-between">
-                <p className="text-white en-text mb-0 d-flex align-items-center">
-                  {numPages} /{" "}
-                  <input
-                    type="text"
-                    className="form-control ml-1"
-                    value={pageNumber}
-                    onChange={this.changePageNumber}
-                    style={{ width: 40, height: 25, textAlign: "center" }}
-                  />
-                </p>
-                {this.state.booklet && this.state.booklet.availableInPrint && (
-                  <ReactToPrint
-                    trigger={() => (
-                      <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/printer.png"
-                          }
-                          height="25"
-                          className="contain-img clickable"
-                        />
-                      </div>
-                    )}
-                    content={() => this.componentRef}
-                  />
-                )}
-              </div>
-              <div className="m-4">
-                <Document
-                  file={this.state.booklet.url}
-                  onLoadSuccess={this.onDocumentLoadSuccess}
-                  ref={el => (this.componentRef = el)}
-                >
-                  {Array.from(new Array(numPages), (el, index) => (
+                  ) : (
                     <React.Fragment>
-                      <Page key={`page_${index + 1}`} pageNumber={index + 1}>
-                        <div className="watermark w-100 d-flex align-items-center justify-content-between">
-                          <h6 className="en-text mb-0 small">
-                            {user && user.id}
-                          </h6>
-
-                          <h6 className="mb-0 small">{user && user.name}</h6>
-
-                          <h6 className="en-text mb-0 small">
-                            0{user && user.phoneNumber}
-                          </h6>
-                        </div>
-                      </Page>
+                      <button
+                        type="submit"
+                        className="btn blue-border-btn"
+                        id="booklet-popover"
+                        disabled={true}
+                      >
+                        طلب الملزمة مطبوعة
+                      </button>
+                      <Tooltip
+                        placement="bottom"
+                        isOpen={this.state.tooltipOpen}
+                        target="booklet-popover"
+                        toggle={this.toggleTooltip}
+                        style={{
+                          backgroundColor: "#f2fdfe",
+                          color: "#4b3a85"
+                        }}
+                      >
+                        <p className="light-font-text small mb-1 mt-2 dark-text">
+                          تم شراء الملزمة سابقاً
+                        </p>
+                      </Tooltip>
                     </React.Fragment>
-                  ))}
-                </Document>
+                  )}
+                </div>
               </div>
             </div>
+          )}
+          <div className="col-12">
+            {this.state.booklet.url ? (
+              <div className="box-layout shadow-sm w-100 gray-box-border scrollable-box">
+                <div className="pdf-wrapper d-flex align-items-center justify-content-between">
+                  <p className="text-white en-text mb-0 d-flex align-items-center">
+                    {numPages} /{" "}
+                    <input
+                      type="text"
+                      className="form-control ml-1"
+                      value={pageNumber}
+                      onChange={this.changePageNumber}
+                      style={{ width: 40, height: 25, textAlign: "center" }}
+                    />
+                  </p>
+                  {this.state.booklet && this.state.booklet.availableInPrint && (
+                    <ReactToPrint
+                      trigger={() => (
+                        <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/printer.png"
+                            }
+                            height="25"
+                            className="contain-img clickable"
+                          />
+                        </div>
+                      )}
+                      content={() => this.componentRef}
+                    />
+                  )}
+                </div>
+
+                <div className="m-4">
+                  <Document
+                    file={this.state.booklet.url}
+                    onLoadSuccess={this.onDocumentLoadSuccess}
+                    ref={el => (this.componentRef = el)}
+                  >
+                    {Array.from(new Array(numPages), (el, index) => (
+                      <React.Fragment>
+                        <Page key={`page_${index + 1}`} pageNumber={index + 1}>
+                          <div className="watermark w-100 d-flex align-items-center justify-content-between">
+                            <h6 className="en-text mb-0 small">
+                              {user && user.id}
+                            </h6>
+
+                            <h6 className="mb-0 small">{user && user.name}</h6>
+
+                            <h6 className="en-text mb-0 small">
+                              0{user && user.phoneNumber}
+                            </h6>
+                          </div>
+                        </Page>
+                      </React.Fragment>
+                    ))}
+                  </Document>
+                </div>
+              </div>
+            ) : (
+              <React.Fragment>
+                <div
+                  className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center"
+                  style={{ height: 300 }}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/empty-files.png"
+                    }
+                    height="100"
+                    className="contain-img mb-3"
+                  />
+                  <p className="dark-text mt-0 mb-0">
+                    لا يوجد ملزمة متوفرة لهذه الدورة حالياً{" "}
+                  </p>
+                </div>
+              </React.Fragment>
+            )}
           </div>
         </div>
       </React.Fragment>

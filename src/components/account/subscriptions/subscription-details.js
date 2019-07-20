@@ -95,7 +95,7 @@ export class SubscriptionDetails extends Component {
                 />
                 <Route path="/subscriptions/:id/speed-up" component={SpeedUp} />
                 <Route path="/subscriptions/:id/booklet" component={Booklet} />
-                <Route
+                {/*<Route
                   path="/subscriptions/:id/discussions"
                   exact
                   component={DiscussionsList}
@@ -124,7 +124,7 @@ export class SubscriptionDetails extends Component {
                 <Route
                   path="/subscriptions/:id/exams/details"
                   component={ExamDetails}
-                />
+                /> */}
                 <Route
                   path="/subscriptions/:id/transactions/list"
                   render={props => (

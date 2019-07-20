@@ -144,6 +144,24 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
+                  to={`/subscriptions/${this.props.id}/booklet`}
+                  activeClassName="active"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/course-booklet.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  الملزمة
+                </NavLink>
+              </li>
+              {/* <li>
+                <NavLink
+                  className="dark-text small"
                   to={`/subscriptions/${this.props.id}/discussions`}
                   activeClassName="active"
                 >
@@ -177,24 +195,7 @@ export class SidebarComponent extends Component {
                   التحديات
                 </NavLink>
               </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/booklet`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-booklet.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  الملزمة
-                </NavLink>
-              </li>
+  
               <li>
                 <NavLink
                   className="dark-text small"
@@ -212,7 +213,7 @@ export class SidebarComponent extends Component {
                   />
                   الاختبارات الإلكترونية
                 </NavLink>
-              </li>
+              </li> */}
               {channelID && (
                 <React.Fragment>
                   {channelID.startsWith("http") ? null : (
