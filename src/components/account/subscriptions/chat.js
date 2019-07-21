@@ -106,7 +106,7 @@ export class UsersChatComponent extends Component {
       if (this.state.activeChannel === "general") {
         client.getChannelBySid(this.props.chatChannelSid).then(channel => {
           channel.sendMessage(data);
-          channel.on("messageAdded", this.messageAdded);
+          // channel.on("messageAdded", this.messageAdded);
         });
       } else {
         client
@@ -142,7 +142,7 @@ export class UsersChatComponent extends Component {
       if (this.state.activeChannel === "general") {
         client.getChannelBySid(this.props.chatChannelSid).then(channel => {
           channel.sendMessage(data);
-          channel.on("messageAdded", this.messageAdded);
+          // channel.on("messageAdded", this.messageAdded);
         });
       } else {
         client
@@ -216,21 +216,40 @@ export class UsersChatComponent extends Component {
 
     if (this.props.authenticated) {
       this.props.getUser();
-      this.props.getChatToken().then(() => this.initiateGeneralChat());
+      this.props.getChatToken().then(() => {
+        this.initiateGeneralChat();
+        axios
+          .get(`${apiBaseUrl}/content/${courseId}/instructors`, { headers })
+          .then(response => {
+            this.setState({ instructors: response.data.data });
+            response.data.data.forEach(instructor => {
+              const channelName = this.generatePrivateChannelName(
+                instructor.id
+              );
+              console.log("channel name", channelName);
+              this.props.twilio.chatClient.then(client => {
+                client.getChannelByUniqueName(channelName).then(channel => {
+                  channel.on("messageAdded", this.messageAdded);
+                });
+              });
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+        this.props.twilio.chatClient.then(client => {
+          client.getChannelBySid(this.props.chatChannelSid).then(channel => {
+            channel.on("messageAdded", this.messageAdded);
+          });
+        });
+      });
     }
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    axios
-      .get(`${apiBaseUrl}/content/${courseId}/instructors`, { headers })
-      .then(response => {
-        this.setState({ instructors: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -329,14 +348,14 @@ export class UsersChatComponent extends Component {
       if (this.state.activeChannel === "general") {
         client.getChannelBySid(this.props.chatChannelSid).then(channel => {
           channel.sendMessage(message);
-          channel.on("messageAdded", this.messageAdded);
+          // channel.on("messageAdded", this.messageAdded);
         });
       } else {
         client
           .getChannelByUniqueName(this.state.privateChannel)
           .then(channel => {
             channel.sendMessage(message);
-            channel.on("messageAdded", this.messageAdded);
+            // channel.on("messageAdded", this.messageAdded);
           });
       }
     });
@@ -353,14 +372,14 @@ export class UsersChatComponent extends Component {
         if (this.state.activeChannel === "general") {
           client.getChannelBySid(this.props.chatChannelSid).then(channel => {
             channel.sendMessage(message);
-            channel.on("messageAdded", this.messageAdded);
+            // channel.on("messageAdded", this.messageAdded);
           });
         } else {
           client
             .getChannelByUniqueName(this.state.privateChannel)
             .then(channel => {
               channel.sendMessage(message);
-              channel.on("messageAdded", this.messageAdded);
+              // channel.on("messageAdded", this.messageAdded);
             });
         }
       });
@@ -520,12 +539,18 @@ export class UsersChatComponent extends Component {
     }
   }
 
-  async setPrivateChannel(pairIdentity) {
+  generatePrivateChannelName(pairIdentity) {
     let myIdentity = this.props.user && this.props.user.id;
     let privateChannelName =
       myIdentity < pairIdentity
         ? pairIdentity + "_" + myIdentity
         : myIdentity + "_" + pairIdentity;
+
+    return privateChannelName;
+  }
+
+  async setPrivateChannel(pairIdentity) {
+    let privateChannelName = this.generatePrivateChannelName(pairIdentity);
     await this.setState({
       privateChannel: privateChannelName,
       activeChannel: "private"
