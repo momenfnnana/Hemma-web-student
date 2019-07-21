@@ -26,9 +26,11 @@ export class BookletComponent extends Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.changePageNumber = this.changePageNumber.bind(this);
   }
+
   onDocumentLoadSuccess = ({ numPages }) => {
     this.setState({ numPages });
   };
+
   toggleTooltip() {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
@@ -122,38 +124,16 @@ export class BookletComponent extends Component {
 
               <div>
                 {this.state.booklet &&
-                this.state.booklet.canBePurchased &&
-                this.state.booklet.availableInPrint ? (
-                  <button
-                    type="submit"
-                    className="btn blue-border-btn"
-                    onClick={this.onSubmit}
-                  >
-                    طلب الملزمة مطبوعة
-                  </button>
-                ) : (
-                  <React.Fragment>
-                    <div id="booklet-tooltip">
-                      <button className="btn blue-border-btn" disabled={true}>
-                        طلب الملزمة مطبوعة
-                      </button>
-                    </div>
-                    <Tooltip
-                      placement="bottom"
-                      isOpen={this.state.tooltipOpen}
-                      target="booklet-tooltip"
-                      toggle={this.toggleTooltip}
-                      style={{
-                        backgroundColor: "#f2fdfe",
-                        color: "#4b3a85"
-                      }}
+                  this.state.booklet.canBePurchased &&
+                  this.state.booklet.availableInPrint && (
+                    <button
+                      type="submit"
+                      className="btn blue-border-btn"
+                      onClick={this.onSubmit}
                     >
-                      <p className="light-font-text small mb-1 mt-2 dark-text">
-                        هذه الملزمة غير متوفرة مطبوعة
-                      </p>
-                    </Tooltip>
-                  </React.Fragment>
-                )}
+                      طلب الملزمة مطبوعة
+                    </button>
+                  )}
               </div>
             </div>
           </div>

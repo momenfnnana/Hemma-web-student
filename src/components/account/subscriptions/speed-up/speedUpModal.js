@@ -81,12 +81,24 @@ export class SpeedUpModalComponent extends Component {
           {file.type == "Image" ? (
             <img src={file.url} alt="File" width="100%" height="auto" />
           ) : file.type == "Pdf" ? (
-            <Document
-              file={file.url}
-              onLoadSuccess={this.onDocumentLoadSuccess}
-            >
-              <Page pageNumber={pageNumber} />
-            </Document>
+            <React.Fragment>
+              <div className="d-flex align-items-center flex-column pt-5 pb-5">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/pdf.png"}
+                  alt="File"
+                  className="contain-img custom-img mx-auto"
+                  height="80"
+                />
+                <h6 className="light-text mt-3">{file.title}</h6>
+                <a
+                  className="btn light-btn btn-sm pl-4 pr-4"
+                  href={file.url}
+                  target="_blank"
+                >
+                  تحميل
+                </a>
+              </div>
+            </React.Fragment>
           ) : file.type == "Video" ? (
             <ReactPlayer
               url={file.url}

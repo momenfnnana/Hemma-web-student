@@ -71,8 +71,8 @@ export class SpeedUp extends Component {
                 />
               )}
             </header>
-            <div className="card-body d-flex justify-content-end align-items-center">
-              <h6 className="card-title small en-text mb-0 p-0 dark-text">
+            <div className="card-body d-flex justify-content-start align-items-center">
+              <h6 className="card-title small mb-0 p-0 dark-text">
                 {file.title}
               </h6>
             </div>
