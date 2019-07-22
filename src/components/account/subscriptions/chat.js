@@ -217,7 +217,6 @@ export class UsersChatComponent extends Component {
     if (this.props.authenticated) {
       this.props.getUser();
       this.props.getChatToken().then(() => {
-        this.initiateGeneralChat();
         axios
           .get(`${apiBaseUrl}/content/${courseId}/instructors`, { headers })
           .then(response => {
@@ -630,7 +629,8 @@ export class UsersChatComponent extends Component {
 
   render() {
     const { isRecording, isPaused } = this.state;
-
+    const channelID = this.props && this.props.chatChannelSid;
+    console.log(channelID);
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -640,6 +640,20 @@ export class UsersChatComponent extends Component {
             </div>
           </div>
         </div>
+        {channelID && (
+          <React.Fragment>
+            {channelID.startsWith("http") && (
+              <div
+                className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable"
+                onClick={() => window.open(channelID, "_blank")}
+              >
+                <h6 className="media chat-item mb-0 d-flex align-items-center  light-text small ">
+                  رابط مجموعة التيليجرام
+                </h6>
+              </div>
+            )}
+          </React.Fragment>
+        )}
         <div className="box-layout shadow-sm w-100">
           <div className="row no-gutters">
             <div className="chat-sidebar col-md-4 border-right">
@@ -649,12 +663,14 @@ export class UsersChatComponent extends Component {
                   placeholder="ابحث هنا"
                 />
               </div>
-              <h6
-                className="media chat-item pb-2 pt-2 d-flex align-items-center clickable light-text small"
-                onClick={() => this.initiateGeneralChat()}
-              >
-                <FaCircle size={9} className="mr-1" /> دردشة للجميع
-              </h6>
+              {!channelID.startsWith("http") && (
+                <h6
+                  className="media chat-item pb-2 pt-2 d-flex align-items-center clickable light-text small"
+                  onClick={() => this.initiateGeneralChat()}
+                >
+                  <FaCircle size={9} className="mr-1" /> دردشة للجميع
+                </h6>
+              )}
               {this.renderInstructors()}
             </div>
             <div className="col-md-8">

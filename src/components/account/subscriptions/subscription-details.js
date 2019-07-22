@@ -100,10 +100,13 @@ export class SubscriptionDetails extends Component {
                   exact
                   component={DiscussionsList}
                 />
-                <Route
-                  path="/subscriptions/:id/discussions/details"
-                  component={DiscussionDetails}
-                />
+                {this.state.details.chatChannelSid && (
+                  <Route
+                    path="/subscriptions/:id/discussions/details"
+                    component={DiscussionDetails}
+                    chatChannelSid={this.state.details.chatChannelSid}
+                  />
+                )}
                 <Route
                   path="/subscriptions/:id/challenges"
                   exact
@@ -136,7 +139,18 @@ export class SubscriptionDetails extends Component {
                     />
                   )}
                 />
-                {channelID && channelID.startsWith("http") ? null : (
+                {this.state.details.chatChannelSid && (
+                  <Route
+                    path="/subscriptions/:id/chat"
+                    render={props => (
+                      <UsersChatComponent
+                        chatChannelSid={this.state.details.chatChannelSid}
+                        {...props}
+                      />
+                    )}
+                  />
+                )}
+                {/* {channelID && channelID.startsWith("http") ? null : (
                   <React.Fragment>
                     {this.state.details.chatChannelSid && (
                       <Route
@@ -150,7 +164,7 @@ export class SubscriptionDetails extends Component {
                       />
                     )}
                   </React.Fragment>
-                )}
+                )} */}
               </div>
             </div>
           </div>
