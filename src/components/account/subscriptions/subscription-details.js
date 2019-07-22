@@ -139,7 +139,18 @@ export class SubscriptionDetails extends Component {
                     />
                   )}
                 />
-                {channelID && channelID.startsWith("http") ? null : (
+                {this.state.details.chatChannelSid && (
+                  <Route
+                    path="/subscriptions/:id/chat"
+                    render={props => (
+                      <UsersChatComponent
+                        chatChannelSid={this.state.details.chatChannelSid}
+                        {...props}
+                      />
+                    )}
+                  />
+                )}
+                {/* {channelID && channelID.startsWith("http") ? null : (
                   <React.Fragment>
                     {this.state.details.chatChannelSid && (
                       <Route
@@ -153,7 +164,7 @@ export class SubscriptionDetails extends Component {
                       />
                     )}
                   </React.Fragment>
-                )}
+                )} */}
               </div>
             </div>
           </div>

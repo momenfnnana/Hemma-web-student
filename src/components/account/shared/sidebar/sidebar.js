@@ -214,6 +214,26 @@ export class SidebarComponent extends Component {
                 </NavLink>
               </li> */}
               {channelID && (
+                <li>
+                  <NavLink
+                    to={`/subscriptions/${this.props.id}/chat`}
+                    activeClassName="active"
+                    className="dark-text small"
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/course-chat.png"
+                      }
+                      height="20"
+                      width="20"
+                      className="mr-2 contain-img"
+                    />
+                    الدردشة
+                  </NavLink>
+                </li>
+              )}
+              {/* {channelID && (
                 <React.Fragment>
                   {channelID.startsWith("http") ? null : (
                     <li>
@@ -236,7 +256,7 @@ export class SidebarComponent extends Component {
                     </li>
                   )}
                 </React.Fragment>
-              )}
+              )} */}
               <li>
                 <NavLink
                   to={`/subscriptions/${this.props.id}/transactions/list`}
