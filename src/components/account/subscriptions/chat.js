@@ -264,7 +264,7 @@ export class UsersChatComponent extends Component {
     client
       .getChannelBySid(this.props.chatChannelSid)
       .then(channel => {
-        this.setState({ loading: false });
+        this.setState({ loading: false, activeChannel: "general" });
 
         client.on("channelJoined", function(channel) {
           console.log("Joined channel " + channel.friendlyName);
