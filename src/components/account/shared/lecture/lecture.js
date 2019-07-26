@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { FaGraduationCap } from "react-icons/fa";
 import "./styles.sass";
 import { Link } from "react-router-dom";
+import Countdown from "react-countdown-now";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 var moment = require("moment-hijri");
@@ -60,31 +61,42 @@ export class Lecture extends Component {
                         this.state.details.instructor.name}
                     </p>
                   </li>
-                  <li className="list-inline-item light-font-text small mt-0 ml-2">
-                    {/* <div className="dark-bg pl-4 pr-4 pt-1 pb-1 rounded">
-                          <p className="text-white en-text mb-0">10:54</p>
-                        </div> */}
-                  </li>
                 </ul>
               </div>
             </div>
             {this.state.details && this.state.details.status == "Live" ? (
-              <div className="w-25 d-flex justify-content-end">
-                <Link
-                  to={`/subscriptions/${
-                    this.props.id
-                  }/live-stream/${lectureID}`}
-                  className="btn silver-outline-btn unset-height w-50"
-                >
-                  انضم
-                </Link>
-              </div>
+              <React.Fragment>
+                {liveID && (
+                  <div className="w-25 d-flex justify-content-end">
+                    {liveID.startsWith("http") ? (
+                      <button
+                        onClick={() => window.open(liveID, "_blank")}
+                        className="btn silver-outline-btn unset-height w-50"
+                      >
+                        انضم
+                      </button>
+                    ) : (
+                      <Link
+                        to={`/subscriptions/${
+                          this.props.id
+                        }/live-stream/${lectureID}`}
+                        className="btn silver-outline-btn unset-height w-50"
+                      >
+                        انضم
+                      </Link>
+                    )}
+                  </div>
+                )}
+              </React.Fragment>
             ) : (
               <React.Fragment>
                 {this.state.details.scheduledAt && (
                   <div className="w-25 d-flex justify-content-end">
                     <h6 className="text-white small">
-                      وقت المحاضرة: <span className="en-text">{hijriDate}</span>
+                      وقت المحاضرة:{" "}
+                      <span className="en-text">
+                        <Countdown date={Date.now() + scheduledAt.getTime()} />
+                      </span>
                     </h6>
                   </div>
                 )}

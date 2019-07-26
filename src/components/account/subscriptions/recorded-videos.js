@@ -68,6 +68,7 @@ export class RecordedVideosComponent extends Component {
             <h6 className="smaller light-purple-text">{section.nameAr}</h6>
             {this.renderChapters(section.chapters)}
           </div>
+          <hr className="light-hr" />
         </React.Fragment>
       ));
     }
@@ -96,13 +97,18 @@ export class RecordedVideosComponent extends Component {
     const courseId = this.props.match.params.id;
     return (
       <div className="custom-control custom-radio mt-3">
-        <Link to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}>
-          <div className="d-flex flex-column">
-            <label className="custom-control-label light-purple-text small">
-              {lecture.nameAr}
-            </label>
-          </div>
-        </Link>
+        <div
+          className="d-flex flex-column clickable"
+          onClick={() =>
+            (window.location = `/subscriptions/${courseId}/recorded-videos/${
+              lecture.id
+            }`)
+          }
+        >
+          <label className="custom-control-label light-purple-text small">
+            {lecture.nameAr}
+          </label>
+        </div>
       </div>
     );
   }
@@ -149,31 +155,8 @@ export class RecordedVideosComponent extends Component {
           <div className="col-12 mb-4">
             <div className="dark-bg rounded shadow-sm">
               <div className="row no-gutters">
-                <div className="col-3 pt-3 pb-4">
+                <div className="col-3 pt-3 pb-4 col-height">
                   {this.renderSections()}
-                  {/* <div className="chapter pl-3">
-                    <h6 className="smaller light-purple-text">الفصل الأول</h6>
-                    <h6 className="text-white">النسبة والتناسب</h6>
-
-                    {videos.map((choice, index) => (
-                      <div className="custom-control custom-radio mt-3">
-                        <a
-                          href={`#!/video/${index}`}
-                          className={`collection-item ${
-                            video === choice ? "active" : ""
-                          }`}
-                          onClick={() => this.selectVideo(index)}
-                        >
-                          <div className="d-flex flex-column">
-                            <label className="custom-control-label light-purple-text small">
-                              {choice.name}
-                            </label>
-                          </div>
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                  <hr className="light-hr" /> */}
                 </div>
                 <div className="col-9">
                   {this.state.details && this.state.details.recordingUrl && (
@@ -188,7 +171,7 @@ export class RecordedVideosComponent extends Component {
                   )}
                 </div>
 
-                <div className="col-12 silver-bg p-4">
+                {/* <div className="col-12 silver-bg p-4">
                   <h6 className="dark-text mb-3">لديك تعليق؟</h6>
                   <Field
                     component={textareaField}
@@ -288,7 +271,7 @@ export class RecordedVideosComponent extends Component {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

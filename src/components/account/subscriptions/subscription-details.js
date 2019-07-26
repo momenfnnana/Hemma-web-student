@@ -57,10 +57,12 @@ export class SubscriptionDetails extends Component {
           <div className="container mt-5 pb-5">
             <div className="row">
               <div className="col-md-3 col-12">
-                <Sidebar
-                  id={courseId}
-                  chatChannelSid={this.state.details.chatChannelSid}
-                />
+                {this.state.details.chatChannelSid && (
+                  <Sidebar
+                    id={courseId}
+                    chatChannelSid={this.state.details.chatChannelSid}
+                  />
+                )}
                 <Instructors id={courseId} />
               </div>
               <div className="col-md-9 col-12">
