@@ -8,6 +8,18 @@ import { apiBaseUrl } from "../../../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
+const renderer = ({ days, hours, minutes, seconds, completed }) => {
+  if (completed) {
+    return null;
+  } else {
+    return (
+      <span>
+        {days}:{hours}:{minutes}:{seconds}
+      </span>
+    );
+  }
+};
+
 export class Lecture extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +41,7 @@ export class Lecture extends Component {
         console.log(error);
       });
   }
+
   render() {
     const lectureID = this.state.details && this.state.details.id;
     const channelID = this.props.chatChannelSid;
@@ -95,7 +108,11 @@ export class Lecture extends Component {
                     <h6 className="text-white small">
                       وقت المحاضرة:{" "}
                       <span className="en-text">
-                        <Countdown date={Date.now() + scheduledAt.getTime()} />
+                        {hijriDate}
+                        {/* <Countdown
+                          date={Date.now() + scheduledAt.getTime()}
+                          renderer={renderer}
+                        /> */}
                       </span>
                     </h6>
                   </div>

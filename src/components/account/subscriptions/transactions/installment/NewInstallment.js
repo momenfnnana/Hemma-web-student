@@ -155,7 +155,7 @@ export class NewInstallmentComponent extends Component {
                       <Field
                         type="number"
                         className="form-control en-text w-100 mt-0 mb-0 text-center"
-                        placeholder="200"
+                        placeholder="0"
                         name="installment"
                         component={numberField}
                         validate={required}

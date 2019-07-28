@@ -50,7 +50,7 @@ export class RecordedVideosComponent extends Component {
 
     const courseId = this.props.match.params.id;
     axios
-      .get(`${apiBaseUrl}/courses/${courseId}`)
+      .get(`${apiBaseUrl}/content/${courseId}/recorded_lectures`, { headers })
       .then(response => {
         this.setState({ courseDetails: response.data.data });
       })
