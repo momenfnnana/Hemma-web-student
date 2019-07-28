@@ -159,7 +159,7 @@ export class SidebarComponent extends Component {
                   الملزمة
                 </NavLink>
               </li>
-              {/* <li>
+              <li>
                 <NavLink
                   className="dark-text small"
                   to={`/subscriptions/${this.props.id}/discussions`}
@@ -176,7 +176,7 @@ export class SidebarComponent extends Component {
                   />
                   المناقشات
                 </NavLink>
-              </li> */}
+              </li>
               {/* <li>
                 <NavLink
                   className="dark-text small"

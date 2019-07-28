@@ -116,19 +116,19 @@ export class SubscriptionDetails extends Component {
                       path="/subscriptions/:id/booklet"
                       component={Booklet}
                     />
-                    {/*<Route
-                  path="/subscriptions/:id/discussions"
-                  exact
-                  component={DiscussionsList}
-                />
-                {this.state.details.chatChannelSid && (
-                  <Route
-                    path="/subscriptions/:id/discussions/details"
-                    component={DiscussionDetails}
-                    chatChannelSid={this.state.details.chatChannelSid}
-                  />
-                )}
-                <Route
+                    <Route
+                      path="/subscriptions/:id/discussions"
+                      exact
+                      component={DiscussionsList}
+                    />
+                    {this.state.details.chatChannelSid && (
+                      <Route
+                        path="/subscriptions/:id/discussions/:discussionId"
+                        component={DiscussionDetails}
+                        chatChannelSid={this.state.details.chatChannelSid}
+                      />
+                    )}
+                    {/* <Route
                   path="/subscriptions/:id/challenges"
                   exact
                   component={ChallengesList}
@@ -172,21 +172,6 @@ export class SubscriptionDetails extends Component {
                         )}
                       />
                     )}
-                    {/* {channelID && channelID.startsWith("http") ? null : (
-                  <React.Fragment>
-                    {this.state.details.chatChannelSid && (
-                      <Route
-                        path="/subscriptions/:id/chat"
-                        render={props => (
-                          <UsersChatComponent
-                            chatChannelSid={this.state.details.chatChannelSid}
-                            {...props}
-                          />
-                        )}
-                      />
-                    )}
-                  </React.Fragment>
-                )} */}
                   </div>
                 </div>
               </div>

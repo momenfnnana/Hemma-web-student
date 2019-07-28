@@ -42,7 +42,7 @@ export class DiscussionDetailsComponent extends Component {
       messages: [],
       privateChannel: "",
       showEmojis: false,
-      instructors: [],
+      discussionDetails: [],
       users: {},
       activeChannel: "general",
       blobObject: null,
@@ -103,10 +103,15 @@ export class DiscussionDetailsComponent extends Component {
     data.append("file", file);
     this.props.twilio.chatClient.then(client => {
       if (this.state.activeChannel === "general") {
-        client.getChannelBySid(this.props.chatChannelSid).then(channel => {
-          channel.sendMessage(data);
-          channel.on("messageAdded", this.messageAdded);
-        });
+        client
+          .getChannelBySid(
+            this.state.discussionDetails &&
+              this.state.discussionDetails.chatChannelSid
+          )
+          .then(channel => {
+            channel.sendMessage(data);
+            channel.on("messageAdded", this.messageAdded);
+          });
       } else {
         client
           .getChannelByUniqueName(this.state.privateChannel)
@@ -139,10 +144,15 @@ export class DiscussionDetailsComponent extends Component {
     data.append("file", blobObject.blob);
     this.props.twilio.chatClient.then(client => {
       if (this.state.activeChannel === "general") {
-        client.getChannelBySid(this.props.chatChannelSid).then(channel => {
-          channel.sendMessage(data);
-          channel.on("messageAdded", this.messageAdded);
-        });
+        client
+          .getChannelBySid(
+            this.state.discussionDetails &&
+              this.state.discussionDetails.chatChannelSid
+          )
+          .then(channel => {
+            channel.sendMessage(data);
+            channel.on("messageAdded", this.messageAdded);
+          });
       } else {
         client
           .getChannelByUniqueName(this.state.privateChannel)
@@ -215,21 +225,23 @@ export class DiscussionDetailsComponent extends Component {
 
     if (this.props.authenticated) {
       this.props.getUser();
-      this.props.getChatToken().then(() => this.initiateGeneralChat());
-    }
-    const courseId = this.props.match.params.id;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .get(`${apiBaseUrl}/content/${courseId}/instructors`, { headers })
-      .then(response => {
-        this.setState({ instructors: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
+      this.props.getChatToken().then(() => {
+        const discussionId = this.props.match.params.discussionId;
+        let token = localStorage.getItem("token");
+        let headers = {
+          Authorization: `Bearer ${token}`
+        };
+        axios
+          .get(`${apiBaseUrl}/discussions/${discussionId}`, { headers })
+          .then(response => {
+            this.setState({ discussionDetails: response.data.data });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+        this.initiateGeneralChat();
       });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -242,7 +254,10 @@ export class DiscussionDetailsComponent extends Component {
     this.setState({ loading: true });
     const client = await this.props.twilio.chatClient;
     client
-      .getChannelBySid(this.props.chatChannelSid)
+      .getChannelBySid(
+        this.state.discussionDetails &&
+          this.state.discussionDetails.chatChannelSid
+      )
       .then(channel => {
         this.setState({ loading: false });
 
@@ -326,10 +341,15 @@ export class DiscussionDetailsComponent extends Component {
     this.setState({ newMessage: "" });
     this.props.twilio.chatClient.then(client => {
       if (this.state.activeChannel === "general") {
-        client.getChannelBySid(this.props.chatChannelSid).then(channel => {
-          channel.sendMessage(message);
-          channel.on("messageAdded", this.messageAdded);
-        });
+        client
+          .getChannelBySid(
+            this.state.discussionDetails &&
+              this.state.discussionDetails.chatChannelSid
+          )
+          .then(channel => {
+            channel.sendMessage(message);
+            channel.on("messageAdded", this.messageAdded);
+          });
       } else {
         client
           .getChannelByUniqueName(this.state.privateChannel)
@@ -350,10 +370,15 @@ export class DiscussionDetailsComponent extends Component {
       this.setState({ newMessage: "" });
       this.props.twilio.chatClient.then(client => {
         if (this.state.activeChannel === "general") {
-          client.getChannelBySid(this.props.chatChannelSid).then(channel => {
-            channel.sendMessage(message);
-            channel.on("messageAdded", this.messageAdded);
-          });
+          client
+            .getChannelBySid(
+              this.state.discussionDetails &&
+                this.state.discussionDetails.chatChannelSid
+            )
+            .then(channel => {
+              channel.sendMessage(message);
+              channel.on("messageAdded", this.messageAdded);
+            });
         } else {
           client
             .getChannelByUniqueName(this.state.privateChannel)
@@ -499,7 +524,14 @@ export class DiscussionDetailsComponent extends Component {
 
   render() {
     const { isRecording, isPaused } = this.state;
-
+    const startsAt = new Date(
+      this.state.discussionDetails && this.state.discussionDetails.startsAt
+    );
+    const startDate = startsAt.toLocaleString();
+    const endsAt = new Date(
+      this.state.discussionDetails && this.state.discussionDetails.endsAt
+    );
+    const endDate = endsAt.toLocaleString();
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -509,19 +541,31 @@ export class DiscussionDetailsComponent extends Component {
                 <div className="media d-flex align-items-center mb-3">
                   <div className="media-body">
                     <h6 className="dark-text">
-                      سؤال سريع عن إحدى زوايا المثلث
+                      {this.state.discussionDetails &&
+                        this.state.discussionDetails.title}
                     </h6>
                     <div className="d-flex align-items-center">
                       <h6 className="dark-silver-text smaller mb-0 mr-3">
-                        من: <span className="en-text">15 - 3 -2019</span>
+                        من:{" "}
+                        <span className="en-text" dir="ltr">
+                          {startDate}
+                        </span>
                       </h6>
                       <h6 className="dark-silver-text smaller mb-0">
-                        إلى: <span className="en-text">15 - 3 -2019</span>
+                        إلى:{" "}
+                        <span className="en-text" dir="ltr">
+                          {endDate}
+                        </span>
                       </h6>
                     </div>
                   </div>
                   <div className="d-flex flex-column align-items-end justify-content-end">
-                    <span className="badge red-bg text-white">مغلق</span>
+                    {this.state.discussionDetails &&
+                    this.state.discussionDetails.active == true ? (
+                      <span className="badge light-bg text-white">مفتوح</span>
+                    ) : (
+                      <span className="badge red-bg text-white">مغلق</span>
+                    )}
                   </div>
                 </div>
               </div>
