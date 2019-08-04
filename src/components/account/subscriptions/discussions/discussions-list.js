@@ -38,34 +38,35 @@ export class DiscussionsList extends Component {
         const endsAt = new Date(discussion.endsAt);
         const endDate = endsAt.toLocaleString();
         return (
-          <Link to={`/subscriptions/${courseId}/discussions/${discussion.id}`}>
-            <div className="discussion-item d-flex align-items-center">
-              <div className="media w-90 d-flex align-items-center justify-content-between">
-                <div className="media-body">
-                  <h6 className="dark-text">{discussion.title}</h6>
-                  <div className="d-flex align-items-center">
-                    <h6 className="dark-silver-text smaller mb-0 mr-3">
-                      من:{" "}
-                      <span className="en-text" dir="ltr">
-                        {startDate}
-                      </span>
-                    </h6>
-                    <h6 className="dark-silver-text smaller mb-0">
-                      إلى:{" "}
-                      <span className="en-text" dir="ltr">
-                        {endDate}
-                      </span>
-                    </h6>
-                  </div>
+          <Link
+            to={`/subscriptions/${courseId}/discussions/${discussion.id}`}
+            className="discussion-item d-flex align-items-center"
+          >
+            <div className="media w-90 d-flex align-items-center justify-content-between">
+              <div className="media-body">
+                <h6 className="dark-text">{discussion.title}</h6>
+                <div className="d-flex align-items-center">
+                  <h6 className="dark-silver-text smaller mb-0 mr-3">
+                    من:{" "}
+                    <span className="en-text" dir="ltr">
+                      {startDate}
+                    </span>
+                  </h6>
+                  <h6 className="dark-silver-text smaller mb-0">
+                    إلى:{" "}
+                    <span className="en-text" dir="ltr">
+                      {endDate}
+                    </span>
+                  </h6>
                 </div>
               </div>
-              <div className="w-10 d-flex flex-column align-items-center justify-content-center">
-                {discussion.active == true ? (
-                  <span className="badge light-bg text-white">مفتوح</span>
-                ) : (
-                  <span className="badge red-bg text-white">مغلق</span>
-                )}
-              </div>
+            </div>
+            <div className="w-10 d-flex flex-column align-items-center justify-content-center">
+              {discussion.active == true ? (
+                <span className="badge light-bg text-white">مفتوح</span>
+              ) : (
+                <span className="badge red-bg text-white">مغلق</span>
+              )}
             </div>
           </Link>
         );
@@ -86,42 +87,31 @@ export class DiscussionsList extends Component {
 
         <div className="row no-gutters">
           <div className="col-12">
-            <div className="box-layout shadow-sm">
-              {this.renderDiscussions()}
-            </div>
+            {this.state.discussions == undefined ||
+            this.state.discussions.length == 0 ? (
+              <React.Fragment>
+                <div
+                  className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center"
+                  style={{ height: 300 }}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/empty-discussions.png"
+                    }
+                    height="90"
+                    className="contain-img mb-3"
+                  />
+                  <p className="dark-text mt-0 mb-0">لا يوجد مناقشات متاحة </p>
+                </div>
+              </React.Fragment>
+            ) : (
+              <div className="box-layout shadow-sm">
+                {this.renderDiscussions()}
+              </div>
+            )}
           </div>
         </div>
-        {/* 
-        <div className="row no-gutters mt-3">
-          <div className="col-12 d-flex justify-content-end">
-            <Pagination
-              className="en-text small"
-              aria-label="Page navigation example"
-            >
-              <PaginationItem>
-                <PaginationLink previous href="#" />
-              </PaginationItem>
-              <PaginationItem active>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">2</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">4</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">5</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink next href="#" />
-              </PaginationItem>
-            </Pagination>
-          </div>
-        </div> */}
       </React.Fragment>
     );
   }

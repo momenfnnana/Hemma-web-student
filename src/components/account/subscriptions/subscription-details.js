@@ -51,7 +51,6 @@ export class SubscriptionDetails extends Component {
       .get(`${apiBaseUrl}/content/${courseId}`, { headers })
       .then(response => {
         this.setState({ details: response.data.data });
-        console.log(this.state.details);
       })
       .catch(error => {
         console.log(error);
@@ -64,7 +63,46 @@ export class SubscriptionDetails extends Component {
 
     return (
       <React.Fragment>
-        {remainingAmount == 0 ? (
+        {remainingAmount > 0 ? (
+          <React.Fragment>
+            <div className="container mt-5 pb-5">
+              <div className="row">
+                <div className="col-12">
+                  <div
+                    className="white-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: 350 }}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/warning.png"
+                      }
+                      className="mb-4"
+                      height="65"
+                    />
+                    <p className="dark-silver-text mb-0">
+                      يجب عليك سداد القسط المتبقي
+                    </p>
+                    <p className="dark-silver-text">
+                      حتى تتمكن من تصفح تفاصيل الدورة
+                    </p>
+                    <button
+                      type="button"
+                      className="btn light-btn"
+                      onClick={this.openInstallmentModal}
+                    >
+                      سداد قسط
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <NewInstallment
+              isInstallmentOpen={this.state.isInstallmentOpen}
+              closeInstallmentModal={this.closeInstallmentModal}
+              courseId={courseId}
+            />
+          </React.Fragment>
+        ) : (
           <React.Fragment>
             {this.props.location.pathname.indexOf("live-stream") < 0 && (
               <div className="container mt-5 pb-5">
@@ -187,45 +225,6 @@ export class SubscriptionDetails extends Component {
                 )}
               />
             )}
-          </React.Fragment>
-        ) : (
-          <React.Fragment>
-            <div className="container mt-5 pb-5">
-              <div className="row">
-                <div className="col-12">
-                  <div
-                    className="white-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: 350 }}
-                  >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/warning.png"
-                      }
-                      className="mb-4"
-                      height="65"
-                    />
-                    <p className="dark-silver-text mb-0">
-                      يجب عليك سداد القسط المتبقي
-                    </p>
-                    <p className="dark-silver-text">
-                      حتى تتمكن من تصفح تفاصيل الدورة
-                    </p>
-                    <button
-                      type="button"
-                      className="btn light-btn"
-                      onClick={this.openInstallmentModal}
-                    >
-                      سداد قسط
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <NewInstallment
-              isInstallmentOpen={this.state.isInstallmentOpen}
-              closeInstallmentModal={this.closeInstallmentModal}
-              courseId={courseId}
-            />
           </React.Fragment>
         )}
       </React.Fragment>

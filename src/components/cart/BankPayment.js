@@ -172,7 +172,7 @@ class BankPaymentComponent extends Component {
               validate={required}
               name="originBankName"
             >
-              <option selected disabled>
+              <option value="" selected disabled hidden>
                 البنك المحول منه
               </option>
               <option value="الراجحي">من بنك الراجحي</option>
@@ -201,7 +201,7 @@ class BankPaymentComponent extends Component {
               validate={required}
               name="destinationBankName"
             >
-              <option selected disabled>
+              <option value="" selected disabled hidden>
                 البنك المحول إليه
               </option>
               <option value="الراجحي">إلى بنك الراجحي</option>

@@ -101,7 +101,7 @@ class HeaderComponent extends Component {
             }
           >
             <div className="container">
-              <Link to="/" className="navbar-brand">
+              <Link to="/" className="navbar-brand mr-0">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="70"
@@ -111,6 +111,23 @@ class HeaderComponent extends Component {
                   سلسلة بالبيد التعليمية
                 </h5>
               </Link>
+              <div className="d-block d-sm-none">
+                {!this.props.authenticated ? (
+                  <Link
+                    className="btn light-outline-btn pl-4 pr-4 unset-height unset-line-height"
+                    to="/auth/register"
+                  >
+                    إنشاء حساب
+                  </Link>
+                ) : (
+                  <Link
+                    className="btn light-outline-btn pl-4 pr-4 unset-height"
+                    to="/subscriptions"
+                  >
+                    دوراتي
+                  </Link>
+                )}
+              </div>
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
@@ -136,7 +153,7 @@ class HeaderComponent extends Component {
                       </NavItem>
                       <NavItem
                         className={
-                          "nav-item rounded-nav-item pl-2 pr-2 light-border"
+                          "nav-item rounded-nav-item pl-2 pr-2 light-border d-none d-sm-block"
                         }
                       >
                         <NavLink
@@ -164,7 +181,6 @@ class HeaderComponent extends Component {
                           سلة التسوق
                         </NavLink>
                       </NavItem>
-
                       <NavItem>
                         <NavLink
                           className={"nav-link mid-text"}
@@ -174,8 +190,7 @@ class HeaderComponent extends Component {
                           الدورات الحالية
                         </NavLink>
                       </NavItem>
-
-                      <NavItem>
+                      <NavItem className="d-none d-sm-block">
                         <NavLink
                           className={"nav-link mid-text"}
                           activeClassName="active"
@@ -183,7 +198,7 @@ class HeaderComponent extends Component {
                         >
                           دوراتي
                         </NavLink>
-                      </NavItem>
+                      </NavItem>{" "}
                       <UncontrolledDropdown nav inNavbar>
                         <DropdownToggle className={"nav-link mid-text"} nav>
                           <img

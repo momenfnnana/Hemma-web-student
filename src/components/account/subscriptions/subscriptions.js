@@ -73,31 +73,61 @@ export class SubscriptionsComponent extends Component {
             />
             <div className="media-body mt-2">
               <h6 className="mt-0 dark-text">{subscription.course.nameAr}</h6>
-              <span className="badge blue-status light-font-text">
-                {subscription.subscriptionStatus == "Cancelled"
-                  ? "ملغية"
-                  : subscription.subscriptionStatus == "Expired"
-                  ? "انتهى الاشتراك"
-                  : subscription.subscriptionStatus == "Active"
-                  ? "مؤكدة"
-                  : "مؤكدة"}
-              </span>
+              {subscription.subscriptionStatus == "Cancelled" ? (
+                <span className="badge blue-status light-font-text">ملغية</span>
+              ) : subscription.subscriptionStatus == "Expired" ? (
+                <span className="badge blue-status light-font-text">
+                  انتهى الاشتراك
+                </span>
+              ) : null}
             </div>
           </div>
           <div className="seperator" />
           <div className="">
             <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-            <p className="dark-silver-text small mb-0">
-              {subscription.cumulativePaymentStatus == "Unpaid"
-                ? "غير مسدد"
-                : subscription.cumulativePaymentStatus == "PartiallyPaid"
-                ? "مسدد جزئياً"
-                : subscription.cumulativePaymentStatus == "FullyPaid"
-                ? "مسدد"
-                : subscription.cumulativePaymentStatus == "Pending"
-                ? "قيد المراجعة"
-                : null}
-            </p>
+
+            {subscription.cumulativePaymentStatus == "Unpaid" ? (
+              <p className="dark-silver-text small mb-0">غير مسدد</p>
+            ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
+              <p className="dark-silver-text small mb-0">مسدد جزئياً</p>
+            ) : subscription.cumulativePaymentStatus == "FullyPaid" ? (
+              <p className="dark-silver-text small mb-0">مسدد</p>
+            ) : subscription.cumulativePaymentStatus == "Pending" ? (
+              <React.Fragment>
+                <p className="dark-silver-text small mb-0" id="status-tooltip">
+                  قيد المراجعة
+                </p>
+                <Tooltip
+                  placement="right"
+                  isOpen={this.state.tooltipOpen}
+                  target="status-tooltip"
+                  toggle={this.toggle}
+                  placement="bottom"
+                  style={{
+                    backgroundColor: "#f2fdfe",
+                    color: "#4b3a85"
+                  }}
+                >
+                  <p className="light-font-text small mb-1 mt-2">
+                    تم تلقي الحوالة وسوف يتم الموافقة عليها خلال 48 ساعة
+                  </p>
+                  <p
+                    className="small en-text mb-2 d-inline-flex align-items-center"
+                    dir="ltr"
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/whatsapp.png"
+                      }
+                      height="20"
+                      width="20"
+                      className="ml-1"
+                    />
+                    +9660539412412{" "}
+                  </p>
+                </Tooltip>
+              </React.Fragment>
+            ) : null}
           </div>
         </div>
       </React.Fragment>

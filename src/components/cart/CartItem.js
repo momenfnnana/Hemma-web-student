@@ -244,42 +244,46 @@ export class CartItem extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <form className="mb-2 d-flex flex-row align-items-center">
-                  <div className="flex-column">
-                    <label className="dark-text smaller mb-0">قيمة القسط</label>
-                    {this.state.editingInstallment && (
-                      <p className="red-text smaller light-font-text mb-0">
-                        {item.canBePaidInInstallments == true &&
-                        this.state.installmentValdation == false &&
-                        this.state.priceValdation == false
-                          ? " حدد قيمة القسط"
-                          : null}
-                      </p>
-                    )}
-                    {this.state.editingInstallment && (
-                      <p className="red-text smaller light-font-text mb-0">
-                        {this.state.installmentValdation == true
-                          ? "القيمة أقل من الحد المسموح به"
-                          : null}
-                      </p>
-                    )}{" "}
-                    {this.state.editingInstallment && (
-                      <p className="red-text smaller light-font-text mb-0">
-                        {this.state.priceValdation == true
-                          ? "القيمة أعلى من الحد المسموح به"
-                          : null}
-                      </p>
-                    )}
-                  </div>
-                  <input
-                    disabled={!this.state.editingInstallment}
-                    type="number"
-                    className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
-                    value={this.getInstallmentInputValue()}
-                    name="itemPrice"
-                    onChange={this.onUpdateInstallmentInput}
-                  />
-                </form>
+                {item.canBePaidInInstallments && (
+                  <form className="mb-2 d-flex flex-row align-items-center">
+                    <div className="flex-column">
+                      <label className="dark-text smaller mb-0">
+                        قيمة القسط
+                      </label>
+                      {this.state.editingInstallment && (
+                        <p className="red-text smaller light-font-text mb-0">
+                          {item.canBePaidInInstallments == true &&
+                          this.state.installmentValdation == false &&
+                          this.state.priceValdation == false
+                            ? " حدد قيمة القسط"
+                            : null}
+                        </p>
+                      )}
+                      {this.state.editingInstallment && (
+                        <p className="red-text smaller light-font-text mb-0">
+                          {this.state.installmentValdation == true
+                            ? "القيمة أقل من الحد المسموح به"
+                            : null}
+                        </p>
+                      )}{" "}
+                      {this.state.editingInstallment && (
+                        <p className="red-text smaller light-font-text mb-0">
+                          {this.state.priceValdation == true
+                            ? "القيمة أعلى من الحد المسموح به"
+                            : null}
+                        </p>
+                      )}
+                    </div>
+                    <input
+                      disabled={!this.state.editingInstallment}
+                      type="number"
+                      className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
+                      value={this.getInstallmentInputValue()}
+                      name="itemPrice"
+                      onChange={this.onUpdateInstallmentInput}
+                    />
+                  </form>
+                )}
                 <div className="d-flex flex-row justify-content-between align-items-center">
                   <label className="dark-text smaller mb-0">سعر الاشتراك</label>
                   <div className="d-flex flex-column mx-auto">
