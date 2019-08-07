@@ -32,7 +32,7 @@ export class Card extends Component {
     ));
     return (
       <React.Fragment>
-        <Link to={`/course/details/${course.id}`} key={course.id}>
+        <Link to={`/course/details/${course.slug}`} key={course.id}>
           <div className="card course-card shadow-sm m-2 border-0" dir="rtl">
             <header className="card-thumb">
               <img key={course.id} src={course.bannerUrl} alt="Course image" />

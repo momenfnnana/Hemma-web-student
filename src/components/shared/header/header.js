@@ -131,6 +131,24 @@ class HeaderComponent extends Component {
               <NavbarToggler onClick={this.toggle} />
               <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
+                  <NavItem>
+                    <NavLink
+                      className={"nav-link mid-text"}
+                      activeClassName="active"
+                      to="/banks"
+                    >
+                      حسابات البنوك
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink
+                      className={"nav-link mid-text"}
+                      activeClassName="active"
+                      to="/faq"
+                    >
+                      الأسئلة المتكررة
+                    </NavLink>
+                  </NavItem>
                   {!this.props.authenticated ? (
                     <React.Fragment>
                       <NavItem>

@@ -59,6 +59,15 @@ export class SubscriptionsComponent extends Component {
                     button: "متابعة"
                   }
                 )
+              : subscription.subscriptionStatus == "Expired"
+              ? swal(
+                  "عفواً",
+                  "تفاصيل الدورة غير متاحة بسبب انتهاء الاشتراك",
+                  "error",
+                  {
+                    button: "متابعة"
+                  }
+                )
               : this.props.history.push(
                   `/subscriptions/${subscription.course.id}`
                 );
@@ -110,20 +119,6 @@ export class SubscriptionsComponent extends Component {
                 >
                   <p className="light-font-text small mb-1 mt-2">
                     تم تلقي الحوالة وسوف يتم الموافقة عليها خلال 48 ساعة
-                  </p>
-                  <p
-                    className="small en-text mb-2 d-inline-flex align-items-center"
-                    dir="ltr"
-                  >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/whatsapp.png"
-                      }
-                      height="20"
-                      width="20"
-                      className="ml-1"
-                    />
-                    +9660539412412{" "}
                   </p>
                 </Tooltip>
               </React.Fragment>

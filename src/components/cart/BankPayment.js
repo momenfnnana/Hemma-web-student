@@ -92,6 +92,8 @@ class BankPaymentComponent extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
+    const cart = this.props.cart;
+    const items = cart && cart.items;
     return (
       <form onSubmit={handleSubmit(this.myFormHandler)}>
         <div className="row mt-4">
@@ -288,20 +290,31 @@ class BankPaymentComponent extends Component {
             />
           </div>
         </div>
-        <div className="row mb-5">
-          <div className="col-12 text-center">
-            <button
-              className="btn light-outline-btn mt-5 w-25"
-              disabled={this.state.disabled}
-            >
-              {this.state.loading == true ? (
-                <Loader type="ball-clip-rotate" />
+        {items && (
+          <div className="row mb-5">
+            <div className="col-12 text-center">
+              {items == undefined || items == 0 ? (
+                <button
+                  className="btn light-outline-btn mt-5 w-25"
+                  disabled={true}
+                >
+                  إتمام الدفع
+                </button>
               ) : (
-                "إتمام الدفع"
+                <button
+                  className="btn light-outline-btn mt-5 w-25"
+                  disabled={this.state.disabled}
+                >
+                  {this.state.loading == true ? (
+                    <Loader type="ball-clip-rotate" />
+                  ) : (
+                    "إتمام الدفع"
+                  )}
+                </button>
               )}
-            </button>
+            </div>
           </div>
-        </div>
+        )}
       </form>
     );
   }

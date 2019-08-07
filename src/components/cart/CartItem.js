@@ -139,12 +139,14 @@ export class CartItem extends Component {
     }
     return (
       <Fragment>
-        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item">
-          <div className="media w-75 position-relative">
-            <MdClose
-              className="close-btn clickable red-text"
-              onClick={this.onRemoveItem}
-            />
+        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item position-relative">
+          <span
+            className="badge red-bg text-white smaller light-font-text clickable close-btn"
+            onClick={this.onRemoveItem}
+          >
+            إزالة
+          </span>
+          <div className="media w-75">
             {item.itemType == "Booklet" ? (
               <div
                 className="light-silver-bg rounded border d-flex align-items-center justify-content-center mr-3"

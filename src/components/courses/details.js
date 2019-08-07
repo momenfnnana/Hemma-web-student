@@ -39,7 +39,7 @@ export class CourseDetails extends Component {
       match: { params }
     } = this.props;
     axios
-      .get(`${apiBaseUrl}/courses/${params.id}`)
+      .get(`${apiBaseUrl}/courses/${params.slug}`)
       .then(response => {
         this.setState({ details: response.data.data });
       })
@@ -188,8 +188,6 @@ export class CourseDetails extends Component {
   }
 
   renderLectures(lectures) {
-    const courseId = this.props.match.params.id;
-
     if (lectures) {
       return lectures.map(lecture => {
         return (

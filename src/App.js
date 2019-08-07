@@ -36,6 +36,8 @@ import requireAuth from "./components/shared/authentication/require-auth";
 import Intercom from "./Intercom";
 import TwilioComponent from "./Twilio";
 import { Account } from "./components/account/settings/account";
+import BankAccounts from "./components/banks/banks";
+import FAQ from "./components/faq/faq";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -54,7 +56,8 @@ class AppBackground extends Component {
       path.startsWith("/categories") ||
       path.startsWith("/course") ||
       path.startsWith("/account") ||
-      path.startsWith("/cart")
+      path.startsWith("/cart") ||
+      path.startsWith("/banks")
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
@@ -133,11 +136,11 @@ export default class AppComponent extends Component {
                     <Route path="/reset-password" component={resetPassword} />
                     <Route path="/categories" exact component={Categories} />
                     <Route
-                      path="/categories/details/:id"
+                      path="/categories/details/:slug"
                       component={CategoryDetails}
                     />
                     <Route
-                      path="/course/details/:id"
+                      path="/course/details/:slug"
                       component={CourseDetails}
                     />
                     <Route path="/cart" exact component={requireAuth(Cart)} />
@@ -161,6 +164,8 @@ export default class AppComponent extends Component {
                       path="/subscriptions/:id"
                       component={requireAuth(SubscriptionDetails)}
                     />
+                    <Route path="/banks" component={BankAccounts} />
+                    <Route path="/faq" component={FAQ} />
                     {/* <Route
                       path="/live-stream/:id"
                       component={requireAuth(SubscriptionDetails)}

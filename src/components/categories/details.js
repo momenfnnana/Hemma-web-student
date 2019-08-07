@@ -38,7 +38,7 @@ export class CategoryDetails extends Component {
       match: { params }
     } = this.props;
     axios
-      .get(`${apiBaseUrl}/categories/${params.id}`)
+      .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
         this.setState({ details: response.data.data });
       })
@@ -73,7 +73,7 @@ export class CategoryDetails extends Component {
     //   });
 
     axios
-      .get(`${apiBaseUrl}/categories/${params.id}/publications`)
+      .get(`${apiBaseUrl}/categories/${params.slug}/publications`)
       .then(response => {
         this.setState({ publications: response.data.data.data });
       })
@@ -83,7 +83,7 @@ export class CategoryDetails extends Component {
 
     axios
       .get(
-        `${apiBaseUrl}/categories/` + params.id + "/courses?featuredOnly=true"
+        `${apiBaseUrl}/categories/` + params.slug + "/courses?featuredOnly=true"
       )
       .then(response => {
         this.setState({ courses: response.data.data.data });
