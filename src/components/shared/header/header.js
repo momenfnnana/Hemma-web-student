@@ -140,7 +140,7 @@ class HeaderComponent extends Component {
                       حسابات البنوك
                     </NavLink>
                   </NavItem>
-                  <NavItem>
+                  {/* <NavItem>
                     <NavLink
                       className={"nav-link mid-text"}
                       activeClassName="active"
@@ -148,7 +148,7 @@ class HeaderComponent extends Component {
                     >
                       الأسئلة المتكررة
                     </NavLink>
-                  </NavItem>
+                  </NavItem> */}
                   {!this.props.authenticated ? (
                     <React.Fragment>
                       <NavItem>

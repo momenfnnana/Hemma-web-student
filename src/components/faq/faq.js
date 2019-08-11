@@ -5,8 +5,7 @@ import {
   AccordionItemBody,
   AccordionItemTitle
 } from "react-accessible-accordion";
-
-import "react-accessible-accordion/dist/fancy-example.css";
+import "./style.sass";
 
 export default class FAQ extends Component {
   render() {
@@ -19,7 +18,7 @@ export default class FAQ extends Component {
                 <h6 className="dark-text">الأسئلة المتكررة</h6>
               </div>
             </div>
-            <div className="row pt-3 pb-5">
+            <div className="row pt-3 pb-5 faq-accordion">
               <div className="col-12">
                 <Accordion>
                   <AccordionItem expanded={true}>

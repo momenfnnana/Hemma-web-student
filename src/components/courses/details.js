@@ -188,8 +188,11 @@ export class CourseDetails extends Component {
   }
 
   renderLectures(lectures) {
+    const sortedLectures = lectures.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
     if (lectures) {
-      return lectures.map(lecture => {
+      return sortedLectures.map(lecture => {
         return (
           <React.Fragment>
             <div className="list-group-item bg-transparent small dark-silver-text light-font-text">

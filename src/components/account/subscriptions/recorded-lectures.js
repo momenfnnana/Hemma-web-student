@@ -60,8 +60,11 @@ export class RecordedLectures extends Component {
 
   renderLectures(lectures) {
     const courseId = this.props.match.params.id;
+    const sortedLectures = lectures.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
     if (lectures) {
-      return lectures.map(lecture => {
+      return sortedLectures.map(lecture => {
         const scheduledAt = new Date(lecture.scheduledAt);
         var day = scheduledAt.getDate();
         var month = scheduledAt.getMonth() + 1;
