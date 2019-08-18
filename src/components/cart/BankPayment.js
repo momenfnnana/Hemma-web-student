@@ -6,7 +6,7 @@ import { inputField } from "../shared/inputs/inputField";
 import { selectField } from "../shared/inputs/selectField";
 import { withRouter } from "react-router-dom";
 import { dateTimeField } from "../shared/inputs/dateTimeField";
-import { checkoutWithBankTransfer } from "../../actions";
+import { checkoutWithBankTransfer, uploadBankSlip } from "../../actions";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 
@@ -32,7 +32,9 @@ class BankPaymentComponent extends Component {
   state = {
     file: null,
     loading: false,
-    disabled: false
+    disabled: false,
+    bankSlip: null,
+    imageLoader: false
   };
 
   constructor(props) {
@@ -46,8 +48,21 @@ class BankPaymentComponent extends Component {
    */
   onFileInputChange(file) {
     this.setState({
-      file: URL.createObjectURL(file)
+      file: URL.createObjectURL(file),
+      imageLoader: true
     });
+    this.props
+      .uploadBankSlip(file)
+      .then(response => {
+        this.setState({ bankSlip: response.payload.url, imageLoader: false });
+      })
+      .catch(error => {
+        this.setState({ file: null, imageLoader: false });
+
+        swal("عفواً", "حدث خطأ عند رفع الصورة", "error", {
+          button: "متابعة"
+        });
+      });
   }
 
   /**
@@ -55,6 +70,7 @@ class BankPaymentComponent extends Component {
    */
   myFormHandler = values => {
     const data = {
+      url: this.state.bankSlip,
       originBankName: values.originBankName,
       destinationBankName: values.destinationBankName,
       accountHolderName: values.accountHolderName,
@@ -68,23 +84,26 @@ class BankPaymentComponent extends Component {
       shippingAddress: values.shippingAddress,
       shippingPhone: values.shippingPhone && values.shippingPhone.phoneNumber
     };
-    this.setState({ loading: true, disabled: true });
 
+    this.setState({ loading: true, disabled: true });
     this.props
-      .checkoutWithBankTransfer(values.bankDoc, data)
+      .checkoutWithBankTransfer(data)
       .then(() => {
         this.setState({ loading: false, disabled: false });
         this.props.history.push("/subscriptions");
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
-        switch (
-          error.response && error.response.data && error.response.data.error
-        ) {
+        switch (error.response.data && error.response.data.error) {
           default:
-            swal("عفواً", "يجب عليك إرفاق صورة للحوالة", "error", {
-              button: "متابعة"
-            });
+            swal(
+              "عفواً",
+              "حدث خطأ خلال عملية الشراء، يرجى المحاولة لاحقاً",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
             break;
         }
       });
@@ -167,7 +186,54 @@ class BankPaymentComponent extends Component {
           </div>
         </div>
         <div className="row mt-4">
-          <div className="col-md-6 ">
+          <div className="col-md-6">
+            <h6 className="dark-silver-text smaller mt-2">
+              يرجى التأكد من إرفاق صورة الحوالة
+            </h6>
+            <Field
+              component={FileInput}
+              name="bankDoc"
+              className="d-none"
+              id="uploadImage"
+              onChange={this.onFileInputChange}
+              validate={required}
+            />
+            <label htmlFor="uploadImage" className="clickable w-100 mb-3">
+              <div
+                className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded align-items-center justify-content-center d-flex flex-column"
+                style={{ minHeight: 200 }}
+              >
+                {this.state.file ? (
+                  <React.Fragment>
+                    {!this.state.imageLoader && (
+                      <img
+                        src={
+                          this.state.file ||
+                          process.env.PUBLIC_URL + "/assets/images/camera.png"
+                        }
+                        className="contain-img"
+                        width="100%"
+                      />
+                    )}
+                    {this.state.imageLoader && (
+                      <Loader type="ball-clip-rotate" />
+                    )}
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/camera.png"}
+                      className="contain-img"
+                      height="40"
+                    />
+
+                    <p className="dark-silver-text light-font-text mt-3 small">
+                      أرفق صورة للحوالة
+                    </p>
+                  </React.Fragment>
+                )}
+              </div>
+            </label>
             <Field
               component={selectField}
               className="form-control"
@@ -238,48 +304,9 @@ class BankPaymentComponent extends Component {
                 />
               </div>
             </div>
-
             <h6 className="dark-silver-text smaller mt-2">
               ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
             </h6>
-
-            <Field
-              component={FileInput}
-              name="bankDoc"
-              className="d-none"
-              id="uploadImage"
-              onChange={this.onFileInputChange}
-              validate={required}
-            />
-            <label htmlFor="uploadImage" className="clickable w-100">
-              <div
-                className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded align-items-center justify-content-center d-flex flex-column"
-                style={{ minHeight: 200 }}
-              >
-                {this.state.file ? (
-                  <img
-                    src={
-                      this.state.file ||
-                      process.env.PUBLIC_URL + "/assets/images/camera.png"
-                    }
-                    className="contain-img"
-                    width="100%"
-                  />
-                ) : (
-                  <React.Fragment>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/camera.png"}
-                      className="contain-img"
-                      height="40"
-                    />
-
-                    <p className="dark-silver-text light-font-text mt-3 small">
-                      أرفق صورة للحوالة
-                    </p>
-                  </React.Fragment>
-                )}
-              </div>
-            </label>
           </div>
 
           <div className="col-md-6 text-center">
@@ -328,7 +355,8 @@ function mapStateToProps(state) {
 }
 
 const actionCreators = {
-  checkoutWithBankTransfer
+  checkoutWithBankTransfer,
+  uploadBankSlip
 };
 
 export const BankPayment = connect(

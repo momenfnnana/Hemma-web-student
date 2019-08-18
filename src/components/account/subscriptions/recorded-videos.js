@@ -89,7 +89,7 @@ export class RecordedVideosComponent extends Component {
     const sortedLectures = lectures.sort((a, b) =>
       a.order > b.order ? 1 : -1
     );
-    if (lectures) {
+    if (sortedLectures) {
       return sortedLectures.map(lecture => {
         return <React.Fragment>{this.renderLecture(lecture)}</React.Fragment>;
       });

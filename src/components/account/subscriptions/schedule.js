@@ -121,7 +121,7 @@ export class Schedule extends Component {
       a.order > b.order ? 1 : -1
     );
 
-    if (lectures) {
+    if (sortedLectures) {
       return sortedLectures.map(lecture => {
         return (
           <React.Fragment>

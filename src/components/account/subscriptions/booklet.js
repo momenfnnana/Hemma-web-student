@@ -1,17 +1,12 @@
 import React, { Component } from "react";
-import "./styles.sass";
 import { Tooltip, Button } from "reactstrap";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
-import ReactToPrint from "react-to-print";
 import swal from "@sweetalert/with-react";
 import { getUser } from "../../../actions/user.actions";
-import { FaChevronRight, FaChevronLeft } from "react-icons/fa";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Page, pdfjs, Document } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc =
-  "//mozilla.github.io/pdf.js/build/pdf.worker.js";
+import "./styles.sass";
 
 export class BookletComponent extends Component {
   constructor(props) {
@@ -138,59 +133,12 @@ export class BookletComponent extends Component {
             </div>
           </div>
           <div className="col-12">
-            <div className="box-layout shadow-sm w-100 gray-box-border scrollable-box">
-              <div className="pdf-wrapper d-flex align-items-center justify-content-between">
-                <p className="text-white en-text mb-0 d-flex align-items-center">
-                  {numPages} /{" "}
-                  <input
-                    type="text"
-                    className="form-control ml-1"
-                    value={pageNumber}
-                    onChange={this.changePageNumber}
-                    style={{ width: 40, height: 25, textAlign: "center" }}
-                  />
-                </p>
-                <ReactToPrint
-                  trigger={() => (
-                    <div className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/printer.png"
-                        }
-                        height="25"
-                        className="contain-img clickable"
-                      />
-                    </div>
-                  )}
-                  content={() => this.componentRef}
-                />
-              </div>
-              <div className="m-4">
-                <Document
-                  file={this.state.booklet.url}
-                  onLoadSuccess={this.onDocumentLoadSuccess}
-                  ref={el => (this.componentRef = el)}
-                >
-                  {Array.from(new Array(numPages), (el, index) => (
-                    <React.Fragment>
-                      <Page key={`page_${index + 1}`} pageNumber={index + 1}>
-                        <div className="watermark w-100 d-flex align-items-center justify-content-between">
-                          <h6 className="en-text mb-0 small">
-                            {user && user.id}
-                          </h6>
-
-                          <h6 className="mb-0 small">{user && user.name}</h6>
-
-                          <h6 className="en-text mb-0 small">
-                            0{user && user.phoneNumber}
-                          </h6>
-                        </div>
-                      </Page>
-                    </React.Fragment>
-                  ))}
-                </Document>
-              </div>
-            </div>
+            <embed
+              src={this.state.booklet.url}
+              type="application/pdf"
+              width="100%"
+              height="1000"
+            />
           </div>
         </div>
       </React.Fragment>
