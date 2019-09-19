@@ -6,15 +6,24 @@ import { apiBaseUrl } from "../../../api/helpers";
 import swal from "@sweetalert/with-react";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 export class SubscriptionsComponent extends Component {
+  page = 1;
+  limit = 4;
+  endOfResults = false;
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
       tooltipOpen: false,
       details: [],
-      subscriptions: []
+      subscriptions: [],
+      hideBtn: false,
+      loading: false,
+      disabled: false,
+      nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`
     };
   }
 
@@ -24,22 +33,43 @@ export class SubscriptionsComponent extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getProfile();
+    await this.loadMore();
+  }
 
+  loadMore = async () => {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    axios
-      .get(`${apiBaseUrl}/courses/purchased`, { headers })
-      .then(response => {
-        this.setState({ subscriptions: response.data.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfResults) {
+      axios
+        .get(this.state.nextPageUrl, { headers })
+        .then(response => {
+          this.setState({ loading: false, disabled: false });
+          const newSubscriptions = [
+            ...this.state.subscriptions,
+            ...response.data.data.data
+          ];
+          this.endOfResults = response.data.data.itemCount < this.limit;
+          this.page++;
+          const nextUrl = `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`;
+          this.setState({
+            subscriptions: newSubscriptions,
+            nextPageUrl: nextUrl
+          });
+          if (newSubscriptions.length == response.data.data.itemCount) {
+            this.setState({ hideBtn: true });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
 
   renderCourses() {
     const subscriptions = this.state.subscriptions || [];
@@ -184,9 +214,26 @@ export class SubscriptionsComponent extends Component {
                     </div>
                   </React.Fragment>
                 ) : (
-                  <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
-                    {this.renderCourses()}
-                  </div>
+                  <React.Fragment>
+                    <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
+                      {this.renderCourses()}
+                    </div>
+                    {!this.state.hideBtn && (
+                      <div className="d-flex align-items-center justify-content-center">
+                        <button
+                          className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
+                          onClick={this.loadMore}
+                          disabled={this.state.disabled}
+                        >
+                          {this.state.loading == true ? (
+                            <Loader type="ball-clip-rotate" />
+                          ) : (
+                            "تحميل المزيد"
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </React.Fragment>
                 )}
 
                 {/* <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">

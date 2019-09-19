@@ -107,8 +107,11 @@ export class CourseDetails extends Component {
 
   renderSections() {
     const sections = this.state.details.sections;
-    if (sections) {
-      return sections.map(section => (
+    const sortedSections = sections.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedSections) {
+      return sortedSections.map(section => (
         <div className="row mt-3">
           <div className="col-12">
             <div className="card section-card" key={section.id}>
@@ -124,8 +127,11 @@ export class CourseDetails extends Component {
   }
 
   renderChapters(chapters) {
-    if (chapters) {
-      return chapters.map(chapter => (
+    const sortedChapters = chapters.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedChapters) {
+      return sortedChapters.map(chapter => (
         <Accordion>
           <AccordionItem expanded={true}>
             <AccordionItemTitle>

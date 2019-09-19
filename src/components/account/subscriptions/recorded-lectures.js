@@ -31,8 +31,11 @@ export class RecordedLectures extends Component {
 
   renderSections() {
     const sections = this.state.details.sections;
-    if (sections) {
-      return sections.map(section => (
+    const sortedSections = sections.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedSections) {
+      return sortedSections.map(section => (
         <React.Fragment>
           <div className="row no-gutters">
             <div className="col-12">
@@ -48,8 +51,11 @@ export class RecordedLectures extends Component {
   }
 
   renderChapters(chapters) {
-    if (chapters) {
-      return chapters.map(chapter => (
+    const sortedChapters = chapters.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedChapters) {
+      return sortedChapters.map(chapter => (
         <React.Fragment>
           <h6 className="dark-text small mb-3 mt-0">{chapter.nameAr}</h6>
           <div className="row">{this.renderLectures(chapter.lectures)}</div>

@@ -61,8 +61,11 @@ export class RecordedVideosComponent extends Component {
 
   renderSections() {
     const sections = this.state.courseDetails.sections;
-    if (sections) {
-      return sections.map(section => (
+    const sortedSections = sections.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedSections) {
+      return sortedSections.map(section => (
         <React.Fragment>
           <div className="chapter pl-3">
             <h6 className="smaller light-purple-text">{section.nameAr}</h6>
@@ -75,8 +78,11 @@ export class RecordedVideosComponent extends Component {
   }
 
   renderChapters(chapters) {
-    if (chapters) {
-      return chapters.map(chapter => (
+    const sortedChapters = chapters.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedChapters) {
+      return sortedChapters.map(chapter => (
         <React.Fragment>
           <h6 className="text-white">{chapter.nameAr}</h6>
           {this.renderLectures(chapter.lectures)}
@@ -103,9 +109,7 @@ export class RecordedVideosComponent extends Component {
         <div
           className="d-flex flex-column clickable"
           onClick={() =>
-            (window.location = `/subscriptions/${courseId}/recorded-videos/${
-              lecture.id
-            }`)
+            (window.location = `/subscriptions/${courseId}/recorded-videos/${lecture.id}`)
           }
         >
           <label className="custom-control-label light-purple-text small">
