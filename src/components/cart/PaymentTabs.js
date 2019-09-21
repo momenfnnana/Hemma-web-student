@@ -55,10 +55,11 @@ export class PaymentTabs extends Component {
                     active: this.state.activeTab === "online"
                   })}
                   onClick={() => this.setActiveTab("online")}
+                  disabled
                 >
                   بطاقة إئتمانية{" "}
                 </NavLink>
-                {/* <img
+                <img
                   src={process.env.PUBLIC_URL + "/assets/images/tag.png"}
                   height="28"
                   alt="Soon"
@@ -66,7 +67,7 @@ export class PaymentTabs extends Component {
                 />
                 <h6 className="text-white light-font-text small text-position mb-0">
                   قريبًا..
-                </h6> */}
+                </h6>
               </NavItem>
             </Nav>
 

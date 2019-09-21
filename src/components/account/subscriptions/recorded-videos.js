@@ -9,12 +9,6 @@ import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 
-const videos = [
-  { id: 315172826, name: "الدرس الأول" },
-  { id: 315172826, name: "الدرس الثاني" },
-  { id: 315172826, name: "الدرس الثالث" }
-];
-
 export class RecordedVideosComponent extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +27,7 @@ export class RecordedVideosComponent extends Component {
     this.handleVolume = this.handleVolume.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const lectureId = this.props.match.params.lectureId;
     let token = localStorage.getItem("token");
     let headers = {
@@ -43,6 +37,30 @@ export class RecordedVideosComponent extends Component {
       .get(`${apiBaseUrl}/content/lectures/${lectureId}`, { headers })
       .then(response => {
         this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    await axios
+      .get(`${apiBaseUrl}/content/lectures/${lectureId}/vdocipher_token`, {
+        headers
+      })
+      .then(response => {
+        const videoID = this.state.details && this.state.details.recordingUrl;
+        if (videoID) {
+          new window.VdoPlayer({
+            otp: response.data.data,
+            playbackInfo: btoa(
+              JSON.stringify({
+                videoId: videoID
+              })
+            ),
+            theme: "9ae8bbe8dd964ddc9bdb932cca1cb59a",
+            // the container can be any DOM element on website
+            container: document.querySelector("#embedBox")
+          });
+        }
       })
       .catch(error => {
         console.log(error);
@@ -61,11 +79,9 @@ export class RecordedVideosComponent extends Component {
 
   renderSections() {
     const sections = this.state.courseDetails.sections;
-    const sortedSections = sections.sort((a, b) =>
-      a.order > b.order ? 1 : -1
-    );
-    if (sortedSections) {
-      return sortedSections.map(section => (
+
+    if (sections) {
+      return sections.map(section => (
         <React.Fragment>
           <div className="chapter pl-3">
             <h6 className="smaller light-purple-text">{section.nameAr}</h6>
@@ -145,9 +161,6 @@ export class RecordedVideosComponent extends Component {
   }
 
   render() {
-    const { videoIndex, paused, volume } = this.state;
-    const videoId = this.state.details.recordingUrl;
-    const video = videos[videoIndex];
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -167,14 +180,10 @@ export class RecordedVideosComponent extends Component {
                 </div>
                 <div className="col-9">
                   {this.state.details && this.state.details.recordingUrl && (
-                    <Vimeo
-                      video={videoId}
-                      className="recorded-video"
-                      volume={volume}
-                      paused={paused}
-                      onPause={this.handlePlayerPause}
-                      onPlay={this.handlePlayerPlay}
-                    />
+                    <div
+                      id="embedBox"
+                      style={{ height: "100%", width: "100%" }}
+                    ></div>
                   )}
                 </div>
 

@@ -31,11 +31,8 @@ export class RecordedLectures extends Component {
 
   renderSections() {
     const sections = this.state.details.sections;
-    const sortedSections = sections.sort((a, b) =>
-      a.order > b.order ? 1 : -1
-    );
-    if (sortedSections) {
-      return sortedSections.map(section => (
+    if (sections) {
+      return sections.map(section => (
         <React.Fragment>
           <div className="row no-gutters">
             <div className="col-12">
@@ -149,6 +146,22 @@ export class RecordedLectures extends Component {
         ) : (
           this.renderSections()
         )}
+        {/* <React.Fragment>
+          <div
+            className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center"
+            style={{ height: 350 }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/repair.png"}
+              height="90"
+              className="contain-img mb-3"
+            />
+            <p className="dark-text mt-0 mb-1">الموقع تحت الصيانه</p>
+            <p className="dark-text mt-0 mb-0">
+              سيتم فتح الفيديوهات خلال أقرب وقت بإذن الله
+            </p>
+          </div>
+        </React.Fragment> */}
       </React.Fragment>
     );
   }

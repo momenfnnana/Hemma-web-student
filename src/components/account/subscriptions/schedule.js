@@ -56,11 +56,9 @@ export class Schedule extends Component {
 
   renderSections() {
     const sections = this.state.details.sections;
-    const sortedSections = sections.sort((a, b) =>
-      a.order > b.order ? 1 : -1
-    );
-    if (sortedSections) {
-      return sortedSections.map(section => (
+
+    if (sections) {
+      return sections.map(section => (
         <div className="row mt-3">
           <div className="col-12">
             <div className="card section-card" key={section.id}>
