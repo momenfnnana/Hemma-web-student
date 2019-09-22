@@ -19,6 +19,23 @@ export class ExamsList extends Component {
 
         <div className="row no-gutters">
           <div className="col-12">
+            <React.Fragment>
+              <div
+                className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
+                style={{ height: 300 }}
+              >
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/empty-exams.png"
+                  }
+                  height="80"
+                  className="contain-img mb-3"
+                />
+                <p className="dark-silver-text mt-0 mb-0">
+                  لا يوجد اختبارات متاحة
+                </p>
+              </div>
+            </React.Fragment>
             <div className="box-layout shadow-sm">
               <Table className="mb-0">
                 <thead className="silver-bg">
