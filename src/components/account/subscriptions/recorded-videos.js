@@ -50,7 +50,7 @@ export class RecordedVideosComponent extends Component {
         const videoID = this.state.details && this.state.details.recordingUrl;
         if (videoID) {
           new window.VdoPlayer({
-            otp: response.data.data,
+            otp: response.data.otp,
             playbackInfo: btoa(
               JSON.stringify({
                 videoId: videoID

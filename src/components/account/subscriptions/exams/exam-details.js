@@ -3,6 +3,7 @@ import { CustomInput, Form, FormGroup, Label } from "reactstrap";
 import { ConfirmExam } from "./confirm-exam";
 import "../styles.sass";
 import { Link } from "react-router-dom";
+import Slider from "react-slick";
 
 export class ExamDetails extends Component {
   state = {
@@ -17,6 +18,14 @@ export class ExamDetails extends Component {
   };
   render() {
     const courseId = this.props.match.params.id;
+    const settings = {
+      className: "center",
+      centerMode: true,
+      infinite: true,
+      centerPadding: "60px",
+      slidesToShow: 3,
+      speed: 500
+    };
 
     return (
       <React.Fragment>
@@ -39,9 +48,9 @@ export class ExamDetails extends Component {
               >
                 <u>الرجوع الى القائمة</u>
               </Link>
-            </div> */}
+            </div>
 
-            {/* <div className="box-layout shadow-sm h-100 pt-5 pb-5 d-flex align-items-center justify-content-center flex-column">
+            <div className="box-layout shadow-sm h-100 pt-5 pb-5 d-flex align-items-center justify-content-center flex-column">
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/passed.png"}
                 height="100"
@@ -61,12 +70,17 @@ export class ExamDetails extends Component {
               </Link>
             </div> */}
 
-            <div className="box-layout shadow-sm h-100 p-4 pb-5">
+            <div className="box-layout shadow-sm h-100 p-4 pb-2">
               <div className="row">
                 <div className="col-12 d-flex align-items-center justify-content-between">
-                  <h6 className="mid-text mb-0">
-                    الامتحان الأول: القطوع المخروطية
-                  </h6>
+                  <div>
+                    <h6 className="mid-text mb-0">
+                      الامتحان الأول: القطوع المخروطية
+                    </h6>
+                    <p className="dark-silver-text mb-0 mt-1 smaller">
+                      وصف الامتحان
+                    </p>
+                  </div>
                   <div className="d-flex align-items-center">
                     <img
                       src={
@@ -83,212 +97,131 @@ export class ExamDetails extends Component {
               </div>
 
               <div className="question-item">
-                <div className="row">
+                <div className="row pb-4">
                   <div className="col-12">
                     <hr />
                   </div>
                 </div>
 
+                <Slider {...settings}>
+                  <div className="box-layout h-55 d-flex justify-content-center flex-column p-3">
+                    <h6 className="dark-text small mb-1">السؤال الاول</h6>
+                    <p className="dark-silver-text light-font-text smaller mb-0">
+                      ذا النص هو مثال لنص يمكن أن يستبدل
+                    </p>
+                  </div>
+                  <div className="box-layout h-55 d-flex justify-content-center flex-column p-3">
+                    <h6 className="dark-text small mb-1">السؤال الاول</h6>
+                    <p className="dark-silver-text light-font-text smaller mb-0">
+                      ذا النص هو مثال لنص يمكن أن يستبدل
+                    </p>
+                  </div>
+                  <div className="box-layout h-55 d-flex justify-content-center flex-column p-3">
+                    <h6 className="dark-text small mb-1">السؤال الاول</h6>
+                    <p className="dark-silver-text light-font-text smaller mb-0">
+                      ذا النص هو مثال لنص يمكن أن يستبدل
+                    </p>
+                  </div>
+                  <div className="box-layout h-55 d-flex justify-content-center flex-column p-3">
+                    <h6 className="dark-text small mb-1">السؤال الاول</h6>
+                    <p className="dark-silver-text light-font-text smaller mb-0">
+                      ذا النص هو مثال لنص يمكن أن يستبدل
+                    </p>
+                  </div>
+                  <div className="box-layout h-55 d-flex justify-content-center flex-column p-3">
+                    <h6 className="dark-text small mb-1">السؤال الاول</h6>
+                    <p className="dark-silver-text light-font-text smaller mb-0">
+                      ذا النص هو مثال لنص يمكن أن يستبدل
+                    </p>
+                  </div>
+                </Slider>
+
+                <div className="row">
+                  <div className="col-12 d-flex align-items-center mb-2">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/hint.png"}
+                      height="17"
+                      className="contain-img mr-2"
+                    />
+                    <p className="small red-text mb-0">
+                      <u>المساعدة</u>
+                    </p>
+                  </div>
+
+                  <div className="col-12">
+                    <div className="box-layout box-border shadow-sm mb-4">
+                      <p className="dark-text small mb-0 p-3 text-break">
+                        لصفحة وليس مقاطع النشر دليل المقروء صار. ألدوس توزيعاَ
+                        قرون إصدار ليتراسيت. أيضاً للنص ما الشكل وليس مقاطع
+                        مقاطع هذا هذا بل مستخدماً.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="row">
                   <div className="col-12">
-                    <div className="row">
-                      <div className="col-12">
-                        <h6 className="dark-text">السؤال الأول</h6>
-                        <p className="dark-silver-text small light-font-text">
-                          ذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد
-                          تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن
-                          تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى
-                          زيادة عدد الحروف التى يولدها التطبيق.
-                        </p>
-                      </div>
-                    </div>
+                    <p className="small dark-silver-text mb-2">
+                      اختر الإجابة الصحيحة
+                    </p>
+                  </div>
+                </div>
 
-                    <div className="row">
-                      <div className="col-12">
-                        <h6 className="dark-silver-text small mb-3">
-                          اختر الإجابة الصحيحة
-                        </h6>
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الأولى"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الثانية"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
+                <div className="row">
+                  <div className="col-7">
+                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                      <CustomInput
+                        type="radio"
+                        label="الإجابة الأولى"
+                        className="small dark-silver-text light-font-text d-flex align-items-center"
+                      />
                     </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الثالثة"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الرابعة"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
+                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                      <CustomInput
+                        type="radio"
+                        label="الإجابة الثانية"
+                        className="small dark-silver-text light-font-text d-flex align-items-center"
+                      />
                     </div>
+                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                      <CustomInput
+                        type="radio"
+                        label="الإجابة الثالثة"
+                        className="small dark-silver-text light-font-text d-flex align-items-center"
+                      />
+                    </div>
+                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                      <CustomInput
+                        type="radio"
+                        label="الإجابة الرابعة"
+                        className="small dark-silver-text light-font-text d-flex align-items-center"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-5 d-flex align-items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/graph.png"}
+                      height="180"
+                      width="100%"
+                      className="contain-img"
+                    />
                   </div>
                 </div>
               </div>
-
-              <div className="question-item">
-                <div className="row">
-                  <div className="col-12">
-                    <hr />
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-8">
-                    <div className="row">
-                      <div className="col-12">
-                        <h6 className="dark-text">السؤال الأول</h6>
-                        <p className="dark-silver-text small light-font-text">
-                          ذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد
-                          تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن
-                          تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى
-                          زيادة عدد الحروف التى يولدها التطبيق.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-12">
-                        <h6 className="dark-silver-text small mb-3">
-                          اختر الإجابة الصحيحة
-                        </h6>
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الأولى"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الثانية"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الثالثة"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الرابعة"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-4">
-                    <div className="row">
-                      <div className="col-12">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/graph.png"
-                          }
-                          height="180"
-                          width="100%"
-                          className="contain-img"
-                        />
-                      </div>
-                    </div>
-                  </div>
+              <div className="row pt-4">
+                <div className="col-12">
+                  <hr />
                 </div>
               </div>
 
-              <div className="question-item">
-                <div className="row">
-                  <div className="col-12">
-                    <hr />
-                  </div>
-                </div>
-
-                <div className="row">
-                  <div className="col-12">
-                    <div className="row">
-                      <div className="col-12">
-                        <h6 className="dark-text">السؤال الأول</h6>
-                        <p className="dark-silver-text small light-font-text">
-                          ذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد
-                          تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن
-                          تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى
-                          زيادة عدد الحروف التى يولدها التطبيق.
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="row">
-                      <div className="col-12">
-                        <h6 className="dark-silver-text small mb-3">
-                          اختر الإجابة الصحيحة
-                        </h6>
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الأولى"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الثانية"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الثالثة"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                      <div className="col-md-6">
-                        <CustomInput
-                          type="radio"
-                          label="الإجابة الرابعة"
-                          className="small dark-silver-text light-font-text"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="row mt-5">
+              <div className="row">
                 <div className="col-12 text-center">
                   <button
-                    className="btn light-outline-btn w-40"
+                    className="btn light-outline-btn w-25"
                     onClick={this.openConfirmExamModal}
                   >
-                    اعتمد الاجابة{" "}
+                    إنهاء الامتحان
                   </button>
                 </div>
               </div>
