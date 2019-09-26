@@ -195,7 +195,7 @@ export class SidebarComponent extends Component {
                   التحديات
                 </NavLink>
               </li> */}
-              {/* <li>
+              <li>
                 <NavLink
                   className="dark-text small"
                   to={`/subscriptions/${this.props.id}/exams/list`}
@@ -212,7 +212,7 @@ export class SidebarComponent extends Component {
                   />
                   الاختبارات الإلكترونية
                 </NavLink>
-              </li> */}
+              </li>
               {channelID && (
                 <li>
                   <NavLink

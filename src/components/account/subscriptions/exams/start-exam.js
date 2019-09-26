@@ -24,7 +24,7 @@ export class StartExam extends Component {
               <h6 className="dark-text small mb-3">
                 مدة الامتحان: <span className="en-text red-text">30</span> دقيقة
               </h6>
-              <p className="dark-text w-50 mx-auto text-center">
+              <p className="dark-text w-50 mx-auto text-center text-break">
                 هذا الامتحان وضع لمساعدتك في اختبار قدراتك، احرص على عدم الغش أو
                 الاستعانة بأي مصادر خارجية
               </p>

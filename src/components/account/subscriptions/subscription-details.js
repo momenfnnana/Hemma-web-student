@@ -174,19 +174,19 @@ export class SubscriptionDetails extends Component {
                 <Route
                   path="/subscriptions/:id/challenges/details"
                   component={ChallengeDetails}
-                />
-                <Route
-                  path="/subscriptions/:id/exams/list"
-                  component={ExamsList}
-                />
-                <Route
-                  path="/subscriptions/:id/exams/start"
-                  component={StartExam}
-                />
-                <Route
-                  path="/subscriptions/:id/exams/details"
-                  component={ExamDetails}
                 /> */}
+                    <Route
+                      path="/subscriptions/:id/exams/list"
+                      component={ExamsList}
+                    />
+                    <Route
+                      path="/subscriptions/:id/exams/start"
+                      component={StartExam}
+                    />
+                    <Route
+                      path="/subscriptions/:id/exams/details"
+                      component={ExamDetails}
+                    />
                     <Route
                       path="/subscriptions/:id/transactions/list"
                       render={props => (
