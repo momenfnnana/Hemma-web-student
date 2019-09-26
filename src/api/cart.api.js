@@ -40,6 +40,11 @@ export const CartApiEndpoints = {
       .then(getDataFromResponse);
   },
 
+  initiateOnlineCheckout: data =>
+    getAuthenticatedAxios()
+      .post(`cart/initiate_card_payment`, data)
+      .then(getDataFromResponse),
+
   checkoutWithBankTransfer: data =>
     getAuthenticatedAxios()
       .post(`cart/checkout_with_bank_transfer`, data)

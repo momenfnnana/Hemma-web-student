@@ -38,6 +38,7 @@ import TwilioComponent from "./Twilio";
 import { Account } from "./components/account/settings/account";
 import BankAccounts from "./components/banks/banks";
 import FAQ from "./components/faq/faq";
+import { Transaction } from "./components/cart/transaction";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -166,6 +167,7 @@ export default class AppComponent extends Component {
                     />
                     <Route path="/banks" component={BankAccounts} />
                     <Route path="/faq" component={FAQ} />
+                    <Route path="/transactions/:id" component={Transaction} />
                     {/* <Route
                       path="/live-stream/:id"
                       component={requireAuth(SubscriptionDetails)}
