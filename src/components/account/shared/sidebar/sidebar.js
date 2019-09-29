@@ -287,7 +287,7 @@ export class SidebarComponent extends Component {
                     width="20"
                     className="mr-2 contain-img"
                   />
-                  تحميل الملزمة
+                  اختصر وقتك
                 </NavLink>
               </li>
             </ul>

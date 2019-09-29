@@ -6,6 +6,8 @@ import { withRouter } from "react-router-dom";
 import { Api } from "../../api";
 import Cleave from "cleave.js/react";
 import "./checkout.styles.sass";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 export class OnlinePaymentComponent extends Component {
   constructor(props, context) {
@@ -125,13 +127,13 @@ export class OnlinePaymentComponent extends Component {
               <div className="col-md-8">
                 <div>
                   <Cleave
-                    placeholder="ادخل رقم البطاقة"
+                    placeholder="Card number"
                     options={{
                       creditCard: true,
                       onCreditCardTypeChanged: this.onCreditCardTypeChanged
                     }}
                     onChange={this.onCreditCardChange}
-                    className="form-control ltr-input position-relative"
+                    className="form-control ltr-input en-input text-center position-relative"
                   />
                   {this.state.creditCardType == "mastercard" ? (
                     <img
@@ -173,7 +175,7 @@ export class OnlinePaymentComponent extends Component {
               </div>
               <div className="col-md-4 mb-3">
                 <Cleave
-                  placeholder="00/00"
+                  placeholder="mm/yy"
                   options={{ date: true, datePattern: ["m", "d"] }}
                   className="form-control ltr-input en-input text-center"
                   onChange={this.onDateChange}
@@ -183,8 +185,8 @@ export class OnlinePaymentComponent extends Component {
                 <input
                   name="cardHolderName"
                   type="text"
-                  className="form-control"
-                  placeholder="اسم حامل البطاقة"
+                  className="form-control ltr-input en-input text-center"
+                  placeholder="Cardholder name"
                   onChange={this.onNameChange}
                 />
               </div>
@@ -195,6 +197,8 @@ export class OnlinePaymentComponent extends Component {
                   className="form-control ltr-input en-input text-center"
                   placeholder="CVV"
                   onChange={this.onCodeChange}
+                  maxlength="3"
+                  pattern="\d{3}"
                 />
               </div>
               <div className="col-md-12 d-flex justify-content-center mt-4">
@@ -205,7 +209,11 @@ export class OnlinePaymentComponent extends Component {
                   disabled={this.isSubmitButtonDisabled()}
                   style={{ opacity: this.isSubmitButtonDisabled() ? 0.5 : 1 }}
                 >
-                  إتمام الدفع
+                  {this.state.loading == true ? (
+                    <Loader type="ball-clip-rotate" />
+                  ) : (
+                    "إتمام الدفع"
+                  )}
                 </button>
               </div>
             </div>
