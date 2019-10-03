@@ -56,7 +56,7 @@ export class Transaction extends Component {
                             .stsResponseStatusDescription}
                       </h5>
                       <h5 className="dark-text mb-3">
-                        رقم الحركة{" "}
+                        رقم العملية{" "}
                         <span className="en-text">
                           {this.state.paymentDetails &&
                             this.state.paymentDetails.transactionId}
@@ -73,13 +73,13 @@ export class Transaction extends Component {
                       {this.state.paymentDetails.createdAt && (
                         <div className="d-flex flex-row align-items-center justify-content-between mb-3">
                           <h6 className="dark-text mb-0 mr-3">
-                            وقت الحركة:{" "}
+                            وقت العملية:{" "}
                             <span className="en-text red-text">
                               {formattedTime}
                             </span>
                           </h6>
                           <h6 className="dark-text mb-0 ml-3">
-                            تاريخ الحركة:{" "}
+                            تاريخ العملية:{" "}
                             <span className="en-text red-text">
                               {formattedDate}
                             </span>
@@ -111,7 +111,7 @@ export class Transaction extends Component {
                             .stsResponseStatusDescription}
                       </h5>
                       <h5 className="dark-text mb-3">
-                        رقم الحركة{" "}
+                        رقم العملية{" "}
                         <span className="en-text">
                           {this.state.paymentDetails &&
                             this.state.paymentDetails.transactionId}
@@ -128,13 +128,13 @@ export class Transaction extends Component {
                       {this.state.paymentDetails.createdAt && (
                         <div className="d-flex flex-row align-items-center justify-content-between mb-3">
                           <h6 className="dark-text mb-0 mr-3">
-                            وقت الحركة:{" "}
+                            وقت العملية:{" "}
                             <span className="en-text red-text">
                               {formattedTime}
                             </span>
                           </h6>
                           <h6 className="dark-text mb-0 ml-3">
-                            تاريخ الحركة:{" "}
+                            تاريخ العملية:{" "}
                             <span className="en-text red-text">
                               {formattedDate}
                             </span>
