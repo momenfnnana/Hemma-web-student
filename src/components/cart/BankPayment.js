@@ -94,7 +94,29 @@ class BankPaymentComponent extends Component {
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
+
         switch (error.response.data && error.response.data.error) {
+          case "HasPaymentUnderProcessing":
+            swal(
+              "عفواً",
+              "يرجى الانتظار حتى تتمكن من القيام بحركة أخرى",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
+          case "Duplicate":
+            swal("عفواً", "تم شراء هذه الدورة سابقاً", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "ServerError":
+            swal("عفواً", "حدث خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
+
           default:
             swal(
               "عفواً",

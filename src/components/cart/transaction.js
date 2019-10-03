@@ -50,13 +50,25 @@ export class Transaction extends Component {
                         src="https://assets9.lottiefiles.com/datafiles/jXqHQIXI6oO6V47/data.json"
                         style={{ width: 320 }}
                       ></lottie-player>
+                      <h5 className="dark-text">
+                        {this.state.paymentDetails &&
+                          this.state.paymentDetails
+                            .stsResponseStatusDescription}
+                      </h5>
                       <h5 className="dark-text mb-3">
-                        تم تنفيذ الحركة رقم{" "}
+                        رقم الحركة{" "}
                         <span className="en-text">
                           {this.state.paymentDetails &&
                             this.state.paymentDetails.transactionId}
                         </span>{" "}
-                        بنجاح
+                      </h5>
+                      <h5 className="dark-text mb-3">
+                        المبلغ{" "}
+                        <span className="en-text red-text">
+                          {this.state.paymentDetails &&
+                            this.state.paymentDetails.amount}{" "}
+                        </span>{" "}
+                        ر.س.
                       </h5>
                       {this.state.paymentDetails.createdAt && (
                         <div className="d-flex flex-row align-items-center justify-content-between mb-3">
@@ -93,7 +105,42 @@ export class Transaction extends Component {
                         style={{ width: 320 }}
                         autoplay
                       ></lottie-player>
-                      <h5 className="dark-text">حدث خطأ ما</h5>
+                      <h5 className="dark-text">
+                        {this.state.paymentDetails &&
+                          this.state.paymentDetails
+                            .stsResponseStatusDescription}
+                      </h5>
+                      <h5 className="dark-text mb-3">
+                        رقم الحركة{" "}
+                        <span className="en-text">
+                          {this.state.paymentDetails &&
+                            this.state.paymentDetails.transactionId}
+                        </span>{" "}
+                      </h5>
+                      <h5 className="dark-text mb-3">
+                        المبلغ{" "}
+                        <span className="en-text red-text">
+                          {this.state.paymentDetails &&
+                            this.state.paymentDetails.amount}{" "}
+                        </span>{" "}
+                        ر.س.
+                      </h5>
+                      {this.state.paymentDetails.createdAt && (
+                        <div className="d-flex flex-row align-items-center justify-content-between mb-3">
+                          <h6 className="dark-text mb-0 mr-3">
+                            وقت الحركة:{" "}
+                            <span className="en-text red-text">
+                              {formattedTime}
+                            </span>
+                          </h6>
+                          <h6 className="dark-text mb-0 ml-3">
+                            تاريخ الحركة:{" "}
+                            <span className="en-text red-text">
+                              {formattedDate}
+                            </span>
+                          </h6>
+                        </div>
+                      )}
                       <Link
                         className="btn light-btn mt-2 pl-4 pr-4 unset-height unset-line-height"
                         to="/cart"

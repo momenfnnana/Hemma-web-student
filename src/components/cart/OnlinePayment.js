@@ -5,9 +5,10 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Api } from "../../api";
 import Cleave from "cleave.js/react";
-import "./checkout.styles.sass";
 import Loader from "react-loaders";
+import swal from "@sweetalert/with-react";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import "./checkout.styles.sass";
 
 export class OnlinePaymentComponent extends Component {
   constructor(props, context) {
@@ -65,7 +66,8 @@ export class OnlinePaymentComponent extends Component {
         callbackUrl: `${window.location.origin}/transactions/{transactionId}`
       })
       .then(result => {
-        console.log("got hash", result);
+        this.setState({ loading: false });
+
         // Create and submit the form
         let html = `
           <form id="purchase" style="display: none;" method="POST" action="${
@@ -116,6 +118,38 @@ export class OnlinePaymentComponent extends Component {
         `;
         document.querySelector("body").innerHTML += html;
         document.getElementById("purchase").submit();
+      })
+      .catch(error => {
+        this.setState({ loading: false });
+
+        switch (error.response.data && error.response.data.error) {
+          case "HasPaymentUnderProcessing":
+            swal(
+              "عفواً",
+              "يرجى الانتظار حتى تتمكن من القيام بحركة أخرى",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
+          case "Duplicate":
+            swal("عفواً", "تم شراء هذه الدورة سابقاً", "error", {
+              button: "متابعة"
+            });
+            break;
+          case "ServerError":
+            swal("عفواً", "حدث خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
+
+          default:
+            swal("عفواً", "حدث خطأ ما", "error", {
+              button: "متابعة"
+            });
+            break;
+        }
       });
   }
   render() {
