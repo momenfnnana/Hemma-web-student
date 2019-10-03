@@ -294,10 +294,9 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-            <div className="row pt-2 pb-5">{this.renderCards()}</div>
 
             {this.state.lectures && this.state.lectures.length > 0 ? (
-              <div className="row pt-2 pb-3">
+              <div className="row pt-5 pb-4">
                 <div className="col-md-4">
                   <h4 className="dark-text mt-3">
                     لأننا حابين نفيدكم قدمنا لكم
@@ -313,6 +312,13 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
             ) : null}
+
+            <div className="row">
+              <div className="col-12 pt-4">
+                <h5 className="dark-text">الدورات المتاحة</h5>
+              </div>
+            </div>
+            <div className="row pt-2 pb-5">{this.renderCards()}</div>
 
             {/* <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
               <div className="col-md-8 col-12">

@@ -127,13 +127,13 @@ export class OnlinePaymentComponent extends Component {
               <div className="col-md-8">
                 <div>
                   <Cleave
-                    placeholder="Card number"
+                    placeholder="رقم البطاقة"
                     options={{
                       creditCard: true,
                       onCreditCardTypeChanged: this.onCreditCardTypeChanged
                     }}
                     onChange={this.onCreditCardChange}
-                    className="form-control ltr-input en-input text-center position-relative"
+                    className="form-control ltr-input position-relative"
                   />
                   {this.state.creditCardType == "mastercard" ? (
                     <img
@@ -185,8 +185,8 @@ export class OnlinePaymentComponent extends Component {
                 <input
                   name="cardHolderName"
                   type="text"
-                  className="form-control ltr-input en-input text-center"
-                  placeholder="Cardholder name"
+                  className="form-control"
+                  placeholder="اسم حامل البطاقة"
                   onChange={this.onNameChange}
                 />
               </div>
