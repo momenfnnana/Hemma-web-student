@@ -44,7 +44,7 @@ export class UsersChatComponent extends Component {
       showEmojis: false,
       instructors: [],
       users: {},
-      activeChannel: "general",
+      activeChannel: "",
       blobObject: null,
       isRecording: false,
       isPaused: false,
@@ -523,6 +523,14 @@ export class UsersChatComponent extends Component {
         <div
           className="media chat-item d-flex align-items-center clickable h-55"
           onClick={() => this.setPrivateChannel(instructor.id)}
+          style={{
+            backgroundColor:
+              this.state.activeChannel == "private" &&
+              this.state.privateChannel ==
+                this.generatePrivateChannelName(instructor.id)
+                ? "#f7f7f7"
+                : null
+          }}
         >
           <img
             src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
@@ -667,6 +675,10 @@ export class UsersChatComponent extends Component {
                 <h6
                   className="media chat-item pb-2 pt-2 d-flex align-items-center clickable light-text small"
                   onClick={() => this.initiateGeneralChat()}
+                  style={{
+                    backgroundColor:
+                      this.state.activeChannel == "general" ? "#f7f7f7" : null
+                  }}
                 >
                   <FaCircle size={9} className="mr-1" /> دردشة للجميع
                 </h6>

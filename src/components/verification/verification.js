@@ -38,56 +38,66 @@ const validate = values => {
 };
 
 class VerificationComponent extends Component {
-  state = {
-    loading: false
-  };
-  myFormHandler = values => {
-    let token = localStorage.getItem("token");
-    let data = {
-      token: values.token
-    };
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    this.setState({ loading: true });
-    axios
-      .post(`${apiBaseUrl}/auth/phone/verify`, data, {
-        headers
-      })
-      .then(response => {
-        this.setState({ loading: false });
-        localStorage.setItem("token", response.data.data.token);
-        window.location = "/";
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        switch (error.response.data && error.response.data.error) {
-          case "ValidationError":
-            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "AlreadyVerified":
-            swal("عفواً", "تم توثيق الحساب سابقاً", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "InvalidConfirmationToken":
-            swal("عفواً", "الرمز المدخل خاطئ", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "VerificationTokenExpired":
-            swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
-              button: "متابعة"
-            });
-            break;
+  constructor(props) {
+    super(props);
 
-          default:
-            console.log("other error");
-        }
-      });
-  };
+    this.state = {
+      loading: false,
+      disabled: false,
+      code: ""
+    };
+    this.verifyCode = this.verifyCode.bind(this);
+  }
+
+  verifyCode(value) {
+    if (value.length == 6) {
+      let token = localStorage.getItem("token");
+      let data = {
+        token: value
+      };
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      this.setState({ loading: true });
+      axios
+        .post(`${apiBaseUrl}/auth/phone/verify`, data, {
+          headers
+        })
+        .then(response => {
+          this.setState({ loading: false });
+          localStorage.setItem("token", response.data.data.token);
+          window.location = "/";
+        })
+        .catch(error => {
+          this.setState({ loading: false });
+          switch (error.response.data && error.response.data.error) {
+            case "ValidationError":
+              swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "AlreadyVerified":
+              swal("عفواً", "تم توثيق الحساب سابقاً", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "InvalidConfirmationToken":
+              swal("عفواً", "الرمز المدخل خاطئ", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "VerificationTokenExpired":
+              swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
+                button: "متابعة"
+              });
+              break;
+
+            default:
+              console.log("other error");
+          }
+        });
+    }
+  }
 
   render() {
     const { handleSubmit, submitting } = this.props;
@@ -112,21 +122,14 @@ class VerificationComponent extends Component {
               </h6>
             </div>
 
-            <form
-              className="centered"
-              onSubmit={handleSubmit(this.myFormHandler)}
-            >
+            <form className="centered">
               <div className="mb-3">
-                <Field name="token" component={VerificationField} />
+                <Field
+                  name="token"
+                  component={VerificationField}
+                  onChange={this.verifyCode}
+                />
               </div>
-
-              <button type="submit" className="btn dark-outline-btn w-100">
-                {this.state.loading == true ? (
-                  <Loader type="ball-clip-rotate" />
-                ) : (
-                  "تحقق من الرمز"
-                )}
-              </button>
             </form>
 
             <div className="text-center pt-4">
