@@ -168,20 +168,6 @@ export class ExamDetails extends Component {
                 </Slider>
 
                 <div className="row p-4 pb-2">
-                  <div
-                    className="col-12 d-flex align-items-center mb-2 clickable"
-                    onClick={this.openHintModal}
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/hint.png"}
-                      height="17"
-                      className="contain-img mr-2"
-                    />
-                    <p className="small red-text mb-0">
-                      <u>المساعدة</u>
-                    </p>
-                  </div>
-
                   <div className="col-12">
                     <div className="box-layout box-border shadow-sm">
                       <p className="dark-text small mb-0 p-3 text-break">
@@ -193,43 +179,63 @@ export class ExamDetails extends Component {
                   </div>
                 </div>
 
-                <div className="row pl-4 pr-4">
-                  <div className="col-12">
-                    <p className="small dark-silver-text mb-2">
-                      اختر الإجابة الصحيحة
-                    </p>
-                  </div>
-                </div>
-
                 <div className="row pl-4 pr-4 pb-4">
                   <div className="col-7">
-                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                      <CustomInput
-                        type="radio"
-                        label="الإجابة الأولى"
-                        className="small dark-silver-text light-font-text d-flex align-items-center"
-                      />
+                    <div className="row d-flex justify-content-between align-items-center mb-3">
+                      <div className="col-md-6">
+                        <p className="small dark-silver-text mb-0">
+                          اختر الإجابة الصحيحة
+                        </p>
+                      </div>
+
+                      <div className="col-md-6">
+                        <button
+                          className="btn red-outline-btn btn-sm small float-right"
+                          onClick={this.openHintModal}
+                        >
+                          <img
+                            src={
+                              process.env.PUBLIC_URL + "/assets/images/hint.png"
+                            }
+                            height="17"
+                            className="contain-img mr-2"
+                          />
+                          المساعدة
+                        </button>
+                      </div>
                     </div>
-                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                      <CustomInput
-                        type="radio"
-                        label="الإجابة الثانية"
-                        className="small dark-silver-text light-font-text d-flex align-items-center"
-                      />
-                    </div>
-                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                      <CustomInput
-                        type="radio"
-                        label="الإجابة الثالثة"
-                        className="small dark-silver-text light-font-text d-flex align-items-center"
-                      />
-                    </div>
-                    <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                      <CustomInput
-                        type="radio"
-                        label="الإجابة الرابعة"
-                        className="small dark-silver-text light-font-text d-flex align-items-center"
-                      />
+
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                          <CustomInput
+                            type="radio"
+                            label="الإجابة الأولى"
+                            className="small dark-silver-text light-font-text d-flex align-items-center"
+                          />
+                        </div>
+                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                          <CustomInput
+                            type="radio"
+                            label="الإجابة الثانية"
+                            className="small dark-silver-text light-font-text d-flex align-items-center"
+                          />
+                        </div>
+                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                          <CustomInput
+                            type="radio"
+                            label="الإجابة الثالثة"
+                            className="small dark-silver-text light-font-text d-flex align-items-center"
+                          />
+                        </div>
+                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                          <CustomInput
+                            type="radio"
+                            label="الإجابة الرابعة"
+                            className="small dark-silver-text light-font-text d-flex align-items-center"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
 
