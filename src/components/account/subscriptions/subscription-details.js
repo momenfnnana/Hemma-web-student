@@ -8,7 +8,7 @@ import { RecordedLectures } from "./recorded-lectures";
 import { RecordedVideos } from "./recorded-videos";
 import { Booklet } from "./booklet";
 import { TransactionsList } from "./transactions/transactions-list";
-import { UsersChatComponent } from "./chat";
+import { UsersChatComponent } from "./chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream";

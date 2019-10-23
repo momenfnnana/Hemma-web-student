@@ -50,7 +50,6 @@ export class CategoryDetails extends Component {
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then(response => {
         this.setState({ lectures: response.data.data });
-        console.log("lectures ", this.state.lectures);
       })
       .catch(error => {
         console.log(error);

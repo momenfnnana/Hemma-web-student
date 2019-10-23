@@ -5,6 +5,7 @@ import { cartReducer } from "./cart.reducer";
 import { authReducer } from "./auth.reducer";
 import { userReducer } from "./user.reducer";
 import { twilioReducer } from "./twilio.reducer";
+import { chatReducer } from "./chat.reducer";
 
 export const hemmaReducer = combineReducers({
   form: formReducer,
@@ -12,5 +13,6 @@ export const hemmaReducer = combineReducers({
   cart: cartReducer,
   auth: authReducer,
   user: userReducer,
-  twilio: twilioReducer
+  twilio: twilioReducer,
+  chat: chatReducer
 });
