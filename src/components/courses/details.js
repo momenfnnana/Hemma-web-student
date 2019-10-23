@@ -13,6 +13,7 @@ import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
 import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -277,6 +278,10 @@ export class CourseDetails extends Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>{`دورة ${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
+          <meta name="description" content={this.state.details.descriptionAr} />
+        </Helmet>
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">

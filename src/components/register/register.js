@@ -15,6 +15,7 @@ import {
   sendToken,
   loginFailed
 } from "../../actions/login.actions";
+import { Helmet } from "react-helmet";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const maxLength = max => value =>
@@ -119,94 +120,103 @@ class RegisterComponent extends Component {
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
-      <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
-        <Field
-          name="username"
-          type="text"
-          component={inputField}
-          className="form-control border-left-0 pl-0"
-          placeholder="الاسم الكامل"
-          validate={[required, nameValue]}
-        >
-          <FaRegUser />
-        </Field>
-
-        <div className="mb-3">
-          <label className="pr-2 dark-silver-text mb-0">أنا: </label>
-
-          <Field
-            component={RadioField}
-            name="gender"
-            validate={required}
-            options={[
-              { title: "ذكر", value: "male" },
-              { title: "أنثى", value: "female" }
-            ]}
+      <React.Fragment>
+        <Helmet>
+          <title>إنشاء حساب | منصّة همّة التعليمية</title>
+          <meta
+            name="description"
+            content="طالب أو معلّم؟ سجّل حسابك في منصّة همّة الآن, واختر دورتك المناسبة."
           />
-        </div>
-        <Field
-          fieldName="phone"
-          name="phone"
-          component={phoneField}
-          containerClassName="intl-tel-input"
-          inputClassName="form-control"
-          defaultCountry="sa"
-          validate={required}
-        />
-
-        <div className="position-relative">
+        </Helmet>
+        <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
           <Field
-            name="password"
-            type={this.state.hidden ? "text" : "password"}
+            name="username"
+            type="text"
             component={inputField}
-            className="form-control border-left-0 pl-0 ltr-input pw-input"
-            placeholder="كلمة المرور"
-            validate={[required, maxLength10, minLength4]}
+            className="form-control border-left-0 pl-0"
+            placeholder="الاسم الكامل"
+            validate={[required, nameValue]}
           >
-            <MdLockOutline />
+            <FaRegUser />
           </Field>
-          {this.state.hidden ? (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
-              width="100%"
-              width="20"
-              className="position-absolute left-input-icon"
-              onClick={this.togglePasswordShow}
-            />
-          ) : (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-              width="100%"
-              width="20"
-              className="position-absolute left-input-icon custom-top"
-              onClick={this.togglePasswordShow}
-            />
-          )}
-        </div>
 
-        <Field
-          name="email"
-          type="email"
-          component={inputField}
-          className="form-control border-left-0 pl-0 ltr-input"
-          placeholder="البريد الإلكتروني"
-          validate={emailValue}
-        >
-          <FaRegEnvelope />
-        </Field>
+          <div className="mb-3">
+            <label className="pr-2 dark-silver-text mb-0">أنا: </label>
 
-        <button
-          type="submit"
-          className="btn dark-outline-btn w-100"
-          disabled={submitting}
-        >
-          {this.state.loading == true ? (
-            <Loader type="ball-clip-rotate" />
-          ) : (
-            "تسجيل"
-          )}
-        </button>
-      </form>
+            <Field
+              component={RadioField}
+              name="gender"
+              validate={required}
+              options={[
+                { title: "ذكر", value: "male" },
+                { title: "أنثى", value: "female" }
+              ]}
+            />
+          </div>
+          <Field
+            fieldName="phone"
+            name="phone"
+            component={phoneField}
+            containerClassName="intl-tel-input"
+            inputClassName="form-control"
+            defaultCountry="sa"
+            validate={required}
+          />
+
+          <div className="position-relative">
+            <Field
+              name="password"
+              type={this.state.hidden ? "text" : "password"}
+              component={inputField}
+              className="form-control border-left-0 pl-0 ltr-input pw-input"
+              placeholder="كلمة المرور"
+              validate={[required, maxLength10, minLength4]}
+            >
+              <MdLockOutline />
+            </Field>
+            {this.state.hidden ? (
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+                width="100%"
+                width="20"
+                className="position-absolute left-input-icon"
+                onClick={this.togglePasswordShow}
+              />
+            ) : (
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+                width="100%"
+                width="20"
+                className="position-absolute left-input-icon custom-top"
+                onClick={this.togglePasswordShow}
+              />
+            )}
+          </div>
+
+          <Field
+            name="email"
+            type="email"
+            component={inputField}
+            className="form-control border-left-0 pl-0 ltr-input"
+            placeholder="البريد الإلكتروني"
+            validate={emailValue}
+          >
+            <FaRegEnvelope />
+          </Field>
+
+          <button
+            type="submit"
+            className="btn dark-outline-btn w-100"
+            disabled={submitting}
+          >
+            {this.state.loading == true ? (
+              <Loader type="ball-clip-rotate" />
+            ) : (
+              "تسجيل"
+            )}
+          </button>
+        </form>
+      </React.Fragment>
     );
   }
 }

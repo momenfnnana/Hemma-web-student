@@ -9,6 +9,7 @@ import { CardsList } from "../shared/cardsList/cardsList";
 import "./styles.sass";
 import { PublicationDetails } from "../publication/publication";
 import { apiBaseUrl } from "../../api/helpers";
+import { Helmet } from "react-helmet";
 
 export class CategoryDetails extends Component {
   constructor(props) {
@@ -55,19 +56,6 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
-    // axios
-    //   .get(
-    //     `${apiBaseUrl}/categories/${
-    //       params.id
-    //     }/free-content`
-    //   )
-    //   .then(response => {
-    //     this.setState({ content: response.data.data.data });
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
-
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}/publications`)
       .then(response => {
@@ -93,15 +81,6 @@ export class CategoryDetails extends Component {
       .catch(error => {
         console.log(error);
       });
-
-    // axios
-    //   .get(`${apiBaseUrl}/courses/recent`)
-    //   .then(response => {
-    //     this.setState({ courses: response.data.data.data });
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
   }
 
   renderPublications() {
@@ -163,47 +142,7 @@ export class CategoryDetails extends Component {
     ));
   }
 
-  // renderFreeContent() {
-  //   return this.state.courses.map(course => (
-  //     <Card key={course.id} course={course} />
-  //   ));
-  // }
-
   render() {
-    // var customSettings = {
-    //   infinite: false,
-    //   slidesToShow: 1,
-    //   slidesToScroll: 1,
-    //   autoplay: false,
-    //   autoplaySpeed: 2000,
-    //   arrows: false,
-    //   responsive: [
-    //     {
-    //       breakpoint: 1024,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1,
-    //         infinite: false
-    //       }
-    //     },
-    //     {
-    //       breakpoint: 600,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1,
-    //         initialSlide: 1
-    //       }
-    //     },
-    //     {
-    //       breakpoint: 480,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1
-    //       }
-    //     }
-    //   ]
-    // };
-
     var settings = {
       infinite: false,
       slidesToShow: 4,
@@ -275,6 +214,10 @@ export class CategoryDetails extends Component {
     } = this.props;
     return (
       <React.Fragment>
+        <Helmet>
+          <title>{`${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
+          <meta name="description" content={this.state.details.descriptionAr} />
+        </Helmet>
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
@@ -318,39 +261,6 @@ export class CategoryDetails extends Component {
               </div>
             </div>
             <div className="row pt-2 pb-5">{this.renderCards()}</div>
-
-            {/* <div className="row pt-5 pb-3 no-gutters d-flex align-items-center">
-              <div className="col-md-8 col-12">
-                <div
-                  className="gradient-bg w-100 d-flex align-items-center justify-content-center"
-                  style={{ height: 180 }}
-                >
-                  <div className="media">
-                    <div className="mr-4">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/megaphone.png"
-                        }
-                        height="60"
-                      />
-                    </div>
-                    <div className="media-body">
-                      <h3 className="text-white light-font-text mb-1">
-                        لا تفوت المحتوى المجاني
-                      </h3>
-                      <p className="text-white light-font-text">
-                        تحتوي هذه المنصة على مجموعة من الدروس والتمرينات
-                        المجانية.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-4 col-12 negative-margin">
-                <Slider {...customSettings}>{this.renderFreeContent()}</Slider>
-              </div>
-            </div> */}
 
             {this.state.publications && this.state.publications.length > 0 ? (
               <div className="row pt-5">

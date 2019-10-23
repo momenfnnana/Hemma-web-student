@@ -14,6 +14,7 @@ import {
   loginFailed
 } from "../../actions/login.actions";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 const validate = values => {
   const errors = {};
@@ -95,57 +96,66 @@ class LoginComponent extends Component {
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
-      <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
-        <Field
-          fieldName="phone"
-          name="phone"
-          component={phoneField}
-          containerClassName="intl-tel-input"
-          inputClassName="form-control"
-          defaultCountry="sa"
-        />
-
-        <div className="position-relative">
+      <React.Fragment>
+        <Helmet>
+          <title>تسجيل الدخول | منصّة همّة التعليمية</title>
+          <meta
+            name="description"
+            content="قم بتسجيل الدخول لحسابك الخاص وابدأ دوراتك الآن! "
+          />
+        </Helmet>
+        <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
           <Field
-            name="password"
-            type={this.state.hidden ? "text" : "password"}
-            component={inputField}
-            className="form-control border-left-0 pl-0 ltr-input pw-input"
-            placeholder="كلمة المرور"
-          >
-            <MdLockOutline />
-          </Field>
-          {this.state.hidden ? (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
-              width="100%"
-              width="20"
-              className="position-absolute left-input-icon"
-              onClick={this.togglePasswordShow}
-            />
-          ) : (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-              width="100%"
-              width="20"
-              className="position-absolute left-input-icon custom-top"
-              onClick={this.togglePasswordShow}
-            />
-          )}
-        </div>
+            fieldName="phone"
+            name="phone"
+            component={phoneField}
+            containerClassName="intl-tel-input"
+            inputClassName="form-control"
+            defaultCountry="sa"
+          />
 
-        <button
-          type="submit"
-          className="btn dark-outline-btn w-100 justify-content-center d-flex align-items-center"
-          disabled={submitting}
-        >
-          {this.state.loading == true ? (
-            <Loader type="ball-clip-rotate" />
-          ) : (
-            "تسجيل الدخول"
-          )}
-        </button>
-      </form>
+          <div className="position-relative">
+            <Field
+              name="password"
+              type={this.state.hidden ? "text" : "password"}
+              component={inputField}
+              className="form-control border-left-0 pl-0 ltr-input pw-input"
+              placeholder="كلمة المرور"
+            >
+              <MdLockOutline />
+            </Field>
+            {this.state.hidden ? (
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+                width="100%"
+                width="20"
+                className="position-absolute left-input-icon"
+                onClick={this.togglePasswordShow}
+              />
+            ) : (
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+                width="100%"
+                width="20"
+                className="position-absolute left-input-icon custom-top"
+                onClick={this.togglePasswordShow}
+              />
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="btn dark-outline-btn w-100 justify-content-center d-flex align-items-center"
+            disabled={submitting}
+          >
+            {this.state.loading == true ? (
+              <Loader type="ball-clip-rotate" />
+            ) : (
+              "تسجيل الدخول"
+            )}
+          </button>
+        </form>
+      </React.Fragment>
     );
   }
 }

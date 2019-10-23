@@ -39,6 +39,7 @@ import { Account } from "./components/account/settings/account";
 import BankAccounts from "./components/banks/banks";
 import FAQ from "./components/faq/faq";
 import { Transaction } from "./components/cart/transaction";
+import { Helmet } from "react-helmet";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -120,6 +121,9 @@ export default class AppComponent extends Component {
         <TwilioComponent />
         <React.Fragment>
           <div>
+            <Helmet>
+              <title>منصّة همّة التعليمية</title>
+            </Helmet>
             <BrowserRouter>
               <ScrollToTop>
                 <AppBackground>
