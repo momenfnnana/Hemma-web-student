@@ -33,17 +33,17 @@ export class UsersChatComponent extends Component {
           </div>
         </div>
 
-        {/* Insert condition here */}
-        <div className="row">
-          <div className="col-md-12">
-            <div className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable">
-              <h6 className="media chat-item mb-0 d-flex align-items-center  light-text small ">
-                رابط مجموعة التيليجرام
-              </h6>
+        {this.props.chatChannelSid.startsWith("http") && (
+          <div className="row">
+            <div className="col-md-12">
+              <div className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable">
+                <h6 className="media chat-item mb-0 d-flex align-items-center light-text small">
+                  رابط مجموعة التيليجرام
+                </h6>
+              </div>
             </div>
           </div>
-        </div>
-        {/* Insert condition here */}
+        )}
 
         <div className="box-layout shadow-sm w-100">
           <div className="row no-gutters">
@@ -54,10 +54,12 @@ export class UsersChatComponent extends Component {
                   placeholder="ابحث هنا"
                 />
               </div>
-              <ChatList
-                courseId={this.props.match.params.id}
-                generalChatId={this.props.chatChannelSid}
-              />
+              {this.props.chatChannelSid && (
+                <ChatList
+                  courseId={this.props.match.params.id}
+                  generalChatId={this.props.chatChannelSid}
+                />
+              )}
             </div>
             <div className="col-md-8">
               <div className="chat-title border-bottom h-55 d-flex align-items-center justify-content-center">

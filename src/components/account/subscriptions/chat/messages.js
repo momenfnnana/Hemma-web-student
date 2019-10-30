@@ -93,12 +93,38 @@ class MessagesList extends Component {
     this.props.getUser();
   };
 
+  async unsubFromChannel(type, id) {
+    let channel;
+    const client = await this.props.twilio.chatClient;
+
+    switch (type) {
+      case "uniqueName":
+        channel = await client.getChannelByUniqueName(id);
+        break;
+
+      case "sid":
+        channel = await client.getChannelBySid(id);
+        break;
+
+      default:
+        return;
+    }
+
+    if (channel) {
+      // Unsubscribe
+      channel.removeAllListeners();
+    }
+  }
+
   async componentDidUpdate(prevProps, prevState) {
     if (prevProps.activeChannelId !== this.props.activeChannelId) {
+      await this.unsubFromChannel(
+        prevProps.activeChannel,
+        prevProps.activeChannelId
+      );
+
       const client = await this.props.twilio.chatClient;
       if (this.props.activeChannel == "sid") {
-        // remove listeners from old channel
-
         // subscribe to new channel
         client
           .getChannelBySid(this.props.activeChannelId)
@@ -119,8 +145,6 @@ class MessagesList extends Component {
             console.log(err);
           });
       } else if (this.props.activeChannel == "uniqueName") {
-        // remove listeners from old channel
-
         // subscribe to new channel
         client
           .getChannelByUniqueName(this.props.activeChannelId)
