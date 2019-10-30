@@ -19,7 +19,6 @@ export class ExamsList extends Component {
       .get(`${apiBaseUrl}/Exams?courseId=${courseId}`, { headers })
       .then(response => {
         this.setState({ exams: response.data.data });
-        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -38,7 +37,7 @@ export class ExamsList extends Component {
             className="d-flex justify-content-between align-items-center"
           >
             <Link
-              to={`/subscriptions/${courseId}/exams/start`}
+              to={`/subscriptions/${courseId}/exam/${exam.id}`}
               className="light-font-text dark-silver-text small"
             >
               {exam.title}

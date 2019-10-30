@@ -1,7 +1,30 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { apiBaseUrl } from "../../../../api/helpers";
 
 export class StartExam extends Component {
+  state = {
+    examDetails: []
+  };
+
+  componentDidMount = () => {
+    const examId = this.props.match.params.examId;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get(`${apiBaseUrl}/Exams/${examId}`, { headers })
+      .then(response => {
+        this.setState({ examDetails: response.data.data });
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
     const courseId = this.props.match.params.id;
 
@@ -16,13 +39,22 @@ export class StartExam extends Component {
                 className="contain-img mb-3"
               />
               <h6 className="mid-text mb-3">
-                الامتحان الأول: القطوع المخروطية
+                {this.state.examDetails.title}:{" "}
+                {this.state.examDetails.description}
               </h6>
               <h6 className="dark-text small">
-                عدد الأسئلة: <span className="en-text red-text">10</span> أسئلة
+                عدد الأسئلة:{" "}
+                <span className="en-text red-text">
+                  {this.state.examDetails.totalQuestions}
+                </span>{" "}
+                أسئلة
               </h6>
               <h6 className="dark-text small mb-3">
-                مدة الامتحان: <span className="en-text red-text">30</span> دقيقة
+                مدة الامتحان:{" "}
+                <span className="en-text red-text">
+                  {this.state.examDetails.totalTime}
+                </span>{" "}
+                دقيقة
               </h6>
               <p className="dark-text w-50 mx-auto text-center text-break">
                 هذا الامتحان وضع لمساعدتك في اختبار قدراتك، احرص على عدم الغش أو

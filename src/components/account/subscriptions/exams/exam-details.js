@@ -5,11 +5,14 @@ import "../styles.sass";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import { HintModal } from "./hint";
+import axios from "axios";
+import { apiBaseUrl } from "../../../../api/helpers";
 
 export class ExamDetails extends Component {
   state = {
     isConfirmExamOpen: false,
-    isHintOpen: false
+    isHintOpen: false,
+    examDetails: []
   };
 
   openConfirmExamModal = () => {

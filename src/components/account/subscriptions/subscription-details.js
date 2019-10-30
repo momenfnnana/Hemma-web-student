@@ -180,7 +180,7 @@ export class SubscriptionDetails extends Component {
                       component={ExamsList}
                     />
                     <Route
-                      path="/subscriptions/:id/exams/start"
+                      path="/subscriptions/:id/exam/:examId"
                       component={StartExam}
                     />
                     <Route
