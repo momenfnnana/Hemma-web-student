@@ -22,6 +22,7 @@ import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
 import { ChallengeDetails } from "./challenges/challenge-details";
 import { NewInstallment } from "./transactions/installment/NewInstallment";
+import { ExamResult } from "./exams/exam-result";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -182,10 +183,17 @@ export class SubscriptionDetails extends Component {
                     <Route
                       path="/subscriptions/:id/exam/:examId"
                       component={StartExam}
+                      exact
                     />
                     <Route
-                      path="/subscriptions/:id/exams/details"
+                      path="/subscriptions/:id/exam/:attemptId/details"
                       component={ExamDetails}
+                      exact
+                    />
+                    <Route
+                      path="/subscriptions/:id/exam/:attemptId/result"
+                      component={ExamResult}
+                      exact
                     />
                     <Route
                       path="/subscriptions/:id/transactions/list"

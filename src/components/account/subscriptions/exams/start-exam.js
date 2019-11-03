@@ -18,7 +18,29 @@ export class StartExam extends Component {
       .get(`${apiBaseUrl}/Exams/${examId}`, { headers })
       .then(response => {
         this.setState({ examDetails: response.data.data });
-        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  startExam = () => {
+    const examId = this.props.match.params.examId;
+    const courseId = this.props.match.params.id;
+
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      examId: examId
+    };
+    axios
+      .post(`${apiBaseUrl}/Exams/Attempts`, data, { headers })
+      .then(response => {
+        this.props.history.push(
+          `/subscriptions/${courseId}/exam/${response.data.data.id}/details`
+        );
       })
       .catch(error => {
         console.log(error);
@@ -60,12 +82,12 @@ export class StartExam extends Component {
                 هذا الامتحان وضع لمساعدتك في اختبار قدراتك، احرص على عدم الغش أو
                 الاستعانة بأي مصادر خارجية
               </p>
-              <Link
+              <button
                 className="btn light-outline-btn w-25 mb-1"
-                to={`/subscriptions/${courseId}/exams/details`}
+                onClick={this.startExam}
               >
                 ابدأ الامتحان
-              </Link>
+              </button>
               <Link
                 className="dark-text smaller"
                 to={`/subscriptions/${courseId}/exams/list`}

@@ -275,7 +275,30 @@ audio:focus
   top:  -10px
   right: 30px          
 .tooltip-inner
-  max-width: 220px     
+  max-width: 220px
+
+.radio-custom
+  -webkit-appearance: none
+  -moz-appearance: none
+  appearance: none
+  display: inline-block
+  width: 20px
+  height: 20px
+  padding: 2px !important
+  background-clip: content-box
+  border: 2px solid #a9acb4
+  background-color: transparent
+  border-radius: 50%
+.radio-custom.radio-success
+  border: 2px solid #109201
+  background-color: transparent
+  &:checked
+    background-color: #109201
+.radio-custom.radio-failure
+  border: 2px solid #f66271
+  background-color: transparent
+  &:checked
+    background-color: #f66271
 @media only screen and (max-width: 767px)                          
     .responsive-margin
       margin-top: 15px
