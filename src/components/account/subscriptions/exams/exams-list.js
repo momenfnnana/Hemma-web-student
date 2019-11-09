@@ -29,32 +29,47 @@ export class ExamsList extends Component {
     const exams = this.state.exams || [];
     const courseId = this.props.match.params.id;
 
-    return exams.map(exam => (
-      <React.Fragment>
-        <tr>
-          <td
-            scope="row"
-            className="d-flex justify-content-between align-items-center"
-          >
-            <Link
-              to={`/subscriptions/${courseId}/exam/${exam.id}`}
-              className="light-font-text dark-silver-text small"
-            >
+    return exams.map(exam => {
+      const examTime = exam.totalTime;
+      const totalTime = Number(examTime);
+
+      var h = Math.floor(totalTime / 3600);
+      var m = Math.floor((totalTime % 3600) / 60);
+      var s = Math.floor((totalTime % 3600) % 60);
+      var time =
+        ("0" + h).slice(-2) +
+        ":" +
+        ("0" + m).slice(-2) +
+        ":" +
+        ("0" + s).slice(-2);
+
+      return (
+        <React.Fragment>
+          <tr>
+            <td scope="row" className="dark-silver-text small">
               {exam.title}
-            </Link>
-          </td>
-          <td className="dark-silver-text small text-center">
-            <span className="en-text">{exam.totalTime}</span> دقيقة
-          </td>
-          <td className="en-text dark-silver-text small text-center">
-            {exam.totalQuestions}
-          </td>
-          <td className="en-text dark-silver-text small text-center">
-            {exam.totalAttempts}
-          </td>
-        </tr>
-      </React.Fragment>
-    ));
+            </td>
+            <td className="dark-silver-text small text-center">
+              <span className="en-text">{time}</span>
+            </td>
+            <td className="en-text dark-silver-text small text-center">
+              {exam.totalQuestions}
+            </td>
+            <td className="en-text dark-silver-text small text-center">
+              {exam.totalAttempts}
+            </td>
+            <td>
+              <Link
+                to={`/subscriptions/${courseId}/exam/${exam.id}`}
+                className="badge dark-bg text-white w-100"
+              >
+                اختبر الآن
+              </Link>
+            </td>
+          </tr>
+        </React.Fragment>
+      );
+    });
   }
 
   render() {
@@ -96,7 +111,7 @@ export class ExamsList extends Component {
                 <Table className="mb-0">
                   <thead className="silver-bg">
                     <tr>
-                      <th className="w-50 dark-silver-text small border-0">
+                      <th className="w-40 dark-silver-text small border-0">
                         الامتحان
                       </th>
                       <th className="w-15 dark-silver-text small border-0 text-center">
@@ -107,6 +122,9 @@ export class ExamsList extends Component {
                       </th>
                       <th className="w-15 dark-silver-text small border-0 text-center">
                         عدد المحاولات
+                      </th>
+                      <th className="w-15 dark-silver-text small border-0 text-center">
+                        تحكم
                       </th>
                     </tr>
                   </thead>

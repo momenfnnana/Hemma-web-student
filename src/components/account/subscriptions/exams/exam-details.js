@@ -1,32 +1,15 @@
 import React, { Component } from "react";
 import { CustomInput } from "reactstrap";
-import { ConfirmExam } from "./confirm-exam";
-import Slider from "react-slick";
 import { HintModal } from "./hint";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import "../styles.sass";
 import { ExamPass } from "./exam-pass";
 import { ExamFail } from "./exam-fail";
-import Countdown from "react-countdown-now";
-
-const Completionist = () => <span>Times up</span>;
-
-const renderer = ({ minutes, seconds, completed }) => {
-  if (completed) {
-    return <Completionist />;
-  } else {
-    return (
-      <React.Fragment>
-        {minutes}:{seconds}
-      </React.Fragment>
-    );
-  }
-};
+import Modal from "react-modal";
+import axios from "axios";
+import "../styles.sass";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -39,15 +22,36 @@ class ExamDetailsComponent extends Component {
       nav1: null,
       nav2: null,
       answers: [],
-      isChecked: false,
       status: "",
       scoreDetails: [],
-      examDetails: []
+      examDetails: [],
+      selectedQuestionId: null,
+      selectedQuestion: 0,
+      checkedItems: new Map()
     };
     this.onInput = this.onInput.bind(this);
   }
 
-  onInput(questionId, selectedChoice) {
+  goToNext = () => {
+    this.setState({
+      selectedQuestion:
+        (this.state.selectedQuestion + 1) % this.state.questions.length
+    });
+  };
+
+  goToPrevious = () => {
+    this.setState({
+      selectedQuestion:
+        (this.state.selectedQuestion - 1) % this.state.questions.length
+    });
+  };
+
+  onInput(questionId, selectedChoice, e) {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    this.setState(prevState => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked)
+    }));
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
@@ -62,12 +66,16 @@ class ExamDetailsComponent extends Component {
     this.setState({ answers });
   }
 
+  openConfirmExamModal = () => {
+    this.setState({ isConfirmExamOpen: true });
+  };
+
   closeConfirmExamModal = () => {
     this.setState({ isConfirmExamOpen: false });
   };
 
-  openHintModal = () => {
-    this.setState({ isHintOpen: true });
+  openHintModal = id => {
+    this.setState({ isHintOpen: true, selectedQuestionId: id });
   };
   closeHintModal = () => {
     this.setState({ isHintOpen: false });
@@ -86,7 +94,6 @@ class ExamDetailsComponent extends Component {
           questions: response.data.data.questions,
           examDetails: response.data.data
         });
-        console.log(response.data.data);
       })
       .catch(error => {
         console.log(error);
@@ -99,7 +106,6 @@ class ExamDetailsComponent extends Component {
   };
 
   submitAnswers = () => {
-    // this.setState({ isConfirmExamOpen: true });
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
     let headers = {
@@ -114,9 +120,9 @@ class ExamDetailsComponent extends Component {
       })
       .then(response => {
         if (response.data.data.status == "Pass") {
-          this.setState({ status: "Pass" });
+          this.setState({ status: "Pass", isConfirmExamOpen: false });
         } else if (response.data.data.status == "Fail") {
-          this.setState({ status: "Fail" });
+          this.setState({ status: "Fail", isConfirmExamOpen: false });
         }
         axios
           .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Scorecard`, {
@@ -130,109 +136,142 @@ class ExamDetailsComponent extends Component {
           });
       })
       .catch(error => {
+        this.setState({ isConfirmExamOpen: false });
         console.log(error);
       });
   };
 
-  renderQuestionsTitle() {
-    const questions = this.state.questions || [];
-    return questions.map(question => (
-      <div className="box-layout h-55 d-flex justify-content-center flex-column p-3 br-0 border-right-0 border-top-0">
-        <h6 className="dark-text small mb-1">السؤال {question.id}</h6>
-
-        <p className="dark-silver-text smaller mb-0 word-break">
-          {question.stem}
-        </p>
-      </div>
-    ));
-  }
-
   renderQuestions() {
     const questions = this.state.questions || [];
-    return questions.map(question => (
+    const question = questions[this.state.selectedQuestion];
+    if (question) {
+      var string = question.stem;
+      var length = 25;
+      var trimmedString =
+        string.length > length
+          ? string.substring(0, length - 3) + "..."
+          : string;
+    }
+    return (
       <React.Fragment>
-        <div dir="rtl">
-          <div className="row p-4 pb-2">
-            <div className="col-12">
-              <div className="box-layout box-border shadow-sm">
-                <p className="dark-text small mb-0 p-3 word-break">
-                  {question.stem}
+        {question && (
+          <React.Fragment>
+            <div className="d-flex justify-content-between flex-row p-3 br-0 border-right-0 border-top-0">
+              <button className="btn light-btn" onClick={this.goToPrevious}>
+                السابق
+              </button>
+              <div className="d-flex flex-column justify-content-center align-items-center">
+                <h6
+                  className={`small mb-1 ${
+                    question.isCorrect == true ? "green-text" : "red-text"
+                  }`}
+                >
+                  السؤال {question.id}
+                </h6>
+                <p className="dark-silver-text smaller mb-0 word-break">
+                  {trimmedString}
                 </p>
               </div>
+
+              <button className="btn light-btn" onClick={this.goToNext}>
+                التالي
+              </button>
             </div>
-          </div>
-          <div className="row pl-4 pr-4 pb-4">
-            <div className="col-7">
-              <div className="row d-flex justify-content-between align-items-center mb-3">
-                <div className="col-md-6">
-                  <p className="small dark-silver-text mb-0">
-                    اختر الإجابة الصحيحة
+            <hr className="mt-0 mb-0" />
+
+            <div className="row p-4 pb-2">
+              <div className="col-12">
+                <div className="box-layout box-border shadow-sm">
+                  <p className="dark-text small mb-0 p-3 word-break">
+                    {question.stem}
                   </p>
                 </div>
-                <div className="col-md-6">
-                  <button
-                    className="btn red-outline-btn btn-sm small float-right d-flex"
-                    onClick={this.openHintModal}
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/hint.png"}
-                      height="17"
-                      className="contain-img mr-2"
-                    />
-                    المساعدة
-                  </button>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12">
-                  {Object.keys(question.choices).map(function(key) {
-                    const value = question.choices[key];
-                    return (
-                      <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                        <CustomInput
-                          type="radio"
-                          label={value}
-                          className="small dark-silver-text light-font-text d-flex align-items-center"
-                          name="selectedAnswer"
-                          onChange={() => this.onInput(question.id, key)}
-                          id={value}
-                          name="selectedChoice"
-                        />
-                      </div>
-                    );
-                  }, this)}
-                </div>
               </div>
             </div>
-            {question.imageUrl && (
-              <div className="col-5 d-flex align-items-center">
-                <img src={question.imageUrl} width="100%" />
+            <div className="row pl-4 pr-4 pb-4">
+              <div className="col-7">
+                <div className="row d-flex justify-content-between align-items-center mb-3">
+                  <div className="col-md-6">
+                    <p className="small dark-silver-text mb-0">
+                      اختر الإجابة الصحيحة
+                    </p>
+                  </div>
+                  <div className="col-md-6">
+                    <button
+                      className="btn red-outline-btn btn-sm small float-right d-flex"
+                      onClick={() => this.openHintModal(question.id)}
+                    >
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/images/hint.png"}
+                        height="17"
+                        className="contain-img mr-2"
+                      />
+                      المساعدة
+                    </button>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12">
+                    {Object.keys(question.choices).map(function(key) {
+                      const value = question.choices[key];
+                      return (
+                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                          <CustomInput
+                            type="radio"
+                            label={value}
+                            className="small dark-silver-text light-font-text d-flex align-items-center"
+                            name="selectedAnswer"
+                            onChange={e => this.onInput(question.id, key, e)}
+                            id={value}
+                            checked={this.state.checkedItems.get(question.stem)}
+                          />
+                        </div>
+                      );
+                    }, this)}
+                  </div>
+                </div>
               </div>
-            )}
-          </div>
-        </div>
+              {question.imageUrl && (
+                <div className="col-5 d-flex align-items-center">
+                  <img src={question.imageUrl} width="100%" />
+                </div>
+              )}
+            </div>
+          </React.Fragment>
+        )}
       </React.Fragment>
-    ));
+    );
   }
 
   render() {
     const courseId = this.props.match.params.id;
     const attemptId = this.props.match.params.attemptId;
-    const settings = {
-      className: "center",
-      centerMode: true,
-      infinite: false,
-      centerPadding: "50",
-      slidesToShow: 3.5,
-      speed: 500
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "35%",
+        height: "auto",
+        borderWidth: 0,
+        padding: 20
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 2
+      }
     };
-
     const dueDate =
       this.state && this.state.examDetails && this.state.examDetails.dueAt;
     const dueTime = new Date(dueDate);
-    const countdownTime = dueTime.getTime();
+    const countDownDate = dueTime.getTime();
 
-    console.log(countdownTime);
+    const questionsLength = this.state.questions.length;
+    const answersLength = this.state.answers.length;
+    const unansweredQuestions = questionsLength - answersLength;
 
     return (
       <React.Fragment>
@@ -255,13 +294,7 @@ class ExamDetailsComponent extends Component {
                 <div className="row p-4">
                   <div className="col-12 d-flex align-items-center justify-content-between">
                     <div>
-                      <h6 className="mid-text mb-0">
-                        {/* الامتحان الأول: القطوع المخروطية */}
-                        أسئلة الامتحان
-                      </h6>
-                      {/* <p className="dark-silver-text mb-0 mt-1 smaller">
-                        وصف الامتحان
-                      </p> */}
+                      <h6 className="mid-text mb-0">أسئلة الامتحان</h6>
                     </div>
                     <div className="d-flex align-items-center">
                       <img
@@ -275,10 +308,7 @@ class ExamDetailsComponent extends Component {
                       />
 
                       <p className="small en-text dark-silver-text mb-0">
-                        <Countdown
-                          date={Date.now() + countdownTime}
-                          renderer={renderer}
-                        />
+                        {countDownDate}
                       </p>
                     </div>
                   </div>
@@ -289,26 +319,7 @@ class ExamDetailsComponent extends Component {
                     <hr className="mb-0 mt-0" />
                   </div>
                 </div>
-                <div className="question-item">
-                  <Slider
-                    asNavFor={this.state.nav1}
-                    ref={slider => (this.slider2 = slider)}
-                    slidesToShow={3}
-                    swipeToSlide={true}
-                    focusOnSelect={true}
-                    {...settings}
-                    className="mb-3"
-                  >
-                    {this.renderQuestionsTitle()}
-                  </Slider>
-                  <Slider
-                    asNavFor={this.state.nav2}
-                    ref={slider => (this.slider1 = slider)}
-                    arrows={false}
-                  >
-                    {this.renderQuestions()}
-                  </Slider>
-                </div>
+                <div className="question-item">{this.renderQuestions()}</div>
                 <div className="row">
                   <div className="col-12">
                     <hr className="mb-0" />
@@ -317,28 +328,74 @@ class ExamDetailsComponent extends Component {
 
                 <div className="row pt-4 pb-3">
                   <div className="col-12 text-center">
-                    <button
-                      className="btn light-outline-btn w-25"
-                      // onClick={this.openConfirmExamModal}
-                      onClick={this.submitAnswers}
-                    >
-                      إنهاء الامتحان
-                    </button>
+                    {unansweredQuestions == 0 ? (
+                      <button
+                        className="btn light-outline-btn w-25"
+                        onClick={this.submitAnswers}
+                      >
+                        إنهاء الامتحان
+                      </button>
+                    ) : (
+                      <button
+                        className="btn light-outline-btn w-25"
+                        onClick={this.openConfirmExamModal}
+                      >
+                        إنهاء الامتحان
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
-
-              <ConfirmExam
-                isConfirmExamOpen={this.state.isConfirmExamOpen}
-                closeConfirmExam={this.closeConfirmExamModal}
-              />
               <HintModal
                 isHintOpen={this.state.isHintOpen}
                 closeHint={this.closeHintModal}
+                id={this.state.selectedQuestionId}
+                attemptId={attemptId}
               />
             </div>
           </div>
         )}
+
+        <Modal
+          style={customStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isConfirmExamOpen}
+          onRequestClose={this.closeConfirmExamModal}
+          closeConfirmExam={this.closeConfirmExamModal}
+        >
+          <div className="container h-100 pt-3 pb-3 w-75 mx-auto">
+            <div className="row">
+              <div className="col-12 d-flex align-items-center justify-content-center flex-column text-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/not-verified.png"
+                  }
+                  height="50"
+                  width="50"
+                  className="contain-img mb-3"
+                />
+                <h6 className="dark-text mb-4 mt-0">
+                  هناك <span className="en-text">{unansweredQuestions}</span>{" "}
+                  أسئلة لم تقم بالاجابة عليها هل أنت متأكد من أنك تريد ارسال
+                  الاجابات؟
+                </h6>
+
+                <button
+                  className="btn light-outline-btn w-75"
+                  onClick={this.submitAnswers}
+                >
+                  اعتمد الاجابة
+                </button>
+                <h6
+                  className="dark-silver-text small mt-3 mb-0 clickable"
+                  onClick={this.closeConfirmExamModal}
+                >
+                  إلغاء
+                </h6>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }

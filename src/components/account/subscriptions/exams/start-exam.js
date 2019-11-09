@@ -49,6 +49,18 @@ export class StartExam extends Component {
 
   render() {
     const courseId = this.props.match.params.id;
+    const examTime = this.state.examDetails.totalTime;
+    const totalTime = Number(examTime);
+
+    var h = Math.floor(totalTime / 3600);
+    var m = Math.floor((totalTime % 3600) / 60);
+    var s = Math.floor((totalTime % 3600) % 60);
+    var time =
+      ("0" + h).slice(-2) +
+      ":" +
+      ("0" + m).slice(-2) +
+      ":" +
+      ("0" + s).slice(-2);
 
     return (
       <React.Fragment>
@@ -60,7 +72,7 @@ export class StartExam extends Component {
                 height="120"
                 className="contain-img mb-3"
               />
-              <h6 className="mid-text mb-3">
+              <h6 className="mid-text mb-3 text-center w-75">
                 {this.state.examDetails.title}:{" "}
                 {this.state.examDetails.description}
               </h6>
@@ -72,10 +84,7 @@ export class StartExam extends Component {
                 أسئلة
               </h6>
               <h6 className="dark-text small mb-3">
-                مدة الامتحان:{" "}
-                <span className="en-text red-text">
-                  {this.state.examDetails.totalTime}
-                </span>{" "}
+                مدة الامتحان: <span className="en-text red-text">{time}</span>{" "}
                 دقيقة
               </h6>
               <p className="dark-text w-50 mx-auto text-center text-break">

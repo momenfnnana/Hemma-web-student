@@ -2,8 +2,38 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 import { inputField } from "../../../shared/inputs/inputField";
 import { Field, reduxForm, Fields } from "redux-form";
+import { apiBaseUrl } from "../../../../api/helpers";
+import axios from "axios";
 
 export class HintModal extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      details: []
+    };
+  }
+  shouldComponentUpdate(nextProps, nextState) {
+    const attemptId = this.props.attemptId;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
+      axios
+        .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Sheet`, { headers })
+        .then(response => {
+          let questions = response.data.data.questions;
+          let questionId = questions.filter(
+            question => question.id == nextProps.id
+          );
+          this.setState({ details: questionId });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    return true;
+  }
   render() {
     const customStyles = {
       content: {
@@ -24,6 +54,7 @@ export class HintModal extends Component {
       }
     };
     const { isHintOpen, closeHint } = this.props;
+
     return (
       <React.Fragment>
         <Modal
@@ -42,7 +73,7 @@ export class HintModal extends Component {
 
                 <div className="box-layout p-3">
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/graph.png"}
+                    src="http://www.wiris.net/demo/editor/render.png?mml=<math><mfrac><mn>1</mn><mi>x</mi></mfrac></math>"
                     height="180"
                     width="100%"
                     className="contain-img"

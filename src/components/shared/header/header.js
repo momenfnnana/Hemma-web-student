@@ -104,12 +104,12 @@ class HeaderComponent extends Component {
               <Link to="/" className="navbar-brand mr-0">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                  height="70"
+                  height="80"
                 />
-                <span className="d-none d-sm-block" />
+                {/* <span className="d-none d-sm-block" />
                 <h5 className="dark-text d-none d-sm-block">
                   سلسلة بالبيد التعليمية
-                </h5>
+                </h5> */}
               </Link>
               <div className="d-block d-sm-none">
                 {!this.props.authenticated ? (

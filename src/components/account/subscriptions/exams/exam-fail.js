@@ -5,8 +5,21 @@ export class ExamFail extends Component {
   render() {
     const courseId = this.props.courseId;
     const attemptId = this.props.attemptId;
-
     const scoreDetails = this.props.scoreDetails;
+
+    const examTime = scoreDetails.timeSpent;
+    const totalTime = Number(examTime);
+
+    var h = Math.floor(totalTime / 3600);
+    var m = Math.floor((totalTime % 3600) / 60);
+    var s = Math.floor((totalTime % 3600) % 60);
+    var time =
+      ("0" + h).slice(-2) +
+      ":" +
+      ("0" + m).slice(-2) +
+      ":" +
+      ("0" + s).slice(-2);
+
     return (
       <div className="row no-gutters">
         <div className="col-12">
@@ -25,9 +38,7 @@ export class ExamFail extends Component {
             <p className="dark-silver-text small mb-1">
               الوقت المستغرق في حل الامتحان
             </p>
-            <p className="dark-silver-text small en-text">
-              {scoreDetails.timeSpent}
-            </p>
+            <p className="dark-silver-text small en-text">{time}</p>
             <Link
               className="dark-text smaller mb-4"
               to={`/subscriptions/${courseId}/exams/list`}
