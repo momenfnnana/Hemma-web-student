@@ -59,14 +59,6 @@ class ExamResultComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
-    if (question) {
-      var string = question.stem;
-      var length = 25;
-      var trimmedString =
-        string.length > length
-          ? string.substring(0, length - 3) + "..."
-          : string;
-    }
 
     return (
       <Accordion className="quiz-accordion">
@@ -83,7 +75,7 @@ class ExamResultComponent extends Component {
                     السؤال {question.id}
                   </h6>
                   <p className="dark-silver-text smaller mb-0 word-break">
-                    {trimmedString}
+                    {question.stem}
                   </p>
                 </div>
                 <span className="fa fa-chevron-down dark-text" />

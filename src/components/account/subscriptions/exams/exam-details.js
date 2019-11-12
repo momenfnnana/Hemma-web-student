@@ -10,6 +10,8 @@ import { ExamFail } from "./exam-fail";
 import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
+var moment = require("moment");
+moment().format();
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -26,8 +28,7 @@ class ExamDetailsComponent extends Component {
       scoreDetails: [],
       examDetails: [],
       selectedQuestionId: null,
-      selectedQuestion: 0,
-      checkedItems: new Map()
+      selectedQuestion: 0
     };
     this.onInput = this.onInput.bind(this);
   }
@@ -46,12 +47,7 @@ class ExamDetailsComponent extends Component {
     });
   };
 
-  onInput(questionId, selectedChoice, e) {
-    const item = e.target.name;
-    const isChecked = e.target.checked;
-    this.setState(prevState => ({
-      checkedItems: prevState.checkedItems.set(item, isChecked)
-    }));
+  onInput(questionId, selectedChoice) {
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
@@ -144,41 +140,33 @@ class ExamDetailsComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
-    if (question) {
-      var string = question.stem;
-      var length = 25;
-      var trimmedString =
-        string.length > length
-          ? string.substring(0, length - 3) + "..."
-          : string;
-    }
+
     return (
       <React.Fragment>
         {question && (
           <React.Fragment>
             <div className="d-flex justify-content-between flex-row p-3 br-0 border-right-0 border-top-0">
-              <button className="btn light-btn" onClick={this.goToPrevious}>
-                السابق
-              </button>
+              {this.state.selectedQuestion == 0 ? (
+                <div />
+              ) : (
+                <button className="btn light-btn" onClick={this.goToPrevious}>
+                  السابق
+                </button>
+              )}
               <div className="d-flex flex-column justify-content-center align-items-center">
-                <h6
-                  className={`small mb-1 ${
-                    question.isCorrect == true ? "green-text" : "red-text"
-                  }`}
-                >
-                  السؤال {question.id}
-                </h6>
-                <p className="dark-silver-text smaller mb-0 word-break">
-                  {trimmedString}
-                </p>
+                <h6 className="mb-0 dark-text">السؤال {question.id}</h6>
               </div>
 
-              <button className="btn light-btn" onClick={this.goToNext}>
-                التالي
-              </button>
+              {this.state.selectedQuestion + 1 ==
+              this.state.questions.length ? (
+                <div />
+              ) : (
+                <button className="btn light-btn" onClick={this.goToNext}>
+                  التالي
+                </button>
+              )}
             </div>
             <hr className="mt-0 mb-0" />
-
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm">
@@ -221,9 +209,8 @@ class ExamDetailsComponent extends Component {
                             label={value}
                             className="small dark-silver-text light-font-text d-flex align-items-center"
                             name="selectedAnswer"
-                            onChange={e => this.onInput(question.id, key, e)}
+                            onChange={this.onInput(question.id, key)}
                             id={value}
-                            checked={this.state.checkedItems.get(question.stem)}
                           />
                         </div>
                       );
@@ -264,10 +251,22 @@ class ExamDetailsComponent extends Component {
         zIndex: 2
       }
     };
+
     const dueDate =
       this.state && this.state.examDetails && this.state.examDetails.dueAt;
     const dueTime = new Date(dueDate);
-    const countDownDate = dueTime.getTime();
+    const dueDateInSeconds = dueTime.getTime() / 1000;
+
+    const currentDate = new Date();
+    const currentDateInSeconds = currentDate.getTime() / 1000;
+
+    var eventTime = dueDateInSeconds;
+    var currentTime = currentDateInSeconds;
+    var diffTime = eventTime - currentTime;
+    var duration = moment.duration(diffTime * 1000, "milliseconds");
+    var interval = 1000;
+
+    var duration = moment.duration(duration - interval, "milliseconds");
 
     const questionsLength = this.state.questions.length;
     const answersLength = this.state.answers.length;
@@ -308,7 +307,7 @@ class ExamDetailsComponent extends Component {
                       />
 
                       <p className="small en-text dark-silver-text mb-0">
-                        {countDownDate}
+                        {/* {countDownDate} */}
                       </p>
                     </div>
                   </div>

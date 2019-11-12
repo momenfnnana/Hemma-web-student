@@ -2,14 +2,15 @@ import React, { Component } from "react";
 import axios from "axios";
 import { FaGraduationCap } from "react-icons/fa";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
 import { CardsList } from "../shared/cardsList/cardsList";
-import "./styles.sass";
 import { PublicationDetails } from "../publication/publication";
 import { apiBaseUrl } from "../../api/helpers";
 import { Helmet } from "react-helmet";
+import swal from "@sweetalert/with-react";
+import "./styles.sass";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export class CategoryDetails extends Component {
   constructor(props) {
@@ -110,6 +111,22 @@ export class CategoryDetails extends Component {
     ));
   }
 
+  openFreeLecture(lecture) {
+    let token = localStorage.getItem("token");
+    if (token) {
+      window.open(lecture.broadcastUrl, "_blank");
+    } else {
+      swal(
+        "عفواً",
+        "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
+        "error",
+        {
+          button: "متابعة"
+        }
+      );
+    }
+  }
+
   renderLectures() {
     return this.state.lectures.map(lecture => (
       <li
@@ -133,7 +150,7 @@ export class CategoryDetails extends Component {
         {lecture.broadcastUrl && (
           <button
             className="btn light-outline-btn unset-height"
-            onClick={() => window.open(lecture.broadcastUrl, "_blank")}
+            onClick={() => this.openFreeLecture(lecture)}
           >
             انضم
           </button>
@@ -144,6 +161,7 @@ export class CategoryDetails extends Component {
 
   render() {
     var settings = {
+      dots: true,
       infinite: false,
       slidesToShow: 4,
       slidesToScroll: 1,
@@ -160,14 +178,13 @@ export class CategoryDetails extends Component {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
-            slidesToScroll: 2,
-            initialSlide: 2
+            slidesToScroll: 1
           }
         },
         {
           breakpoint: 480,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 2,
             slidesToScroll: 1
           }
         }
