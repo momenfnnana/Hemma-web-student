@@ -41,7 +41,7 @@ export class SpeedUp extends Component {
     const files = this.state.files || [];
     return files.map(file => (
       <React.Fragment>
-        <div className="col-md-4">
+        <div className="col-md-4" key={file.id}>
           <div
             className="card card-sm custom-height shadow-sm border-0 clickable"
             onClick={() => this.openSpeedUpModal(file.id)}

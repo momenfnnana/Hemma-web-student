@@ -203,7 +203,10 @@ class ExamDetailsComponent extends Component {
                     {Object.keys(question.choices).map(function(key) {
                       const value = question.choices[key];
                       return (
-                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                        <div
+                          className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2"
+                          key={question.id}
+                        >
                           <CustomInput
                             type="radio"
                             label={value}

@@ -416,7 +416,7 @@ export class DiscussionDetailsComponent extends Component {
       return (
         <React.Fragment>
           {message.author == myIdentity ? (
-            <li className="mb-3">
+            <li className="mb-3" key={message.id}>
               {message.type == "image" && (
                 <div className="message my-message text-white light-font-text bg-transparent">
                   <img
@@ -459,7 +459,11 @@ export class DiscussionDetailsComponent extends Component {
               )}
             </li>
           ) : (
-            <li className="clearfix mb-3" ref={this.newMessageAdded}>
+            <li
+              className="clearfix mb-3"
+              ref={this.newMessageAdded}
+              key={message.id}
+            >
               <div className="message-data">
                 {user && (
                   <span className="message-data-name small">{user.name}</span>

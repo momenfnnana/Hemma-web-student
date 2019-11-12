@@ -14,15 +14,9 @@ import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream";
 import { DiscussionsList } from "./discussions/discussions-list";
 import { DiscussionDetails } from "./discussions/discussion-details";
-import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
-import { ChallengesList } from "./challenges/challenges-list";
-import { ExamsList } from "./exams/exams-list";
-import { StartExam } from "./exams/start-exam";
-import { ExamDetails } from "./exams/exam-details";
-import { ChallengeDetails } from "./challenges/challenge-details";
 import { NewInstallment } from "./transactions/installment/NewInstallment";
-import { ExamResult } from "./exams/exam-result";
+import axios from "axios";
 
 export class SubscriptionDetails extends Component {
   constructor(props) {
@@ -120,7 +114,6 @@ export class SubscriptionDetails extends Component {
                   <div className="col-md-9 col-12">
                     <div className="row no-gutters">
                       <div className="col-12">
-                        {/* <AccountBreadcrumb /> */}
                         {this.state.details.chatChannelSid && (
                           <Lecture
                             id={courseId}
@@ -167,34 +160,6 @@ export class SubscriptionDetails extends Component {
                         chatChannelSid={this.state.details.chatChannelSid}
                       />
                     )}
-                    {/* <Route
-                  path="/subscriptions/:id/challenges"
-                  exact
-                  component={ChallengesList}
-                />
-                <Route
-                  path="/subscriptions/:id/challenges/details"
-                  component={ChallengeDetails}
-                /> */}
-                    <Route
-                      path="/subscriptions/:id/exams/list"
-                      component={ExamsList}
-                    />
-                    <Route
-                      path="/subscriptions/:id/exam/:examId"
-                      component={StartExam}
-                      exact
-                    />
-                    <Route
-                      path="/subscriptions/:id/exam/:attemptId/details"
-                      component={ExamDetails}
-                      exact
-                    />
-                    <Route
-                      path="/subscriptions/:id/exam/:attemptId/result"
-                      component={ExamResult}
-                      exact
-                    />
                     <Route
                       path="/subscriptions/:id/transactions/list"
                       render={props => (

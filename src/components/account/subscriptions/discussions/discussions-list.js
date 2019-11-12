@@ -42,7 +42,10 @@ export class DiscussionsList extends Component {
             to={`/subscriptions/${courseId}/discussions/${discussion.id}`}
             className="discussion-item d-flex align-items-center"
           >
-            <div className="media w-90 d-flex align-items-center justify-content-between">
+            <div
+              className="media w-90 d-flex align-items-center justify-content-between"
+              key={discussion.id}
+            >
               <div className="media-body">
                 <h6 className="dark-text">{discussion.title}</h6>
                 <div className="d-flex align-items-center">

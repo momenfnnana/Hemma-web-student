@@ -29,7 +29,10 @@ export class Instructors extends Component {
     const instructors = this.state.instructors;
     if (instructors) {
       return instructors.map(instructor => (
-        <div className="white-bg border-bottom d-flex align-items-center mh-55 p-3">
+        <div
+          className="white-bg border-bottom d-flex align-items-center mh-55 p-3"
+          key={instructor.id}
+        >
           {/* <div>
             <img
               src={process.env.PUBLIC_URL + "/assets/images/female-circle.png"}
@@ -42,7 +45,7 @@ export class Instructors extends Component {
             <h6 className="mid-text small mb-1 mt-0">{instructor.name}</h6>
 
             {instructor.sections.map(section => (
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center" key={section.id}>
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/diary.png"}
                   className="mr-2"

@@ -122,7 +122,6 @@ class MessagesList extends Component {
         prevProps.activeChannel,
         prevProps.activeChannelId
       );
-
       const client = await this.props.twilio.chatClient;
       if (this.props.activeChannel == "sid") {
         // subscribe to new channel
@@ -189,10 +188,11 @@ class MessagesList extends Component {
 
     return messages.map(message => {
       const user = this.getUser(message.author);
+      // console.log(messages);
       return (
         <React.Fragment>
           {message.author == myIdentity ? (
-            <li className="mb-3">
+            <li className="mb-3" key={message.id}>
               {message.type == "image" && (
                 <div className="message my-message text-white light-font-text bg-transparent">
                   <img
@@ -235,7 +235,11 @@ class MessagesList extends Component {
               )}
             </li>
           ) : (
-            <li className="clearfix mb-3" ref={this.newMessageAdded}>
+            <li
+              className="clearfix mb-3"
+              ref={this.newMessageAdded}
+              key={message.id}
+            >
               <div className="message-data">
                 {user && (
                   <span className="message-data-name small">{user.name}</span>

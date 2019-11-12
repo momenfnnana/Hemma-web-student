@@ -92,9 +92,16 @@ export class CategoryDetails extends Component {
           key={publication.id}
           onClick={() => this.openModal(publication.id)}
         >
-          <img src={publication.thumbnailUrl} width="100%" />
+          <img
+            src={publication.thumbnailUrl}
+            width="100%"
+            alt={publication.id}
+          />
           <div className="publication-overlay">
-            <img src={process.env.PUBLIC_URL + "/assets/images/eye.png"} />
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+              alt={publication.id}
+            />
           </div>
         </div>
       </React.Fragment>
@@ -104,7 +111,7 @@ export class CategoryDetails extends Component {
   renderCards() {
     return this.state.courses.map(course => (
       <React.Fragment>
-        <div className="col-md-4">
+        <div className="col-md-4" key={course.id}>
           <Card key={course.id} course={course} />
         </div>
       </React.Fragment>
@@ -245,6 +252,7 @@ export class CategoryDetails extends Component {
                     height="50"
                     width="50"
                     className="mt-3"
+                    alt={this.state.details.nameAr}
                   />
                 </div>
                 <h5 className="dark-text mt-3">{this.state.details.nameAr}</h5>

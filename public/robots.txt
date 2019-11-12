@@ -1,4 +1,7 @@
-User-Agent: *
+User-agent: *
 Disallow: 
-
+Disallow: /assets/
+Disallow: https://staging.hemma.sa/
+Disallow: https://admin.hemma.sa/
+Disallow: http://admin.staging.hemma.sa/
 Sitemap: https://hemma.sa/sitemap.xml

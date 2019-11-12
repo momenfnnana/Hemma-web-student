@@ -18,7 +18,7 @@ export class Card extends Component {
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
     const instructor = course.instructors.map(instructor => (
-      <React.Fragment>
+      <React.Fragment key={instructor.id}>
         <img
           src={process.env.PUBLIC_URL + "/assets/images/blue-male.png"}
           height="15"

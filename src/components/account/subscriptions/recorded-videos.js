@@ -82,7 +82,7 @@ export class RecordedVideosComponent extends Component {
 
     if (sections) {
       return sections.map(section => (
-        <React.Fragment>
+        <React.Fragment key={section.id}>
           <div className="chapter pl-3">
             <h6 className="smaller light-purple-text">{section.nameAr}</h6>
             {this.renderChapters(section.chapters)}
@@ -99,7 +99,7 @@ export class RecordedVideosComponent extends Component {
     );
     if (sortedChapters) {
       return sortedChapters.map(chapter => (
-        <React.Fragment>
+        <React.Fragment key={chapter.id}>
           <h6 className="text-white">{chapter.nameAr}</h6>
           {this.renderLectures(chapter.lectures)}
         </React.Fragment>
@@ -113,7 +113,11 @@ export class RecordedVideosComponent extends Component {
     );
     if (sortedLectures) {
       return sortedLectures.map(lecture => {
-        return <React.Fragment>{this.renderLecture(lecture)}</React.Fragment>;
+        return (
+          <React.Fragment key={lecture.id}>
+            {this.renderLecture(lecture)}
+          </React.Fragment>
+        );
       });
     }
   }

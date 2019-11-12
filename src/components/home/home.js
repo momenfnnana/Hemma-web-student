@@ -150,7 +150,7 @@ export class Home extends Component {
         <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
             return (
-              <div className="mt-5 mb-3 col-lg-3 col-6">
+              <div className="mt-5 mb-3 col-lg-3 col-6" key={cat.id}>
                 <Link to={`/categories/details/${cat.slug}`} key={cat.id}>
                   <div
                     key={cat.id}
