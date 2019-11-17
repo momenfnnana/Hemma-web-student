@@ -84,7 +84,7 @@ export class RecordedLectures extends Component {
                 <header className="card-thumb">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
-                    alt="Course image"
+                    alt={lecture.nameAr}
                   />
                 </header>
                 <div className="card-body d-flex justify-content-center flex-column">

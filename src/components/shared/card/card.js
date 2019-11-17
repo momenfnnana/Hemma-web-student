@@ -35,7 +35,7 @@ export class Card extends Component {
         <Link to={`/course/details/${course.slug}`} key={course.id}>
           <div className="card course-card shadow-sm m-2 border-0" dir="rtl">
             <header className="card-thumb">
-              <img key={course.id} src={course.bannerUrl} alt="Course image" />
+              <img key={course.id} src={course.bannerUrl} alt={course.nameAr} />
             </header>
             <div className="card-body">
               <h6 className="card-title small mid-text" key={course.id}>

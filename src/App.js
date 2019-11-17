@@ -40,6 +40,7 @@ import BankAccounts from "./components/banks/banks";
 import FAQ from "./components/faq/faq";
 import { Transaction } from "./components/cart/transaction";
 import { Helmet } from "react-helmet";
+import ReactGA from "react-ga";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -97,6 +98,7 @@ AppBackground = withRouter(AppBackground);
 
 export default class AppComponent extends Component {
   async componentDidMount() {
+    this.initializeReactGA();
     let token = localStorage.getItem("token");
     let data = {};
     let headers = {
@@ -112,6 +114,11 @@ export default class AppComponent extends Component {
       .catch(error => {
         console.log(error);
       });
+  }
+
+  initializeReactGA() {
+    ReactGA.initialize("UA-151210995-1");
+    ReactGA.pageview("/");
   }
 
   render() {

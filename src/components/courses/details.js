@@ -448,27 +448,29 @@ export class CourseDetails extends Component {
                     </ul>
                   </div>
                 </div>
-                <div
-                  className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
-                  onClick={() =>
-                    window.open(
-                      `${this.state.details.schedulePosterUrl}`,
-                      "_blank"
-                    )
-                  }
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/file-white.png"
+                {this.state.details.schedulePosterUrl && (
+                  <div
+                    className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
+                    onClick={() =>
+                      window.open(
+                        `${this.state.details.schedulePosterUrl}`,
+                        "_blank"
+                      )
                     }
-                    className="mr-2"
-                    height="25"
-                    alt="File"
-                  />{" "}
-                  <h6 className="text-white mb-0 mt-0 light-font-text">
-                    تنزيل جدول الدورة
-                  </h6>
-                </div>
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/file-white.png"
+                      }
+                      className="mr-2"
+                      height="25"
+                      alt="File"
+                    />{" "}
+                    <h6 className="text-white mb-0 mt-0 light-font-text">
+                      تنزيل جدول الدورة
+                    </h6>
+                  </div>
+                )}
 
                 {this.state.details.instructors == undefined ||
                 this.state.details.instructors == 0 ? null : (
@@ -495,11 +497,16 @@ export class CourseDetails extends Component {
                 <div className="row">
                   <div className="col-12">
                     <h3 className="mid-text">{this.state.details.nameAr}</h3>
-                    <h6 className="dark-text">
+                    <Link
+                      className="dark-text"
+                      to={`/categories/details/${this.state.details &&
+                        this.state.details.category &&
+                        this.state.details.category.slug}`}
+                    >
                       {this.state.details &&
                         this.state.details.category &&
                         this.state.details.category.nameAr}
-                    </h6>
+                    </Link>
                     <p className="small dark-text light-font-text w-75 mt-3">
                       {this.state.details.descriptionAr}
                     </p>
@@ -535,10 +542,15 @@ export class CourseDetails extends Component {
                     <h4 className="mid-text mb-2">الشروط والأحكام</h4>
                     <p className="light-font-text dark-text small mb-1">
                       1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب المشترك في{" "}
-                      <span className="light-text">منصّة همّة</span>
+                      <Link to="/" className="light-text">
+                        منصّة همّة
+                      </Link>
                     </p>
                     <p className="light-font-text dark-text small mb-1">
-                      2- لا تتحمل <span className="light-text">منصّة همّة</span>{" "}
+                      2- لا تتحمل{" "}
+                      <Link to="/" className="light-text">
+                        منصّة همّة
+                      </Link>{" "}
                       أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة ومشاهدته
                       لتسجيل المحاضرات{" "}
                     </p>
