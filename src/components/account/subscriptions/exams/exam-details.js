@@ -10,8 +10,7 @@ import { ExamFail } from "./exam-fail";
 import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
-var moment = require("moment");
-moment().format();
+import ReactMomentCountDown from "react-moment-countdown";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -28,10 +27,55 @@ class ExamDetailsComponent extends Component {
       scoreDetails: [],
       examDetails: [],
       selectedQuestionId: null,
-      selectedQuestion: 0
+      selectedQuestion: 0,
+      checkedItems: new Map()
     };
     this.onInput = this.onInput.bind(this);
+    this.onCountdownEnd = this.onCountdownEnd.bind(this);
   }
+
+  onCountdownEnd = () => {
+    const questionsLength = this.state.questions.length;
+    const answersLength = this.state.answers.length;
+    const unansweredQuestions = questionsLength - answersLength;
+    if (unansweredQuestions == 0) {
+      const attemptId = this.props.match.params.attemptId;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      let data = {
+        answers: this.state.answers
+      };
+      axios
+        .post(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Submission`, data, {
+          headers
+        })
+        .then(response => {
+          if (response.data.data.status == "Pass") {
+            this.setState({ status: "Pass", isConfirmExamOpen: false });
+          } else if (response.data.data.status == "Fail") {
+            this.setState({ status: "Fail", isConfirmExamOpen: false });
+          }
+          axios
+            .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Scorecard`, {
+              headers
+            })
+            .then(response => {
+              this.setState({ scoreDetails: response.data.data });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        })
+        .catch(error => {
+          this.setState({ isConfirmExamOpen: false });
+          console.log(error);
+        });
+    } else {
+      this.openConfirmExamModal();
+    }
+  };
 
   goToNext = () => {
     this.setState({
@@ -47,7 +91,12 @@ class ExamDetailsComponent extends Component {
     });
   };
 
-  onInput(questionId, selectedChoice) {
+  onInput(questionId, selectedChoice, e) {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    this.setState(prevState => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked)
+    }));
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
@@ -209,8 +258,9 @@ class ExamDetailsComponent extends Component {
                             label={value}
                             className="small dark-silver-text light-font-text d-flex align-items-center"
                             name="selectedAnswer"
-                            onChange={this.onInput(question.id, key)}
+                            onChange={e => this.onInput(question.id, key, e)}
                             id={value}
+                            checked={this.state.checkedItems.get(question.stem)}
                           />
                         </div>
                       );
@@ -252,25 +302,23 @@ class ExamDetailsComponent extends Component {
       }
     };
 
-    const dueDate =
-      this.state && this.state.examDetails && this.state.examDetails.dueAt;
-    const dueTime = new Date(dueDate);
-    const dueDateInSeconds = dueTime.getTime() / 1000;
-
-    const currentDate = new Date();
-    const currentDateInSeconds = currentDate.getTime() / 1000;
-
-    var eventTime = dueDateInSeconds;
-    var currentTime = currentDateInSeconds;
-    var diffTime = eventTime - currentTime;
-    var duration = moment.duration(diffTime * 1000, "milliseconds");
-    var interval = 1000;
-
-    var duration = moment.duration(duration - interval, "milliseconds");
-
     const questionsLength = this.state.questions.length;
     const answersLength = this.state.answers.length;
     const unansweredQuestions = questionsLength - answersLength;
+
+    const dueDate =
+      this.state && this.state.examDetails && this.state.examDetails.dueAt;
+    const formattedDate = new Date(dueDate);
+    var day = formattedDate.getDate();
+    var month = formattedDate.getMonth() + 1;
+    var year = formattedDate.getFullYear();
+    var finalDate = year + "-" + month + "-" + day;
+    var hours = formattedDate.getHours() + 2;
+    var minutes = formattedDate.getMinutes();
+    var seconds = formattedDate.getSeconds();
+    var finalTime = hours + ":" + minutes + ":" + seconds;
+    var countdownTo = finalDate + " " + finalTime;
+    const dateInFuture = new Date(countdownTo);
 
     return (
       <React.Fragment>
@@ -307,7 +355,11 @@ class ExamDetailsComponent extends Component {
                       />
 
                       <p className="small en-text dark-silver-text mb-0">
-                        {/* {countDownDate} */}
+                        <ReactMomentCountDown
+                          toDate={dateInFuture}
+                          sourceFormatMask="YYYY-MM-DD HH:mm:ss"
+                          onCountdownEnd={this.onCountdownEnd}
+                        />
                       </p>
                     </div>
                   </div>
