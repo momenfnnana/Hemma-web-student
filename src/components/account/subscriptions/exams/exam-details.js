@@ -27,8 +27,7 @@ class ExamDetailsComponent extends Component {
       scoreDetails: [],
       examDetails: [],
       selectedQuestionId: null,
-      selectedQuestion: 0,
-      checkedItems: new Map()
+      selectedQuestion: 0
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
@@ -91,12 +90,7 @@ class ExamDetailsComponent extends Component {
     });
   };
 
-  onInput(questionId, selectedChoice, e) {
-    const item = e.target.name;
-    const isChecked = e.target.checked;
-    this.setState(prevState => ({
-      checkedItems: prevState.checkedItems.set(item, isChecked)
-    }));
+  onInput(questionId, selectedChoice) {
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
@@ -189,6 +183,7 @@ class ExamDetailsComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
+    const answer = this.state.answers.find(a => a.id === question.id);
 
     return (
       <React.Fragment>
@@ -251,17 +246,21 @@ class ExamDetailsComponent extends Component {
                   <div className="col-md-12">
                     {Object.keys(question.choices).map(function(key) {
                       const value = question.choices[key];
+                      const selected = answer && answer.selectedChoice === key;
                       return (
                         <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                          <CustomInput
+                          <input
                             type="radio"
                             label={value}
                             className="small dark-silver-text light-font-text d-flex align-items-center"
-                            name="selectedAnswer"
-                            onChange={e => this.onInput(question.id, key, e)}
+                            name={`choice-${question.id}`}
+                            onChange={() => this.onInput(question.id, key)}
                             id={value}
-                            checked={this.state.checkedItems.get(question.stem)}
+                            checked={selected}
                           />
+                          <label className="mb-0 dark-silver-text small ml-2">
+                            {value}
+                          </label>
                         </div>
                       );
                     }, this)}
