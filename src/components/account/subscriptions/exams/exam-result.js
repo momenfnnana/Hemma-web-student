@@ -11,6 +11,7 @@ import {
   AccordionItemTitle
 } from "react-accessible-accordion";
 import "../styles.sass";
+import { HintModal } from "./hint";
 
 class ExamResultComponent extends Component {
   constructor() {
@@ -25,6 +26,13 @@ class ExamResultComponent extends Component {
       selectedQuestion: 0
     };
   }
+
+  openHintModal = id => {
+    this.setState({ isHintOpen: true, selectedQuestionId: id });
+  };
+  closeHintModal = () => {
+    this.setState({ isHintOpen: false });
+  };
 
   goToNext = () => {
     this.setState({
@@ -103,6 +111,21 @@ class ExamResultComponent extends Component {
                         <p className="small red-text mb-0">لم تقم بالإجابة</p>
                       )}
                     </div>
+                    <div className="col-md-6">
+                      <button
+                        className="btn red-outline-btn btn-sm small float-right d-flex"
+                        onClick={() => this.openHintModal(question.id)}
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/images/hint.png"
+                          }
+                          height="17"
+                          className="contain-img mr-2"
+                        />
+                        طريقة الحل
+                      </button>
+                    </div>
                   </div>
                   <div className="row">
                     <div className="col-md-12">
@@ -148,6 +171,7 @@ class ExamResultComponent extends Component {
   }
 
   render() {
+    const attemptId = this.props.match.params.attemptId;
     const courseId = this.props.match.params.id;
     const settings = {
       className: "center",
@@ -178,6 +202,13 @@ class ExamResultComponent extends Component {
             </div>
           </div>
         </div>
+
+        <HintModal
+          isHintOpen={this.state.isHintOpen}
+          closeHint={this.closeHintModal}
+          id={this.state.selectedQuestionId}
+          attemptId={attemptId}
+        />
       </React.Fragment>
     );
   }
