@@ -68,17 +68,7 @@ export class UsersChatComponent extends Component {
               <div className="chat-title border-bottom h-55 d-flex align-items-center justify-content-center">
                 <h6 className="dark-text small mb-0">دردشة للجميع</h6>
               </div>
-              <div className="chat-window">
-                <div
-                  className="chat-history"
-                  ref={component => (this.listWrapperEl = component)}
-                >
-                  <ul className="list-unstyled">
-                    <MessagesList />
-                  </ul>
-                </div>
-                <MessageInput />
-              </div>
+              <MessagesList />
             </div>
           </div>
         </div>

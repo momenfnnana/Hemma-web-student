@@ -253,12 +253,12 @@ class MessageInput extends Component {
                   onSelect={this.addEmoji}
                   ref={this.emojiPicker}
                 />
-              ) : null}
+              ) : null}{" "}
               <ReactMic
                 record={isRecording}
                 pause={isPaused}
                 onStop={this.onStop}
-              />
+              />{" "}
             </div>
           </div>
         </form>

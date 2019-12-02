@@ -73,7 +73,6 @@ class UsersList extends Component {
                 ? "#f7f7f7"
                 : null
           }}
-          key={instructor.id}
         >
           <img
             src={process.env.PUBLIC_URL + "/assets/images/user-circle.png"}
