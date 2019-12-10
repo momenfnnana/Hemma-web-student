@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { Sidebar } from "../shared/sidebar/sidebar";
 import { Lecture } from "../shared/lecture/lecture";
-import { Schedule } from "./schedule";
-import AccountBreadcrumb from "../shared/breadcrumb/breadcrumb";
+import { Schedule } from "./schedule/schedule";
 import { Instructors } from "../shared/instructors/instructors";
-import { RecordedLectures } from "./recorded-lectures";
-import { RecordedVideos } from "./recorded-videos";
-import { Booklet } from "./booklet";
+import { RecordedLectures } from "./lectures/recorded-lectures";
+import { LectureDetails } from "./lectures/recorded-videos";
+import { Booklet } from "./booklet/booklet";
 import { TransactionsList } from "./transactions/transactions-list";
 import { UsersChatComponent } from "./chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
-import { LiveStream } from "./live-stream";
+import { LiveStream } from "./live-stream/live-stream";
 import { DiscussionsList } from "./discussions/discussions-list";
 import { DiscussionDetails } from "./discussions/discussion-details";
 import axios from "axios";
@@ -144,8 +143,8 @@ export class SubscriptionDetails extends Component {
                       component={RecordedLectures}
                     />
                     <Route
-                      path="/subscriptions/:id/recorded-videos/:lectureId"
-                      component={RecordedVideos}
+                      path="/subscriptions/:id/lecture/:lectureId"
+                      component={LectureDetails}
                     />
                     <Route
                       path="/subscriptions/:id/speed-up"

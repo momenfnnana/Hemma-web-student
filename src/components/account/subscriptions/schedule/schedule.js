@@ -9,7 +9,7 @@ import {
   AccordionItemBody
 } from "react-accessible-accordion";
 import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
+import { apiBaseUrl } from "../../../../api/helpers";
 import { Link } from "react-router-dom";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -131,7 +131,7 @@ export class Schedule extends Component {
           <React.Fragment>
             {lecture.status == "Recorded" ? (
               <Link
-                to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}
+                to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
                 className="list-group-item bg-transparent small dark-silver-text light-font-text"
               >
                 {this.renderLecture(lecture)}

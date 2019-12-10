@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "./styles.sass";
+import "../styles.sass";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
+import { apiBaseUrl } from "../../../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -78,7 +78,7 @@ export class RecordedLectures extends Component {
           <div className="col-md-4">
             <Link
               className="dark-text small"
-              to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}
+              to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
             >
               <div className="card card-sm shadow-sm border-0">
                 <header className="card-thumb">
