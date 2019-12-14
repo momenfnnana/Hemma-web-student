@@ -214,9 +214,13 @@ class ExamDetailsComponent extends Component {
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm">
-                  <p className="dark-text small mb-0 p-3 word-break">
-                    {question.stem}
-                  </p>
+                  {question.renderedStem ? (
+                    <img src={question.renderedStem} className="m-3" />
+                  ) : (
+                    <p className="dark-text small mb-0 p-3 word-break">
+                      {question.stem}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

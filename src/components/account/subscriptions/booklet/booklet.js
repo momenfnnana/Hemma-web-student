@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { Tooltip, Button } from "reactstrap";
 import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
+import { apiBaseUrl } from "../../../../api/helpers";
 import swal from "@sweetalert/with-react";
-import { getUser } from "../../../actions/user.actions";
+import { getUser } from "../../../../actions/user.actions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import "./styles.sass";
+import "../styles.sass";
 
 export class BookletComponent extends Component {
   constructor(props) {

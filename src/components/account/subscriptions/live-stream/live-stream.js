@@ -10,12 +10,12 @@ import {
 import Modal from "react-modal";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { getUser } from "../../../actions/user.actions";
-import { getChatToken } from "../../../actions/twilio.actions";
+import { getUser } from "../../../../actions/user.actions";
+import { getChatToken } from "../../../../actions/twilio.actions";
 import firebase from "firebase";
 import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
-import "./styles.sass";
+import { apiBaseUrl } from "../../../../api/helpers";
+import "../styles.sass";
 
 export class LiveStreamComponent extends Component {
   constructor(props) {
@@ -656,9 +656,7 @@ export class LiveStreamComponent extends Component {
                   {this.state.details && this.state.details.broadcastUrl && (
                     <div className="iframeWrapper">
                       <iframe
-                        src={`https://hemma.sa/webinar.html?id=${
-                          this.state.details.broadcastUrl
-                        }`}
+                        src={`https://hemma.sa/webinar.html?id=${this.state.details.broadcastUrl}`}
                         width="100%"
                         height="600"
                         frameBorder="0"
