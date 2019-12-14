@@ -314,7 +314,7 @@ export class Comment extends Component {
                 className="badge dark-bg text-white smaller mb-0 mr-3 clickable"
                 onClick={() => this.toggleFullReplies()}
               >
-                جميع الردود
+                <span className="en-text">{comment.replyCount}</span> ردود
               </h6>
 
               <h6
