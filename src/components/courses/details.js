@@ -342,13 +342,15 @@ export class CourseDetails extends Component {
                         ريال
                       </h4>
                     </div>
-                    <button
-                      type="button"
-                      className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
-                      onClick={() => this.addToCart(this.state.details.id)}
-                    >
-                      اشترك الآن
-                    </button>
+                    {this.state.details.purchasable && (
+                      <button
+                        type="button"
+                        className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
+                        onClick={() => this.addToCart(this.state.details.id)}
+                      >
+                        اشترك الآن
+                      </button>
+                    )}
                     <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
                     <ul className="list-unstyled">
                       {this.state.details &&
