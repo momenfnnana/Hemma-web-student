@@ -49,7 +49,7 @@ class ChatList extends Component {
         </h6>
         {/* Insert condition here */}
 
-        <UsersList courseId={this.props.courseId} />
+        {/* <UsersList courseId={this.props.courseId} /> */}
       </React.Fragment>
     );
   }

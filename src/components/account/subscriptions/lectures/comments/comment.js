@@ -254,21 +254,21 @@ export class Comment extends Component {
                     إجابة معتمدة{" "}
                   </h6>
                 )}
+                {myIdentity == commenterId && comment.type == "Text" && (
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/edit.png"}
+                    width="20"
+                    className="contain-img mr-2 clickable"
+                    onClick={() => this.toggleEditCommentForm()}
+                  />
+                )}
                 {myIdentity == commenterId && (
-                  <div>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/edit.png"}
-                      width="20"
-                      className="contain-img mr-2 clickable"
-                      onClick={() => this.toggleEditCommentForm()}
-                    />
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/remove.png"}
-                      width="20"
-                      className="contain-img clickable"
-                      onClick={() => this.props.onDelete()}
-                    />
-                  </div>
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/remove.png"}
+                    width="20"
+                    className="contain-img clickable"
+                    onClick={() => this.props.onDelete()}
+                  />
                 )}
               </div>
             </div>
@@ -298,6 +298,10 @@ export class Comment extends Component {
                   <p className="dark-text smaller word-break mb-2">
                     {comment.value}
                   </p>
+                ) : comment.type == "3" ? (
+                  <audio controls className="w-100">
+                    <source src={comment.value} />
+                  </audio>
                 ) : (
                   <img
                     src={comment.value}

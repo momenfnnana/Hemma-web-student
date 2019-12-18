@@ -63,7 +63,11 @@ export class OnlinePaymentComponent extends Component {
     this.setState({ loading: true });
     Api.cart
       .initiateOnlineCheckout({
-        callbackUrl: `${window.location.origin}/transactions/{transactionId}`
+        callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
+        shippingRecipient: "test",
+        shippingCityId: "Abha",
+        shippingAddress: "test",
+        shippingPhone: "0512345678"
       })
       .then(result => {
         this.setState({ loading: false });

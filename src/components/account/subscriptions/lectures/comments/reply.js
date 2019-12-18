@@ -95,22 +95,24 @@ export class Reply extends Component {
               </div>
             </div>
             <div className="d-flex align-items-center justify-content-end">
-              {myIdentity == commenterId && (
-                <div>
+              <div>
+                {myIdentity == commenterId && reply.type == "Text" && (
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/edit.png"}
                     width="20"
                     className="contain-img mr-2 clickable"
                     onClick={() => this.toggleEditReplyForm()}
                   />
+                )}
+                {myIdentity == commenterId && (
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/remove.png"}
                     width="20"
                     className="contain-img clickable"
                     onClick={() => this.props.onDelete()}
                   />
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
           {this.state.showEditReplyForm ? (
@@ -138,6 +140,10 @@ export class Reply extends Component {
                 <p className="dark-text smaller word-break mb-2">
                   {reply.value}
                 </p>
+              ) : reply.type == "3" ? (
+                <audio controls className="w-100">
+                  <source src={reply.value} />
+                </audio>
               ) : (
                 <img
                   src={reply.value}
