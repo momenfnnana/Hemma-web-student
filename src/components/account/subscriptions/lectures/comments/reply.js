@@ -140,7 +140,7 @@ export class Reply extends Component {
                 <p className="dark-text smaller word-break mb-2">
                   {reply.value}
                 </p>
-              ) : reply.type == "3" ? (
+              ) : reply.type == "Voice" ? (
                 <audio controls className="w-100">
                   <source src={reply.value} />
                 </audio>

@@ -298,7 +298,7 @@ export class Comment extends Component {
                   <p className="dark-text smaller word-break mb-2">
                     {comment.value}
                   </p>
-                ) : comment.type == "3" ? (
+                ) : comment.type == "Voice" ? (
                   <audio controls className="w-100">
                     <source src={comment.value} />
                   </audio>
