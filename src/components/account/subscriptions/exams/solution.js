@@ -5,7 +5,7 @@ import { Field, reduxForm, Fields } from "redux-form";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 
-export class HintModal extends Component {
+export class SolutionModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +20,7 @@ export class HintModal extends Component {
     };
     if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
       axios
-        .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Sheet`, {
+        .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/DetailedScorecard`, {
           headers
         })
         .then(response => {
@@ -55,16 +55,16 @@ export class HintModal extends Component {
         zIndex: 20
       }
     };
-    const { isHintOpen, closeHint } = this.props;
+    const { isSolutionOpen, closeSolution } = this.props;
 
     return (
       <React.Fragment>
         <Modal
           style={customStyles}
           ariaHideApp={false}
-          isOpen={isHintOpen}
-          onRequestClose={closeHint}
-          closeHint={closeHint}
+          isOpen={isSolutionOpen}
+          onRequestClose={closeSolution}
+          closeSolution={closeSolution}
         >
           <div className="container pt-4 pb-3">
             <div className="row">
@@ -88,7 +88,7 @@ export class HintModal extends Component {
                 <div className="d-flex align-items-center justify-content-center">
                   <button
                     className="btn light-btn unset-height w-25 mt-4"
-                    onClick={closeHint}
+                    onClick={closeSolution}
                   >
                     العودة للسؤال
                   </button>

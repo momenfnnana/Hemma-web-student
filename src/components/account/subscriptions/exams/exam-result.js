@@ -11,14 +11,14 @@ import {
   AccordionItemTitle
 } from "react-accessible-accordion";
 import "../styles.sass";
-import { HintModal } from "./hint";
+import { SolutionModal } from "./solution";
 
 class ExamResultComponent extends Component {
   constructor() {
     super();
     this.state = {
       isConfirmExamOpen: false,
-      isHintOpen: false,
+      isSolutionOpen: false,
       examDetails: [],
       questions: [],
       nav1: null,
@@ -27,11 +27,11 @@ class ExamResultComponent extends Component {
     };
   }
 
-  openHintModal = id => {
-    this.setState({ isHintOpen: true, selectedQuestionId: id });
+  openSolutionModal = id => {
+    this.setState({ isSolutionOpen: true, selectedQuestionId: id });
   };
-  closeHintModal = () => {
-    this.setState({ isHintOpen: false });
+  closeSolutionModal = () => {
+    this.setState({ isSolutionOpen: false });
   };
 
   goToNext = () => {
@@ -82,9 +82,6 @@ class ExamResultComponent extends Component {
                   >
                     السؤال {question.id}
                   </h6>
-                  <p className="dark-silver-text smaller mb-0 word-break">
-                    {question.stem}
-                  </p>
                 </div>
                 <span className="fa fa-chevron-down dark-text" />
               </div>
@@ -93,9 +90,12 @@ class ExamResultComponent extends Component {
               <div className="row p-4 pb-2">
                 <div className="col-12">
                   <div className="box-layout box-border shadow-sm">
-                    <p className="dark-text small mb-0 p-3 word-break">
-                      {question.stem}
-                    </p>
+                    <img
+                      src={question.renderedStem}
+                      className="m-3 contain-img"
+                      width="20%"
+                      height="50"
+                    />
                   </div>
                 </div>
               </div>
@@ -114,7 +114,7 @@ class ExamResultComponent extends Component {
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"
-                        onClick={() => this.openHintModal(question.id)}
+                        onClick={() => this.openSolutionModal(question.id)}
                       >
                         <img
                           src={
@@ -203,9 +203,9 @@ class ExamResultComponent extends Component {
           </div>
         </div>
 
-        <HintModal
-          isHintOpen={this.state.isHintOpen}
-          closeHint={this.closeHintModal}
+        <SolutionModal
+          isSolutionOpen={this.state.isSolutionOpen}
+          closeSolution={this.closeSolution}
           id={this.state.selectedQuestionId}
           attemptId={attemptId}
         />
