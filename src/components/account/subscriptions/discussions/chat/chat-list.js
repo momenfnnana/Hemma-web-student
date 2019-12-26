@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FaCircle } from "react-icons/fa";
-import { changeChannel } from "../../../../actions/chat.actions";
+import { changeChannel } from "../../../../../actions/chat.actions";
 import { connect } from "react-redux";
 
 class ChatList extends Component {

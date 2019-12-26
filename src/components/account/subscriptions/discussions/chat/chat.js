@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { getUser } from "../../../../actions/user.actions";
-import { getChatToken } from "../../../../actions/twilio.actions";
+import { getUser } from "../../../../../actions/user.actions";
+import { getChatToken } from "../../../../../actions/twilio.actions";
 import ChatList from "./chat-list";
 import MessagesList from "./messages";
 import MessageInput from "./message-input";
 import { reduxForm } from "redux-form";
-
 import "../styles.sass";
 
 export class UsersChatComponent extends Component {
@@ -20,16 +19,8 @@ export class UsersChatComponent extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="row">
-          <div className="col-12 mb-4">
-            <div className="d-flex justify-content-between">
-              <h6 className="dark-text small mb-0 mt-0">الدردشة</h6>
-            </div>
-          </div>
-        </div>
-
         {this.props.chatChannelSid.startsWith("http") && (
-          <div className="row">
+          <div className="row mt-4">
             <div className="col-md-12">
               <div className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable">
                 <h6 className="media chat-item mb-0 d-flex align-items-center light-text small">
@@ -40,7 +31,7 @@ export class UsersChatComponent extends Component {
           </div>
         )}
 
-        <div className="box-layout shadow-sm w-100">
+        <div className="box-layout shadow-sm w-100 mt-4">
           <div className="row no-gutters">
             <div className="chat-sidebar col-md-4 border-right">
               <div className="p-3">
@@ -51,7 +42,7 @@ export class UsersChatComponent extends Component {
               </div>
               {this.props.chatChannelSid && (
                 <ChatList
-                  courseId={this.props.match.params.id}
+                  courseId={this.props.courseId}
                   generalChatId={this.props.chatChannelSid}
                 />
               )}

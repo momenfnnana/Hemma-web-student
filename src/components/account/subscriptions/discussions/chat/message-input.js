@@ -3,7 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { Picker } from "emoji-mart";
 import { ReactMic } from "react-mic";
 import "emoji-mart/css/emoji-mart.css";
-import { changeChannel } from "../../../../actions/chat.actions";
+import { changeChannel } from "../../../../../actions/chat.actions";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
 
