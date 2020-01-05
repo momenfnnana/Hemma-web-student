@@ -77,7 +77,16 @@ export class CourseDetails extends Component {
           case "ItemAlreadyPurchased":
             this.props.history.push(`/subscriptions/${id}/schedule`);
             break;
-
+          case "InactiveCourse":
+            swal(
+              "عفواً",
+              "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة"

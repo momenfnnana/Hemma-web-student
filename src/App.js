@@ -129,7 +129,9 @@ export default class AppComponent extends Component {
         <React.Fragment>
           <div>
             <Helmet>
-              <title>منصّة همّة التعليمية</title>
+              <title>
+                منصّة همّة التعليمية | 25 عاماً في خدمة الطلاب والطالبات
+              </title>
             </Helmet>
             <BrowserRouter>
               <ScrollToTop>

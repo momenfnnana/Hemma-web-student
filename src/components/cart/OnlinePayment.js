@@ -28,7 +28,7 @@ export class OnlinePaymentComponent extends Component {
     this.onDateChange = this.onDateChange.bind(this);
     this.onNameChange = this.onNameChange.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
-    this.handleCheckout = this.handleCheckout.bind(this);
+    this.myFormHandler = this.myFormHandler.bind(this);
   }
 
   onCreditCardChange(event) {
@@ -59,11 +59,15 @@ export class OnlinePaymentComponent extends Component {
     );
   };
 
-  handleCheckout() {
+  myFormHandler = values => {
     this.setState({ loading: true });
     Api.cart
       .initiateOnlineCheckout({
-        callbackUrl: `${window.location.origin}/transactions/{transactionId}`
+        callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
+        shippingRecipient: values.shippingRecipient,
+        shippingCityId: values.shippingCityId,
+        shippingAddress: values.shippingAddress,
+        shippingPhone: values.shippingPhone
       })
       .then(result => {
         this.setState({ loading: false });
@@ -151,12 +155,14 @@ export class OnlinePaymentComponent extends Component {
             break;
         }
       });
-  }
+  };
   render() {
+    const { handleSubmit, submitting } = this.props;
+
     return (
       <div className="row mt-5">
         <div className="col-12 d-flex justify-content-center">
-          <form className="w-60">
+          <form className="w-60" onSubmit={handleSubmit(this.myFormHandler)}>
             <div className="row">
               <div className="col-md-8">
                 <div>
@@ -238,8 +244,6 @@ export class OnlinePaymentComponent extends Component {
               <div className="col-md-12 d-flex justify-content-center mt-4">
                 <button
                   className="btn light-outline-btn w-50"
-                  type="button"
-                  onClick={this.handleCheckout}
                   disabled={this.isSubmitButtonDisabled()}
                   style={{ opacity: this.isSubmitButtonDisabled() ? 0.5 : 1 }}
                 >
@@ -261,13 +265,13 @@ export class OnlinePaymentComponent extends Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart,
-    formValues: state.form.cart && state.form.cart.values
+    formValues: state.form.onlinePayment && state.form.onlinePayment.values
   };
 }
 
 export const OnlinePayment = connect(mapStateToProps)(
   reduxForm({
-    form: "cart",
+    form: "onlinePayment",
     destroyOnUnmount: false
   })(withRouter(OnlinePaymentComponent))
 );
