@@ -13,23 +13,23 @@ import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream/live-stream";
 import { DiscussionsList } from "./discussions/discussions-list";
 import { DiscussionDetails } from "./discussions/discussion-details";
-import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
-import { ChallengesList } from "./challenges/challenges-list";
 import { ExamsList } from "./exams/exams-list";
 import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
-import { ChallengeDetails } from "./challenges/challenge-details";
 import { NewInstallment } from "./transactions/installment/NewInstallment";
 import { ExamResult } from "./exams/exam-result";
+import { RatingModal } from "./rating/rating-modal";
+import { getSubscription } from "../../../actions/subscription.actions";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
 
-export class SubscriptionDetails extends Component {
+class SubscriptionDetailsComponent extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       details: [],
-      isInstallmentOpen: false
+      isInstallmentOpen: false,
+      isRatingModalOpen: false
     };
   }
 
@@ -40,26 +40,46 @@ export class SubscriptionDetails extends Component {
     this.setState({ isInstallmentOpen: false });
   };
 
+  openRatingModal = () => {
+    this.setState({ isRatingModalOpen: true });
+  };
+  closeRatingModal = () => {
+    this.setState({ isRatingModalOpen: false });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.ratingStatus &&
+      !prevProps &&
+      prevProps.subscription &&
+      prevProps.subscription.ratingStatus
+    ) {
+      const courseId = this.props.match.params.id;
+      this.props.getSubscription(courseId);
+    }
+  }
+
   componentDidMount() {
     const courseId = this.props.match.params.id;
-
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .get(`${apiBaseUrl}/content/${courseId}`, { headers })
-      .then(response => {
-        this.setState({ details: response.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.props.getSubscription(courseId);
   }
+
   render() {
     const courseId = this.props.match.params.id;
-    const channelID = this.state.details.chatChannelSid;
-    const remainingAmount = this.state.details.remainingAmount;
+    const subscription =
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.subscription;
+    const ratingStatus =
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.ratingStatus;
+    const remainingAmount =
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.remainingAmount;
 
     return (
       <React.Fragment>
@@ -108,22 +128,41 @@ export class SubscriptionDetails extends Component {
               <div className="container mt-5 pb-5">
                 <div className="row">
                   <div className="col-md-3 col-12">
-                    {this.state.details.chatChannelSid && (
+                    {subscription && subscription.chatChannelSid && (
                       <Sidebar
                         id={courseId}
-                        chatChannelSid={this.state.details.chatChannelSid}
+                        chatChannelSid={
+                          subscription && subscription.chatChannelSid
+                        }
                       />
                     )}
+                    {ratingStatus == "Skipped" && (
+                      <button
+                        className="btn light-btn w-100 mb-3"
+                        onClick={() => this.openRatingModal()}
+                      >
+                        قيّم الدورة
+                      </button>
+                    )}
+                    <RatingModal
+                      isRatingModalOpen={
+                        ratingStatus == "Available"
+                          ? true
+                          : this.state.isRatingModalOpen
+                      }
+                      closeRatingModal={this.closeRatingModal}
+                      courseId={courseId}
+                      ratingStatus={ratingStatus}
+                    />
                     <Instructors id={courseId} />
                   </div>
                   <div className="col-md-9 col-12">
                     <div className="row no-gutters">
                       <div className="col-12">
-                        {/* <AccountBreadcrumb /> */}
-                        {this.state.details.chatChannelSid && (
+                        {subscription && subscription.chatChannelSid && (
                           <Lecture
                             id={courseId}
-                            chatChannelSid={this.state.details.chatChannelSid}
+                            chatChannelSid={subscription.chatChannelSid}
                           />
                         )}
                       </div>
@@ -133,7 +172,7 @@ export class SubscriptionDetails extends Component {
                       path="/subscriptions/:id/schedule"
                       render={props => (
                         <Schedule
-                          courseName={this.state.details.nameAr}
+                          courseName={subscription && subscription.nameAr}
                           {...props}
                         />
                       )}
@@ -159,22 +198,13 @@ export class SubscriptionDetails extends Component {
                       exact
                       component={DiscussionsList}
                     />
-                    {this.state.details.chatChannelSid && (
+                    {subscription && subscription.chatChannelSid && (
                       <Route
                         path="/subscriptions/:id/discussions/:discussionId"
                         component={DiscussionDetails}
-                        chatChannelSid={this.state.details.chatChannelSid}
+                        chatChannelSid={subscription.chatChannelSid}
                       />
                     )}
-                    {/* <Route
-                  path="/subscriptions/:id/challenges"
-                  exact
-                  component={ChallengesList}
-                />
-                <Route
-                  path="/subscriptions/:id/challenges/details"
-                  component={ChallengeDetails}
-                /> */}
                     <Route
                       path="/subscriptions/:id/exams/list"
                       component={ExamsList}
@@ -198,20 +228,17 @@ export class SubscriptionDetails extends Component {
                       path="/subscriptions/:id/transactions/list"
                       render={props => (
                         <TransactionsList
-                          remainingAmount={
-                            this.state.details &&
-                            this.state.details.remainingAmount
-                          }
+                          remainingAmount={subscription.remainingAmount}
                           {...props}
                         />
                       )}
                     />
-                    {this.state.details.chatChannelSid && (
+                    {subscription && subscription.chatChannelSid && (
                       <Route
                         path="/subscriptions/:id/chat"
                         render={props => (
                           <UsersChatComponent
-                            chatChannelSid={this.state.details.chatChannelSid}
+                            chatChannelSid={subscription.chatChannelSid}
                             {...props}
                           />
                         )}
@@ -221,12 +248,12 @@ export class SubscriptionDetails extends Component {
                 </div>
               </div>
             )}
-            {this.state.details.chatChannelSid && (
+            {subscription && subscription.chatChannelSid && (
               <Route
                 path="/subscriptions/:id/live-stream/:lectureId"
                 render={props => (
                   <LiveStream
-                    chatChannelSid={this.state.details.chatChannelSid}
+                    chatChannelSid={subscription.chatChannelSid}
                     {...props}
                   />
                 )}
@@ -238,3 +265,17 @@ export class SubscriptionDetails extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    subscription: state.subscription,
+    ratingStatus: state.ratingStatus
+  };
+}
+
+SubscriptionDetailsComponent = connect(
+  mapStateToProps,
+  { getSubscription }
+)(SubscriptionDetailsComponent);
+
+export const SubscriptionDetails = withRouter(SubscriptionDetailsComponent);
