@@ -6,6 +6,7 @@ import { authReducer } from "./auth.reducer";
 import { userReducer } from "./user.reducer";
 import { twilioReducer } from "./twilio.reducer";
 import { chatReducer } from "./chat.reducer";
+import { subscriptionReducer } from "./subscription.reducer";
 
 export const hemmaReducer = combineReducers({
   form: formReducer,
@@ -14,5 +15,6 @@ export const hemmaReducer = combineReducers({
   auth: authReducer,
   user: userReducer,
   twilio: twilioReducer,
-  chat: chatReducer
+  chat: chatReducer,
+  subscription: subscriptionReducer
 });

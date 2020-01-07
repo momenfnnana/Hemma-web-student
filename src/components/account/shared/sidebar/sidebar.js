@@ -53,7 +53,7 @@ export class SidebarComponent extends Component {
 
     return (
       <React.Fragment>
-        <div className="sidebar mb-4">
+        <div className="sidebar mb-3">
           <div className="header">
             <div className="d-inline-flex align-items-center">
               {this.props.user && this.props.user.gender == "Male" ? (
