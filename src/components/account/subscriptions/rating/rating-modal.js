@@ -7,6 +7,8 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { textareaField } from "../../../shared/inputs/textareaField";
 import { withRouter } from "react-router-dom";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-beat.scss";
 
 const validate = values => {
   const errors = {};
@@ -20,7 +22,9 @@ class RatingModalComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rating: 0
+      rating: 0,
+      loading: false,
+      disabled: false
     };
   }
 
@@ -38,14 +42,17 @@ class RatingModalComponent extends Component {
       score: this.state.rating,
       feedBack: values.feedback
     };
+    this.setState({ loading: true, disabled: true });
     axios
       .post(`${apiBaseUrl}/ratings/rate`, data, {
         headers
       })
       .then(response => {
+        this.setState({ loading: false, disabled: false });
         this.props.closeRatingModal();
       })
       .catch(error => {
+        this.setState({ loading: false, disabled: false });
         console.log(error);
       });
   };
@@ -58,14 +65,17 @@ class RatingModalComponent extends Component {
     let data = {
       courseId: this.props.courseId
     };
+    this.setState({ loading: true, disabled: true });
     axios
       .post(`${apiBaseUrl}/ratings/skip`, data, {
         headers
       })
       .then(response => {
+        this.setState({ loading: false, disabled: false });
         this.props.closeRatingModal();
       })
       .catch(error => {
+        this.setState({ loading: false, disabled: false });
         this.props.closeRatingModal();
       });
   };
@@ -96,7 +106,7 @@ class RatingModalComponent extends Component {
         style={customStyles}
         ariaHideApp={false}
         isOpen={isRatingModalOpen}
-        onRequestClose={closeRatingModal}
+        onRequestClose={this.skipRating}
         closeRatingModal={closeRatingModal}
       >
         <div className="container pt-2 pb-2">
@@ -140,15 +150,25 @@ class RatingModalComponent extends Component {
                 <button
                   type="submit"
                   className="btn light-outline-btn smaller unset-height w-35"
+                  disabled={this.state.disabled}
                 >
-                  أرسل التقييم
+                  {this.state.loading == true ? (
+                    <Loader type="ball-beat" className="light-loader" />
+                  ) : (
+                    "أرسل التقييم"
+                  )}
                 </button>
                 <button
                   type="button"
                   className="btn dark-outline-btn smaller ml-3 unset-height w-35"
                   onClick={this.skipRating}
+                  disabled={this.state.disabled}
                 >
-                  قيّم لاحقاً
+                  {this.state.loading == true ? (
+                    <Loader type="ball-beat" className="dark-loader" />
+                  ) : (
+                    "قيّم لاحقاً"
+                  )}
                 </button>
               </div>
             </div>

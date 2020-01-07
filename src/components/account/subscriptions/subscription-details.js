@@ -52,9 +52,7 @@ class SubscriptionDetailsComponent extends Component {
       this.props &&
       this.props.subscription &&
       this.props.subscription.ratingStatus &&
-      !prevProps &&
-      prevProps.subscription &&
-      prevProps.subscription.ratingStatus
+      !prevProps.ratingStatus
     ) {
       const courseId = this.props.match.params.id;
       this.props.getSubscription(courseId);
