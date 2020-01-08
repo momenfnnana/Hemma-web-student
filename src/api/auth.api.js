@@ -29,5 +29,10 @@ export const AuthApiEndpoints = {
         name,
         gender
       })
+      .then(getDataFromResponse),
+
+  getCities: () =>
+    getAuthenticatedAxios()
+      .get(`SACities/lookup`)
       .then(getDataFromResponse)
 };

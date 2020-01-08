@@ -21,6 +21,8 @@ import {
 import { emailField } from "../../shared/inputs/emailField";
 import { EmailToken } from "./reset/email/EmailToken";
 import { PhoneToken } from "./reset/phone/PhoneToken";
+import { selectField } from "../../shared/inputs/selectField";
+import { Api } from "../../../api";
 
 const validate = values => {
   const errors = {};
@@ -46,7 +48,11 @@ class EditAccountComponent extends Component {
       phonePopover: false,
       emailPopover: false,
       isEmailTokenOpen: false,
-      isPhoneTokenOpen: false
+      isPhoneTokenOpen: false,
+      cities: [],
+      selectedCity: "",
+      selectedLevel: "",
+      educationalEntities: []
     };
   }
 
@@ -78,6 +84,7 @@ class EditAccountComponent extends Component {
 
   componentDidMount() {
     this.props.getProfile();
+    Api.auth.getCities().then(cities => this.setState({ cities: cities }));
   }
 
   myFormHandler = values => {
@@ -86,7 +93,10 @@ class EditAccountComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     let data = {
-      name: values.name
+      name: values.name,
+      educationalLevel: values.educationalLevel,
+      educationalEntityId: values.educationalEntityId,
+      saCityId: values.saCityId
     };
     axios
       .put(`${apiBaseUrl}/users/me`, data, {
@@ -232,8 +242,66 @@ class EditAccountComponent extends Component {
       });
   };
 
+  renderCities() {
+    return this.state.cities.map(city => (
+      <option key={city.id} value={city.id}>
+        {city.nameAr}
+      </option>
+    ));
+  }
+
+  renderEntities() {
+    return this.state.educationalEntities.map(entity => (
+      <option key={entity.id} value={entity.id}>
+        {entity.name}
+      </option>
+    ));
+  }
+
+  handleCitiesChange = event => {
+    this.setState({ selectedCity: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${this.state.selectedLevel}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleLevelChange = event => {
+    this.setState({ selectedLevel: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${this.state.selectedLevel}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
+
+    let defaultLevel;
+    if (
+      this.props.initialValues &&
+      this.props.initialValues.educationalLevel == "Student"
+    ) {
+      defaultLevel = "طالب";
+    } else if (
+      this.props.initialValues &&
+      this.props.initialValues.educationalLevel == "Other"
+    ) {
+      defaultLevel = "أخرى";
+    }
+
     return (
       <React.Fragment>
         <h3 className="dark-text">الملف الشخصي</h3>
@@ -348,7 +416,6 @@ class EditAccountComponent extends Component {
                 type="email"
                 component={emailField}
                 className="form-control border-right-0 pr-0 pr-1 left-radius-0 ltr-input"
-                // placeholder="البريد الإلكتروني"
                 disabled={true}
               >
                 <FaRegEnvelope />
@@ -366,7 +433,6 @@ class EditAccountComponent extends Component {
                     className="position-absolute right-input-icon clickable"
                     id="email-popover"
                   />
-
                   <Popover
                     placement="right"
                     isOpen={this.state.emailPopover}
@@ -388,6 +454,46 @@ class EditAccountComponent extends Component {
                 </React.Fragment>
               ) : null}
             </div>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="saCityId"
+              onChange={this.handleCitiesChange}
+            >
+              <option selected disabled>
+                {this.props.initialValues &&
+                  this.props.initialValues.saCity &&
+                  this.props.initialValues.saCity.nameAr}
+              </option>
+              {this.renderCities()}
+            </Field>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="educationalLevel"
+              onChange={this.handleLevelChange}
+            >
+              <option selected disabled>
+                {defaultLevel}
+              </option>
+              <option value="Student">طالب</option>
+              <option value="Other">أخرى</option>
+            </Field>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="educationalEntityId"
+            >
+              <option selected disabled>
+                {this.props.initialValues &&
+                  this.props.initialValues.educationalEntity &&
+                  this.props.initialValues.educationalEntity.name}
+              </option>
+              {this.renderEntities()}
+            </Field>
 
             <EmailToken
               isEmailTokenOpen={this.state.isEmailTokenOpen}
