@@ -52,7 +52,8 @@ class RegisterComponent extends Component {
       cities: [],
       selectedCity: "",
       selectedLevel: "",
-      educationalEntities: []
+      educationalEntities: [],
+      selected: null
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
@@ -151,7 +152,7 @@ class RegisterComponent extends Component {
     this.setState({ selectedCity: event.target.value });
     axios
       .get(
-        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${this.state.selectedLevel}`
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${event.target.value}&EducationalLevel=${this.state.selectedLevel}`
       )
       .then(response => {
         this.setState({ educationalEntities: response.data.data });
@@ -165,7 +166,7 @@ class RegisterComponent extends Component {
     this.setState({ selectedLevel: event.target.value });
     axios
       .get(
-        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${this.state.selectedLevel}`
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${event.target.value}`
       )
       .then(response => {
         this.setState({ educationalEntities: response.data.data });
@@ -268,9 +269,7 @@ class RegisterComponent extends Component {
             name="saCityId"
             onChange={this.handleCitiesChange}
           >
-            <option selected disabled>
-              المدينة
-            </option>
+            <option selected="selected">المدينة</option>
             {this.renderCities()}
           </Field>
 
@@ -280,9 +279,7 @@ class RegisterComponent extends Component {
             name="educationalLevel"
             onChange={this.handleLevelChange}
           >
-            <option selected disabled>
-              المستوى التعليمي
-            </option>
+            <option selected="selected">المستوى التعليمي</option>
             <option value="Student">طالب</option>
             <option value="Other">أخرى</option>
           </Field>
@@ -291,10 +288,14 @@ class RegisterComponent extends Component {
             component={selectField}
             className="form-control"
             name="educationalEntityId"
+            disabled={
+              !this.state.selectedCity ||
+              !this.state.selectedLevel ||
+              this.state.educationalEntities == undefined ||
+              this.state.educationalEntities.length == 0
+            }
           >
-            <option selected disabled>
-              الجهة التعليمية
-            </option>
+            <option selected="selected">الجهة التعليمية</option>
             {this.renderEntities()}
           </Field>
 

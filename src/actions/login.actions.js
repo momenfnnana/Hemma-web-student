@@ -25,7 +25,10 @@ export const signupUser = ({
   email,
   password,
   name,
-  gender
+  gender,
+  educationalLevel,
+  educationalEntityId,
+  saCityId
 }) => {
   return {
     type: UNAUTHENTICATED,
@@ -35,7 +38,10 @@ export const signupUser = ({
       email,
       password,
       name,
-      gender
+      gender,
+      educationalLevel,
+      educationalEntityId,
+      saCityId
     )
   };
 };
