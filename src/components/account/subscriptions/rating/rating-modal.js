@@ -10,21 +10,14 @@ import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
 
-const validate = values => {
-  const errors = {};
-  if (!values.feedback) {
-    errors.feedback = "يجب تعبئة هذه الخانة";
-  }
-  return errors;
-};
-
 class RatingModalComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       rating: 0,
       loading: false,
-      disabled: false
+      disabled: false,
+      ratingError: false
     };
   }
 
@@ -42,18 +35,22 @@ class RatingModalComponent extends Component {
       score: this.state.rating,
       feedBack: values.feedback
     };
-    this.setState({ loading: true, disabled: true });
+    this.setState({ loading: true, disabled: true, ratingError: false });
     axios
       .post(`${apiBaseUrl}/ratings/rate`, data, {
         headers
       })
       .then(response => {
-        this.setState({ loading: false, disabled: false });
+        this.setState({ loading: false, disabled: false, ratingError: false });
         this.props.closeRatingModal();
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
-        console.log(error);
+        switch (error.response.data && error.response.data.message) {
+          case "Invalid Rate Value":
+            this.setState({ ratingError: true });
+            break;
+        }
       });
   };
 
@@ -91,7 +88,7 @@ class RatingModalComponent extends Component {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        width: "30%",
+        width: "37%",
         height: "auto",
         borderWidth: 0
       },
@@ -129,6 +126,11 @@ class RatingModalComponent extends Component {
                   name="rate"
                   onStarClick={this.onStarClick.bind(this)}
                 />
+                {this.state.ratingError && (
+                  <p className="mt-1 mb-2 smaller red-text">
+                    قيمة التقييم يجب أن تكون ١ على الأقل
+                  </p>
+                )}
               </div>
             </div>
             <div className="row">
@@ -139,7 +141,7 @@ class RatingModalComponent extends Component {
                     className="form-control light-font-text small"
                     type="text"
                     name="feedback"
-                    rows="4"
+                    rows="5"
                     component={textareaField}
                   />
                 </div>
@@ -186,8 +188,7 @@ function mapStateToProps(state) {
 }
 
 RatingModalComponent = reduxForm({
-  form: "rating",
-  validate
+  form: "rating"
 })(RatingModalComponent);
 
 RatingModalComponent = connect(mapStateToProps)(RatingModalComponent);
