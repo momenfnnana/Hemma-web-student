@@ -208,11 +208,11 @@ export class Home extends Component {
     };
 
     const testimonialsSettings = {
-      infinite: false,
+      infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 2000,
+      autoplaySpeed: 2500,
       fade: true,
       dots: true,
       arrows: false,
