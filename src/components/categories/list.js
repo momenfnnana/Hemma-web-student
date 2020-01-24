@@ -64,7 +64,15 @@ export class CategoriesComponent extends Component {
             {this.state.loading ? (
               <MyLoader style={{ height: 50 }} />
             ) : (
-              <Link to={`/categories/details/${cat.slug}`} key={cat.id}>
+              <Link
+                to={{
+                  pathname: `/categories/details/${cat.slug}`,
+                  state: {
+                    catId: cat.id
+                  }
+                }}
+                key={cat.id}
+              >
                 <h5 key={cat.id} className="dark-text mb-0">
                   <img
                     key={cat.id}
@@ -78,7 +86,12 @@ export class CategoriesComponent extends Component {
               </Link>
             )}
             <Link
-              to={`/categories/details/${cat.slug}`}
+              to={{
+                pathname: `/categories/details/${cat.slug}`,
+                state: {
+                  catId: cat.id
+                }
+              }}
               key={cat.id}
               className="btn dark-btn unset-height unset-line-height br-5"
             >

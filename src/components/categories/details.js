@@ -7,14 +7,21 @@ import { CardsList } from "../shared/cardsList/cardsList";
 import { PublicationDetails } from "../publication/publication";
 import { apiBaseUrl } from "../../api/helpers";
 import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 import swal from "@sweetalert/with-react";
-import "./styles.sass";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "./styles.sass";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
 export class CategoryDetails extends Component {
+  page = 1;
+  limit = 6;
+  endOfResults = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -23,8 +30,13 @@ export class CategoryDetails extends Component {
       content: [],
       publications: [],
       courses: [],
+      competitions: [],
       selectedPublicationId: null,
-      modalIsOpen: false
+      modalIsOpen: false,
+      hideBtn: false,
+      loading: false,
+      disabled: false,
+      nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -37,7 +49,44 @@ export class CategoryDetails extends Component {
     this.setState({ modalIsOpen: false });
   }
 
-  componentDidMount() {
+  loadMore = async () => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfResults) {
+      axios
+        .get(this.state.nextPageUrl, { headers })
+        .then(response => {
+          this.setState({ loading: false, disabled: false });
+          const newCourses = [
+            ...this.state.courses,
+            ...response.data.data.data
+          ];
+          this.endOfResults = response.data.data.itemCount < this.limit;
+          this.page++;
+          const nextUrl = `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`;
+          this.setState({
+            courses: newCourses,
+            nextPageUrl: nextUrl
+          });
+          if (newCourses.length == response.data.data.itemCount) {
+            this.setState({ hideBtn: true });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
+
+  async componentDidMount() {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
     const {
       match: { params }
     } = this.props;
@@ -70,20 +119,19 @@ export class CategoryDetails extends Component {
 
     axios
       .get(
-        `${apiBaseUrl}/categories/` + params.slug + "/courses?featuredOnly=true"
+        `${apiBaseUrl}/competitions?categoryId=${this.props.location.state.catId}`,
+        {
+          headers
+        }
       )
       .then(response => {
-        this.setState({ courses: response.data.data.data });
-        setTimeout(
-          function() {
-            this.setState({ loading: false });
-          }.bind(this),
-          800
-        );
+        this.setState({ competitions: response.data.data });
       })
       .catch(error => {
         console.log(error);
       });
+
+    await this.loadMore();
   }
 
   renderPublications() {
@@ -211,6 +259,82 @@ export class CategoryDetails extends Component {
     });
   }
 
+  getCompetitionDetails(id) {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    const {
+      match: { params }
+    } = this.props;
+    axios
+      .get(`${apiBaseUrl}/Competitions/${id}`, {
+        headers
+      })
+      .then(response => {
+        console.log(response);
+        this.props.history.push(
+          `/categories/details/${params.slug}/competition/${id}`
+        );
+      })
+      .catch(error => {
+        switch (error.response.data && error.response.data.message) {
+          case "Student City not match the Competition City":
+            swal(
+              "عفواً",
+              "هذه المسابقة مخصصة لمدارس معينة، يمكنك المشاركة بمسابقة أخرى",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
+          case "Student has attempt on this competition":
+            swal("عفواً", "لا يمكنك الاشتراك بالمسابقة أكثر من مرة", "error", {
+              button: "متابعة"
+            });
+            break;
+          default:
+            console.log("other error");
+        }
+      });
+  }
+
+  renderCompetitions() {
+    const {
+      match: { params }
+    } = this.props;
+    return this.state.competitions.map(competition => (
+      <React.Fragment>
+        <div
+          className="competition-box d-flex flex-column justify-content-center clickable"
+          onClick={() => this.getCompetitionDetails(competition.id)}
+        >
+          <div className="box-img">
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/competition.png"}
+              height="50"
+            />
+          </div>
+          <div className="box-body">
+            <h6 className="dark-text mb-1">{competition.name}</h6>
+            {competition.isTaken ? (
+              <div className="red-label">
+                <p className="text-white text-break mb-0">
+                  تمت المشاركة بالمسابقة
+                </p>
+              </div>
+            ) : (
+              <div className="light-label">
+                <p className="text-white text-break mb-0">تحدى نفسك</p>
+              </div>
+            )}
+          </div>
+        </div>
+      </React.Fragment>
+    ));
+  }
+
   render() {
     var settings = {
       dots: true,
@@ -279,9 +403,6 @@ export class CategoryDetails extends Component {
       ]
     };
 
-    const {
-      match: { params }
-    } = this.props;
     return (
       <React.Fragment>
         <Helmet>
@@ -331,8 +452,24 @@ export class CategoryDetails extends Component {
                 <h5 className="dark-text">الدورات المتاحة</h5>
               </div>
             </div>
-            <div className="row pt-2 pb-5">{this.renderCards()}</div>
-
+            <div className="row pt-2 pb-3">{this.renderCards()}</div>
+            {!this.state.hideBtn && (
+              <div className="row">
+                <div className="col-md-12 d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                    onClick={this.loadMore}
+                    disabled={this.state.disabled}
+                  >
+                    {this.state.loading == true ? (
+                      <Loader type="ball-clip-rotate" />
+                    ) : (
+                      "عرض المزيد"
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
             {this.state.publications && this.state.publications.length > 0 ? (
               <div className="row pt-5">
                 <div className="col-12 text-center">
@@ -352,6 +489,32 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
             ) : null}
+            {!this.state.competitions == undefined ||
+              (!this.state.competitions.length == 0 && (
+                <div className="row pt-5 pb-4 d-flex align-items-center">
+                  <div className="col-md-5">
+                    <h4 className="dark-text">
+                      مع همة تقدرون تتحدون أنفسكم مع
+                      <span className="light-text">المسابقات</span>
+                    </h4>
+                    <p className="dark-silver-text text-break mb-0">
+                      نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
+                      اقوى المنافسين
+                    </p>
+                  </div>
+                  <div className="col-md-4">{this.renderCompetitions()}</div>
+                  <div className="col-md-3">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/competitions.png"
+                      }
+                      width="100%"
+                      className="contain-img"
+                    />
+                  </div>
+                </div>
+              ))}
           </div>
         </section>
       </React.Fragment>

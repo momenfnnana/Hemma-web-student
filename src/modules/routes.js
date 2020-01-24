@@ -31,6 +31,7 @@ import BankAccounts from "../components/banks/banks";
 import FAQ from "../components/faq/faq";
 import { Transaction } from "../components/cart/transaction";
 import ScrollToTop from "../components/shared/scroll-to-top/ScrollToTop";
+import { Competition } from "../components/categories/competitions/competition";
 
 class AppBackground extends Component {
   render() {
@@ -105,7 +106,13 @@ export class MainRouter extends Component {
               <Route path="/categories" exact component={Categories} />
               <Route
                 path="/categories/details/:slug"
+                exact
                 component={CategoryDetails}
+              />
+              <Route
+                path="/categories/details/:slug/competition/:id"
+                exact
+                component={requireAuth(Competition)}
               />
               <Route path="/course/details/:slug" component={CourseDetails} />
               <Route path="/cart" exact component={requireAuth(Cart)} />
