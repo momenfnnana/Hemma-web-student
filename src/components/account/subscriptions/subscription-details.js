@@ -22,9 +22,6 @@ import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { apiBaseUrl } from "../../../api/helpers";
-import { NewInstallment } from "./transactions/installment/NewInstallment";
-import axios from "axios";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
