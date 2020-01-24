@@ -16,6 +16,10 @@ import {
   loginFailed
 } from "../../actions/login.actions";
 import { Helmet } from "react-helmet";
+import { selectField } from "../shared/inputs/selectField";
+import { Api } from "../../api";
+import axios from "axios";
+import { apiBaseUrl } from "../../api/helpers";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const maxLength = max => value =>
@@ -44,7 +48,12 @@ class RegisterComponent extends Component {
     this.state = {
       hidden: true,
       password: "",
-      loading: false
+      loading: false,
+      cities: [],
+      selectedCity: "",
+      selectedLevel: "",
+      educationalEntities: [],
+      selected: null
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
@@ -60,10 +69,12 @@ class RegisterComponent extends Component {
       email: values.email,
       password: values.password,
       name: values.username,
-      gender: values.gender
+      gender: values.gender,
+      educationalLevel: values.educationalLevel,
+      educationalEntityId: values.educationalEntityId,
+      saCityId: values.saCityId
     });
     this.setState({ loading: true });
-
     request
       .then(action => {
         this.setState({ loading: false });
@@ -114,6 +125,54 @@ class RegisterComponent extends Component {
           default:
             console.log(error);
         }
+      });
+  };
+
+  componentDidMount() {
+    Api.auth.getCities().then(cities => this.setState({ cities: cities }));
+  }
+
+  renderCities() {
+    return this.state.cities.map(city => (
+      <option key={city.id} value={city.id}>
+        {city.nameAr}
+      </option>
+    ));
+  }
+
+  renderEntities() {
+    return this.state.educationalEntities.map(entity => (
+      <option key={entity.id} value={entity.id}>
+        {entity.name}
+      </option>
+    ));
+  }
+
+  handleCitiesChange = event => {
+    this.setState({ selectedCity: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${event.target.value}&EducationalLevel=${this.state.selectedLevel}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleLevelChange = event => {
+    this.setState({ selectedLevel: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${event.target.value}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
       });
   };
 
@@ -202,6 +261,42 @@ class RegisterComponent extends Component {
             validate={emailValue}
           >
             <FaRegEnvelope />
+          </Field>
+
+          <Field
+            component={selectField}
+            className="form-control"
+            name="saCityId"
+            onChange={this.handleCitiesChange}
+          >
+            <option selected="selected">المدينة</option>
+            {this.renderCities()}
+          </Field>
+
+          <Field
+            component={selectField}
+            className="form-control"
+            name="educationalLevel"
+            onChange={this.handleLevelChange}
+          >
+            <option selected="selected">المستوى التعليمي</option>
+            <option value="Student">طالب</option>
+            <option value="Other">أخرى</option>
+          </Field>
+
+          <Field
+            component={selectField}
+            className="form-control"
+            name="educationalEntityId"
+            disabled={
+              !this.state.selectedCity ||
+              !this.state.selectedLevel ||
+              this.state.educationalEntities == undefined ||
+              this.state.educationalEntities.length == 0
+            }
+          >
+            <option selected="selected">الجهة التعليمية</option>
+            {this.renderEntities()}
           </Field>
 
           <button

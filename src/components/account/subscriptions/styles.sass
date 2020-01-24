@@ -222,7 +222,7 @@
   background-color: #4b3a85 !important
 .ball-clip-rotate> div
   border: 2px solid #9786d2 !important
-  border-bottom-color: transparent !important   
+  border-bottom-color: transparent !important
 audio:focus
   outline: none
 
@@ -309,7 +309,20 @@ audio:focus
   left: 10px
   bottom: 10px
   cursor: pointer
-  margin-bottom: 0        
+  margin-bottom: 0
+.ball-beat
+  display: flex
+  align-items: center
+  justify-content: center  
+.ball-beat > div 
+  width: 10px !important
+  height: 10px !important 
+.dark-loader  
+  .ball-beat > div 
+    background-color: #4b3a85 !important
+.light-loader  
+  .ball-beat > div 
+    background-color: #2bc3cc !important        
 @media only screen and (max-width: 767px)                          
     .responsive-margin
       margin-top: 15px

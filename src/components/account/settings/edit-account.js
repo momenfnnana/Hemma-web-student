@@ -11,16 +11,12 @@ import { FaRegUser } from "react-icons/fa";
 import { getProfile } from "../../../actions";
 import { FaRegEnvelope } from "react-icons/fa";
 import { apiBaseUrl } from "../../../api/helpers";
-import {
-  Tooltip,
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverBody
-} from "reactstrap";
+import { Popover, PopoverBody } from "reactstrap";
 import { emailField } from "../../shared/inputs/emailField";
 import { EmailToken } from "./reset/email/EmailToken";
 import { PhoneToken } from "./reset/phone/PhoneToken";
+import { Api } from "../../../api";
+import { selectField } from "../../shared/inputs/selectField";
 
 const validate = values => {
   const errors = {};
@@ -46,7 +42,14 @@ class EditAccountComponent extends Component {
       phonePopover: false,
       emailPopover: false,
       isEmailTokenOpen: false,
-      isPhoneTokenOpen: false
+      isPhoneTokenOpen: false,
+      cities: [],
+      selectedCity: "",
+      selectedLevel: "",
+      educationalEntities: [],
+      enableCities: false,
+      enableLevels: false,
+      enableEntities: false
     };
   }
 
@@ -78,6 +81,7 @@ class EditAccountComponent extends Component {
 
   componentDidMount() {
     this.props.getProfile();
+    Api.auth.getCities().then(cities => this.setState({ cities: cities }));
   }
 
   myFormHandler = values => {
@@ -86,7 +90,10 @@ class EditAccountComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     let data = {
-      name: values.name
+      name: values.name,
+      educationalLevel: values.educationalLevel,
+      educationalEntityId: values.educationalEntityId,
+      saCityId: values.saCityId
     };
     axios
       .put(`${apiBaseUrl}/users/me`, data, {
@@ -232,8 +239,77 @@ class EditAccountComponent extends Component {
       });
   };
 
+  renderCities() {
+    return this.state.cities.map(city => (
+      <option key={city.id} value={city.id}>
+        {city.nameAr}
+      </option>
+    ));
+  }
+
+  renderEntities() {
+    return this.state.educationalEntities.map(entity => (
+      <option key={entity.id} value={entity.id}>
+        {entity.name}
+      </option>
+    ));
+  }
+
+  handleCitiesChange = event => {
+    this.setState({ selectedCity: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${event.target.value}&EducationalLevel=${this.state.selectedLevel}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleLevelChange = event => {
+    this.setState({ selectedLevel: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${event.target.value}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleEntitiesChange = event => {
+    this.setState({ selectedEntity: event.target.value });
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
+    const defaultCity =
+      this.props.initialValues &&
+      this.props.initialValues.saCity &&
+      this.props.initialValues.saCity.nameAr;
+    let defaultLevel;
+    if (
+      this.props.initialValues &&
+      this.props.initialValues.educationalLevel == "Student"
+    ) {
+      defaultLevel = "طالب";
+    } else if (
+      this.props.initialValues &&
+      this.props.initialValues.educationalLevel == "Other"
+    ) {
+      defaultLevel = "أخرى";
+    }
+    const defaultEntity =
+      this.props.initialValues &&
+      this.props.initialValues.educationalEntity &&
+      this.props.initialValues.educationalEntity.name;
+
     return (
       <React.Fragment>
         <h3 className="dark-text">الملف الشخصي</h3>
@@ -348,7 +424,6 @@ class EditAccountComponent extends Component {
                 type="email"
                 component={emailField}
                 className="form-control border-right-0 pr-0 pr-1 left-radius-0 ltr-input"
-                // placeholder="البريد الإلكتروني"
                 disabled={true}
               >
                 <FaRegEnvelope />
@@ -366,7 +441,6 @@ class EditAccountComponent extends Component {
                     className="position-absolute right-input-icon clickable"
                     id="email-popover"
                   />
-
                   <Popover
                     placement="right"
                     isOpen={this.state.emailPopover}
@@ -388,6 +462,99 @@ class EditAccountComponent extends Component {
                 </React.Fragment>
               ) : null}
             </div>
+
+            <React.Fragment>
+              {!this.state.enableCities && (
+                <div className="form-group change-field">
+                  <input
+                    className="form-control"
+                    disabled={true}
+                    value={!defaultCity ? "المدينة" : defaultCity}
+                  />
+                  <h6
+                    className="red-text mb-0 smaller clickable"
+                    onClick={() => this.setState({ enableCities: true })}
+                  >
+                    تغيير
+                  </h6>
+                </div>
+              )}
+              {this.state.enableCities && (
+                <Field
+                  component={selectField}
+                  className="form-control"
+                  name="saCityId"
+                  onChange={this.handleCitiesChange}
+                >
+                  <option selected="selected">المدينة</option>
+                  {this.renderCities()}
+                </Field>
+              )}
+            </React.Fragment>
+
+            <React.Fragment>
+              {!this.state.enableLevels && (
+                <div className="form-group change-field">
+                  <input
+                    className="form-control"
+                    disabled={true}
+                    value={!defaultLevel ? "المستوى التعليمي" : defaultLevel}
+                  />
+                  <h6
+                    className="red-text mb-0 smaller clickable"
+                    onClick={() => this.setState({ enableLevels: true })}
+                  >
+                    تغيير
+                  </h6>
+                </div>
+              )}
+              {this.state.enableLevels && (
+                <Field
+                  component={selectField}
+                  className="form-control"
+                  name="educationalLevel"
+                  onChange={this.handleLevelChange}
+                >
+                  <option selected="selected">المستوى التعليمي</option>
+                  <option value="Student">طالب</option>
+                  <option value="Other">أخرى</option>
+                </Field>
+              )}
+            </React.Fragment>
+
+            <React.Fragment>
+              {!this.state.enableEntities && (
+                <div className="form-group change-field">
+                  <input
+                    className="form-control"
+                    disabled={true}
+                    value={!defaultEntity ? "الجهة التعليمية" : defaultEntity}
+                  />
+                  <h6
+                    className="red-text mb-0 smaller clickable"
+                    onClick={() => this.setState({ enableEntities: true })}
+                  >
+                    تغيير
+                  </h6>
+                </div>
+              )}
+              {this.state.enableEntities && (
+                <Field
+                  component={selectField}
+                  className="form-control"
+                  name="educationalEntityId"
+                  disabled={
+                    !this.state.selectedCity ||
+                    !this.state.selectedLevel ||
+                    this.state.educationalEntities == undefined ||
+                    this.state.educationalEntities.length == 0
+                  }
+                >
+                  <option selected="selected">الجهة التعليمية</option>
+                  {this.renderEntities()}
+                </Field>
+              )}
+            </React.Fragment>
 
             <EmailToken
               isEmailTokenOpen={this.state.isEmailTokenOpen}

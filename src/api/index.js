@@ -4,6 +4,7 @@ import { CoursesApiEndpoints } from "./courses.api";
 import { AuthApiEndpoints } from "./auth.api";
 import { UserApiEndpoints } from "./user.api";
 import { TwilioApiEndpoints } from "./twilio.api";
+import { SubscriptionApiEndpoints } from "./subscription.api";
 
 export const Api = {
   ...helpers,
@@ -11,5 +12,6 @@ export const Api = {
   cart: CartApiEndpoints,
   auth: AuthApiEndpoints,
   user: UserApiEndpoints,
-  twilio: TwilioApiEndpoints
+  twilio: TwilioApiEndpoints,
+  subscription: SubscriptionApiEndpoints
 };
