@@ -59,7 +59,7 @@ export class Schedule extends Component {
 
     if (sections) {
       return sections.map(section => (
-        <div className="row mt-3">
+        <div className="row mt-3" key={section.id}>
           <div className="col-12">
             <div className="card section-card" key={section.id}>
               <div className="card-header border-bottom-0">
@@ -79,7 +79,7 @@ export class Schedule extends Component {
     );
     if (sortedChapters) {
       return sortedChapters.map(chapter => (
-        <Accordion>
+        <Accordion key={chapter.id}>
           <AccordionItem expanded={true}>
             <AccordionItemTitle>
               <h6 className="dark-text mb-0 small dark-text">
@@ -103,7 +103,11 @@ export class Schedule extends Component {
       const user = this.getUser(message.author);
       return (
         <React.Fragment>
-          <div className="chat-message" ref={this.newMessageAdded}>
+          <div
+            className="chat-message"
+            ref={this.newMessageAdded}
+            key={message.id}
+          >
             <div className="d-flex align-items-center">
               {user && (
                 <h6 className="mid-text smaller mt-0 mb-0">{user.name}</h6>
@@ -128,7 +132,7 @@ export class Schedule extends Component {
     if (sortedLectures) {
       return sortedLectures.map(lecture => {
         return (
-          <React.Fragment>
+          <React.Fragment key={lecture.id}>
             {lecture.status == "Recorded" ? (
               <Link
                 to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
@@ -155,7 +159,7 @@ export class Schedule extends Component {
     var scheduledDate = year + "-" + month + "-" + day;
     var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
     return (
-      <div className="row">
+      <div className="row" key={lecture.id}>
         <div className="col-6">
           {lecture.status == "Recorded" && (
             <img

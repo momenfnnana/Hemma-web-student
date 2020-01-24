@@ -76,6 +76,7 @@ export class SubscriptionsComponent extends Component {
     return subscriptions.map(subscription => (
       <React.Fragment>
         <div
+          key={subscription.id}
           className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 clickable"
           onClick={() => {
             subscription.cumulativePaymentStatus == "Unpaid" ||

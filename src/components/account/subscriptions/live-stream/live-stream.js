@@ -207,7 +207,11 @@ export class LiveStreamComponent extends Component {
       const user = this.getUser(message.author);
       return (
         <React.Fragment>
-          <div className="chat-message" ref={this.newMessageAdded}>
+          <div
+            className="chat-message"
+            ref={this.newMessageAdded}
+            key={message.id}
+          >
             <div className="d-flex align-items-center">
               {user && (
                 <h6 className="mid-text smaller mt-0 mb-0">{user.name}</h6>

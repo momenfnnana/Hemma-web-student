@@ -57,7 +57,10 @@ export class CategoriesComponent extends Component {
     return cats.map(cat => (
       <React.Fragment>
         <div className="row pt-5">
-          <div className="col-12 d-inline-flex align-items-center justify-content-between">
+          <div
+            className="col-12 d-inline-flex align-items-center justify-content-between"
+            key={cat.id}
+          >
             {this.state.loading ? (
               <MyLoader style={{ height: 50 }} />
             ) : (
@@ -68,6 +71,7 @@ export class CategoriesComponent extends Component {
                     src={cat.icon}
                     height="50"
                     className="mr-2"
+                    alt={cat.nameAr}
                   />
                   {cat.nameAr}
                 </h5>

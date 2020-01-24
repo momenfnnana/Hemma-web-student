@@ -31,7 +31,10 @@ export class UsersChatComponent extends Component {
         {this.props.chatChannelSid.startsWith("http") && (
           <div className="row">
             <div className="col-md-12">
-              <div className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable">
+              <div
+                className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable"
+                onClick={() => window.open(this.props.chatChannelSid, "_blank")}
+              >
                 <h6 className="media chat-item mb-0 d-flex align-items-center light-text small">
                   رابط مجموعة التيليجرام
                 </h6>
@@ -60,17 +63,7 @@ export class UsersChatComponent extends Component {
               <div className="chat-title border-bottom h-55 d-flex align-items-center justify-content-center">
                 <h6 className="dark-text small mb-0">دردشة للجميع</h6>
               </div>
-              <div className="chat-window">
-                <div
-                  className="chat-history"
-                  ref={component => (this.listWrapperEl = component)}
-                >
-                  <ul className="list-unstyled">
-                    <MessagesList />
-                  </ul>
-                </div>
-                <MessageInput />
-              </div>
+              <MessagesList />
             </div>
           </div>
         </div>

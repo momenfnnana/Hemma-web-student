@@ -5,18 +5,30 @@ import { connect } from "react-redux";
 import { getCart } from "../../actions";
 import { RecentCoursesSlider } from "./RecentCoursesSlider";
 import { MiniCartItemsList } from "./MiniCartItemsList";
-import { ShippingAddressDisplay } from "./ShippingAddressDisplay";
 import { formatPrice } from "./helpers";
-import { PaymentTabs } from "./PaymentTabs";
 import { ShippingAddressForm } from "./ShippingAddressForm";
+import { OnlineShippingAddressForm } from "./OnlineShippingAddressForm";
+import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
+import classnames from "classnames";
+import { BankPayment } from "./BankPayment";
+import { OnlinePayment } from "./OnlinePayment";
 
 class CheckoutComponent extends Component {
   state = {
-    busy: true
+    busy: true,
+    activeTab: "bank"
   };
 
   constructor(props) {
     super(props);
+    this.setActiveTab = this.setActiveTab.bind(this);
+  }
+
+  /**
+   * Set the active tab
+   */
+  setActiveTab(tab) {
+    this.setState({ activeTab: tab });
   }
 
   componentDidMount() {
@@ -55,10 +67,19 @@ class CheckoutComponent extends Component {
                 <MiniCartItemsList />
 
                 <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
-                  {cart && cart.requireShippingAddress && (
-                    <ShippingAddressForm />
+                  {this.state.activeTab == "bank" ? (
+                    <React.Fragment>
+                      {cart && cart.requireShippingAddress && (
+                        <ShippingAddressForm />
+                      )}
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      {cart && cart.requireShippingAddress && (
+                        <OnlineShippingAddressForm />
+                      )}
+                    </React.Fragment>
                   )}
-
                   <div className="pt-2 pb-3">
                     <div className="pl-4 pr-4 pt-2 pb-1 d-flex flex-row align-items-center">
                       <h6 className="mid-text mb-0 mt-0 mr-3">المبلغ الكلي</h6>
@@ -76,7 +97,45 @@ class CheckoutComponent extends Component {
               </div>
 
               <div className="col-md-8 mt-3">
-                <PaymentTabs />
+                <div className="row">
+                  <div className="col-12">
+                    <Nav tabs className="custom-tabs w-50 mx-auto">
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activeTab === "bank"
+                          })}
+                          onClick={() => this.setActiveTab("bank")}
+                        >
+                          تحويل بنكي
+                        </NavLink>
+                      </NavItem>
+                      <NavItem className="position-relative">
+                        <NavLink disabled>بطاقة إئتمانية </NavLink>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL + "/assets/images/tag.png"
+                          }
+                          height="28"
+                          alt="Soon"
+                          className="position-absolute tag-img"
+                        />
+                        <h6 className="text-white light-font-text small text-position mb-0">
+                          قريبًا..
+                        </h6>
+                      </NavItem>
+                    </Nav>
+
+                    <TabContent activeTab={this.state.activeTab}>
+                      <TabPane tabId="bank">
+                        <BankPayment />
+                      </TabPane>
+                      <TabPane tabId="online">
+                        <OnlinePayment />
+                      </TabPane>
+                    </TabContent>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

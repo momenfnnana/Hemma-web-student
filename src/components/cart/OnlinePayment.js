@@ -265,13 +265,13 @@ export class OnlinePaymentComponent extends Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart,
-    formValues: state.form.cart && state.form.cart.values
+    formValues: state.form.onlinePayment && state.form.onlinePayment.values
   };
 }
 
 export const OnlinePayment = connect(mapStateToProps)(
   reduxForm({
-    form: "cart",
+    form: "onlinePayment",
     destroyOnUnmount: false
   })(withRouter(OnlinePaymentComponent))
 );

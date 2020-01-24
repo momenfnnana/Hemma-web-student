@@ -34,7 +34,7 @@ export class RecordedLectures extends Component {
     if (sections) {
       return sections.map(section => (
         <React.Fragment>
-          <div className="row no-gutters">
+          <div className="row no-gutters" key={section.id}>
             <div className="col-12">
               <h6 className="dark-text small mb-3 mt-0">{section.nameAr}</h6>
               <div className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 mb-4">
@@ -53,7 +53,7 @@ export class RecordedLectures extends Component {
     );
     if (sortedChapters) {
       return sortedChapters.map(chapter => (
-        <React.Fragment>
+        <React.Fragment key={chapter.id}>
           <h6 className="dark-text small mb-3 mt-0">{chapter.nameAr}</h6>
           <div className="row">{this.renderLectures(chapter.lectures)}</div>
         </React.Fragment>
@@ -75,7 +75,7 @@ export class RecordedLectures extends Component {
         var scheduledDate = year + "-" + month + "-" + day;
         var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
         return (
-          <div className="col-md-4">
+          <div className="col-md-4" key={lecture.id}>
             <Link
               className="dark-text small"
               to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
@@ -84,7 +84,7 @@ export class RecordedLectures extends Component {
                 <header className="card-thumb">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
-                    alt="Course image"
+                    alt={lecture.nameAr}
                   />
                 </header>
                 <div className="card-body d-flex justify-content-center flex-column">

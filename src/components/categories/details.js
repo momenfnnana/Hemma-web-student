@@ -11,6 +11,8 @@ import swal from "@sweetalert/with-react";
 import "./styles.sass";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+var moment = require("moment-hijri");
+moment().format("iYYYY/iM/iD");
 
 export class CategoryDetails extends Component {
   constructor(props) {
@@ -92,9 +94,16 @@ export class CategoryDetails extends Component {
           key={publication.id}
           onClick={() => this.openModal(publication.id)}
         >
-          <img src={publication.thumbnailUrl} width="100%" />
+          <img
+            src={publication.thumbnailUrl}
+            width="100%"
+            alt={publication.id}
+          />
           <div className="publication-overlay">
-            <img src={process.env.PUBLIC_URL + "/assets/images/eye.png"} />
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+              alt={publication.id}
+            />
           </div>
         </div>
       </React.Fragment>
@@ -104,7 +113,7 @@ export class CategoryDetails extends Component {
   renderCards() {
     return this.state.courses.map(course => (
       <React.Fragment>
-        <div className="col-md-4">
+        <div className="col-md-4" key={course.id}>
           <Card key={course.id} course={course} />
         </div>
       </React.Fragment>
@@ -128,35 +137,78 @@ export class CategoryDetails extends Component {
   }
 
   renderLectures() {
-    return this.state.lectures.map(lecture => (
-      <li
-        key={lecture.id}
-        className="list-group-item d-flex justify-content-between align-items-center"
-        dir="rtl"
-      >
-        <div className="media d-flex align-items-center">
-          <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
-            <FaGraduationCap className="text-white" size="34" />
+    const sortedLectures = this.state.lectures.sort(
+      (b, a) => a.scheduledAt - b.scheduledAt
+    );
+
+    return sortedLectures.map(lecture => {
+      const scheduledAt = new Date(lecture.scheduledAt);
+      //Date
+      var day = scheduledAt.getDate();
+      var month = scheduledAt.getMonth() + 1;
+      var year = scheduledAt.getFullYear();
+      var scheduledDate = year + "-" + month + "-" + day;
+      var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+      //Time
+      var lectureTime = scheduledAt.getTime();
+      const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
+      const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
+      const time = `${hours}:${minutes}`;
+      var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
+
+      return (
+        <li
+          key={lecture.id}
+          className="list-group-item d-flex justify-content-between align-items-center"
+          dir="rtl"
+        >
+          <div className="media d-flex align-items-center">
+            <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
+              <FaGraduationCap className="text-white" size="34" />
+            </div>
+            <div className="media-body">
+              <h6 className="dark-text">{lecture.nameAr}</h6>
+              <div className="d-flex align-items-center">
+                <h5 className="mid-text small en-text d-flex align-items-center">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
+                    height="12"
+                    width="12"
+                    className="mr-1"
+                  />
+                  {hijriDate}
+                </h5>
+
+                <h5 className="mid-text small en-text d-flex align-items-center">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
+                    className="mr-1 ml-3"
+                    height="15"
+                    alt="Time"
+                  />
+                  <span dir="ltr">
+                    {time} {ampm}
+                  </span>
+                </h5>
+              </div>
+              {lecture.instructor && (
+                <p className="light-text small mb-0">
+                  {lecture.instructor && lecture.instructor.name}
+                </p>
+              )}
+            </div>
           </div>
-          <div className="media-body">
-            <h6 className="dark-text">{lecture.nameAr}</h6>
-            {lecture.instructor && (
-              <p className="light-text small mb-0">
-                {lecture.instructor && lecture.instructor.name}
-              </p>
-            )}
-          </div>
-        </div>
-        {lecture.broadcastUrl && (
-          <button
-            className="btn light-outline-btn unset-height"
-            onClick={() => this.openFreeLecture(lecture)}
-          >
-            انضم
-          </button>
-        )}
-      </li>
-    ));
+          {lecture.broadcastUrl && (
+            <button
+              className="btn light-outline-btn unset-height"
+              onClick={() => this.openFreeLecture(lecture)}
+            >
+              انضم
+            </button>
+          )}
+        </li>
+      );
+    });
   }
 
   render() {
@@ -203,7 +255,7 @@ export class CategoryDetails extends Component {
         {
           breakpoint: 1024,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 2,
             slidesToScroll: 1,
             infinite: false
           }
@@ -211,7 +263,7 @@ export class CategoryDetails extends Component {
         {
           breakpoint: 600,
           settings: {
-            slidesToShow: 1,
+            slidesToShow: 2,
             slidesToScroll: 1,
             initialSlide: 1
           }
@@ -219,8 +271,9 @@ export class CategoryDetails extends Component {
         {
           breakpoint: 480,
           settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
+            slidesToShow: 2,
+            slidesToScroll: 1,
+            dots: true
           }
         }
       ]
@@ -245,6 +298,7 @@ export class CategoryDetails extends Component {
                     height="50"
                     width="50"
                     className="mt-3"
+                    alt={this.state.details.nameAr}
                   />
                 </div>
                 <h5 className="dark-text mt-3">{this.state.details.nameAr}</h5>
@@ -261,7 +315,7 @@ export class CategoryDetails extends Component {
                     لأننا حابين نفيدكم قدمنا لكم
                   </h4>
                   <h4 className="light-text">محاضرات مجانية</h4>
-                  <p className="dark-silver-text small text-break mb-0">
+                  <p className="dark-silver-text small text-break">
                     نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
                     المزيد
                   </p>
