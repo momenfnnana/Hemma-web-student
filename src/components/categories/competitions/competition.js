@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
+import ReactMomentCountDown from "react-moment-countdown";
 
-export class Competition extends Component {
+class CompetitionComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -15,68 +17,25 @@ export class Competition extends Component {
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
   }
 
-  onCountdownEnd = () => {
-    const questionsLength = this.state.questions.length;
-    const answersLength = this.state.answers.length;
-    const unansweredQuestions = questionsLength - answersLength;
-    if (unansweredQuestions == 0) {
-      const attemptId = this.props.match.params.attemptId;
-      let token = localStorage.getItem("token");
-      let headers = {
-        Authorization: `Bearer ${token}`
-      };
-      let data = {
-        answers: this.state.answers
-      };
-      axios
-        .post(`${apiBaseUrl}/Competitions/Attempts/${attemptId}`, data, {
-          headers
-        })
-        .then(response => {
-          console.log(response);
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    } else {
-      this.openConfirmExamModal();
-    }
-  };
-
-  componentDidMount = () => {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    const {
-      match: { params }
-    } = this.props;
-    axios
-      .get(`${apiBaseUrl}/Competitions/${params.id}`, {
-        headers
-      })
-      .then(response => {
-        this.setState({
-          questions: response.data.data.questions,
-          competitionDetails: response.data.data
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  onCountdownEnd = attemptId => {
+    console.log(attemptId);
   };
 
   goToNext = () => {
     this.setState({
       selectedQuestion:
-        (this.state.selectedQuestion + 1) % this.state.questions.length
+        (this.state.selectedQuestion + 1) % this.props.competitionDetails &&
+        this.props.competitionDetails.questions &&
+        this.props.competitionDetails.questions.length
     });
   };
 
   goToPrevious = () => {
     this.setState({
       selectedQuestion:
-        (this.state.selectedQuestion - 1) % this.state.questions.length
+        (this.state.selectedQuestion - 1) % this.props.competitionDetails &&
+        this.props.competitionDetails.questions &&
+        this.props.competitionDetails.questions.length
     });
   };
 
@@ -95,7 +54,10 @@ export class Competition extends Component {
     this.setState({ answers });
   }
   renderQuestions() {
-    const questions = this.state.questions || [];
+    const questions =
+      (this.props.competitionDetails &&
+        this.props.competitionDetails.questions) ||
+      [];
     const question = questions[this.state.selectedQuestion];
     const answer = this.state.answers.find(a => a.id === question.id);
 
@@ -116,7 +78,8 @@ export class Competition extends Component {
               </div>
 
               {this.state.selectedQuestion + 1 ==
-              this.state.questions.length ? (
+                this.props.competitionDetails &&
+              this.props.competitionDetails.questions.length ? (
                 <div />
               ) : (
                 <button className="btn light-btn" onClick={this.goToNext}>
@@ -182,7 +145,45 @@ export class Competition extends Component {
       </React.Fragment>
     );
   }
+
+  submitAnswers = attemptId => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      answers: this.state.answers
+    };
+    axios
+      .put(`${apiBaseUrl}/Competitions/Attempts/${attemptId}`, data, {
+        headers
+      })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   render() {
+    const competitionDetails = this.props && this.props.competitionDetails;
+    const attemptId =
+      competitionDetails && competitionDetails.competitionAttemptId;
+
+    const dueDate = competitionDetails && competitionDetails.dueAt;
+    const formattedDate = new Date(dueDate);
+    var day = formattedDate.getDate();
+    var month = formattedDate.getMonth() + 1;
+    var year = formattedDate.getFullYear();
+    var finalDate = year + "-" + month + "-" + day;
+    var hours = formattedDate.getHours() + 2;
+    var minutes = formattedDate.getMinutes();
+    var seconds = formattedDate.getSeconds();
+    var finalTime = hours + ":" + minutes + ":" + seconds;
+    var countdownTo = finalDate + " " + finalTime;
+    const dateInFuture = new Date(countdownTo);
+
     return (
       <section className="pt-5 pb-5">
         <div className="container">
@@ -192,7 +193,7 @@ export class Competition extends Component {
                 <div className="title d-flex align-items-center justify-content-between mb-3">
                   <div>
                     <h5 className="text-white mb-1">
-                      مسابقة كفايات المعلمين والمعلمات
+                      {competitionDetails.name}
                     </h5>
                     <p className="text-white small mb-0">
                       تحدى نفسك و ابرز قدراتك في المسابقة الأقوى على الاطلاق على
@@ -200,32 +201,24 @@ export class Competition extends Component {
                     </p>
                   </div>
                   <h5 className="text-white en-text mb-0">
-                    01:02:30<i className="fa fa-clock ml-2"></i>
+                    <ReactMomentCountDown
+                      toDate={dateInFuture}
+                      sourceFormatMask="YYYY-MM-DD HH:mm:ss"
+                      onCountdownEnd={() => this.onCountdownEnd(attemptId)}
+                    />
+                    <i className="fa fa-clock ml-2"></i>
                   </h5>
                 </div>
                 <div className="question-item">{this.renderQuestions()}</div>
                 <hr />
                 <div className="d-flex align-items-center justify-content-center">
-                  <button className="btn light-outline-btn w-20">
+                  <button
+                    className="btn light-outline-btn w-20"
+                    onClick={() => this.submitAnswers(attemptId)}
+                  >
                     إنهاء المسابقة
                   </button>
                 </div>
-
-                {/* {unansweredQuestions == 0 ? (
-                  <button
-                    className="btn light-outline-btn w-25"
-                    onClick={this.submitAnswers}
-                  >
-                    إنهاء الامتحان
-                  </button>
-                ) : (
-                  <button
-                    className="btn light-outline-btn w-25"
-                    onClick={this.openConfirmExamModal}
-                  >
-                    إنهاء الامتحان
-                  </button>
-                )} */}
               </div>
             </div>
           </div>
@@ -234,3 +227,9 @@ export class Competition extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return { competitionDetails: state.categories };
+}
+
+export const Competition = connect(mapStateToProps)(CompetitionComponent);

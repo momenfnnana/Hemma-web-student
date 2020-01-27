@@ -3,13 +3,13 @@ import axios from "axios";
 import { FaGraduationCap } from "react-icons/fa";
 import Slider from "react-slick";
 import { Card } from "../shared/card/card";
-import { CardsList } from "../shared/cardsList/cardsList";
 import { PublicationDetails } from "../publication/publication";
 import { apiBaseUrl } from "../../api/helpers";
 import { Helmet } from "react-helmet";
-import { Link } from "react-router-dom";
 import swal from "@sweetalert/with-react";
 import Loader from "react-loaders";
+import { getCompetitions, getCompetitionDetails } from "../../actions";
+import { connect } from "react-redux";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -18,7 +18,7 @@ import "./styles.sass";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class CategoryDetails extends Component {
+class CategoryDetailsComponent extends Component {
   page = 1;
   limit = 6;
   endOfResults = false;
@@ -83,10 +83,6 @@ export class CategoryDetails extends Component {
   };
 
   async componentDidMount() {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
     const {
       match: { params }
     } = this.props;
@@ -117,15 +113,10 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
-    axios
-      .get(
-        `${apiBaseUrl}/competitions?categoryId=${this.props.location.state.catId}`,
-        {
-          headers
-        }
-      )
+    this.props
+      .getCompetitions(this.props.location.state.catId)
       .then(response => {
-        this.setState({ competitions: response.data.data });
+        this.setState({ competitions: response.payload });
       })
       .catch(error => {
         console.log(error);
@@ -260,19 +251,12 @@ export class CategoryDetails extends Component {
   }
 
   getCompetitionDetails(id) {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
     const {
       match: { params }
     } = this.props;
-    axios
-      .get(`${apiBaseUrl}/Competitions/${id}`, {
-        headers
-      })
+    this.props
+      .getCompetitionDetails(id)
       .then(response => {
-        console.log(response);
         this.props.history.push(
           `/categories/details/${params.slug}/competition/${id}`
         );
@@ -312,7 +296,12 @@ export class CategoryDetails extends Component {
         >
           <div className="box-img">
             <img
-              src={process.env.PUBLIC_URL + "/assets/images/competition.png"}
+              src={
+                competition.isTaken
+                  ? process.env.PUBLIC_URL +
+                    "/assets/images/competition-disabled.png"
+                  : process.env.PUBLIC_URL + "/assets/images/competition.png"
+              }
               height="50"
             />
           </div>
@@ -494,7 +483,7 @@ export class CategoryDetails extends Component {
                 <div className="row pt-5 pb-4 d-flex align-items-center">
                   <div className="col-md-5">
                     <h4 className="dark-text">
-                      مع همة تقدرون تتحدون أنفسكم مع
+                      مع همة تقدرون تتحدون أنفسكم مع{" "}
                       <span className="light-text">المسابقات</span>
                     </h4>
                     <p className="dark-silver-text text-break mb-0">
@@ -521,3 +510,20 @@ export class CategoryDetails extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    competitions: state.categories,
+    competitionDetails: state.categories
+  };
+}
+
+const actionCreators = {
+  getCompetitions,
+  getCompetitionDetails
+};
+
+export const CategoryDetails = connect(
+  mapStateToProps,
+  actionCreators
+)(CategoryDetailsComponent);
