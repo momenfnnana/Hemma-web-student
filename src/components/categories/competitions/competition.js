@@ -11,31 +11,56 @@ class CompetitionComponent extends Component {
       competitionDetails: [],
       questions: [],
       answers: [],
-      selectedQuestion: 0
+      selectedQuestion: 0,
+      attemptSubmitted: false,
+      numberOfWrongAnswers: null,
+      numberOfCorrectAnswers: null
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
   }
 
   onCountdownEnd = attemptId => {
-    console.log(attemptId);
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      answers: this.state.answers
+    };
+    axios
+      .put(`${apiBaseUrl}/Competitions/Attempts/${attemptId}`, data, {
+        headers
+      })
+      .then(response => {
+        this.setState({
+          numberOfCorrectAnswers: response.data.data.numberOfCorrectAnswers,
+          numberOfWrongAnswers: response.data.data.numberOfWrongAnswers,
+          attemptSubmitted: true
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   goToNext = () => {
+    const questionsLength =
+      this.props.competitionDetails &&
+      this.props.competitionDetails.questions &&
+      this.props.competitionDetails.questions.length;
     this.setState({
-      selectedQuestion:
-        (this.state.selectedQuestion + 1) % this.props.competitionDetails &&
-        this.props.competitionDetails.questions &&
-        this.props.competitionDetails.questions.length
+      selectedQuestion: (this.state.selectedQuestion + 1) % questionsLength
     });
   };
 
   goToPrevious = () => {
+    const questionsLength =
+      this.props.competitionDetails &&
+      this.props.competitionDetails.questions &&
+      this.props.competitionDetails.questions.length;
     this.setState({
-      selectedQuestion:
-        (this.state.selectedQuestion - 1) % this.props.competitionDetails &&
-        this.props.competitionDetails.questions &&
-        this.props.competitionDetails.questions.length
+      selectedQuestion: (this.state.selectedQuestion - 1) % questionsLength
     });
   };
 
@@ -60,6 +85,10 @@ class CompetitionComponent extends Component {
       [];
     const question = questions[this.state.selectedQuestion];
     const answer = this.state.answers.find(a => a.id === question.id);
+    const questionsLength =
+      this.props.competitionDetails &&
+      this.props.competitionDetails.questions &&
+      this.props.competitionDetails.questions.length;
 
     return (
       <React.Fragment>
@@ -74,12 +103,12 @@ class CompetitionComponent extends Component {
                 </button>
               )}
               <div className="d-flex flex-column justify-content-center align-items-center">
-                <h6 className="mb-0 dark-text">السؤال {question.id}</h6>
+                <h6 className="mb-0 dark-text">
+                  السؤال {this.state.selectedQuestion + 1}
+                </h6>
               </div>
 
-              {this.state.selectedQuestion + 1 ==
-                this.props.competitionDetails &&
-              this.props.competitionDetails.questions.length ? (
+              {this.state.selectedQuestion + 1 == questionsLength ? (
                 <div />
               ) : (
                 <button className="btn light-btn" onClick={this.goToNext}>
@@ -159,7 +188,11 @@ class CompetitionComponent extends Component {
         headers
       })
       .then(response => {
-        console.log(response);
+        this.setState({
+          numberOfCorrectAnswers: response.data.data.numberOfCorrectAnswers,
+          numberOfWrongAnswers: response.data.data.numberOfWrongAnswers,
+          attemptSubmitted: true
+        });
       })
       .catch(error => {
         console.log(error);
@@ -190,35 +223,102 @@ class CompetitionComponent extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="competition-item border-0 box-layout bg-white shadow-sm h-100">
-                <div className="title d-flex align-items-center justify-content-between mb-3">
-                  <div>
-                    <h5 className="text-white mb-1">
-                      {competitionDetails.name}
-                    </h5>
-                    <p className="text-white small mb-0">
-                      تحدى نفسك و ابرز قدراتك في المسابقة الأقوى على الاطلاق على
-                      مستوى مدارس
-                    </p>
-                  </div>
-                  <h5 className="text-white en-text mb-0">
-                    <ReactMomentCountDown
-                      toDate={dateInFuture}
-                      sourceFormatMask="YYYY-MM-DD HH:mm:ss"
-                      onCountdownEnd={() => this.onCountdownEnd(attemptId)}
-                    />
-                    <i className="fa fa-clock ml-2"></i>
-                  </h5>
-                </div>
-                <div className="question-item">{this.renderQuestions()}</div>
-                <hr />
-                <div className="d-flex align-items-center justify-content-center">
-                  <button
-                    className="btn light-outline-btn w-20"
-                    onClick={() => this.submitAnswers(attemptId)}
-                  >
-                    إنهاء المسابقة
-                  </button>
-                </div>
+                {!this.state.attemptSubmitted ? (
+                  <React.Fragment>
+                    <div className="title d-flex align-items-center justify-content-between mb-3">
+                      <div>
+                        <h5 className="text-white mb-1">
+                          {competitionDetails.name}
+                        </h5>
+                        <p className="text-white small mb-0">
+                          تحدى نفسك و ابرز قدراتك في المسابقة الأقوى على الاطلاق
+                          على مستوى مدارس
+                        </p>
+                      </div>
+                      <h5 className="text-white en-text mb-0">
+                        <ReactMomentCountDown
+                          toDate={dateInFuture}
+                          sourceFormatMask="YYYY-MM-DD HH:mm:ss"
+                          onCountdownEnd={() => this.onCountdownEnd(attemptId)}
+                        />
+                        <i className="fa fa-clock ml-2"></i>
+                      </h5>
+                    </div>
+                    <div className="question-item">
+                      {this.renderQuestions()}
+                    </div>
+                    <hr />
+                    <div className="d-flex align-items-center justify-content-center">
+                      <button
+                        className="btn light-outline-btn w-20"
+                        onClick={() => this.submitAnswers(attemptId)}
+                      >
+                        إنهاء المسابقة
+                      </button>
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    {this.state.numberOfCorrectAnswers >
+                      this.state.numberOfWrongAnswers && (
+                      <div className="row py-4">
+                        <div className="col-12 d-flex flex-column align-items-center">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/passed.png"
+                            }
+                            height="120"
+                            className="contain-img mb-3"
+                          />
+                          <h5 className="mid-text mb-2">تهانينا، لقد نجحت!</h5>
+                          <p className="green-text small mb-1">
+                            عدد الإجابات الصحيحة:{" "}
+                            <span className="en-text">
+                              {this.state.numberOfCorrectAnswers}
+                            </span>
+                          </p>
+                          <p className="red-text small mb-1">
+                            عدد الإجابات الخاطئة:{" "}
+                            <span className="en-text">
+                              {this.state.numberOfWrongAnswers}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {this.state.numberOfCorrectAnswers <
+                      this.state.numberOfWrongAnswers && (
+                      <div className="row py-4">
+                        <div className="col-12 d-flex flex-column align-items-center">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/failed.png"
+                            }
+                            height="120"
+                            className="contain-img mb-3"
+                          />
+                          <h5 className="mid-text mb-2">
+                            لا بأس عاود المحاولة ..
+                          </h5>
+                          <p className="green-text small mb-1">
+                            عدد الإجابات الصحيحة:{" "}
+                            <span className="en-text">
+                              {this.state.numberOfCorrectAnswers}
+                            </span>
+                          </p>
+                          <p className="red-text small mb-1">
+                            عدد الإجابات الخاطئة:{" "}
+                            <span className="en-text">
+                              {this.state.numberOfWrongAnswers}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                  </React.Fragment>
+                )}
               </div>
             </div>
           </div>

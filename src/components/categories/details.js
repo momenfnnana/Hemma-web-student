@@ -14,6 +14,7 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
+import { AccountModal } from "./competitions/account-modal";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -36,6 +37,8 @@ class CategoryDetailsComponent extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
+      isAccountOpen: false,
+      selectedCompetition: null,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -48,6 +51,13 @@ class CategoryDetailsComponent extends Component {
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
+
+  openAccountModal = () => {
+    this.setState({ isAccountOpen: true });
+  };
+  closeAccountModal = () => {
+    this.setState({ isAccountOpen: false });
+  };
 
   loadMore = async () => {
     let token = localStorage.getItem("token");
@@ -262,6 +272,7 @@ class CategoryDetailsComponent extends Component {
         );
       })
       .catch(error => {
+        this.setState({ selectedCompetition: id });
         switch (error.response.data && error.response.data.message) {
           case "Student City not match the Competition City":
             swal(
@@ -277,6 +288,9 @@ class CategoryDetailsComponent extends Component {
             swal("عفواً", "لا يمكنك الاشتراك بالمسابقة أكثر من مرة", "error", {
               button: "متابعة"
             });
+            break;
+          case "SACity is required to take the competition":
+            this.openAccountModal();
             break;
           default:
             console.log("other error");
@@ -325,6 +339,10 @@ class CategoryDetailsComponent extends Component {
   }
 
   render() {
+    let token = localStorage.getItem("token");
+    const {
+      match: { params }
+    } = this.props;
     var settings = {
       dots: true,
       infinite: false,
@@ -490,8 +508,9 @@ class CategoryDetailsComponent extends Component {
                   اقوى المنافسين
                 </p>
               </div>
+
               {this.state.competitions == undefined ||
-              this.state.competitions.length == 0 ? (
+              (this.state.competitions.length == 0 && !token) ? (
                 <div className="col-md-4">
                   <div className="competition-box d-flex flex-column justify-content-center clickable">
                     <div className="box-img">
@@ -510,9 +529,30 @@ class CategoryDetailsComponent extends Component {
                     </div>
                   </div>
                 </div>
+              ) : this.state.competitions == undefined ||
+                this.state.competitions.length == 0 ? (
+                <div className="col-md-4">
+                  <div className="competition-box d-flex flex-column justify-content-center clickable">
+                    <div className="box-img">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/competition-disabled.png"
+                        }
+                        height="50"
+                      />
+                    </div>
+                    <div className="box-body">
+                      <h6 className="dark-text mb-0 text-center">
+                        لا يوجد مسابقات متاحة في الوقت الحالي
+                      </h6>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <div className="col-md-4">{this.renderCompetitions()}</div>
               )}
+
               <div className="col-md-3">
                 <img
                   src={
@@ -525,6 +565,12 @@ class CategoryDetailsComponent extends Component {
             </div>
           </div>
         </section>
+        <AccountModal
+          isAccountOpen={this.state.isAccountOpen}
+          closeAccount={this.closeAccountModal}
+          competitionId={this.state.selectedCompetition}
+          slug={params.slug}
+        />
       </React.Fragment>
     );
   }
