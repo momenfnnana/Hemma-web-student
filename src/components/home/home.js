@@ -91,7 +91,15 @@ export class Home extends Component {
           {cats.map((cat, i) => {
             return (
               <div className="mt-5 mb-3 col-lg-3 col-6" key={cat.id}>
-                <Link to={`/categories/details/${cat.slug}`} key={cat.id}>
+                <Link
+                  to={{
+                    pathname: `/categories/details/${cat.slug}`,
+                    state: {
+                      catId: cat.id
+                    }
+                  }}
+                  key={cat.id}
+                >
                   <div
                     key={cat.id}
                     className="half-circle-border d-flex flex-column align-items-center mx-auto"
