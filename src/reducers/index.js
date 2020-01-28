@@ -18,5 +18,5 @@ export const hemmaReducer = combineReducers({
   twilio: twilioReducer,
   chat: chatReducer,
   subscription: subscriptionReducer,
-  categories: categoriesReducer
+  competition: categoriesReducer
 });

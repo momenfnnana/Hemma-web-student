@@ -1,20 +1,27 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
 import ReactMomentCountDown from "react-moment-countdown";
+import swal from "@sweetalert/with-react";
+import { Api } from "../../../api";
+import { SpecificSchools } from "./cases/specific-schools";
+import { NotAllowed } from "./cases/not-allowed";
+import { CityMissing } from "./cases/city-missing";
+import { getCompetitionDetails } from "../../../actions";
+import { connect } from "react-redux";
 
 class CompetitionComponent extends Component {
   constructor() {
     super();
     this.state = {
-      competitionDetails: [],
-      questions: [],
       answers: [],
       selectedQuestion: 0,
       attemptSubmitted: false,
       numberOfWrongAnswers: null,
-      numberOfCorrectAnswers: null
+      numberOfCorrectAnswers: null,
+      notAllowed: false,
+      cityMissing: false,
+      specificSchools: false
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
@@ -46,9 +53,10 @@ class CompetitionComponent extends Component {
 
   goToNext = () => {
     const questionsLength =
-      this.props.competitionDetails &&
-      this.props.competitionDetails.questions &&
-      this.props.competitionDetails.questions.length;
+      this.props &&
+      this.props.competition &&
+      this.props.competition.questions &&
+      this.props.competition.questions.length;
     this.setState({
       selectedQuestion: (this.state.selectedQuestion + 1) % questionsLength
     });
@@ -56,9 +64,10 @@ class CompetitionComponent extends Component {
 
   goToPrevious = () => {
     const questionsLength =
-      this.props.competitionDetails &&
-      this.props.competitionDetails.questions &&
-      this.props.competitionDetails.questions.length;
+      this.props &&
+      this.props.competition &&
+      this.props.competition.questions &&
+      this.props.competition.questions.length;
     this.setState({
       selectedQuestion: (this.state.selectedQuestion - 1) % questionsLength
     });
@@ -80,15 +89,17 @@ class CompetitionComponent extends Component {
   }
   renderQuestions() {
     const questions =
-      (this.props.competitionDetails &&
-        this.props.competitionDetails.questions) ||
+      (this.props &&
+        this.props.competition &&
+        this.props.competition.questions) ||
       [];
     const question = questions[this.state.selectedQuestion];
     const answer = this.state.answers.find(a => a.id === question.id);
     const questionsLength =
-      this.props.competitionDetails &&
-      this.props.competitionDetails.questions &&
-      this.props.competitionDetails.questions.length;
+      this.props &&
+      this.props.competition &&
+      this.props.competition.questions &&
+      this.props.competition.questions.length;
 
     return (
       <React.Fragment>
@@ -199,8 +210,46 @@ class CompetitionComponent extends Component {
       });
   };
 
+  componentDidMount() {
+    const {
+      match: { params }
+    } = this.props;
+
+    this.props
+      .getCompetitionDetails(params.id)
+      .then(response => {})
+      .catch(error => {
+        switch (error.response.data && error.response.data.message) {
+          case "Student City not match the Competition City":
+            this.setState({ specificSchools: true });
+            break;
+          case "Student has attempt on this competition":
+            this.setState({ notAllowed: true });
+            break;
+          case "Student Gender not match the Competition Gender":
+            this.setState({ specificSchools: true });
+            break;
+          case "SACity is required to take the competition":
+            this.setState({ cityMissing: true });
+            break;
+          default:
+            console.log("other error");
+        }
+      });
+  }
+
+  updateCityState = cityMissing => {
+    this.setState({ cityMissing: cityMissing });
+  };
+  updateSchoolState = specificSchools => {
+    this.setState({ specificSchools: specificSchools });
+  };
+  updateDuplicateState = notAllowed => {
+    this.setState({ notAllowed: notAllowed });
+  };
+
   render() {
-    const competitionDetails = this.props && this.props.competitionDetails;
+    const competitionDetails = this.props && this.props.competition;
     const attemptId =
       competitionDetails && competitionDetails.competitionAttemptId;
 
@@ -223,7 +272,19 @@ class CompetitionComponent extends Component {
           <div className="row">
             <div className="col-md-12">
               <div className="competition-item border-0 box-layout bg-white shadow-sm h-100">
-                {!this.state.attemptSubmitted ? (
+                {this.state.specificSchools && <SpecificSchools />}
+                {this.state.notAllowed && <NotAllowed />}
+                {this.state.cityMissing && (
+                  <CityMissing
+                    updateCityState={this.updateCityState}
+                    updateSpecificSchools={this.updateSchoolState}
+                    updateDuplicateState={this.updateDuplicateState}
+                  />
+                )}
+                {!this.state.attemptSubmitted &&
+                !this.state.specificSchools &&
+                !this.state.notAllowed &&
+                !this.state.cityMissing ? (
                   <React.Fragment>
                     <div className="title d-flex align-items-center justify-content-between mb-3">
                       <div>
@@ -329,7 +390,16 @@ class CompetitionComponent extends Component {
 }
 
 function mapStateToProps(state) {
-  return { competitionDetails: state.categories };
+  return {
+    competition: state.competition
+  };
 }
 
-export const Competition = connect(mapStateToProps)(CompetitionComponent);
+const actionCreators = {
+  getCompetitionDetails
+};
+
+export const Competition = connect(
+  mapStateToProps,
+  actionCreators
+)(CompetitionComponent);

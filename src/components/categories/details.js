@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import axios from "axios";
 import { FaGraduationCap } from "react-icons/fa";
 import Slider from "react-slick";
 import { Card } from "../shared/card/card";
@@ -8,18 +7,17 @@ import { apiBaseUrl } from "../../api/helpers";
 import { Helmet } from "react-helmet";
 import swal from "@sweetalert/with-react";
 import Loader from "react-loaders";
-import { getCompetitions, getCompetitionDetails } from "../../actions";
-import { connect } from "react-redux";
+import { Api } from "../../api";
+import axios from "axios";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
-import { AccountModal } from "./competitions/account-modal";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-class CategoryDetailsComponent extends Component {
+export class CategoryDetails extends Component {
   page = 1;
   limit = 6;
   endOfResults = false;
@@ -37,8 +35,6 @@ class CategoryDetailsComponent extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
-      isAccountOpen: false,
-      selectedCompetition: null,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -51,13 +47,6 @@ class CategoryDetailsComponent extends Component {
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
-
-  openAccountModal = () => {
-    this.setState({ isAccountOpen: true });
-  };
-  closeAccountModal = () => {
-    this.setState({ isAccountOpen: false });
-  };
 
   loadMore = async () => {
     let token = localStorage.getItem("token");
@@ -123,10 +112,10 @@ class CategoryDetailsComponent extends Component {
         console.log(error);
       });
 
-    this.props
+    Api.categories
       .getCompetitions(this.props.location.state.catId)
       .then(response => {
-        this.setState({ competitions: response.payload });
+        this.setState({ competitions: response });
       })
       .catch(error => {
         console.log(error);
@@ -260,44 +249,6 @@ class CategoryDetailsComponent extends Component {
     });
   }
 
-  getCompetitionDetails(id) {
-    const {
-      match: { params }
-    } = this.props;
-    this.props
-      .getCompetitionDetails(id)
-      .then(response => {
-        this.props.history.push(
-          `/categories/details/${params.slug}/competition/${id}`
-        );
-      })
-      .catch(error => {
-        this.setState({ selectedCompetition: id });
-        switch (error.response.data && error.response.data.message) {
-          case "Student City not match the Competition City":
-            swal(
-              "عفواً",
-              "هذه المسابقة مخصصة لمدارس معينة، يمكنك المشاركة بمسابقة أخرى",
-              "error",
-              {
-                button: "متابعة"
-              }
-            );
-            break;
-          case "Student has attempt on this competition":
-            swal("عفواً", "لا يمكنك الاشتراك بالمسابقة أكثر من مرة", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "SACity is required to take the competition":
-            this.openAccountModal();
-            break;
-          default:
-            console.log("other error");
-        }
-      });
-  }
-
   renderCompetitions() {
     const {
       match: { params }
@@ -306,7 +257,11 @@ class CategoryDetailsComponent extends Component {
       <React.Fragment>
         <div
           className="competition-box d-flex flex-column justify-content-center clickable"
-          onClick={() => this.getCompetitionDetails(competition.id)}
+          onClick={() =>
+            this.props.history.push(
+              `/categories/details/${params.slug}/competition/${competition.id}`
+            )
+          }
         >
           <div className="box-img">
             <img
@@ -565,30 +520,7 @@ class CategoryDetailsComponent extends Component {
             </div>
           </div>
         </section>
-        <AccountModal
-          isAccountOpen={this.state.isAccountOpen}
-          closeAccount={this.closeAccountModal}
-          competitionId={this.state.selectedCompetition}
-          slug={params.slug}
-        />
       </React.Fragment>
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    competitions: state.categories,
-    competitionDetails: state.categories
-  };
-}
-
-const actionCreators = {
-  getCompetitions,
-  getCompetitionDetails
-};
-
-export const CategoryDetails = connect(
-  mapStateToProps,
-  actionCreators
-)(CategoryDetailsComponent);
