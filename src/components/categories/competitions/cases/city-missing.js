@@ -273,6 +273,26 @@ class CityMissingComponent extends Component {
     ));
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.initialValues.saCityId !== this.props.initialValues.saCityId ||
+      nextProps.initialValues.educationalLevel !==
+        this.props.initialValues.educationalLevel
+    ) {
+      axios
+        .get(
+          `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${nextProps.initialValues.saCityId}&EducationalLevel=${nextProps.initialValues.educationalLevel}`
+        )
+        .then(response => {
+          this.setState({ educationalEntities: response.data.data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    return true;
+  }
+
   handleCitiesChange = event => {
     this.setState({ selectedCity: event.target.value });
     axios
@@ -490,98 +510,40 @@ class CityMissingComponent extends Component {
                 ) : null}
               </div>
 
-              <React.Fragment>
-                {!this.state.enableCities && (
-                  <div className="form-group change-field">
-                    <input
-                      className="form-control"
-                      disabled={true}
-                      value={!defaultCity ? "المدينة" : defaultCity}
-                    />
-                    <h6
-                      className="red-text mb-0 smaller clickable"
-                      onClick={() => this.setState({ enableCities: true })}
-                    >
-                      تغيير
-                    </h6>
-                  </div>
-                )}
-                {this.state.enableCities && (
-                  <Field
-                    component={selectField}
-                    className="form-control"
-                    name="saCityId"
-                    onChange={this.handleCitiesChange}
-                  >
-                    <option selected="selected">المدينة</option>
-                    {this.renderCities()}
-                  </Field>
-                )}
-              </React.Fragment>
+              <Field
+                component={selectField}
+                className="form-control"
+                name="saCityId"
+                onChange={this.handleCitiesChange}
+              >
+                <option selected="selected">المدينة</option>
+                {this.renderCities()}
+              </Field>
 
-              <React.Fragment>
-                {!this.state.enableLevels && (
-                  <div className="form-group change-field">
-                    <input
-                      className="form-control"
-                      disabled={true}
-                      value={!defaultLevel ? "المستوى التعليمي" : defaultLevel}
-                    />
-                    <h6
-                      className="red-text mb-0 smaller clickable"
-                      onClick={() => this.setState({ enableLevels: true })}
-                    >
-                      تغيير
-                    </h6>
-                  </div>
-                )}
-                {this.state.enableLevels && (
-                  <Field
-                    component={selectField}
-                    className="form-control"
-                    name="educationalLevel"
-                    onChange={this.handleLevelChange}
-                  >
-                    <option selected="selected">المستوى التعليمي</option>
-                    <option value="Student">طالب</option>
-                    <option value="Other">أخرى</option>
-                  </Field>
-                )}
-              </React.Fragment>
+              <Field
+                component={selectField}
+                className="form-control"
+                name="educationalLevel"
+                onChange={this.handleLevelChange}
+              >
+                <option selected="selected">المستوى التعليمي</option>
+                <option value="Student">طالب</option>
+                <option value="Other">أخرى</option>
+              </Field>
 
-              <React.Fragment>
-                {!this.state.enableEntities && (
-                  <div className="form-group change-field">
-                    <input
-                      className="form-control"
-                      disabled={true}
-                      value={!defaultEntity ? "الجهة التعليمية" : defaultEntity}
-                    />
-                    <h6
-                      className="red-text mb-0 smaller clickable"
-                      onClick={() => this.setState({ enableEntities: true })}
-                    >
-                      تغيير
-                    </h6>
-                  </div>
-                )}
-                {this.state.enableEntities && (
-                  <Field
-                    component={selectField}
-                    className="form-control"
-                    name="educationalEntityId"
-                    disabled={
-                      !this.state.selectedCity ||
-                      !this.state.selectedLevel ||
-                      this.state.educationalEntities == undefined ||
-                      this.state.educationalEntities.length == 0
-                    }
-                  >
-                    <option selected="selected">الجهة التعليمية</option>
-                    {this.renderEntities()}
-                  </Field>
-                )}
-              </React.Fragment>
+              <Field
+                component={selectField}
+                className="form-control"
+                name="educationalEntityId"
+                onChange={this.handleEntitiesChange}
+                disabled={
+                  this.state.educationalEntities == undefined ||
+                  this.state.educationalEntities.length == 0
+                }
+              >
+                <option selected="selected">الجهة التعليمية</option>
+                {this.renderEntities()}
+              </Field>
 
               <EmailToken
                 isEmailTokenOpen={this.state.isEmailTokenOpen}
@@ -607,11 +569,21 @@ class CityMissingComponent extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
+  let props = {
     initialValues: state.profile,
     entireState: state,
     competition: state.competition
   };
+
+  if (state.profile && state.profile.saCity) {
+    props.initialValues.saCityId = state.profile.saCity.id;
+  }
+  if (state.profile && state.profile.educationalEntity) {
+    props.initialValues.educationalEntityId =
+      state.profile.educationalEntity.id;
+  }
+
+  return props;
 }
 
 CityMissingComponent = reduxForm({
