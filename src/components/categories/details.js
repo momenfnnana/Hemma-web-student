@@ -9,6 +9,7 @@ import swal from "@sweetalert/with-react";
 import Loader from "react-loaders";
 import { Api } from "../../api";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -467,41 +468,35 @@ export class CategoryDetails extends Component {
               {this.state.competitions == undefined ||
               (this.state.competitions.length == 0 && !token) ? (
                 <div className="col-md-4">
-                  <div className="competition-box d-flex flex-column justify-content-center clickable">
-                    <div className="box-img">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/competition-disabled.png"
-                        }
-                        height="50"
-                      />
-                    </div>
-                    <div className="box-body">
-                      <h6 className="dark-text mb-0 text-center">
-                        يجب عليك تسجيل الدخول حتى تتمكن من الاشتراك بالمسابقات
-                      </h6>
-                    </div>
+                  <div className="competition-box-empty d-flex flex-column justify-content-around align-items-center">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/warning.png"
+                      }
+                      height="30"
+                    />
+                    <h6 className="dark-text small mb-0 text-center w-75">
+                      يجب عليك{" "}
+                      <Link to="/auth/login" className="light-text">
+                        تسجيل الدخول
+                      </Link>{" "}
+                      حتى تتمكن من الاشتراك بالمسابقات
+                    </h6>
                   </div>
                 </div>
               ) : this.state.competitions == undefined ||
                 this.state.competitions.length == 0 ? (
                 <div className="col-md-4">
-                  <div className="competition-box d-flex flex-column justify-content-center clickable">
-                    <div className="box-img">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/competition-disabled.png"
-                        }
-                        height="50"
-                      />
-                    </div>
-                    <div className="box-body">
-                      <h6 className="dark-text mb-0 text-center">
-                        لا يوجد مسابقات متاحة في الوقت الحالي
-                      </h6>
-                    </div>
+                  <div className="competition-box-empty d-flex flex-column justify-content-around align-items-center">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/warning.png"
+                      }
+                      height="30"
+                    />
+                    <h6 className="dark-text small mb-0 text-center w-75">
+                      لا يوجد مسابقات متاحة في الوقت الحالي
+                    </h6>
                   </div>
                 </div>
               ) : (

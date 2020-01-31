@@ -321,39 +321,33 @@ class CompetitionComponent extends Component {
                 ) : (
                   <React.Fragment>
                     {this.state.numberOfCorrectAnswers >
-                      this.state.numberOfWrongAnswers ||
-                      (this.state.numberOfCorrectAnswers ==
-                        this.state.numberOfWrongAnswers &&
-                        this.state.numberOfCorrectAnswers !== null &&
-                        this.state.numberOfWrongAnswers !== null && (
-                          <div className="row py-4">
-                            <div className="col-12 d-flex flex-column align-items-center">
-                              <img
-                                src={
-                                  process.env.PUBLIC_URL +
-                                  "/assets/images/passed.png"
-                                }
-                                height="120"
-                                className="contain-img mb-3"
-                              />
-                              <h5 className="mid-text mb-2">
-                                تهانينا، لقد نجحت!
-                              </h5>
-                              <p className="green-text small mb-1">
-                                عدد الإجابات الصحيحة:{" "}
-                                <span className="en-text">
-                                  {this.state.numberOfCorrectAnswers}
-                                </span>
-                              </p>
-                              <p className="red-text small mb-1">
-                                عدد الإجابات الخاطئة:{" "}
-                                <span className="en-text">
-                                  {this.state.numberOfWrongAnswers}
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        ))}
+                      this.state.numberOfWrongAnswers && (
+                      <div className="row py-4">
+                        <div className="col-12 d-flex flex-column align-items-center">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/passed.png"
+                            }
+                            height="120"
+                            className="contain-img mb-3"
+                          />
+                          <h5 className="mid-text mb-2">تهانينا، لقد نجحت!</h5>
+                          <p className="green-text small mb-1">
+                            عدد الإجابات الصحيحة:{" "}
+                            <span className="en-text">
+                              {this.state.numberOfCorrectAnswers}
+                            </span>
+                          </p>
+                          <p className="red-text small mb-1">
+                            عدد الإجابات الخاطئة:{" "}
+                            <span className="en-text">
+                              {this.state.numberOfWrongAnswers}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    )}
                     {this.state.numberOfCorrectAnswers <
                       this.state.numberOfWrongAnswers && (
                       <div className="row py-4">
@@ -384,6 +378,38 @@ class CompetitionComponent extends Component {
                         </div>
                       </div>
                     )}
+                    {this.state.numberOfCorrectAnswers ==
+                      this.state.numberOfWrongAnswers &&
+                      this.state.numberOfCorrectAnswers !== null &&
+                      this.state.numberOfWrongAnswers !== null && (
+                        <div className="row py-4">
+                          <div className="col-12 d-flex flex-column align-items-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/passed.png"
+                              }
+                              height="120"
+                              className="contain-img mb-3"
+                            />
+                            <h5 className="mid-text mb-2">
+                              تهانينا، لقد نجحت!
+                            </h5>
+                            <p className="green-text small mb-1">
+                              عدد الإجابات الصحيحة:{" "}
+                              <span className="en-text">
+                                {this.state.numberOfCorrectAnswers}
+                              </span>
+                            </p>
+                            <p className="red-text small mb-1">
+                              عدد الإجابات الخاطئة:{" "}
+                              <span className="en-text">
+                                {this.state.numberOfWrongAnswers}
+                              </span>
+                            </p>
+                          </div>
+                        </div>
+                      )}
                   </React.Fragment>
                 )}
               </div>
