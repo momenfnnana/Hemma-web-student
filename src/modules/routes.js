@@ -120,7 +120,10 @@ export class MainRouter extends Component {
                 exact
                 component={requireAuth(Competition)}
               />
-              <Route path="/quick-questions" component={QuickQuestions} />
+              <Route
+                path="/categories/details/:slug/quick-questions/:categoryGroupId"
+                component={QuickQuestions}
+              />
               <Route path="/quick-question" component={QuickQuestion} />
               <Route path="/question-summary" component={QuestionSummary} />
               <Route path="/course/details/:slug" component={CourseDetails} />

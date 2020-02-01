@@ -31,6 +31,7 @@ export class CategoryDetails extends Component {
       publications: [],
       courses: [],
       competitions: [],
+      categoryGroups: [],
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
@@ -122,7 +123,37 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
+    axios
+      .get(
+        `${apiBaseUrl}/CategoryGroups?categoryId=${this.props.location.state.catId}`
+      )
+      .then(response => {
+        this.setState({ categoryGroups: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     await this.loadMore();
+  }
+
+  renderCategoryGroups() {
+    const {
+      match: { params }
+    } = this.props;
+    return this.state.categoryGroups.map(group => (
+      <React.Fragment>
+        <div className="col-md-2">
+          <Link
+            to={`/categories/details/${params.slug}/quick-questions/${group.id}`}
+            className="category-group-box d-flex align-items-center justify-content-center"
+            key={group.id}
+          >
+            <h6 className="dark-text mb-0">{group.name}</h6>
+          </Link>
+        </div>
+      </React.Fragment>
+    ));
   }
 
   renderPublications() {
@@ -460,41 +491,7 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-            <div className="row pt-3">
-              <div className="col-md-2">
-                <Link
-                  to={`/categories/details/${params.slug}/quick-questions`}
-                  className="category-group-box d-flex align-items-center justify-content-center"
-                >
-                  <h6 className="dark-text mb-0">الرياضيات</h6>
-                </Link>
-              </div>
-              <div className="col-md-2">
-                <div className="category-group-box d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text mb-0">الكيمياء</h6>
-                </div>
-              </div>
-              <div className="col-md-2">
-                <div className="category-group-box d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text mb-0">الفيزياء</h6>
-                </div>
-              </div>
-              <div className="col-md-2">
-                <div className="category-group-box d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text mb-0">الأحياء</h6>
-                </div>
-              </div>
-              <div className="col-md-2">
-                <div className="category-group-box d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text mb-0">الرياضيات</h6>
-                </div>
-              </div>
-              <div className="col-md-2">
-                <div className="category-group-box d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text mb-0">الكيمياء</h6>
-                </div>
-              </div>
-            </div>
+            <div className="row pt-3">{this.renderCategoryGroups()}</div>
             <div className="row pt-5 pb-4 d-flex align-items-center">
               <div className="col-md-5">
                 <h4 className="dark-text">
