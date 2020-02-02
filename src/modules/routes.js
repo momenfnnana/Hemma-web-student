@@ -122,7 +122,16 @@ export class MainRouter extends Component {
               />
               <Route
                 path="/categories/details/:slug/quick-questions/:categoryGroupId"
+                exact
                 component={QuickQuestions}
+              />
+              <Route
+                path="/categories/details/:slug/quick-questions/details/:questionId"
+                component={QuickQuestion}
+              />
+              <Route
+                path="/categories/details/:slug/quick-questions/summary/:questionId"
+                component={QuestionSummary}
               />
               <Route path="/quick-question" component={QuickQuestion} />
               <Route path="/question-summary" component={QuestionSummary} />

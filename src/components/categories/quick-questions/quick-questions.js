@@ -3,6 +3,10 @@ import { Progress } from "react-sweet-progress";
 import "react-sweet-progress/lib/style.css";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
+import { Link } from "react-router-dom";
+
+var moment = require("moment");
+moment().format();
 
 export class QuickQuestions extends Component {
   constructor(props) {
@@ -88,6 +92,35 @@ export class QuickQuestions extends Component {
       )
       .then(response => {
         this.setState({ isJoined: !this.state.isJoined });
+        if (this.state.isJoined) {
+          axios
+            .get(
+              `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}`,
+              {
+                headers
+              }
+            )
+            .then(response => {
+              this.setState({ quickQuestions: response.data.data });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+
+          axios
+            .get(
+              `${apiBaseUrl}/QuickQuestionFavorites?categoryGroupId=${params.categoryGroupId}`,
+              {
+                headers
+              }
+            )
+            .then(response => {
+              this.setState({ questionsFavorites: response.data.data });
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
       })
       .catch(error => {
         console.log(error);
@@ -145,220 +178,277 @@ export class QuickQuestions extends Component {
   }
 
   renderQuestion() {
-    return this.state.quickQuestions.map(question => (
-      <React.Fragment>
-        <div className="col-md-4 d-flex align-items-center" key={question.id}>
-          <div className="question-card">
-            <div className="row">
-              <React.Fragment>
-                <div className="col-6">
-                  {question.isAnswered && (
-                    <div className="answer-label">
-                      <h6 className="smaller light-text mb-0">
-                        تمت الإجابة على السؤال
-                      </h6>
+    const {
+      match: { params }
+    } = this.props;
+    return this.state.quickQuestions.map(question => {
+      let currentDate = new Date();
+      let getCurrentDate =
+        currentDate.getFullYear() +
+        "-" +
+        (currentDate.getMonth() + 1) +
+        "-" +
+        currentDate.getDate();
+      let questionDate = new Date(question.publishDate);
+      let getQuestionDate =
+        questionDate.getFullYear() +
+        "-" +
+        (questionDate.getMonth() + 1) +
+        "-" +
+        questionDate.getDate();
+      let currentDay = moment(getCurrentDate);
+      let questionDay = moment(getQuestionDate);
+      let diff = moment.duration(currentDay.diff(questionDay));
+      let days = diff.days() % 7;
+      return (
+        <React.Fragment>
+          <div className="col-md-4 d-flex align-items-center" key={question.id}>
+            <div className="question-card">
+              <div className="row">
+                <React.Fragment>
+                  <div className="col-6">
+                    {question.isAnswered && (
+                      <div className="answer-label">
+                        <h6 className="smaller light-text mb-0">
+                          تمت الإجابة على السؤال
+                        </h6>
+                      </div>
+                    )}
+                  </div>
+                  <div className="col-6">
+                    {!question.isFavorite && (
+                      <div
+                        className="favorite-label d-flex align-items-center justify-content-end clickable"
+                        onClick={() => this.toggleFavorite(question.id)}
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/empty-heart.png"
+                          }
+                          height="12"
+                          className="mr-1"
+                        />
+                        <h6 className="smaller mid-text mb-0">
+                          إضافة إلى المفضلة
+                        </h6>
+                      </div>
+                    )}
+                  </div>
+                </React.Fragment>
+              </div>
+              <Link
+                to={
+                  question.isAnswered
+                    ? `/categories/details/${params.slug}/quick-questions/summary/${question.id}`
+                    : `/categories/details/${params.slug}/quick-questions/details/${question.id}`
+                }
+              >
+                <div className="question-body">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <p className="mid-text light-font-text smaller text-break">
+                        {question.description}
+                      </p>
                     </div>
-                  )}
+                  </div>
                 </div>
-                <div className="col-6">
-                  {!question.isFavorite && (
+              </Link>
+              <div className="question-footer">
+                <div className="row">
+                  <div className="col-md-12">
+                    <p className="light-font-text smaller dark-silver-text mb-0">
+                      <React.Fragment>
+                        منذ <span className="en-text">{days}</span> يوم
+                      </React.Fragment>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="answers-ratio d-flex justify-content-center flex-column">
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <h6 className="dark-text smaller mb-0 mr-2">
+                      الإجابات الصحيحة
+                    </h6>
+                    <div className="w-50 en-text small red-text">
+                      <Progress
+                        percent={question.numberOfCorrectAnswers}
+                        status="success"
+                        theme={{
+                          success: {
+                            symbol: question.numberOfCorrectAnswers + "%",
+                            color: "#2bc3cc"
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <h6 className="dark-text smaller mb-0 mr-2">
+                      الإجابات الخاطئة
+                    </h6>
+                    <div className="w-50 en-text small">
+                      <Progress
+                        percent={question.numberOfWrongAnswers}
+                        status="error"
+                        theme={{
+                          error: {
+                            symbol: question.numberOfWrongAnswers + "%",
+                            color: "#f66271"
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    });
+  }
+
+  renderQuestionsFavorites() {
+    const {
+      match: { params }
+    } = this.props;
+    return this.state.questionsFavorites.map(question => {
+      let currentDate = new Date();
+      let getCurrentDate =
+        currentDate.getFullYear() +
+        "-" +
+        (currentDate.getMonth() + 1) +
+        "-" +
+        currentDate.getDate();
+      let questionDate = new Date(question.publishDate);
+      let getQuestionDate =
+        questionDate.getFullYear() +
+        "-" +
+        (questionDate.getMonth() + 1) +
+        "-" +
+        questionDate.getDate();
+      let currentDay = moment(getCurrentDate);
+      let questionDay = moment(getQuestionDate);
+      let diff = moment.duration(currentDay.diff(questionDay));
+      let days = diff.days() % 7;
+      return (
+        <React.Fragment>
+          <div
+            className="col-md-4 d-flex align-items-center"
+            key={question.quickQuestionId}
+          >
+            <div className="question-card">
+              <div className="row">
+                <React.Fragment>
+                  <div className="col-6">
+                    {question.isAnswered && (
+                      <div className="answer-label">
+                        <h6 className="smaller light-text mb-0">
+                          تمت الإجابة على السؤال
+                        </h6>
+                      </div>
+                    )}
+                  </div>
+                  <div className="col-6">
                     <div
                       className="favorite-label d-flex align-items-center justify-content-end clickable"
-                      onClick={() => this.toggleFavorite(question.id)}
+                      onClick={() =>
+                        this.toggleFavorite(question.quickQuestionId)
+                      }
                     >
                       <img
                         src={
                           process.env.PUBLIC_URL +
-                          "/assets/images/empty-heart.png"
+                          "/assets/images/red-heart.png"
                         }
                         height="12"
                         className="mr-1"
                       />
                       <h6 className="smaller mid-text mb-0">
-                        إضافة إلى المفضلة
+                        إزالة من المفضلة
                       </h6>
                     </div>
-                  )}
-                </div>
-              </React.Fragment>
-            </div>
-            <div className="question-body">
-              <div className="row">
-                <div className="col-md-12">
-                  <h6 className="dark-text small">
-                    سؤال عن النسبة والتناسب مكرر أعوام سابقة
-                  </h6>
-                  <p className="mid-text light-font-text smaller text-break">
-                    {question.description}
-                  </p>
-                </div>
+                  </div>
+                </React.Fragment>
               </div>
-            </div>
-            <div className="question-footer">
-              <div className="row">
-                <div className="col-md-12">
-                  <p className="light-font-text smaller dark-silver-text mb-0">
-                    <React.Fragment>
-                      منذ <span className="en-text">14</span> يوم
-                    </React.Fragment>
-                  </p>
+              <Link
+                to={
+                  question.isAnswered
+                    ? `/categories/details/${params.slug}/quick-questions/summary/${question.quickQuestionId}`
+                    : `/categories/details/${params.slug}/quick-questions/details/${question.quickQuestionId}`
+                }
+              >
+                <div className="question-body">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <p className="mid-text light-font-text smaller text-break">
+                        {question.description}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="answers-ratio d-flex justify-content-center flex-column">
-              <div className="row">
-                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text smaller mb-0 mr-2">
-                    الإجابات الصحيحة
-                  </h6>
-                  <div className="w-50 en-text small red-text">
-                    <Progress
-                      percent={25}
-                      status="error"
-                      theme={{
-                        error: {
-                          symbol: this.state.percent + "%",
-                          trailColor: "#f66271",
-                          color: "#f66271"
-                        }
-                      }}
-                    />
+              </Link>
+              <div className="question-footer">
+                <div className="row">
+                  <div className="col-md-12">
+                    <p className="light-font-text smaller dark-silver-text mb-0">
+                      <React.Fragment>
+                        منذ <span className="en-text">{days}</span> يوم
+                      </React.Fragment>
+                    </p>
                   </div>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text smaller mb-0 mr-2">
-                    الإجابات الخاطئة
-                  </h6>
-                  <div className="w-50 en-text small">
-                    <Progress
-                      percent={100}
-                      status="success"
-                      theme={{
-                        success: {
-                          symbol: this.state.percent + "%",
-                          trailColor: "#2bc3cc",
-                          color: "#2bc3cc"
-                        }
-                      }}
-                    />
+              <div className="answers-ratio d-flex justify-content-center flex-column">
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <h6 className="dark-text smaller mb-0 mr-2">
+                      الإجابات الصحيحة
+                    </h6>
+                    <div className="w-50 en-text small red-text">
+                      <Progress
+                        percent={question.numberOfCorrectAnswers}
+                        status="success"
+                        theme={{
+                          success: {
+                            symbol: question.numberOfCorrectAnswers + "%",
+                            color: "#2bc3cc"
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <h6 className="dark-text smaller mb-0 mr-2">
+                      الإجابات الخاطئة
+                    </h6>
+                    <div className="w-50 en-text small">
+                      <Progress
+                        percent={question.numberOfWrongAnswers}
+                        status="error"
+                        theme={{
+                          error: {
+                            symbol: question.numberOfWrongAnswers + "%",
+                            color: "#f66271"
+                          }
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </React.Fragment>
-    ));
+        </React.Fragment>
+      );
+    });
   }
-
-  renderQuestionsFavorites() {
-    return this.state.questionsFavorites.map(question => (
-      <React.Fragment>
-        <div className="col-md-4 d-flex align-items-center" key={question.id}>
-          <div className="question-card">
-            <div className="row">
-              <React.Fragment>
-                <div className="col-6">
-                  {question.isAnswered && (
-                    <div className="answer-label">
-                      <h6 className="smaller light-text mb-0">
-                        تمت الإجابة على السؤال
-                      </h6>
-                    </div>
-                  )}
-                </div>
-                <div className="col-6">
-                  <div
-                    className="favorite-label d-flex align-items-center justify-content-end clickable"
-                    onClick={() =>
-                      this.toggleFavorite(question.quickQuestionId)
-                    }
-                  >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/red-heart.png"
-                      }
-                      height="12"
-                      className="mr-1"
-                    />
-                    <h6 className="smaller mid-text mb-0">إزالة من المفضلة</h6>
-                  </div>
-                </div>
-              </React.Fragment>
-            </div>
-            <div className="question-body">
-              <div className="row">
-                <div className="col-md-12">
-                  <h6 className="dark-text small">
-                    سؤال عن النسبة والتناسب مكرر أعوام سابقة
-                  </h6>
-                  <p className="mid-text light-font-text smaller text-break">
-                    {question.description}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="question-footer">
-              <div className="row">
-                <div className="col-md-12">
-                  <p className="light-font-text smaller dark-silver-text mb-0">
-                    <React.Fragment>
-                      منذ <span className="en-text">14</span> يوم
-                    </React.Fragment>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="answers-ratio d-flex justify-content-center flex-column">
-              <div className="row">
-                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text smaller mb-0 mr-2">
-                    الإجابات الصحيحة
-                  </h6>
-                  <div className="w-50 en-text small red-text">
-                    <Progress
-                      percent={25}
-                      status="error"
-                      theme={{
-                        error: {
-                          symbol: this.state.percent + "%",
-                          trailColor: "#f66271",
-                          color: "#f66271"
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                  <h6 className="dark-text smaller mb-0 mr-2">
-                    الإجابات الخاطئة
-                  </h6>
-                  <div className="w-50 en-text small">
-                    <Progress
-                      percent={100}
-                      status="success"
-                      theme={{
-                        success: {
-                          symbol: this.state.percent + "%",
-                          trailColor: "#2bc3cc",
-                          color: "#2bc3cc"
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </React.Fragment>
-    ));
-  }
-
   render() {
     return (
       <section className="pt-5 pb-5">
@@ -412,34 +502,48 @@ export class QuickQuestions extends Component {
               </p>
             </div>
           </div>
+          {!this.state.questionsFavorites == undefined ||
+            (!this.state.questionsFavorites.length == 0 &&
+              this.state.isJoined && (
+                <React.Fragment>
+                  <div className="row pt-4">
+                    <div className="col-md-12 d-flex align-items-center">
+                      <div className="title-circle">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/heart-gradient.png"
+                          }
+                        />
+                      </div>
+                      <h5 className="dark-text mb-0">الاسئلة المفضلة</h5>
+                    </div>
+                  </div>
 
-          <div className="row pt-4">
-            <div className="col-md-12 d-flex align-items-center">
-              <div className="title-circle">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/heart-gradient.png"
-                  }
-                />
-              </div>
-              <h5 className="dark-text mb-0">الاسئلة المفضلة</h5>
-            </div>
-          </div>
+                  <div className="row pt-4">
+                    {this.renderQuestionsFavorites()}
+                  </div>
+                </React.Fragment>
+              ))}
 
-          <div className="row pt-4">{this.renderQuestionsFavorites()}</div>
-          <div className="row pt-4">
-            <div className="col-md-12 d-flex align-items-center">
-              <div className="title-circle">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/all-questions.png"
-                  }
-                />
+          {this.state.isJoined && (
+            <React.Fragment>
+              <div className="row pt-4">
+                <div className="col-md-12 d-flex align-items-center">
+                  <div className="title-circle">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/all-questions.png"
+                      }
+                    />
+                  </div>
+                  <h5 className="dark-text mb-0">جميع الأسئلة</h5>
+                </div>
               </div>
-              <h5 className="dark-text mb-0">جميع الأسئلة</h5>
-            </div>
-          </div>
-          <div className="row pt-4">{this.renderQuestion()}</div>
+              <div className="row pt-4">{this.renderQuestion()}</div>
+            </React.Fragment>
+          )}
         </div>
       </section>
     );

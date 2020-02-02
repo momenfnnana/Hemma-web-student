@@ -1,11 +1,41 @@
 import React, { Component } from "react";
 import { Progress } from "react-sweet-progress";
 import "react-sweet-progress/lib/style.css";
+import { apiBaseUrl } from "../../../api/helpers";
+import axios from "axios";
 export class QuestionSummary extends Component {
   state = {
-    percent: 25
+    details: []
   };
+
+  componentDidMount() {
+    const {
+      match: { params }
+    } = this.props;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .get(
+        `${apiBaseUrl}/QuickQuestionAnswers?quickQuestionId=${params.questionId}`,
+        {
+          headers
+        }
+      )
+      .then(response => {
+        this.setState({ details: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
   render() {
+    const question =
+      this.state.details &&
+      this.state.details.quickQuestion &&
+      this.state.details.quickQuestion.mcq;
+    const rateChoices = this.state.details && this.state.details.rateChoices;
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -19,110 +49,104 @@ export class QuestionSummary extends Component {
                 </p>
               </div>
             </div>
-            <div className="row py-5">
-              <div className="col-md-12">
-                <div className="row p-4 pb-2">
-                  <div className="col-12">
-                    <h6 className="dark-text">
-                      سؤال عن النسبة والتناسب مكرر أعوام سابقة
-                    </h6>
-                    <p className="mid-text light-font-text small text-break w-50 mb-0">
-                      سؤال عن النسبة و التناسب يقيس درجة فهم الطالب لمفاهيم
-                      العامة للمفاهيم العامة للمفاهيم العامة للمفاهيم العامة
-                    </p>
+            {question && rateChoices && (
+              <div className="row py-5">
+                <div className="col-md-12">
+                  <div className="row p-4 pb-2">
+                    <div className="col-12">
+                      <p className="mid-text light-font-text small text-break w-50 mb-0">
+                        {this.state.details.description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="row pl-4 pr-4 pb-4">
-                  <div className="col-7">
-                    <div className="row d-flex justify-content-between align-items-center mb-3">
-                      <div className="col-md-12">
-                        <p className="small dark-silver-text mb-0">
-                          ملخص الإجابات
-                        </p>
+                  <div className="row p-4 pb-2">
+                    <div className="col-12">
+                      <div className="box-layout box-border shadow-sm">
+                        <img
+                          src={question.renderedStem}
+                          className="m-3 contain-img"
+                          width="20%"
+                          height="50"
+                        />
                       </div>
                     </div>
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="en-text d-flex align-items-center mb-2">
-                          <div className="key-circle failure ar-text">أ</div>
-                          <div className="w-75">
-                            <Progress
-                              percent={25}
-                              status="error"
-                              theme={{
-                                error: {
-                                  symbol: this.state.percent + "%",
-                                  trailColor: "#f66271",
-                                  color: "#f66271"
-                                }
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="en-text d-flex align-items-center mb-2">
-                          <div className="key-circle success ar-text">ب</div>
-                          <div className="w-75">
-                            <Progress
-                              percent={100}
-                              status="success"
-                              theme={{
-                                success: {
-                                  symbol: this.state.percent + "%",
-                                  trailColor: "#2bc3cc",
-                                  color: "#2bc3cc"
-                                }
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="en-text d-flex align-items-center mb-2">
-                          <div className="key-circle failure ar-text">ج</div>
-                          <div className="w-75">
-                            <Progress
-                              percent={25}
-                              status="error"
-                              theme={{
-                                error: {
-                                  symbol: this.state.percent + "%",
-                                  trailColor: "#f66271",
-                                  color: "#f66271"
-                                }
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div className="en-text d-flex align-items-center mb-2">
-                          <div className="key-circle failure ar-text">د</div>
-                          <div className="w-75">
-                            <Progress
-                              percent={25}
-                              status="error"
-                              theme={{
-                                error: {
-                                  symbol: this.state.percent + "%",
-                                  trailColor: "#f66271",
-                                  color: "#f66271"
-                                }
-                              }}
-                            />
-                          </div>
-                          <p className="ar-text mb-0 text-break smaller dark-text">
-                            إجابتك
+                  </div>
+                  <div className="row pl-4 pr-4 pb-4">
+                    <div className="col-7">
+                      <div className="row d-flex justify-content-between align-items-center mb-3">
+                        <div className="col-md-12">
+                          <p className="small dark-silver-text mb-0">
+                            ملخص الإجابات
                           </p>
                         </div>
                       </div>
+                      <div className="row">
+                        <div className="col-md-12">
+                          {Object.keys(rateChoices).map((item, i) => (
+                            <div
+                              className="en-text d-flex align-items-center mb-2"
+                              key={i}
+                            >
+                              <div
+                                className={`key-circle ar-text ${
+                                  this.state.details.correctChoice == item
+                                    ? "success"
+                                    : "failure"
+                                }`}
+                              >
+                                {item == "a"
+                                  ? "أ"
+                                  : item == "b"
+                                  ? "ب"
+                                  : item == "c"
+                                  ? "ج"
+                                  : item == "d"
+                                  ? "د"
+                                  : null}
+                              </div>
+                              <div className="w-75">
+                                <Progress
+                                  percent={rateChoices[item].rate}
+                                  status={
+                                    this.state.details.correctChoice == item
+                                      ? "success"
+                                      : "error"
+                                  }
+                                  theme={{
+                                    error: {
+                                      symbol: rateChoices[item].rate + "%",
+                                      color: "#f66271"
+                                    },
+                                    success: {
+                                      symbol: rateChoices[item].rate + "%",
+                                      color: "#2bc3cc"
+                                    }
+                                  }}
+                                />
+                              </div>
+                              {this.state.details.selectedChoice == item && (
+                                <p className="ar-text mb-0 text-break small dark-text">
+                                  إجابتك
+                                </p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="col-1" />
-                  <div className="col-4 d-flex align-items-center">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/graph.png"}
-                      className="contain-img w-100"
-                    />
+                    <div className="col-1" />
+                    <div className="col-4 d-flex align-items-center">
+                      <img
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/graph.png"
+                        }
+                        className="contain-img w-100"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
             <div className="row">
               <div className="col-md-12 d-flex align-items-center justify-content-center">
                 <hr />
