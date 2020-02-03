@@ -53,6 +53,8 @@ p
     width: 35%
 .w-70
     width: 70%
+.w-60
+    width: 60%
 .w-15
     width: 15%        
 .w-90
@@ -71,6 +73,8 @@ p
     height: 80px
 .h-65
     height: 65px
+.br-0
+    border-radius: 0px !important   
 .table td, .table th
     vertical-align: middle                     
 .radius-top-0
@@ -97,7 +101,9 @@ p
     border-top-left-radius: 0px !important
     border-bottom-left-radius: 0px !important
 .justify-content-evenly
-    justify-content: space-evenly    
+    justify-content: space-evenly
+.word-break
+    word-break: break-word        
 .light-text
     color: $light-blue
 .red-text
@@ -111,7 +117,9 @@ p
 .silver-text
     color: $silver
 .light-silver-text
-    color: #fbfbfb        
+    color: #fbfbfb
+.green-text
+    color: #109201            
 .dark-bg
     background: $dark-blue
 .mid-bg
@@ -138,7 +146,9 @@ p
 .light-border
     border: 1px solid $light-blue !important 
 .white-border
-    border: 1px solid $white !important                    
+    border: 1px solid $white !important
+.text-break
+    word-break: break-word                       
 .underlined-tabs
     li
         width: 100px
@@ -172,12 +182,12 @@ form
         border-radius: 5px
         border: 1px solid $silver
         font-size: 13px
-    select.form-control
+    select.form-control 
         color: $silver
         height: 40px
         border-radius: 5px
         border: 1px solid $silver
-        font-size: 12px        
+        font-size: 12px    
     .input-group-text
         background-color: $white
         border: 1px solid $silver
@@ -191,6 +201,14 @@ form
     input.ltr-input::-webkit-input-placeholder
         direction: rtl
         font-family: GessMedium
+    input.en-input::-webkit-input-placeholder
+        font-family: MontserratMedium
+        direction: ltr
+        text-align: center
+    .form-control[readonly]
+        background-color: $white
+    .form-control:disabled, .form-control[readonly]
+        color: #a9acb4          
     small
         color: $red
         font-size: 10px
@@ -201,6 +219,7 @@ form
             color: $red 
     .input-success>.input-group-prepend>.input-group-text, .input-success>input.form-control, .input-success>textarea.form-control, .input-success>.intl-tel-input>input, .input-success>select.form-control, .input-success>.rdt>input.form-control
         border: 1px solid $light-blue
+        color: $dark-blue
         svg
             color: $light-blue
 input
@@ -278,7 +297,12 @@ a.btn
     &:hover, &:focus
         background-color: #fbfbfb
         color: $dark-blue
-        transition: background-color ease-out 0.3s         
+        transition: background-color ease-out 0.3s
+.red-outline-btn
+    border: 1px solid $red
+    color: $red
+    font-size: 13px
+    cursor: pointer              
 .intl-tel-input
     direction: ltr
     width: 100%
@@ -371,12 +395,14 @@ a.btn
         direction: ltr 
         font-family: MontserratRegular 
 .swal-text
-    text-align: center   
+    text-align: center
+.accordion__title:hover
+    transition: background-color ease-out 0.3s              
 @media only screen and (max-width: 767px)
     .w-25, .w-75, .w-40, .w-35
         width: 100% !important 
     .navbar-light .navbar-toggler
-        border-color: $white
+        border-color: #dfdfdf
     .hero-section
         margin-top: 50px
         margin-bottom: 25px
@@ -384,7 +410,7 @@ a.btn
             font-size: 1.5rem
             text-align: center
             margin-bottom: 25px
-    .features-section
+    .testimonials-section
         padding-top: 60px
         margin-bottom: 70px                   
     .categories-section

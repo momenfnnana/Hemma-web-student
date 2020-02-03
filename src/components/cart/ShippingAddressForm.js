@@ -65,11 +65,11 @@ class ShippingAddressFormComponent extends Component {
               <Field
                 fieldName="shippingPhone"
                 name="shippingPhone"
-                component={phoneField}
-                containerClassName="intl-tel-input"
-                inputClassName="form-control"
-                defaultCountry="sa"
+                component={inputField}
+                className="form-control border-left-0 pl-0 ltr-input en-input"
                 validate={required}
+                placeholder="051 234 5678"
+                type="number"
               />
             </div>
             <div className="form-group">

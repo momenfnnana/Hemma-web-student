@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import "./styles.sass";
+import "../styles.sass";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { apiBaseUrl } from "../../../api/helpers";
+import { apiBaseUrl } from "../../../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -34,7 +34,7 @@ export class RecordedLectures extends Component {
     if (sections) {
       return sections.map(section => (
         <React.Fragment>
-          <div className="row no-gutters">
+          <div className="row no-gutters" key={section.id}>
             <div className="col-12">
               <h6 className="dark-text small mb-3 mt-0">{section.nameAr}</h6>
               <div className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 mb-4">
@@ -48,9 +48,12 @@ export class RecordedLectures extends Component {
   }
 
   renderChapters(chapters) {
-    if (chapters) {
-      return chapters.map(chapter => (
-        <React.Fragment>
+    const sortedChapters = chapters.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedChapters) {
+      return sortedChapters.map(chapter => (
+        <React.Fragment key={chapter.id}>
           <h6 className="dark-text small mb-3 mt-0">{chapter.nameAr}</h6>
           <div className="row">{this.renderLectures(chapter.lectures)}</div>
         </React.Fragment>
@@ -60,8 +63,11 @@ export class RecordedLectures extends Component {
 
   renderLectures(lectures) {
     const courseId = this.props.match.params.id;
-    if (lectures) {
-      return lectures.map(lecture => {
+    const sortedLectures = lectures.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedLectures) {
+      return sortedLectures.map(lecture => {
         const scheduledAt = new Date(lecture.scheduledAt);
         var day = scheduledAt.getDate();
         var month = scheduledAt.getMonth() + 1;
@@ -69,16 +75,16 @@ export class RecordedLectures extends Component {
         var scheduledDate = year + "-" + month + "-" + day;
         var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
         return (
-          <div className="col-md-4">
+          <div className="col-md-4" key={lecture.id}>
             <Link
               className="dark-text small"
-              to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}
+              to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
             >
               <div className="card card-sm shadow-sm border-0">
                 <header className="card-thumb">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
-                    alt="Course image"
+                    alt={lecture.nameAr}
                   />
                 </header>
                 <div className="card-body d-flex justify-content-center flex-column">
@@ -140,6 +146,22 @@ export class RecordedLectures extends Component {
         ) : (
           this.renderSections()
         )}
+        {/* <React.Fragment>
+          <div
+            className="box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center"
+            style={{ height: 350 }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/repair.png"}
+              height="90"
+              className="contain-img mb-3"
+            />
+            <p className="dark-text mt-0 mb-1">الموقع تحت الصيانه</p>
+            <p className="dark-text mt-0 mb-0">
+              سيتم فتح الفيديوهات خلال أقرب وقت بإذن الله
+            </p>
+          </div>
+        </React.Fragment> */}
       </React.Fragment>
     );
   }

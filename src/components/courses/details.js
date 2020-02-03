@@ -13,6 +13,7 @@ import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
 import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -39,7 +40,7 @@ export class CourseDetails extends Component {
       match: { params }
     } = this.props;
     axios
-      .get(`${apiBaseUrl}/courses/${params.id}`)
+      .get(`${apiBaseUrl}/courses/${params.slug}`)
       .then(response => {
         this.setState({ details: response.data.data });
       })
@@ -76,7 +77,16 @@ export class CourseDetails extends Component {
           case "ItemAlreadyPurchased":
             this.props.history.push(`/subscriptions/${id}/schedule`);
             break;
-
+          case "InactiveCourse":
+            swal(
+              "عفواً",
+              "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",
+              "error",
+              {
+                button: "متابعة"
+              }
+            );
+            break;
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة"
@@ -90,7 +100,7 @@ export class CourseDetails extends Component {
     const features = this.state.details.features;
     if (features) {
       return features.map(feature => (
-        <React.Fragment>
+        <React.Fragment key={feature.id}>
           <div
             className="col-md-6 col-12 align-items-center pb-2"
             key={feature.id}
@@ -107,9 +117,10 @@ export class CourseDetails extends Component {
 
   renderSections() {
     const sections = this.state.details.sections;
+
     if (sections) {
       return sections.map(section => (
-        <div className="row mt-3">
+        <div className="row mt-3" key={section.id}>
           <div className="col-12">
             <div className="card section-card" key={section.id}>
               <div className="card-header border-bottom-0">
@@ -124,9 +135,12 @@ export class CourseDetails extends Component {
   }
 
   renderChapters(chapters) {
-    if (chapters) {
-      return chapters.map(chapter => (
-        <Accordion>
+    const sortedChapters = chapters.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedChapters) {
+      return sortedChapters.map(chapter => (
+        <Accordion key={chapter.id}>
           <AccordionItem expanded={true}>
             <AccordionItemTitle>
               <h6 className="dark-text mb-0 small dark-text">
@@ -147,7 +161,10 @@ export class CourseDetails extends Component {
     const instructors = this.state.details && this.state.details.instructors;
     if (instructors) {
       return instructors.map(instructor => (
-        <div className="white-bg border-bottom d-flex align-items-center mh-55 p-3">
+        <div
+          className="white-bg border-bottom d-flex align-items-center mh-55 p-3"
+          key={instructor.id}
+        >
           {/* <div>
             <img
               src={process.env.PUBLIC_URL + "/assets/images/female-circle.png"}
@@ -188,12 +205,13 @@ export class CourseDetails extends Component {
   }
 
   renderLectures(lectures) {
-    const courseId = this.props.match.params.id;
-
-    if (lectures) {
-      return lectures.map(lecture => {
+    const sortedLectures = lectures.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedLectures) {
+      return sortedLectures.map(lecture => {
         return (
-          <React.Fragment>
+          <React.Fragment key={lecture.id}>
             <div className="list-group-item bg-transparent small dark-silver-text light-font-text">
               {this.renderLecture(lecture)}
             </div>
@@ -218,6 +236,7 @@ export class CourseDetails extends Component {
               src={process.env.PUBLIC_URL + "/assets/images/play.png"}
               className="mr-2"
               height="15"
+              alt="Course video"
             />
           )}
           {lecture.nameAr}
@@ -272,6 +291,10 @@ export class CourseDetails extends Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>{`دورة ${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
+          <meta name="description" content={this.state.details.descriptionAr} />
+        </Helmet>
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
@@ -295,6 +318,7 @@ export class CourseDetails extends Component {
                           height="50"
                           className="position-absolute play-btn clickable"
                           onClick={this.openModal}
+                          alt="Play"
                         />
                       </React.Fragment>
                     ) : (
@@ -303,6 +327,7 @@ export class CourseDetails extends Component {
                         height="180"
                         width="100%"
                         className="mb-3 rounded cover-img"
+                        alt={this.state.details.nameAr}
                       />
                     )}
                   </div>
@@ -332,13 +357,15 @@ export class CourseDetails extends Component {
                         ريال
                       </h4>
                     </div>
-                    <button
-                      type="button"
-                      className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
-                      onClick={() => this.addToCart(this.state.details.id)}
-                    >
-                      اشترك الآن
-                    </button>
+                    {this.state.details.purchasable && (
+                      <button
+                        type="button"
+                        className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
+                        onClick={() => this.addToCart(this.state.details.id)}
+                      >
+                        اشترك الآن
+                      </button>
+                    )}
                     <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
                     <ul className="list-unstyled">
                       {this.state.details &&
@@ -351,6 +378,7 @@ export class CourseDetails extends Component {
                             }
                             className="mr-2"
                             height="15"
+                            alt="Duration"
                           />
                           {this.state.details.durationTextAr}
                         </li>
@@ -366,6 +394,7 @@ export class CourseDetails extends Component {
                             }
                             className="mr-2"
                             height="15"
+                            alt="Quarters"
                           />{" "}
                           {this.state.details.validityTextAr}
                         </li>
@@ -380,6 +409,7 @@ export class CourseDetails extends Component {
                             }
                             className="mr-2"
                             height="15"
+                            alt="Calendar"
                           />{" "}
                           <span className="en-text">{hijriDate}</span>
                         </li>
@@ -395,6 +425,7 @@ export class CourseDetails extends Component {
                             }
                             className="mr-2"
                             height="15"
+                            alt="Calendar"
                           />{" "}
                           {this.state.details.scheduleTextAr}
                         </li>
@@ -410,6 +441,7 @@ export class CourseDetails extends Component {
                             }
                             className="mr-2"
                             height="18"
+                            alt="Diary"
                           />{" "}
                           <span className="en-text">
                             {this.state.details &&
@@ -427,26 +459,29 @@ export class CourseDetails extends Component {
                     </ul>
                   </div>
                 </div>
-                <div
-                  className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
-                  onClick={() =>
-                    window.open(
-                      `${this.state.details.schedulePosterUrl}`,
-                      "_blank"
-                    )
-                  }
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/file-white.png"
+                {this.state.details.schedulePosterUrl && (
+                  <div
+                    className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
+                    onClick={() =>
+                      window.open(
+                        `${this.state.details.schedulePosterUrl}`,
+                        "_blank"
+                      )
                     }
-                    className="mr-2"
-                    height="25"
-                  />{" "}
-                  <h6 className="text-white mb-0 mt-0 light-font-text">
-                    تنزيل جدول الدورة
-                  </h6>
-                </div>
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/file-white.png"
+                      }
+                      className="mr-2"
+                      height="25"
+                      alt="File"
+                    />{" "}
+                    <h6 className="text-white mb-0 mt-0 light-font-text">
+                      تنزيل جدول الدورة
+                    </h6>
+                  </div>
+                )}
 
                 {this.state.details.instructors == undefined ||
                 this.state.details.instructors == 0 ? null : (
@@ -459,6 +494,7 @@ export class CourseDetails extends Component {
                         }
                         className="mr-2"
                         height="20"
+                        alt="Instructors"
                       />
                       <h6 className="dark-text small mb-0">المدربين</h6>
                     </div>
@@ -472,6 +508,16 @@ export class CourseDetails extends Component {
                 <div className="row">
                   <div className="col-12">
                     <h3 className="mid-text">{this.state.details.nameAr}</h3>
+                    <Link
+                      className="dark-text"
+                      to={`/categories/details/${this.state.details &&
+                        this.state.details.category &&
+                        this.state.details.category.slug}`}
+                    >
+                      {this.state.details &&
+                        this.state.details.category &&
+                        this.state.details.category.nameAr}
+                    </Link>
                     <p className="small dark-text light-font-text w-75 mt-3">
                       {this.state.details.descriptionAr}
                     </p>
@@ -492,6 +538,7 @@ export class CourseDetails extends Component {
                         }
                         className="mb-3"
                         height="60"
+                        alt="Course schedule"
                       />{" "}
                       <p className="silver-text">
                         سيتم عرض جدول الدورة فور توفره{" "}
@@ -501,6 +548,29 @@ export class CourseDetails extends Component {
                 ) : (
                   this.renderSections()
                 )}
+                <div className="row mt-5">
+                  <div className="col-12">
+                    <h4 className="mid-text mb-2">الشروط والأحكام</h4>
+                    <p className="light-font-text dark-text small mb-1">
+                      1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب المشترك في{" "}
+                      <Link to="/" className="light-text">
+                        منصّة همّة
+                      </Link>
+                    </p>
+                    <p className="light-font-text dark-text small mb-1">
+                      2- لا تتحمل{" "}
+                      <Link to="/" className="light-text">
+                        منصّة همّة
+                      </Link>{" "}
+                      أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة ومشاهدته
+                      لتسجيل المحاضرات{" "}
+                    </p>
+                    <p className="light-font-text dark-text small mb-1">
+                      3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ انتهاء
+                      الاشتراك
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

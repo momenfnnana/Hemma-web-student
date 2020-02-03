@@ -1,0 +1,12 @@
+.diaout-layer {
+  width: 100% !important;
+  height: 200px !important;
+  min-width: unset !important;
+}
+#dialog-join .tab,
+#dialog-invite .tab {
+  width: 50% !important;
+}
+.active-avatar-name {
+  font-size: 35px !important;
+}

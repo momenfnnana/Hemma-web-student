@@ -68,7 +68,7 @@ export class TransactionsList extends Component {
         var hijriDate = moment(transactionDate).format("iYYYY/iM/iD");
 
         return (
-          <tr className="text-center">
+          <tr className="text-center" key={transaction.id}>
             <td scope="row" className="light-font-text dark-silver-text small">
               {transaction.type}
             </td>

@@ -18,7 +18,7 @@ export class Card extends Component {
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
     const instructor = course.instructors.map(instructor => (
-      <React.Fragment>
+      <React.Fragment key={instructor.id}>
         <img
           src={process.env.PUBLIC_URL + "/assets/images/blue-male.png"}
           height="15"
@@ -32,10 +32,10 @@ export class Card extends Component {
     ));
     return (
       <React.Fragment>
-        <Link to={`/course/details/${course.id}`} key={course.id}>
+        <Link to={`/course/details/${course.slug}`} key={course.id}>
           <div className="card course-card shadow-sm m-2 border-0" dir="rtl">
             <header className="card-thumb">
-              <img key={course.id} src={course.bannerUrl} alt="Course image" />
+              <img key={course.id} src={course.bannerUrl} alt={course.nameAr} />
             </header>
             <div className="card-body">
               <h6 className="card-title small mid-text" key={course.id}>

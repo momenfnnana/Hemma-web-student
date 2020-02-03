@@ -1,11 +1,4 @@
 import React, { Component } from "react";
-import "./styles.sass";
-import {
-  Carousel,
-  CarouselItem,
-  CarouselIndicators,
-  CarouselCaption
-} from "reactstrap";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -17,36 +10,10 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import SliderDes from "../features-slider/slider-des";
 import data from "../features-slider/data";
 import { apiBaseUrl } from "../../api/helpers";
+import "./styles.sass";
 
-const items = [
-  {
-    id: 1,
-    altText: "Slide 1",
-    caption:
-      "كل الشكر لسلسلة بالبيد التعليمية سلسلة تعتني بالمشتركين وتهتم لحل كل عقبة تعترضهم فشكراً لكم."
-  },
-  {
-    id: 2,
-    altText: "Slide 2",
-    caption: "تستاهلون كل خير فعلاً دورة متكاملة وقوية"
-  },
-  {
-    id: 3,
-    altText: "Slide 3",
-    caption: "سلسلة بالبيد ما شاء الله مجهود رائع وتنظيم مرتب والملزمة كنز عظيم"
-  },
-  {
-    id: 4,
-    altText: "Slide 4",
-    caption: "شكراً سلسلة بالبيد الله يوفق جميع القائمين عليها يا رب"
-  },
-  {
-    id: 5,
-    altText: "Slide 5",
-    caption:
-      "أولا الشكر لله ثم لسلسلة بالبيد المعطاة المتميزة شكرا لكم من القلب شكراً لثقتنا التي لم تخيب بالله ثم جهودكم شكرا لكل ما قدمتوه الحمدالله نجحنا وصنعنا الفرق و القادم أفضل"
-  }
-];
+var moment = require("moment");
+moment().format();
 
 const images = [
   {
@@ -78,43 +45,7 @@ const images = [
 export class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { activeIndex: 0, categories: [], courses: [] };
-    this.next = this.next.bind(this);
-    this.previous = this.previous.bind(this);
-    this.goToIndex = this.goToIndex.bind(this);
-    this.onExiting = this.onExiting.bind(this);
-    this.onExited = this.onExited.bind(this);
-  }
-
-  onExiting() {
-    this.animating = true;
-  }
-
-  onExited() {
-    this.animating = false;
-  }
-
-  next() {
-    if (this.animating) return;
-    const nextIndex =
-      this.state.activeIndex === items.length - 1
-        ? 0
-        : this.state.activeIndex + 1;
-    this.setState({ activeIndex: nextIndex });
-  }
-
-  previous() {
-    if (this.animating) return;
-    const nextIndex =
-      this.state.activeIndex === 0
-        ? items.length - 1
-        : this.state.activeIndex - 1;
-    this.setState({ activeIndex: nextIndex });
-  }
-
-  goToIndex(newIndex) {
-    if (this.animating) return;
-    this.setState({ activeIndex: newIndex });
+    this.state = { categories: [], courses: [], testimonials: [] };
   }
 
   componentDidMount() {
@@ -135,6 +66,15 @@ export class Home extends Component {
       .catch(error => {
         console.log(error);
       });
+
+    axios
+      .get(`${apiBaseUrl}/ratings/testimonials`)
+      .then(response => {
+        this.setState({ testimonials: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   renderCourses() {
@@ -150,8 +90,16 @@ export class Home extends Component {
         <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
             return (
-              <div className="mt-5 mb-3 col-lg-3 col-6">
-                <Link to={`/categories/details/${cat.id}`} key={cat.id}>
+              <div className="mt-5 mb-3 col-lg-3 col-6" key={cat.id}>
+                <Link
+                  to={{
+                    pathname: `/categories/details/${cat.slug}`,
+                    state: {
+                      catId: cat.id
+                    }
+                  }}
+                  key={cat.id}
+                >
                   <div
                     key={cat.id}
                     className="half-circle-border d-flex flex-column align-items-center mx-auto"
@@ -175,9 +123,66 @@ export class Home extends Component {
     );
   }
 
+  renderTestimonials() {
+    return this.state.testimonials.map(testimonial => {
+      let currentDate = new Date();
+      let getCurrentDate =
+        currentDate.getFullYear() +
+        "-" +
+        (currentDate.getMonth() + 1) +
+        "-" +
+        currentDate.getDate();
+      let testimonialDate = new Date(testimonial.createdAt);
+      let getTestimonialDate =
+        testimonialDate.getFullYear() +
+        "-" +
+        (testimonialDate.getMonth() + 1) +
+        "-" +
+        testimonialDate.getDate();
+      let currentDay = moment(getCurrentDate);
+      let testimonialDay = moment(getTestimonialDate);
+      let diff = moment.duration(currentDay.diff(testimonialDay));
+      let weeks = Math.floor(diff.asWeeks());
+      let days = diff.days() % 7;
+      return (
+        <div className="testimonial-slide" dir="rtl">
+          <div className="row">
+            <div className="col-md-12 mb-3">
+              <p className="light-font-text small mid-text mb-0">
+                {testimonial.feedBack}
+              </p>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 d-flex align-items-center justify-content-between">
+              <div>
+                <h6 className="mid-text small mb-1">
+                  - {testimonial.studentName}
+                </h6>
+                <p className="light-font-text smaller mid-text mb-0">
+                  {testimonial.courseName}
+                </p>
+              </div>
+              <p className="light-font-text small dark-silver-text mb-0">
+                {weeks == "0" ? (
+                  <React.Fragment>
+                    قبل <span className="en-text">{days}</span> أيام
+                  </React.Fragment>
+                ) : (
+                  <React.Fragment>
+                    قبل <span className="en-text">{weeks}</span> أسابيع
+                  </React.Fragment>
+                )}
+              </p>
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+
   render() {
-    const { activeIndex } = this.state;
-    var settings = {
+    const settings = {
       infinite: false,
       slidesToShow: 3,
       slidesToScroll: 3,
@@ -210,22 +215,41 @@ export class Home extends Component {
       ]
     };
 
-    const slides = items.map(item => {
-      return (
-        <CarouselItem
-          className="custom-tag"
-          tag="div"
-          key={item.id}
-          onExiting={this.onExiting}
-          onExited={this.onExited}
-        >
-          <CarouselCaption
-            className="dark-text small light-font-text d-block mt-0 d-flex align-items-center justify-content-center"
-            captionText={item.caption}
-          />
-        </CarouselItem>
-      );
-    });
+    const testimonialsSettings = {
+      infinite: true,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2500,
+      fade: true,
+      dots: true,
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            infinite: false
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            initialSlide: 1
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    };
 
     return (
       <React.Fragment>
@@ -280,45 +304,33 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="features-section">
+        <section className="testimonials-section">
           <div className="container">
+            <div className="row">
+              <div className="col-md-12">
+                <h4 className="dark-text">قالوا عنا..</h4>
+              </div>
+            </div>
             <div className="row d-flex justify-content-center align-items-center">
-              <div className="col-md-2 d-none d-md-block order-md-1">
+              <div className="col-md-6 order-2">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
                   className="contain-img"
-                  width="100%"
+                  height="50"
+                  className="quotes-img"
                 />
+                <Slider {...testimonialsSettings}>
+                  {this.renderTestimonials()}
+                </Slider>
               </div>
-              <div className="col-md-5 order-2">
-                <h4 className="dark-text mb-3">قالوا عنا..</h4>
-
-                <div>
-                  <style>
-                    {`.custom-tag {
-                    width: 100%;
-                    height: 180px;
-                    border-radius: 11px;
-                    background-color: #dff1f5;}`}
-                  </style>
-                  <Carousel
-                    activeIndex={activeIndex}
-                    next={this.next}
-                    previous={this.previous}
-                  >
-                    <CarouselIndicators
-                      items={items}
-                      activeIndex={activeIndex}
-                      onClickHandler={this.goToIndex}
-                    />
-                    {slides}
-                  </Carousel>
-                </div>
-              </div>
-              <div className="col-md-5 order-1 order-md-3">
+              <div className="col-md-6 order-1 order-md-3">
                 <img
-                  src={process.env.PUBLIC_URL + "/assets/images/faq.png"}
-                  className="contain-img w-75 float-right"
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/testimonials.png"
+                  }
+                  className="contain-img"
+                  width="100%"
+                  height="250"
                 />
               </div>
             </div>

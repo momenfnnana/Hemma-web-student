@@ -9,12 +9,6 @@ import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import "./styles.sass";
 
-const videos = [
-  { id: 315172826, name: "الدرس الأول" },
-  { id: 315172826, name: "الدرس الثاني" },
-  { id: 315172826, name: "الدرس الثالث" }
-];
-
 export class RecordedVideosComponent extends Component {
   constructor(props) {
     super(props);
@@ -33,7 +27,7 @@ export class RecordedVideosComponent extends Component {
     this.handleVolume = this.handleVolume.bind(this);
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const lectureId = this.props.match.params.lectureId;
     let token = localStorage.getItem("token");
     let headers = {
@@ -48,9 +42,33 @@ export class RecordedVideosComponent extends Component {
         console.log(error);
       });
 
+    await axios
+      .get(`${apiBaseUrl}/content/lectures/${lectureId}/vdocipher_token`, {
+        headers
+      })
+      .then(response => {
+        const videoID = this.state.details && this.state.details.recordingUrl;
+        if (videoID) {
+          new window.VdoPlayer({
+            otp: response.data.data.otp,
+            playbackInfo: btoa(
+              JSON.stringify({
+                videoId: videoID
+              })
+            ),
+            theme: "9ae8bbe8dd964ddc9bdb932cca1cb59a",
+            // the container can be any DOM element on website
+            container: document.querySelector("#embedBox")
+          });
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     const courseId = this.props.match.params.id;
     axios
-      .get(`${apiBaseUrl}/courses/${courseId}`)
+      .get(`${apiBaseUrl}/content/${courseId}/recorded_lectures`, { headers })
       .then(response => {
         this.setState({ courseDetails: response.data.data });
       })
@@ -61,22 +79,27 @@ export class RecordedVideosComponent extends Component {
 
   renderSections() {
     const sections = this.state.courseDetails.sections;
+
     if (sections) {
       return sections.map(section => (
-        <React.Fragment>
+        <React.Fragment key={section.id}>
           <div className="chapter pl-3">
             <h6 className="smaller light-purple-text">{section.nameAr}</h6>
             {this.renderChapters(section.chapters)}
           </div>
+          <hr className="light-hr" />
         </React.Fragment>
       ));
     }
   }
 
   renderChapters(chapters) {
-    if (chapters) {
-      return chapters.map(chapter => (
-        <React.Fragment>
+    const sortedChapters = chapters.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedChapters) {
+      return sortedChapters.map(chapter => (
+        <React.Fragment key={chapter.id}>
           <h6 className="text-white">{chapter.nameAr}</h6>
           {this.renderLectures(chapter.lectures)}
         </React.Fragment>
@@ -85,9 +108,16 @@ export class RecordedVideosComponent extends Component {
   }
 
   renderLectures(lectures) {
-    if (lectures) {
-      return lectures.map(lecture => {
-        return <React.Fragment>{this.renderLecture(lecture)}</React.Fragment>;
+    const sortedLectures = lectures.sort((a, b) =>
+      a.order > b.order ? 1 : -1
+    );
+    if (sortedLectures) {
+      return sortedLectures.map(lecture => {
+        return (
+          <React.Fragment key={lecture.id}>
+            {this.renderLecture(lecture)}
+          </React.Fragment>
+        );
       });
     }
   }
@@ -96,13 +126,16 @@ export class RecordedVideosComponent extends Component {
     const courseId = this.props.match.params.id;
     return (
       <div className="custom-control custom-radio mt-3">
-        <Link to={`/subscriptions/${courseId}/recorded-videos/${lecture.id}`}>
-          <div className="d-flex flex-column">
-            <label className="custom-control-label light-purple-text small">
-              {lecture.nameAr}
-            </label>
-          </div>
-        </Link>
+        <div
+          className="d-flex flex-column clickable"
+          onClick={() =>
+            (window.location = `/subscriptions/${courseId}/recorded-videos/${lecture.id}`)
+          }
+        >
+          <label className="custom-control-label light-purple-text small">
+            {lecture.nameAr}
+          </label>
+        </div>
       </div>
     );
   }
@@ -132,9 +165,6 @@ export class RecordedVideosComponent extends Component {
   }
 
   render() {
-    const { videoIndex, paused, volume } = this.state;
-    const videoId = this.state.details.recordingUrl;
-    const video = videos[videoIndex];
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -149,46 +179,19 @@ export class RecordedVideosComponent extends Component {
           <div className="col-12 mb-4">
             <div className="dark-bg rounded shadow-sm">
               <div className="row no-gutters">
-                <div className="col-3 pt-3 pb-4">
+                <div className="col-3 pt-3 pb-4 col-height">
                   {this.renderSections()}
-                  {/* <div className="chapter pl-3">
-                    <h6 className="smaller light-purple-text">الفصل الأول</h6>
-                    <h6 className="text-white">النسبة والتناسب</h6>
-
-                    {videos.map((choice, index) => (
-                      <div className="custom-control custom-radio mt-3">
-                        <a
-                          href={`#!/video/${index}`}
-                          className={`collection-item ${
-                            video === choice ? "active" : ""
-                          }`}
-                          onClick={() => this.selectVideo(index)}
-                        >
-                          <div className="d-flex flex-column">
-                            <label className="custom-control-label light-purple-text small">
-                              {choice.name}
-                            </label>
-                          </div>
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                  <hr className="light-hr" /> */}
                 </div>
                 <div className="col-9">
                   {this.state.details && this.state.details.recordingUrl && (
-                    <Vimeo
-                      video={videoId}
-                      className="recorded-video"
-                      volume={volume}
-                      paused={paused}
-                      onPause={this.handlePlayerPause}
-                      onPlay={this.handlePlayerPlay}
-                    />
+                    <div
+                      id="embedBox"
+                      style={{ height: "100%", width: "100%" }}
+                    ></div>
                   )}
                 </div>
 
-                <div className="col-12 silver-bg p-4">
+                {/* <div className="col-12 silver-bg p-4">
                   <h6 className="dark-text mb-3">لديك تعليق؟</h6>
                   <Field
                     component={textareaField}
@@ -288,7 +291,7 @@ export class RecordedVideosComponent extends Component {
                       </p>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

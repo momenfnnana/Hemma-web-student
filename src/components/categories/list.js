@@ -9,6 +9,7 @@ import { inputField } from "../shared/inputs/inputField";
 import { Field, reduxForm } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { Helmet } from "react-helmet";
 
 const MyLoader = props => (
   <ContentLoader
@@ -56,24 +57,41 @@ export class CategoriesComponent extends Component {
     return cats.map(cat => (
       <React.Fragment>
         <div className="row pt-5">
-          <div className="col-12 d-inline-flex align-items-center justify-content-between">
+          <div
+            className="col-12 d-inline-flex align-items-center justify-content-between"
+            key={cat.id}
+          >
             {this.state.loading ? (
               <MyLoader style={{ height: 50 }} />
             ) : (
-              <Link to={`/categories/details/${cat.id}`} key={cat.id}>
+              <Link
+                to={{
+                  pathname: `/categories/details/${cat.slug}`,
+                  state: {
+                    catId: cat.id
+                  }
+                }}
+                key={cat.id}
+              >
                 <h5 key={cat.id} className="dark-text mb-0">
                   <img
                     key={cat.id}
                     src={cat.icon}
                     height="50"
                     className="mr-2"
+                    alt={cat.nameAr}
                   />
                   {cat.nameAr}
                 </h5>
               </Link>
             )}
             <Link
-              to={`/categories/details/${cat.id}`}
+              to={{
+                pathname: `/categories/details/${cat.slug}`,
+                state: {
+                  catId: cat.id
+                }
+              }}
               key={cat.id}
               className="btn dark-btn unset-height unset-line-height br-5"
             >
@@ -93,26 +111,15 @@ export class CategoriesComponent extends Component {
   render() {
     return (
       <React.Fragment>
+        <Helmet>
+          <title>الدورات الحالية | منصّة همّة التعليمية</title>
+          <meta
+            name="description"
+            content="تعرّف على أحدث الدورات المتاحة حالياً وقم باختيار الدورة المناسبة الآن!"
+          />
+        </Helmet>
         <section className="pt-3 pb-5">
-          <div className="container">
-            {/* <div className="row pt-5 pb-3 w-50">
-              <div className="col-12">
-                <form>
-                  <Field
-                    name="search"
-                    type="text"
-                    component={inputField}
-                    className="form-control border-left-0 pl-0"
-                    placeholder="ابحث عن دورة.."
-                  >
-                    <MdSearch />
-                  </Field>
-                </form>
-              </div>
-            </div> */}
-
-            {this.renderCategories()}
-          </div>
+          <div className="container">{this.renderCategories()}</div>
         </section>
       </React.Fragment>
     );

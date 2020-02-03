@@ -16,6 +16,7 @@ export class selectField extends Component {
             {...this.props.input}
             value={this.props.input.value}
             className={inputClass}
+            disabled={this.props.disabled}
           >
             {this.props.children}
           </select>

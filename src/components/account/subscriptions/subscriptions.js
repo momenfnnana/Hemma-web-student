@@ -6,15 +6,24 @@ import { apiBaseUrl } from "../../../api/helpers";
 import swal from "@sweetalert/with-react";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 export class SubscriptionsComponent extends Component {
+  page = 1;
+  limit = 4;
+  endOfResults = false;
   constructor(props) {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
       tooltipOpen: false,
       details: [],
-      subscriptions: []
+      subscriptions: [],
+      hideBtn: false,
+      loading: false,
+      disabled: false,
+      nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`
     };
   }
 
@@ -24,28 +33,50 @@ export class SubscriptionsComponent extends Component {
     });
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.getProfile();
+    await this.loadMore();
+  }
 
+  loadMore = async () => {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    axios
-      .get(`${apiBaseUrl}/courses/purchased`, { headers })
-      .then(response => {
-        this.setState({ subscriptions: response.data.data.data });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfResults) {
+      axios
+        .get(this.state.nextPageUrl, { headers })
+        .then(response => {
+          this.setState({ loading: false, disabled: false });
+          const newSubscriptions = [
+            ...this.state.subscriptions,
+            ...response.data.data.data
+          ];
+          this.endOfResults = response.data.data.itemCount < this.limit;
+          this.page++;
+          const nextUrl = `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`;
+          this.setState({
+            subscriptions: newSubscriptions,
+            nextPageUrl: nextUrl
+          });
+          if (newSubscriptions.length == response.data.data.itemCount) {
+            this.setState({ hideBtn: true });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
 
   renderCourses() {
     const subscriptions = this.state.subscriptions || [];
     return subscriptions.map(subscription => (
       <React.Fragment>
         <div
+          key={subscription.id}
           className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 clickable"
           onClick={() => {
             subscription.cumulativePaymentStatus == "Unpaid" ||
@@ -54,6 +85,15 @@ export class SubscriptionsComponent extends Component {
               ? swal(
                   "عفواً",
                   "تفاصيل الدورة غير متاحة حتى يتم مراجعة الحوالة من قبل الإدارة",
+                  "error",
+                  {
+                    button: "متابعة"
+                  }
+                )
+              : subscription.subscriptionStatus == "Expired"
+              ? swal(
+                  "عفواً",
+                  "تفاصيل الدورة غير متاحة بسبب انتهاء الاشتراك",
                   "error",
                   {
                     button: "متابعة"
@@ -73,31 +113,47 @@ export class SubscriptionsComponent extends Component {
             />
             <div className="media-body mt-2">
               <h6 className="mt-0 dark-text">{subscription.course.nameAr}</h6>
-              <span className="badge blue-status light-font-text">
-                {subscription.subscriptionStatus == "Cancelled"
-                  ? "ملغية"
-                  : subscription.subscriptionStatus == "Expired"
-                  ? "انتهى الاشتراك"
-                  : subscription.subscriptionStatus == "Active"
-                  ? "مؤكدة"
-                  : "مؤكدة"}
-              </span>
+              {subscription.subscriptionStatus == "Cancelled" ? (
+                <span className="badge blue-status light-font-text">ملغية</span>
+              ) : subscription.subscriptionStatus == "Expired" ? (
+                <span className="badge blue-status light-font-text">
+                  انتهى الاشتراك
+                </span>
+              ) : null}
             </div>
           </div>
           <div className="seperator" />
           <div className="">
             <h6 className="dark-text mb-0 small">الحالة المالية</h6>
-            <p className="dark-silver-text small mb-0">
-              {subscription.cumulativePaymentStatus == "Unpaid"
-                ? "غير مسدد"
-                : subscription.cumulativePaymentStatus == "PartiallyPaid"
-                ? "مسدد جزئياً"
-                : subscription.cumulativePaymentStatus == "FullyPaid"
-                ? "مسدد"
-                : subscription.cumulativePaymentStatus == "Pending"
-                ? "قيد المراجعة"
-                : null}
-            </p>
+
+            {subscription.cumulativePaymentStatus == "Unpaid" ? (
+              <p className="dark-silver-text small mb-0">غير مسدد</p>
+            ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
+              <p className="dark-silver-text small mb-0">مسدد جزئياً</p>
+            ) : subscription.cumulativePaymentStatus == "FullyPaid" ? (
+              <p className="dark-silver-text small mb-0">مسدد</p>
+            ) : subscription.cumulativePaymentStatus == "Pending" ? (
+              <React.Fragment>
+                <p className="dark-silver-text small mb-0" id="status-tooltip">
+                  قيد المراجعة
+                </p>
+                <Tooltip
+                  placement="right"
+                  isOpen={this.state.tooltipOpen}
+                  target="status-tooltip"
+                  toggle={this.toggle}
+                  placement="bottom"
+                  style={{
+                    backgroundColor: "#f2fdfe",
+                    color: "#4b3a85"
+                  }}
+                >
+                  <p className="light-font-text small mb-1 mt-2">
+                    تم تلقي الحوالة وسوف يتم الموافقة عليها خلال 48 ساعة
+                  </p>
+                </Tooltip>
+              </React.Fragment>
+            ) : null}
           </div>
         </div>
       </React.Fragment>
@@ -159,9 +215,26 @@ export class SubscriptionsComponent extends Component {
                     </div>
                   </React.Fragment>
                 ) : (
-                  <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
-                    {this.renderCourses()}
-                  </div>
+                  <React.Fragment>
+                    <div className="silver-bg box-layout w-100 pb-0 p-4 mt-4">
+                      {this.renderCourses()}
+                    </div>
+                    {!this.state.hideBtn && (
+                      <div className="d-flex align-items-center justify-content-center">
+                        <button
+                          className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
+                          onClick={this.loadMore}
+                          disabled={this.state.disabled}
+                        >
+                          {this.state.loading == true ? (
+                            <Loader type="ball-clip-rotate" />
+                          ) : (
+                            "تحميل المزيد"
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </React.Fragment>
                 )}
 
                 {/* <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4">

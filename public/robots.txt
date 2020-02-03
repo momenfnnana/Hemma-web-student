@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: 
+Disallow: /assets/
+Disallow: https://staging.hemma.sa/
+Disallow: https://admin.hemma.sa/
+Disallow: http://admin.staging.hemma.sa/
+Disallow: https://www.tlabna.net/
+Sitemap: https://hemma.sa/sitemap.xml

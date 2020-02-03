@@ -11,16 +11,12 @@ import { FaRegUser } from "react-icons/fa";
 import { getProfile } from "../../../actions";
 import { FaRegEnvelope } from "react-icons/fa";
 import { apiBaseUrl } from "../../../api/helpers";
-import {
-  Tooltip,
-  Button,
-  Popover,
-  PopoverHeader,
-  PopoverBody
-} from "reactstrap";
+import { Popover, PopoverBody } from "reactstrap";
 import { emailField } from "../../shared/inputs/emailField";
 import { EmailToken } from "./reset/email/EmailToken";
 import { PhoneToken } from "./reset/phone/PhoneToken";
+import { Api } from "../../../api";
+import { selectField } from "../../shared/inputs/selectField";
 
 const validate = values => {
   const errors = {};
@@ -46,7 +42,14 @@ class EditAccountComponent extends Component {
       phonePopover: false,
       emailPopover: false,
       isEmailTokenOpen: false,
-      isPhoneTokenOpen: false
+      isPhoneTokenOpen: false,
+      cities: [],
+      selectedCity: "",
+      selectedLevel: "",
+      educationalEntities: [],
+      enableCities: false,
+      enableLevels: false,
+      enableEntities: false
     };
   }
 
@@ -78,6 +81,7 @@ class EditAccountComponent extends Component {
 
   componentDidMount() {
     this.props.getProfile();
+    Api.auth.getCities().then(cities => this.setState({ cities: cities }));
   }
 
   myFormHandler = values => {
@@ -86,7 +90,11 @@ class EditAccountComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     let data = {
-      name: values.name
+      name: values.name,
+      educationalLevel: values.educationalLevel,
+      educationalEntityId: values.educationalEntityId,
+      saCityId: values.saCityId,
+      nationalityId: values.nationalityId
     };
     axios
       .put(`${apiBaseUrl}/users/me`, data, {
@@ -232,8 +240,77 @@ class EditAccountComponent extends Component {
       });
   };
 
+  renderCities() {
+    return this.state.cities.map(city => (
+      <option key={city.id} value={city.id}>
+        {city.nameAr}
+      </option>
+    ));
+  }
+
+  renderEntities() {
+    return this.state.educationalEntities.map(entity => (
+      <option key={entity.id} value={entity.id}>
+        {entity.name}
+      </option>
+    ));
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (
+      nextProps.initialValues.saCityId !== this.props.initialValues.saCityId ||
+      nextProps.initialValues.educationalLevel !==
+        this.props.initialValues.educationalLevel
+    ) {
+      axios
+        .get(
+          `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${nextProps.initialValues.saCityId}&EducationalLevel=${nextProps.initialValues.educationalLevel}`
+        )
+        .then(response => {
+          this.setState({ educationalEntities: response.data.data });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    return true;
+  }
+
+  handleCitiesChange = event => {
+    this.setState({ selectedCity: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${event.target.value}&EducationalLevel=${this.state.selectedLevel}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleLevelChange = event => {
+    this.setState({ selectedLevel: event.target.value });
+    axios
+      .get(
+        `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${event.target.value}`
+      )
+      .then(response => {
+        this.setState({ educationalEntities: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleEntitiesChange = event => {
+    this.setState({ selectedEntity: event.target.value });
+  };
+
   render() {
     const { handleSubmit, submitting } = this.props;
+
     return (
       <React.Fragment>
         <h3 className="dark-text">الملف الشخصي</h3>
@@ -348,7 +425,6 @@ class EditAccountComponent extends Component {
                 type="email"
                 component={emailField}
                 className="form-control border-right-0 pr-0 pr-1 left-radius-0 ltr-input"
-                // placeholder="البريد الإلكتروني"
                 disabled={true}
               >
                 <FaRegEnvelope />
@@ -366,7 +442,6 @@ class EditAccountComponent extends Component {
                     className="position-absolute right-input-icon clickable"
                     id="email-popover"
                   />
-
                   <Popover
                     placement="right"
                     isOpen={this.state.emailPopover}
@@ -388,6 +463,55 @@ class EditAccountComponent extends Component {
                 </React.Fragment>
               ) : null}
             </div>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="saCityId"
+              onChange={this.handleCitiesChange}
+            >
+              <option selected="selected">المدينة</option>
+              {this.renderCities()}
+            </Field>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="educationalLevel"
+              onChange={this.handleLevelChange}
+            >
+              <option selected="selected">المستوى التعليمي</option>
+              <option value="Student">طالب</option>
+              <option value="Other">أخرى</option>
+            </Field>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="educationalEntityId"
+              onChange={this.handleEntitiesChange}
+              disabled={
+                this.state.educationalEntities == undefined ||
+                this.state.educationalEntities.length == 0
+              }
+            >
+              <option selected="selected">الجهة التعليمية</option>
+              {this.renderEntities()}
+            </Field>
+
+            <Field
+              component={selectField}
+              className="form-control"
+              name="nationalityId"
+            >
+              <option selected="selected">الجنسية</option>
+              <option value="379cdce7-23fe-4e43-806f-70b2031e81db">
+                سعودي
+              </option>
+              <option value="497cdce7-23fe-4e43-806f-70b2031e81db">
+                غير سعودي
+              </option>
+            </Field>
 
             <EmailToken
               isEmailTokenOpen={this.state.isEmailTokenOpen}
@@ -412,10 +536,22 @@ class EditAccountComponent extends Component {
 }
 
 function mapStateToProps(state) {
-  return {
+  let props = {
     initialValues: state.profile,
     entireState: state
   };
+
+  if (state.profile && state.profile.saCity) {
+    props.initialValues.saCityId = state.profile.saCity.id;
+  }
+  if (state.profile && state.profile.educationalEntity) {
+    props.initialValues.educationalEntityId =
+      state.profile.educationalEntity.id;
+  }
+  if (state.profile && state.profile.nationality) {
+    props.initialValues.nationalityId = state.profile.nationality.id;
+  }
+  return props;
 }
 
 EditAccountComponent = reduxForm({

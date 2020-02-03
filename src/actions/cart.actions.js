@@ -6,6 +6,7 @@ export const REMOVE_COUPON = "removeCoupon";
 export const REMOVE_CART_ITEM = "removeCartItem";
 export const UPDATE_CART_ITEM = "updateCartItem";
 export const CHECKOUT_WITH_BANK_TRANSFER = "checkoutWithBankTransfer";
+export const UPLOAD_BANK_SLIP = "uploadBankSlip";
 
 export const getCart = () => {
   return {
@@ -42,14 +43,16 @@ export const updateCartItem = (item, data) => {
   };
 };
 
-export const checkoutWithBankTransfer = (bankSlipFile, data) => {
-  const request = Api.cart.uploadBankSlip(bankSlipFile).then(response => {
-    data.url = response.url;
-    return Api.cart.checkoutWithBankTransfer(data);
-  });
-
+export const checkoutWithBankTransfer = data => {
   return {
     type: CHECKOUT_WITH_BANK_TRANSFER,
-    payload: request
+    payload: Api.cart.checkoutWithBankTransfer(data)
+  };
+};
+
+export const uploadBankSlip = bankSlipFile => {
+  return {
+    type: UPLOAD_BANK_SLIP,
+    payload: Api.cart.uploadBankSlip(bankSlipFile)
   };
 };

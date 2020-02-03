@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { addCoupon, removeCoupon } from "../../actions";
 import swal from "@sweetalert/with-react";
 import { formatPrice } from "./helpers";
-import { ShippingAddressForm } from "./ShippingAddressForm";
 
 class CartSummaryComponent extends Component {
   state = {

@@ -83,10 +83,7 @@ class FooterComponent extends Component {
       phoneNumber: values.subscribe.phoneNumber
     };
     axios
-      .post(
-        `${apiBaseUrl}/newsletters/subscriptions`,
-        data
-      )
+      .post(`${apiBaseUrl}/newsletters/subscriptions`, data)
       .then(response => {
         this.setState({ valid: true, visibility: false });
       })
@@ -198,7 +195,7 @@ class FooterComponent extends Component {
               </div>
             </div>
             <div className="col-md-4 col-12 d-flex flex-column justify-content-end">
-              <p className="light-font-text small dark-text w-75">
+              <p className="light-font-text small dark-text w-75 text-break">
                 قم بترك بيانات التواصل الخاصة بك وسوف نقوم بارسال اشعارات حول
                 الدورات المجانية
               </p>

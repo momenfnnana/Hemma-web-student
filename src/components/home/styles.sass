@@ -9,7 +9,7 @@ $light-silver: #f2f2f2
 $dark-silver: #a9acb4
 $off-white: #fefefe 
 
-.hero-section, .features-section
+.hero-section, .testimonials-section
   padding-top: 100px
   margin-bottom: 100px
 .journey-section
@@ -33,9 +33,35 @@ $off-white: #fefefe
   top: 50%
   -ms-transform: translateY(-50%)
   transform: translateY(-50%)
- 
-
-
+.testimonials-section
+  .quotes-img
+    position: absolute
+    z-index: 999999
+    top: -25px
+    right: -5px
+  .slick-slider
+    .slick-list
+      overflow: visible
+    .slick-dots
+      bottom: -50px 
+      li
+        width: 10px 
+        button:before
+          color: #6c53bf 
+          font-size: 10px
+  .testimonial-slide  
+    background: $white
+    width: 100%
+    border-radius: 12px
+    box-shadow: 15px 15px #f2fafc
+    border: 1px solid #f2fafc 
+    height: 180px
+    padding: 10px 20px 10px 20px
+    display: inline-flex !important
+    justify-content: center !important
+    flex-direction: column !important
+    p
+      word-break: break-word  
 .featureSlider .image-gallery-content
   display: flex
   flex-wrap: wrap

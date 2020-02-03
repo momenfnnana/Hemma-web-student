@@ -42,59 +42,64 @@ class VerifyIdComponent extends Component {
 
     this.state = {
       loading: false,
-      disabled: false
+      disabled: false,
+      code: ""
     };
+    this.verifyCode = this.verifyCode.bind(this);
   }
-  myFormHandler = values => {
-    const { userInfo } = this.props.location;
-    let data = {
-      countryCode: userInfo.countryCode,
-      phoneNumber: userInfo.phoneNumber,
-      token: values.token
-    };
-    this.setState({ loading: true, disabled: true });
-    axios
-      .post(`${apiBaseUrl}/auth/password/reset/phone/check_token`, data)
-      .then(response => {
-        this.setState({ loading: false, disabled: false });
-        this.props.history.push({
-          pathname: "/reset-password",
-          userData: data
+
+  verifyCode(value) {
+    if (value.length == 6) {
+      const { userInfo } = this.props.location;
+      let data = {
+        countryCode: userInfo.countryCode,
+        phoneNumber: userInfo.phoneNumber,
+        token: value
+      };
+      this.setState({ loading: true, disabled: true });
+      axios
+        .post(`${apiBaseUrl}/auth/password/reset/phone/check_token`, data)
+        .then(response => {
+          this.setState({ loading: false, disabled: false });
+          this.props.history.push({
+            pathname: "/reset-password",
+            userData: data
+          });
+        })
+        .catch(error => {
+          this.setState({ loading: false, disabled: false });
+          switch (error.response.data && error.response.data.error) {
+            case "ValidationError":
+              swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "UserNotFound":
+              swal("عفواً", "هذا المستخدم غير موجود", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "InvalidConfirmationToken":
+              swal("عفواً", "الرمز المدخل غير صحيح", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "VerificationTokenExpired":
+              swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
+                button: "متابعة"
+              });
+              break;
+            case "FailedToSend":
+              swal("عفواً", "حصل خطأ ما", "error", {
+                button: "متابعة"
+              });
+              break;
+            default:
+              console.log("other error");
+          }
         });
-      })
-      .catch(error => {
-        this.setState({ loading: false, disabled: false });
-        switch (error.response.data && error.response.data.error) {
-          case "ValidationError":
-            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "UserNotFound":
-            swal("عفواً", "هذا المستخدم غير موجود", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "InvalidConfirmationToken":
-            swal("عفواً", "الرمز المدخل غير صحيح", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "VerificationTokenExpired":
-            swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "FailedToSend":
-            swal("عفواً", "حصل خطأ ما", "error", {
-              button: "متابعة"
-            });
-            break;
-          default:
-            console.log("other error");
-        }
-      });
-  };
+    }
+  }
 
   resendCode = () => {
     const { userInfo } = this.props.location;
@@ -171,25 +176,14 @@ class VerifyIdComponent extends Component {
               </h6>
             </div>
 
-            <form
-              className="centered"
-              onSubmit={handleSubmit(this.myFormHandler)}
-            >
+            <form className="centered">
               <div className="mb-3">
-                <Field name="token" component={VerificationField} />
+                <Field
+                  name="token"
+                  component={VerificationField}
+                  onChange={this.verifyCode}
+                />
               </div>
-
-              <button
-                type="submit"
-                className="btn dark-outline-btn w-100"
-                disabled={this.state.disabled}
-              >
-                {this.state.loading == true ? (
-                  <Loader type="ball-clip-rotate" />
-                ) : (
-                  "تحقق من الرمز"
-                )}
-              </button>
             </form>
 
             <div className="text-center pt-4">
