@@ -205,7 +205,7 @@ class ExamResultComponent extends Component {
 
         <SolutionModal
           isSolutionOpen={this.state.isSolutionOpen}
-          closeSolution={this.closeSolution}
+          closeSolution={this.closeSolutionModal}
           id={this.state.selectedQuestionId}
           attemptId={attemptId}
         />
