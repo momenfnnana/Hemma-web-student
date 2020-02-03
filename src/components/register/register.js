@@ -72,7 +72,8 @@ class RegisterComponent extends Component {
       gender: values.gender,
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
-      saCityId: values.saCityId
+      saCityId: values.saCityId,
+      nationalityId: values.nationalityId
     });
     this.setState({ loading: true });
     request
@@ -297,6 +298,18 @@ class RegisterComponent extends Component {
           >
             <option selected="selected">الجهة التعليمية</option>
             {this.renderEntities()}
+          </Field>
+
+          <Field
+            component={selectField}
+            className="form-control"
+            name="nationalityId"
+          >
+            <option selected="selected">الجنسية</option>
+            <option value="379cdce7-23fe-4e43-806f-70b2031e81db">سعودي</option>
+            <option value="497cdce7-23fe-4e43-806f-70b2031e81db">
+              غير سعودي
+            </option>
           </Field>
 
           <button

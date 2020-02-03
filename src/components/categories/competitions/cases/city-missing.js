@@ -95,7 +95,8 @@ class CityMissingComponent extends Component {
       name: values.name,
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
-      saCityId: values.saCityId
+      saCityId: values.saCityId,
+      nationalityId: values.nationalityId
     };
     axios
       .put(`${apiBaseUrl}/users/me`, data, {
@@ -327,26 +328,6 @@ class CityMissingComponent extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
-    const defaultCity =
-      this.props.initialValues &&
-      this.props.initialValues.saCity &&
-      this.props.initialValues.saCity.nameAr;
-    let defaultLevel;
-    if (
-      this.props.initialValues &&
-      this.props.initialValues.educationalLevel == "Student"
-    ) {
-      defaultLevel = "طالب";
-    } else if (
-      this.props.initialValues &&
-      this.props.initialValues.educationalLevel == "Other"
-    ) {
-      defaultLevel = "أخرى";
-    }
-    const defaultEntity =
-      this.props.initialValues &&
-      this.props.initialValues.educationalEntity &&
-      this.props.initialValues.educationalEntity.name;
 
     return (
       <React.Fragment>
@@ -545,6 +526,20 @@ class CityMissingComponent extends Component {
                 {this.renderEntities()}
               </Field>
 
+              <Field
+                component={selectField}
+                className="form-control"
+                name="nationalityId"
+              >
+                <option selected="selected">الجنسية</option>
+                <option value="379cdce7-23fe-4e43-806f-70b2031e81db">
+                  سعودي
+                </option>
+                <option value="497cdce7-23fe-4e43-806f-70b2031e81db">
+                  غير سعودي
+                </option>
+              </Field>
+
               <EmailToken
                 isEmailTokenOpen={this.state.isEmailTokenOpen}
                 closeEmailTokenModal={this.closeEmailTokenModal}
@@ -582,7 +577,9 @@ function mapStateToProps(state) {
     props.initialValues.educationalEntityId =
       state.profile.educationalEntity.id;
   }
-
+  if (state.profile && state.profile.nationality) {
+    props.initialValues.nationalityId = state.profile.nationality.id;
+  }
   return props;
 }
 

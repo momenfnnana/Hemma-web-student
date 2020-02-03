@@ -93,7 +93,8 @@ class EditAccountComponent extends Component {
       name: values.name,
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
-      saCityId: values.saCityId
+      saCityId: values.saCityId,
+      nationalityId: values.nationalityId
     };
     axios
       .put(`${apiBaseUrl}/users/me`, data, {
@@ -498,6 +499,20 @@ class EditAccountComponent extends Component {
               {this.renderEntities()}
             </Field>
 
+            <Field
+              component={selectField}
+              className="form-control"
+              name="nationalityId"
+            >
+              <option selected="selected">الجنسية</option>
+              <option value="379cdce7-23fe-4e43-806f-70b2031e81db">
+                سعودي
+              </option>
+              <option value="497cdce7-23fe-4e43-806f-70b2031e81db">
+                غير سعودي
+              </option>
+            </Field>
+
             <EmailToken
               isEmailTokenOpen={this.state.isEmailTokenOpen}
               closeEmailTokenModal={this.closeEmailTokenModal}
@@ -533,7 +548,9 @@ function mapStateToProps(state) {
     props.initialValues.educationalEntityId =
       state.profile.educationalEntity.id;
   }
-
+  if (state.profile && state.profile.nationality) {
+    props.initialValues.nationalityId = state.profile.nationality.id;
+  }
   return props;
 }
 

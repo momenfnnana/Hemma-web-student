@@ -28,7 +28,8 @@ export const signupUser = ({
   gender,
   educationalLevel,
   educationalEntityId,
-  saCityId
+  saCityId,
+  nationalityId
 }) => {
   return {
     type: UNAUTHENTICATED,
@@ -41,7 +42,8 @@ export const signupUser = ({
       gender,
       educationalLevel,
       educationalEntityId,
-      saCityId
+      saCityId,
+      nationalityId
     )
   };
 };
