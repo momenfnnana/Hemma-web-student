@@ -466,12 +466,14 @@ export class QuickQuestions extends Component {
                   إنضمام
                 </button>
               )}
-              <button
-                className="btn btn-sm unset-height small red-outline-btn light-font-text w-25 ml-2"
-                onClick={this.toggleJoin}
-              >
-                انسحاب
-              </button>
+              {this.state.isJoined && (
+                <button
+                  className="btn btn-sm unset-height small red-outline-btn light-font-text w-25 ml-2"
+                  onClick={this.toggleJoin}
+                >
+                  انسحاب
+                </button>
+              )}
             </div>
             <div className="col-md-12 mt-2">
               <p className="dark-text small text-break w-75">
@@ -502,29 +504,57 @@ export class QuickQuestions extends Component {
               </p>
             </div>
           </div>
-          {!this.state.questionsFavorites == undefined ||
-            (!this.state.questionsFavorites.length == 0 &&
-              this.state.isJoined && (
-                <React.Fragment>
-                  <div className="row pt-4">
-                    <div className="col-md-12 d-flex align-items-center">
-                      <div className="title-circle">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/heart-gradient.png"
-                          }
-                        />
+          {this.state.isJoined && (
+            <React.Fragment>
+              <div className="row pt-4">
+                <div className="col-md-12 d-flex align-items-center">
+                  <div className="title-circle">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/heart-gradient.png"
+                      }
+                    />
+                  </div>
+                  <h5 className="dark-text mb-0">الاسئلة المفضلة</h5>
+                </div>
+              </div>
+
+              <div className="row pt-4">
+                {this.state.questionsFavorites == undefined ||
+                this.state.questionsFavorites.length == 0 ? (
+                  <div className="col-md-12">
+                    <div className="question-card">
+                      <div className="question-body">
+                        <div className="row">
+                          <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/red-heart.png"
+                              }
+                              height="25"
+                              className="contain-img mb-2"
+                            />
+                            <p className="mid-text light-font-text small text-break mb-0">
+                              لا يوجد لديك أسئلة مفضلة
+                            </p>
+                            <p className="mid-text light-font-text small text-break mb-0">
+                              قم بإضافة الأسئلة الآن!
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                      <h5 className="dark-text mb-0">الاسئلة المفضلة</h5>
                     </div>
                   </div>
-
-                  <div className="row pt-4">
+                ) : (
+                  <React.Fragment>
                     {this.renderQuestionsFavorites()}
-                  </div>
-                </React.Fragment>
-              ))}
+                  </React.Fragment>
+                )}
+              </div>
+            </React.Fragment>
+          )}
 
           {this.state.isJoined && (
             <React.Fragment>

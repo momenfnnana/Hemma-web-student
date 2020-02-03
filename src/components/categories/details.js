@@ -137,20 +137,38 @@ export class CategoryDetails extends Component {
     await this.loadMore();
   }
 
-  renderCategoryGroups() {
+  categoryGroupRedirection(CategoryGroup) {
     const {
       match: { params }
     } = this.props;
+    let token = localStorage.getItem("token");
+    if (token) {
+      this.props.history.push(
+        `/categories/details/${params.slug}/quick-questions/${CategoryGroup}`
+      );
+    } else {
+      swal(
+        "عفواً",
+        "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
+        "error",
+        {
+          button: "متابعة"
+        }
+      );
+    }
+  }
+
+  renderCategoryGroups() {
     return this.state.categoryGroups.map(group => (
       <React.Fragment>
         <div className="col-md-2">
-          <Link
-            to={`/categories/details/${params.slug}/quick-questions/${group.id}`}
-            className="category-group-box d-flex align-items-center justify-content-center"
+          <div
+            className="category-group-box d-flex align-items-center justify-content-center clickable"
             key={group.id}
+            onClick={() => this.categoryGroupRedirection(group.id)}
           >
             <h6 className="dark-text mb-0">{group.name}</h6>
-          </Link>
+          </div>
         </div>
       </React.Fragment>
     ));
