@@ -109,7 +109,7 @@ export class QuestionSummary extends Component {
                             </div>
                             <div className="w-75">
                               <Progress
-                                percent={rateChoices[item].rate * 100}
+                                percent={parseInt(rateChoices[item].rate * 100)}
                                 status={
                                   this.state.details.correctChoice == item
                                     ? "success"
@@ -117,11 +117,15 @@ export class QuestionSummary extends Component {
                                 }
                                 theme={{
                                   error: {
-                                    symbol: rateChoices[item].rate * 100 + "%",
+                                    symbol:
+                                      parseInt(rateChoices[item].rate * 100) +
+                                      "%",
                                     color: "#f66271"
                                   },
                                   success: {
-                                    symbol: rateChoices[item].rate * 100 + "%",
+                                    symbol:
+                                      parseInt(rateChoices[item].rate * 100) +
+                                      "%",
                                     color: "#2bc3cc"
                                   }
                                 }}
