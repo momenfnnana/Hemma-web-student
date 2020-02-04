@@ -32,6 +32,9 @@ import FAQ from "../components/faq/faq";
 import { Transaction } from "../components/cart/transaction";
 import ScrollToTop from "../components/shared/scroll-to-top/ScrollToTop";
 import { Competition } from "../components/categories/competitions/competition";
+import { QuickQuestions } from "../components/categories/quick-questions/quick-questions";
+import { QuickQuestion } from "../components/categories/quick-questions/quick-question";
+import { QuestionSummary } from "../components/categories/quick-questions/question-summary";
 
 class AppBackground extends Component {
   render() {
@@ -49,7 +52,10 @@ class AppBackground extends Component {
       path.startsWith("/course") ||
       path.startsWith("/account") ||
       path.startsWith("/cart") ||
-      path.startsWith("/banks")
+      path.startsWith("/banks") ||
+      path.startsWith("/quick-questions") ||
+      path.startsWith("/quick-question") ||
+      path.startsWith("/question-summary")
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
@@ -114,6 +120,21 @@ export class MainRouter extends Component {
                 exact
                 component={requireAuth(Competition)}
               />
+              <Route
+                path="/categories/details/:slug/quick-questions/:categoryGroupId"
+                exact
+                component={QuickQuestions}
+              />
+              <Route
+                path="/categories/details/:slug/quick-questions/details/:questionId"
+                component={QuickQuestion}
+              />
+              <Route
+                path="/categories/details/:slug/quick-questions/summary/:questionId"
+                component={QuestionSummary}
+              />
+              <Route path="/quick-question" component={QuickQuestion} />
+              <Route path="/question-summary" component={QuestionSummary} />
               <Route path="/course/details/:slug" component={CourseDetails} />
               <Route path="/cart" exact component={requireAuth(Cart)} />
               <Route path="/cart/checkout" component={requireAuth(Checkout)} />
