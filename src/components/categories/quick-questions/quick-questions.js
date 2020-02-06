@@ -317,24 +317,6 @@ export class QuickQuestions extends Component {
       match: { params }
     } = this.props;
     return this.state.questionsFavorites.map(question => {
-      let currentDate = new Date();
-      let getCurrentDate =
-        currentDate.getFullYear() +
-        "-" +
-        (currentDate.getMonth() + 1) +
-        "-" +
-        currentDate.getDate();
-      let questionDate = new Date(question.publishDate);
-      let getQuestionDate =
-        questionDate.getFullYear() +
-        "-" +
-        (questionDate.getMonth() + 1) +
-        "-" +
-        questionDate.getDate();
-      let currentDay = moment(getCurrentDate);
-      let questionDay = moment(getQuestionDate);
-      let diff = moment.duration(currentDay.diff(questionDay));
-      let days = diff.days() % 7;
       return (
         <React.Fragment>
           <div
@@ -392,17 +374,7 @@ export class QuickQuestions extends Component {
                   </div>
                 </div>
               </Link>
-              <div className="question-footer">
-                <div className="row">
-                  <div className="col-md-12">
-                    <p className="light-font-text smaller dark-silver-text mb-0">
-                      <React.Fragment>
-                        منذ <span className="en-text">{days}</span> يوم
-                      </React.Fragment>
-                    </p>
-                  </div>
-                </div>
-              </div>
+
               <div className="answers-ratio d-flex justify-content-center flex-column">
                 <div className="row">
                   <div className="col-md-12 d-flex align-items-center justify-content-center">
@@ -454,13 +426,13 @@ export class QuickQuestions extends Component {
       <section className="pt-5 pb-5">
         <div className="container">
           <div className="row">
-            <div className="col-md-9 d-flex align-items-center">
+            <div className="col-9 d-flex align-items-center">
               <h4 className="light-text mb-0">{this.state.details.name}</h4>
             </div>
-            <div className="col-md-3 d-flex align-items-center justify-content-end">
+            <div className="col-3 d-flex align-items-center justify-content-end">
               {!this.state.isJoined && (
                 <button
-                  className="btn btn-sm unset-height small light-btn light-font-text w-25"
+                  className="btn btn-sm unset-height small light-btn light-font-text"
                   onClick={this.toggleJoin}
                 >
                   إنضمام
@@ -468,7 +440,7 @@ export class QuickQuestions extends Component {
               )}
               {this.state.isJoined && (
                 <button
-                  className="btn btn-sm unset-height small red-outline-btn light-font-text w-25 ml-2"
+                  className="btn btn-sm unset-height small red-outline-btn light-font-text ml-2"
                   onClick={this.toggleJoin}
                 >
                   انسحاب

@@ -7,6 +7,8 @@ import { apiBaseUrl } from "../../../../../api/helpers";
 import { getUser } from "../../../../../actions/user.actions";
 import axios from "axios";
 import { Comment } from "./comment";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-beat.scss";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -18,7 +20,8 @@ export class CommentsListComponent extends Component {
       comments: [],
       comment: "",
       file: "",
-      commentType: ""
+      commentType: "",
+      disabled: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -116,6 +119,7 @@ export class CommentsListComponent extends Component {
       type: this.state.file ? "Image" : "Text",
       value: this.state.file ? this.state.file : this.state.comment
     };
+    this.setState({ disabled: true });
     axios
       .post(
         `${apiBaseUrl}/RecordedLectureComments?lectureId=${lectureId}`,
@@ -132,9 +136,10 @@ export class CommentsListComponent extends Component {
           };
         });
         this.commentInput.value = "";
-        this.setState({ file: "" });
+        this.setState({ file: "", disabled: false });
       })
       .catch(error => {
+        this.setState({ disabled: false });
         console.log(error);
       });
   }
@@ -187,7 +192,11 @@ export class CommentsListComponent extends Component {
               </label>
             </div>
           </div>
-          <button className="btn light-outline-btn btn-sm unset-height pl-5 pr-5 float-right">
+          <button
+            className="btn light-outline-btn btn-sm unset-height pl-5 pr-5 float-right"
+            disabled={this.state.disabled}
+            loading={this.state.loading}
+          >
             ارسال
           </button>
         </form>

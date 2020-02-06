@@ -518,7 +518,7 @@ export class CourseDetails extends Component {
                         this.state.details.category &&
                         this.state.details.category.nameAr}
                     </Link>
-                    <p className="small dark-text light-font-text w-75 mt-3">
+                    <p className="small dark-text light-font-text w-75 mt-3 text-break">
                       {this.state.details.descriptionAr}
                     </p>
                   </div>

@@ -9,7 +9,8 @@ export class Reply extends Component {
     this.state = {
       showEditReplyForm: false,
       replyValue: props.reply.value,
-      replyType: props.reply.type
+      replyType: props.reply.type,
+      disabled: false
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -39,6 +40,7 @@ export class Reply extends Component {
       type: this.state.replyType,
       value: this.state.replyValue
     };
+    this.setState({ disabled: true });
     axios
       .put(
         `${apiBaseUrl}/RecordedLectureComments/Replies/${this.props.reply.id}`,
@@ -54,10 +56,12 @@ export class Reply extends Component {
         this.setState({
           showEditReplyForm: false,
           replyValue: reply.value,
-          replyType: reply.type
+          replyType: reply.type,
+          disabled: false
         });
       })
       .catch(error => {
+        this.setState({ disabled: false });
         console.log(error);
       });
   }
@@ -129,6 +133,7 @@ export class Reply extends Component {
                 <button
                   type="submit"
                   className="btn light-outline-btn btn-sm unset-height pl-5 pr-5 float-right"
+                  disabled={this.state.disabled}
                 >
                   ارسال
                 </button>

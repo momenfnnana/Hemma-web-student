@@ -4,6 +4,8 @@ import "react-sweet-progress/lib/style.css";
 import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
 import { CommentsList } from "./comments/comments-list";
+import { Link } from "react-router-dom";
+
 export class QuestionSummary extends Component {
   state = {
     details: []
@@ -45,12 +47,26 @@ export class QuestionSummary extends Component {
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-12 text-center">
+              <div className="col-md-8">
                 <h5 className="dark-text mt-3">الأسئلة السريعة</h5>
-                <p className="dark-text mt-2 small w-40 mx-auto text-break">
+                <p className="dark-text mt-2 small w-50 text-break">
                   لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
                   القدرات والتحصيلي بأعلى العلامات!
                 </p>
+              </div>
+              <div className="col-md-4 d-flex align-items-center justify-content-end">
+                <Link
+                  to={`/categories/details/${params.slug}/quick-questions/${params.categoryGroupId}`}
+                  className="btn btn-sm unset-height small light-btn light-font-text"
+                >
+                  العودة إلى المجموعة
+                </Link>
+                <Link
+                  to="/"
+                  className="btn btn-sm unset-height small red-outline-btn light-font-text ml-2"
+                >
+                  العودة إلى الرئيسية
+                </Link>
               </div>
             </div>
             {question && rateChoices && (
