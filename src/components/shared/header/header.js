@@ -106,10 +106,6 @@ class HeaderComponent extends Component {
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="80"
                 />
-                {/* <span className="d-none d-sm-block" />
-                <h5 className="dark-text d-none d-sm-block">
-                  سلسلة بالبيد التعليمية
-                </h5> */}
               </Link>
               <div className="d-block d-sm-none">
                 {!this.props.authenticated ? (
@@ -140,7 +136,7 @@ class HeaderComponent extends Component {
                       حسابات البنوك
                     </NavLink>
                   </NavItem>
-                  {/* <NavItem>
+                  <NavItem>
                     <NavLink
                       className={"nav-link mid-text"}
                       activeClassName="active"
@@ -148,7 +144,7 @@ class HeaderComponent extends Component {
                     >
                       الأسئلة المتكررة
                     </NavLink>
-                  </NavItem> */}
+                  </NavItem>
                   {!this.props.authenticated ? (
                     <React.Fragment>
                       <NavItem>

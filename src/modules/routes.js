@@ -55,7 +55,8 @@ class AppBackground extends Component {
       path.startsWith("/banks") ||
       path.startsWith("/quick-questions") ||
       path.startsWith("/quick-question") ||
-      path.startsWith("/question-summary")
+      path.startsWith("/question-summary") ||
+      path.startsWith("/faq")
     ) {
       img = "pages-bg.png";
       imgSize = "100%";

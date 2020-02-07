@@ -12,7 +12,6 @@ export class Reply extends Component {
       replyType: props.reply.type,
       disabled: false
     };
-
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -32,38 +31,41 @@ export class Reply extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      type: this.state.replyType,
-      value: this.state.replyValue
-    };
-    this.setState({ disabled: true });
-    axios
-      .put(
-        `${apiBaseUrl}/QuickQuestionComments/Replies/${this.props.reply.id}`,
-        data,
-        {
-          headers
-        }
-      )
-      .then(response => {
-        const reply = response.data.data;
-        this.props.reply.value = reply.value;
-        this.props.reply.type = reply.type;
-        this.setState({
-          showEditReplyForm: false,
-          replyValue: reply.value,
-          replyType: reply.type,
-          disabled: false
+    if (this.replyInput.value !== "") {
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      let data = {
+        type: this.state.replyType,
+        value: this.state.replyValue
+      };
+      this.setState({ disabled: true });
+      axios
+        .put(
+          `${apiBaseUrl}/QuickQuestionComments/Replies/${this.props.reply.id}`,
+          data,
+          {
+            headers
+          }
+        )
+        .then(response => {
+          const reply = response.data.data;
+          this.props.reply.value = reply.value;
+          this.props.reply.type = reply.type;
+          this.setState({
+            showEditReplyForm: false,
+            replyValue: reply.value,
+            replyType: reply.type,
+            disabled: false
+          });
+          this.replyInput.value = "";
+        })
+        .catch(error => {
+          this.setState({ disabled: false });
+          console.log(error);
         });
-      })
-      .catch(error => {
-        this.setState({ disabled: false });
-        console.log(error);
-      });
+    }
   }
 
   render() {
@@ -129,6 +131,8 @@ export class Reply extends Component {
                   value={this.state.replyValue}
                   rows="4"
                   className="form-control small dark-text shadow-sm mb-3"
+                  id="replyInput"
+                  ref={ref => (this.replyInput = ref)}
                 />
                 <button
                   type="submit"

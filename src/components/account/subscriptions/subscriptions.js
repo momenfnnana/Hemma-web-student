@@ -5,10 +5,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Table,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
   TabContent,
   TabPane
 } from "reactstrap";
@@ -36,7 +32,10 @@ export class SubscriptionsComponent extends Component {
       loading: false,
       disabled: false,
       nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`,
-      activeTab: "Active"
+      activeTab: "Active",
+      activeCourses: [],
+      expiredCourses: [],
+      cancelledCourses: []
     };
     this.setActiveTab = this.setActiveTab.bind(this);
   }
@@ -91,7 +90,27 @@ export class SubscriptionsComponent extends Component {
 
   renderCourses() {
     const subscriptions = this.state.subscriptions || [];
-    return subscriptions.map(subscription => (
+    const activeTabSubs = subscriptions.filter(
+      s => s.subscriptionStatus === this.state.activeTab
+    );
+    if (activeTabSubs.length == 0) {
+      return (
+        <div className="col-12">
+          <div
+            className="d-flex flex-column align-items-center justify-content-center"
+            style={{ height: 200 }}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/course.png"}
+              className="mb-1"
+              height="80"
+            />
+            <h5 className="dark-text mt-0">لا يوجد دورات</h5>
+          </div>
+        </div>
+      );
+    }
+    return activeTabSubs.map(subscription => (
       <React.Fragment>
         {this.state.activeTab == subscription.subscriptionStatus && (
           <div className="col-md-4 col-12">

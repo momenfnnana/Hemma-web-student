@@ -13,6 +13,9 @@ var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
 export class CommentsListComponent extends Component {
+  page = 1;
+  limit = 10;
+  endOfResults = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -20,7 +23,9 @@ export class CommentsListComponent extends Component {
       comment: "",
       file: "",
       commentType: "",
-      disabled: false
+      disabled: false,
+      hideBtn: false,
+      nextPageUrl: `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${this.props.quickQuestionId}&page=${this.page}&limit=${this.limit}`
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -47,29 +52,43 @@ export class CommentsListComponent extends Component {
       });
   };
 
-  componentDidMount() {
-    this.props.getUser();
-
+  loadMore = async () => {
     const quickQuestionId = this.props.quickQuestionId;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfResults) {
+      axios
+        .get(this.state.nextPageUrl, { headers })
+        .then(response => {
+          this.setState({ loading: false, disabled: false });
+          const newComments = [
+            ...this.state.comments,
+            ...response.data.data.data
+          ];
+          this.endOfResults = response.data.data.itemCount < this.limit;
+          this.page++;
+          const nextUrl = `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${quickQuestionId}&page=${this.page}&limit=${this.limit}`;
+          this.setState({
+            comments: newComments,
+            nextPageUrl: nextUrl
+          });
+          if (newComments.length == response.data.data.itemCount) {
+            this.setState({ hideBtn: true });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
 
-    axios
-      .get(
-        `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${quickQuestionId}`,
-        {
-          headers
-        }
-      )
-      .then(response => {
-        const comments = response.data.data.data;
-        this.setState({ comments });
-      })
-      .catch(error => {
-        console.log(error);
-      });
+  async componentDidMount() {
+    this.props.getUser();
+    await this.loadMore();
   }
 
   renderComments = () => {
@@ -112,38 +131,40 @@ export class CommentsListComponent extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const quickQuestionId = this.props.quickQuestionId;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      type: this.state.file ? "Image" : "Text",
-      value: this.state.file ? this.state.file : this.state.comment
-    };
-    this.setState({ disabled: true });
-    axios
-      .post(
-        `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${quickQuestionId}`,
-        data,
-        {
-          headers
-        }
-      )
-      .then(response => {
-        const comment = response.data.data;
-        this.setState(prevState => {
-          return {
-            comments: prevState.comments.concat(comment)
-          };
+    if (this.commentInput.value !== "" || this.state.file) {
+      const quickQuestionId = this.props.quickQuestionId;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      let data = {
+        type: this.state.file ? "Image" : "Text",
+        value: this.state.file ? this.state.file : this.state.comment
+      };
+      this.setState({ disabled: true });
+      axios
+        .post(
+          `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${quickQuestionId}`,
+          data,
+          {
+            headers
+          }
+        )
+        .then(response => {
+          const comment = response.data.data;
+          this.setState(prevState => {
+            return {
+              comments: prevState.comments.concat(comment)
+            };
+          });
+          this.commentInput.value = "";
+          this.setState({ file: "", disabled: false });
+        })
+        .catch(error => {
+          this.setState({ disabled: false });
+          console.log(error);
         });
-        this.commentInput.value = "";
-        this.setState({ file: "", disabled: false });
-      })
-      .catch(error => {
-        this.setState({ disabled: false });
-        console.log(error);
-      });
+    }
   }
 
   render() {
@@ -203,7 +224,6 @@ export class CommentsListComponent extends Component {
             </button>
           </form>
           <div className="clearfix" />
-
           <div className="d-flex justify-content-between align-items-center responsive-col mt-4">
             <h6 className="dark-text small mb-0 mt-0">التعليقات</h6>
 
@@ -220,6 +240,21 @@ export class CommentsListComponent extends Component {
             </div>
           </div>
           {this.renderComments()}
+          {!this.state.hideBtn && (
+            <div className="d-flex align-items-center justify-content-center">
+              <button
+                className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
+                onClick={this.loadMore}
+                disabled={this.state.disabled}
+              >
+                {this.state.loading == true ? (
+                  <Loader type="ball-beat" className="dark-loader" />
+                ) : (
+                  "تحميل المزيد"
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );

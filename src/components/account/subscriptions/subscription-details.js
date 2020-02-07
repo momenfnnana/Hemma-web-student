@@ -28,8 +28,7 @@ class SubscriptionDetailsComponent extends Component {
     super(props);
     this.state = {
       details: [],
-      isInstallmentOpen: false,
-      isRatingModalOpen: false
+      isInstallmentOpen: false
     };
   }
 
@@ -39,25 +38,6 @@ class SubscriptionDetailsComponent extends Component {
   closeInstallmentModal = () => {
     this.setState({ isInstallmentOpen: false });
   };
-
-  openRatingModal = () => {
-    this.setState({ isRatingModalOpen: true });
-  };
-  closeRatingModal = () => {
-    this.setState({ isRatingModalOpen: false });
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.ratingStatus &&
-      !prevProps.ratingStatus
-    ) {
-      const courseId = this.props.match.params.id;
-      this.props.getSubscription(courseId);
-    }
-  }
 
   componentDidMount() {
     const courseId = this.props.match.params.id;
@@ -70,14 +50,8 @@ class SubscriptionDetailsComponent extends Component {
       this.props &&
       this.props.subscription &&
       this.props.subscription.subscription;
-    const ratingStatus =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.ratingStatus;
-    const remainingAmount =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.remainingAmount;
+    const ratingStatus = subscription && subscription.ratingStatus;
+    const remainingAmount = subscription && subscription.remainingAmount;
 
     return (
       <React.Fragment>
@@ -137,20 +111,23 @@ class SubscriptionDetailsComponent extends Component {
                     {ratingStatus == "Skipped" && (
                       <button
                         className="btn light-btn w-100 mb-3"
-                        onClick={() => this.openRatingModal()}
+                        onClick={() =>
+                          this.setState({ forceOpenRatingModal: true })
+                        }
                       >
                         قيّم الدورة
                       </button>
                     )}
                     <RatingModal
                       isRatingModalOpen={
-                        ratingStatus == "Available"
-                          ? true
-                          : this.state.isRatingModalOpen
+                        ratingStatus == "Available" ||
+                        this.state.forceOpenRatingModal
                       }
-                      closeRatingModal={this.closeRatingModal}
+                      onClose={() =>
+                        this.setState({ forceOpenRatingModal: false })
+                      }
+                      status={ratingStatus}
                       courseId={courseId}
-                      ratingStatus={ratingStatus}
                     />
                     <Instructors id={courseId} />
                   </div>
@@ -266,8 +243,7 @@ class SubscriptionDetailsComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    subscription: state.subscription,
-    ratingStatus: state.ratingStatus
+    subscription: state.subscription
   };
 }
 
