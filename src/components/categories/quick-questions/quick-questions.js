@@ -4,11 +4,16 @@ import "react-sweet-progress/lib/style.css";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { Link } from "react-router-dom";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-beat.scss";
 
 var moment = require("moment");
 moment().format();
 
 export class QuickQuestions extends Component {
+  page = 1;
+  limit = 6;
+  endOfResults = false;
   constructor(props) {
     super(props);
     this.state = {
@@ -16,13 +21,16 @@ export class QuickQuestions extends Component {
       details: [],
       isJoined: null,
       quickQuestions: [],
-      questionsFavorites: []
+      questionsFavorites: [],
+      disabled: false,
+      hideBtn: false,
+      nextPageUrl: `${apiBaseUrl}/QuickQuestions?categoryGroupId=${this.props.match.params.categoryGroupId}&page=${this.page}&limit=${this.limit}`
     };
     this.toggleJoin = this.toggleJoin.bind(this);
     this.toggleFavorite = this.toggleFavorite.bind(this);
   }
 
-  componentDidMount() {
+  loadMore = async () => {
     const {
       match: { params }
     } = this.props;
@@ -30,6 +38,48 @@ export class QuickQuestions extends Component {
     let headers = {
       Authorization: `Bearer ${token}`
     };
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfResults) {
+      axios
+        .get(this.state.nextPageUrl, { headers })
+        .then(response => {
+          this.setState({
+            loading: false,
+            disabled: false
+          });
+          const newQuestions = [
+            ...this.state.quickQuestions,
+            ...response.data.data.data
+          ];
+          console.log(newQuestions);
+          this.endOfResults = response.data.data.itemCount < this.limit;
+          this.page++;
+          const nextUrl = `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}&page=${this.page}&limit=${this.limit}`;
+          this.setState({
+            quickQuestions: newQuestions,
+            nextPageUrl: nextUrl
+          });
+          if (newQuestions.length == response.data.data.itemCount) {
+            this.setState({ hideBtn: true });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
+
+  async componentDidMount() {
+    const {
+      match: { params }
+    } = this.props;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+
+    await this.loadMore();
 
     axios
       .get(`${apiBaseUrl}/CategoryGroups/${params.categoryGroupId}`, {
@@ -40,20 +90,6 @@ export class QuickQuestions extends Component {
           details: response.data.data,
           isJoined: response.data.data.isJoined
         });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    axios
-      .get(
-        `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}`,
-        {
-          headers
-        }
-      )
-      .then(response => {
-        this.setState({ quickQuestions: response.data.data });
       })
       .catch(error => {
         console.log(error);
@@ -107,13 +143,13 @@ export class QuickQuestions extends Component {
         if (this.state.isJoined) {
           axios
             .get(
-              `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}`,
+              `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}&page=1&limit=6`,
               {
                 headers
               }
             )
             .then(response => {
-              this.setState({ quickQuestions: response.data.data });
+              this.setState({ quickQuestions: response.data.data.data });
             })
             .catch(error => {
               console.log(error);
@@ -158,13 +194,13 @@ export class QuickQuestions extends Component {
       .then(response => {
         axios
           .get(
-            `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}`,
+            `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}&page=1&limit=6`,
             {
               headers
             }
           )
           .then(response => {
-            this.setState({ quickQuestions: response.data.data });
+            this.setState({ quickQuestions: response.data.data.data });
           })
           .catch(error => {
             console.log(error);
@@ -541,6 +577,25 @@ export class QuickQuestions extends Component {
                 </div>
               </div>
               <div className="row pt-4">{this.renderQuestion()}</div>
+              <div className="row">
+                <div className="col-md-12">
+                  {!this.state.hideBtn && (
+                    <div className="d-flex align-items-center justify-content-center">
+                      <button
+                        className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
+                        onClick={this.loadMore}
+                        disabled={this.state.disabled}
+                      >
+                        {this.state.loading == true ? (
+                          <Loader type="ball-beat" className="dark-loader" />
+                        ) : (
+                          "تحميل المزيد"
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
             </React.Fragment>
           )}
         </div>

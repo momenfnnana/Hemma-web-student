@@ -163,11 +163,14 @@ export class CategoryDetails extends Component {
       <React.Fragment>
         <div className="col-md-2">
           <div
-            className="shadow-box d-flex align-items-center justify-content-center clickable"
+            className="shadow-box d-flex flex-column align-items-center justify-content-center clickable"
             key={group.id}
             onClick={() => this.categoryGroupRedirection(group.id)}
           >
-            <h6 className="dark-text mb-0">{group.name}</h6>
+            <h6 className="dark-text mb-1">{group.name}</h6>
+            <p className="dark-text smaller mb-0 text-break text-center">
+              {group.description}
+            </p>
           </div>
         </div>
       </React.Fragment>
@@ -430,7 +433,7 @@ export class CategoryDetails extends Component {
                     src={this.state.details.icon}
                     height="50"
                     width="50"
-                    className="mt-3"
+                    className="mt-3 contain-img"
                     alt={this.state.details.nameAr}
                   />
                 </div>
