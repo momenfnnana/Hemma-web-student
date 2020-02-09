@@ -31,15 +31,11 @@ const images = [
   {
     thumbnail: process.env.PUBLIC_URL + "/assets/images/discussions.png",
     description: <SliderDes data={data.features[3]} />
+  },
+  {
+    thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
+    description: <SliderDes data={data.features[4]} />
   }
-  // {
-  //   thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
-  //   description: <SliderDes data={data.features[4]} />
-  // },
-  // {
-  //   thumbnail: process.env.PUBLIC_URL + "/assets/images/go.png",
-  //   description: <SliderDes data={data.features[5]} />
-  // }
 ];
 
 export class Home extends Component {
@@ -90,7 +86,7 @@ export class Home extends Component {
         <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
             return (
-              <div className="mt-5 mb-3 col-lg-3 col-6" key={cat.id}>
+              <div className="col-lg-3 col-6" key={cat.id}>
                 <Link
                   to={{
                     pathname: `/categories/details/${cat.slug}`,
@@ -102,15 +98,16 @@ export class Home extends Component {
                 >
                   <div
                     key={cat.id}
-                    className="half-circle-border d-flex flex-column align-items-center mx-auto"
+                    className="shadow-box custom-height d-flex flex-column align-items-center justify-content-center clickable"
                   >
                     <img
                       key={cat.id}
                       src={cat.icon}
-                      height="45"
-                      className="mt-3 mb-2"
+                      height="30"
+                      width="30"
+                      className="contain-img mb-2"
                     />
-                    <h6 className="dark-text small text-center">
+                    <h6 className="dark-text small text-center mb-0">
                       {cat.nameAr}
                     </h6>
                   </div>
@@ -256,26 +253,48 @@ export class Home extends Component {
         <section className="hero-section">
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
-              <div className="col-md-4" />
+              <div className="col-md-4">
+                <h3 className="dark-text">سلسلة بالبيد التعليمية</h3>
+                <h3 className="dark-text">٢٥ عاماً في خدمة</h3>
+                <h3 className="light-text"> الطلاب و الطالبات</h3>
+              </div>
               <div className="col-md-8 d-flex align-items-center justify-content-center">
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
                   }
                   width="100%"
+                  className="contain-img"
                 />
               </div>
             </div>
           </div>
         </section>
-
-        <section className="categories-section">
-          <div className="container">{this.renderCategories()}</div>
+        <section className="categories-section mt-4">
+          <div className="container">
+            <div className="row mb-3">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                <h4 className="dark-text mb-1">منصاتنا</h4>
+                <p className="dark-text">
+                  تعرف على ابرز منصاتنا التعليمية القيمة{" "}
+                </p>
+              </div>
+            </div>
+            {this.renderCategories()}
+          </div>
         </section>
 
         <section className="journey-section section-padder">
           <div className="container">
-            <div className="row d-flex h-100 align-items-center">
+            <div className="row">
+              <div className="col-md-12">
+                <h4 className="dark-text mb-1">مميزاتنا</h4>
+                <p className="dark-text">
+                  تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة
+                </p>
+              </div>
+            </div>
+            <div className="row">
               <div className="col-md-12">
                 <div className="featureSlider" id="featureSection">
                   <div className="featureDesWrapper">
@@ -296,6 +315,14 @@ export class Home extends Component {
 
         <section className="courses-section pt-5">
           <div className="container">
+            <div className="row mb-3">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                <h4 className="dark-text mb-1">ابرز الدورات</h4>
+                <p className="dark-text">
+                  تعرف على ابرز الدورات التعليمية القيمة
+                </p>
+              </div>
+            </div>
             <div className="row">
               <div className="col-md-12">
                 <Slider {...settings}>{this.renderCourses()}</Slider>
@@ -303,7 +330,21 @@ export class Home extends Component {
             </div>
           </div>
         </section>
-
+        {/* <section>
+          <div className="container">
+            <div className="row mb-3">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                <h4 className="dark-text mb-1">خطوات الإشتراك بالدورة</h4>
+                <p className="dark-text">
+                  يمكنك الان التسجيل بأحد دوراتنا باتباعك للخطوات التالية
+                </p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-12"></div>
+            </div>
+          </div>
+        </section> */}
         <section className="testimonials-section">
           <div className="container">
             <div className="row">

@@ -19,7 +19,7 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 export class SubscriptionsComponent extends Component {
   page = 1;
-  limit = 4;
+  limit = 3;
   endOfResults = false;
   constructor(props) {
     super(props);

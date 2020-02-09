@@ -163,7 +163,7 @@ export class CategoryDetails extends Component {
       <React.Fragment>
         <div className="col-md-2">
           <div
-            className="category-group-box d-flex align-items-center justify-content-center clickable"
+            className="shadow-box d-flex align-items-center justify-content-center clickable"
             key={group.id}
             onClick={() => this.categoryGroupRedirection(group.id)}
           >

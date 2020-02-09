@@ -91,6 +91,18 @@ export class QuickQuestions extends Component {
         }
       )
       .then(response => {
+        axios
+          .get(`${apiBaseUrl}/CategoryGroups/${params.categoryGroupId}`, {
+            headers
+          })
+          .then(response => {
+            this.setState({
+              details: response.data.data
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
         this.setState({ isJoined: !this.state.isJoined });
         if (this.state.isJoined) {
           axios
@@ -200,6 +212,26 @@ export class QuickQuestions extends Component {
       let questionDay = moment(getQuestionDate);
       let diff = moment.duration(currentDay.diff(questionDay));
       let days = diff.days() % 7;
+      const totalQuestionsNumber =
+        question.numberOfWrongAnswers + question.numberOfCorrectAnswers;
+      let wrongQuestionsRatio;
+      if (totalQuestionsNumber == 0) {
+        wrongQuestionsRatio = 0;
+      } else {
+        wrongQuestionsRatio = parseInt(
+          (question.numberOfWrongAnswers / totalQuestionsNumber) * 100
+        );
+      }
+
+      let correctQuestionsRatio;
+      if (totalQuestionsNumber == 0) {
+        correctQuestionsRatio = 0;
+      } else {
+        correctQuestionsRatio = parseInt(
+          (question.numberOfCorrectAnswers / totalQuestionsNumber) * 100
+        );
+      }
+
       return (
         <React.Fragment>
           <div className="col-md-4 d-flex align-items-center" key={question.id}>
@@ -273,11 +305,11 @@ export class QuickQuestions extends Component {
                     </h6>
                     <div className="w-50 en-text small red-text">
                       <Progress
-                        percent={question.numberOfCorrectAnswers}
+                        percent={correctQuestionsRatio}
                         status="success"
                         theme={{
                           success: {
-                            symbol: question.numberOfCorrectAnswers + "%",
+                            symbol: correctQuestionsRatio + "%",
                             color: "#2bc3cc"
                           }
                         }}
@@ -292,11 +324,11 @@ export class QuickQuestions extends Component {
                     </h6>
                     <div className="w-50 en-text small">
                       <Progress
-                        percent={question.numberOfWrongAnswers}
+                        percent={wrongQuestionsRatio}
                         status="error"
                         theme={{
                           error: {
-                            symbol: question.numberOfWrongAnswers + "%",
+                            symbol: wrongQuestionsRatio + "%",
                             color: "#f66271"
                           }
                         }}
@@ -374,47 +406,6 @@ export class QuickQuestions extends Component {
                   </div>
                 </div>
               </Link>
-
-              <div className="answers-ratio d-flex justify-content-center flex-column">
-                <div className="row">
-                  <div className="col-md-12 d-flex align-items-center justify-content-center">
-                    <h6 className="dark-text smaller mb-0 mr-2">
-                      الإجابات الصحيحة
-                    </h6>
-                    <div className="w-50 en-text small red-text">
-                      <Progress
-                        percent={question.numberOfCorrectAnswers}
-                        status="success"
-                        theme={{
-                          success: {
-                            symbol: question.numberOfCorrectAnswers + "%",
-                            color: "#2bc3cc"
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12 d-flex align-items-center justify-content-center">
-                    <h6 className="dark-text smaller mb-0 mr-2">
-                      الإجابات الخاطئة
-                    </h6>
-                    <div className="w-50 en-text small">
-                      <Progress
-                        percent={question.numberOfWrongAnswers}
-                        status="error"
-                        theme={{
-                          error: {
-                            symbol: question.numberOfWrongAnswers + "%",
-                            color: "#f66271"
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </React.Fragment>
@@ -448,9 +439,15 @@ export class QuickQuestions extends Component {
               )}
             </div>
             <div className="col-md-12 mt-2">
-              <p className="dark-text small text-break w-75">
-                {this.state.details.description}
-              </p>
+              {this.state.details.description ? (
+                <p className="dark-text small text-break w-75">
+                  {this.state.details.description}
+                </p>
+              ) : (
+                <p className="dark-text small text-break w-75">
+                  لا يوجد وصف للسؤال
+                </p>
+              )}
             </div>
             <div className="col-md-4 d-flex align-items-center">
               <h6 className="dark-text mb-0">عدد الأعضاء:</h6>

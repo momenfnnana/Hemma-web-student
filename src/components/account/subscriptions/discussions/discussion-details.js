@@ -43,6 +43,11 @@ export class DiscussionDetailsComponent extends Component {
       this.state.discussionDetails && this.state.discussionDetails.endsAt
     );
     const endDate = endsAt.toLocaleString();
+    console.log(
+      "sid ",
+      this.state.discussionDetails &&
+        this.state.discussionDetails.chatChannelSid
+    );
     return (
       <React.Fragment>
         <div className="row no-gutters">
