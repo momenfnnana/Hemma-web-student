@@ -56,7 +56,7 @@ export class QuestionSummary extends Component {
               </div>
               <div className="col-md-4 d-flex align-items-center justify-content-end">
                 <Link
-                  to={`/categories/details/${params.slug}/quick-questions/${params.categoryGroupId}`}
+                  to={`/categories/details/${params.slug}/quick-questions/${this.state.details.categoryGroupId}`}
                   className="btn btn-sm unset-height small light-btn light-font-text"
                 >
                   العودة إلى المجموعة
