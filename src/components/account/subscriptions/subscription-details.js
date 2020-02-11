@@ -7,7 +7,8 @@ import { RecordedLectures } from "./lectures/recorded-lectures";
 import { LectureDetails } from "./lectures/recorded-videos";
 import { Booklet } from "./booklet/booklet";
 import { TransactionsList } from "./transactions/transactions-list";
-import { UsersChatComponent } from "./chat/chat";
+// import { UsersChatComponent } from "./chat/chat";
+import { UsersChatComponent } from "../../chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream/live-stream";
@@ -214,6 +215,7 @@ class SubscriptionDetailsComponent extends Component {
                         render={props => (
                           <UsersChatComponent
                             chatChannelSid={subscription.chatChannelSid}
+                            title="عنوان تجريبي"
                             {...props}
                           />
                         )}

@@ -3,7 +3,8 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
 import { getChatToken } from "../../../../actions/twilio.actions";
-import { UsersChatComponent } from "./chat/chat";
+//import { UsersChatComponent } from "./chat/chat";
+import { UsersChatComponent } from "../../../chat/chat";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
 import axios from "axios";
@@ -91,6 +92,7 @@ export class DiscussionDetailsComponent extends Component {
         {this.state.discussionDetails &&
           this.state.discussionDetails.chatChannelSid && (
             <UsersChatComponent
+              title="عنوان المناقشة"
               chatChannelSid={this.state.discussionDetails.chatChannelSid}
               courseId={courseId}
             />

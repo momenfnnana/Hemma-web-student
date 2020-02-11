@@ -1,3 +1,3 @@
-export * from "./cart";
+export * from "./Cart";
 export * from "./Checkout";
 export * from "./helpers";
