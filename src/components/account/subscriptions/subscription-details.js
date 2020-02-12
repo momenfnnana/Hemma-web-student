@@ -6,8 +6,7 @@ import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./lectures/recorded-lectures";
 import { LectureDetails } from "./lectures/recorded-videos";
 import { Booklet } from "./booklet/booklet";
-import { TransactionsList } from "./transactions/transactions-list";
-// import { UsersChatComponent } from "./chat/chat";
+import TransactionsList from "./transactions/transactions-list";
 import { UsersChatComponent } from "../../chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
@@ -23,13 +22,15 @@ import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { RefundComponent } from "./transactions/refund/RefundForm";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       details: [],
-      isInstallmentOpen: false
+      isInstallmentOpen: false,
+      isRefundOpen: false
     };
   }
 
@@ -38,6 +39,13 @@ class SubscriptionDetailsComponent extends Component {
   };
   closeInstallmentModal = () => {
     this.setState({ isInstallmentOpen: false });
+  };
+
+  openRefundModal = () => {
+    this.setState({ isRefundOpen: true });
+  };
+  closeRefundModal = () => {
+    this.setState({ isRefundOpen: false });
   };
 
   componentDidMount() {
@@ -78,13 +86,22 @@ class SubscriptionDetailsComponent extends Component {
                     <p className="dark-silver-text">
                       حتى تتمكن من تصفح تفاصيل الدورة
                     </p>
-                    <button
-                      type="button"
-                      className="btn light-btn"
-                      onClick={this.openInstallmentModal}
-                    >
-                      سداد قسط
-                    </button>
+                    <div className="d-flex align-items-center">
+                      <button
+                        type="button"
+                        className="btn light-btn btn-width mr-2"
+                        onClick={this.openInstallmentModal}
+                      >
+                        سداد قسط
+                      </button>
+                      <button
+                        type="button"
+                        className="btn red-outline-btn btn-width"
+                        onClick={this.openRefundModal}
+                      >
+                        استرجاع الرسوم
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -92,6 +109,11 @@ class SubscriptionDetailsComponent extends Component {
             <NewInstallment
               isInstallmentOpen={this.state.isInstallmentOpen}
               closeInstallmentModal={this.closeInstallmentModal}
+              courseId={courseId}
+            />
+            <RefundComponent
+              isRefundOpen={this.state.isRefundOpen}
+              closeRefundModal={this.closeRefundModal}
               courseId={courseId}
             />
           </React.Fragment>
@@ -202,12 +224,7 @@ class SubscriptionDetailsComponent extends Component {
                     />
                     <Route
                       path="/subscriptions/:id/transactions/list"
-                      render={props => (
-                        <TransactionsList
-                          remainingAmount={subscription.remainingAmount}
-                          {...props}
-                        />
-                      )}
+                      component={TransactionsList}
                     />
                     {subscription && subscription.chatChannelSid && (
                       <Route
@@ -215,7 +232,6 @@ class SubscriptionDetailsComponent extends Component {
                         render={props => (
                           <UsersChatComponent
                             chatChannelSid={subscription.chatChannelSid}
-                            title="عنوان تجريبي"
                             {...props}
                           />
                         )}

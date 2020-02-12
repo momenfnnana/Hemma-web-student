@@ -8,8 +8,6 @@ import MessagesList from "./messages";
 import MessageInput from "./message-input";
 import { reduxForm } from "redux-form";
 
-//import "../styles.sass";
-
 /**
  * Things we should pass in props:
  * - title
@@ -27,17 +25,6 @@ export class UsersChatComponent extends Component {
   render() {
     return (
       <React.Fragment>
-
-        {this.props.title && (
-            <div className="row">
-            <div className="col-12 mb-4">
-                <div className="d-flex justify-content-between">
-                <h6 className="dark-text small mb-0 mt-0">{this.props.title}</h6>
-                </div>
-            </div>
-            </div>
-        )}
-
         {this.props.chatChannelSid.startsWith("http") && (
           <div className="row">
             <div className="col-md-12">
@@ -64,8 +51,8 @@ export class UsersChatComponent extends Component {
               </div>
               {this.props.chatChannelSid && (
                 <ChatList
-                    courseId={this.props.courseId}
-                    generalChatId={this.props.chatChannelSid}
+                  courseId={this.props.courseId}
+                  generalChatId={this.props.chatChannelSid}
                 />
               )}
             </div>

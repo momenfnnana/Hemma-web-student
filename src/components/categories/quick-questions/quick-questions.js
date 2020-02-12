@@ -315,9 +315,15 @@ export class QuickQuestions extends Component {
                 <div className="question-body">
                   <div className="row">
                     <div className="col-md-12">
-                      <p className="mid-text light-font-text smaller text-break">
-                        {question.description}
-                      </p>
+                      {question.description ? (
+                        <p className="mid-text light-font-text smaller text-break">
+                          {question.description}
+                        </p>
+                      ) : (
+                        <p className="mid-text light-font-text smaller text-break">
+                          لا يوجد وصف للسؤال
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -435,9 +441,15 @@ export class QuickQuestions extends Component {
                 <div className="question-body">
                   <div className="row">
                     <div className="col-md-12">
-                      <p className="mid-text light-font-text smaller text-break">
-                        {question.description}
-                      </p>
+                      {question.description ? (
+                        <p className="mid-text light-font-text smaller text-break">
+                          {question.description}
+                        </p>
+                      ) : (
+                        <p className="mid-text light-font-text smaller text-break">
+                          لا يوجد وصف للسؤال
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
