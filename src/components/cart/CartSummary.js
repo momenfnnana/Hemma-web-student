@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { addCoupon, removeCoupon } from "../../actions";
+import { addCoupon, removeCoupon, getCart } from "../../actions";
 import swal from "@sweetalert/with-react";
 import { formatPrice } from "./helpers";
 
@@ -85,14 +85,21 @@ class CartSummaryComponent extends Component {
   onAddCoupon() {
     this.props
       .addCoupon(this.state.couponInputValue)
-      .then(() => {
-        this.setState({
-          couponInputValue: ""
-        });
+      .catch(async error => {
+        if (error.response && error.response.status === 401) {
+          return await this.props.getCart();
+        } else {
+          throw error;
+        }
       })
       .catch(error => {
         swal("عفواً", "يرجى التحقق من صحة الكوبون المدخل", "error", {
           button: "متابعة"
+        });
+      })
+      .then(() => {
+        this.setState({
+          couponInputValue: ""
         });
       });
   }
@@ -198,7 +205,8 @@ function mapStateToProps(state) {
 
 const actionCreators = {
   addCoupon,
-  removeCoupon
+  removeCoupon,
+  getCart
 };
 
 export const CartSummary = connect(
