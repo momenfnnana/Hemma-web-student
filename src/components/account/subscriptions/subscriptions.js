@@ -1,41 +1,22 @@
 import React, { Component } from "react";
 import axios from "axios";
-import {
-  Tooltip,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane
-} from "reactstrap";
+import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
-import swal from "@sweetalert/with-react";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
 import classnames from "classnames";
-import Loader from "react-loaders";
-import "loaders.css/src/animations/ball-clip-rotate.scss";
+import { ActiveSubscriptions } from "./list/active";
+import { ExpiredSubscriptions } from "./list/expired";
+import { WithdrawnSubscriptions } from "./list/withdrawn";
 
 export class SubscriptionsComponent extends Component {
-  page = 1;
-  limit = 3;
-  endOfResults = false;
   constructor(props) {
     super(props);
-    this.toggle = this.toggle.bind(this);
     this.state = {
-      tooltipOpen: false,
       details: [],
       subscriptions: [],
-      hideBtn: false,
-      loading: false,
-      disabled: false,
-      nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`,
-      activeTab: "Active",
-      activeCourses: [],
-      expiredCourses: [],
-      cancelledCourses: []
+      activeTab: "Active"
     };
     this.setActiveTab = this.setActiveTab.bind(this);
   }
@@ -44,165 +25,25 @@ export class SubscriptionsComponent extends Component {
     this.setState({ activeTab: tab });
   }
 
-  toggle() {
-    this.setState({
-      tooltipOpen: !this.state.tooltipOpen
-    });
-  }
-
   async componentDidMount() {
     this.props.getProfile();
-    await this.loadMore();
-  }
-
-  loadMore = async () => {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
-    this.setState({ loading: true, disabled: true });
-    if (!this.endOfResults) {
-      axios
-        .get(this.state.nextPageUrl, { headers })
-        .then(response => {
-          this.setState({ loading: false, disabled: false });
-          const newSubscriptions = [
-            ...this.state.subscriptions,
-            ...response.data.data.data
-          ];
-          this.endOfResults = response.data.data.itemCount < this.limit;
-          this.page++;
-          const nextUrl = `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}`;
-          this.setState({
-            subscriptions: newSubscriptions,
-            nextPageUrl: nextUrl
-          });
-          if (newSubscriptions.length == response.data.data.itemCount) {
-            this.setState({ hideBtn: true });
-          }
-        })
-        .catch(error => {
-          console.log(error);
-          this.setState({ loading: false, disabled: false });
-        });
-    }
-  };
-
-  renderCourses() {
-    const subscriptions = this.state.subscriptions || [];
-    const activeTabSubs = subscriptions.filter(
-      s => s.subscriptionStatus === this.state.activeTab
-    );
-    if (activeTabSubs.length == 0) {
-      return (
-        <div className="col-12">
-          <div
-            className="d-flex flex-column align-items-center justify-content-center"
-            style={{ height: 200 }}
-          >
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/course.png"}
-              className="mb-1"
-              height="80"
-            />
-            <h5 className="dark-text mt-0">لا يوجد دورات</h5>
-          </div>
-        </div>
-      );
-    }
-    return activeTabSubs.map(subscription => (
-      <React.Fragment>
-        {this.state.activeTab == subscription.subscriptionStatus && (
-          <div className="col-md-4 col-12">
-            <div
-              key={subscription.id}
-              onClick={() => {
-                subscription.cumulativePaymentStatus == "Unpaid" ||
-                // subscription.cumulativePaymentStatus == "PartiallyPaid" ||
-                subscription.cumulativePaymentStatus == "Pending"
-                  ? swal(
-                      "عفواً",
-                      "تفاصيل الدورة غير متاحة حتى يتم مراجعة الحوالة من قبل الإدارة",
-                      "error",
-                      {
-                        button: "متابعة"
-                      }
-                    )
-                  : subscription.subscriptionStatus == "Expired"
-                  ? swal(
-                      "عفواً",
-                      "تفاصيل الدورة غير متاحة بسبب انتهاء الاشتراك",
-                      "error",
-                      {
-                        button: "متابعة"
-                      }
-                    )
-                  : subscription.subscriptionStatus == "Withdrawn"
-                  ? swal(
-                      "عفواً",
-                      "تفاصيل الدورة غير متاحة بسبب انسحابك من الدورة",
-                      "error",
-                      {
-                        button: "متابعة"
-                      }
-                    )
-                  : this.props.history.push(
-                      `/subscriptions/${subscription.course.id}`
-                    );
-              }}
-            >
-              <div className="card card-sm md-height shadow-sm border-0 clickable">
-                <header className="card-thumb">
-                  <img src={subscription.course.bannerUrl} alt="Course image" />
-                </header>
-                <div className="card-body d-flex flex-column justify-content-center">
-                  <h6 className="card-title small mb-0 p-0 dark-text">
-                    {subscription.course.nameAr}
-                  </h6>
-
-                  {subscription.cumulativePaymentStatus == "Unpaid" ? (
-                    <p className="dark-silver-text small mb-0">غير مسدد</p>
-                  ) : subscription.cumulativePaymentStatus ==
-                    "PartiallyPaid" ? (
-                    <p className="dark-silver-text small mb-0">مسدد جزئياً</p>
-                  ) : subscription.cumulativePaymentStatus == "FullyPaid" ? (
-                    <p className="dark-silver-text small mb-0">مسدد</p>
-                  ) : subscription.cumulativePaymentStatus == "Pending" ? (
-                    <React.Fragment>
-                      <p
-                        className="dark-silver-text small mb-0"
-                        id="status-tooltip"
-                      >
-                        قيد المراجعة
-                      </p>
-                      <Tooltip
-                        placement="right"
-                        isOpen={this.state.tooltipOpen}
-                        target="status-tooltip"
-                        toggle={this.toggle}
-                        placement="bottom"
-                        style={{
-                          backgroundColor: "#f2fdfe",
-                          color: "#4b3a85"
-                        }}
-                      >
-                        <p className="light-font-text small mb-1 mt-2">
-                          تم تلقي الحوالة وسوف يتم الموافقة عليها خلال 48 ساعة
-                        </p>
-                      </Tooltip>
-                    </React.Fragment>
-                  ) : null}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </React.Fragment>
-    ));
+    axios
+      .get(`${apiBaseUrl}/courses/purchased?SubscriptionStatus=All`, {
+        headers
+      })
+      .then(response => {
+        this.setState({ subscriptions: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   render() {
-    const classes = "tooltip-inner";
     let avatarImg;
     if (this.props.initialValues.gender == "Male") {
       avatarImg = process.env.PUBLIC_URL + "/assets/images/male-avatar.png";
@@ -238,7 +79,6 @@ export class SubscriptionsComponent extends Component {
               </div>
               <div className="col-md-8">
                 <h5 className="dark-text mb-3">قائمة دوراتي</h5>
-
                 {this.state.subscriptions == undefined ||
                 this.state.subscriptions.length == 0 ? (
                   <React.Fragment>
@@ -291,64 +131,13 @@ export class SubscriptionsComponent extends Component {
                     </Nav>
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="Active">
-                        <div className="silver-bg box-layout w-100 pb-0 p-3 mt-4">
-                          <div className="row">{this.renderCourses()}</div>
-                        </div>
-                        {!this.state.hideBtn && (
-                          <div className="d-flex align-items-center justify-content-center">
-                            <button
-                              className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
-                              onClick={this.loadMore}
-                              disabled={this.state.disabled}
-                            >
-                              {this.state.loading == true ? (
-                                <Loader type="ball-clip-rotate" />
-                              ) : (
-                                "تحميل المزيد"
-                              )}
-                            </button>
-                          </div>
-                        )}
+                        <ActiveSubscriptions />
                       </TabPane>
                       <TabPane tabId="Expired">
-                        <div className="silver-bg box-layout w-100 pb-0 p-3 mt-4">
-                          <div className="row">{this.renderCourses()}</div>
-                        </div>
-                        {!this.state.hideBtn && (
-                          <div className="d-flex align-items-center justify-content-center">
-                            <button
-                              className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
-                              onClick={this.loadMore}
-                              disabled={this.state.disabled}
-                            >
-                              {this.state.loading == true ? (
-                                <Loader type="ball-clip-rotate" />
-                              ) : (
-                                "تحميل المزيد"
-                              )}
-                            </button>
-                          </div>
-                        )}
+                        <ExpiredSubscriptions />
                       </TabPane>
                       <TabPane tabId="Withdrawn">
-                        <div className="silver-bg box-layout w-100 pb-0 p-3 mt-4">
-                          <div className="row">{this.renderCourses()}</div>
-                        </div>
-                        {!this.state.hideBtn && (
-                          <div className="d-flex align-items-center justify-content-center">
-                            <button
-                              className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
-                              onClick={this.loadMore}
-                              disabled={this.state.disabled}
-                            >
-                              {this.state.loading == true ? (
-                                <Loader type="ball-clip-rotate" />
-                              ) : (
-                                "تحميل المزيد"
-                              )}
-                            </button>
-                          </div>
-                        )}
+                        <WithdrawnSubscriptions />
                       </TabPane>
                     </TabContent>
                   </React.Fragment>
