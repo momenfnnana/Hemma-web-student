@@ -3,10 +3,13 @@ import axios from "axios";
 import { Tooltip } from "reactstrap";
 import { apiBaseUrl } from "../../../../api/helpers";
 import swal from "@sweetalert/with-react";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
+import { withRouter, Link } from "react-router-dom";
 
-export class WithdrawnSubscriptions extends Component {
+class SubscriptionsListComponent extends Component {
   page = 1;
-  limit = 10;
+  limit = 50;
   endOfResults = false;
   constructor(props) {
     super(props);
@@ -14,7 +17,10 @@ export class WithdrawnSubscriptions extends Component {
     this.state = {
       tooltipOpen: false,
       subscriptions: [],
-      nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}&SubscriptionStatus=Withdrawn`
+      hideBtn: false,
+      loading: false,
+      disabled: false,
+      nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}&SubscriptionStatus=${this.props.subscriptionStatus}`
     };
   }
 
@@ -43,7 +49,7 @@ export class WithdrawnSubscriptions extends Component {
           ];
           this.endOfResults = response.data.data.itemCount < this.limit;
           this.page++;
-          const nextUrl = `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}&SubscriptionStatus=Withdrawn`;
+          const nextUrl = `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}&SubscriptionStatus=${this.props.subscriptionStatus}`;
           this.setState({
             subscriptions: newSubscriptions,
             nextPageUrl: nextUrl
@@ -169,6 +175,21 @@ export class WithdrawnSubscriptions extends Component {
           ) : (
             <React.Fragment>
               <div className="row">{this.renderCourses()}</div>
+              {/* {!this.state.hideBtn && (
+                <div className="d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn dark-btn unset-height unset-line-height br-5 mb-3 w-25"
+                    onClick={this.loadMore}
+                    disabled={this.state.disabled}
+                  >
+                    {this.state.loading == true ? (
+                      <Loader type="ball-clip-rotate" />
+                    ) : (
+                      "تحميل المزيد"
+                    )}
+                  </button>
+                </div>
+              )} */}
             </React.Fragment>
           )}
         </div>
@@ -176,3 +197,5 @@ export class WithdrawnSubscriptions extends Component {
     );
   }
 }
+
+export const SubscriptionsList = withRouter(SubscriptionsListComponent);

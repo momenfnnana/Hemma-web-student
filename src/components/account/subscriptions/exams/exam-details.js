@@ -189,36 +189,18 @@ class ExamDetailsComponent extends Component {
       <React.Fragment>
         {question && (
           <React.Fragment>
-            <div className="d-flex justify-content-between flex-row p-3 br-0 border-right-0 border-top-0">
-              {this.state.selectedQuestion == 0 ? (
-                <div />
-              ) : (
-                <button className="btn light-btn" onClick={this.goToPrevious}>
-                  السابق
-                </button>
-              )}
-              <div className="d-flex flex-column justify-content-center align-items-center">
-                <h6 className="mb-0 dark-text">السؤال {question.id}</h6>
-              </div>
-
-              {this.state.selectedQuestion + 1 ==
-              this.state.questions.length ? (
-                <div />
-              ) : (
-                <button className="btn light-btn" onClick={this.goToNext}>
-                  التالي
-                </button>
-              )}
+            <div className="d-flex justify-content-center align-items-center flex-row p-3 br-0 border-right-0 border-top-0">
+              <h6 className="mb-0 dark-text">السؤال {question.id}</h6>
             </div>
             <hr className="mt-0 mb-0" />
             <div className="row p-4 pb-2">
               <div className="col-12">
-                <div className="box-layout box-border shadow-sm">
+                <div className="box-layout box-border shadow-sm p-3">
                   <img
                     src={question.renderedStem}
-                    className="m-3 contain-img"
-                    width="20%"
-                    height="50"
+                    className="contain-img"
+                    width="100%"
+                    height="100"
                   />
                 </div>
               </div>
@@ -379,8 +361,20 @@ class ExamDetailsComponent extends Component {
                   </div>
                 </div>
 
-                <div className="row pt-4 pb-3">
-                  <div className="col-12 text-center">
+                <div className="row pt-4 pb-3 pl-3 pr-3">
+                  <div className="col-12 text-center d-flex justify-content-between align-items-center">
+                    {this.state.selectedQuestion == 0 ? (
+                      <div />
+                    ) : (
+                      <div>
+                        <button
+                          className="btn light-btn"
+                          onClick={this.goToPrevious}
+                        >
+                          السابق
+                        </button>
+                      </div>
+                    )}
                     {unansweredQuestions == 0 ? (
                       <button
                         className="btn light-outline-btn w-25"
@@ -395,6 +389,20 @@ class ExamDetailsComponent extends Component {
                       >
                         إنهاء الامتحان
                       </button>
+                    )}
+
+                    {this.state.selectedQuestion + 1 ==
+                    this.state.questions.length ? (
+                      <div />
+                    ) : (
+                      <div>
+                        <button
+                          className="btn light-btn"
+                          onClick={this.goToNext}
+                        >
+                          التالي
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>

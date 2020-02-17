@@ -6,9 +6,7 @@ import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
 import classnames from "classnames";
-import { ActiveSubscriptions } from "./list/active";
-import { ExpiredSubscriptions } from "./list/expired";
-import { WithdrawnSubscriptions } from "./list/withdrawn";
+import { SubscriptionsList } from "./list/subscriptions-list";
 
 export class SubscriptionsComponent extends Component {
   constructor(props) {
@@ -131,13 +129,13 @@ export class SubscriptionsComponent extends Component {
                     </Nav>
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="Active">
-                        <ActiveSubscriptions />
+                        <SubscriptionsList subscriptionStatus="Active" />
                       </TabPane>
                       <TabPane tabId="Expired">
-                        <ExpiredSubscriptions />
+                        <SubscriptionsList subscriptionStatus="Expired" />
                       </TabPane>
                       <TabPane tabId="Withdrawn">
-                        <WithdrawnSubscriptions />
+                        <SubscriptionsList subscriptionStatus="Withdrawn" />
                       </TabPane>
                     </TabContent>
                   </React.Fragment>
