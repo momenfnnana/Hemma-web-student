@@ -110,19 +110,15 @@ class CheckoutComponent extends Component {
                           تحويل بنكي
                         </NavLink>
                       </NavItem>
-                      <NavItem className="position-relative">
-                        <NavLink disabled>بطاقة إئتمانية </NavLink>
-                        <img
-                          src={
-                            process.env.PUBLIC_URL + "/assets/images/tag.png"
-                          }
-                          height="28"
-                          alt="Soon"
-                          className="position-absolute tag-img"
-                        />
-                        <h6 className="text-white light-font-text small text-position mb-0">
-                          قريبًا..
-                        </h6>
+                      <NavItem>
+                        <NavLink
+                          className={classnames({
+                            active: this.state.activeTab === "online"
+                          })}
+                          onClick={() => this.setActiveTab("online")}
+                        >
+                          بطاقة إئتمانية
+                        </NavLink>
                       </NavItem>
                     </Nav>
 
