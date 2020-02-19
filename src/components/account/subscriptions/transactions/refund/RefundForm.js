@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../../../../api/helpers";
 import axios from "axios";
 import swal from "@sweetalert/with-react";
+import { FaTimes } from "react-icons/fa";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 
@@ -124,9 +125,10 @@ export class RefundComponent extends Component {
           onRequestClose={closeRefundModal}
           closeRefundModal={closeRefundModal}
         >
-          <div className="container pt-4 pb-2">
+          <div className="container py-2">
             <div className="row">
               <div className="col-md-6 col-12">
+                <FaTimes className="dark-text" onClick={closeRefundModal} />
                 <h6 className="light-text text-center">طلب استرداد الرسوم</h6>
                 <h6 className="dark-text smaller mb-3 text-center">
                   يرجى تعبئة المعلومات التالية لاتمام العملية
@@ -174,9 +176,9 @@ export class RefundComponent extends Component {
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/refund-art.png"}
                   width="80%"
-                  className="contain-img"
+                  className="contain-img d-none d-md-block"
                 />
-                <div className="box-layout light-silver-bg h-65 d-flex align-items-center mt-4">
+                <div className="box-layout light-silver-bg h-65 d-flex align-items-center mt-4 px-1">
                   <h6 className="dark-text small mb-0 mt-0 w-75 mx-auto">
                     سيتم استرجاع المبلغ خلال أسبوع من وصول الطلب
                   </h6>

@@ -199,8 +199,7 @@ class ExamDetailsComponent extends Component {
                   <img
                     src={question.renderedStem}
                     className="contain-img"
-                    width="100%"
-                    height="100"
+                    width="90%"
                   />
                 </div>
               </div>

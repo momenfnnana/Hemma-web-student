@@ -105,37 +105,19 @@ class CompetitionComponent extends Component {
       <React.Fragment>
         {question && (
           <React.Fragment>
-            <div className="d-flex justify-content-between flex-row p-3 br-0 border-right-0 border-top-0">
-              {this.state.selectedQuestion == 0 ? (
-                <div />
-              ) : (
-                <button className="btn light-btn" onClick={this.goToPrevious}>
-                  السابق
-                </button>
-              )}
-              <div className="d-flex flex-column justify-content-center align-items-center">
-                <h6 className="mb-0 dark-text">
-                  السؤال {this.state.selectedQuestion + 1}
-                </h6>
-              </div>
-
-              {this.state.selectedQuestion + 1 == questionsLength ? (
-                <div />
-              ) : (
-                <button className="btn light-btn" onClick={this.goToNext}>
-                  التالي
-                </button>
-              )}
+            <div className="d-flex justify-content-center align-items-center flex-row p-3 br-0 border-right-0 border-top-0">
+              <h6 className="mb-0 dark-text">
+                السؤال {this.state.selectedQuestion + 1}
+              </h6>
             </div>
             <hr className="mt-0 mb-0" />
             <div className="row p-4 pb-2">
               <div className="col-12">
-                <div className="box-layout box-border shadow-sm">
+                <div className="box-layout box-border shadow-sm p-3">
                   <img
                     src={question.renderedStem}
-                    className="m-3 contain-img"
-                    width="20%"
-                    height="50"
+                    className="contain-img"
+                    width="90%"
                   />
                 </div>
               </div>
@@ -309,13 +291,39 @@ class CompetitionComponent extends Component {
                       {this.renderQuestions()}
                     </div>
                     <hr />
-                    <div className="d-flex align-items-center justify-content-center">
+
+                    <div className="d-flex justify-content-between align-items-center">
+                      {this.state.selectedQuestion == 0 ? (
+                        <div />
+                      ) : (
+                        <div>
+                          <button
+                            className="btn light-btn"
+                            onClick={this.goToPrevious}
+                          >
+                            السابق
+                          </button>
+                        </div>
+                      )}
                       <button
                         className="btn light-outline-btn w-20"
                         onClick={() => this.submitAnswers(attemptId)}
                       >
                         إنهاء المسابقة
                       </button>
+                      {this.state.selectedQuestion + 1 ==
+                      this.state.questions.length ? (
+                        <div />
+                      ) : (
+                        <div>
+                          <button
+                            className="btn light-btn"
+                            onClick={this.goToNext}
+                          >
+                            التالي
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </React.Fragment>
                 ) : (

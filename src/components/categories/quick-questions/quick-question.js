@@ -116,12 +116,11 @@ export class QuickQuestion extends Component {
                   <React.Fragment>
                     <div className="row p-4 pb-2">
                       <div className="col-12">
-                        <div className="box-layout box-border shadow-sm">
+                        <div className="box-layout box-border shadow-sm p-3">
                           <img
                             src={question.renderedStem}
-                            className="m-3 contain-img"
-                            width="20%"
-                            height="50"
+                            className="contain-img"
+                            width="90%"
                           />
                         </div>
                       </div>

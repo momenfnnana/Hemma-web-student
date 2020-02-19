@@ -80,12 +80,11 @@ export class QuestionSummary extends Component {
                 </div>
                 <div className="row pb-4">
                   <div className="col-12">
-                    <div className="box-layout box-border shadow-sm bg-white">
+                    <div className="box-layout box-border shadow-sm p-3">
                       <img
                         src={question.renderedStem}
-                        className="m-3 contain-img"
-                        width="20%"
-                        height="50"
+                        className="contain-img"
+                        width="90%"
                       />
                     </div>
                   </div>

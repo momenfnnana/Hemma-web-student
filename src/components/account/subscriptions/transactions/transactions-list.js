@@ -108,7 +108,7 @@ class TransactionsList extends Component {
               <div>
                 <button
                   type="button"
-                  className="btn border mid-text smaller ml-2"
+                  className="btn border mid-text smaller"
                   onClick={this.openRefundModal}
                 >
                   <img
@@ -151,7 +151,7 @@ class TransactionsList extends Component {
                 {!remainingAmount == "0" && (
                   <button
                     type="button"
-                    className="btn border mid-text smaller"
+                    className="btn border mid-text smaller ml-2"
                     onClick={this.openInstallmentModal}
                   >
                     <img
