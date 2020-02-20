@@ -12,11 +12,16 @@ import { FaTimes } from "react-icons/fa";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 
-export class RefundComponent extends Component {
-  state = {
-    loading: false,
-    disabled: false
-  };
+class RefundComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      disabled: false,
+      isModalOpen: false
+    };
+    this.myFormHandler = this.myFormHandler.bind(this);
+  }
 
   myFormHandler = values => {
     let token = localStorage.getItem("token");
@@ -38,21 +43,7 @@ export class RefundComponent extends Component {
       .then(async response => {
         this.setState({ loading: false, disabled: false });
         this.props.closeRefundModal();
-        swal({
-          button: "متابعة",
-          content: (
-            <div>
-              <img
-                src={
-                  process.env.PUBLIC_URL + "/assets/images/success-alert.png"
-                }
-                className="mb-3"
-                height="45"
-              />
-              <h6 className="dark-text mb-0">وصل طلب الاسترداد بنجاح </h6>
-            </div>
-          )
-        });
+        this.setState({ isModalOpen: true });
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
@@ -71,20 +62,8 @@ export class RefundComponent extends Component {
                     height="45"
                   />
                   <h6 className="dark-text">
-                    يتعذر استرجاع الرسوم لأحد الأسباب التالية
+                    لا يمكن تقديم طلبات الانسحاب لهذه الدورة
                   </h6>
-                  <ul className="list-unstyled mb-0">
-                    <li className="light-font-text dark-text small">
-                      - لا يمكنك استرجاع الرسوم بعد مرور درسين على الأقل من
-                      الدورة
-                    </li>
-                    <li className="light-font-text dark-text small">
-                      - لا يمكنك استرجاع الرسوم بعد شراء الملزمة
-                    </li>
-                    <li className="light-font-text dark-text small">
-                      - لا يمكنك إرسال طلب استرجاع رسوم أكثر من مرة
-                    </li>
-                  </ul>
                 </div>
               )
             });
@@ -110,12 +89,30 @@ export class RefundComponent extends Component {
         zIndex: 2
       }
     };
+    const smallModalStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "30%",
+        height: "auto",
+        borderWidth: 0
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 2
+      }
+    };
     const {
       isRefundOpen,
       closeRefundModal,
       handleSubmit,
       submitting
     } = this.props;
+    console.log("propssiees ", this.props);
     return (
       <React.Fragment>
         <Modal
@@ -128,7 +125,10 @@ export class RefundComponent extends Component {
           <div className="container py-2">
             <div className="row">
               <div className="col-md-6 col-12">
-                <FaTimes className="dark-text" onClick={closeRefundModal} />
+                <FaTimes
+                  className="dark-text clickable"
+                  onClick={closeRefundModal}
+                />
                 <h6 className="light-text text-center">طلب استرداد الرسوم</h6>
                 <h6 className="dark-text smaller mb-3 text-center">
                   يرجى تعبئة المعلومات التالية لاتمام العملية
@@ -187,6 +187,37 @@ export class RefundComponent extends Component {
             </div>
           </div>
         </Modal>
+
+        <Modal
+          style={smallModalStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isModalOpen}
+          closeRefundModal={this.state.isModalOpen}
+        >
+          <div className="container py-2">
+            <div className="row">
+              <div className="col-12 d-flex flex-column align-items-center justify-content-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/success-alert.png"
+                  }
+                  className="mb-3"
+                  height="45"
+                />
+                <h6 className="dark-text mb-0">وصل طلب الاسترداد بنجاح </h6>
+                <button
+                  className="custom-swal-btn mt-4"
+                  onClick={() => {
+                    this.setState({ isModalOpen: false });
+                    this.props.history.push("/subscriptions");
+                  }}
+                >
+                  متابعة
+                </button>
+              </div>
+            </div>
+          </div>
+        </Modal>
       </React.Fragment>
     );
   }
@@ -204,4 +235,4 @@ RefundComponent = reduxForm({
 
 RefundComponent = connect(mapStateToProps)(RefundComponent);
 
-export const Checkout = withRouter(RefundComponent);
+export const Refund = withRouter(RefundComponent);

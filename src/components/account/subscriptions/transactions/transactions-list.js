@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import { RefundComponent } from "./refund/RefundForm";
+import { Refund } from "./refund/RefundForm";
 import "./styles.sass";
 import { WrongTransactionComponent } from "./wrong-transaction/WrongTransaction";
 import { NewInstallment } from "./installment/NewInstallment";
@@ -122,7 +122,7 @@ class TransactionsList extends Component {
                   />
                   استرجاع الرسوم
                 </button>
-                <RefundComponent
+                <Refund
                   isRefundOpen={this.state.isRefundOpen}
                   closeRefundModal={this.closeRefundModal}
                   courseId={courseId}

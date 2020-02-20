@@ -22,7 +22,7 @@ import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { RefundComponent } from "./transactions/refund/RefundForm";
+import { Refund } from "./transactions/refund/RefundForm";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -111,7 +111,7 @@ class SubscriptionDetailsComponent extends Component {
               closeInstallmentModal={this.closeInstallmentModal}
               courseId={courseId}
             />
-            <RefundComponent
+            <Refund
               isRefundOpen={this.state.isRefundOpen}
               closeRefundModal={this.closeRefundModal}
               courseId={courseId}
