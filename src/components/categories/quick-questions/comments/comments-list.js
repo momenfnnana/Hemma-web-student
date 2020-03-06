@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { apiBaseUrl } from "../../../../../api/helpers";
-import { getUser } from "../../../../../actions/user.actions";
+import { apiBaseUrl } from "../../../../api/helpers";
+import { getUser } from "../../../../actions/user.actions";
 import axios from "axios";
 import { Comment } from "./comment";
 import Loader from "react-loaders";
@@ -25,7 +25,7 @@ export class CommentsListComponent extends Component {
       commentType: "",
       disabled: false,
       hideBtn: false,
-      nextPageUrl: `${apiBaseUrl}/RecordedLectureComments?lectureId=${this.props.lectureId}&page=${this.page}&limit=${this.limit}`
+      nextPageUrl: `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${this.props.quickQuestionId}&page=${this.page}&limit=${this.limit}`
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -41,7 +41,7 @@ export class CommentsListComponent extends Component {
     data.append("file", event.target.files[0]);
     data.append("type", "Comments");
     axios
-      .post(`${apiBaseUrl}/RecordedLectureComments/Uploads`, data, {
+      .post(`${apiBaseUrl}/QuickQuestionComments/Uploads`, data, {
         headers
       })
       .then(response => {
@@ -53,7 +53,7 @@ export class CommentsListComponent extends Component {
   };
 
   loadMore = async () => {
-    const lectureId = this.props.lectureId;
+    const quickQuestionId = this.props.quickQuestionId;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -70,7 +70,7 @@ export class CommentsListComponent extends Component {
           ];
           this.endOfResults = response.data.data.itemCount < this.limit;
           this.page++;
-          const nextUrl = `${apiBaseUrl}/RecordedLectureComments?lectureId=${lectureId}&page=${this.page}&limit=${this.limit}`;
+          const nextUrl = `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${quickQuestionId}&page=${this.page}&limit=${this.limit}`;
           this.setState({
             comments: newComments,
             nextPageUrl: nextUrl
@@ -107,7 +107,7 @@ export class CommentsListComponent extends Component {
       Authorization: `Bearer ${token}`
     };
     axios
-      .delete(`${apiBaseUrl}/RecordedLectureComments/${id}`, {
+      .delete(`${apiBaseUrl}/QuickQuestionComments/${id}`, {
         headers
       })
       .then(response => {
@@ -132,7 +132,7 @@ export class CommentsListComponent extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.commentInput.value !== "" || this.state.file) {
-      const lectureId = this.props.lectureId;
+      const quickQuestionId = this.props.quickQuestionId;
       let token = localStorage.getItem("token");
       let headers = {
         Authorization: `Bearer ${token}`
@@ -144,7 +144,7 @@ export class CommentsListComponent extends Component {
       this.setState({ disabled: true });
       axios
         .post(
-          `${apiBaseUrl}/RecordedLectureComments?lectureId=${lectureId}`,
+          `${apiBaseUrl}/QuickQuestionComments?quickQuestionId=${quickQuestionId}`,
           data,
           {
             headers
@@ -169,93 +169,93 @@ export class CommentsListComponent extends Component {
 
   render() {
     return (
-      <div className="col-12 silver-bg p-4">
-        <h6 className="dark-text mb-3">لديك تعليق؟</h6>
-        <form onSubmit={this.handleSubmit}>
-          <div className="position-relative">
-            <textarea
-              id="commentInput"
-              type="text"
-              name="comment"
-              onChange={this.handleChange}
-              placeholder="اذا كنت تعرف جواب السؤال اترك تعليقا"
-              rows="6"
-              className="form-control small dark-text shadow-sm mb-3"
-              ref={ref => (this.commentInput = ref)}
-            />
-            <div className="textarea-icon d-flex align-items-center">
-              {this.state.file && (
-                <h6 className="light-text smaller mb-0 mr-3">
+      <div className="col-12">
+        <div className="silver-bg p-4">
+          <h6 className="dark-text mb-3">لديك تعليق؟</h6>
+          <form onSubmit={this.handleSubmit}>
+            <div className="position-relative">
+              <textarea
+                id="commentInput"
+                type="text"
+                name="comment"
+                onChange={this.handleChange}
+                placeholder="اذا كنت تعرف جواب السؤال اترك تعليقا"
+                rows="6"
+                className="form-control small dark-text shadow-sm mb-3"
+                ref={ref => (this.commentInput = ref)}
+              />
+              <div className="textarea-icon d-flex align-items-center">
+                {this.state.file && (
+                  <h6 className="light-text smaller mb-0 mr-3">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/check-mark.png"
+                      }
+                      width="12"
+                      className="contain-img mr-1"
+                    />
+                    تم إرفاق الملف بنجاح
+                  </h6>
+                )}
+                <label htmlFor="uploadImage" className="mb-0">
+                  <input
+                    className="d-none"
+                    id="uploadImage"
+                    type="file"
+                    onChange={this.handleFileChange}
+                  />
                   <img
                     src={
-                      process.env.PUBLIC_URL + "/assets/images/check-mark.png"
+                      process.env.PUBLIC_URL +
+                      "/assets/images/dark-attachment.png"
                     }
-                    width="12"
-                    className="contain-img mr-1"
+                    height="30"
+                    width="30"
+                    className="contain-img clickable"
                   />
-                  تم إرفاق الملف بنجاح
-                </h6>
-              )}
-              <label htmlFor="uploadImage" className="mb-0">
-                <input
-                  className="d-none"
-                  id="uploadImage"
-                  type="file"
-                  onChange={this.handleFileChange}
-                />
-                <img
-                  src={
-                    process.env.PUBLIC_URL +
-                    "/assets/images/dark-attachment.png"
-                  }
-                  height="30"
-                  width="30"
-                  className="contain-img clickable"
-                />
-              </label>
+                </label>
+              </div>
             </div>
-          </div>
-          <button
-            className="btn light-outline-btn btn-sm unset-height pl-5 pr-5 float-right"
-            disabled={this.state.disabled}
-            loading={this.state.loading}
-          >
-            ارسال
-          </button>
-        </form>
-        <div className="clearfix" />
-
-        <div className="d-flex justify-content-between align-items-center responsive-col mt-4">
-          <h6 className="dark-text small mb-0 mt-0">التعليقات</h6>
-
-          <div className="d-flex align-items-center">
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/comments.png"}
-              height="15"
-              width="20"
-              className="contain-img mr-1"
-            />
-            <h6 className="mid-text en-text mb-0">
-              {this.state.comments.length}
-            </h6>
-          </div>
-        </div>
-        {this.renderComments()}
-        {!this.state.hideBtn && (
-          <div className="d-flex align-items-center justify-content-center">
             <button
-              className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
-              onClick={this.loadMore}
+              className="btn light-outline-btn btn-sm unset-height pl-5 pr-5 float-right"
               disabled={this.state.disabled}
             >
-              {this.state.loading == true ? (
-                <Loader type="ball-beat" className="dark-loader" />
-              ) : (
-                "تحميل المزيد"
-              )}
+              ارسال
             </button>
+          </form>
+          <div className="clearfix" />
+          <div className="d-flex justify-content-between align-items-center responsive-col mt-4">
+            <h6 className="dark-text small mb-0 mt-0">التعليقات</h6>
+
+            <div className="d-flex align-items-center">
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/comments.png"}
+                height="15"
+                width="20"
+                className="contain-img mr-1"
+              />
+              <h6 className="mid-text en-text mb-0">
+                {this.state.comments.length}
+              </h6>
+            </div>
           </div>
-        )}
+          {this.renderComments()}
+          {!this.state.hideBtn && (
+            <div className="d-flex align-items-center justify-content-center">
+              <button
+                className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
+                onClick={this.loadMore}
+                disabled={this.state.disabled}
+              >
+                {this.state.loading == true ? (
+                  <Loader type="ball-beat" className="dark-loader" />
+                ) : (
+                  "تحميل المزيد"
+                )}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     );
   }

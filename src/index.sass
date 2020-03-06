@@ -91,6 +91,8 @@ p
     border-bottom-left-radius: 5px !important                       
 .en-text
     font-family: MontserratMedium
+.ar-text
+    font-family: "GessMedium"        
 .popover
     font-family: "GessMedium"    
 .dark-text
@@ -342,7 +344,20 @@ a.btn
 
 .swal-title, .swal-text
     color: $dark-blue      
-
+.swal-footer
+    text-align: center
+.custom-swal-btn
+    background-color: #7cd1f9
+    color: #fff
+    border: none
+    box-shadow: none
+    border-radius: 5px
+    font-weight: 600
+    font-size: 14px
+    padding: 10px 24px
+    margin: 0
+    cursor: pointer  
+     
 .half-circle-border
     width: 150px
     height: 75px
@@ -350,6 +365,14 @@ a.btn
     border-top-right-radius: 85px
     border: 5px solid $light-silver
     border-bottom: 0
+.full-circle-border
+    width: 55px
+    height: 55px
+    border-radius: 100%
+    border: 5px solid $light-silver
+    display: flex
+    align-items: center
+    justify-content: center
 .gradient-bg
     width: 70px
     height: 70px
@@ -397,8 +420,12 @@ a.btn
 .swal-text
     text-align: center
 .accordion__title:hover
-    transition: background-color ease-out 0.3s              
+    transition: background-color ease-out 0.3s
+.btn-width
+    width: 120px                  
 @media only screen and (max-width: 767px)
+    .btn-width
+        width: unset
     .w-25, .w-75, .w-40, .w-35
         width: 100% !important 
     .navbar-light .navbar-toggler

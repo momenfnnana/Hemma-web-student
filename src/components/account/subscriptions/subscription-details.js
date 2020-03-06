@@ -6,8 +6,8 @@ import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./lectures/recorded-lectures";
 import { LectureDetails } from "./lectures/recorded-videos";
 import { Booklet } from "./booklet/booklet";
-import { TransactionsList } from "./transactions/transactions-list";
-import { UsersChatComponent } from "./chat/chat";
+import TransactionsList from "./transactions/transactions-list";
+import { UsersChatComponent } from "../../chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream/live-stream";
@@ -22,6 +22,7 @@ import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import { Refund } from "./transactions/refund/RefundForm";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class SubscriptionDetailsComponent extends Component {
     this.state = {
       details: [],
       isInstallmentOpen: false,
-      isRatingModalOpen: false
+      isRefundOpen: false
     };
   }
 
@@ -40,24 +41,12 @@ class SubscriptionDetailsComponent extends Component {
     this.setState({ isInstallmentOpen: false });
   };
 
-  openRatingModal = () => {
-    this.setState({ isRatingModalOpen: true });
+  openRefundModal = () => {
+    this.setState({ isRefundOpen: true });
   };
-  closeRatingModal = () => {
-    this.setState({ isRatingModalOpen: false });
+  closeRefundModal = () => {
+    this.setState({ isRefundOpen: false });
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.ratingStatus &&
-      !prevProps.ratingStatus
-    ) {
-      const courseId = this.props.match.params.id;
-      this.props.getSubscription(courseId);
-    }
-  }
 
   componentDidMount() {
     const courseId = this.props.match.params.id;
@@ -70,14 +59,8 @@ class SubscriptionDetailsComponent extends Component {
       this.props &&
       this.props.subscription &&
       this.props.subscription.subscription;
-    const ratingStatus =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.ratingStatus;
-    const remainingAmount =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.remainingAmount;
+    const ratingStatus = subscription && subscription.ratingStatus;
+    const remainingAmount = subscription && subscription.remainingAmount;
 
     return (
       <React.Fragment>
@@ -103,13 +86,22 @@ class SubscriptionDetailsComponent extends Component {
                     <p className="dark-silver-text">
                       حتى تتمكن من تصفح تفاصيل الدورة
                     </p>
-                    <button
-                      type="button"
-                      className="btn light-btn"
-                      onClick={this.openInstallmentModal}
-                    >
-                      سداد قسط
-                    </button>
+                    <div className="d-flex align-items-center">
+                      <button
+                        type="button"
+                        className="btn light-btn btn-width mr-2"
+                        onClick={this.openInstallmentModal}
+                      >
+                        سداد قسط
+                      </button>
+                      <button
+                        type="button"
+                        className="btn red-outline-btn btn-width"
+                        onClick={this.openRefundModal}
+                      >
+                        استرجاع الرسوم
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -117,6 +109,11 @@ class SubscriptionDetailsComponent extends Component {
             <NewInstallment
               isInstallmentOpen={this.state.isInstallmentOpen}
               closeInstallmentModal={this.closeInstallmentModal}
+              courseId={courseId}
+            />
+            <Refund
+              isRefundOpen={this.state.isRefundOpen}
+              closeRefundModal={this.closeRefundModal}
               courseId={courseId}
             />
           </React.Fragment>
@@ -137,20 +134,23 @@ class SubscriptionDetailsComponent extends Component {
                     {ratingStatus == "Skipped" && (
                       <button
                         className="btn light-btn w-100 mb-3"
-                        onClick={() => this.openRatingModal()}
+                        onClick={() =>
+                          this.setState({ forceOpenRatingModal: true })
+                        }
                       >
                         قيّم الدورة
                       </button>
                     )}
                     <RatingModal
                       isRatingModalOpen={
-                        ratingStatus == "Available"
-                          ? true
-                          : this.state.isRatingModalOpen
+                        ratingStatus == "Available" ||
+                        this.state.forceOpenRatingModal
                       }
-                      closeRatingModal={this.closeRatingModal}
+                      onClose={() =>
+                        this.setState({ forceOpenRatingModal: false })
+                      }
+                      status={ratingStatus}
                       courseId={courseId}
-                      ratingStatus={ratingStatus}
                     />
                     <Instructors id={courseId} />
                   </div>
@@ -224,12 +224,7 @@ class SubscriptionDetailsComponent extends Component {
                     />
                     <Route
                       path="/subscriptions/:id/transactions/list"
-                      render={props => (
-                        <TransactionsList
-                          remainingAmount={subscription.remainingAmount}
-                          {...props}
-                        />
-                      )}
+                      component={TransactionsList}
                     />
                     {subscription && subscription.chatChannelSid && (
                       <Route
@@ -266,8 +261,7 @@ class SubscriptionDetailsComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    subscription: state.subscription,
-    ratingStatus: state.ratingStatus
+    subscription: state.subscription
   };
 }
 

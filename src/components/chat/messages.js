@@ -3,9 +3,9 @@ import { connect } from "react-redux";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
-import { getUser } from "../../../../../actions/user.actions";
+import { getUser } from "../../actions/user.actions";
 import axios from "axios";
-import { apiBaseUrl } from "../../../../../api/helpers";
+import { apiBaseUrl } from "../../api/helpers";
 
 class MessagesList extends Component {
   constructor(props) {
@@ -123,48 +123,27 @@ class MessagesList extends Component {
         prevProps.activeChannelId
       );
 
+      console.log("Got new props", prevProps, this.props);
       const client = await this.props.twilio.chatClient;
-      if (this.props.activeChannel == "sid") {
-        // subscribe to new channel
-        client
-          .getChannelBySid(this.props.activeChannelId)
-          .then(channel => {
-            channel.getMessages().then(paginator => {
-              const channelMessages = paginator.items;
-              const messages = channelMessages.map(this.convertMessage);
-              this.setState({
-                messages: messages,
-                twilioMessages: channelMessages,
-                paginator: paginator
-              });
-
-              channel.on("messageAdded", this.messageAdded);
+      // subscribe to new channel
+      client
+        .getChannelBySid(this.props.activeChannelId)
+        .then(channel => {
+          channel.getMessages().then(paginator => {
+            const channelMessages = paginator.items;
+            const messages = channelMessages.map(this.convertMessage);
+            this.setState({
+              messages: messages,
+              twilioMessages: channelMessages,
+              paginator: paginator
             });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      } else if (this.props.activeChannel == "uniqueName") {
-        // subscribe to new channel
-        client
-          .getChannelByUniqueName(this.props.activeChannelId)
-          .then(channel => {
-            channel.getMessages().then(paginator => {
-              const channelMessages = paginator.items;
-              const messages = channelMessages.map(this.convertMessage);
-              this.setState({
-                messages: messages,
-                twilioMessages: channelMessages,
-                paginator: paginator
-              });
 
-              channel.on("messageAdded", this.messageAdded);
-            });
-          })
-          .catch(err => {
-            console.log(err);
+            channel.on("messageAdded", this.messageAdded);
           });
-      }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 

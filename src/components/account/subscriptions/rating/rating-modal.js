@@ -7,6 +7,7 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import { textareaField } from "../../../shared/inputs/textareaField";
 import { withRouter } from "react-router-dom";
+import { getSubscription } from "../../../../actions/subscription.actions";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
 
@@ -40,9 +41,12 @@ class RatingModalComponent extends Component {
       .post(`${apiBaseUrl}/ratings/rate`, data, {
         headers
       })
-      .then(response => {
+      .then(async response => {
         this.setState({ loading: false, disabled: false, ratingError: false });
-        this.props.closeRatingModal();
+
+        await this.props.getSubscription(this.props.courseId);
+
+        this.props.onClose();
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
@@ -54,31 +58,35 @@ class RatingModalComponent extends Component {
       });
   };
 
-  skipRating = () => {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      courseId: this.props.courseId
-    };
-    this.setState({ loading: true, disabled: true });
-    axios
-      .post(`${apiBaseUrl}/ratings/skip`, data, {
-        headers
-      })
-      .then(response => {
+  skipRating = async () => {
+    if (this.props.status == "Available") {
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      let data = {
+        courseId: this.props.courseId
+      };
+      this.setState({ loading: true, disabled: true });
+
+      try {
+        const response = await axios.post(`${apiBaseUrl}/ratings/skip`, data, {
+          headers
+        });
+
+        await this.props.getSubscription(this.props.courseId);
+      } catch {
         this.setState({ loading: false, disabled: false });
-        this.props.closeRatingModal();
-      })
-      .catch(error => {
-        this.setState({ loading: false, disabled: false });
-        this.props.closeRatingModal();
-      });
+        this.props.onClose();
+      }
+    } else {
+      this.setState({ loading: false, disabled: false });
+      this.props.onClose();
+    }
   };
 
   render() {
-    const { isRatingModalOpen, closeRatingModal, handleSubmit } = this.props;
+    const { isRatingModalOpen, handleSubmit } = this.props;
     const { rating } = this.state;
     const customStyles = {
       content: {
@@ -104,7 +112,6 @@ class RatingModalComponent extends Component {
         ariaHideApp={false}
         isOpen={isRatingModalOpen}
         onRequestClose={this.skipRating}
-        closeRatingModal={closeRatingModal}
       >
         <div className="container pt-2 pb-2">
           <div className="row">
@@ -191,6 +198,9 @@ RatingModalComponent = reduxForm({
   form: "rating"
 })(RatingModalComponent);
 
-RatingModalComponent = connect(mapStateToProps)(RatingModalComponent);
+RatingModalComponent = connect(
+  mapStateToProps,
+  { getSubscription }
+)(RatingModalComponent);
 
 export const RatingModal = withRouter(RatingModalComponent);

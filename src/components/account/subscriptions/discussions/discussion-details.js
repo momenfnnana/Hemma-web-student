@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
 import { getChatToken } from "../../../../actions/twilio.actions";
-import { UsersChatComponent } from "./chat/chat";
+import { UsersChatComponent } from "../../../chat/chat";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
 import axios from "axios";
@@ -43,11 +43,16 @@ export class DiscussionDetailsComponent extends Component {
       this.state.discussionDetails && this.state.discussionDetails.endsAt
     );
     const endDate = endsAt.toLocaleString();
+    console.log(
+      "sid ",
+      this.state.discussionDetails &&
+        this.state.discussionDetails.chatChannelSid
+    );
     return (
       <React.Fragment>
         <div className="row no-gutters">
           <div className="col-12">
-            <div className="box-layout shadow-sm">
+            <div className="box-layout shadow-sm mb-4">
               <div className="discussion-item pt-4 unset-height">
                 <div className="media d-flex align-items-center mb-3">
                   <div className="media-body">
@@ -86,6 +91,7 @@ export class DiscussionDetailsComponent extends Component {
         {this.state.discussionDetails &&
           this.state.discussionDetails.chatChannelSid && (
             <UsersChatComponent
+              title="عنوان المناقشة"
               chatChannelSid={this.state.discussionDetails.chatChannelSid}
               courseId={courseId}
             />

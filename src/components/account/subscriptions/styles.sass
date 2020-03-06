@@ -20,7 +20,11 @@
 
 .card-sm.custom-height
   min-height: 140px
-
+.card-sm.md-height
+  min-height: 160px
+  .card-body
+    height: unset
+    min-height: 40px
 .custom-control-label::before
   background-color: transparent
   width: 0.8rem
@@ -326,4 +330,42 @@ audio:focus
 @media only screen and (max-width: 767px)                          
     .responsive-margin
       margin-top: 15px
-   
+ 
+.account-tabs
+    border-bottom: none
+    border-radius: 5px
+    border: none
+.account-tabs .nav-item.show .nav-link, .account-tabs .nav-link.active, .account-tabs .nav-link.active:hover
+    color: #2bc3cc
+    background-color: white
+    font-size: 15px
+    border: 1px solid transparent
+    border-radius: 3px
+.account-tabs
+    .nav-item
+        width: calc(100% / 3)
+        text-align: center
+        font-family: GessLight
+        font-size: 15px
+        color: #a9acb4
+        cursor: pointer
+        background-color: #f2f2f2
+        border: 1px solid #dbdbdb
+    .nav-item:last-child
+      border-top-left-radius: 5px
+      border-bottom-left-radius: 5px
+      border-right: none
+    .nav-item:first-child
+      border-top-right-radius: 5px
+      border-bottom-right-radius: 5px
+      border-left: none      
+    .nav-link
+      border-radius: 0px
+      background-color: transparent
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      &:hover
+        border-color: transparent
+

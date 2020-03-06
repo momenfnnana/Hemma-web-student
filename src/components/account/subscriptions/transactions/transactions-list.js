@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import { RefundComponent } from "./refund/RefundForm";
+import { Refund } from "./refund/RefundForm";
 import "./styles.sass";
 import { WrongTransactionComponent } from "./wrong-transaction/WrongTransaction";
 import { NewInstallment } from "./installment/NewInstallment";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
+import { connect } from "react-redux";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class TransactionsList extends Component {
+class TransactionsList extends Component {
   state = {
     isInstallmentOpen: false,
     isRefundOpen: false,
@@ -90,18 +91,24 @@ export class TransactionsList extends Component {
 
   render() {
     const courseId = this.props.match.params.id;
+    const subscription =
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.subscription;
+    const remainingAmount = subscription && subscription.remainingAmount;
+
     return (
       <React.Fragment>
-        <div className="row mb-4 no-gutters">
+        <div className="row mb-3 no-gutters">
           <div className="col-12">
             <div className="d-flex justify-content-between align-items-center responsive-col">
               <h6 className="dark-text small mb-0 mt-0">
                 المدفوعات واسترجاع الرسوم
               </h6>
               <div>
-                {/* <button
+                <button
                   type="button"
-                  className="btn border mid-text smaller mr-2"
+                  className="btn border mid-text smaller"
                   onClick={this.openRefundModal}
                 >
                   <img
@@ -115,11 +122,12 @@ export class TransactionsList extends Component {
                   />
                   استرجاع الرسوم
                 </button>
-                <RefundComponent
+                <Refund
                   isRefundOpen={this.state.isRefundOpen}
                   closeRefundModal={this.closeRefundModal}
+                  courseId={courseId}
                 />
-                <button
+                {/*  <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
                   onClick={this.openWrongTransactionModal}
@@ -140,10 +148,10 @@ export class TransactionsList extends Component {
                   closeWrongTransactionModal={this.closeWrongTransactionModal}
                 /> */}
 
-                {this.props && this.props.remainingAmount == "0" ? null : (
+                {!remainingAmount == "0" && (
                   <button
                     type="button"
-                    className="btn border mid-text smaller"
+                    className="btn border mid-text smaller ml-2"
                     onClick={this.openInstallmentModal}
                   >
                     <img
@@ -198,3 +206,10 @@ export class TransactionsList extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    subscription: state.subscription
+  };
+}
+
+export default TransactionsList = connect(mapStateToProps)(TransactionsList);

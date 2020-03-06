@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FaCircle } from "react-icons/fa";
-import { changeChannel } from "../../../../actions/chat.actions";
+import { changeChannel } from "../../actions/chat.actions";
 import { connect } from "react-redux";
 
 class ChatList extends Component {
@@ -9,24 +9,25 @@ class ChatList extends Component {
   };
 
   async initiateGeneralChat() {
-    // this.props.changeChannel("sid", this.props.generalChatId);
-    // const client = await this.props.twilio.chatClient;
-    // client
-    //   .getChannelBySid(this.props.generalChatId)
-    //   .then(channel => {
-    //     client.on("channelJoined", function(channel) {
-    //       console.log("Joined channel " + channel.friendlyName);
-    //     });
-    //     channel.join().catch(function(err) {
-    //       console.error(
-    //         "Couldn't join channel " + channel.friendlyName + " because " + err
-    //       );
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //     this.setState({ loading: false });
-    //   });
+    this.props.changeChannel("sid", this.props.generalChatId);
+    const client = await this.props.twilio.chatClient;
+    client
+      .getChannelBySid(this.props.generalChatId)
+      .then(channel => {
+        client.on("channelJoined", function(channel) {
+          console.log("Joined channel " + channel.friendlyName);
+        });
+
+        channel.join().catch(function(err) {
+          console.error(
+            "Couldn't join channel " + channel.friendlyName + " because " + err
+          );
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({ loading: false });
+      });
   }
 
   render() {

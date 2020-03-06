@@ -5,10 +5,71 @@ import { Field, reduxForm } from "redux-form";
 import { inputField } from "../../../../shared/inputs/inputField";
 import { textareaField } from "../../../../shared/inputs/textareaField";
 import { withRouter } from "react-router-dom";
+import { apiBaseUrl } from "../../../../../api/helpers";
+import axios from "axios";
+import swal from "@sweetalert/with-react";
+import { FaTimes } from "react-icons/fa";
 
-export class RefundComponent extends Component {
+const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
+
+class RefundComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      disabled: false,
+      isModalOpen: false
+    };
+    this.myFormHandler = this.myFormHandler.bind(this);
+  }
+
   myFormHandler = values => {
-    console.log(values);
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let data = {
+      courseId: this.props.courseId,
+      bankName: values.bankName,
+      accountNumber: values.accountNumber,
+      accountOwnerName: values.accountOwnerName,
+      leavingReason: values.leavingReason
+    };
+    this.setState({ loading: true, disabled: true });
+    axios
+      .post(`${apiBaseUrl}/FullRefunds`, data, {
+        headers
+      })
+      .then(async response => {
+        this.setState({ loading: false, disabled: false });
+        this.props.closeRefundModal();
+        this.setState({ isModalOpen: true });
+      })
+      .catch(error => {
+        this.setState({ loading: false, disabled: false });
+        this.props.closeRefundModal();
+        switch (error.response.data && error.response.data.message) {
+          default:
+            swal({
+              button: "متابعة",
+              content: (
+                <div>
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/fail-alert.png"
+                    }
+                    className="mb-3"
+                    height="45"
+                  />
+                  <h6 className="dark-text">
+                    لا يمكن تقديم طلبات الانسحاب لهذه الدورة
+                  </h6>
+                </div>
+              )
+            });
+            break;
+        }
+      });
   };
   render() {
     const customStyles = {
@@ -20,7 +81,24 @@ export class RefundComponent extends Component {
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
         width: "50%",
-        height: "65%",
+        height: "auto",
+        borderWidth: 0
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 2
+      }
+    };
+    const smallModalStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "30%",
+        height: "auto",
         borderWidth: 0
       },
       overlay: {
@@ -34,6 +112,7 @@ export class RefundComponent extends Component {
       handleSubmit,
       submitting
     } = this.props;
+    console.log("propssiees ", this.props);
     return (
       <React.Fragment>
         <Modal
@@ -43,12 +122,15 @@ export class RefundComponent extends Component {
           onRequestClose={closeRefundModal}
           closeRefundModal={closeRefundModal}
         >
-          <div className="container pt-4">
+          <div className="container py-2">
             <div className="row">
-              <div className="col-md-6 col-12 text-center">
-                <h6 className="light-text mb-4">طلب استرداد الرسوم</h6>
-
-                <h6 className="dark-text smaller mb-2">
+              <div className="col-md-6 col-12">
+                <FaTimes
+                  className="dark-text clickable"
+                  onClick={closeRefundModal}
+                />
+                <h6 className="light-text text-center">طلب استرداد الرسوم</h6>
+                <h6 className="dark-text smaller mb-3 text-center">
                   يرجى تعبئة المعلومات التالية لاتمام العملية
                 </h6>
                 <form onSubmit={handleSubmit(this.myFormHandler)}>
@@ -58,6 +140,7 @@ export class RefundComponent extends Component {
                     component={inputField}
                     className="form-control border-left-0 pl-0"
                     placeholder="اسم البنك"
+                    validate={required}
                   />
                   <Field
                     name="accountNumber"
@@ -65,21 +148,24 @@ export class RefundComponent extends Component {
                     component={inputField}
                     className="form-control border-left-0 pl-0"
                     placeholder="رقم الحساب"
+                    validate={required}
                   />
                   <Field
-                    name="accountNumber"
+                    name="accountOwnerName"
                     type="text"
                     component={inputField}
                     className="form-control border-left-0 pl-0"
                     placeholder="اسم صاحب الحساب"
+                    validate={required}
                   />
                   <Field
-                    name="accountNumber"
+                    name="leavingReason"
                     type="text"
                     component={textareaField}
                     className="form-control"
                     placeholder="سبب الانسحاب"
                     rows="5"
+                    validate={required}
                   />
                   <button className="btn light-outline-btn mt-4 w-100">
                     استرجاع الرسوم
@@ -90,16 +176,44 @@ export class RefundComponent extends Component {
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/refund-art.png"}
                   width="80%"
-                  className="contain-img"
+                  className="contain-img d-none d-md-block"
                 />
-                <div className="box-layout light-silver-bg h-65 d-flex align-items-center mt-4">
+                <div className="box-layout light-silver-bg h-65 d-flex align-items-center mt-4 px-1">
                   <h6 className="dark-text small mb-0 mt-0 w-75 mx-auto">
-                    سيتم استرجاع مبلغ:{" "}
-                    <span className="light-text en-text">150</span>{" "}
-                    <span className="light-text"> ريال </span> خلال أسبوع من
-                    وصول الطلب
+                    سيتم استرجاع المبلغ خلال أسبوع من وصول الطلب
                   </h6>
                 </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
+
+        <Modal
+          style={smallModalStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isModalOpen}
+          closeRefundModal={this.state.isModalOpen}
+        >
+          <div className="container py-2">
+            <div className="row">
+              <div className="col-12 d-flex flex-column align-items-center justify-content-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/success-alert.png"
+                  }
+                  className="mb-3"
+                  height="45"
+                />
+                <h6 className="dark-text mb-0">وصل طلب الاسترداد بنجاح </h6>
+                <button
+                  className="custom-swal-btn mt-4"
+                  onClick={() => {
+                    this.setState({ isModalOpen: false });
+                    this.props.history.push("/subscriptions");
+                  }}
+                >
+                  متابعة
+                </button>
               </div>
             </div>
           </div>
@@ -117,9 +231,8 @@ function mapStateToProps(state) {
 
 RefundComponent = reduxForm({
   form: "Refund"
-  // validate
 })(RefundComponent);
 
 RefundComponent = connect(mapStateToProps)(RefundComponent);
 
-export const Checkout = withRouter(RefundComponent);
+export const Refund = withRouter(RefundComponent);

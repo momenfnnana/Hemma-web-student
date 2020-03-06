@@ -11,8 +11,8 @@ import {
   TabPane
 } from "reactstrap";
 import classnames from "classnames";
-import "./styles.sass";
 import { ChallengeComponent } from "./create-challenge";
+import "./styles.sass";
 
 export class ChallengesList extends Component {
   state = {

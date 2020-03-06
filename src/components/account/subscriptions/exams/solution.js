@@ -70,7 +70,7 @@ export class SolutionModal extends Component {
             <div className="row">
               <div className="col-md-12 col-12">
                 <span className="badge red-bg text-white mb-3 hint-badge">
-                  مساعدة
+                  طريقة الحل
                 </span>
 
                 <div className="box-layout p-3">

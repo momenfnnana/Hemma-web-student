@@ -31,6 +31,7 @@ export class CategoryDetails extends Component {
       publications: [],
       courses: [],
       competitions: [],
+      categoryGroups: [],
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
@@ -122,7 +123,58 @@ export class CategoryDetails extends Component {
         console.log(error);
       });
 
+    axios
+      .get(
+        `${apiBaseUrl}/CategoryGroups?categoryId=${this.props.location.state.catId}`
+      )
+      .then(response => {
+        this.setState({ categoryGroups: response.data.data });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
     await this.loadMore();
+  }
+
+  categoryGroupRedirection(CategoryGroup) {
+    const {
+      match: { params }
+    } = this.props;
+    let token = localStorage.getItem("token");
+    if (token) {
+      this.props.history.push(
+        `/categories/details/${params.slug}/quick-questions/${CategoryGroup}`
+      );
+    } else {
+      swal(
+        "عفواً",
+        "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
+        "error",
+        {
+          button: "متابعة"
+        }
+      );
+    }
+  }
+
+  renderCategoryGroups() {
+    return this.state.categoryGroups.map(group => (
+      <React.Fragment>
+        <div className="col-md-2">
+          <div
+            className="shadow-box d-flex flex-column align-items-center justify-content-center clickable"
+            key={group.id}
+            onClick={() => this.categoryGroupRedirection(group.id)}
+          >
+            <h6 className="dark-text mb-1">{group.name}</h6>
+            <p className="dark-text smaller mb-0 text-break text-center">
+              {group.description}
+            </p>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
   }
 
   renderPublications() {
@@ -381,7 +433,7 @@ export class CategoryDetails extends Component {
                     src={this.state.details.icon}
                     height="50"
                     width="50"
-                    className="mt-3"
+                    className="mt-3 contain-img"
                     alt={this.state.details.nameAr}
                   />
                 </div>
@@ -452,7 +504,19 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
             ) : null}
-
+            {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
+              <React.Fragment>
+                <div className="row pt-5">
+                  <div className="col-12 text-center">
+                    <h3 className="dark-text">المجموعات</h3>
+                    <p className="dark-silver-text">
+                      بنقدملكم مجموعة من الأسئلة السريعة
+                    </p>
+                  </div>
+                </div>
+                <div className="row pt-3">{this.renderCategoryGroups()}</div>
+              </React.Fragment>
+            )}
             <div className="row pt-5 pb-4 d-flex align-items-center">
               <div className="col-md-5">
                 <h4 className="dark-text">

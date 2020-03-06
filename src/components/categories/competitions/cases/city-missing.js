@@ -48,7 +48,8 @@ class CityMissingComponent extends Component {
       educationalEntities: [],
       enableCities: false,
       enableLevels: false,
-      enableEntities: false
+      enableEntities: false,
+      nationalities: []
     };
   }
 
@@ -81,6 +82,9 @@ class CityMissingComponent extends Component {
   componentDidMount() {
     this.props.getProfile();
     Api.auth.getCities().then(cities => this.setState({ cities: cities }));
+    axios.get(`${apiBaseUrl}/Nationalities/lookup`).then(response => {
+      this.setState({ nationalities: response.data.data });
+    });
   }
 
   myFormHandler = values => {
@@ -95,7 +99,8 @@ class CityMissingComponent extends Component {
       name: values.name,
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
-      saCityId: values.saCityId
+      saCityId: values.saCityId,
+      nationalityId: values.nationalityId
     };
     axios
       .put(`${apiBaseUrl}/users/me`, data, {
@@ -257,6 +262,14 @@ class CityMissingComponent extends Component {
       });
   };
 
+  renderNationalities() {
+    return this.state.nationalities.map(nationality => (
+      <option key={nationality.id} value={nationality.id}>
+        {nationality.name}
+      </option>
+    ));
+  }
+
   renderCities() {
     return this.state.cities.map(city => (
       <option key={city.id} value={city.id}>
@@ -327,26 +340,6 @@ class CityMissingComponent extends Component {
 
   render() {
     const { handleSubmit, submitting } = this.props;
-    const defaultCity =
-      this.props.initialValues &&
-      this.props.initialValues.saCity &&
-      this.props.initialValues.saCity.nameAr;
-    let defaultLevel;
-    if (
-      this.props.initialValues &&
-      this.props.initialValues.educationalLevel == "Student"
-    ) {
-      defaultLevel = "طالب";
-    } else if (
-      this.props.initialValues &&
-      this.props.initialValues.educationalLevel == "Other"
-    ) {
-      defaultLevel = "أخرى";
-    }
-    const defaultEntity =
-      this.props.initialValues &&
-      this.props.initialValues.educationalEntity &&
-      this.props.initialValues.educationalEntity.name;
 
     return (
       <React.Fragment>
@@ -545,6 +538,15 @@ class CityMissingComponent extends Component {
                 {this.renderEntities()}
               </Field>
 
+              <Field
+                component={selectField}
+                className="form-control"
+                name="nationalityId"
+              >
+                <option selected="selected">الجنسية</option>
+                {this.renderNationalities()}
+              </Field>
+
               <EmailToken
                 isEmailTokenOpen={this.state.isEmailTokenOpen}
                 closeEmailTokenModal={this.closeEmailTokenModal}
@@ -582,7 +584,9 @@ function mapStateToProps(state) {
     props.initialValues.educationalEntityId =
       state.profile.educationalEntity.id;
   }
-
+  if (state.profile && state.profile.nationality) {
+    props.initialValues.nationalityId = state.profile.nationality.id;
+  }
   return props;
 }
 

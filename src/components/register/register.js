@@ -53,7 +53,8 @@ class RegisterComponent extends Component {
       selectedCity: "",
       selectedLevel: "",
       educationalEntities: [],
-      selected: null
+      selected: null,
+      nationalities: []
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
@@ -72,7 +73,8 @@ class RegisterComponent extends Component {
       gender: values.gender,
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
-      saCityId: values.saCityId
+      saCityId: values.saCityId,
+      nationalityId: values.nationalityId
     });
     this.setState({ loading: true });
     request
@@ -130,6 +132,17 @@ class RegisterComponent extends Component {
 
   componentDidMount() {
     Api.auth.getCities().then(cities => this.setState({ cities: cities }));
+    axios.get(`${apiBaseUrl}/Nationalities/lookup`).then(response => {
+      this.setState({ nationalities: response.data.data });
+    });
+  }
+
+  renderNationalities() {
+    return this.state.nationalities.map(nationality => (
+      <option key={nationality.id} value={nationality.id}>
+        {nationality.name}
+      </option>
+    ));
   }
 
   renderCities() {
@@ -297,6 +310,15 @@ class RegisterComponent extends Component {
           >
             <option selected="selected">الجهة التعليمية</option>
             {this.renderEntities()}
+          </Field>
+
+          <Field
+            component={selectField}
+            className="form-control"
+            name="nationalityId"
+          >
+            <option selected="selected">الجنسية</option>
+            {this.renderNationalities()}
           </Field>
 
           <button

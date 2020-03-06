@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { apiBaseUrl } from "../../../../../api/helpers";
+import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -12,7 +12,6 @@ export class Reply extends Component {
       replyType: props.reply.type,
       disabled: false
     };
-
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -44,7 +43,7 @@ export class Reply extends Component {
       this.setState({ disabled: true });
       axios
         .put(
-          `${apiBaseUrl}/RecordedLectureComments/Replies/${this.props.reply.id}`,
+          `${apiBaseUrl}/QuickQuestionComments/Replies/${this.props.reply.id}`,
           data,
           {
             headers
