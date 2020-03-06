@@ -504,15 +504,19 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
             ) : null}
-            <div className="row pt-5">
-              <div className="col-12 text-center">
-                <h3 className="dark-text">المجموعات</h3>
-                <p className="dark-silver-text">
-                  بنقدملكم مجموعة من الأسئلة السريعة
-                </p>
-              </div>
-            </div>
-            <div className="row pt-3">{this.renderCategoryGroups()}</div>
+            {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
+              <React.Fragment>
+                <div className="row pt-5">
+                  <div className="col-12 text-center">
+                    <h3 className="dark-text">المجموعات</h3>
+                    <p className="dark-silver-text">
+                      بنقدملكم مجموعة من الأسئلة السريعة
+                    </p>
+                  </div>
+                </div>
+                <div className="row pt-3">{this.renderCategoryGroups()}</div>
+              </React.Fragment>
+            )}
             <div className="row pt-5 pb-4 d-flex align-items-center">
               <div className="col-md-5">
                 <h4 className="dark-text">

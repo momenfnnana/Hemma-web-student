@@ -95,11 +95,6 @@ class CompetitionComponent extends Component {
       [];
     const question = questions[this.state.selectedQuestion];
     const answer = this.state.answers.find(a => a.id === question.id);
-    const questionsLength =
-      this.props &&
-      this.props.competition &&
-      this.props.competition.questions &&
-      this.props.competition.questions.length;
 
     return (
       <React.Fragment>
@@ -218,6 +213,8 @@ class CompetitionComponent extends Component {
             console.log("other error");
         }
       });
+
+    console.log("state is", this.state);
   }
 
   updateCityState = cityMissing => {
@@ -247,6 +244,11 @@ class CompetitionComponent extends Component {
     var finalTime = hours + ":" + minutes + ":" + seconds;
     var countdownTo = finalDate + " " + finalTime;
     const dateInFuture = new Date(countdownTo);
+    const questionsLength =
+      this.props &&
+      this.props.competition &&
+      this.props.competition.questions &&
+      this.props.competition.questions.length;
 
     return (
       <section className="pt-5 pb-5">
@@ -311,8 +313,7 @@ class CompetitionComponent extends Component {
                       >
                         إنهاء المسابقة
                       </button>
-                      {this.state.selectedQuestion + 1 ==
-                      this.state.questions.length ? (
+                      {this.state.selectedQuestion + 1 == questionsLength ? (
                         <div />
                       ) : (
                         <div>

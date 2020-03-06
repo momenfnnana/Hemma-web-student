@@ -48,7 +48,8 @@ class CityMissingComponent extends Component {
       educationalEntities: [],
       enableCities: false,
       enableLevels: false,
-      enableEntities: false
+      enableEntities: false,
+      nationalities: []
     };
   }
 
@@ -81,6 +82,9 @@ class CityMissingComponent extends Component {
   componentDidMount() {
     this.props.getProfile();
     Api.auth.getCities().then(cities => this.setState({ cities: cities }));
+    axios.get(`${apiBaseUrl}/Nationalities/lookup`).then(response => {
+      this.setState({ nationalities: response.data.data });
+    });
   }
 
   myFormHandler = values => {
@@ -257,6 +261,14 @@ class CityMissingComponent extends Component {
         }
       });
   };
+
+  renderNationalities() {
+    return this.state.nationalities.map(nationality => (
+      <option key={nationality.id} value={nationality.id}>
+        {nationality.name}
+      </option>
+    ));
+  }
 
   renderCities() {
     return this.state.cities.map(city => (
@@ -532,12 +544,7 @@ class CityMissingComponent extends Component {
                 name="nationalityId"
               >
                 <option selected="selected">الجنسية</option>
-                <option value="379cdce7-23fe-4e43-806f-70b2031e81db">
-                  سعودي
-                </option>
-                <option value="497cdce7-23fe-4e43-806f-70b2031e81db">
-                  غير سعودي
-                </option>
+                {this.renderNationalities()}
               </Field>
 
               <EmailToken
