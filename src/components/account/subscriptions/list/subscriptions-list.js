@@ -99,7 +99,7 @@ class SubscriptionsListComponent extends Component {
                     }
                   )
                 : this.props.history.push(
-                    `/subscriptions/${subscription.course.id}`
+                    `/course/content/${subscription.course.id}`
                   );
             }}
           >

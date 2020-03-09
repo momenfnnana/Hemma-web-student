@@ -84,7 +84,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/schedule`}
+                  to={`/course/content/${this.props.id}/schedule`}
                   activeClassName="active"
                 >
                   <img
@@ -102,7 +102,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/recorded-lectures`}
+                  to={`/course/content/${this.props.id}/recorded-lectures`}
                   activeClassName="active"
                 >
                   <img
@@ -120,7 +120,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/booklet`}
+                  to={`/course/content/${this.props.id}/booklet`}
                   activeClassName="active"
                 >
                   <img
@@ -138,7 +138,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/discussions`}
+                  to={`/course/content/${this.props.id}/discussions`}
                   activeClassName="active"
                 >
                   <img
@@ -156,7 +156,7 @@ export class SidebarComponent extends Component {
               {channelID && (
                 <li>
                   <NavLink
-                    to={`/subscriptions/${this.props.id}/chat`}
+                    to={`/course/content/${this.props.id}/chat`}
                     activeClassName="active"
                     className="dark-text small"
                   >
@@ -175,7 +175,7 @@ export class SidebarComponent extends Component {
               )}
               <li>
                 <NavLink
-                  to={`/subscriptions/${this.props.id}/transactions/list`}
+                  to={`/course/content/${this.props.id}/transactions/list`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -193,7 +193,7 @@ export class SidebarComponent extends Component {
               </li>
               <li>
                 <NavLink
-                  to={`/subscriptions/${this.props.id}/speed-up`}
+                  to={`/course/content/${this.props.id}/speed-up`}
                   activeClassName="active"
                   className="dark-text small"
                 >
@@ -209,7 +209,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/subscriptions/${this.props.id}/exams/list`}
+                  to={`/course/content/${this.props.id}/exams/list`}
                   activeClassName="active"
                   className="dark-text small"
                 >

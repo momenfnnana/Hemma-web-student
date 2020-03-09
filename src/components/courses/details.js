@@ -75,7 +75,7 @@ export class CourseDetails extends Component {
             });
             break;
           case "ItemAlreadyPurchased":
-            this.props.history.push(`/subscriptions/${id}/schedule`);
+            this.props.history.push(`/course/content/${id}/schedule`);
             break;
           case "InactiveCourse":
             swal(

@@ -377,7 +377,7 @@ export class LiveStreamComponent extends Component {
                             className="btn light-outline-btn w-40 mr-2 unset-height"
                             onClick={() =>
                               this.props.history.push(
-                                "/subscriptions/details/schedule"
+                                "/course/content/details/schedule"
                               )
                             }
                           >

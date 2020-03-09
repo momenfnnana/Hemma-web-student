@@ -120,7 +120,7 @@ export class LectureDetails extends Component {
         <div
           className="d-flex flex-column clickable"
           onClick={() =>
-            (window.location = `/subscriptions/${courseId}/lecture/${lecture.id}`)
+            (window.location = `/course/content/${courseId}/lecture/${lecture.id}`)
           }
         >
           <label className="custom-control-label light-purple-text small">

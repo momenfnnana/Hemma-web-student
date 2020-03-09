@@ -19,15 +19,17 @@ export class Card extends Component {
 
     const instructor = course.instructors.map(instructor => (
       <React.Fragment key={instructor.id}>
-        <img
-          src={process.env.PUBLIC_URL + "/assets/images/blue-male.png"}
-          height="15"
-          width="15"
-          className="mr-1 contain-img"
-        />
-        <span key={instructor.id} className="mr-3">
-          {instructor.name}
-        </span>
+        <div className="col-md-6 light-font-text small light-text d-flex align-items-center mb-0">
+          <img
+            src={process.env.PUBLIC_URL + "/assets/images/blue-male.png"}
+            height="15"
+            width="15"
+            className="mr-1 contain-img"
+          />
+          <span key={instructor.id} className="mr-3">
+            {instructor.name}
+          </span>
+        </div>
       </React.Fragment>
     ));
     return (
@@ -44,9 +46,7 @@ export class Card extends Component {
               {course.instructors == undefined ||
               course.instructors == 0 ? null : (
                 <div className="card-subtitle">
-                  <div className="list-inline-item light-font-text small light-text d-inline-flex align-items-center mb-2">
-                    {instructor}
-                  </div>
+                  <div className="row">{instructor}</div>
                 </div>
               )}
               <ul className="list-inline mb-1">
@@ -79,7 +79,7 @@ export class Card extends Component {
                 </li>
               </ul>
             </div>
-            <p className="card-description dark-text light-font-text smaller mb-0 text-center ">
+            <p className="card-description dark-text light-font-text smaller mb-0 text-center text-break">
               {desc}
             </p>
           </div>

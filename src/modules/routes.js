@@ -142,17 +142,17 @@ export class MainRouter extends Component {
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
               <Route
-                path="/subscriptions"
+                path="/course/content"
                 exact
                 component={requireAuth(Subscriptions)}
               />
               <Redirect
                 exact
-                from="/subscriptions/:id"
-                to="/subscriptions/:id/schedule"
+                from="/course/content/:id"
+                to="/course/content/:id/schedule"
               />
               <Route
-                path="/subscriptions/:id"
+                path="/course/content/:id"
                 component={requireAuth(SubscriptionDetails)}
               />
               <Route path="/banks" component={BankAccounts} />

@@ -39,7 +39,7 @@ export class DiscussionsList extends Component {
         const endDate = endsAt.toLocaleString();
         return (
           <Link
-            to={`/subscriptions/${courseId}/discussions/${discussion.id}`}
+            to={`/course/content/${courseId}/discussions/${discussion.id}`}
             className="discussion-item d-flex align-items-center"
           >
             <div

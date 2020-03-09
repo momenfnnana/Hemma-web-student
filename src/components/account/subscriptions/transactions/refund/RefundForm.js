@@ -209,7 +209,7 @@ class RefundComponent extends Component {
                   className="custom-swal-btn mt-4"
                   onClick={() => {
                     this.setState({ isModalOpen: false });
-                    this.props.history.push("/subscriptions");
+                    this.props.history.push("/course/content");
                   }}
                 >
                   متابعة
