@@ -21,13 +21,15 @@ class CompetitionComponent extends Component {
       numberOfCorrectAnswers: null,
       notAllowed: false,
       cityMissing: false,
-      specificSchools: false
+      specificSchools: false,
+      endCountdown: false
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
   }
 
   onCountdownEnd = attemptId => {
+    this.setState({ endCountdown: true });
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -281,11 +283,18 @@ class CompetitionComponent extends Component {
                         </p>
                       </div>
                       <h5 className="text-white en-text mb-0">
-                        <ReactMomentCountDown
-                          toDate={dateInFuture}
-                          sourceFormatMask="YYYY-MM-DD HH:mm:ss"
-                          onCountdownEnd={() => this.onCountdownEnd(attemptId)}
-                        />
+                        {this.state.endCountdown ? (
+                          "00:00:00"
+                        ) : (
+                          <ReactMomentCountDown
+                            toDate={dateInFuture}
+                            sourceFormatMask="YYYY-MM-DD HH:mm:ss"
+                            onCountdownEnd={() =>
+                              this.onCountdownEnd(attemptId)
+                            }
+                          />
+                        )}
+
                         <i className="fa fa-clock ml-2"></i>
                       </h5>
                     </div>
