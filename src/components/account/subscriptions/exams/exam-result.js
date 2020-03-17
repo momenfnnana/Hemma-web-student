@@ -67,7 +67,6 @@ class ExamResultComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
-
     return (
       <Accordion className="quiz-accordion">
         {questions.map(question => (
@@ -110,6 +109,7 @@ class ExamResultComponent extends Component {
                         <p className="small red-text mb-0">لم تقم بالإجابة</p>
                       )}
                     </div>
+
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"

@@ -112,7 +112,6 @@ class RefundComponent extends Component {
       handleSubmit,
       submitting
     } = this.props;
-    console.log("propssiees ", this.props);
     return (
       <React.Fragment>
         <Modal

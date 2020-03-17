@@ -14,6 +14,7 @@ import Modal from "react-modal";
 import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { Api } from "../../api";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -75,7 +76,20 @@ export class CourseDetails extends Component {
             });
             break;
           case "ItemAlreadyPurchased":
-            this.props.history.push(`/course/content/${id}/schedule`);
+            Api.subscription
+              .getSubscription(id)
+              .then(res => {
+                this.props.history.push(`/course/content/${id}/schedule`);
+              })
+              .catch(error => {
+                switch (error.response.data && error.response.data.error) {
+                  case "UserNotSubscribed":
+                    swal("عفواً", "لا يمكن شراء الدورة أكثر من مرة", "error", {
+                      button: "متابعة"
+                    });
+                    break;
+                }
+              });
             break;
           case "InactiveCourse":
             swal(
