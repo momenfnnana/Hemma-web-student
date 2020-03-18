@@ -74,10 +74,10 @@ class resetPasswordComponent extends Component {
                   this.props.history.push("/verify");
                 })
                 .catch(error => {
-                  this.props.history.push("/account/subscriptions");
+                  this.props.history.push("/account/course/content");
                 });
             } else {
-              this.props.history.push("/account/subscriptions");
+              this.props.history.push("/account/course/content");
             }
           })
           .catch(error => {

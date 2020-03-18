@@ -4,7 +4,7 @@ import { Tooltip } from "reactstrap";
 import { apiBaseUrl } from "../../../../api/helpers";
 import swal from "@sweetalert/with-react";
 import Loader from "react-loaders";
-import "loaders.css/src/animations/ball-clip-rotate.scss";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import { withRouter, Link } from "react-router-dom";
 
 class SubscriptionsListComponent extends Component {
@@ -20,6 +20,7 @@ class SubscriptionsListComponent extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
+      pageLoading: true,
       nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}&SubscriptionStatus=${this.props.subscriptionStatus}`
     };
   }
@@ -52,7 +53,8 @@ class SubscriptionsListComponent extends Component {
           const nextUrl = `${apiBaseUrl}/courses/purchased?Page=${this.page}&Limit=${this.limit}&SubscriptionStatus=${this.props.subscriptionStatus}`;
           this.setState({
             subscriptions: newSubscriptions,
-            nextPageUrl: nextUrl
+            nextPageUrl: nextUrl,
+            pageLoading: false
           });
         })
         .catch(error => {
@@ -99,7 +101,7 @@ class SubscriptionsListComponent extends Component {
                     }
                   )
                 : this.props.history.push(
-                    `/subscriptions/${subscription.course.id}`
+                    `/course/content/${subscription.course.id}`
                   );
             }}
           >
@@ -154,45 +156,39 @@ class SubscriptionsListComponent extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="silver-bg box-layout w-100 pb-0 p-3 mt-4">
-          {this.state.subscriptions == undefined ||
-          this.state.subscriptions.length == 0 ? (
-            <React.Fragment>
-              <div className="col-12">
-                <div
-                  className="d-flex flex-column align-items-center justify-content-center"
-                  style={{ height: 200 }}
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/course.png"}
-                    className="mb-1"
-                    height="80"
-                  />
-                  <h5 className="dark-text mt-0">لا يوجد دورات</h5>
-                </div>
-              </div>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              <div className="row">{this.renderCourses()}</div>
-              {/* {!this.state.hideBtn && (
-                <div className="d-flex align-items-center justify-content-center">
-                  <button
-                    className="btn dark-btn unset-height unset-line-height br-5 mb-3 w-25"
-                    onClick={this.loadMore}
-                    disabled={this.state.disabled}
+        {this.state.pageLoading ? (
+          <div
+            className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+            style={{ minHeight: 350 }}
+          >
+            <Loader type="ball-spin-fade-loader" className="dark-loader" />
+          </div>
+        ) : (
+          <div className="silver-bg box-layout w-100 pb-0 p-3 mt-4">
+            {this.state.subscriptions == undefined ||
+            this.state.subscriptions.length == 0 ? (
+              <React.Fragment>
+                <div className="col-12">
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: 200 }}
                   >
-                    {this.state.loading == true ? (
-                      <Loader type="ball-clip-rotate" />
-                    ) : (
-                      "تحميل المزيد"
-                    )}
-                  </button>
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/course.png"}
+                      className="mb-1"
+                      height="80"
+                    />
+                    <h5 className="dark-text mt-0">لا يوجد دورات</h5>
+                  </div>
                 </div>
-              )} */}
-            </React.Fragment>
-          )}
-        </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className="row">{this.renderCourses()}</div>
+              </React.Fragment>
+            )}
+          </div>
+        )}
       </React.Fragment>
     );
   }

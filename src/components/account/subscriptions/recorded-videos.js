@@ -129,7 +129,7 @@ export class RecordedVideosComponent extends Component {
         <div
           className="d-flex flex-column clickable"
           onClick={() =>
-            (window.location = `/subscriptions/${courseId}/recorded-videos/${lecture.id}`)
+            (window.location = `/course/content/${courseId}/recorded-videos/${lecture.id}`)
           }
         >
           <label className="custom-control-label light-purple-text small">

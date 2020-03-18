@@ -90,7 +90,7 @@ class BankPaymentComponent extends Component {
       .checkoutWithBankTransfer(data)
       .then(() => {
         this.setState({ loading: false, disabled: false });
-        this.props.history.push("/subscriptions");
+        this.props.history.push("/course/content");
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });

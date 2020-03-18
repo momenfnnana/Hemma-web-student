@@ -78,7 +78,7 @@ export class RecordedLectures extends Component {
           <div className="col-md-4" key={lecture.id}>
             <Link
               className="dark-text small"
-              to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
+              to={`/course/content/${courseId}/lecture/${lecture.id}`}
             >
               <div className="card card-sm shadow-sm border-0">
                 <header className="card-thumb">

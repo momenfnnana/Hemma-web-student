@@ -135,7 +135,7 @@ export class Schedule extends Component {
           <React.Fragment key={lecture.id}>
             {lecture.status == "Recorded" ? (
               <Link
-                to={`/subscriptions/${courseId}/lecture/${lecture.id}`}
+                to={`/course/content/${courseId}/lecture/${lecture.id}`}
                 className="list-group-item bg-transparent small dark-silver-text light-font-text"
               >
                 {this.renderLecture(lecture)}

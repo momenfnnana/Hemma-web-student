@@ -65,7 +65,7 @@ $off-white: #fefefe
 .featureSlider .image-gallery-content
   display: flex
   flex-wrap: wrap
-  align-items: center
+  align-items: flex-start
   .image-gallery-slide-wrapper
     max-width: 60%
     width: 60%
@@ -75,21 +75,7 @@ $off-white: #fefefe
     > span
       display: flex
     .image-gallery-left-nav, .image-gallery-right-nav
-      top: -20px
-      font-size: 1.5em
-      padding: 0px 15px
-    .image-gallery-fullscreen-button::before, .image-gallery-play-button::before, .image-gallery-left-nav::before, .image-gallery-right-nav::before
-      text-shadow: none
-      color: #4b3a85
-    .image-gallery-left-nav
-      right: 20px
-      left: unset
-      &:before
-        content: "\f2ca"
-    .image-gallery-right-nav
-      right: -15px
-      &:before
-        content: "\f30f"        
+      display: none     
     .image-gallery-swipe .image-gallery-slide .image-gallery-description
       background: transparent
       bottom: 0px
@@ -115,40 +101,40 @@ $off-white: #fefefe
       .image-gallery-thumbnail
         &:nth-child(1)
           position: absolute
-          top: -100px
-          left: 0
+          top: -110px
+          left: -25px
           width: 120px
           height: 120px
         &:nth-child(2)
           position: absolute
-          top: 0px
-          left: 190px
-          width: 120px
-          height: 120px
+          top: -80px
+          left: 115px
+          width: 140px
+          height: 140px
         &:nth-child(3)
           position: absolute
-          top: 120px
-          left: 280px
-          width: 120px
-          height: 120px
+          top: 10px
+          left: 210px
+          width: 140px
+          height: 140px
         &:nth-child(4)
           position: absolute
-          bottom: 150px
-          left: 220px
-          width: 120px
-          height: 120px
+          top: 135px
+          left: 225px
+          width: 140px
+          height: 140px
         &:nth-child(5)
           position: absolute
-          bottom: 90px
-          left: 50px
-          width: 120px
-          height: 120px
+          top: 245px
+          left: 130px
+          width: 140px
+          height: 140px
         &:nth-child(6)
           position: absolute
           bottom: -80px
           left: 140px
-          width: 120px
-          height: 120px  
+          width: 140px
+          height: 140px  
         transition: all 0.35s ease
         border: 0
         border-radius: 50%
@@ -157,7 +143,7 @@ $off-white: #fefefe
           height: 100%
         &.active
           border: 0
-          transform: scale(1.3)
+          transform: scale(1.5)
           .image-gallery-thumbnail-inner
             &::before
               content: ''

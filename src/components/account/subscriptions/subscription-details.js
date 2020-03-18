@@ -167,7 +167,7 @@ class SubscriptionDetailsComponent extends Component {
                     </div>
 
                     <Route
-                      path="/subscriptions/:id/schedule"
+                      path="/course/content/:id/schedule"
                       render={props => (
                         <Schedule
                           courseName={subscription && subscription.nameAr}
@@ -176,59 +176,59 @@ class SubscriptionDetailsComponent extends Component {
                       )}
                     />
                     <Route
-                      path="/subscriptions/:id/recorded-lectures"
+                      path="/course/content/:id/recorded-lectures"
                       component={RecordedLectures}
                     />
                     <Route
-                      path="/subscriptions/:id/lecture/:lectureId"
+                      path="/course/content/:id/lecture/:lectureId"
                       component={LectureDetails}
                     />
                     <Route
-                      path="/subscriptions/:id/speed-up"
+                      path="/course/content/:id/speed-up"
                       component={SpeedUp}
                     />
                     <Route
-                      path="/subscriptions/:id/booklet"
+                      path="/course/content/:id/booklet"
                       component={Booklet}
                     />
                     <Route
-                      path="/subscriptions/:id/discussions"
+                      path="/course/content/:id/discussions"
                       exact
                       component={DiscussionsList}
                     />
                     {subscription && subscription.chatChannelSid && (
                       <Route
-                        path="/subscriptions/:id/discussions/:discussionId"
+                        path="/course/content/:id/discussions/:discussionId"
                         component={DiscussionDetails}
                         chatChannelSid={subscription.chatChannelSid}
                       />
                     )}
                     <Route
-                      path="/subscriptions/:id/exams/list"
+                      path="/course/content/:id/exams/list"
                       component={ExamsList}
                     />
                     <Route
-                      path="/subscriptions/:id/exam/:examId"
+                      path="/course/content/:id/exam/:examId"
                       component={StartExam}
                       exact
                     />
                     <Route
-                      path="/subscriptions/:id/exam/:attemptId/details"
+                      path="/course/content/:id/exam/:attemptId/details"
                       component={ExamDetails}
                       exact
                     />
                     <Route
-                      path="/subscriptions/:id/exam/:attemptId/result"
+                      path="/course/content/:id/exam/:attemptId/result"
                       component={ExamResult}
                       exact
                     />
                     <Route
-                      path="/subscriptions/:id/transactions/list"
+                      path="/course/content/:id/transactions/list"
                       component={TransactionsList}
                     />
                     {subscription && subscription.chatChannelSid && (
                       <Route
-                        path="/subscriptions/:id/chat"
+                        path="/course/content/:id/chat"
                         render={props => (
                           <UsersChatComponent
                             chatChannelSid={subscription.chatChannelSid}
@@ -243,7 +243,7 @@ class SubscriptionDetailsComponent extends Component {
             )}
             {subscription && subscription.chatChannelSid && (
               <Route
-                path="/subscriptions/:id/live-stream/:lectureId"
+                path="/course/content/:id/live-stream/:lectureId"
                 render={props => (
                   <LiveStream
                     chatChannelSid={subscription.chatChannelSid}

@@ -88,7 +88,7 @@ export class Transaction extends Component {
                       )}
                       <Link
                         className="btn light-btn mt-2 pl-4 pr-4 unset-height unset-line-height"
-                        to="/subscriptions"
+                        to="/course/content"
                       >
                         قائمة دوراتي
                       </Link>

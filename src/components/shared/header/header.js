@@ -95,7 +95,7 @@ class HeaderComponent extends Component {
           <Navbar
             className={
               "navbar navbar-expand-lg navbar-light bg-transparent " +
-              (this.props.location.pathname.startsWith("/subscriptions/details")
+              (this.props.location.pathname.startsWith("/course/content/details")
                 ? "shadow-sm"
                 : "null")
             }
@@ -118,7 +118,7 @@ class HeaderComponent extends Component {
                 ) : (
                   <Link
                     className="btn light-outline-btn pl-4 pr-4 unset-height"
-                    to="/subscriptions"
+                    to="/course/content"
                   >
                     دوراتي
                   </Link>
@@ -208,7 +208,7 @@ class HeaderComponent extends Component {
                         <NavLink
                           className={"nav-link mid-text"}
                           activeClassName="active"
-                          to="/subscriptions"
+                          to="/course/content"
                         >
                           دوراتي
                         </NavLink>

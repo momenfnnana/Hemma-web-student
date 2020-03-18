@@ -112,7 +112,6 @@ class RefundComponent extends Component {
       handleSubmit,
       submitting
     } = this.props;
-    console.log("propssiees ", this.props);
     return (
       <React.Fragment>
         <Modal
@@ -209,7 +208,7 @@ class RefundComponent extends Component {
                   className="custom-swal-btn mt-4"
                   onClick={() => {
                     this.setState({ isModalOpen: false });
-                    this.props.history.push("/subscriptions");
+                    this.props.history.push("/course/content");
                   }}
                 >
                   متابعة

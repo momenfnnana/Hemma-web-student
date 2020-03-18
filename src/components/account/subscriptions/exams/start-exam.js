@@ -39,7 +39,7 @@ export class StartExam extends Component {
       .post(`${apiBaseUrl}/Exams/Attempts`, data, { headers })
       .then(response => {
         this.props.history.push(
-          `/subscriptions/${courseId}/exam/${response.data.data.id}/details`
+          `/course/content/${courseId}/exam/${response.data.data.id}/details`
         );
       })
       .catch(error => {
@@ -99,7 +99,7 @@ export class StartExam extends Component {
               </button>
               <Link
                 className="dark-text smaller"
-                to={`/subscriptions/${courseId}/exams/list`}
+                to={`/course/content/${courseId}/exams/list`}
               >
                 <u>الرجوع الى القائمة</u>
               </Link>

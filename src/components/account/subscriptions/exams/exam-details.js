@@ -27,13 +27,15 @@ class ExamDetailsComponent extends Component {
       scoreDetails: [],
       examDetails: [],
       selectedQuestionId: null,
-      selectedQuestion: 0
+      selectedQuestion: 0,
+      endCountdown: false
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
   }
 
   onCountdownEnd = () => {
+    this.setState({ endCountdown: true });
     const questionsLength = this.state.questions.length;
     const answersLength = this.state.answers.length;
     const unansweredQuestions = questionsLength - answersLength;
@@ -338,11 +340,15 @@ class ExamDetailsComponent extends Component {
                       />
 
                       <p className="small en-text dark-silver-text mb-0">
-                        <ReactMomentCountDown
-                          toDate={dateInFuture}
-                          sourceFormatMask="YYYY-MM-DD HH:mm:ss"
-                          onCountdownEnd={this.onCountdownEnd}
-                        />
+                        {this.state.endCountdown ? (
+                          "00:00:00"
+                        ) : (
+                          <ReactMomentCountDown
+                            toDate={dateInFuture}
+                            sourceFormatMask="YYYY-MM-DD HH:mm:ss"
+                            onCountdownEnd={this.onCountdownEnd}
+                          />
+                        )}
                       </p>
                     </div>
                   </div>

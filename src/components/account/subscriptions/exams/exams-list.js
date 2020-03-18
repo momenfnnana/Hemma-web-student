@@ -60,7 +60,7 @@ export class ExamsList extends Component {
             </td>
             <td>
               <Link
-                to={`/subscriptions/${courseId}/exam/${exam.id}`}
+                to={`/course/content/${courseId}/exam/${exam.id}`}
                 className="badge dark-bg text-white w-100"
               >
                 اختبر الآن

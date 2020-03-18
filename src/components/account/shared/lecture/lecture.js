@@ -90,9 +90,7 @@ export class Lecture extends Component {
                       </button>
                     ) : (
                       <Link
-                        to={`/subscriptions/${
-                          this.props.id
-                        }/live-stream/${lectureID}`}
+                        to={`/course/content/${this.props.id}/live-stream/${lectureID}`}
                         className="btn silver-outline-btn unset-height w-50"
                       >
                         انضم

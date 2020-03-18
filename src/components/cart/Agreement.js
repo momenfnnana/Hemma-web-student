@@ -51,7 +51,7 @@ class AgreementFormComponent extends Component {
           headers
         })
         .then(response => {
-          this.props.history.push("/subscriptions");
+          this.props.history.push("/course/content");
         })
         .catch(error => {
           swal("عفواً", "خدث خطأ ما", "error", {

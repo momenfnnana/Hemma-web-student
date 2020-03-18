@@ -41,14 +41,14 @@ export class ExamFail extends Component {
             <p className="dark-silver-text small en-text">{time}</p>
             <Link
               className="dark-text smaller mb-4"
-              to={`/subscriptions/${courseId}/exams/list`}
+              to={`/course/content/${courseId}/exams/list`}
             >
               <u>الرجوع الى القائمة</u>
             </Link>
 
             <Link
               className="btn light-btn unset-height unset-line-height"
-              to={`/subscriptions/${courseId}/exam/${attemptId}/result`}
+              to={`/course/content/${courseId}/exam/${attemptId}/result`}
             >
               التأكد من الإجابات
             </Link>

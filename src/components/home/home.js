@@ -312,8 +312,7 @@ export class Home extends Component {
             </div>
           </div>
         </section>
-
-        <section className="courses-section pt-5">
+        <section className="courses-section">
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
@@ -330,7 +329,7 @@ export class Home extends Component {
             </div>
           </div>
         </section>
-        {/* <section>
+        {/* <section className="pt-5">
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
@@ -345,38 +344,42 @@ export class Home extends Component {
             </div>
           </div>
         </section> */}
-        <section className="testimonials-section">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <h4 className="dark-text">قالوا عنا..</h4>
+        {!this.state.testimonials == undefined ||
+          (!this.state.testimonials.length == 0 && (
+            <section className="testimonials-section">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-12">
+                    <h4 className="dark-text">قالوا عنا..</h4>
+                  </div>
+                </div>
+                <div className="row d-flex justify-content-center align-items-center">
+                  <div className="col-md-6 order-2">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
+                      className="contain-img"
+                      height="50"
+                      className="quotes-img"
+                    />
+                    <Slider {...testimonialsSettings}>
+                      {this.renderTestimonials()}
+                    </Slider>
+                  </div>
+                  <div className="col-md-6 order-1 order-md-3">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/testimonials.png"
+                      }
+                      className="contain-img"
+                      width="100%"
+                      height="250"
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row d-flex justify-content-center align-items-center">
-              <div className="col-md-6 order-2">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
-                  className="contain-img"
-                  height="50"
-                  className="quotes-img"
-                />
-                <Slider {...testimonialsSettings}>
-                  {this.renderTestimonials()}
-                </Slider>
-              </div>
-              <div className="col-md-6 order-1 order-md-3">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/testimonials.png"
-                  }
-                  className="contain-img"
-                  width="100%"
-                  height="250"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
+            </section>
+          ))}
       </React.Fragment>
     );
   }
