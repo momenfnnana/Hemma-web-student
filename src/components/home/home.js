@@ -31,11 +31,11 @@ const images = [
   {
     thumbnail: process.env.PUBLIC_URL + "/assets/images/discussions.png",
     description: <SliderDes data={data.features[3]} />
-  },
-  {
-    thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
-    description: <SliderDes data={data.features[4]} />
   }
+  // {
+  //   thumbnail: process.env.PUBLIC_URL + "/assets/images/challenges.png",
+  //   description: <SliderDes data={data.features[4]} />
+  // }
 ];
 
 export class Home extends Component {
@@ -284,7 +284,7 @@ export class Home extends Component {
           </div>
         </section>
 
-        <section className="journey-section section-padder">
+        <section className="journey-section section-padder pb-0">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
@@ -312,7 +312,7 @@ export class Home extends Component {
             </div>
           </div>
         </section>
-        <section className="courses-section">
+        <section className="courses-section pb-5">
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
