@@ -290,21 +290,10 @@ class ExamDetailsComponent extends Component {
     const questionsLength = this.state.questions.length;
     const answersLength = this.state.answers.length;
     const unansweredQuestions = questionsLength - answersLength;
-
     const dueDate =
       this.state && this.state.examDetails && this.state.examDetails.dueAt;
-    const formattedDate = new Date(dueDate);
-    var day = formattedDate.getDate();
-    var month = formattedDate.getMonth() + 1;
-    var year = formattedDate.getFullYear();
-    var finalDate = year + "-" + month + "-" + day;
-    var hours = formattedDate.getHours() + 2;
-    var minutes = formattedDate.getMinutes();
-    var seconds = formattedDate.getSeconds();
-    var finalTime = hours + ":" + minutes + ":" + seconds;
-    var countdownTo = finalDate + " " + finalTime;
-    const dateInFuture = new Date(countdownTo);
 
+    if (!dueDate) return null;
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
@@ -338,14 +327,12 @@ class ExamDetailsComponent extends Component {
                         width="14"
                         className="contain-img mr-1"
                       />
-
                       <p className="small en-text dark-silver-text mb-0">
                         {this.state.endCountdown ? (
                           "00:00:00"
                         ) : (
                           <ReactMomentCountDown
-                            toDate={dateInFuture}
-                            sourceFormatMask="YYYY-MM-DD HH:mm:ss"
+                            toDate={new Date(new Date(dueDate + "+0000"))}
                             onCountdownEnd={this.onCountdownEnd}
                           />
                         )}

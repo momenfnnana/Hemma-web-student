@@ -235,17 +235,8 @@ class CompetitionComponent extends Component {
       competitionDetails && competitionDetails.competitionAttemptId;
 
     const dueDate = competitionDetails && competitionDetails.dueAt;
-    const formattedDate = new Date(dueDate);
-    var day = formattedDate.getDate();
-    var month = formattedDate.getMonth() + 1;
-    var year = formattedDate.getFullYear();
-    var finalDate = year + "-" + month + "-" + day;
-    var hours = formattedDate.getHours() + 2;
-    var minutes = formattedDate.getMinutes();
-    var seconds = formattedDate.getSeconds();
-    var finalTime = hours + ":" + minutes + ":" + seconds;
-    var countdownTo = finalDate + " " + finalTime;
-    const dateInFuture = new Date(countdownTo);
+    if (!dueDate) return null;
+
     const questionsLength =
       this.props &&
       this.props.competition &&
@@ -287,11 +278,8 @@ class CompetitionComponent extends Component {
                           "00:00:00"
                         ) : (
                           <ReactMomentCountDown
-                            toDate={dateInFuture}
-                            sourceFormatMask="YYYY-MM-DD HH:mm:ss"
-                            onCountdownEnd={() =>
-                              this.onCountdownEnd(attemptId)
-                            }
+                            toDate={new Date(new Date(dueDate + "+0000"))}
+                            onCountdownEnd={this.onCountdownEnd}
                           />
                         )}
 
