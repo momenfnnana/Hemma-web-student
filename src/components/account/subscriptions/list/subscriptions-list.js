@@ -139,7 +139,7 @@ class SubscriptionsListComponent extends Component {
                         color: "#4b3a85"
                       }}
                     >
-                      <p className="light-font-text small mb-1 mt-2">
+                      <p className="light-font-text small mb-1 mt-2 text-break">
                         تم تلقي الحوالة وسوف يتم الموافقة عليها خلال 48 ساعة
                       </p>
                     </Tooltip>

@@ -46,6 +46,40 @@ export class CommentsListComponent extends Component {
       })
       .then(response => {
         this.setState({ file: response.data.data.url, commentType: "Image" });
+        if (this.state.file) {
+          const lectureId = this.props.lectureId;
+          let token = localStorage.getItem("token");
+          let headers = {
+            Authorization: `Bearer ${token}`
+          };
+          let data = {
+            type: "Image",
+            value: this.state.file
+          };
+          this.setState({ disabled: true });
+          axios
+            .post(
+              `${apiBaseUrl}/RecordedLectureComments?lectureId=${lectureId}`,
+              data,
+              {
+                headers
+              }
+            )
+            .then(response => {
+              const comment = response.data.data;
+              this.setState(prevState => {
+                return {
+                  comments: prevState.comments.concat(comment)
+                };
+              });
+              this.commentInput.value = "";
+              this.setState({ file: "", disabled: false });
+            })
+            .catch(error => {
+              this.setState({ disabled: false });
+              console.log(error);
+            });
+        }
       })
       .catch(error => {
         console.log(error);
@@ -131,15 +165,15 @@ export class CommentsListComponent extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    if (this.commentInput.value !== "" || this.state.file) {
+    if (this.commentInput.value !== "") {
       const lectureId = this.props.lectureId;
       let token = localStorage.getItem("token");
       let headers = {
         Authorization: `Bearer ${token}`
       };
       let data = {
-        type: this.state.file ? "Image" : "Text",
-        value: this.state.file ? this.state.file : this.state.comment
+        type: "Text",
+        value: this.state.comment
       };
       this.setState({ disabled: true });
       axios
@@ -184,18 +218,6 @@ export class CommentsListComponent extends Component {
               ref={ref => (this.commentInput = ref)}
             />
             <div className="textarea-icon d-flex align-items-center">
-              {this.state.file && (
-                <h6 className="light-text smaller mb-0 mr-3">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/check-mark.png"
-                    }
-                    width="12"
-                    className="contain-img mr-1"
-                  />
-                  تم إرفاق الملف بنجاح
-                </h6>
-              )}
               <label htmlFor="uploadImage" className="mb-0">
                 <input
                   className="d-none"

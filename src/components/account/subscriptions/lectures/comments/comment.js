@@ -47,6 +47,37 @@ export class Comment extends Component {
       })
       .then(response => {
         this.setState({ file: response.data.data.url, replyType: "Image" });
+        let token = localStorage.getItem("token");
+        let headers = {
+          Authorization: `Bearer ${token}`
+        };
+        let data = {
+          type: "Image",
+          value: this.state.file
+        };
+        axios
+          .post(
+            `${apiBaseUrl}/RecordedLectureComments/${this.props.comment.id}/Replies`,
+            data,
+            {
+              headers
+            }
+          )
+          .then(response => {
+            this.setState({
+              showAddReplyForm: !this.state.showAddReplyForm
+            });
+            const reply = response.data.data;
+            this.props.comment.latestReply = reply;
+            this.setState(prevState => {
+              return {
+                replies: prevState.replies.concat(reply)
+              };
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       })
       .catch(error => {
         console.log(error);
@@ -165,8 +196,8 @@ export class Comment extends Component {
       Authorization: `Bearer ${token}`
     };
     let data = {
-      type: this.state.file ? "Image" : "Text",
-      value: this.state.file ? this.state.file : this.state.reply
+      type: "Text",
+      value: this.state.reply
     };
     axios
       .post(
@@ -351,19 +382,6 @@ export class Comment extends Component {
                     className="form-control small dark-text shadow-sm mb-3"
                   />
                   <div className="textarea-icon d-flex align-items-center">
-                    {this.state.file && (
-                      <h6 className="light-text smaller mb-0 mr-3">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/check-mark.png"
-                          }
-                          width="12"
-                          className="contain-img mr-1"
-                        />
-                        تم إرفاق الملف بنجاح
-                      </h6>
-                    )}
                     <label htmlFor="uploadReplyImage" className="mb-0">
                       <input
                         className="d-none"
