@@ -17,6 +17,7 @@ class MessagesList extends Component {
     };
     this.convertMessage = this.convertMessage.bind(this);
     this.messageAdded = this.messageAdded.bind(this);
+    this.bindToChannel = this.bindToChannel.bind(this);
   }
 
   loadUsers() {
@@ -91,6 +92,9 @@ class MessagesList extends Component {
 
   componentDidMount = async () => {
     this.props.getUser();
+    if (this.props.activeChannelId) {
+      this.bindToChannel();
+    }
   };
 
   async unsubFromChannel(type, id) {
@@ -116,15 +120,9 @@ class MessagesList extends Component {
     }
   }
 
-  async componentDidUpdate(prevProps, prevState) {
-    if (prevProps.activeChannelId !== this.props.activeChannelId) {
-      await this.unsubFromChannel(
-        prevProps.activeChannel,
-        prevProps.activeChannelId
-      );
-
-      console.log("Got new props", prevProps, this.props);
-      const client = await this.props.twilio.chatClient;
+  async bindToChannel() {
+    const client = await this.props.twilio.chatClient;
+    if (this.props.activeChannelId) {
       // subscribe to new channel
       client
         .getChannelBySid(this.props.activeChannelId)
@@ -144,6 +142,17 @@ class MessagesList extends Component {
         .catch(err => {
           console.log(err);
         });
+    }
+  }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (prevProps.activeChannelId !== this.props.activeChannelId) {
+      await this.unsubFromChannel(
+        prevProps.activeChannel,
+        prevProps.activeChannelId
+      );
+
+      this.bindToChannel();
     }
   }
 

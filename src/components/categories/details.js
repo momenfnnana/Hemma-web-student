@@ -517,66 +517,57 @@ export class CategoryDetails extends Component {
                 <div className="row pt-3">{this.renderCategoryGroups()}</div>
               </React.Fragment>
             )}
-            <div className="row pt-5 pb-4 d-flex align-items-center">
-              <div className="col-md-5">
-                <h4 className="dark-text">
-                  مع همة تقدرون تتحدون أنفسكم مع{" "}
-                  <span className="light-text">المسابقات</span>
-                </h4>
-                <p className="dark-silver-text text-break mb-0">
-                  نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
-                  اقوى المنافسين
-                </p>
-              </div>
+            {!this.state.competitions == undefined ||
+              (!this.state.competitions.length == 0 && (
+                <div className="row pt-5 pb-4 d-flex align-items-center">
+                  <div className="col-md-5">
+                    <h4 className="dark-text">
+                      مع همة تقدرون تتحدون أنفسكم مع{" "}
+                      <span className="light-text">المسابقات</span>
+                    </h4>
+                    <p className="dark-silver-text text-break mb-0">
+                      نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
+                      اقوى المنافسين
+                    </p>
+                  </div>
 
-              {this.state.competitions == undefined ||
-              (this.state.competitions.length == 0 && !token) ? (
-                <div className="col-md-4">
-                  <div className="competition-box-empty d-flex flex-column justify-content-around align-items-center">
+                  {(!this.state.competitions == undefined ||
+                    !this.state.competitions.length == 0) &&
+                  !token ? (
+                    <div className="col-md-4">
+                      <div className="competition-box-empty d-flex flex-column justify-content-around align-items-center">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/warning.png"
+                          }
+                          height="30"
+                        />
+                        <h6 className="dark-text small mb-0 text-center w-75">
+                          يجب عليك{" "}
+                          <Link to="/auth/login" className="light-text">
+                            تسجيل الدخول
+                          </Link>{" "}
+                          حتى تتمكن من الاشتراك بالمسابقات
+                        </h6>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-4">{this.renderCompetitions()}</div>
+                  )}
+
+                  <div className="col-md-3">
                     <img
                       src={
-                        process.env.PUBLIC_URL + "/assets/images/warning.png"
+                        process.env.PUBLIC_URL +
+                        "/assets/images/competitions.png"
                       }
-                      height="30"
+                      width="100%"
+                      className="contain-img"
                     />
-                    <h6 className="dark-text small mb-0 text-center w-75">
-                      يجب عليك{" "}
-                      <Link to="/auth/login" className="light-text">
-                        تسجيل الدخول
-                      </Link>{" "}
-                      حتى تتمكن من الاشتراك بالمسابقات
-                    </h6>
                   </div>
                 </div>
-              ) : this.state.competitions == undefined ||
-                this.state.competitions.length == 0 ? (
-                <div className="col-md-4">
-                  <div className="competition-box-empty d-flex flex-column justify-content-around align-items-center">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/warning.png"
-                      }
-                      height="30"
-                    />
-                    <h6 className="dark-text small mb-0 text-center w-75">
-                      لا يوجد مسابقات متاحة في الوقت الحالي
-                    </h6>
-                  </div>
-                </div>
-              ) : (
-                <div className="col-md-4">{this.renderCompetitions()}</div>
-              )}
-
-              <div className="col-md-3">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/competitions.png"
-                  }
-                  width="100%"
-                  className="contain-img"
-                />
-              </div>
-            </div>
+              ))}
           </div>
         </section>
       </React.Fragment>

@@ -61,7 +61,6 @@ class SubscriptionDetailsComponent extends Component {
       this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -226,12 +225,16 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/transactions/list"
                       component={TransactionsList}
                     />
-                    {subscription && subscription.chatChannelSid && (
+                    {subscription && (
                       <Route
                         path="/course/content/:id/chat"
                         render={props => (
                           <UsersChatComponent
                             chatChannelSid={subscription.chatChannelSid}
+                            forceInternalChat={subscription.forceInternalChat}
+                            internalChannelId={subscription.internalChannelId}
+                            externalChannelUrl={subscription.externalChannelUrl}
+                            chatEnabled={subscription.chatEnabled}
                             {...props}
                           />
                         )}

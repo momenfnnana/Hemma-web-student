@@ -4,9 +4,7 @@ import Modal from "react-modal";
 import { Page, pdfjs, Document } from "react-pdf";
 import "./styles.sass";
 import { apiBaseUrl } from "../../api/helpers";
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${
-  pdfjs.version
-}/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 export class PublicationDetails extends Component {
   constructor(props) {
@@ -48,7 +46,7 @@ export class PublicationDetails extends Component {
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
         width: "50%",
-        height: "50%",
+        height: "70%",
         borderWidth: 0
       },
       overlay: {
@@ -99,12 +97,16 @@ export class PublicationDetails extends Component {
             </div>
             <div className="row">
               <div className="col-12">
-                <Document
-                  file="https://hemma.ams3.cdn.digitaloceanspaces.com/pdf/demo.pdf"
-                  onLoadSuccess={this.onDocumentLoadSuccess}
-                >
-                  <Page pageNumber={pageNumber} />
-                </Document>
+                <embed
+                  src={
+                    this.state.publication &&
+                    this.state.publication.previewUrl +
+                      "#scrollbar=0&toolbar=0&navpanes=0"
+                  }
+                  type="application/pdf"
+                  width="100%"
+                  height="1000"
+                />
               </div>
             </div>
           </div>

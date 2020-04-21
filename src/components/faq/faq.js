@@ -31,18 +31,20 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small mb-2">
+                      <p className="dark-silver-text small text-break mb-2">
                         من مميزات دوراتنا واللي نقدمها لمشتركينا
                       </p>
                       <ul className="mb-0">
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
                           البث المباشر والتدريب المكثف
                         </li>
-                        <li className="dark-silver-text small">ملزمة شاملة </li>
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
+                          ملزمة شاملة{" "}
+                        </li>
+                        <li className="dark-silver-text small text-break">
                           اختبارات دورية
                         </li>
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
                           مناقشات ودردشة جماعية مع زملائك
                         </li>
                       </ul>
@@ -58,7 +60,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         لا، على حسب الدورة المسجل بعض الدورات فقط مباشر
                       </p>
                     </AccordionItemBody>
@@ -73,7 +75,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         ممكن نرفق صورة طريقة المشاهدة
                       </p>
                     </AccordionItemBody>
@@ -89,16 +91,16 @@ export default class FAQ extends Component {
                     </AccordionItemTitle>
                     <AccordionItemBody>
                       <ul className="mb-0">
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
                           سجل دخول في الموقع ب رقم جوالك وكلمة السر
                         </li>
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
                           ادخل أيقونة دوراتي
                         </li>
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
                           قم باختيار دورتك
                         </li>
-                        <li className="dark-silver-text small">
+                        <li className="dark-silver-text small text-break">
                           راح تظهرلك قائمة اختر أيقونة المحاضرات المسجلة ومشاهدة
                           ممتعة
                         </li>
@@ -115,7 +117,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         ايوه بالتأكيد ومرجعك شامل سيكون
                       </p>
                     </AccordionItemBody>
@@ -130,7 +132,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         لكل دورة موعد مختلف ,تواصل مع الدعم الفني لمعرفة
                         المواعيد أو اشترك بالنشرة البريدية، نسعد بخدمتك
                       </p>
@@ -144,7 +146,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         المدة الزمنية مختلفة بين كل دورة وأخرى.
                       </p>
                     </AccordionItemBody>
@@ -159,7 +161,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         زر حسابنا على التويتر، نسعد بمرورك{" "}
                         <span className="en-text">@hemmaEdu</span>
                       </p>
@@ -177,7 +179,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         نرفق صورة رقم الحسابات
                       </p>
                     </AccordionItemBody>
@@ -192,7 +194,9 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">من ٢٤-٤٨ ساعة</p>
+                      <p className="dark-silver-text small text-break">
+                        من ٢٤-٤٨ ساعة
+                      </p>
                     </AccordionItemBody>
                   </AccordionItem>
                   <AccordionItem>
@@ -205,7 +209,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         ايوه ضروري يكون اتصالك ممتاز
                       </p>
                     </AccordionItemBody>
@@ -220,7 +224,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         لا، بعد ما يتم تأكيد طلبك لا مجال للانسحاب مهما كان
                         العذر.
                       </p>
@@ -236,7 +240,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         لا الحساب حق لمشترك واحد
                       </p>
                     </AccordionItemBody>
@@ -251,7 +255,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         بعض الدورات متاح فيها امكانية التقسيط
                       </p>
                     </AccordionItemBody>
@@ -266,7 +270,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         لا تكون مفعلة فقط خلال مدة الاشتراك
                       </p>
                     </AccordionItemBody>
@@ -281,7 +285,7 @@ export default class FAQ extends Component {
                       </div>
                     </AccordionItemTitle>
                     <AccordionItemBody>
-                      <p className="dark-silver-text small">
+                      <p className="dark-silver-text small text-break">
                         نعتذر منك لا يوجد كوبونات حالية
                       </p>
                     </AccordionItemBody>
