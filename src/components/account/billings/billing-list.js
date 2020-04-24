@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { Refund } from "./refund/RefundForm";
-import "./styles.sass";
-import { WrongTransactionComponent } from "./wrong-transaction/WrongTransaction";
 import { NewInstallment } from "./installment/NewInstallment";
 import axios from "axios";
-import { apiBaseUrl } from "../../../../api/helpers";
+import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
+import { getSubscription } from "../../../actions";
+import { withRouter } from "react-router-dom";
+import "./styles.sass";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-class TransactionsList extends Component {
+class BillingListComponent extends Component {
   state = {
     isInstallmentOpen: false,
     isRefundOpen: false,
@@ -41,7 +43,7 @@ class TransactionsList extends Component {
 
   componentDidMount() {
     const courseId = this.props.match.params.id;
-
+    this.props.getSubscription(courseId);
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -99,35 +101,34 @@ class TransactionsList extends Component {
 
     return (
       <React.Fragment>
-        <div className="row mb-3 no-gutters">
-          <div className="col-12">
-            <div className="d-flex justify-content-between align-items-center responsive-col">
-              <h6 className="dark-text small mb-0 mt-0">
-                المدفوعات واسترجاع الرسوم
-              </h6>
-              <div>
-                <button
-                  type="button"
-                  className="btn border mid-text smaller"
-                  onClick={this.openRefundModal}
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-payments.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
+        <div className="container pb-5">
+          <div className="row mb-3 no-gutters">
+            <div className="col-12">
+              <div className="d-flex justify-content-between align-items-center responsive-col">
+                <h6 className="dark-text small mb-0 mt-0">الحركات المالية </h6>
+                <div>
+                  <button
+                    type="button"
+                    className="btn border mid-text smaller"
+                    onClick={this.openRefundModal}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/course-payments.png"
+                      }
+                      height="20"
+                      width="20"
+                      className="mr-2 contain-img"
+                    />
+                    استرجاع الرسوم
+                  </button>
+                  <Refund
+                    isRefundOpen={this.state.isRefundOpen}
+                    closeRefundModal={this.closeRefundModal}
+                    courseId={courseId}
                   />
-                  استرجاع الرسوم
-                </button>
-                <Refund
-                  isRefundOpen={this.state.isRefundOpen}
-                  closeRefundModal={this.closeRefundModal}
-                  courseId={courseId}
-                />
-                {/*  <button
+                  {/*  <button
                   type="button"
                   className="btn border mid-text smaller mr-2"
                   onClick={this.openWrongTransactionModal}
@@ -148,57 +149,58 @@ class TransactionsList extends Component {
                   closeWrongTransactionModal={this.closeWrongTransactionModal}
                 /> */}
 
-                {!remainingAmount == "0" && (
-                  <button
-                    type="button"
-                    className="btn border mid-text smaller ml-2"
-                    onClick={this.openInstallmentModal}
-                  >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/installment.png"
-                      }
-                      height="20"
-                      width="20"
-                      className="mr-2 contain-img"
-                    />
-                    طلب سداد قسط
-                  </button>
-                )}
+                  {!remainingAmount == "0" && (
+                    <button
+                      type="button"
+                      className="btn border mid-text smaller ml-2"
+                      onClick={this.openInstallmentModal}
+                    >
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/installment.png"
+                        }
+                        height="20"
+                        width="20"
+                        className="mr-2 contain-img"
+                      />
+                      طلب سداد قسط
+                    </button>
+                  )}
 
-                <NewInstallment
-                  isInstallmentOpen={this.state.isInstallmentOpen}
-                  closeInstallmentModal={this.closeInstallmentModal}
-                  courseId={courseId}
-                />
+                  <NewInstallment
+                    isInstallmentOpen={this.state.isInstallmentOpen}
+                    closeInstallmentModal={this.closeInstallmentModal}
+                    courseId={courseId}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="row no-gutters">
-          <div className="col-12">
-            <div className="box-layout shadow-sm">
-              <Table className="mb-0">
-                <thead className="silver-bg">
-                  <tr className="text-center">
-                    <th className="w-25 dark-silver-text small border-0">
-                      العملية
-                    </th>
-                    <th className="w-25 dark-silver-text small border-0">
-                      المبلغ
-                    </th>
-                    <th className="w-25 dark-silver-text small border-0">
-                      التاريخ
-                    </th>
-                    <th className="w-25 dark-silver-text small border-0">
-                      الحالة
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>{this.renderTransaction()}</tbody>
-              </Table>
+          <div className="row no-gutters">
+            <div className="col-12">
+              <div className="box-layout shadow-sm">
+                <Table className="mb-0">
+                  <thead className="silver-bg">
+                    <tr className="text-center">
+                      <th className="w-25 dark-silver-text small border-0">
+                        العملية
+                      </th>
+                      <th className="w-25 dark-silver-text small border-0">
+                        المبلغ
+                      </th>
+                      <th className="w-25 dark-silver-text small border-0">
+                        التاريخ
+                      </th>
+                      <th className="w-25 dark-silver-text small border-0">
+                        الحالة
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>{this.renderTransaction()}</tbody>
+                </Table>
+              </div>
             </div>
           </div>
         </div>
@@ -206,10 +208,16 @@ class TransactionsList extends Component {
     );
   }
 }
+
 function mapStateToProps(state) {
   return {
     subscription: state.subscription
   };
 }
 
-export default TransactionsList = connect(mapStateToProps)(TransactionsList);
+BillingListComponent = connect(
+  mapStateToProps,
+  { getSubscription }
+)(BillingListComponent);
+
+export const BillingList = withRouter(BillingListComponent);

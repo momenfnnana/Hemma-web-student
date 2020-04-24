@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
-import { NewInstallment } from "../../subscriptions/transactions/installment/NewInstallment";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import "./styles.sass";

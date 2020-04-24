@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { inputField } from "../../../../shared/inputs/inputField";
-import { textareaField } from "../../../../shared/inputs/textareaField";
+import { inputField } from "../../../shared/inputs/inputField";
 import { withRouter } from "react-router-dom";
 import { Table } from "reactstrap";
-import { RadioField } from "../../../../shared/inputs/RadioFeild";
 
 export class WrongTransactionComponent extends Component {
   state = { showContent: false };

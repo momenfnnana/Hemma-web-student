@@ -36,21 +36,33 @@ export default class RecordingVideo extends Component {
       }
     };
     return (
-      <Modal
-        style={customStyles}
-        ariaHideApp={false}
-        isOpen={this.props.modalIsOpen}
-        onRequestClose={this.props.toggleRecordingModal}
-        toggle={this.props.toggleRecordingModal}
-      >
-        <ReactPlayer
-          url={this.props.recordingUrl}
-          playing={true}
-          controls={true}
-          width="100%"
-          height="100%"
-        />
-      </Modal>
+      <React.Fragment>
+        <Modal
+          style={customStyles}
+          ariaHideApp={false}
+          isOpen={this.props.modalIsOpen}
+          onRequestClose={this.props.toggleRecordingModal}
+          toggle={this.props.toggleRecordingModal}
+        >
+          <button
+            className="btn close-modal"
+            onClick={this.props.toggleRecordingModal}
+          >
+            <img
+              src={process.env.PUBLIC_URL + "/assets/images/close.png"}
+              height="12"
+              alt="close"
+            />
+          </button>
+          <ReactPlayer
+            url={this.props.recordingUrl}
+            playing={true}
+            controls={true}
+            width="100%"
+            height="100%"
+          />
+        </Modal>
+      </React.Fragment>
     );
   }
 }

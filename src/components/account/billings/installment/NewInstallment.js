@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { withRouter } from "react-router-dom";
 import swal from "@sweetalert/with-react";
-import { apiBaseUrl } from "../../../../../api/helpers";
+import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
-import { numberField } from "../../../../shared/inputs/numberField";
+import { numberField } from "../../../shared/inputs/numberField";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 

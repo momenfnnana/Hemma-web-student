@@ -6,7 +6,6 @@ import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./lectures/recorded-lectures";
 import { LectureDetails } from "./lectures/recorded-videos";
 import { Booklet } from "./booklet/booklet";
-import TransactionsList from "./transactions/transactions-list";
 import { UsersChatComponent } from "../../chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
@@ -16,13 +15,13 @@ import { DiscussionDetails } from "./discussions/discussion-details";
 import { ExamsList } from "./exams/exams-list";
 import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
-import { NewInstallment } from "./transactions/installment/NewInstallment";
 import { ExamResult } from "./exams/exam-result";
 import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Refund } from "./transactions/refund/RefundForm";
+import { NewInstallment } from "../billings/installment/NewInstallment";
+import { Refund } from "../billings/refund/RefundForm";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -220,10 +219,6 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/exam/:attemptId/result"
                       component={ExamResult}
                       exact
-                    />
-                    <Route
-                      path="/course/content/:id/transactions/list"
-                      component={TransactionsList}
                     />
                     {subscription && (
                       <Route
