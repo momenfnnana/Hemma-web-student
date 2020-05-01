@@ -35,6 +35,8 @@ import { Competition } from "../components/categories/competitions/competition";
 import { QuickQuestions } from "../components/categories/quick-questions/quick-questions";
 import { QuickQuestion } from "../components/categories/quick-questions/quick-question";
 import { QuestionSummary } from "../components/categories/quick-questions/question-summary";
+import { BillingCourses } from "../components/account/billings/billing-courses";
+import { BillingList } from "../components/account/billings/billing-list";
 
 class AppBackground extends Component {
   render() {
@@ -141,6 +143,12 @@ export class MainRouter extends Component {
               <Route path="/cart/checkout" component={requireAuth(Checkout)} />
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
+              <Route
+                path="/billing"
+                exact
+                component={requireAuth(BillingCourses)}
+              />
+              <Route path="/billing/:id" component={requireAuth(BillingList)} />
               <Route
                 path="/course/content"
                 exact

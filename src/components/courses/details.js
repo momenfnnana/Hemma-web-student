@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./styles.sass";
 import {
   Accordion,
   AccordionItem,
@@ -15,17 +14,32 @@ import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
+import "./styles.sass";
+import RecordingVideo from "./recording-video";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
 export class CourseDetails extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { details: [], checked: false, modalIsOpen: false };
-
+    this.state = {
+      details: [],
+      checked: false,
+      modalIsOpen: false,
+      recordingModalIsOpen: false,
+      recordingUrl: null
+    };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.toggleRecordingModal = this.toggleRecordingModal.bind(this);
+  }
+
+  toggleRecordingModal(url) {
+    this.setState({
+      recordingModalIsOpen: !this.state.recordingModalIsOpen,
+      recordingUrl: url
+    });
   }
 
   openModal() {
@@ -244,16 +258,32 @@ export class CourseDetails extends Component {
     var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
     return (
       <div className="row">
-        <div className="col-6">
-          {lecture.status == "Recorded" && (
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/play.png"}
-              className="mr-2"
-              height="15"
-              alt="Course video"
-            />
+        <div className="col-6 d-flex align-items-center">
+          <div className="d-flex align-items-center">
+            {lecture.status == "Recorded" && (
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/play.png"}
+                className="mr-2"
+                height="15"
+                alt="Course video"
+              />
+            )}
+            {lecture.nameAr}
+          </div>
+          {lecture.recordingUrl && (
+            <div
+              className="outline-label clickable"
+              onClick={() => this.toggleRecordingModal(lecture.recordingUrl)}
+            >
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/blue-play.png"}
+                className="mr-1"
+                height="10"
+                alt="Guest video"
+              />
+              <span>مشاهدة المحتوى المجاني</span>
+            </div>
           )}
-          {lecture.nameAr}
         </div>
         <div className="col-6 d-flex justify-content-end align-items-center">
           {lecture.status == "Live" ? (
@@ -589,6 +619,11 @@ export class CourseDetails extends Component {
             </div>
           </div>
         </section>
+        <RecordingVideo
+          recordingUrl={this.state.recordingUrl}
+          modalIsOpen={this.state.recordingModalIsOpen}
+          toggleRecordingModal={this.toggleRecordingModal}
+        />
       </React.Fragment>
     );
   }

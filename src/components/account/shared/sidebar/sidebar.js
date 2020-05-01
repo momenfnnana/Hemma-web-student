@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
-import { NewInstallment } from "../../subscriptions/transactions/installment/NewInstallment";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import "./styles.sass";
@@ -120,7 +119,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/course/content/${this.props.id}/booklet`}
+                  to={`/course/content/${this.props.id}/booklets`}
                   activeClassName="active"
                 >
                   <img
@@ -132,7 +131,7 @@ export class SidebarComponent extends Component {
                     width="20"
                     className="mr-2 contain-img"
                   />
-                  الملزمة
+                  الملازم
                 </NavLink>
               </li>
               <li>

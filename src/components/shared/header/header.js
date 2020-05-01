@@ -95,7 +95,9 @@ class HeaderComponent extends Component {
           <Navbar
             className={
               "navbar navbar-expand-lg navbar-light bg-transparent " +
-              (this.props.location.pathname.startsWith("/course/content/details")
+              (this.props.location.pathname.startsWith(
+                "/course/content/details"
+              )
                 ? "shadow-sm"
                 : "null")
             }
@@ -230,6 +232,15 @@ class HeaderComponent extends Component {
                               to="/account/update"
                             >
                               تعديل الملف
+                            </NavLink>
+                          </DropdownItem>
+                          <DropdownItem className="p-0">
+                            <NavLink
+                              className="nav-link mid-text"
+                              activeClassName="active"
+                              to="/billing"
+                            >
+                              الحركات المالية
                             </NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">

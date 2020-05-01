@@ -5,8 +5,7 @@ import { Schedule } from "./schedule/schedule";
 import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./lectures/recorded-lectures";
 import { LectureDetails } from "./lectures/recorded-videos";
-import { Booklet } from "./booklet/booklet";
-import TransactionsList from "./transactions/transactions-list";
+import { Booklets } from "./booklets/booklets";
 import { UsersChatComponent } from "../../chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
@@ -16,13 +15,14 @@ import { DiscussionDetails } from "./discussions/discussion-details";
 import { ExamsList } from "./exams/exams-list";
 import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
-import { NewInstallment } from "./transactions/installment/NewInstallment";
 import { ExamResult } from "./exams/exam-result";
 import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Refund } from "./transactions/refund/RefundForm";
+import { NewInstallment } from "../billings/installment/NewInstallment";
+import { Refund } from "../billings/refund/RefundForm";
+import { BookletDetails } from "./booklets/booklet-details";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -187,8 +187,14 @@ class SubscriptionDetailsComponent extends Component {
                       component={SpeedUp}
                     />
                     <Route
-                      path="/course/content/:id/booklet"
-                      component={Booklet}
+                      exact
+                      path="/course/content/:id/booklets"
+                      component={Booklets}
+                    />
+                    <Route
+                      exact
+                      path="/course/content/:id/booklets/:bookletId"
+                      component={BookletDetails}
                     />
                     <Route
                       path="/course/content/:id/discussions"
@@ -220,10 +226,6 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/exam/:attemptId/result"
                       component={ExamResult}
                       exact
-                    />
-                    <Route
-                      path="/course/content/:id/transactions/list"
-                      component={TransactionsList}
                     />
                     {subscription && (
                       <Route
