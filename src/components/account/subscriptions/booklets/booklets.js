@@ -1,25 +1,18 @@
 import React, { Component } from "react";
-import { Tooltip, Button } from "reactstrap";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import swal from "@sweetalert/with-react";
 import { getUser } from "../../../../actions/user.actions";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import "../styles.sass";
 
-export class BookletComponent extends Component {
+export class BookletsComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      numPages: null,
-      pageNumber: 1,
-      tooltipOpen: false,
-      booklet: []
+      booklets: []
     };
-    this.toggleTooltip = this.toggleTooltip.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-    this.changePageNumber = this.changePageNumber.bind(this);
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -45,7 +38,9 @@ export class BookletComponent extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/booklet`, { headers })
       .then(response => {
-        this.setState({ booklet: response.data.data });
+        this.setState({
+          booklets: response.data.data.parts
+        });
       })
       .catch(error => {
         console.log(error);
@@ -99,25 +94,54 @@ export class BookletComponent extends Component {
       });
   }
 
-  changePageNumber(event) {
-    this.setState({
-      pageNumber: event.target.value
+  renderBooklets() {
+    const booklets = this.state.booklets;
+    const courseId = this.props.match.params.id;
+
+    return booklets.map(booklet => {
+      return (
+        <div
+          to={`/course/content/${courseId}/booklets/${booklet.id}`}
+          onClick={() =>
+            this.props.history.push(
+              `/course/content/${courseId}/booklets/${booklet.id}`,
+              {
+                name: booklet.name,
+                url: booklet.url
+              }
+            )
+          }
+          className="col-md-4"
+          key={booklet.id}
+        >
+          <div className="card card-sm custom-height shadow-sm border-0 clickable">
+            <header className="card-thumb d-flex align-items-center justify-content-center">
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/pdf.png"}
+                alt="File"
+                className="contain-img custom-img mx-auto"
+              />
+            </header>
+            <div className="card-body d-flex justify-content-start align-items-center">
+              <h6 className="card-title small mb-0 p-0 dark-text">
+                {booklet.name}
+              </h6>
+            </div>
+          </div>
+        </div>
+      );
     });
   }
 
   render() {
-    const { pageNumber, numPages } = this.state;
-    const user = this.props && this.props.user;
     return (
       <React.Fragment>
         <div className="row no-gutters">
-          <div className="col-12 mb-4">
+          <div className="col-12 mb-3">
             <div className="d-flex justify-content-between align-items-center">
-              <h6 className="dark-text small mb-0 mt-0">
-                {this.state.booklet && this.state.booklet.nameAr}
-              </h6>
+              <h6 className="dark-text mb-0 mt-0"></h6>
 
-              <div>
+              {/* <div>
                 {this.state.booklet &&
                   this.state.booklet.canBePurchased &&
                   this.state.booklet.availableInPrint && (
@@ -129,16 +153,35 @@ export class BookletComponent extends Component {
                       طلب الملزمة مطبوعة
                     </button>
                   )}
-              </div>
+              </div> */}
             </div>
           </div>
-          <div className="col-12">
-            <embed
-              src={this.state.booklet.url}
-              type="application/pdf"
-              width="100%"
-              height="1000"
-            />
+          <div className="box-layout silver-bg shadow-sm d-flex flex-column w-100 rounded p-4 pb-0">
+            {this.state.booklets == undefined ||
+            this.state.booklets.length == 0 ? (
+              <React.Fragment>
+                <div className="col-12">
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center"
+                    style={{ height: 200 }}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/empty-files.png"
+                      }
+                      className="mb-1"
+                      height="80"
+                    />
+                    <h5 className="dark-text mt-0">لا يوجد ملازم متاحة</h5>
+                  </div>
+                </div>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <div className="row">{this.renderBooklets()}</div>
+              </React.Fragment>
+            )}
           </div>
         </div>
       </React.Fragment>
@@ -153,9 +196,9 @@ function mapStateToProps(state) {
   };
 }
 
-BookletComponent = connect(
+BookletsComponent = connect(
   mapStateToProps,
   { getUser }
-)(BookletComponent);
+)(BookletsComponent);
 
-export const Booklet = withRouter(BookletComponent);
+export const Booklets = withRouter(BookletsComponent);

@@ -119,7 +119,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/course/content/${this.props.id}/booklet`}
+                  to={`/course/content/${this.props.id}/booklets`}
                   activeClassName="active"
                 >
                   <img
@@ -131,7 +131,7 @@ export class SidebarComponent extends Component {
                     width="20"
                     className="mr-2 contain-img"
                   />
-                  الملزمة
+                  الملازم
                 </NavLink>
               </li>
               <li>
