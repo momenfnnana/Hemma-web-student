@@ -25,6 +25,7 @@ export class UsersChatComponent extends Component {
   render() {
     return (
       <React.Fragment>
+        {/* In case chatEnabled === true then render chat else render alert  */}
         {!this.props.chatEnabled ? (
           <React.Fragment>
             <div className="chat-title border h-55 d-flex align-items-center justify-content-center mb-4 rounded shadow-sm clickable">
@@ -85,7 +86,7 @@ export class UsersChatComponent extends Component {
                           <MessagesList />
                         </ul>
                       </div>
-                      <MessageInput />
+                      {this.props.allowSend && <MessageInput />}
                     </div>
                   </div>
                 </div>

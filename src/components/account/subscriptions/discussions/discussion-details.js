@@ -43,11 +43,7 @@ export class DiscussionDetailsComponent extends Component {
       this.state.discussionDetails && this.state.discussionDetails.endsAt
     );
     const endDate = endsAt.toLocaleString();
-    console.log(
-      "sid ",
-      this.state.discussionDetails &&
-        this.state.discussionDetails.chatChannelSid
-    );
+
     return (
       <React.Fragment>
         <div className="row no-gutters">
@@ -92,8 +88,11 @@ export class DiscussionDetailsComponent extends Component {
           this.state.discussionDetails.chatChannelSid && (
             <UsersChatComponent
               title="عنوان المناقشة"
-              chatChannelSid={this.state.discussionDetails.chatChannelSid}
+              internalChannelId={this.state.discussionDetails.chatChannelSid}
               courseId={courseId}
+              chatEnabled={true}
+              forceInternalChat={true}
+              allowSend={this.state.discussionDetails.active}
             />
           )}
       </React.Fragment>

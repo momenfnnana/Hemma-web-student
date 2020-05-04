@@ -174,24 +174,6 @@ export class SidebarComponent extends Component {
               )}
               <li>
                 <NavLink
-                  to={`/course/content/${this.props.id}/transactions/list`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-payments.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                  />
-                  المدفوعات واسترجاع الرسوم
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
                   to={`/course/content/${this.props.id}/speed-up`}
                   activeClassName="active"
                   className="dark-text small"

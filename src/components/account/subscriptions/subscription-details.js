@@ -237,6 +237,7 @@ class SubscriptionDetailsComponent extends Component {
                             internalChannelId={subscription.internalChannelId}
                             externalChannelUrl={subscription.externalChannelUrl}
                             chatEnabled={subscription.chatEnabled}
+                            allowSend={true}
                             {...props}
                           />
                         )}
