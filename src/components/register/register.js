@@ -32,10 +32,6 @@ export const minLength = min => value =>
     ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
     : undefined;
 export const minLength4 = minLength(4);
-const nameValue = value =>
-  value && !/^[\u0621-\u064A\w]{2,}(\s[\u0621-\u064A\w]{2,})+\s*$/.test(value)
-    ? "الاسم يجب أن يحتوي على مقطعين على الأقل"
-    : undefined;
 const emailValue = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "يرجى إدخال البريد الإلكتروني بصيغة صحيحة"
@@ -207,7 +203,7 @@ class RegisterComponent extends Component {
             component={inputField}
             className="form-control border-left-0 pl-0"
             placeholder="الاسم الكامل"
-            validate={[required, nameValue]}
+            validate={[required]}
           >
             <FaRegUser />
           </Field>

@@ -22,12 +22,6 @@ const validate = values => {
   const errors = {};
   if (!values.name) {
     errors.name = "يجب تعبئة هذه الخانة";
-  } else if (
-    !/^[\u0621-\u064Aa-zA-Z]{2,}(\s[\u0621-\u064Aa-zA-Z]{2,})+$/.test(
-      values.name
-    )
-  ) {
-    errors.name = "الاسم يجب أن يحتوي على مقطعين على الأقل";
   }
   return errors;
 };
