@@ -5,6 +5,28 @@ import { withRouter } from "react-router-dom";
 import "../styles.sass";
 
 export class BookletDetailsComponent extends Component {
+  downloadPdf = () => {
+    fetch(this.props.location.state.url, {
+      method: "GET",
+      headers: {
+        Accept: "application/pdf",
+        "Content-Type": "application/pdf"
+      }
+    })
+      .then(response => response.blob())
+      .then(response => {
+        var blob = response;
+        var reader = new window.FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = function() {
+          var base64data = reader.result;
+          window.open(base64data);
+        };
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
   render() {
     const url = this.props.location.state.url;
     const name = this.props.location.state.name;
@@ -18,7 +40,7 @@ export class BookletDetailsComponent extends Component {
           </div>
           <div className="col-12">
             <embed
-              src={`${url}#toolbar=0&navpanes=0&scrollbar=0`}
+              src={`${url}`}
               type="application/pdf"
               width="100%"
               height="1000"
