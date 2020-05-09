@@ -82,7 +82,7 @@ class BankPaymentComponent extends Component {
       shippingRecipient: values.shippingRecipient,
       shippingCityId: values.shippingCityId,
       shippingAddress: values.shippingAddress,
-      shippingPhone: values.shippingPhone && values.shippingPhone.phoneNumber
+      shippingPhone: values.shippingPhone
     };
 
     this.setState({ loading: true, disabled: true });
