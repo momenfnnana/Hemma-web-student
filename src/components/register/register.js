@@ -272,7 +272,7 @@ class RegisterComponent extends Component {
             <FaRegEnvelope />
           </Field>
 
-          <Field
+          {/* <Field
             component={selectField}
             className="form-control"
             name="saCityId"
@@ -315,14 +315,14 @@ class RegisterComponent extends Component {
           >
             <option selected="selected">الجنسية</option>
             {this.renderNationalities()}
-          </Field>
+          </Field> */}
 
           <button
             type="submit"
             className="btn dark-outline-btn w-100"
             disabled={submitting}
           >
-            {this.state.loading == true ? (
+            {this.state.loading === true ? (
               <Loader type="ball-clip-rotate" />
             ) : (
               "تسجيل"
