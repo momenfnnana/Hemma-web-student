@@ -261,7 +261,7 @@ class RegisterComponent extends Component {
             )}
           </div>
 
-          <Field
+          {/* <Field
             name="email"
             type="email"
             component={inputField}
@@ -272,7 +272,7 @@ class RegisterComponent extends Component {
             <FaRegEnvelope />
           </Field>
 
-          {/* <Field
+        <Field
             component={selectField}
             className="form-control"
             name="saCityId"
