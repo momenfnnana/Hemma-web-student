@@ -1,0 +1,175 @@
+.circles-wrapper {
+  width: 500px;
+  height: 500px;
+  border-radius: 100%;
+  position: relative;
+  margin-top: -80px;
+  margin-left: -80px;
+}
+
+.dotCircle {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 100%;
+  z-index: 20;
+}
+
+.dotCircle .item-dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95px;
+  height: 95px;
+  position: absolute;
+  background: #fff;
+  border-radius: 100%;
+  z-index: 3;
+  cursor: pointer;
+  box-shadow: 0 13px 26px 0 rgba(75, 58, 133, 0.18);
+}
+
+.dotCircle .item-dot::after {
+  content: "";
+  width: 82px;
+  height: 82px;
+  position: absolute;
+  border-radius: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+}
+.dotCircle .item-dot::before {
+  content: "";
+  width: 85px;
+  height: 85px;
+  position: absolute;
+  border-radius: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+}
+
+.dotCircle .item-dot.active {
+  background: #f7f7f7;
+  transition: 0.5s;
+}
+
+.dotCircle .item-dot .active-item {
+  width: 56px;
+  height: 56px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+}
+
+.dotCircle .item-dot.active .active-item {
+  display: block;
+}
+
+.dotCircle .item-dot:hover {
+  background: #f7f7f7;
+  transition: 0.5s;
+}
+
+.circle-content {
+  width: 250px;
+  height: 250px;
+  border-radius: 100%;
+  color: #fff;
+  position: relative;
+  top: 125px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  box-shadow: 0 13px 26px 0 rgba(75, 58, 133, 0.18);
+  margin: auto;
+  background-color: #fff;
+}
+
+.circle-content .circle-item {
+  border-radius: 100%;
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: scale(0);
+  transition: 0.5s;
+  font-weight: bold;
+  font-size: 13px;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle-desc {
+  transform: scale(0);
+  transition: 0.5s;
+  position: absolute;
+  top: 50px;
+}
+
+.circle-item.active {
+  z-index: 1;
+  opacity: 1;
+  transform: scale(1);
+  transition: 0.5s;
+}
+
+.circle-desc.active {
+  z-index: 1;
+  opacity: 1;
+  transform: scale(1);
+  transition: 0.5s;
+}
+
+@media only screen and (min-width: 300px) and (max-width: 599px) {
+  .circles-wrapper {
+    width: 300px;
+    height: 300px;
+    margin: 110px auto;
+  }
+  .circles-wrapper::after {
+    width: 100%;
+    height: 100%;
+  }
+
+  .dotCircle {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+}
+@media only screen and (min-width: 1200px) and (max-width: 1499px) {
+}
+
+@media only screen and (min-width: 1500px) {
+}

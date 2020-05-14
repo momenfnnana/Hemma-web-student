@@ -9,9 +9,14 @@ $light-silver: #f2f2f2
 $dark-silver: #a9acb4
 $off-white: #fefefe 
 
-.hero-section, .testimonials-section
+.hero-section, .categories-section,.journey-section,.courses-section,.steps-section,.testimonials-section
   padding-top: 100px
-  margin-bottom: 100px
+  padding-bottom: 50px
+.hero-section
+  .purple-text
+    color: #6d68af
+  .blue-text
+    color: #6999cd    
 .journey-section
   background-image: url("/assets/images/shape-bg.png")
   background-size: contain
@@ -62,386 +67,77 @@ $off-white: #fefefe
     flex-direction: column !important
     p
       word-break: break-word  
-.featureSlider .image-gallery-content
-  display: flex
-  flex-wrap: wrap
-  align-items: flex-start
-  .image-gallery-slide-wrapper
-    max-width: 60%
-    width: 60%
+
+.steps
+  width: 100%
+  position: relative
+  margin: auto
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    height: 1px
+    width: 100%
+    right: calc(50px / 2)
+    z-index: 1
+    border-bottom: 1px dashed rgb(198, 198, 198)
+.step
+  transition: all 0.4s ease-in-out
+  background-color: #FFF
+  display: inline-block
+  width: 40%
+  &::before
+    content: ''
+    position: absolute
+    height: 30px
+    width: 30px
+    background-color: #4b3a85
+    border-radius: 15px
+    transform: translateY(-45%)
+    z-index: 2
+    color: #fff
+    text-align: center
     display: flex
-    flex-wrap: wrap
-    flex-direction: column-reverse
-    > span
-      display: flex
-    .image-gallery-left-nav, .image-gallery-right-nav
-      display: none     
-    .image-gallery-swipe .image-gallery-slide .image-gallery-description
-      background: transparent
-      bottom: 0px
-      position: relative
-      .featureDes
-        box-sizing: border-box
-        max-width: 450px
-        line-height: 20px
-        word-break: break-word
-  .image-gallery-thumbnails-wrapper
-    max-width: 40%
-    height: 520px
-    width: 40%
-    .image-gallery-thumbnails
-      overflow: initial
-      padding-left: 30px
-    .image-gallery-thumbnails-container
-      position: relative
-      height: 520px
-      img
-        border-radius: 50%
-        height: 100%
-        width: 100%
-      .image-gallery-thumbnail
-        &:nth-child(1)
-          position: absolute
-          top: -110px
-          left: -25px
-          width: 120px
-          height: 120px
-        &:nth-child(2)
-          position: absolute
-          top: -80px
-          left: 115px
-          width: 140px
-          height: 140px
-        &:nth-child(3)
-          position: absolute
-          top: 10px
-          left: 210px
-          width: 140px
-          height: 140px
-        &:nth-child(4)
-          position: absolute
-          top: 135px
-          left: 225px
-          width: 140px
-          height: 140px
-        &:nth-child(5)
-          position: absolute
-          top: 245px
-          left: 130px
-          width: 140px
-          height: 140px
-        &:nth-child(6)
-          position: absolute
-          bottom: -80px
-          left: 140px
-          width: 140px
-          height: 140px  
-        transition: all 0.35s ease
-        border: 0
-        border-radius: 50%
-        .image-gallery-thumbnail-inner
-          width: 100%
-          height: 100%
-        &.active
-          border: 0
-          transform: scale(1.3)
-          .image-gallery-thumbnail-inner
-            &::before
-              content: ''
-              position: absolute
-              display: block
-              width: 100%
-              height: 100%
-              box-shadow: 0 0 0 0.8px rgba(0, 0, 0, 0.1)
-              border-radius: 50%
-              top: 50%
-              left: 50%
-              opacity: 0
-              -webkit-transform: translate(-50%, -50%)
-              transform: translate(-50%, -50%)
-              animation: pulse 1.1s ease-out infinite
-              backface-visibility: hidden
-              pointer-events: none
-            &::after
-              content: ''
-              position: absolute
-              display: block
-              width: 100%
-              height: 100%
-              box-shadow: 0 0 0 0.8px rgba(0, 0, 0, 0.1)
-              border-radius: 50%
-              top: 50%
-              left: 50%
-              opacity: 0
-              -webkit-transform: translate(-50%, -50%)
-              transform: translate(-50%, -50%)
-              animation: pulse 1.3s ease-out infinite
-              backface-visibility: hidden
-              pointer-events: none
-              animation-delay: 1s
-          img
-            position: relative
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content
-    flex-direction: column
-
-@media screen and (max-width: 1100px) and (min-width: 992px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper
-    max-width: 56%
-    width: 56%
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper
-    max-width: 50%
-    width: 50%
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper
-    max-width: 100%
-    width: 100%
-
-@media (max-width: 480px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper > span
+    align-items: center
     justify-content: center
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper .image-gallery-swipe .image-gallery-slide .image-gallery-description .featureDes
-    font-size: 30px
-    line-height: 40px
-    max-width: 100%
-
-@media (max-width: 768px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper .image-gallery-swipe .image-gallery-slide .image-gallery-description .featureDes
-    font-size: 24px
-    line-height: 22px
-
-@media (max-width: 480px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper .image-gallery-swipe .image-gallery-slide .image-gallery-description .featureDes
-    font-size: 20px
-    text-align: center
-
-@media (max-width: 480px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper .image-gallery-swipe .image-gallery-slide .image-gallery-description .featureDes::before
-    text-align: center
-
-@media (max-width: 480px)
-  .featureSlider .image-gallery-content .image-gallery-slide-wrapper .image-gallery-swipe .image-gallery-slide .image-gallery-description .featureDetails
-    text-align: center
-
-@media screen and (max-width: 1100px) and (min-width: 992px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper
-    padding-left: 25px
-    overflow: hidden
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper
-    padding-left: 0px
-    overflow: hidden
-    max-width: 50%
-    width: 50%
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper
-    max-width: 100%
-    width: 100%
-    height: auto
-    margin-top: 50px
-    overflow: hidden
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails
-    padding-left: 0px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails
-    overflow: hidden
-
-@media screen and (max-width: 1100px) and (min-width: 992px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container
-    margin-left: -20px
-    margin-top: 15px
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container
-    margin-left: -25px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container
-    height: auto
-    margin-left: 0px
-
-@media (max-width: 768px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container img
-    box-shadow: none
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container img
-    width: 70px
-    height: 70px
-
-@media (max-width: 480px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container img
-    width: 70px
-    height: 70px
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(1)
-    position: absolute
-    top: 220px
-    left: 80px
-    width: 120px
-    height: 120px
-    img
-      width: 80px
-      height: 80px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(1)
-    position: relative
-    top: 0
-    left: 0
-    width: calc(33.33% - 30px)
-    height: auto
-    margin-right: 30px
-    margin-left: 10px
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(2)
-    position: absolute
-    top: 110px
-    left: 160px
-    width: 100px
+  &.minimized
+    transition: background-color 0.3s ease-in-out
+    cursor: pointer
+    width: calc(60% / 5)
+    &::before
+      background-color: #ebebeb
+      color: #b7b7b7    
+  &.step-one
+    &::before
+      content: '1'  
+  &.step-two
+    &::before
+      content: '2'  
+  &.step-three
+    &::before
+      content: '3'
+  &.step-four
+    &::before
+      content: '4'
+  &.step-five
+    &::before
+      content: '5'
+  &.step-six
+    &::before
+      content: '6'
+.step-content
+  transition: all 0.3s ease-in-out
+  overflow: hidden
+  position: relative
+.step.minimized > .step-content
+  width: 0px
+.step-content
+  &.one, &.two, &.three, &.four, &.five, &.six
     height: 100px
+    width: 100%
+    margin-top: 35px
 
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(2)
-    position: relative
-    top: 0
-    width: calc(33.33% - 30px)
-    height: auto
-    margin-right: 30px
-    left: 0
-
-@media screen and (max-width: 1100px) and (min-width: 992px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(3)
-    position: absolute
-    top: 180px
-    left: 220px
-    width: 70px
-    height: 70px
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(3)
-    position: absolute
-    top: 200px
-    left: 272px
-    width: 70px
-    height: 70px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(3)
-    position: relative
-    top: 0
-    width: calc(33.33% - 30px)
-    height: auto
-    margin-right: 30px
-    left: 0
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(4)
-    position: absolute
-    bottom: 100px
-    left: 240px
-    width: 90px
-    height: 90px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(4)
-    position: relative
-    top: 0
-    width: calc(33.33% - 30px)
-    height: auto
-    margin-right: 30px
-    left: 0
-
-@media screen and (max-width: 1100px) and (min-width: 992px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(5)
-    position: absolute
-    bottom: 50px
-    left: 20px
-    width: 105px
-    height: 105px
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(5)
-    position: absolute
-    bottom: 40px
-    left: 115px
-    width: 105px
-    height: 105px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(5)
-    position: relative
-    top: 0
-    width: calc(33.33% - 30px)
-    height: auto
-    margin-right: 30px
-    left: 0
-
-@media screen and (max-width: 1100px) and (min-width: 992px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(6)
-    position: absolute
-    bottom: 50px
-    left: 20px
-    width: 105px
-    height: 105px
-
-@media (max-width: 991px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(6)
-    position: absolute
-    bottom: 40px
-    left: 115px
-    width: 105px
-    height: 105px
-
-@media (max-width: 767px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail:nth-child(6)
-    position: relative
-    top: 0
-    width: calc(33.33% - 30px)
-    height: auto
-    margin-right: 30px
-    left: 0      
-
-@media (max-width: 1100px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail.active
-    box-shadow: none
-
-@keyframes pulse
-  0%
-    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1)
-    opacity: 1
-
-  100%
-    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5)
-    opacity: 0
-
-
-@media (max-width: 991px)
-  @keyframes pulse
-    0%
-      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1)
-      opacity: 0
-
-    100%
-      transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.2)
-      opacity: 0
-
-@media (max-width: 768px)
-  .featureSlider .image-gallery-content .image-gallery-thumbnails-wrapper .image-gallery-thumbnails-container .image-gallery-thumbnail.active img
-    margin: 10px 0  
-
-
-
+@media only screen and (max-width: 767px)
+  .steps
+    &::before
+      content: none
