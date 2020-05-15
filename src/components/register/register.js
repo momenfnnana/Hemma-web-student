@@ -16,7 +16,6 @@ import {
   loginFailed
 } from "../../actions/login.actions";
 import { Helmet } from "react-helmet";
-import { selectField } from "../shared/inputs/selectField";
 import { Api } from "../../api";
 import axios from "axios";
 import { apiBaseUrl } from "../../api/helpers";
@@ -245,34 +244,34 @@ class RegisterComponent extends Component {
             {this.state.hidden ? (
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
-                width="100%"
                 width="20"
                 className="position-absolute left-input-icon"
                 onClick={this.togglePasswordShow}
+                alt="icon"
               />
             ) : (
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-                width="100%"
                 width="20"
                 className="position-absolute left-input-icon custom-top"
                 onClick={this.togglePasswordShow}
+                alt="icon"
               />
             )}
           </div>
 
-          {/* <Field
+          <Field
             name="email"
             type="email"
             component={inputField}
             className="form-control border-left-0 pl-0 ltr-input"
-            placeholder="البريد الإلكتروني"
+            placeholder="البريد الإلكتروني (اختياري)"
             validate={emailValue}
           >
             <FaRegEnvelope />
           </Field>
 
-        <Field
+          {/* <Field
             component={selectField}
             className="form-control"
             name="saCityId"
