@@ -28,7 +28,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-1"
                         >
                           <span className="badge">1</span>
-                          كيف تكون طريقة الدورات؟
+                          أكاديمية همة التعليمية ماذا تقدم؟
                         </h5>
                       </div>
                     </div>
@@ -40,22 +40,29 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-2">
-                          من مميزات دوراتنا واللي نقدمها لمشتركينا
+                          دورات تدريبة مكثفة، تساعدك على إجتياز الاختبارات
+                          التالية :
                         </p>
-                        <ul className="mb-0">
+                        <ul className="mb-1">
                           <li className="dark-silver-text small text-break">
-                            البث المباشر والتدريب المكثف
+                            الرخصة المهنية التعليمية
                           </li>
                           <li className="dark-silver-text small text-break">
-                            ملزمة شاملة{" "}
+                            القدرات العامة
                           </li>
                           <li className="dark-silver-text small text-break">
-                            اختبارات دورية
+                            التحصيلي 
                           </li>
                           <li className="dark-silver-text small text-break">
-                            مناقشات ودردشة جماعية مع زملائك
+                            القدره المعرفية
+                          </li>
+                          <li className="dark-silver-text small text-break">
+                            قدرات الجامعيين
                           </li>
                         </ul>
+                        <p className="dark-silver-text small text-break mb-0">
+                          وكذلك نقدم دورات لإعداد معلمات التربية البدنية
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -70,7 +77,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-2"
                         >
                           <span className="badge">2</span>
-                          هل يجب علي حضور البث المباشر؟
+                          كيف أشترك بالدورة؟
                         </h5>
                       </div>
                     </div>
@@ -81,9 +88,15 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <p className="dark-silver-text small text-break mb-0">
-                          لا، على حسب الدورة المسجل بعض الدورات فقط مباشر
-                        </p>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/faq/subscribe.png"
+                          }
+                          className="contain-img"
+                          width="100%"
+                          alt="faq"
+                        />
                       </div>
                     </div>
                   </div>
@@ -98,7 +111,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-3"
                         >
                           <span className="badge">3</span>
-                          كيف يمكنني الانضمام للبث المباشر؟
+                          ما هي طريقة دوراتنا؟
                         </h5>
                       </div>
                     </div>
@@ -109,39 +122,15 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <div className="row">
-                          <div className="col-md-12">
-                            <p className="dark-silver-text small text-break mb-0">
-                              عن طريق اللابتوب:
-                            </p>
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/faq/laptop.png"
-                              }
-                              className="contain-img"
-                              width="100%"
-                              alt="faq"
-                            />
-                          </div>
-                        </div>
-                        <hr />
-                        <div className="row">
-                          <div className="col-md-12">
-                            <p className="dark-silver-text small text-break mb-0">
-                              عن طريق الجوال:
-                            </p>
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/faq/mobile.png"
-                              }
-                              className="contain-img"
-                              width="100%"
-                              alt="faq"
-                            />
-                          </div>
-                        </div>
+                        <p className="dark-silver-text small text-break mb-0">
+                          دوراتنا اونلاين تتابعها وأنت في بيتك عن الموقع
+                          الالكتروني{" "}
+                          <span className="en-text light-text mr-1" dir="ltr">
+                            hemma.sa
+                          </span>
+                          ونقدم محاضرات بث مباشر يُحفظ في صفحتك لاحقا، او
+                          متابعتها عن طريق المحاضرات المسجله ..{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -157,7 +146,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-4"
                         >
                           <span className="badge">4</span>
-                          كيف يمكنني مشاهدة المحاضرات المسجلة؟
+                          بماذا تتميز الدورات؟
                         </h5>
                       </div>
                     </div>
@@ -170,17 +159,22 @@ export default class FAQ extends Component {
                       <div className="card-body">
                         <ul className="mb-0">
                           <li className="dark-silver-text small text-break">
-                            سجل دخول في الموقع ب رقم جوالك وكلمة السر
+                            مادة علمية مكثفة وشاملة للمعايير
                           </li>
                           <li className="dark-silver-text small text-break">
-                            ادخل أيقونة دوراتي
+                            بث مباشر للمحاضرات{" "}
                           </li>
                           <li className="dark-silver-text small text-break">
-                            قم باختيار دورتك
+                            حقيبة تعليمية شاملة{" "}
                           </li>
                           <li className="dark-silver-text small text-break">
-                            راح تظهرلك قائمة اختر أيقونة المحاضرات المسجلة
-                            ومشاهدة ممتعة
+                            اختبارات دورية
+                          </li>
+                          <li className="dark-silver-text small text-break">
+                            مناقشات عامة بين المشتركين{" "}
+                          </li>
+                          <li className="dark-silver-text small text-break">
+                            مناقشات مع المدرب{" "}
                           </li>
                         </ul>
                       </div>
@@ -198,7 +192,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-5"
                         >
                           <span className="badge">5</span>
-                          هل يوجد كتاب أو مرجع للدورة؟
+                          هل جميع الدورات بث مباشر؟{" "}
                         </h5>
                       </div>
                     </div>
@@ -210,7 +204,9 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          نعم، بالتأكيد ومرجعك شامل سيكون
+                          حسب الدورة المُسجل فيها، يوجد دورات بث مباشر وبعد البث
+                          تنزل مسجلة في صفحتك، ودورات أخرى تُقدم فيها المحاضرات
+                          مسجلة فقط، ودورات تُقدم بث مباشر فقط
                         </p>
                       </div>
                     </div>
@@ -227,7 +223,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-6"
                         >
                           <span className="badge">6</span>
-                          متى تبدأ الدورة؟
+                          هل يتوجب علي حضور البث المباشر؟{" "}
                         </h5>
                       </div>
                     </div>
@@ -238,9 +234,13 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
+                        <p className="dark-silver-text small text-break mb-1">
+                          1-في حاله كانت الدورة المشترك فيها تعتمد على البث
+                          المباشر فقط ، فيجب عليك الحضور في الوقت المحدد للبث.
+                        </p>
                         <p className="dark-silver-text small text-break mb-0">
-                          لكل دورة موعد مختلف ,تواصل مع الدعم الفني لمعرفة
-                          المواعيد أو اشترك بالنشرة البريدية، نسعد بخدمتك
+                          2- في حاله كانت مشترك في دورة تحفظ فيها المحاضرات بعد
+                          البث مسجلة فلا يتوجب حضورك ، ويمكنك مشاهدتها لاحقا.
                         </p>
                       </div>
                     </div>
@@ -257,7 +257,8 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-7"
                         >
                           <span className="badge">7</span>
-                          كم مدة الدورة؟
+                          كيف يمكنني الإنضمام للبث المباشر عن طريق جهاز الجوال
+                          او الايباد؟{" "}
                         </h5>
                       </div>
                     </div>
@@ -268,9 +269,15 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <p className="dark-silver-text small text-break mb-0">
-                          المدة الزمنية مختلفة بين كل دورة وأخرى
-                        </p>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/faq/mobile.png"
+                          }
+                          className="contain-img"
+                          width="100%"
+                          alt="faq"
+                        />
                       </div>
                     </div>
                   </div>
@@ -286,7 +293,8 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-8"
                         >
                           <span className="badge">8</span>
-                          تجارب وآراء المشتركين وين القاها؟
+                          كيف يمكنني الإنضمام للبث المباشر عن طريق جهاز
+                          االلابتوب؟
                         </h5>
                       </div>
                     </div>
@@ -297,12 +305,15 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <p className="dark-silver-text small text-break mb-0">
-                          زر حسابنا على التويتر، نسعد بمرورك{" "}
-                          <span className="en-text light-text" dir="ltr">
-                            @hemmaEdu
-                          </span>
-                        </p>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/faq/laptop.png"
+                          }
+                          className="contain-img"
+                          width="100%"
+                          alt="faq"
+                        />
                       </div>
                     </div>
                   </div>
@@ -318,7 +329,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-9"
                         >
                           <span className="badge">9</span>
-                          كيف أسجل بالدورة؟
+                          كيف يمكنني مشاهدة المحاضرات المسجلة؟
                         </h5>
                       </div>
                     </div>
@@ -329,22 +340,30 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/faq/subscribe.png"
-                          }
-                          className="contain-img"
-                          width="100%"
-                          alt="faq"
-                        />
+                        <p className="dark-silver-text small text-break mb-2">
+                          إتبع الخطوات التالية :{" "}
+                        </p>
+                        <ul className="mb-1">
+                          <li className="dark-silver-text small text-break">
+                            سجل دخول في الموقع بإستخدام رقم جوالك وكلمة المرور{" "}
+                          </li>
+                          <li className="dark-silver-text small text-break">
+                            ادخل أيقونة دوراتي 
+                          </li>
+                          <li className="dark-silver-text small text-break">
+                            قم بإختيار دورتك
+                          </li>
+                          <li className="dark-silver-text small text-break">
+                            سوف تظهر لك قائمة على يمين الشاشة، اختر أيقونة
+                            المحاضرات المسجلة
+                          </li>
+                        </ul>
+                        <p className="dark-silver-text small text-break mb-0">
+                          ومشاهدة ممتعة 💓
+                        </p>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="faq" id="accordion">
                   <div className="card">
                     <div className="card-header" id="faqHeading-10">
                       <div className="mb-0">
@@ -356,7 +375,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-10"
                         >
                           <span className="badge">10</span>
-                          ما هو رقم الحساب البنكي؟
+                          هل يوجد كتاب أو ملزمة للدورة؟
                         </h5>
                       </div>
                     </div>
@@ -367,19 +386,16 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/faq/banks.png"
-                          }
-                          className="contain-img"
-                          width="100%"
-                          alt="faq"
-                        />
+                        <p className="dark-silver-text small text-break mb-0">
+                          نعم، لكل دورة حقيبة علمية شاملة لمحتوى الدورة{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
-
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="faq" id="accordion">
                   <div className="card">
                     <div className="card-header" id="faqHeading-11">
                       <div className="mb-0">
@@ -391,7 +407,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-11"
                         >
                           <span className="badge">11</span>
-                          مدة تأكيد الطلب؟
+                          اين أجد الملزمه الخاصه بالدورة ؟
                         </h5>
                       </div>
                     </div>
@@ -403,7 +419,8 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          من ٢٤-٤٨ ساعة
+                          الملزمة الإلكترونيه موجودة في ايقونة اختصر وقتك بصيغة
+                          pdf ، ويمكنك طباعتها .{" "}
                         </p>
                       </div>
                     </div>
@@ -420,7 +437,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-12"
                         >
                           <span className="badge">12</span>
-                          هل يتطلب الاتصال شبكة إنترنت ممتازة؟
+                          اين أجد الإختبارات الإلكترونية وحلولها؟
                         </h5>
                       </div>
                     </div>
@@ -432,7 +449,9 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          نعم، ضروري يكون اتصالك ممتاز
+                          في ايقونة الاختبارات الإلكترونية في صفحتك بالموقع،
+                          ويمكن الاطلاع على حلول الأسئلة، بالضغط على ايقونة
+                          طريقة الحل.{" "}
                         </p>
                       </div>
                     </div>
@@ -449,7 +468,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-13"
                         >
                           <span className="badge">13</span>
-                          هل يمكنني الانسحاب من الدورة؟
+                          تجارب وآراء المشتركين اين اجدها؟
                         </h5>
                       </div>
                     </div>
@@ -461,8 +480,10 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          لا، بعد ما يتم تأكيد طلبك لا مجال للانسحاب مهما كان
-                          العذر
+                          زر حسابنا على التويتر، نسعد بمرورك{" "}
+                          <span className="en-text light-text" dir="ltr">
+                            @hemmaEdu
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -479,7 +500,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-14"
                         >
                           <span className="badge">14</span>
-                          اقدر اشترك مع أخوي أو أي شخص آخر بالحساب؟
+                          كيف أدفع مبلغ الدورة؟
                         </h5>
                       </div>
                     </div>
@@ -490,9 +511,19 @@ export default class FAQ extends Component {
                       data-parent="#accordion"
                     >
                       <div className="card-body">
-                        <p className="dark-silver-text small text-break mb-0">
-                          لا، الحساب حق لمشترك واحد
+                        <p className="dark-silver-text small text-break mb-1">
+                          يمكنك الدفع عن طريق التحويل لأحد حسابتنا البنكية .. او
+                          الدفع عن طريقة بطاقة الفيزا، او الماستركارد أو مدى .
                         </p>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/faq/banks.png"
+                          }
+                          className="contain-img"
+                          width="100%"
+                          alt="faq"
+                        />
                       </div>
                     </div>
                   </div>
@@ -508,7 +539,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-15"
                         >
                           <span className="badge">15</span>
-                          هل يمكنني التقسيط؟
+                          مدة تأكيد الإشتراك بالدورة ؟
                         </h5>
                       </div>
                     </div>
@@ -520,7 +551,7 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          بعض الدورات متاح فيها إمكانية التقسيط
+                          يستغرق تأكيد إشتراكك بالدورة من 24-48 ساعة  {" "}
                         </p>
                       </div>
                     </div>
@@ -537,7 +568,8 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-16"
                         >
                           <span className="badge">16</span>
-                          هل تبقى المحاضرات بعد نهاية المدة؟
+                          هل يتطلب مشاهدة البث والمحاضرات المسجلة شبكة انترنت
+                          ممتازة؟  
                         </h5>
                       </div>
                     </div>
@@ -549,7 +581,7 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          لا تكون مفعلة فقط خلال مدة الاشتراك
+                          نعم .. يتطلب مشاهدة المحاضرات اتصال انترنت سريع .. {" "}
                         </p>
                       </div>
                     </div>
@@ -566,7 +598,7 @@ export default class FAQ extends Component {
                           data-aria-controls="faqCollapse-17"
                         >
                           <span className="badge">17</span>
-                          هل يوجد كوبون خصم؟
+                          هل يمكنني الانسحاب من الدورة؟ 
                         </h5>
                       </div>
                     </div>
@@ -578,7 +610,97 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          لا يوجد كوبونات حالية، يتم الإعلان عنها فور توفرها
+                          يمكنك الانسحاب قبل بدء الدورة، ويُرفض ذلك بعد بدء
+                          الدورة مباشره
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card">
+                    <div className="card-header" id="faqHeading-18">
+                      <div className="mb-0">
+                        <h5
+                          className="faq-title dark-text mb-0 small"
+                          data-toggle="collapse"
+                          data-target="#faqCollapse-18"
+                          data-aria-expanded="true"
+                          data-aria-controls="faqCollapse-18"
+                        >
+                          <span className="badge">18</span>
+                          هل استطيع الاشتراك انا وصديقي او احد اقاربي في حساب
+                          واحد؟
+                        </h5>
+                      </div>
+                    </div>
+                    <div
+                      id="faqCollapse-18"
+                      className="collapse"
+                      aria-labelledby="faqHeading-18"
+                      data-parent="#accordion"
+                    >
+                      <div className="card-body">
+                        <p className="dark-silver-text small text-break mb-0">
+                          لا، الدورة متاحة لمشترك واحد فقط
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card">
+                    <div className="card-header" id="faqHeading-19">
+                      <div className="mb-0">
+                        <h5
+                          className="faq-title dark-text mb-0 small"
+                          data-toggle="collapse"
+                          data-target="#faqCollapse-19"
+                          data-aria-expanded="true"
+                          data-aria-controls="faqCollapse-19"
+                        >
+                          <span className="badge">19</span>
+                          هل يمكنني الدفع عن طريق الأقساط؟
+                        </h5>
+                      </div>
+                    </div>
+                    <div
+                      id="faqCollapse-19"
+                      className="collapse"
+                      aria-labelledby="faqHeading-19"
+                      data-parent="#accordion"
+                    >
+                      <div className="card-body">
+                        <p className="dark-silver-text small text-break mb-0">
+                          خدمة الدفع بالأقساط متاحة لبعض الدورات..
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="card">
+                    <div className="card-header" id="faqHeading-20">
+                      <div className="mb-0">
+                        <h5
+                          className="faq-title dark-text mb-0 small"
+                          data-toggle="collapse"
+                          data-target="#faqCollapse-20"
+                          data-aria-expanded="true"
+                          data-aria-controls="faqCollapse-20"
+                        >
+                          <span className="badge">20</span>
+                          إلى متى تبقى المحاضرات في حسابي؟{" "}
+                        </h5>
+                      </div>
+                    </div>
+                    <div
+                      id="faqCollapse-20"
+                      className="collapse"
+                      aria-labelledby="faqHeading-20"
+                      data-parent="#accordion"
+                    >
+                      <div className="card-body">
+                        <p className="dark-silver-text small text-break mb-0">
+                          محاضرات الدورة تبقى في حسابك حتى وقت الإختبار، ثم يتم
+                          حذفها بشكل تلقائي ..{" "}
                         </p>
                       </div>
                     </div>
