@@ -35,7 +35,8 @@ class MessageInput extends Component {
       isRecording: false,
       isPaused: false,
       file: null,
-      recordingLoaded: false
+      recordingLoaded: false,
+      sendingFile: false
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.emojiPicker = React.createRef();
@@ -157,7 +158,8 @@ class MessageInput extends Component {
 
   onFileInputChange(file) {
     this.setState({
-      file: URL.createObjectURL(file)
+      file: URL.createObjectURL(file),
+      sendingFile: true
     });
     let data = new FormData();
     data.append("file", file);
@@ -165,13 +167,14 @@ class MessageInput extends Component {
       if (this.props.activeChannel === "sid") {
         client.getChannelBySid(this.props.activeChannelId).then(channel => {
           channel.sendMessage(data);
-          // channel.on("messageAdded", this.messageAdded);
+          this.setState({ sendingFile: false });
         });
       } else if (this.props.activeChannel === "uniqueName") {
         client
           .getChannelByUniqueName(this.props.activeChannelId)
           .then(channel => {
             channel.sendMessage(data);
+            this.setState({ sendingFile: false });
           });
       }
     });
@@ -241,14 +244,22 @@ class MessageInput extends Component {
                 />
                 <li className="list-inline-item clickable">
                   <label htmlFor="attachFile" className="clickable w-100">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/attachment.png"
-                      }
-                      alt="Attach"
-                      height="20"
-                      className="contain-img"
-                    />
+                    {this.state.sendingFile ? (
+                      <Loader
+                        type="ball-clip-rotate"
+                        className="light-loader"
+                      />
+                    ) : (
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/attachment.png"
+                        }
+                        alt="Attach"
+                        height="20"
+                        className="contain-img"
+                      />
+                    )}
                     <Field
                       component={FileInput}
                       name="attachment"
