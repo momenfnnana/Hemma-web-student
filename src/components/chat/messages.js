@@ -91,6 +91,7 @@ class MessagesList extends Component {
   }
 
   componentDidMount = async () => {
+    this.scrollToBottom();
     this.props.getUser();
     if (this.props.activeChannelId) {
       this.bindToChannel();
@@ -146,6 +147,7 @@ class MessagesList extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
+    this.scrollToBottom();
     if (prevProps.activeChannelId !== this.props.activeChannelId) {
       await this.unsubFromChannel(
         prevProps.activeChannel,
@@ -164,11 +166,13 @@ class MessagesList extends Component {
     }));
   }
 
-  newMessageAdded = div => {
-    this.loadUsers();
-    if (div) {
-      div.scrollIntoView({ block: "nearest" });
-    }
+  scrollToBottom = () => {
+    this.messagesEnd &&
+      this.messagesEnd.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start"
+      });
   };
 
   render() {
@@ -179,9 +183,9 @@ class MessagesList extends Component {
       const user = this.getUser(message.author);
       return (
         <React.Fragment>
-          {message.author == myIdentity ? (
+          {message.author === myIdentity ? (
             <li className="mb-3">
-              {message.type == "image" && (
+              {message.type === "image" && (
                 <div className="message my-message text-white light-font-text bg-transparent">
                   <img
                     src={message.url}
@@ -197,7 +201,7 @@ class MessagesList extends Component {
                   </span>
                 </div>
               )}
-              {message.type == "text" && (
+              {message.type === "text" && (
                 <div className="message my-message text-white light-font-text">
                   {message.body}{" "}
                   <span
@@ -208,7 +212,7 @@ class MessagesList extends Component {
                   </span>
                 </div>
               )}
-              {message.type == "audio" && message.url && (
+              {message.type === "audio" && message.url && (
                 <div className="message my-message text-white light-font-text bg-transparent">
                   <audio controls className="w-100">
                     <source src={message.url} />
@@ -223,14 +227,14 @@ class MessagesList extends Component {
               )}
             </li>
           ) : (
-            <li className="clearfix mb-3" ref={this.newMessageAdded}>
+            <li className="clearfix mb-3">
               <div className="message-data">
                 {user && (
                   <span className="message-data-name small">{user.name}</span>
                 )}
               </div>
               <div className="d-flex justify-content-end">
-                {message.type == "image" && (
+                {message.type === "image" && (
                   <div className="message other-message dark-text light-font-text bg-transparent">
                     <img
                       src={message.url}
@@ -246,7 +250,7 @@ class MessagesList extends Component {
                     </span>
                   </div>
                 )}
-                {message.type == "text" && (
+                {message.type === "text" && (
                   <div className="message other-message dark-text light-font-text">
                     {message.body}{" "}
                     <span
@@ -257,7 +261,7 @@ class MessagesList extends Component {
                     </span>
                   </div>
                 )}
-                {message.type == "audio" && message.url && (
+                {message.type === "audio" && message.url && (
                   <div className="message other-message dark-text light-font-text bg-transparent">
                     <audio controls className="w-100">
                       <source src={message.url} />
@@ -281,6 +285,11 @@ class MessagesList extends Component {
               </div>
             </li>
           )}
+          <li
+            ref={el => {
+              this.messagesEnd = el;
+            }}
+          ></li>
         </React.Fragment>
       );
     });
