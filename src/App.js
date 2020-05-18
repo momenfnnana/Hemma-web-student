@@ -11,6 +11,7 @@ import Intercom from "./Intercom";
 import TwilioComponent from "./Twilio";
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
+import jwtDecode from "jwt-decode";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -32,6 +33,12 @@ export default class AppComponent extends Component {
       .catch(error => {
         console.log(error);
       });
+
+    // Check for token expiration and redirect user to login if token is expired.
+    if (token && jwtDecode(token).exp < Date.now() / 1000) {
+      localStorage.clear();
+      this.props.history.push("/auth/login");
+    }
   }
 
   initializeReactGA() {
