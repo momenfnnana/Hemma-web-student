@@ -6,6 +6,8 @@ import "emoji-mart/css/emoji-mart.css";
 import { changeChannel } from "../../actions/chat.actions";
 import { connect } from "react-redux";
 import ReactDOM from "react-dom";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -32,7 +34,8 @@ class MessageInput extends Component {
       blobObject: null,
       isRecording: false,
       isPaused: false,
-      file: null
+      file: null,
+      recordingLoaded: false
     };
     this.sendMessage = this.sendMessage.bind(this);
     this.emojiPicker = React.createRef();
@@ -130,14 +133,17 @@ class MessageInput extends Component {
   };
 
   onStop(blobObject) {
+    this.setState({ recordingLoaded: true });
     let data = new FormData();
     data.append("file", blobObject.blob);
     this.props.twilio.chatClient.then(client => {
       if (this.props.activeChannel === "sid") {
         client.getChannelBySid(this.props.activeChannelId).then(channel => {
           channel.sendMessage(data);
+          this.setState({ recordingLoaded: false });
         });
       } else if (this.props.activeChannel === "uniqueName") {
+        this.setState({ recordingLoaded: false });
         client
           .getChannelByUniqueName(this.props.activeChannelId)
           .then(channel => {
@@ -192,24 +198,41 @@ class MessageInput extends Component {
             <div className="options">
               <ul className="list-unstyled list-inline mb-0">
                 <li className="list-inline-item clickable">
-                  {isRecording ? (
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/mute.png"}
-                      alt="Record"
-                      height="23"
-                      className="contain-img"
-                      disabled={!isRecording}
-                      onClick={this.stopRecording}
-                    />
-                  ) : (
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/record.png"}
-                      alt="Record"
-                      height="23"
-                      className="contain-img"
-                      onClick={this.startOrPauseRecording}
-                    />
-                  )}
+                  <>
+                    {this.state.recordingLoaded ? (
+                      <Loader
+                        type="ball-clip-rotate"
+                        className="light-loader"
+                      />
+                    ) : (
+                      <>
+                        {isRecording ? (
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/blue-mute.png"
+                            }
+                            alt="Record"
+                            height="23"
+                            className="contain-img"
+                            disabled={!isRecording}
+                            onClick={this.stopRecording}
+                          />
+                        ) : (
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/dark-mic.png"
+                            }
+                            alt="Record"
+                            height="23"
+                            className="contain-img"
+                            onClick={this.startOrPauseRecording}
+                          />
+                        )}
+                      </>
+                    )}
+                  </>
                 </li>
                 <ReactMic
                   record={isRecording}
