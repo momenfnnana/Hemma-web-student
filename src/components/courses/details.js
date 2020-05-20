@@ -8,14 +8,14 @@ import {
 } from "react-accessible-accordion";
 import swal from "@sweetalert/with-react";
 import ReactPlayer from "react-player";
-import StarRatingComponent from "react-star-rating-component";
 import Modal from "react-modal";
 import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
-import "./styles.sass";
 import RecordingVideo from "./recording-video";
+import "./styles.sass";
+import { PageLoader } from "./page-loader";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -28,7 +28,8 @@ export class CourseDetails extends Component {
       checked: false,
       modalIsOpen: false,
       recordingModalIsOpen: false,
-      recordingUrl: null
+      recordingUrl: null,
+      isPageLoading: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -51,15 +52,17 @@ export class CourseDetails extends Component {
   }
 
   componentDidMount() {
+    this.setState({ isPageLoading: true });
     const {
       match: { params }
     } = this.props;
     axios
       .get(`${apiBaseUrl}/courses/${params.slug}`)
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data, isPageLoading: false });
       })
       .catch(error => {
+        this.setState({ isPageLoading: false });
         console.log(error);
       });
   }
@@ -101,6 +104,9 @@ export class CourseDetails extends Component {
                     swal("عفواً", "لا يمكن شراء الدورة أكثر من مرة", "error", {
                       button: "متابعة"
                     });
+                    break;
+                  default:
+                    console.log(error);
                     break;
                 }
               });
@@ -334,297 +340,313 @@ export class CourseDetails extends Component {
     var hijriDate = moment(courseDate).format("iYYYY/iM/iD");
 
     return (
-      <React.Fragment>
-        <Helmet>
-          <title>{`دورة ${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
-          <meta name="description" content={this.state.details.descriptionAr} />
-        </Helmet>
-        <section className="pt-5 pb-5">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-4">
-                <div className="white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
-                  <div className="position-relative">
-                    {this.state.details.videoUrl ? (
-                      <React.Fragment>
+      <>
+        {this.state.isPageLoading ? (
+          <PageLoader />
+        ) : (
+          <React.Fragment>
+            <Helmet>
+              <title>{`دورة ${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
+              <meta
+                name="description"
+                content={this.state.details.descriptionAr}
+              />
+            </Helmet>
+            <section className="pt-5 pb-5">
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-4">
+                    <div className="white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
+                      <div className="position-relative">
+                        {this.state.details.videoUrl ? (
+                          <React.Fragment>
+                            <ReactPlayer
+                              url={this.state.details.videoUrl}
+                              playing={false}
+                              controls={false}
+                              width="100%"
+                              height="100%"
+                            />
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/play-button.png"
+                              }
+                              height="50"
+                              className="position-absolute play-btn clickable"
+                              onClick={this.openModal}
+                              alt="Play"
+                            />
+                          </React.Fragment>
+                        ) : (
+                          <img
+                            src={this.state.details.bannerUrl}
+                            height="180"
+                            width="100%"
+                            className="mb-3 rounded cover-img"
+                            alt={this.state.details.nameAr}
+                          />
+                        )}
+                      </div>
+                      <Modal
+                        style={customStyles}
+                        ariaHideApp={false}
+                        isOpen={this.state.modalIsOpen}
+                        onRequestClose={this.closeModal}
+                      >
                         <ReactPlayer
                           url={this.state.details.videoUrl}
-                          playing={false}
-                          controls={false}
+                          playing={true}
+                          controls={true}
                           width="100%"
                           height="100%"
                         />
+                      </Modal>
+
+                      <div className="container">
+                        <div className="d-inline-flex align-items-center">
+                          <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
+                          <h4 className="mid-text">
+                            <span className="en-text">
+                              {this.state.details.price &&
+                                parseFloat(this.state.details.price.toFixed(2))}
+                            </span>{" "}
+                            ريال
+                          </h4>
+                        </div>
+                        {this.state.details.purchasable && (
+                          <button
+                            type="button"
+                            className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
+                            onClick={() =>
+                              this.addToCart(this.state.details.id)
+                            }
+                          >
+                            اشترك الآن
+                          </button>
+                        )}
+                        <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
+                        <ul className="list-unstyled">
+                          {this.state.details &&
+                          this.state.details.durationTextAr ? (
+                            <li className="small dark-text mb-2">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/clock.png"
+                                }
+                                className="mr-2"
+                                height="15"
+                                alt="Duration"
+                              />
+                              {this.state.details.durationTextAr}
+                            </li>
+                          ) : null}
+
+                          {this.state.details &&
+                          this.state.details.validityTextAr ? (
+                            <li className="small dark-text mb-2">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/quarters.png"
+                                }
+                                className="mr-2"
+                                height="15"
+                                alt="Quarters"
+                              />{" "}
+                              {this.state.details.validityTextAr}
+                            </li>
+                          ) : null}
+
+                          {courseDate ? (
+                            <li className="small dark-text mb-2">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/calendar.png"
+                                }
+                                className="mr-2"
+                                height="15"
+                                alt="Calendar"
+                              />{" "}
+                              <span className="en-text">{hijriDate}</span>
+                            </li>
+                          ) : null}
+
+                          {this.state.details &&
+                          this.state.details.scheduleTextAr ? (
+                            <li className="small dark-text mb-2">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/calendar.png"
+                                }
+                                className="mr-2"
+                                height="15"
+                                alt="Calendar"
+                              />{" "}
+                              {this.state.details.scheduleTextAr}
+                            </li>
+                          ) : null}
+
+                          {this.state.details &&
+                          this.state.details.companionBook ? (
+                            <li className="small dark-text mb-2">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/diary.png"
+                                }
+                                className="mr-2"
+                                height="18"
+                                alt="Diary"
+                              />{" "}
+                              <span className="en-text">
+                                {this.state.details &&
+                                  this.state.details.companionBook &&
+                                  this.state.details.companionBook.price &&
+                                  parseFloat(
+                                    this.state.details.companionBook.price.toFixed(
+                                      2
+                                    )
+                                  )}
+                              </span>{" "}
+                              ريال
+                            </li>
+                          ) : null}
+                        </ul>
+                      </div>
+                    </div>
+                    {this.state.details.schedulePosterUrl && (
+                      <div
+                        className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
+                        onClick={() =>
+                          window.open(
+                            `${this.state.details.schedulePosterUrl}`,
+                            "_blank"
+                          )
+                        }
+                      >
                         <img
                           src={
                             process.env.PUBLIC_URL +
-                            "/assets/images/play-button.png"
+                            "/assets/images/file-white.png"
                           }
-                          height="50"
-                          className="position-absolute play-btn clickable"
-                          onClick={this.openModal}
-                          alt="Play"
-                        />
+                          className="mr-2"
+                          height="25"
+                          alt="File"
+                        />{" "}
+                        <h6 className="text-white mb-0 mt-0 light-font-text">
+                          تنزيل جدول الدورة
+                        </h6>
+                      </div>
+                    )}
+
+                    {this.state.details.instructors == undefined ||
+                    this.state.details.instructors == 0 ? null : (
+                      <div className="box-layout w-100 radius-bottom-0 border-bottom-0">
+                        <div className="silver-bg d-flex align-items-center p-3">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/instructors.png"
+                            }
+                            className="mr-2"
+                            height="20"
+                            alt="Instructors"
+                          />
+                          <h6 className="dark-text small mb-0">المدربين</h6>
+                        </div>
+                        <hr className="mt-0 mb-0" />
+
+                        <div>{this.renderInstructors()}</div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="col-md-8">
+                    <div className="row">
+                      <div className="col-12">
+                        <h3 className="mid-text">
+                          {this.state.details.nameAr}
+                        </h3>
+                        <Link
+                          className="dark-text"
+                          to={`/categories/details/${this.state.details &&
+                            this.state.details.category &&
+                            this.state.details.category.slug}`}
+                        >
+                          {this.state.details &&
+                            this.state.details.category &&
+                            this.state.details.category.nameAr}
+                        </Link>
+                        <p className="small dark-text light-font-text w-75 mt-3 text-break">
+                          {this.state.details.descriptionAr}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="row">{this.renderFeatures()}</div>
+                    {this.state.details.sections == undefined ||
+                    this.state.details.sections == 0 ? (
+                      <React.Fragment>
+                        <div
+                          className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                          style={{ height: 250 }}
+                        >
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/event.png"
+                            }
+                            className="mb-3"
+                            height="60"
+                            alt="Course schedule"
+                          />{" "}
+                          <p className="silver-text">
+                            سيتم عرض جدول الدورة فور توفره{" "}
+                          </p>
+                        </div>
                       </React.Fragment>
                     ) : (
-                      <img
-                        src={this.state.details.bannerUrl}
-                        height="180"
-                        width="100%"
-                        className="mb-3 rounded cover-img"
-                        alt={this.state.details.nameAr}
-                      />
+                      this.renderSections()
                     )}
-                  </div>
-                  <Modal
-                    style={customStyles}
-                    ariaHideApp={false}
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                  >
-                    <ReactPlayer
-                      url={this.state.details.videoUrl}
-                      playing={true}
-                      controls={true}
-                      width="100%"
-                      height="100%"
-                    />
-                  </Modal>
-
-                  <div className="container">
-                    <div className="d-inline-flex align-items-center">
-                      <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
-                      <h4 className="mid-text">
-                        <span className="en-text">
-                          {this.state.details.price &&
-                            parseFloat(this.state.details.price.toFixed(2))}
-                        </span>{" "}
-                        ريال
-                      </h4>
+                    <div className="row mt-5">
+                      <div className="col-12">
+                        <h4 className="mid-text mb-2">الشروط والأحكام</h4>
+                        <p className="light-font-text dark-text small mb-1">
+                          1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب المشترك
+                          في{" "}
+                          <Link to="/" className="light-text">
+                            منصّة همّة
+                          </Link>
+                        </p>
+                        <p className="light-font-text dark-text small mb-1">
+                          2- لا تتحمل{" "}
+                          <Link to="/" className="light-text">
+                            منصّة همّة
+                          </Link>{" "}
+                          أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة
+                          ومشاهدته لتسجيل المحاضرات{" "}
+                        </p>
+                        <p className="light-font-text dark-text small mb-1">
+                          3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ
+                          انتهاء الاشتراك
+                        </p>
+                      </div>
                     </div>
-                    {this.state.details.purchasable && (
-                      <button
-                        type="button"
-                        className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
-                        onClick={() => this.addToCart(this.state.details.id)}
-                      >
-                        اشترك الآن
-                      </button>
-                    )}
-                    <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
-                    <ul className="list-unstyled">
-                      {this.state.details &&
-                      this.state.details.durationTextAr ? (
-                        <li className="small dark-text mb-2">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/clock.png"
-                            }
-                            className="mr-2"
-                            height="15"
-                            alt="Duration"
-                          />
-                          {this.state.details.durationTextAr}
-                        </li>
-                      ) : null}
-
-                      {this.state.details &&
-                      this.state.details.validityTextAr ? (
-                        <li className="small dark-text mb-2">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/quarters.png"
-                            }
-                            className="mr-2"
-                            height="15"
-                            alt="Quarters"
-                          />{" "}
-                          {this.state.details.validityTextAr}
-                        </li>
-                      ) : null}
-
-                      {courseDate ? (
-                        <li className="small dark-text mb-2">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            className="mr-2"
-                            height="15"
-                            alt="Calendar"
-                          />{" "}
-                          <span className="en-text">{hijriDate}</span>
-                        </li>
-                      ) : null}
-
-                      {this.state.details &&
-                      this.state.details.scheduleTextAr ? (
-                        <li className="small dark-text mb-2">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/calendar.png"
-                            }
-                            className="mr-2"
-                            height="15"
-                            alt="Calendar"
-                          />{" "}
-                          {this.state.details.scheduleTextAr}
-                        </li>
-                      ) : null}
-
-                      {this.state.details &&
-                      this.state.details.companionBook ? (
-                        <li className="small dark-text mb-2">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/diary.png"
-                            }
-                            className="mr-2"
-                            height="18"
-                            alt="Diary"
-                          />{" "}
-                          <span className="en-text">
-                            {this.state.details &&
-                              this.state.details.companionBook &&
-                              this.state.details.companionBook.price &&
-                              parseFloat(
-                                this.state.details.companionBook.price.toFixed(
-                                  2
-                                )
-                              )}
-                          </span>{" "}
-                          ريال
-                        </li>
-                      ) : null}
-                    </ul>
-                  </div>
-                </div>
-                {this.state.details.schedulePosterUrl && (
-                  <div
-                    className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
-                    onClick={() =>
-                      window.open(
-                        `${this.state.details.schedulePosterUrl}`,
-                        "_blank"
-                      )
-                    }
-                  >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/file-white.png"
-                      }
-                      className="mr-2"
-                      height="25"
-                      alt="File"
-                    />{" "}
-                    <h6 className="text-white mb-0 mt-0 light-font-text">
-                      تنزيل جدول الدورة
-                    </h6>
-                  </div>
-                )}
-
-                {this.state.details.instructors == undefined ||
-                this.state.details.instructors == 0 ? null : (
-                  <div className="box-layout w-100 radius-bottom-0 border-bottom-0">
-                    <div className="silver-bg d-flex align-items-center p-3">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/instructors.png"
-                        }
-                        className="mr-2"
-                        height="20"
-                        alt="Instructors"
-                      />
-                      <h6 className="dark-text small mb-0">المدربين</h6>
-                    </div>
-                    <hr className="mt-0 mb-0" />
-
-                    <div>{this.renderInstructors()}</div>
-                  </div>
-                )}
-              </div>
-              <div className="col-md-8">
-                <div className="row">
-                  <div className="col-12">
-                    <h3 className="mid-text">{this.state.details.nameAr}</h3>
-                    <Link
-                      className="dark-text"
-                      to={`/categories/details/${this.state.details &&
-                        this.state.details.category &&
-                        this.state.details.category.slug}`}
-                    >
-                      {this.state.details &&
-                        this.state.details.category &&
-                        this.state.details.category.nameAr}
-                    </Link>
-                    <p className="small dark-text light-font-text w-75 mt-3 text-break">
-                      {this.state.details.descriptionAr}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="row">{this.renderFeatures()}</div>
-                {this.state.details.sections == undefined ||
-                this.state.details.sections == 0 ? (
-                  <React.Fragment>
-                    <div
-                      className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
-                      style={{ height: 250 }}
-                    >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/event.png"
-                        }
-                        className="mb-3"
-                        height="60"
-                        alt="Course schedule"
-                      />{" "}
-                      <p className="silver-text">
-                        سيتم عرض جدول الدورة فور توفره{" "}
-                      </p>
-                    </div>
-                  </React.Fragment>
-                ) : (
-                  this.renderSections()
-                )}
-                <div className="row mt-5">
-                  <div className="col-12">
-                    <h4 className="mid-text mb-2">الشروط والأحكام</h4>
-                    <p className="light-font-text dark-text small mb-1">
-                      1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب المشترك في{" "}
-                      <Link to="/" className="light-text">
-                        منصّة همّة
-                      </Link>
-                    </p>
-                    <p className="light-font-text dark-text small mb-1">
-                      2- لا تتحمل{" "}
-                      <Link to="/" className="light-text">
-                        منصّة همّة
-                      </Link>{" "}
-                      أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة ومشاهدته
-                      لتسجيل المحاضرات{" "}
-                    </p>
-                    <p className="light-font-text dark-text small mb-1">
-                      3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ انتهاء
-                      الاشتراك
-                    </p>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-        <RecordingVideo
-          recordingUrl={this.state.recordingUrl}
-          modalIsOpen={this.state.recordingModalIsOpen}
-          toggleRecordingModal={this.toggleRecordingModal}
-        />
-      </React.Fragment>
+            </section>
+            <RecordingVideo
+              recordingUrl={this.state.recordingUrl}
+              modalIsOpen={this.state.recordingModalIsOpen}
+              toggleRecordingModal={this.toggleRecordingModal}
+            />
+          </React.Fragment>
+        )}
+      </>
     );
   }
 }
