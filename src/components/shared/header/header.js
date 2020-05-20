@@ -17,6 +17,7 @@ import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
 import { signOutAction } from "../../../actions/login.actions";
 import { getUser } from "../../../actions/user.actions";
+import jwtDecode from "jwt-decode";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -41,6 +42,12 @@ class HeaderComponent extends Component {
   componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
+    }
+    let token = localStorage.getItem("token");
+    // Check for token expiration and redirect user to login if token is expired.
+    if (token && jwtDecode(token).exp < Date.now() / 1000) {
+      localStorage.clear();
+      this.props.history.push("/auth/login");
     }
   }
 
