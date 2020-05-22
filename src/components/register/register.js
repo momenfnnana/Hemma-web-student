@@ -30,6 +30,14 @@ export const minLength = min => value =>
   value && value.length < min
     ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
     : undefined;
+const nameValue = value => {
+  value = value || "";
+  const trimmed = value.replace(/\s/g, "");
+  const valid = /^[\u0621-\u064A\w]{5,}$/.test(trimmed);
+
+  return valid ? undefined : "الاسم يجب أن يحتوي ٥ أحرف على الأقل";
+};
+
 export const minLength4 = minLength(4);
 const emailValue = value =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
@@ -135,7 +143,8 @@ class RegisterComponent extends Component {
   renderNationalities() {
     return this.state.nationalities.map(nationality => (
       <option key={nationality.id} value={nationality.id}>
-        {nationality.name}
+        {" "}
+        {nationality.name}{" "}
       </option>
     ));
   }
@@ -143,7 +152,8 @@ class RegisterComponent extends Component {
   renderCities() {
     return this.state.cities.map(city => (
       <option key={city.id} value={city.id}>
-        {city.nameAr}
+        {" "}
+        {city.nameAr}{" "}
       </option>
     ));
   }
@@ -151,7 +161,8 @@ class RegisterComponent extends Component {
   renderEntities() {
     return this.state.educationalEntities.map(entity => (
       <option key={entity.id} value={entity.id}>
-        {entity.name}
+        {" "}
+        {entity.name}{" "}
       </option>
     ));
   }
@@ -189,12 +200,12 @@ class RegisterComponent extends Component {
     return (
       <React.Fragment>
         <Helmet>
-          <title>إنشاء حساب | منصّة همّة التعليمية</title>
+          <title> إنشاء حساب | منصّ ة همّ ة التعليمية </title>{" "}
           <meta
             name="description"
             content="طالب أو معلّم؟ سجّل حسابك في منصّة همّة الآن, واختر دورتك المناسبة."
           />
-        </Helmet>
+        </Helmet>{" "}
         <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
           <Field
             name="username"
@@ -202,14 +213,12 @@ class RegisterComponent extends Component {
             component={inputField}
             className="form-control border-left-0 pl-0"
             placeholder="الاسم الكامل"
-            validate={[required]}
+            validate={[required, nameValue]}
           >
             <FaRegUser />
           </Field>
-
           <div className="mb-3">
-            <label className="pr-2 dark-silver-text mb-0">أنا: </label>
-
+            <label className="pr-2 dark-silver-text mb-0"> أنا: </label>
             <Field
               component={RadioField}
               name="gender"
@@ -218,8 +227,8 @@ class RegisterComponent extends Component {
                 { title: "ذكر", value: "male" },
                 { title: "أنثى", value: "female" }
               ]}
-            />
-          </div>
+            />{" "}
+          </div>{" "}
           <Field
             fieldName="phone"
             name="phone"
@@ -229,7 +238,6 @@ class RegisterComponent extends Component {
             defaultCountry="sa"
             validate={required}
           />
-
           <div className="position-relative">
             <Field
               name="password"
@@ -240,7 +248,7 @@ class RegisterComponent extends Component {
               validate={[required, maxLength10, minLength4]}
             >
               <MdLockOutline />
-            </Field>
+            </Field>{" "}
             {this.state.hidden ? (
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
@@ -257,9 +265,8 @@ class RegisterComponent extends Component {
                 onClick={this.togglePasswordShow}
                 alt="icon"
               />
-            )}
+            )}{" "}
           </div>
-
           <Field
             name="email"
             type="email"
@@ -270,64 +277,63 @@ class RegisterComponent extends Component {
           >
             <FaRegEnvelope />
           </Field>
-
           {/* <Field
-            component={selectField}
-            className="form-control"
-            name="saCityId"
-            onChange={this.handleCitiesChange}
-          >
-            <option selected="selected">المدينة</option>
-            {this.renderCities()}
-          </Field>
+                        component={selectField}
+                        className="form-control"
+                        name="saCityId"
+                        onChange={this.handleCitiesChange}
+                      >
+                        <option selected="selected">المدينة</option>
+                        {this.renderCities()}
+                      </Field>
 
-          <Field
-            component={selectField}
-            className="form-control"
-            name="educationalLevel"
-            onChange={this.handleLevelChange}
-          >
-            <option selected="selected">المستوى التعليمي</option>
-            <option value="Student">طالب</option>
-            <option value="Other">أخرى</option>
-          </Field>
+                      <Field
+                        component={selectField}
+                        className="form-control"
+                        name="educationalLevel"
+                        onChange={this.handleLevelChange}
+                      >
+                        <option selected="selected">المستوى التعليمي</option>
+                        <option value="Student">طالب</option>
+                        <option value="Other">أخرى</option>
+                      </Field>
 
-          <Field
-            component={selectField}
-            className="form-control"
-            name="educationalEntityId"
-            disabled={
-              !this.state.selectedCity ||
-              !this.state.selectedLevel ||
-              this.state.educationalEntities == undefined ||
-              this.state.educationalEntities.length == 0
-            }
-          >
-            <option selected="selected">الجهة التعليمية</option>
-            {this.renderEntities()}
-          </Field>
+                      <Field
+                        component={selectField}
+                        className="form-control"
+                        name="educationalEntityId"
+                        disabled={
+                          !this.state.selectedCity ||
+                          !this.state.selectedLevel ||
+                          this.state.educationalEntities == undefined ||
+                          this.state.educationalEntities.length == 0
+                        }
+                      >
+                        <option selected="selected">الجهة التعليمية</option>
+                        {this.renderEntities()}
+                      </Field>
 
-          <Field
-            component={selectField}
-            className="form-control"
-            name="nationalityId"
-          >
-            <option selected="selected">الجنسية</option>
-            {this.renderNationalities()}
-          </Field> */}
-
+                      <Field
+                        component={selectField}
+                        className="form-control"
+                        name="nationalityId"
+                      >
+                        <option selected="selected">الجنسية</option>
+                        {this.renderNationalities()}
+                      </Field> */}
           <button
             type="submit"
             className="btn dark-outline-btn w-100"
             disabled={submitting}
           >
+            {" "}
             {this.state.loading === true ? (
               <Loader type="ball-clip-rotate" />
             ) : (
               "تسجيل"
-            )}
-          </button>
-        </form>
+            )}{" "}
+          </button>{" "}
+        </form>{" "}
       </React.Fragment>
     );
   }
