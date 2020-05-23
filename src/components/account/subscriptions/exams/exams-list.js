@@ -3,13 +3,17 @@ import { Table } from "reactstrap";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
 export class ExamsList extends Component {
   state = {
-    exams: []
+    exams: [],
+    isPageLoading: false
   };
 
   componentDidMount = () => {
+    this.setState({ isPageLoading: true });
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
@@ -18,9 +22,10 @@ export class ExamsList extends Component {
     axios
       .get(`${apiBaseUrl}/Exams?courseId=${courseId}`, { headers })
       .then(response => {
-        this.setState({ exams: response.data.data });
+        this.setState({ exams: response.data.data, isPageLoading: false });
       })
       .catch(error => {
+        this.setState({ isPageLoading: false });
         console.log(error);
       });
   };
@@ -75,6 +80,15 @@ export class ExamsList extends Component {
   render() {
     const courseId = this.props.match.params.id;
     return (
+      <>
+      {this.state.isPageLoading ? (
+        <div
+        className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: 350 }}
+      >
+        <Loader type="ball-spin-fade-loader" className="dark-loader" />
+      </div>
+      ) : (
       <React.Fragment>
         <div className="row mb-4 no-gutters">
           <div className="col-12">
@@ -135,6 +149,8 @@ export class ExamsList extends Component {
           </div>
         </div>
       </React.Fragment>
+      )}
+      </>
     );
   }
 }
