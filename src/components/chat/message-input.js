@@ -156,7 +156,7 @@ class MessageInput extends Component {
       if (this.props.activeChannel === "sid") {
         client.getChannelBySid(this.props.activeChannelId).then(channel => {
           channel
-            .sendMessage(data)
+            .sendMessage({contentType: `${'audio/wav'}`, media:blobObject.blob})
             .then(() => {
               this.setState({ isSending: false });
             })
@@ -283,6 +283,8 @@ class MessageInput extends Component {
                   <ReactMic
                     record={isRecording}
                     pause={isPaused}
+                    channelCount={1}
+                    mimeType="audio/wav"
                     onStop={this.onStop}
                   />
                   <li className="list-inline-item clickable">
