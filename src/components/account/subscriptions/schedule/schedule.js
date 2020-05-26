@@ -11,16 +11,22 @@ import {
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { Link } from "react-router-dom";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss"; 
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
 export class Schedule extends Component {
   constructor(props) {
     super(props);
-    this.state = { details: [] };
+    this.state = { details: [],
+      isPageLoading: false
+     };
   }
 
   componentDidMount() {
+    this.setState({ isPageLoading: true });
     const courseId = this.props.match.params.id;
 
     let token = localStorage.getItem("token");
@@ -30,9 +36,10 @@ export class Schedule extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/content`, { headers })
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data, isPageLoading: false });
       })
       .catch(error => {
+        this.setState({ isPageLoading: false });
         console.log(error);
       });
   }
@@ -226,6 +233,15 @@ export class Schedule extends Component {
     //   ]
     // };
     return (
+      <>
+      {this.state.isPageLoading ? (
+        <div
+        className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: 350 }}
+      >
+        <Loader type="ball-spin-fade-loader" className="dark-loader" />
+      </div>
+      ) : (
       <React.Fragment>
         <div className="row no-gutters">
           {/* <div className="col-12 mb-4">
@@ -267,6 +283,8 @@ export class Schedule extends Component {
           )}
         </div>
       </React.Fragment>
+      )}
+      </>
     );
   }
 }
