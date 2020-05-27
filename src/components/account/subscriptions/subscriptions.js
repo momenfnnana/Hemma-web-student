@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
 import classnames from "classnames";
 import { SubscriptionsList } from "./list/subscriptions-list";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
 export class SubscriptionsComponent extends Component {
   constructor(props) {
@@ -14,7 +16,8 @@ export class SubscriptionsComponent extends Component {
     this.state = {
       details: [],
       subscriptions: [],
-      activeTab: "Active"
+      activeTab: "Active",
+      isPageLoading: false
     };
     this.setActiveTab = this.setActiveTab.bind(this);
   }
@@ -24,6 +27,7 @@ export class SubscriptionsComponent extends Component {
   }
 
   async componentDidMount() {
+    this.setState({ isPageLoading: true });
     this.props.getProfile();
     let token = localStorage.getItem("token");
     let headers = {
@@ -34,9 +38,10 @@ export class SubscriptionsComponent extends Component {
         headers
       })
       .then(response => {
-        this.setState({ subscriptions: response.data.data });
+        this.setState({ subscriptions: response.data.data, isPageLoading: false });
       })
       .catch(error => {
+        this.setState({ isPageLoading: false });
         console.log(error);
       });
   }
@@ -50,6 +55,7 @@ export class SubscriptionsComponent extends Component {
     }
 
     return (
+
       <React.Fragment>
         <section className="pt-5 pb-5">
           <div className="container">
@@ -77,69 +83,82 @@ export class SubscriptionsComponent extends Component {
               </div>
               <div className="col-md-8">
                 <h5 className="dark-text mb-3">قائمة دوراتي</h5>
-                {this.state.subscriptions == undefined ||
-                this.state.subscriptions.length == 0 ? (
-                  <React.Fragment>
+                <>
+                  {this.state.isPageLoading ? (
                     <div
-                      className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
-                      style={{ height: 300 }}
+                      className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+                      style={{ minHeight: 350 }}
                     >
-                      <p className="dark-text mt-0">يشرفنا انضمامك لنا!</p>
-                      <Link
-                        to="/categories"
-                        className="btn light-outline-btn w-25"
-                      >
-                        أختر دورتك الآن
-                      </Link>{" "}
+                      <Loader type="ball-spin-fade-loader" className="dark-loader" />
                     </div>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <Nav tabs className="account-tabs mx-auto">
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeTab === "Active"
-                          })}
-                          onClick={() => this.setActiveTab("Active")}
-                        >
-                          سارية
+                  ) : (
+                      <>
+                        {this.state.subscriptions == undefined ||
+                          this.state.subscriptions.length == 0 ? (
+                            <React.Fragment>
+                              <div
+                                className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                                style={{ height: 300 }}
+                              >
+                                <p className="dark-text mt-0">يشرفنا انضمامك لنا!</p>
+                                <Link
+                                  to="/categories"
+                                  className="btn light-outline-btn w-25"
+                                >
+                                  أختر دورتك الآن
+                      </Link>{" "}
+                              </div>
+                            </React.Fragment>
+                          ) : (
+                            <React.Fragment>
+                              <Nav tabs className="account-tabs mx-auto">
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: this.state.activeTab === "Active"
+                                    })}
+                                    onClick={() => this.setActiveTab("Active")}
+                                  >
+                                    سارية
                         </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeTab === "Expired"
-                          })}
-                          onClick={() => this.setActiveTab("Expired")}
-                        >
-                          منتهية
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: this.state.activeTab === "Expired"
+                                    })}
+                                    onClick={() => this.setActiveTab("Expired")}
+                                  >
+                                    منتهية
                         </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          className={classnames({
-                            active: this.state.activeTab === "Withdrawn"
-                          })}
-                          onClick={() => this.setActiveTab("Withdrawn")}
-                        >
-                          منسحب
+                                </NavItem>
+                                <NavItem>
+                                  <NavLink
+                                    className={classnames({
+                                      active: this.state.activeTab === "Withdrawn"
+                                    })}
+                                    onClick={() => this.setActiveTab("Withdrawn")}
+                                  >
+                                    منسحب
                         </NavLink>
-                      </NavItem>
-                    </Nav>
-                    <TabContent activeTab={this.state.activeTab}>
-                      <TabPane tabId="Active">
-                        <SubscriptionsList subscriptionStatus="Active" />
-                      </TabPane>
-                      <TabPane tabId="Expired">
-                        <SubscriptionsList subscriptionStatus="Expired" />
-                      </TabPane>
-                      <TabPane tabId="Withdrawn">
-                        <SubscriptionsList subscriptionStatus="Withdrawn" />
-                      </TabPane>
-                    </TabContent>
-                  </React.Fragment>
-                )}
+                                </NavItem>
+                              </Nav>
+                              <TabContent activeTab={this.state.activeTab}>
+                                <TabPane tabId="Active">
+                                  <SubscriptionsList subscriptionStatus="Active" />
+                                </TabPane>
+                                <TabPane tabId="Expired">
+                                  <SubscriptionsList subscriptionStatus="Expired" />
+                                </TabPane>
+                                <TabPane tabId="Withdrawn">
+                                  <SubscriptionsList subscriptionStatus="Withdrawn" />
+                                </TabPane>
+                              </TabContent>
+                            </React.Fragment>
+                          )}
+                      </>
+                    )}
+                </>
               </div>
             </div>
           </div>
