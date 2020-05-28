@@ -5,12 +5,15 @@ import ReactPlayer from "react-player";
 import "../styles.sass";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
 export class SpeedUp extends Component {
   state = {
     isSpeedUpOpen: false,
     files: [],
-    selectedFileId: null
+    selectedFileId: null,
+    isPageLoading: false
   };
 
   openSpeedUpModal(id) {
@@ -21,6 +24,7 @@ export class SpeedUp extends Component {
   };
 
   componentDidMount() {
+    this.setState({ isPageLoading: true });
     const courseId = this.props.match.params.id;
 
     let token = localStorage.getItem("token");
@@ -30,9 +34,10 @@ export class SpeedUp extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/speedups`, { headers })
       .then(response => {
-        this.setState({ files: response.data.data });
+        this.setState({ files: response.data.data, isPageLoading: false });
       })
       .catch(error => {
+        this.setState({ isPageLoading: false });
         console.log(error);
       });
   }
@@ -84,6 +89,15 @@ export class SpeedUp extends Component {
 
   render() {
     return (
+      <>
+      {this.state.isPageLoading ? (
+        <div
+        className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: 350 }}
+      >
+        <Loader type="ball-spin-fade-loader" className="dark-loader" />
+      </div>
+      ) : (
       <React.Fragment>
         <div className="row no-gutters">
           <div className="col-12 mb-4">
@@ -121,6 +135,8 @@ export class SpeedUp extends Component {
           id={this.state.selectedFileId}
         />
       </React.Fragment>
+      )}
+      </>
     );
   }
 }

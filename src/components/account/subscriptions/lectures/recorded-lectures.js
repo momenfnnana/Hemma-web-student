@@ -3,16 +3,22 @@ import "../styles.sass";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
 export class RecordedLectures extends Component {
   constructor(props) {
     super(props);
-    this.state = { details: [] };
+    this.state = { details: [],
+      isPageLoading: false
+     };
   }
 
   componentDidMount() {
+    this.setState({ isPageLoading: true });
     const courseId = this.props.match.params.id;
 
     let token = localStorage.getItem("token");
@@ -22,9 +28,10 @@ export class RecordedLectures extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/recorded_lectures`, { headers })
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data, isPageLoading: false });
       })
       .catch(error => {
+        this.setState({ isPageLoading: false });
         console.log(error);
       });
   }
@@ -127,6 +134,15 @@ export class RecordedLectures extends Component {
 
   render() {
     return (
+      <>
+      {this.state.isPageLoading ? (
+        <div
+        className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: 350 }}
+      >
+        <Loader type="ball-spin-fade-loader" className="dark-loader" />
+      </div>
+      ) : (
       <React.Fragment>
         {this.state.details.sections == undefined ||
         this.state.details.sections.length == 0 ? (
@@ -163,6 +179,8 @@ export class RecordedLectures extends Component {
           </div>
         </React.Fragment> */}
       </React.Fragment>
+      )}
+      </>
     );
   }
 }
