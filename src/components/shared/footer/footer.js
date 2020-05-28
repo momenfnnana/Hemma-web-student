@@ -134,7 +134,7 @@ class FooterComponent extends Component {
                 </li>
               </ul> */}
               <p className="light-font-text small dark-text mb-1 mt-0">
-                جميع الحقوق محفوظة <span className="en-text">© 2019</span>
+                جميع الحقوق محفوظة <span className="en-text">© {(new Date().getFullYear())}</span>
               </p>
 
               <div className="d-inline-flex align-items-center">
