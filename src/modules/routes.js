@@ -96,9 +96,6 @@ class AppBackground extends Component {
 AppBackground = withRouter(AppBackground);
 
 class MainRouterComponent extends Component {
-  componentDidMount(){
-    console.log('auth prop ', this.props.authenticated)
-  }
   render() {
     return (
       <BrowserRouter>
