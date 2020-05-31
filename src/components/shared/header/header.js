@@ -36,7 +36,7 @@ class HeaderComponent extends Component {
 
   logout = () => {
     this.props.signOutAction();
-    this.props.history.push("/");
+    this.props.history.push("/home");
   };
 
   componentDidMount() {
@@ -110,7 +110,7 @@ class HeaderComponent extends Component {
             }
           >
             <div className="container">
-              <Link to="/" className="navbar-brand mr-0">
+              <Link to="/home" className="navbar-brand mr-0">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="80"
