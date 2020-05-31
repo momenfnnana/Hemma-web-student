@@ -37,6 +37,7 @@ import { QuickQuestion } from "../components/categories/quick-questions/quick-qu
 import { QuestionSummary } from "../components/categories/quick-questions/question-summary";
 import { BillingCourses } from "../components/account/billings/billing-courses";
 import { BillingList } from "../components/account/billings/billing-list";
+import { connect } from "react-redux";
 
 class AppBackground extends Component {
   render() {
@@ -45,7 +46,7 @@ class AppBackground extends Component {
     let imgSize = null;
     let imgPosition = null;
 
-    if (path === "/") {
+    if (path === "/home") {
       img = "home-bg.png";
       imgSize = "100%";
       imgPosition = "center top";
@@ -94,7 +95,7 @@ class AppBackground extends Component {
 
 AppBackground = withRouter(AppBackground);
 
-export class MainRouter extends Component {
+class MainRouterComponent extends Component {
   render() {
     return (
       <BrowserRouter>
@@ -102,7 +103,7 @@ export class MainRouter extends Component {
           <AppBackground>
             <Header />
             <Switch>
-              <Route path="/" exact component={Home} />
+            <Route path="/home" exact component={Home} />
               <Route path="/auth" component={Auth} />
               <Route
                 path="/verify"
@@ -167,7 +168,12 @@ export class MainRouter extends Component {
               <Route path="/faq" component={FAQ} />
               <Route path="/transactions/:id" component={Transaction} />
               <Route path="/not-found" component={NotFound} />
+
+              {!this.props.authenticated ? (
               <Redirect from="/" exact to="/home" />
+              ) : (
+              <Redirect from="/" exact to="/course/content" />
+                )}
               <Redirect to="/not-found" />
             </Switch>
             <Footer />
@@ -177,3 +183,16 @@ export class MainRouter extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+  };
+}
+
+MainRouterComponent = connect(
+  mapStateToProps,
+
+)(MainRouterComponent);
+
+export const MainRouter = MainRouterComponent;
