@@ -196,18 +196,18 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/booklets/:bookletId"
                       component={BookletDetails}
                     />
-                    <Route
+                    {/* <Route
                       path="/course/content/:id/discussions"
                       exact
                       component={DiscussionsList}
-                    />
-                    {subscription && subscription.chatChannelSid && (
+                    /> */}
+                    {/* {subscription && subscription.chatChannelSid && (
                       <Route
                         path="/course/content/:id/discussions/:discussionId"
                         component={DiscussionDetails}
                         chatChannelSid={subscription.chatChannelSid}
                       />
-                    )}
+                    )} */}
                     <Route
                       path="/course/content/:id/exams/list"
                       component={ExamsList}

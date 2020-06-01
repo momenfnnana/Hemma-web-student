@@ -134,7 +134,7 @@ export class SidebarComponent extends Component {
                   الملازم
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/discussions`}
@@ -151,7 +151,7 @@ export class SidebarComponent extends Component {
                   />
                   المناقشات
                 </NavLink>
-              </li>
+              </li> */}
               {channelID && (
                 <li>
                   <NavLink
