@@ -7,11 +7,19 @@ import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
 import { apiBaseUrl } from "../../api/helpers";
 import "./styles.sass";
+import { connect } from "react-redux";
+import { NavLink, Route } from "react-router-dom";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { GoogleLogin } from "react-google-login";
+import { Login } from "../login/login";
+import { Register } from "../register/register";
+import swal from "@sweetalert/with-react";
+import { loginWithTwitter } from "../auth/firebase";
 
 var moment = require("moment");
 moment().format();
 
-export class Home extends Component {
+class HomeComponent extends Component {
   constructor(props) {
     super(props);
     this.state = { categories: [], courses: [], testimonials: [] };
@@ -51,6 +59,62 @@ export class Home extends Component {
       <Card key={course.id} course={course} />
     ));
   }
+  responseGoogle = response => {
+    let deviceId = localStorage.getItem("deviceId");
+    let data = {
+      accessToken: response.accessToken,
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+    };
+    if (!response.accessToken) return;
+    axios
+      .post(`${apiBaseUrl}/auth/login_with_google`, data)
+      .then(response => {
+        localStorage.setItem("token", response.data.data.token);
+        window.location = "/";
+      })
+      .catch(error => {
+        swal("عفواً", "هذا المستخدم غير موجود", "error", {
+          button: "متابعة"
+        });
+
+        this.props.history.push("/auth/register");
+      });
+  };
+
+  responseFacebook = response => {
+    let deviceId = localStorage.getItem("deviceId");
+    let data = {
+      accessToken: response.accessToken,
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+    };
+    if (!response.accessToken) return;
+    axios
+      .post(`${apiBaseUrl}/auth/login_with_facebook`, data)
+      .then(response => {
+        localStorage.setItem("token", response.data.data.token);
+        window.location = "/";
+      })
+      .catch(error => {
+        console.log(error);
+        swal("عفواً", "هذا المستخدم غير موجود", "error", {
+          button: "متابعة"
+        });
+        this.props.history.push("/auth/register");
+      });
+  };
+  twitterLogin = async () => {
+    loginWithTwitter()
+      .then(token => {
+        localStorage.setItem("token", token);
+        window.location = "/";
+      })
+      .catch(error => {
+        swal("عفواً", "هذا المستخدم غير موجود", "error", {
+          button: "متابعة"
+        });
+        this.props.history.push("/auth/register");
+      });
+  };
 
   renderCategories() {
     const cats = this.state.categories;
@@ -224,27 +288,173 @@ export class Home extends Component {
 
     return (
       <React.Fragment>
-        <section className="hero-section">
-          <div className="container">
-            <div className="row h-100 d-flex align-items-center">
-              <div className="col-md-4">
-                <h2 className="purple-text">سلسلة بالبيد التعليمية</h2>
-                <h2 className="purple-text">٢٥ عاماً في خدمة</h2>
-                <h2 className="blue-text"> الطلاب و الطالبات</h2>
-              </div>
-              <div className="col-md-8 d-flex align-items-center justify-content-center">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
-                  }
-                  width="100%"
-                  className="contain-img"
-                  alt="artwork"
-                />
+        {this.props.authenticated ? (
+          <section className="hero-section">
+            <div className="container">
+              <div className="row h-100 d-flex align-items-center">
+                <div className="col-md-4">
+                  <h2 className="purple-text">سلسلة بالبيد التعليمية</h2>
+                  <h2 className="purple-text">٢٥ عاماً في خدمة</h2>
+                  <h2 className="blue-text"> الطلاب و الطالبات</h2>
+                </div>
+                <div className="col-md-8 d-flex align-items-center justify-content-center">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    }
+                    width="100%"
+                    className="contain-img d-md-block d-none d-sm-none"
+                    alt="artwork"
+
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : (
+          <section className="hero-section">
+            <div className="container">
+              <div className="row h-100 d-flex align-items-center">
+                <div className="col-md-12">
+                  <h2 className="purple-text text-center">
+                    {" "}
+                    سلسلة بالبيد التعليمية، ٢٥عاماً في خدمة الطلاب والطالبات{" "}
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="container pb-5">
+                <div
+                  className="row align-items-center justify-content-center"
+                  style={{ minHeight: 550 }}
+                >
+                  <div className="col-md-6 col-12 order-md-1 order-2">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/login-artwork.png"
+                      }
+                      height="350"
+                      className="artwork-img"
+                      alt="artwork"
+                    />
+                  </div>
+                  <div className="col-md-6 col-12 order-md-2 order-1">
+                    <ul className="list-inline underlined-tabs mb-4 text-center">
+                      <li className="list-inline-item small">
+                        <NavLink
+                          className="dark-text"
+                          activeClassName="active"
+                          to="/home/login"
+                        >
+                          تسجيل دخول
+                        </NavLink>
+                      </li>
+                      <li className="list-inline-item small">
+                        <NavLink
+                          className="dark-text"
+                          activeClassName="active"
+                          to="/home/register"
+                        >
+                          إنشاء حساب
+                        </NavLink>
+                      </li>
+                    </ul>
+                    <Route
+                      exact
+                      path={["/", "/home", "/home/login"]}
+                      render={props => <Login {...props} />}
+                    />
+                    <Route
+                      exact
+                      path="/home/register"
+                      render={props => <Register {...props} />}
+                    />
+                    {this.props.location.pathname === "/" ||
+                    this.props.location.pathname === "/home" ||
+                    this.props.location.pathname === "/home/login" ? (
+                      <React.Fragment>
+                        <div className="pt-4 pb-4">
+                          <p className="text-center dark-text circle-border">
+                            أو
+                          </p>
+                        </div>
+                        <ul className="list-inline mb-0 text-center">
+                          <li className="list-inline-item">
+                            <GoogleLogin
+                              clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
+                              render={renderProps => (
+                                <button
+                                  className="bg-transparent border-0 p-0 clickable"
+                                  onClick={renderProps.onClick}
+                                >
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/google-plus.png"
+                                    }
+                                    height="35"
+                                    alt="google-plus"
+                                  />
+                                </button>
+                              )}
+                              onSuccess={this.responseGoogle}
+                              onFailure={this.responseGoogle}
+                            />
+                          </li>
+                          <li className="list-inline-item">
+                            <FacebookLogin
+                              appId="381989645718539"
+                              callback={this.responseFacebook}
+                              autoLoad={false}
+                              fields="name,email,picture"
+                              render={renderProps => (
+                                <button
+                                  className="bg-transparent border-0 p-0 clickable"
+                                  onClick={renderProps.onClick}
+                                >
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/facebook.png"
+                                    }
+                                    height="35"
+                                    alt="facebook"
+                                  />
+                                </button>
+                              )}
+                            />
+                          </li>
+                          <li className="list-inline-item">
+                            <img
+                              onClick={this.twitterLogin}
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/twitter.png"
+                              }
+                              height="35"
+                              className="clickable"
+                              alt="twitter"
+                            />
+                          </li>
+                        </ul>
+                        <div className="text-center pt-4">
+                          <NavLink
+                            to="/forgot-password"
+                            className="dark-text small"
+                          >
+                            نسيت كلمة المرور؟
+                          </NavLink>
+                        </div>
+                      </React.Fragment>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
         <section className="categories-section">
           <div className="container">
             <div className="row mb-3">
@@ -691,3 +901,12 @@ export class Home extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated
+  };
+}
+
+HomeComponent = connect(mapStateToProps)(HomeComponent);
+
+export const Home = HomeComponent;
