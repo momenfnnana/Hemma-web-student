@@ -29,11 +29,29 @@ export class CourseDetails extends Component {
       modalIsOpen: false,
       recordingModalIsOpen: false,
       recordingUrl: null,
-      isPageLoading: false
+      isPageLoading: false,
+      confirm: false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.toggleRecordingModal = this.toggleRecordingModal.bind(this);
+  }
+
+  confirmationPopup(){
+    swal({
+      title:`هل أنت متأكد أنك تريد الاشتراك في دورة ${this.state.details.nameAr}`,
+      icon: "warning",
+      buttons: "موافق",
+      dangerMode: false,
+    }).then(() => {
+      this.setState({ confirm: true });
+      if(this.state.confirm)
+      {
+        this.addToCart(this.state.details.id)
+      }
+    })
+
+    
   }
 
   toggleRecordingModal(url) {
@@ -418,8 +436,8 @@ export class CourseDetails extends Component {
                           <button
                             type="button"
                             className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
-                            onClick={() =>
-                              this.addToCart(this.state.details.id)
+                            onClick={() => 
+                              this.confirmationPopup()
                             }
                           >
                             اشترك الآن
