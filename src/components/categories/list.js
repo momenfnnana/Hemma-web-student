@@ -12,7 +12,10 @@ import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
 
 const MyLoader = props => (
-  <ContentLoader
+  <div className="container">
+    <div className="row mb-3">
+      <div className="col-md-12">
+      <ContentLoader
     rtl
     height={50}
     width={300}
@@ -23,7 +26,31 @@ const MyLoader = props => (
   >
     <circle cx="25" cy="25" r="25" />
     <rect x="60" y="21" rx="4" ry="4" width="150" height="10" />
+ 
+  
   </ContentLoader>
+      </div>
+    </div>
+ 
+   
+    <div className="row">
+      <div className="col-md-4">
+        <ContentLoader height="300" className="mb-4">
+          <rect x="0" y="0" rx="5" ry="5" width="370" height="300" />
+        </ContentLoader>
+      </div>
+      <div className="col-md-4">
+        <ContentLoader height="300" className="mb-4">
+          <rect x="0" y="0" rx="5" ry="5" width="370" height="300" />
+        </ContentLoader>
+      </div>
+      <div className="col-md-4">
+        <ContentLoader height="300" className="mb-4">
+          <rect x="0" y="0" rx="5" ry="5" width="370" height="300" />
+        </ContentLoader>
+      </div>
+    </div>
+  </div>
 );
 export class CategoriesComponent extends Component {
   constructor(props) {
