@@ -62,11 +62,8 @@ export class CardsList extends Component {
   renderCards() {
     return this.state.courses.map(course => (
       <React.Fragment key={course.id}>
-        {this.state.loading ? (
-          <MyLoader />
-        ) : (
+        
           <Card key={course.id} course={course} />
-        )}
       </React.Fragment>
     ));
   }

@@ -4,15 +4,18 @@ import { CardsList } from "../shared/cardsList/cardsList";
 import { Link } from "react-router-dom";
 import ContentLoader from "react-content-loader";
 import { apiBaseUrl } from "../../api/helpers";
-import { MdSearch } from "react-icons/md";
-import { inputField } from "../shared/inputs/inputField";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-beat.scss";
 
 const MyLoader = props => (
-  <ContentLoader
+  <div className="container">
+    <div className="row mb-3">
+      <div className="col-md-12">
+      <ContentLoader
     rtl
     height={50}
     width={300}
@@ -23,7 +26,31 @@ const MyLoader = props => (
   >
     <circle cx="25" cy="25" r="25" />
     <rect x="60" y="21" rx="4" ry="4" width="150" height="10" />
+ 
+  
   </ContentLoader>
+      </div>
+    </div>
+ 
+   
+    <div className="row">
+      <div className="col-md-4">
+        <ContentLoader height="300" className="mb-4">
+          <rect x="0" y="0" rx="5" ry="5" width="370" height="300" />
+        </ContentLoader>
+      </div>
+      <div className="col-md-4">
+        <ContentLoader height="300" className="mb-4">
+          <rect x="0" y="0" rx="5" ry="5" width="370" height="300" />
+        </ContentLoader>
+      </div>
+      <div className="col-md-4">
+        <ContentLoader height="300" className="mb-4">
+          <rect x="0" y="0" rx="5" ry="5" width="370" height="300" />
+        </ContentLoader>
+      </div>
+    </div>
+  </div>
 );
 export class CategoriesComponent extends Component {
   constructor(props) {
@@ -41,10 +68,10 @@ export class CategoriesComponent extends Component {
       .then(response => {
         this.setState({ categories: response.data.data.data });
         setTimeout(
-          function() {
-            this.setState({ loading: false });
+          function () {
+            this.setState({loading: false });
           }.bind(this),
-          800
+          800 
         );
       })
       .catch(error => {
@@ -55,60 +82,68 @@ export class CategoriesComponent extends Component {
   renderCategories() {
     const cats = this.state.categories;
     return cats.map(cat => (
-      <React.Fragment>
-        <div className="row pt-5">
-          <div
-            className="col-12 d-inline-flex align-items-center justify-content-between"
-            key={cat.id}
-          >
-            {this.state.loading ? (
-              <MyLoader style={{ height: 50 }} />
-            ) : (
-              <Link
-                to={{
-                  pathname: `/categories/details/${cat.slug}`,
-                  state: {
-                    catId: cat.id
-                  }
-                }}
-                key={cat.id}
-                className="d-flex align-items-center"
-              >
-                <div className="full-circle-border mr-2">
-                  <img
+      <>
+        {this.state.loading ? (
+          <MyLoader style={{ height: 50 }} />
+        ) : (
+            <React.Fragment>
+              <div className="row pt-5">
+                <div
+                  className="col-12 d-inline-flex align-items-center justify-content-between"
+                  key={cat.id}
+                >
+
+                  <Link
+                    to={{
+                      pathname: `/categories/details/${cat.slug}`,
+                      state: {
+                        catId: cat.id
+                      }
+                    }}
                     key={cat.id}
-                    src={cat.icon}
-                    height="25"
-                    width="25"
-                    className="contain-img"
-                    alt={cat.nameAr}
-                  />
-                </div>
-                <h5 key={cat.id} className="dark-text mb-0">
-                  {cat.nameAr}
-                </h5>
-              </Link>
-            )}
-            <Link
-              to={{
-                pathname: `/categories/details/${cat.slug}`,
-                state: {
-                  catId: cat.id
-                }
-              }}
-              key={cat.id}
-              className="btn dark-btn unset-height unset-line-height br-5"
-            >
-              شاهد المزيد
+                    className="d-flex align-items-center"
+                  >
+                    <div className="full-circle-border mr-2">
+                      <img
+                        key={cat.id}
+                        src={cat.icon}
+                        height="25"
+                        width="25"
+                        className="contain-img"
+                        alt={cat.nameAr}
+                      />
+                    </div>
+                    <h5 key={cat.id} className="dark-text mb-0">
+                      {cat.nameAr}
+                    </h5>
+                  </Link>
+                  <Link
+                    to={{
+                      pathname: `/categories/details/${cat.slug}`,
+                      state: {
+                        catId: cat.id
+                      }
+                    }}
+                    key={cat.id}
+                    className="btn dark-btn unset-height unset-line-height br-5"
+                  >
+                    {this.state.loading == true ? (
+                  <Loader type="ball-beat" className="dark-loader" />
+                ) : (
+                    "شاهد المزيد"
+                    )}
             </Link>
-          </div>
-        </div>
-        <div className="row pt-4">
-          <div className="col-12">
-            <CardsList catId={cat.id} />
-          </div>
-        </div>
-      </React.Fragment>
+                
+                </div>
+              </div>
+              <div className="row pt-4">
+                <div className="col-12">
+                  <CardsList catId={cat.id} />
+                </div>
+              </div>
+            </React.Fragment>
+          )}
+      </>
     ));
   }
 
