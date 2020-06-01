@@ -167,7 +167,7 @@ export class MainRouter extends Component {
               <Route path="/faq" component={FAQ} />
               <Route path="/transactions/:id" component={Transaction} />
               <Route path="/not-found" component={NotFound} />
-              <Redirect from="/" exact to="/home" />
+              <Redirect from="/" to="/home" />
               <Redirect to="/not-found" />
             </Switch>
             <Footer />
