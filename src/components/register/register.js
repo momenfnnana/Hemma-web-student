@@ -37,6 +37,13 @@ const nameValue = value => {
 
   return valid ? undefined : "الاسم يجب أن يحتوي ٥ أحرف على الأقل";
 };
+const phoneValue = value => {
+  value = value.phoneNumber || "";
+  const trimmed = value.replace(/\s/g, "");
+  const valid = /^0\d{9}$/.test(trimmed);
+
+  return valid ? undefined : "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
+}
 
 export const minLength4 = minLength(4);
 const emailValue = value =>
@@ -236,7 +243,7 @@ class RegisterComponent extends Component {
             containerClassName="intl-tel-input"
             inputClassName="form-control"
             defaultCountry="sa"
-            validate={required}
+            validate={[required, phoneValue]}
           />
           <div className="position-relative">
             <Field
