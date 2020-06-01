@@ -289,154 +289,171 @@ class HomeComponent extends Component {
     return (
       <React.Fragment>
         {this.props.authenticated ? (
-        <section className="hero-section">
-          <div className="container">
-            <div className="row h-100 d-flex align-items-center">
-              <div className="col-md-4">
-                <h2 className="purple-text">سلسلة بالبيد التعليمية</h2>
-                <h2 className="purple-text">٢٥ عاماً في خدمة</h2>
-                <h2 className="blue-text"> الطلاب و الطالبات</h2>
-              </div>
-              <div className="col-md-8 d-flex align-items-center justify-content-center">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
-                  }
-                  width="100%"
-                  className="contain-img"
-                  alt="artwork"
-                />
+          <section className="hero-section">
+            <div className="container">
+              <div className="row h-100 d-flex align-items-center">
+                <div className="col-md-4">
+                  <h2 className="purple-text">سلسلة بالبيد التعليمية</h2>
+                  <h2 className="purple-text">٢٥ عاماً في خدمة</h2>
+                  <h2 className="blue-text"> الطلاب و الطالبات</h2>
+                </div>
+                <div className="col-md-8 d-flex align-items-center justify-content-center">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    }
+                    width="100%"
+                    className="contain-img d-md-block d-none d-sm-none"
+                    alt="artwork"
+
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
         ) : (
-            <section className="hero-section">
-              <div className="container">
-                <div className="row h-100 d-flex align-items-center">
-                  <div className="col-md-12">
-                    <h2 className="purple-text"> سلسلة بالبيد التعليمية، ٢٥عاماً في خدمة الطلاب والطالبات </h2>
+          <section className="hero-section">
+            <div className="container">
+              <div className="row h-100 d-flex align-items-center">
+                <div className="col-md-12">
+                  <h2 className="purple-text text-center">
+                    {" "}
+                    سلسلة بالبيد التعليمية، ٢٥عاماً في خدمة الطلاب والطالبات{" "}
+                  </h2>
+                </div>
+              </div>
+            </div>
+            <div className="col-md-12">
+              <div className="container pb-5">
+                <div
+                  className="row align-items-center justify-content-center"
+                  style={{ minHeight: 550 }}
+                >
+                  <div className="col-md-6 col-12 order-md-1 order-2">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/login-artwork.png"
+                      }
+                      height="350"
+                      className="artwork-img"
+                      alt="artwork"
+                    />
+                  </div>
+                  <div className="col-md-6 col-12 order-md-2 order-1">
+                    <ul className="list-inline underlined-tabs mb-4 text-center">
+                      <li className="list-inline-item small">
+                        <NavLink
+                          className="dark-text"
+                          activeClassName="active"
+                          to="/home/login"
+                        >
+                          تسجيل دخول
+                        </NavLink>
+                      </li>
+                      <li className="list-inline-item small">
+                        <NavLink
+                          className="dark-text"
+                          activeClassName="active"
+                          to="/home/register"
+                        >
+                          إنشاء حساب
+                        </NavLink>
+                      </li>
+                    </ul>
+                    <Route
+                      exact
+                      path={["/", "/home", "/home/login"]}
+                      render={props => <Login {...props} />}
+                    />
+                    <Route
+                      exact
+                      path="/home/register"
+                      render={props => <Register {...props} />}
+                    />
+                    {this.props.location.pathname === "/" ||
+                    this.props.location.pathname === "/home" ||
+                    this.props.location.pathname === "/home/login" ? (
+                      <React.Fragment>
+                        <div className="pt-4 pb-4">
+                          <p className="text-center dark-text circle-border">
+                            أو
+                          </p>
+                        </div>
+                        <ul className="list-inline mb-0 text-center">
+                          <li className="list-inline-item">
+                            <GoogleLogin
+                              clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
+                              render={renderProps => (
+                                <button
+                                  className="bg-transparent border-0 p-0 clickable"
+                                  onClick={renderProps.onClick}
+                                >
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/google-plus.png"
+                                    }
+                                    height="35"
+                                    alt="google-plus"
+                                  />
+                                </button>
+                              )}
+                              onSuccess={this.responseGoogle}
+                              onFailure={this.responseGoogle}
+                            />
+                          </li>
+                          <li className="list-inline-item">
+                            <FacebookLogin
+                              appId="381989645718539"
+                              callback={this.responseFacebook}
+                              autoLoad={false}
+                              fields="name,email,picture"
+                              render={renderProps => (
+                                <button
+                                  className="bg-transparent border-0 p-0 clickable"
+                                  onClick={renderProps.onClick}
+                                >
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      "/assets/images/facebook.png"
+                                    }
+                                    height="35"
+                                    alt="facebook"
+                                  />
+                                </button>
+                              )}
+                            />
+                          </li>
+                          <li className="list-inline-item">
+                            <img
+                              onClick={this.twitterLogin}
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/twitter.png"
+                              }
+                              height="35"
+                              className="clickable"
+                              alt="twitter"
+                            />
+                          </li>
+                        </ul>
+                        <div className="text-center pt-4">
+                          <NavLink
+                            to="/forgot-password"
+                            className="dark-text small"
+                          >
+                            نسيت كلمة المرور؟
+                          </NavLink>
+                        </div>
+                      </React.Fragment>
+                    ) : null}
                   </div>
                 </div>
               </div>
-              <div className="col-md-12">
-              <div className="container pt-5 pb-5">
-        <div
-          className="row align-items-center justify-content-center"
-          style={{ minHeight: 550 }}
-        >
-          <div className="col-md-6 col-12 order-md-1 order-2">
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/login-artwork.png"}
-              height="350"
-              className="artwork-img"
-            />
-          </div>
-          <div className="col-md-6 col-12 order-md-2 order-1">
-            <ul className="list-inline underlined-tabs mb-4 text-center">
-              <li className="list-inline-item small">
-                <NavLink
-                  href=""
-                  className="dark-text"
-                  activeClassName="active"
-                  to="/"
-                >
-                  تسجيل دخول
-                </NavLink>
-              </li>
-              <li className="list-inline-item small">
-                <NavLink
-                  href=""
-                  className="dark-text"
-                  activeClassName="active"
-                  to="/home/register"
-                >
-                  إنشاء حساب
-                </NavLink>
-              </li>
-            </ul>
-            <Route
-              exact
-              path="/"
-              render={props => <Login {...props} />}
-            />
-            <Route
-              exact
-              path="/home/register"
-              render={props => <Register {...props} />}
-            />
-            {this.props.location.pathname === "/" ? (
-              <React.Fragment>
-                <div className="pt-4 pb-4">
-                  <p className="text-center dark-text circle-border">أو</p>
-                </div>
-                <ul className="list-inline mb-0 text-center">
-                  <li className="list-inline-item">
-                    <GoogleLogin
-                      clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
-                      render={renderProps => (
-                        <button
-                          className="bg-transparent border-0 p-0 clickable"
-                          onClick={renderProps.onClick}
-                        >
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/google-plus.png"
-                            }
-                            height="35"
-                          />
-                        </button>
-                      )}
-                      onSuccess={this.responseGoogle}
-                      onFailure={this.responseGoogle}
-                    />
-                  </li>
-                  <li className="list-inline-item">
-                    <FacebookLogin
-                      appId="381989645718539"
-                      callback={this.responseFacebook}
-                      autoLoad={false}
-                      fields="name,email,picture"
-                      render={renderProps => (
-                        <button
-                          className="bg-transparent border-0 p-0 clickable"
-                          onClick={renderProps.onClick}
-                        >
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/facebook.png"
-                            }
-                            height="35"
-                          />
-                        </button>
-                      )}
-                    />
-                  </li>
-                  <li className="list-inline-item">
-                    <img
-                      onClick={this.twitterLogin}
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/twitter.png"
-                      }
-                      height="35"
-                      className="clickable"
-                    />
-                  </li>
-                </ul>
-                <div className="text-center pt-4">
-                  <NavLink to="/forgot-password" className="dark-text small">
-                    نسيت كلمة المرور؟
-                  </NavLink>
-                </div>
-              </React.Fragment>
-            ) : null}
-          </div>
-        </div>
-      </div>
-              </div>
-            </section>
+            </div>
+          </section>
         )}
         <section className="categories-section">
           <div className="container">
@@ -885,14 +902,11 @@ class HomeComponent extends Component {
   }
 }
 function mapStateToProps(state) {
-    return {
-      authenticated: state.auth.authenticated,
-    };
-  }
-  
-HomeComponent = connect(
-    mapStateToProps,
-  
-  )(HomeComponent);
-  
+  return {
+    authenticated: state.auth.authenticated
+  };
+}
+
+HomeComponent = connect(mapStateToProps)(HomeComponent);
+
 export const Home = HomeComponent;

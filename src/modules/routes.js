@@ -103,7 +103,7 @@ class MainRouterComponent extends Component {
           <AppBackground>
             <Header />
             <Switch>
-            <Route path="/home" exact component={Home} />
+              <Route path="/home" component={Home} />
               <Route path="/auth" component={Auth} />
               <Route
                 path="/verify"
@@ -170,10 +170,10 @@ class MainRouterComponent extends Component {
               <Route path="/not-found" component={NotFound} />
 
               {!this.props.authenticated ? (
-              <Redirect from="/" exact to="/home" />
+                <Redirect from="/" exact to="/home" />
               ) : (
-              <Redirect from="/" exact to="/course/content" />
-                )}
+                <Redirect from="/" exact to="/course/content" />
+              )}
               <Redirect to="/not-found" />
             </Switch>
             <Footer />
@@ -186,13 +186,10 @@ class MainRouterComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated,
+    authenticated: state.auth.authenticated
   };
 }
 
-MainRouterComponent = connect(
-  mapStateToProps,
-
-)(MainRouterComponent);
+MainRouterComponent = connect(mapStateToProps)(MainRouterComponent);
 
 export const MainRouter = MainRouterComponent;
