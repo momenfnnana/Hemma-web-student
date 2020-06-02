@@ -102,7 +102,7 @@ export class SpeedUp extends Component {
         <div className="row no-gutters">
           <div className="col-12 mb-4">
             <div className="d-flex justify-content-between">
-              <h6 className="dark-text small mb-0 mt-0">اختصر وقتك</h6>
+              <h6 className="dark-text small mb-0 mt-0">مرفقات الدورة</h6>
             </div>
           </div>
           <div className="col-12">

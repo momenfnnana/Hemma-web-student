@@ -506,7 +506,7 @@ class HomeComponent extends Component {
                     </div>
 
                     <div className="circle-desc circle-desc4">
-                      <h6 className="dark-text">اختصر وقتك</h6>
+                      <h6 className="dark-text">مرفقات الدورة</h6>
                       <p className="dark-text light-font-text small text-break">
                         كل الملفات المتعلقة بالدورة في مكان واحد بشكل سهل ومبسط
                         للتحميل
@@ -697,7 +697,7 @@ class HomeComponent extends Component {
                         className="contain-img mb-3"
                         alt="speed-up"
                       />
-                      <h6 className="dark-text">اختصر وقتك</h6>
+                      <h6 className="dark-text">مرفقات الدورة</h6>
                     </div>
                     <div className="circle-item circle-item5">
                       <img

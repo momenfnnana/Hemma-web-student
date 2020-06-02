@@ -419,7 +419,7 @@ export default class FAQ extends Component {
                     >
                       <div className="card-body">
                         <p className="dark-silver-text small text-break mb-0">
-                          الملزمة الإلكترونيه موجودة في ايقونة اختصر وقتك بصيغة
+                          الملزمة الإلكترونيه موجودة في ايقونة مرفقات الدورة بصيغة
                           pdf ، ويمكنك طباعتها .{" "}
                         </p>
                       </div>
