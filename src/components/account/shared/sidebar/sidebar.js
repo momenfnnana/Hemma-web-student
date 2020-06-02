@@ -184,7 +184,7 @@ export class SidebarComponent extends Component {
                     width="20"
                     className="mr-2 contain-img"
                   />
-                  اختصر وقتك
+                  مرفقات الدورة
                 </NavLink>
               </li>
               <li>
