@@ -48,6 +48,19 @@ class VerificationComponent extends Component {
     };
     this.verifyCode = this.verifyCode.bind(this);
   }
+  verifyUser = () => {
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
+        headers
+      })
+       .catch(error => {
+        console.log(error);
+      });
+  };
 
   verifyCode(value) {
     if (value.length == 6) {
@@ -133,12 +146,16 @@ class VerificationComponent extends Component {
             </form>
 
             <div className="text-center pt-4">
-              <a href="" className="dark-text small">
+
+              <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-              </a>
-              <a href="" className="light-text small">
-                إعادة إرسال
-              </a>{" "}
+                <span
+                  className="light-text text-decoration-none clickable"
+                  onClick={this.verifyUser}
+                >
+                  اضغط هنا
+                    </span>
+              </p>
             </div>
             <div className="text-center pt-1">
               <Link to="/" className="dark-text small light-text clickable">
