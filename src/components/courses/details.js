@@ -38,20 +38,21 @@ export class CourseDetails extends Component {
   }
 
   confirmationPopup(){
-    swal({
-      title:`هل أنت متأكد أنك تريد الاشتراك في دورة ${this.state.details.nameAr}`,
-      icon: "warning",
-      buttons: "موافق",
-      dangerMode: false,
-    }).then(() => {
-      this.setState({ confirm: true });
-      if(this.state.confirm)
-      {
-        this.addToCart(this.state.details.id)
-      }
+    swal(`هل أنت متأكد أنك تريد الاشتراك في دورة ${this.state.details.nameAr}`, {
+      buttons: {
+        cancel: "الغاء",
+        ok:"موافق"
+      },
     })
-
-    
+    .then((value) => {
+      switch (value) {
+     
+        case "ok":
+          this.addToCart(this.state.details.id)
+        default:
+          break;
+      }
+    });
   }
 
   toggleRecordingModal(url) {
