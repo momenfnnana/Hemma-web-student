@@ -58,27 +58,14 @@ class HeaderComponent extends Component {
   }
 
   verifyUser = () => {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
-        headers
-      })
-      .then(response => {
-        this.props.history.push("/verify");
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.props.history.push("/verify");
   };
 
   render() {
     const user = this.props.user;
     return (
       <React.Fragment>
-        {!this.props.phoneNumberConfirmed && this.props.authenticated && !this.props.location.pathname.startsWith(
+    {!this.props.phoneNumberConfirmed && this.props.authenticated && !this.props.location.pathname.startsWith(
                 "/verify"
               ) ? (
           <div className="top-header dark-bg">
