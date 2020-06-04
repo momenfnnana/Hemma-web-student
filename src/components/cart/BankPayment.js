@@ -314,7 +314,7 @@ class BankPaymentComponent extends Component {
                   name="date"
                   dateFormat={false}
                   validate={required}
-                  timeFormat="HH:mm a"
+                  timeFormat="hh:mm a"
                 />
               </div>
               <div>
