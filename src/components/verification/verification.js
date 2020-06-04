@@ -8,6 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import Countdown from "react-countdown-now";
 
 const validate = values => {
   const errors = {};
@@ -44,10 +45,13 @@ class VerificationComponent extends Component {
     this.state = {
       loading: false,
       disabled: false,
-      code: ""
+      code: "",
+      date: 10000,
     };
     this.verifyCode = this.verifyCode.bind(this);
+    this.countdownInterval = 0;
   }
+
   verifyUser = () => {
     let token = localStorage.getItem("token");
     let headers = {
@@ -57,10 +61,36 @@ class VerificationComponent extends Component {
       .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
         headers
       })
-       .catch(error => {
+      .catch(error => {
         console.log(error);
       });
   };
+
+  componentDidMount() {
+    this.start();
+  }
+
+  componentWillUnmount() {
+    this.clearInterval();
+  }
+
+  start() {
+    this.countdownInterval = window.setInterval(() => {
+      if (this.state.date <= 0) {
+        return this.clearInterval();
+      }
+
+      this.setState(({ date }) => ({ date: date - 1000 }));
+    }, 1000);
+  }
+
+  handleUpdate = () => {
+    this.forceUpdate();
+  };
+
+  clearInterval() {
+    window.clearInterval(this.countdownInterval);
+  }
 
   verifyCode(value) {
     if (value.length == 6) {
@@ -77,7 +107,7 @@ class VerificationComponent extends Component {
           headers
         })
         .then(response => {
-          this.setState({ loading: false });
+          this.setState({ loading: false, date: 10000 });
           localStorage.setItem("token", response.data.data.token);
           window.location = "/";
         })
@@ -149,12 +179,16 @@ class VerificationComponent extends Component {
 
               <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-                <span
-                  className="light-text text-decoration-none clickable"
-                  onClick={this.verifyUser}
-                >
-                  اضغط هنا
+                {this.state.date > 0 ? (
+                  <Countdown date={this.state.date} controlled={true} zeroPadTime onStart={this.handleUpdate } />
+                ) : (
+                    <span
+                      className="light-text text-decoration-none clickable"
+                      onClick={this.verifyUser }
+                    >
+                      إعادة إرسال
                     </span>
+                  )}
               </p>
             </div>
             <div className="text-center pt-1">
