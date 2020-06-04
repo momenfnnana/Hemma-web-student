@@ -38,7 +38,7 @@ export class CourseDetails extends Component {
   }
 
   confirmationPopup(){
-    swal(`هل أنت متأكد أنك تريد الاشتراك في دورة ${this.state.details.nameAr}`, {
+    swal(`هل أنت متأكد أنك تريد الاشتراك في دورة (${this.state.details.nameAr})؟`, {
       buttons: {
         cancel: "الغاء",
         ok:"موافق"
