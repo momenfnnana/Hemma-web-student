@@ -64,10 +64,10 @@ export class OnlinePaymentComponent extends Component {
     Api.cart
       .initiateOnlineCheckout({
         callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
-        shippingRecipient: values.shippingRecipient,
-        shippingCityId: values.shippingCityId,
-        shippingAddress: values.shippingAddress,
-        shippingPhone: values.shippingPhone
+        shippingRecipient: this.props.cartValues.shippingRecipient,
+        shippingCityId: this.props.cartValues.shippingCityId,
+        shippingAddress: this.props.cartValues.shippingAddress,
+        shippingPhone: this.props.cartValues.shippingPhone
       })
       .then(result => {
         this.setState({ loading: false });
@@ -265,7 +265,8 @@ export class OnlinePaymentComponent extends Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart,
-    formValues: state.form.onlinePayment && state.form.onlinePayment.values
+    formValues: state.form.onlinePayment && state.form.onlinePayment.values,
+    cartValues: state.form.cart && state.form.cart.values
   };
 }
 
