@@ -8,7 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
-import Countdown from "react-countdown-now";
+import Countdown, { CountdownApi } from "react-countdown-now";
 
 const validate = values => {
   const errors = {};
@@ -46,7 +46,7 @@ class VerificationComponent extends Component {
       loading: false,
       disabled: false,
       code: "",
-      date: 10000,
+      date: 59000,
     };
     this.verifyCode = this.verifyCode.bind(this);
     this.countdownInterval = 0;
@@ -60,37 +60,13 @@ class VerificationComponent extends Component {
     axios
       .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
         headers
-      })
+      }).then(this.setState({date : 10000}))
       .catch(error => {
+        this.setState({date : 10000})
         console.log(error);
       });
   };
 
-  componentDidMount() {
-    this.start();
-  }
-
-  componentWillUnmount() {
-    this.clearInterval();
-  }
-
-  start() {
-    this.countdownInterval = window.setInterval(() => {
-      if (this.state.date <= 0) {
-        return this.clearInterval();
-      }
-
-      this.setState(({ date }) => ({ date: date - 1000 }));
-    }, 1000);
-  }
-
-  handleUpdate = () => {
-    this.forceUpdate();
-  };
-
-  clearInterval() {
-    window.clearInterval(this.countdownInterval);
-  }
 
   verifyCode(value) {
     if (value.length == 6) {
@@ -107,7 +83,7 @@ class VerificationComponent extends Component {
           headers
         })
         .then(response => {
-          this.setState({ loading: false, date: 10000 });
+          this.setState({ loading: false});
           localStorage.setItem("token", response.data.data.token);
           window.location = "/";
         })
@@ -142,7 +118,21 @@ class VerificationComponent extends Component {
     }
   }
 
-  render() {
+  render() { 
+    const renderer = ({  seconds, completed })=> {
+      if (completed) {
+        // Render a completed state
+        return  <span
+        className="light-text text-decoration-none clickable"
+        onClick={this.verifyUser}
+      >
+        إعادة إرسال
+      </span>
+      } else {
+        // Render a countdown
+        return <span>({seconds})</span>;
+      }
+    }
     const { handleSubmit, submitting } = this.props;
     return (
       <div className="container pt-5 pb-5">
@@ -179,16 +169,11 @@ class VerificationComponent extends Component {
 
               <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-                {this.state.date > 0 ? (
-                  <Countdown date={this.state.date} controlled={true} zeroPadTime onStart={this.handleUpdate } />
-                ) : (
-                    <span
-                      className="light-text text-decoration-none clickable"
-                      onClick={this.verifyUser }
-                    >
-                      إعادة إرسال
-                    </span>
-                  )}
+                <Countdown
+                  date={Date.now() + 10000}
+                  renderer={renderer}
+                  autoStart={true}
+                />
               </p>
             </div>
             <div className="text-center pt-1">
