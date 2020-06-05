@@ -63,7 +63,7 @@ class VerificationComponent extends Component {
   };
 
   verifyCode(value) {
-    if (value.length == 6) {
+    if (value.length == 4) {
       let token = localStorage.getItem("token");
       let data = {
         token: value
@@ -136,7 +136,7 @@ class VerificationComponent extends Component {
             </div>
 
             <form className="centered">
-              <div className="mb-3">
+              <div className="mb-3 text-center">
                 <Field
                   name="token"
                   component={VerificationField}
