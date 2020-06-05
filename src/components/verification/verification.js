@@ -136,7 +136,7 @@ class VerificationComponent extends Component {
             </div>
 
             <form className="centered">
-              <div className="mb-3">
+              <div className="mb-3 text-center">
                 <Field
                   name="token"
                   component={VerificationField}
