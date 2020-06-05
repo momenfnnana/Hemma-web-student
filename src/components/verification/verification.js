@@ -46,13 +46,13 @@ class VerificationComponent extends Component {
       loading: false,
       disabled: false,
       code: "",
-      date: 59000,
+      date: Date.now() + 10000
     };
     this.verifyCode = this.verifyCode.bind(this);
-    this.countdownInterval = 0;
   }
 
   verifyUser = () => {
+    this.setState({date: Date.now() + 10000});
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -60,9 +60,8 @@ class VerificationComponent extends Component {
     axios
       .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
         headers
-      }).then(this.setState({date : 10000}))
+      }).then()
       .catch(error => {
-        this.setState({date : 10000})
         console.log(error);
       });
   };
@@ -117,21 +116,20 @@ class VerificationComponent extends Component {
         });
     }
   }
-
   render() { 
-    const renderer = ({  seconds, completed })=> {
+  const  start = ({seconds, completed}) => {
       if (completed) {
-        // Render a completed state
-        return  <span
-        className="light-text text-decoration-none clickable"
-        onClick={this.verifyUser}
-      >
-        إعادة إرسال
-      </span>
-      } else {
-        // Render a countdown
-        return <span>({seconds})</span>;
-      }
+          // Render a completed state
+          return  <span
+          className="light-text text-decoration-none clickable"
+          onClick={this.verifyUser}
+        >
+          إعادة إرسال
+        </span>
+        } else {
+          // Render a countdown
+          return <span>({seconds})</span>;
+        }
     }
     const { handleSubmit, submitting } = this.props;
     return (
@@ -152,7 +150,7 @@ class VerificationComponent extends Component {
               <h6 className="light-text small">تأكيد حسابك</h6>
               <h6 className="dark-text small">
                 أدخل رمز التحقق الذي أرسلناه إلى جوالك
-              </h6>
+              </h6> 
             </div>
 
             <form className="centered">
@@ -170,10 +168,11 @@ class VerificationComponent extends Component {
               <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
                 <Countdown
-                  date={Date.now() + 10000}
-                  renderer={renderer}
+                  date={this.state.date}
                   autoStart={true}
+                  renderer={start}
                 />
+
               </p>
             </div>
             <div className="text-center pt-1">
