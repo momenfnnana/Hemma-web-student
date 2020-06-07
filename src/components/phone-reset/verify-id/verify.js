@@ -5,7 +5,7 @@ import swal from "@sweetalert/with-react";
 import axios from "axios";
 import { VerificationField } from "../../shared/inputs/verificationField";
 import { apiBaseUrl } from "../../../api/helpers";
-import Loader from "react-loaders";
+import Countdown from "react-countdown-now";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 
 const validate = values => {
@@ -43,7 +43,10 @@ class VerifyIdComponent extends Component {
     this.state = {
       loading: false,
       disabled: false,
-      code: ""
+      code: "",
+      date: Date.now() + 59000,
+      countdownApi: null,
+      showResend: false
     };
     this.verifyCode = this.verifyCode.bind(this);
   }
@@ -102,6 +105,7 @@ class VerifyIdComponent extends Component {
   }
 
   resendCode = () => {
+    this.setState({ date: Date.now() + 59000, showResend: false });
     const { userInfo } = this.props.location;
     let data = {
       countryCode: userInfo.countryCode,
@@ -150,10 +154,40 @@ class VerifyIdComponent extends Component {
         }
       });
   };
+  verifyUser = () => {
+    this.setState({ date: Date.now() + 59000, showResend: false });
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    axios
+      .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
+        headers
+      })
+      .then()
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  handleComplete = () => {
+    this.setState({ showResend: true });
+  };
+
+  handleUpdate = () => {
+    this.forceUpdate();
+  };
+
+  setRef = countdown => {
+    if (countdown) {
+      this.countdownApi = countdown.getApi();
+    }
+  };
 
   render() {
     const { userInfo } = this.props.location;
     const { handleSubmit, submitting } = this.props;
+    const renderer = ({ seconds }) => <span>({seconds})</span>;
     return (
       <div className="container pt-5 pb-5">
         <div
@@ -187,12 +221,27 @@ class VerifyIdComponent extends Component {
             </form>
 
             <div className="text-center pt-4">
-              <span href="" className="dark-text small">
+              <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-              </span>
-              <span className="light-text small" onClick={this.resendCode}>
-                إعادة إرسال
-              </span>
+                {this.state.showResend ? (
+                  <span
+                    className="light-text text-decoration-none clickable"
+                    onClick={this.verifyUser}
+                  >
+                    إعادة إرسال
+                  </span>
+                ) : (
+                  <Countdown
+                    date={this.state.date}
+                    autoStart={true}
+                    key={this.state.date}
+                    ref={this.setRef}
+                    onMount={this.handleUpdate}
+                    onComplete={this.handleComplete}
+                    renderer={renderer}
+                  />
+                )}
+              </p>
             </div>
           </div>
         </div>

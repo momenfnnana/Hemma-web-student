@@ -8,7 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
-import Countdown, { CountdownApi } from "react-countdown-now";
+import Countdown from "react-countdown-now";
 
 const validate = values => {
   const errors = {};
@@ -46,13 +46,15 @@ class VerificationComponent extends Component {
       loading: false,
       disabled: false,
       code: "",
-      date: Date.now() + 10000
+      date: Date.now() + 59000,
+      countdownApi: null,
+      showResend: false
     };
     this.verifyCode = this.verifyCode.bind(this);
   }
 
   verifyUser = () => {
-    this.setState({date: Date.now() + 10000});
+    this.setState({ date: Date.now() + 59000, showResend: false });
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -60,15 +62,29 @@ class VerificationComponent extends Component {
     axios
       .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
         headers
-      }).then()
+      })
+      .then()
       .catch(error => {
         console.log(error);
       });
   };
 
+  handleComplete = () => {
+    this.setState({ showResend: true });
+  };
+
+  handleUpdate = () => {
+    this.forceUpdate();
+  };
+
+  setRef = countdown => {
+    if (countdown) {
+      this.countdownApi = countdown.getApi();
+    }
+  };
 
   verifyCode(value) {
-    if (value.length == 6) {
+    if (value.length === 4) {
       let token = localStorage.getItem("token");
       let data = {
         token: value
@@ -82,7 +98,7 @@ class VerificationComponent extends Component {
           headers
         })
         .then(response => {
-          this.setState({ loading: false});
+          this.setState({ loading: false });
           localStorage.setItem("token", response.data.data.token);
           window.location = "/";
         })
@@ -116,22 +132,9 @@ class VerificationComponent extends Component {
         });
     }
   }
-  render() { 
-  const  start = ({seconds, completed}) => {
-      if (completed) {
-          // Render a completed state
-          return  <span
-          className="light-text text-decoration-none clickable"
-          onClick={this.verifyUser}
-        >
-          إعادة إرسال
-        </span>
-        } else {
-          // Render a countdown
-          return <span>({seconds})</span>;
-        }
-    }
+  render() {
     const { handleSubmit, submitting } = this.props;
+    const renderer = ({ seconds }) => <span>({seconds})</span>;
     return (
       <div className="container pt-5 pb-5">
         <div
@@ -150,7 +153,7 @@ class VerificationComponent extends Component {
               <h6 className="light-text small">تأكيد حسابك</h6>
               <h6 className="dark-text small">
                 أدخل رمز التحقق الذي أرسلناه إلى جوالك
-              </h6> 
+              </h6>
             </div>
 
             <form className="centered">
@@ -164,15 +167,26 @@ class VerificationComponent extends Component {
             </form>
 
             <div className="text-center pt-4">
-
               <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-                <Countdown
-                  date={this.state.date}
-                  autoStart={true}
-                  renderer={start}
-                />
-
+                {this.state.showResend ? (
+                  <span
+                    className="light-text text-decoration-none clickable"
+                    onClick={this.verifyUser}
+                  >
+                    إعادة إرسال
+                  </span>
+                ) : (
+                  <Countdown
+                    date={this.state.date}
+                    autoStart={true}
+                    key={this.state.date}
+                    ref={this.setRef}
+                    onMount={this.handleUpdate}
+                    onComplete={this.handleComplete}
+                    renderer={renderer}
+                  />
+                )}
               </p>
             </div>
             <div className="text-center pt-1">
