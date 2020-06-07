@@ -17,7 +17,8 @@ class BillingListComponent extends Component {
     isInstallmentOpen: false,
     isRefundOpen: false,
     isWrongTransactionOpen: false,
-    details: []
+    details: [],
+    remainingAmount : null
   };
 
   openRefundModal = () => {
@@ -51,7 +52,7 @@ class BillingListComponent extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/transaction_history`, { headers })
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data.transactions, remainingAmount: response.data.data.remainingAmount });
       })
       .catch(error => {
         console.log(error);
@@ -97,7 +98,6 @@ class BillingListComponent extends Component {
       this.props &&
       this.props.subscription &&
       this.props.subscription.subscription;
-    const remainingAmount = subscription && subscription.remainingAmount;
 
     return (
       <React.Fragment>
@@ -149,7 +149,7 @@ class BillingListComponent extends Component {
                   closeWrongTransactionModal={this.closeWrongTransactionModal}
                 /> */}
 
-                  {!remainingAmount == "0" && (
+                  {!this.state.remainingAmount == "0" && (
                     <button
                       type="button"
                       className="btn border mid-text smaller ml-2"

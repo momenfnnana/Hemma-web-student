@@ -104,10 +104,16 @@ class MainRouterComponent extends Component {
             <Header />
             <Switch>
               <Route path="/home" component={Home} />
+              {!this.props.authenticated ? (
               <Route path="/auth" component={Auth} />
+              ):(
+                <Redirect from="/auth"  to="/course/content" />
+              )}
+              {/* <Route path="/auth" component={Auth}/> */}
               <Route
                 path="/verify"
                 exact
+                to="/course/content"
                 component={requireAuth(Verification)}
               />
               <Route path="/verify/identity" component={VerifyId} />

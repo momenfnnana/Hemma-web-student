@@ -137,7 +137,7 @@ class LoginComponent extends Component {
                 src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
                 width="100%"
                 width="20"
-                className="position-absolute left-input-icon custom-top"
+                className="position-absolute left-input-icon"
                 onClick={this.togglePasswordShow}
               />
             )}

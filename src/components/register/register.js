@@ -9,6 +9,7 @@ import { phoneField } from "../shared/inputs/phoneField";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import { RadioField } from "../shared/inputs/RadioFeild";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import {
   loginAction,
   signupUser,
@@ -64,7 +65,8 @@ class RegisterComponent extends Component {
       selectedLevel: "",
       educationalEntities: [],
       selected: null,
-      nationalities: []
+      nationalities: [],
+      isPageLoading: false
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
@@ -89,7 +91,7 @@ class RegisterComponent extends Component {
     this.setState({ loading: true });
     request
       .then(action => {
-        this.setState({ loading: false });
+        this.setState({ loading: false, isPageLoading:true });
         this.props
           .loginAction({
             countryCode: values.phone.countryCode,
@@ -101,17 +103,22 @@ class RegisterComponent extends Component {
               this.props
                 .sendToken()
                 .then(response => {
+                  this.setState({isPageLoading:false})
                   this.props.history.push("/verify");
                 })
                 .catch(error => {
+                  this.setState({isPageLoading:false})
+
                   this.props.history.push("/");
                 });
             } else {
+              this.setState({isPageLoading:false})
+
               this.props.history.push("/");
             }
           })
           .catch(error => {
-            this.setState({ loading: false });
+            this.setState({ loading: false, isPageLoading: false });
             this.props.loginFailed(error);
             switch (error.response.data && error.response.data.error) {
               case "InvalidCredentials":
@@ -206,8 +213,19 @@ class RegisterComponent extends Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <React.Fragment>
+      {this.state.isPageLoading?
+        <React.Fragment>
+        <div
+            className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+            style={{ minHeight: 350 }}
+          >
+            <Loader type="ball-spin-fade-loader" className="dark-loader" />
+          </div>
+        </React.Fragment>
+        : 
+      <React.Fragment>
         <Helmet>
-          <title> إنشاء حساب | منصّ ة همّ ة التعليمية </title>{" "}
+          <title> إنشاء حساب | منصّة همّة التعليمية </title>{" "}
           <meta
             name="description"
             content="طالب أو معلّم؟ سجّل حسابك في منصّة همّة الآن, واختر دورتك المناسبة."
@@ -268,7 +286,7 @@ class RegisterComponent extends Component {
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
                 width="20"
-                className="position-absolute left-input-icon custom-top"
+                className="position-absolute left-input-icon"
                 onClick={this.togglePasswordShow}
                 alt="icon"
               />
@@ -341,6 +359,8 @@ class RegisterComponent extends Component {
             )}{" "}
           </button>{" "}
         </form>{" "}
+      </React.Fragment>
+      }
       </React.Fragment>
     );
   }
