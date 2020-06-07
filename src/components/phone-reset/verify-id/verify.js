@@ -49,7 +49,7 @@ class VerifyIdComponent extends Component {
   }
 
   verifyCode(value) {
-    if (value.length == 6) {
+    if (value.length == 4) {
       const { userInfo } = this.props.location;
       let data = {
         countryCode: userInfo.countryCode,
@@ -176,7 +176,7 @@ class VerifyIdComponent extends Component {
               </h6>
             </div>
 
-            <form className="centered">
+            <form className="text-center">
               <div className="mb-3">
                 <Field
                   name="token"
