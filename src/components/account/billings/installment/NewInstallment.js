@@ -62,9 +62,11 @@ export class NewInstallmentComponent extends Component {
         this.props.closeInstallmentModal();
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
-            swal("عفواً", "هذه الدورة مضافة سابقاً إلى سلة التسوق", "error", {
+            swal("عفواً", "القسط مضاف سابقًا إلى سلة التسوق", "error", {
               button: "متابعة"
             });
+            this.props.history.push("/cart")
+           
             break;
           case "BadRequest":
             swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
