@@ -63,14 +63,14 @@ export class BookletsComponent extends Component {
   }
 
   onSubmit() {
-    console.log("submit",this.state.booklet.id)
+   
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
     };
     let data = {
       type: "Booklet",
-      itemId: this.state.booklet && this.state.booklet.id
+      itemId:  this.state.booklet.id
     };
     axios
       .post(`${apiBaseUrl}/cart/items`, data, { headers })
@@ -187,7 +187,7 @@ export class BookletsComponent extends Component {
                     <button
                       type="submit"
                       className="btn blue-border-btn"
-                      onClick={this.onSubmit}
+                      onClick={()=>this.onSubmit()}
                     >
                       طلب الملزمة مطبوعة
                     </button>
