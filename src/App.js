@@ -11,6 +11,7 @@ import Intercom from "./Intercom";
 import TwilioComponent from "./Twilio";
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
+import { ToastProvider } from 'react-toast-notifications'
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -41,7 +42,8 @@ export default class AppComponent extends Component {
 
   render() {
     return (
-      <Provider store={store}>
+      <ToastProvider>
+    <Provider store={store}>
         <Intercom />
         <TwilioComponent />
         <React.Fragment>
@@ -55,6 +57,8 @@ export default class AppComponent extends Component {
           </div>
         </React.Fragment>
       </Provider>
+      </ToastProvider>
+  
     );
   }
 }

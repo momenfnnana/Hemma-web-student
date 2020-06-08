@@ -5,14 +5,12 @@ import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
 import { CommentsList } from "./comments/comments-list";
 import { Link } from "react-router-dom";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import {ToastsContainerPosition,ToastsContainer, ToastsStore} from 'react-toasts';
+import { ToastDemo } from "./toast-notification";
+
 
 export class QuestionSummary extends Component {
   state = {
     details: [],
-    value: window.location.href,
-    copied: false,
   };
 
   componentDidMount() {
@@ -38,6 +36,7 @@ export class QuestionSummary extends Component {
       });
   }
   render() {
+
     const question =
       this.state.details &&
       this.state.details.quickQuestion &&
@@ -59,19 +58,7 @@ export class QuestionSummary extends Component {
                 </p>
               </div>
               <div className="col-md-6 d-flex align-items-center justify-content-end">
-              <CopyToClipboard text={this.state.value}
-                  onCopy={() => ToastsStore.info("تم النسخ")}
-                  > 
-                        <button
-                  type="button"
-                    className="btn btn-xs unset-height small light-btn light-font-text mr-2"
-                
-                  >
-                    مشاركة السؤال
-                </button> 
-                 </CopyToClipboard> 
-            
-                <ToastsContainer store={ToastsStore} position={ToastsContainerPosition.TOP_LEFT}/>
+               <ToastDemo/>
                 <Link
                   to={`/categories/details/${params.slug}/quick-questions/${this.state.details.categoryGroupId}`}
                   className="btn btn-sm unset-height small light-btn light-font-text"
