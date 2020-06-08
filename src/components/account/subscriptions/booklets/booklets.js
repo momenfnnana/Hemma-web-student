@@ -14,6 +14,7 @@ export class BookletsComponent extends Component {
     super(props);
     this.state = {
       booklets: [],
+      booklet:{},
       isPageLoading: false
     };
   }
@@ -44,8 +45,10 @@ export class BookletsComponent extends Component {
       .then(response => {
         this.setState({
           booklets: response.data.data.parts,
-          isPageLoading: false
+          isPageLoading: false,
+          booklet: response.data.data
         });
+        console.log("here",response.data.data)
       })
       .catch(error => {
         this.setState({ isPageLoading: false });
@@ -60,6 +63,7 @@ export class BookletsComponent extends Component {
   }
 
   onSubmit() {
+    console.log("submit",this.state.booklet.id)
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -156,10 +160,30 @@ export class BookletsComponent extends Component {
                   <div className="d-flex justify-content-between align-items-center">
                     <h6 className="dark-text mb-0 mt-0"></h6>
 
-                    {/* <div>
-                {this.state.booklet &&
+                    <div>
+
+                {this.state.booklet.agency == "Printsa" ? (
+                    <a
+                      className="btn blue-border-btn mr-2"
+                      href={`https://www.aramex.com/sa/ar/track/track-shipments/track-results?mode=0&ShipmentNumber=${this.state.booklet.trackingId}`}
+                      target="_blank"
+                    >
+                      تتبع 
+                    </a>
+                    
+                  ) : this.state.booklet.agency == "SMSA" ?(
+                    <a
+                      className="btn blue-border-btn mr-2"
+                      href={`http://www.smsaexpress.com/Track.aspx?tracknumbers==${this.state.booklet.trackingId}`}
+                      target="_blank"
+                    >
+                      تتبع
+                    </a>
+                  ): null}
+                    
+                  {this.state.booklet &&
                   this.state.booklet.canBePurchased &&
-                  this.state.booklet.availableInPrint && (
+                  this.state.booklet.availableInPrint ? (
                     <button
                       type="submit"
                       className="btn blue-border-btn"
@@ -167,8 +191,10 @@ export class BookletsComponent extends Component {
                     >
                       طلب الملزمة مطبوعة
                     </button>
-                  )}
-              </div> */}
+                    
+                  ):null}
+                  
+              </div>
                   </div>
                 </div>
                 <div className="box-layout silver-bg shadow-sm d-flex flex-column w-100 rounded p-4 pb-0">
