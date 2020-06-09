@@ -113,9 +113,7 @@ class VerifyIdComponent extends Component {
 
     axios
       .post(`${apiBaseUrl}/auth/password/reset/phone/send_token`, data)
-      .then(response => {
-        console.log("sent");
-      })
+      .then(() => {})
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
           case "ValidationError":
