@@ -103,7 +103,6 @@ class VerifyIdComponent extends Component {
         });
     }
   }
-
   resendCode = () => {
     this.setState({ date: Date.now() + 59000, showResend: false });
     const { userInfo } = this.props.location;
@@ -154,6 +153,20 @@ class VerifyIdComponent extends Component {
         }
       });
   };
+  handleComplete = () => {
+    this.setState({ showResend: true });
+  };
+
+  handleUpdate = () => {
+    this.forceUpdate();
+  };
+
+  setRef = countdown => {
+    if (countdown) {
+      this.countdownApi = countdown.getApi();
+    }
+  };
+
   render() {
     const { userInfo } = this.props.location;
     const { handleSubmit, submitting } = this.props;
