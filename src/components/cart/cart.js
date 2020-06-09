@@ -8,6 +8,10 @@ import { CartItemsList } from "./CartItemsList";
 import { RecentCoursesSlider } from "./RecentCoursesSlider";
 import { EmptyCartPrompt } from "./EmptyCartPrompt";
 import { AgreementForm } from "./Agreement";
+import { formatPrice } from "./helpers";
+import swal from "@sweetalert/with-react";
+import { apiBaseUrl } from "../../api/helpers";
+import axios from "axios";
 
 class CartComponent extends Component {
   state = {
@@ -27,6 +31,16 @@ class CartComponent extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
+  nextPopup(){
+    swal("نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة", {
+      buttons: {
+        ok:"موافق"
+      },
+    })
+    .then((value) => {
+    this.handleCartCheckout()
+    });
+  }
 
   componentDidMount() {
     // Fetch the cart again every time the user access the cart page
@@ -43,6 +57,41 @@ class CartComponent extends Component {
           busy: false
         });
       });
+  }
+  
+  handleCartCheckout() {
+    const cart = this.props.cart;
+    const cartAmount = cart && cart.total;
+
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    if (cartAmount == 0) {
+      let data = {
+        url: "No_PAYMENT",
+        originBankName: "No_PAYMENT",
+        destinationBankName: "No_PAYMENT",
+        accountHolderName: "No_PAYMENT",
+        accountNumber: "No_PAYMENT",
+        amount: 0,
+        date: new Date()
+      };
+      axios
+        .post(`${apiBaseUrl}/cart/checkout_with_bank_transfer`, data, {
+          headers
+        })
+        .then(response => {
+          this.props.history.push("/course/content");
+        })
+        .catch(error => {
+          swal("عفواً", "خدث خطأ ما", "error", {
+            button: "متابعة"
+          });
+        });
+    } else {
+      this.props.history.push("/cart/checkout");
+    }
   }
 
   render() {
@@ -65,7 +114,7 @@ class CartComponent extends Component {
                 <button
                   className="btn light-outline-btn mt-4 w-100"
                   disabled={!items || items.length === 0}
-                  onClick={() => this.openModal()}
+                  onClick={() => formatPrice(cart.total) ? this.openModal() : this.nextPopup()}
                 >
                   متابعة
                 </button>
