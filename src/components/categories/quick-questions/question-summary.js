@@ -5,10 +5,12 @@ import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
 import { CommentsList } from "./comments/comments-list";
 import { Link } from "react-router-dom";
+import { ToastDemo } from "./toast-notification";
+
 
 export class QuestionSummary extends Component {
   state = {
-    details: []
+    details: [],
   };
 
   componentDidMount() {
@@ -34,6 +36,7 @@ export class QuestionSummary extends Component {
       });
   }
   render() {
+
     const question =
       this.state.details &&
       this.state.details.quickQuestion &&
@@ -47,14 +50,15 @@ export class QuestionSummary extends Component {
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-8">
+              <div className="col-md-6">
                 <h5 className="dark-text mt-3">الأسئلة السريعة</h5>
-                <p className="dark-text mt-2 small w-50 text-break">
+                <p className="dark-text mt-2 small text-break">
                   لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
                   القدرات والتحصيلي بأعلى العلامات!
                 </p>
               </div>
-              <div className="col-md-4 d-flex align-items-center justify-content-end">
+              <div className="col-md-6 d-flex align-items-center justify-content-end">
+               <ToastDemo/>
                 <Link
                   to={`/categories/details/${params.slug}/quick-questions/${this.state.details.categoryGroupId}`}
                   className="btn btn-sm unset-height small light-btn light-font-text"
@@ -67,6 +71,7 @@ export class QuestionSummary extends Component {
                 >
                   العودة إلى الرئيسية
                 </Link>
+
               </div>
             </div>
             {question && rateChoices && (
