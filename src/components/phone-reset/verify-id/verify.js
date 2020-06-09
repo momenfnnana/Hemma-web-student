@@ -154,36 +154,6 @@ class VerifyIdComponent extends Component {
         }
       });
   };
-  verifyUser = () => {
-    this.setState({ date: Date.now() + 59000, showResend: false });
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
-        headers
-      })
-      .then()
-      .catch(error => {
-        console.log(error);
-      });
-  };
-
-  handleComplete = () => {
-    this.setState({ showResend: true });
-  };
-
-  handleUpdate = () => {
-    this.forceUpdate();
-  };
-
-  setRef = countdown => {
-    if (countdown) {
-      this.countdownApi = countdown.getApi();
-    }
-  };
-
   render() {
     const { userInfo } = this.props.location;
     const { handleSubmit, submitting } = this.props;
@@ -226,7 +196,7 @@ class VerifyIdComponent extends Component {
                 {this.state.showResend ? (
                   <span
                     className="light-text text-decoration-none clickable"
-                    onClick={this.verifyUser}
+                    onClick={this.resendCode}
                   >
                     إعادة إرسال
                   </span>
