@@ -8,6 +8,7 @@ import { Link, withRouter } from "react-router-dom";
 import { apiBaseUrl } from "../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import Countdown from "react-countdown-now";
 
 const validate = values => {
   const errors = {};
@@ -44,11 +45,16 @@ class VerificationComponent extends Component {
     this.state = {
       loading: false,
       disabled: false,
-      code: ""
+      code: "",
+      date: Date.now() + 59000,
+      countdownApi: null,
+      showResend: false
     };
     this.verifyCode = this.verifyCode.bind(this);
   }
+
   verifyUser = () => {
+    this.setState({ date: Date.now() + 59000, showResend: false });
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -57,9 +63,24 @@ class VerificationComponent extends Component {
       .post(`${apiBaseUrl}/auth/phone/send_token`, null, {
         headers
       })
-       .catch(error => {
+      .then()
+      .catch(error => {
         console.log(error);
       });
+  };
+
+  handleComplete = () => {
+    this.setState({ showResend: true });
+  };
+
+  handleUpdate = () => {
+    this.forceUpdate();
+  };
+
+  setRef = countdown => {
+    if (countdown) {
+      this.countdownApi = countdown.getApi();
+    }
   };
 
   verifyCode(value) {
@@ -111,9 +132,9 @@ class VerificationComponent extends Component {
         });
     }
   }
-
   render() {
     const { handleSubmit, submitting } = this.props;
+    const renderer = ({ seconds }) => <span>({seconds})</span>;
     return (
       <div className="container pt-5 pb-5">
         <div
@@ -146,15 +167,26 @@ class VerificationComponent extends Component {
             </form>
 
             <div className="text-center pt-4">
-
               <p className="dark-text small">
                 لم يصلك رمز التحقق؟{" "}
-                <span
-                  className="light-text text-decoration-none clickable"
-                  onClick={this.verifyUser}
-                >
-                  اضغط هنا
-                    </span>
+                {this.state.showResend ? (
+                  <span
+                    className="light-text text-decoration-none clickable"
+                    onClick={this.verifyUser}
+                  >
+                    إعادة إرسال
+                  </span>
+                ) : (
+                  <Countdown
+                    date={this.state.date}
+                    autoStart={true}
+                    key={this.state.date}
+                    ref={this.setRef}
+                    onMount={this.handleUpdate}
+                    onComplete={this.handleComplete}
+                    renderer={renderer}
+                  />
+                )}
               </p>
             </div>
             <div className="text-center pt-1">
