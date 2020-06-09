@@ -630,30 +630,6 @@ export class CourseDetails extends Component {
                     ) : (
                       this.renderSections()
                     )}
-                    <div className="row mt-5">
-                      <div className="col-12">
-                        <h4 className="mid-text mb-2">الشروط والأحكام</h4>
-                        <p className="light-font-text dark-text small mb-1">
-                          1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب المشترك
-                          في{" "}
-                          <Link to="/" className="light-text">
-                            منصّة همّة
-                          </Link>
-                        </p>
-                        <p className="light-font-text dark-text small mb-1">
-                          2- لا تتحمل{" "}
-                          <Link to="/" className="light-text">
-                            منصّة همّة
-                          </Link>{" "}
-                          أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة
-                          ومشاهدته لتسجيل المحاضرات{" "}
-                        </p>
-                        <p className="light-font-text dark-text small mb-1">
-                          3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ
-                          انتهاء الاشتراك
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
