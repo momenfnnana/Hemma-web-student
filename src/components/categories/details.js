@@ -115,7 +115,7 @@ export class CategoryDetails extends Component {
       });
 
     Api.categories
-      .getCompetitions(this.props.location.state.catId)
+      .getCompetitions(params.slug)
       .then(response => {
         this.setState({ competitions: response });
       })
@@ -125,7 +125,7 @@ export class CategoryDetails extends Component {
 
     axios
       .get(
-        `${apiBaseUrl}/CategoryGroups?categoryId=${this.props.location.state.catId}`
+        `${apiBaseUrl}/CategoryGroups?category=${params.slug}`
       )
       .then(response => {
         this.setState({ categoryGroups: response.data.data });
