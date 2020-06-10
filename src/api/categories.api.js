@@ -3,7 +3,7 @@ import { getAuthenticatedAxios, getDataFromResponse } from "./helpers";
 export const CategoriesApiEndpoints = {
   getCompetitions: categoryId =>
     getAuthenticatedAxios()
-      .get(`/competitions?categoryId=${categoryId}`, {})
+      .get(`/competitions?category=${categoryId}`, {})
       .then(getDataFromResponse),
 
   getCompetitionDetails: competitionId =>
