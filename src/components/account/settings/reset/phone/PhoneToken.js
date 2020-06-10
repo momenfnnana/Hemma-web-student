@@ -97,7 +97,7 @@ export class PhoneTokenComponent extends Component {
                 <h6 className="light-text mb-2">التحقق من الهوية</h6>
 
                 <h6 className="dark-text smaller mb-4">
-                  أدخل رمز التحقق المكون من ستة خانات والمرسل على الرقم{" "}
+                  أدخل رمز التحقق المكون من أربعة خانات والمرسل على الرقم{" "}
                 </h6>
                 <form onSubmit={handleSubmit(this.submitPhoneToken)}>
                   <Field name="token" component={VerificationField} />

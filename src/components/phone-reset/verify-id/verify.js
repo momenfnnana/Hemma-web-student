@@ -186,7 +186,7 @@ class VerifyIdComponent extends Component {
             <div className="text-center mb-3">
               <h6 className="light-text">التحقق من الهوية</h6>
               <h6 className="dark-text w-50 small mx-auto">
-                أدخل رمز التحقق المكون من ستة خانات والمرسل على الرقم{" "}
+                أدخل رمز التحقق المكون من أربعة خانات والمرسل على الرقم{" "}
                 <span className="en-text">{userInfo.phoneNumber}</span>
               </h6>
             </div>
