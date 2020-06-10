@@ -97,7 +97,7 @@ export class EmailTokenComponent extends Component {
                 </h6>
 
                 <h6 className="dark-text smaller mb-4 text-center">
-                  أدخل رمز التحقق المكون من ستة خانات والمرسل على البريد
+                  أدخل رمز التحقق المكون من أربعة خانات والمرسل على البريد
                 </h6>
                 <form
                   onSubmit={handleSubmit(this.submitEmailToken)}
