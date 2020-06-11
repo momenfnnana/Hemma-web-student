@@ -29,6 +29,7 @@ export class CourseDetails extends Component {
       modalIsOpen: false,
       recordingModalIsOpen: false,
       recordingUrl: null,
+      selectedLecture: null,
       isPageLoading: false,
       confirm: false
     };
@@ -37,28 +38,30 @@ export class CourseDetails extends Component {
     this.toggleRecordingModal = this.toggleRecordingModal.bind(this);
   }
 
-  confirmationPopup(){
-    swal(`هل أنت متأكد أنك تريد الاشتراك في دورة (${this.state.details.nameAr})؟`, {
-      buttons: {
-        cancel: "الغاء",
-        ok:"موافق"
-      },
-    })
-    .then((value) => {
+  confirmationPopup() {
+    swal(
+      `هل أنت متأكد أنك تريد الاشتراك في دورة (${this.state.details.nameAr})؟`,
+      {
+        buttons: {
+          cancel: "الغاء",
+          ok: "موافق"
+        }
+      }
+    ).then(value => {
       switch (value) {
-     
         case "ok":
-          this.addToCart(this.state.details.id)
+          this.addToCart(this.state.details.id);
         default:
           break;
       }
     });
   }
 
-  toggleRecordingModal(url) {
+  toggleRecordingModal(url, id) {
     this.setState({
       recordingModalIsOpen: !this.state.recordingModalIsOpen,
-      recordingUrl: url
+      recordingUrl: url,
+      selectedLecture: id
     });
   }
 
@@ -283,9 +286,9 @@ export class CourseDetails extends Component {
     var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
     return (
       <div className="row">
-        <div className="col-6 d-flex align-items-center">
+        <div className="col-md-9 d-flex align-items-center">
           <div className="d-flex align-items-center">
-            {lecture.status == "Recorded" && (
+            {lecture.status === "Recorded" && (
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/play.png"}
                 className="mr-2"
@@ -298,7 +301,9 @@ export class CourseDetails extends Component {
           {lecture.recordingUrl && (
             <div
               className="outline-label clickable"
-              onClick={() => this.toggleRecordingModal(lecture.recordingUrl)}
+              onClick={() =>
+                this.toggleRecordingModal(lecture.recordingUrl, lecture.id)
+              }
             >
               <img
                 src={process.env.PUBLIC_URL + "/assets/images/blue-play.png"}
@@ -310,18 +315,18 @@ export class CourseDetails extends Component {
             </div>
           )}
         </div>
-        <div className="col-6 d-flex justify-content-end align-items-center">
-          {lecture.status == "Live" ? (
+        <div className="col-md-3 d-flex justify-content-end align-items-center">
+          {lecture.status === "Live" ? (
             <div className="small mb-0 d-flex align-items-center">
               <span className="en-text">{hijriDate}</span>{" "}
               <span className="badge light-bg ml-2 text-white">مباشرة</span>
             </div>
-          ) : lecture.status == "Scheduled" ? (
+          ) : lecture.status === "Scheduled" ? (
             <div className="small mb-0 d-flex align-items-center">
               <span className="en-text">{hijriDate}</span>{" "}
               <span className="badge mid-bg ml-2 text-white">مجدولة</span>
             </div>
-          ) : lecture.status == "Recorded" ? (
+          ) : lecture.status === "Recorded" ? (
             <div className="small mb-0 d-flex align-items-center">
               <span className="en-text">{hijriDate}</span>{" "}
               <span className="badge red-bg ml-2 text-white">مسجلة</span>
@@ -437,9 +442,7 @@ export class CourseDetails extends Component {
                           <button
                             type="button"
                             className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
-                            onClick={() => 
-                              this.confirmationPopup()
-                            }
+                            onClick={() => this.confirmationPopup()}
                           >
                             اشترك الآن
                           </button>
@@ -562,8 +565,8 @@ export class CourseDetails extends Component {
                       </div>
                     )}
 
-                    {this.state.details.instructors == undefined ||
-                    this.state.details.instructors == 0 ? null : (
+                    {this.state.details.instructors === undefined ||
+                    this.state.details.instructors === 0 ? null : (
                       <div className="box-layout w-100 radius-bottom-0 border-bottom-0">
                         <div className="silver-bg d-flex align-items-center p-3">
                           <img
@@ -606,8 +609,8 @@ export class CourseDetails extends Component {
                     </div>
 
                     <div className="row">{this.renderFeatures()}</div>
-                    {this.state.details.sections == undefined ||
-                    this.state.details.sections == 0 ? (
+                    {this.state.details.sections === undefined ||
+                    this.state.details.sections === 0 ? (
                       <React.Fragment>
                         <div
                           className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
@@ -627,41 +630,42 @@ export class CourseDetails extends Component {
                           </p>
                         </div>
                       </React.Fragment>
-                        ) : (
-                          this.renderSections()
-                        )}
-                        {this.state.details.price ? 
+                    ) : (
+                      this.renderSections()
+                    )}
+                    {this.state.details.price ? (
                       <div className="row mt-5">
                         <div className="col-12">
                           <h4 className="mid-text mb-2">الشروط والأحكام</h4>
                           <p className="light-font-text dark-text small mb-1">
-                            1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب المشترك
-                          في{" "}
+                            1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب
+                            المشترك في{" "}
                             <Link to="/" className="light-text">
                               منصّة همّة
-                          </Link>
+                            </Link>
                           </p>
                           <p className="light-font-text dark-text small mb-1">
                             2- لا تتحمل{" "}
                             <Link to="/" className="light-text">
                               منصّة همّة
-                          </Link>{" "}
-                          أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة
-                          ومشاهدته لتسجيل المحاضرات{" "}
+                            </Link>{" "}
+                            أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة
+                            ومشاهدته لتسجيل المحاضرات{" "}
                           </p>
                           <p className="light-font-text dark-text small mb-1">
                             3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ
                             انتهاء الاشتراك
-                        </p>
+                          </p>
                         </div>
                       </div>
-                      : null}
-                    </div>
+                    ) : null}
                   </div>
+                </div>
               </div>
             </section>
             <RecordingVideo
               recordingUrl={this.state.recordingUrl}
+              selectedLecture={this.state.selectedLecture}
               modalIsOpen={this.state.recordingModalIsOpen}
               toggleRecordingModal={this.toggleRecordingModal}
             />

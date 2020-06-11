@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
 import ReactPlayer from "react-player";
+import { Api } from "../../api";
 
 export default class RecordingVideo extends Component {
   state = {
@@ -12,7 +13,27 @@ export default class RecordingVideo extends Component {
       this.props.recordingUrl !== nextProps.recordingUrl &&
       nextProps.recordingUrl !== null
     ) {
-      this.setState({ recordingUrl: nextProps.recordingUrl });
+      this.setState({
+        recordingUrl: nextProps.recordingUrl
+      });
+      Api.getUnAuthenticatedAxios()
+        .get(`Lectures/${nextProps.selectedLecture}/vdocipher_token`, {})
+        .then(response => {
+          const videoID = nextProps.recordingUrl;
+          if (videoID) {
+            new window.VdoPlayer({
+              otp: response.data.data.otp,
+              playbackInfo: btoa(
+                JSON.stringify({
+                  videoId: videoID
+                })
+              ),
+              theme: "9ae8bbe8dd964ddc9bdb932cca1cb59a",
+              // the container can be any DOM element on website
+              container: document.querySelector("#embedBox")
+            });
+          }
+        });
     }
     return true;
   }
@@ -54,13 +75,9 @@ export default class RecordingVideo extends Component {
               alt="close"
             />
           </button>
-          <ReactPlayer
-            url={this.props.recordingUrl}
-            playing={true}
-            controls={true}
-            width="100%"
-            height="100%"
-          />
+          {this.state.recordingUrl && (
+            <div id="embedBox" style={{ height: "100%", width: "100%" }}></div>
+          )}
         </Modal>
       </React.Fragment>
     );
