@@ -99,23 +99,25 @@ class RegisterComponent extends Component {
             password: values.password
           })
           .then(res => {
-            if (!this.props.phoneNumberConfirmed) {
-              this.props
-                .sendToken()
-                .then(response => {
-                  this.setState({isPageLoading:false})
-                  this.props.history.push("/verify");
-                })
-                .catch(error => {
-                  this.setState({isPageLoading:false})
+            //TODO return the verfication page
 
-                  this.props.history.push("/");
-                });
-            } else {
+            // if (!this.props.phoneNumberConfirmed) {
+            //   this.props
+            //     .sendToken()
+            //     .then(response => {
+            //       this.setState({isPageLoading:false})
+            //       this.props.history.push("/verify");
+            //     })
+            //     .catch(error => {
+            //       this.setState({isPageLoading:false})
+
+            //       this.props.history.push("/");
+            //     });
+            // } else {
               this.setState({isPageLoading:false})
 
               this.props.history.push("/");
-            }
+            // }
           })
           .catch(error => {
             this.setState({ loading: false, isPageLoading: false });
