@@ -163,11 +163,14 @@ export class Reply extends Component {
                       />
                     ) : (
                         <video
-                          src={reply.value}
-                          height="200"
-                          width="400"
-                          className="contain-img"
-                        />
+                        height="200"
+                        width="400"
+                        className="video-container video-container-overlay"
+                        autoPlay=""
+                        controls
+                      >
+                      <source type="video/mp4" data-reactid=".0.1.0.0.0" src={reply.value}/>
+                        </video>
                       )}
             </React.Fragment>
           )}

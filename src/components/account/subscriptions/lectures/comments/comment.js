@@ -342,11 +342,14 @@ export class Comment extends Component {
                   />
                 ): (
                   <video
-                  src={comment.value}
                   height="200"
                   width="400"
-                  className="contain-img"
-                />
+                  className="video-container video-container-overlay"
+                  autoPlay=""
+                  controls
+                >
+                <source type="video/mp4" data-reactid=".0.1.0.0.0" src={comment.value}/>
+                  </video>
                 )}
               </React.Fragment>
             )}
