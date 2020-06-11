@@ -333,13 +333,20 @@ export class Comment extends Component {
                   <audio controls className="w-100">
                     <source src={comment.value} />
                   </audio>
-                ) : (
+                ) :comment.type == "Image" ? (
                   <img
                     src={comment.value}
                     height="200"
                     width="400"
                     className="contain-img"
                   />
+                ): (
+                  <video
+                  src={comment.value}
+                  height="200"
+                  width="400"
+                  className="contain-img"
+                />
                 )}
               </React.Fragment>
             )}

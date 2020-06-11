@@ -154,14 +154,21 @@ export class Reply extends Component {
                 <audio controls className="w-100">
                   <source src={reply.value} />
                 </audio>
-              ) : (
+              ) : reply.type == "Image" ?(
                 <img
                   src={reply.value}
                   height="200"
                   width="400"
                   className="contain-img"
-                />
-              )}
+                      />
+                    ) : (
+                        <video
+                          src={reply.value}
+                          height="200"
+                          width="400"
+                          className="contain-img"
+                        />
+                      )}
             </React.Fragment>
           )}
         </div>
