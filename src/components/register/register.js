@@ -44,7 +44,7 @@ const phoneValue = value => {
   const valid = /^0\d{9}$/.test(trimmed);
 
   return valid ? undefined : "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
-}
+};
 
 export const minLength4 = minLength(4);
 const emailValue = value =>
@@ -91,48 +91,21 @@ class RegisterComponent extends Component {
     this.setState({ loading: true });
     request
       .then(action => {
-        this.setState({ loading: false, isPageLoading:true });
-        this.props
-          .loginAction({
-            countryCode: values.phone.countryCode,
-            phoneNumber: values.phone.phoneNumber,
-            password: values.password
-          })
-          .then(res => {
-            //TODO return the verfication page
+        this.props.history.push("/");
+        // this.setState({ loading: false, isPageLoading: true });
 
-            // if (!this.props.phoneNumberConfirmed) {
-            //   this.props
-            //     .sendToken()
-            //     .then(response => {
-            //       this.setState({isPageLoading:false})
-            //       this.props.history.push("/verify");
-            //     })
-            //     .catch(error => {
-            //       this.setState({isPageLoading:false})
-
-            //       this.props.history.push("/");
-            //     });
-            // } else {
-              this.setState({isPageLoading:false})
-
-              this.props.history.push("/");
-            // }
-          })
-          .catch(error => {
-            this.setState({ loading: false, isPageLoading: false });
-            this.props.loginFailed(error);
-            switch (error.response.data && error.response.data.error) {
-              case "InvalidCredentials":
-                swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-                  button: "متابعة"
-                });
-                break;
-
-              default:
-                console.log(error);
-            }
-          });
+        // if (!this.props.phoneNumberConfirmed) {
+        //   this.props
+        //     .sendToken()
+        //     .then(() => {
+        //       this.props.history.push("/verify");
+        //     })
+        //     .catch(error => {
+        //       this.props.history.push("/");
+        //     });
+        // } else {
+        //   this.props.history.push("/");
+        // }
       })
       .catch(error => {
         this.setState({ loading: false });
@@ -215,96 +188,101 @@ class RegisterComponent extends Component {
     const { handleSubmit, submitting } = this.props;
     return (
       <React.Fragment>
-      {this.state.isPageLoading?
-        <React.Fragment>
-        <div
-            className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
-            style={{ minHeight: 350 }}
-          >
-            <Loader type="ball-spin-fade-loader" className="dark-loader" />
-          </div>
-        </React.Fragment>
-        : 
-      <React.Fragment>
-        <Helmet>
-          <title> إنشاء حساب | منصّة همّة التعليمية </title>{" "}
-          <meta
-            name="description"
-            content="طالب أو معلّم؟ سجّل حسابك في منصّة همّة الآن, واختر دورتك المناسبة."
-          />
-        </Helmet>{" "}
-        <form className="centered" onSubmit={handleSubmit(this.myFormHandler)}>
-          <Field
-            name="username"
-            type="text"
-            component={inputField}
-            className="form-control border-left-0 pl-0"
-            placeholder="الاسم الكامل"
-            validate={[required, nameValue]}
-          >
-            <FaRegUser />
-          </Field>
-          <div className="mb-3">
-            <label className="pr-2 dark-silver-text mb-0"> أنا: </label>
-            <Field
-              component={RadioField}
-              name="gender"
-              validate={required}
-              options={[
-                { title: "ذكر", value: "male" },
-                { title: "أنثى", value: "female" }
-              ]}
-            />{" "}
-          </div>{" "}
-          <Field
-            fieldName="phone"
-            name="phone"
-            component={phoneField}
-            containerClassName="intl-tel-input"
-            inputClassName="form-control"
-            defaultCountry="sa"
-            validate={[required, phoneValue]}
-          />
-          <div className="position-relative">
-            <Field
-              name="password"
-              type={this.state.hidden ? "text" : "password"}
-              component={inputField}
-              className="form-control border-left-0 pl-0 ltr-input pw-input"
-              placeholder="كلمة المرور"
-              validate={[required, maxLength10, minLength4]}
+        {this.state.isPageLoading ? (
+          <React.Fragment>
+            <div
+              className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+              style={{ minHeight: 350 }}
             >
-              <MdLockOutline />
-            </Field>{" "}
-            {this.state.hidden ? (
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
-                width="20"
-                className="position-absolute left-input-icon"
-                onClick={this.togglePasswordShow}
-                alt="icon"
+              <Loader type="ball-spin-fade-loader" className="dark-loader" />
+            </div>
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Helmet>
+              <title> إنشاء حساب | منصّة همّة التعليمية </title>{" "}
+              <meta
+                name="description"
+                content="طالب أو معلّم؟ سجّل حسابك في منصّة همّة الآن, واختر دورتك المناسبة."
               />
-            ) : (
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-                width="20"
-                className="position-absolute left-input-icon"
-                onClick={this.togglePasswordShow}
-                alt="icon"
+            </Helmet>{" "}
+            <form
+              className="centered"
+              onSubmit={handleSubmit(this.myFormHandler)}
+            >
+              <Field
+                name="username"
+                type="text"
+                component={inputField}
+                className="form-control border-left-0 pl-0"
+                placeholder="الاسم الكامل"
+                validate={[required, nameValue]}
+              >
+                <FaRegUser />
+              </Field>
+              <div className="mb-3">
+                <label className="pr-2 dark-silver-text mb-0"> أنا: </label>
+                <Field
+                  component={RadioField}
+                  name="gender"
+                  validate={required}
+                  options={[
+                    { title: "ذكر", value: "male" },
+                    { title: "أنثى", value: "female" }
+                  ]}
+                />{" "}
+              </div>{" "}
+              <Field
+                fieldName="phone"
+                name="phone"
+                component={phoneField}
+                containerClassName="intl-tel-input"
+                inputClassName="form-control"
+                defaultCountry="sa"
+                validate={[required, phoneValue]}
               />
-            )}{" "}
-          </div>
-          <Field
-            name="email"
-            type="email"
-            component={inputField}
-            className="form-control border-left-0 pl-0 ltr-input"
-            placeholder="البريد الإلكتروني (اختياري)"
-            validate={emailValue}
-          >
-            <FaRegEnvelope />
-          </Field>
-          {/* <Field
+              <div className="position-relative">
+                <Field
+                  name="password"
+                  type={this.state.hidden ? "text" : "password"}
+                  component={inputField}
+                  className="form-control border-left-0 pl-0 ltr-input pw-input"
+                  placeholder="كلمة المرور"
+                  validate={[required, maxLength10, minLength4]}
+                >
+                  <MdLockOutline />
+                </Field>{" "}
+                {this.state.hidden ? (
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/closed-eye.png"
+                    }
+                    width="20"
+                    className="position-absolute left-input-icon"
+                    onClick={this.togglePasswordShow}
+                    alt="icon"
+                  />
+                ) : (
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
+                    width="20"
+                    className="position-absolute left-input-icon"
+                    onClick={this.togglePasswordShow}
+                    alt="icon"
+                  />
+                )}{" "}
+              </div>
+              <Field
+                name="email"
+                type="email"
+                component={inputField}
+                className="form-control border-left-0 pl-0 ltr-input"
+                placeholder="البريد الإلكتروني (اختياري)"
+                validate={emailValue}
+              >
+                <FaRegEnvelope />
+              </Field>
+              {/* <Field
                         component={selectField}
                         className="form-control"
                         name="saCityId"
@@ -348,21 +326,21 @@ class RegisterComponent extends Component {
                         <option selected="selected">الجنسية</option>
                         {this.renderNationalities()}
                       </Field> */}
-          <button
-            type="submit"
-            className="btn dark-outline-btn w-100"
-            disabled={submitting}
-          >
-            {" "}
-            {this.state.loading === true ? (
-              <Loader type="ball-clip-rotate" />
-            ) : (
-              "تسجيل"
-            )}{" "}
-          </button>{" "}
-        </form>{" "}
-      </React.Fragment>
-      }
+              <button
+                type="submit"
+                className="btn dark-outline-btn w-100"
+                disabled={submitting}
+              >
+                {" "}
+                {this.state.loading === true ? (
+                  <Loader type="ball-clip-rotate" />
+                ) : (
+                  "تسجيل"
+                )}{" "}
+              </button>{" "}
+            </form>{" "}
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }

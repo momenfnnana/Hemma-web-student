@@ -3,6 +3,7 @@ import { Api } from "../api";
 export const AUTHENTICATED = "authenticated_user";
 export const UNAUTHENTICATED = "unauthenticated_user";
 export const AUTHENTICATION_ERROR = "authentication_error";
+export const AUTHENTICATE_USER = "authenticate_user";
 export const SEND_TOKEN = "sendToken";
 
 export const loginAction = ({ countryCode, phoneNumber, password }) => {
@@ -32,7 +33,7 @@ export const signupUser = ({
   nationalityId
 }) => {
   return {
-    type: UNAUTHENTICATED,
+    type: AUTHENTICATE_USER,
     payload: Api.auth.signup(
       countryCode,
       phoneNumber,

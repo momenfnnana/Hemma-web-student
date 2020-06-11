@@ -2,7 +2,8 @@ import {
   AUTHENTICATED,
   UNAUTHENTICATED,
   AUTHENTICATION_ERROR,
-  SEND_TOKEN
+  SEND_TOKEN,
+  AUTHENTICATE_USER
 } from "../actions/login.actions";
 
 import jwtDecode from "jwt-decode";
@@ -21,6 +22,16 @@ export const authReducer = (state = null, action) => {
 
   switch (action.type) {
     case AUTHENTICATED:
+      // store the token
+      localStorage.setItem("token", action.payload.token);
+      if (action.error) return state;
+      return {
+        ...state,
+        ...extractTokenInfo(action.payload.token),
+        token: action.payload.token,
+        authenticated: true
+      };
+    case AUTHENTICATE_USER:
       // store the token
       localStorage.setItem("token", action.payload.token);
       if (action.error) return state;
