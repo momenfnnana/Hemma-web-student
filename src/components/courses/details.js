@@ -283,7 +283,7 @@ export class CourseDetails extends Component {
     var month = scheduledAt.getMonth() + 1;
     var year = scheduledAt.getFullYear();
     var scheduledDate = year + "-" + month + "-" + day;
-    var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+    var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
     return (
       <div className="row">
         <div className="col-md-9 d-flex align-items-center">
@@ -361,7 +361,7 @@ export class CourseDetails extends Component {
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     var courseDate = year + "-" + month + "-" + day;
-    var hijriDate = moment(courseDate).format("iYYYY/iM/iD");
+    var hijriDate = moment(courseDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
 
     return (
       <>

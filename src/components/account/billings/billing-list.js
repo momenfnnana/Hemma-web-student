@@ -86,7 +86,7 @@ class BillingListComponent extends Component {
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
         var transactionDate = year + "-" + month + "-" + day;
-        var hijriDate = moment(transactionDate).format("iYYYY/iM/iD");
+        var hijriDate = moment(transactionDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
 
         return (
           <tr className="text-center" key={transaction.id}>
@@ -119,7 +119,8 @@ class BillingListComponent extends Component {
         var month = date.getMonth() + 1;
         var year = date.getFullYear();
         var withdrawsDate = year + "-" + month + "-" + day;
-        var hijriDate = moment(withdrawsDate).format("iYYYY/iM/iD");
+        var hijriDate = moment(withdrawsDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
+
 
         return (
           <tr className="text-center" key={withdraw.id}>

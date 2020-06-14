@@ -12,7 +12,7 @@ export class Card extends Component {
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     var courseDate = year + "-" + month + "-" + day;
-    var hijriDate = moment(courseDate).format("iYYYY/iM/iD");
+    var hijriDate = moment(courseDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
 
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
