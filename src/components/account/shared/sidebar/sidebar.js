@@ -168,7 +168,7 @@ export class SidebarComponent extends Component {
                       width="20"
                       className="mr-2 contain-img"
                     />
-                    الدردشة
+                    قروب التيليجرام
                   </NavLink>
                 </li>
               )}
