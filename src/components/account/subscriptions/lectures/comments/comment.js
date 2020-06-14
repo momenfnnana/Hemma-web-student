@@ -248,7 +248,7 @@ export class Comment extends Component {
     let month = createdAt.getMonth() + 1;
     let year = createdAt.getFullYear();
     let fullDate = year + "-" + month + "-" + day;
-    let hijriDate = moment(fullDate).format("iYYYY/iM/iD");
+    let hijriDate = moment(fullDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
 
     const commenterId = comment.user && comment.user.id;
 

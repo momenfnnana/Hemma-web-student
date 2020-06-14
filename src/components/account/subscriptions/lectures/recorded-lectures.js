@@ -80,7 +80,7 @@ export class RecordedLectures extends Component {
         var month = scheduledAt.getMonth() + 1;
         var year = scheduledAt.getFullYear();
         var scheduledDate = year + "-" + month + "-" + day;
-        var hijriDate = moment(scheduledDate).format("iYYYY/iM/iD");
+        var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
         return (
           <div className="col-md-4" key={lecture.id}>
             <Link
