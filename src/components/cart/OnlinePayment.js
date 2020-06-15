@@ -59,15 +59,26 @@ export class OnlinePaymentComponent extends Component {
     );
   };
 
-  myFormHandler = values => {
+  myFormHandler = () => {
+    const cart = this.props.cart;
+    const itemsThatRequireShippingAddress = cart.items.filter(
+      i => i.requiresShippingAddress
+    );
+    const itemDetails = itemsThatRequireShippingAddress.map(obj => ({
+      id: obj.id,
+      shippingRecipient: this.props.cartValues.shippingRecipient,
+      shippingCityId: this.props.cartValues.shippingCityId,
+      shippingAddress: this.props.cartValues.shippingAddress,
+      shippingPhone: this.props.cartValues.shippingPhone
+    }));
+    const data = {
+      callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
+      checkoutItemDetails: itemDetails
+    };
     this.setState({ loading: true });
     Api.cart
       .initiateOnlineCheckout({
-        callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
-        shippingRecipient: this.props.cartValues.shippingRecipient,
-        shippingCityId: this.props.cartValues.shippingCityId,
-        shippingAddress: this.props.cartValues.shippingAddress,
-        shippingPhone: this.props.cartValues.shippingPhone
+        data
       })
       .then(result => {
         this.setState({ loading: false });

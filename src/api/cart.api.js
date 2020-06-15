@@ -48,5 +48,10 @@ export const CartApiEndpoints = {
   checkoutWithBankTransfer: data =>
     getAuthenticatedAxios()
       .post(`cart/checkout_with_bank_transfer`, data)
+      .then(getDataFromResponse),
+
+  getCities: () =>
+    getAuthenticatedAxios()
+      .get(`SACities/lookup/all`)
       .then(getDataFromResponse)
 };
