@@ -49,8 +49,6 @@ class CheckoutComponent extends Component {
 
   render() {
     const cart = this.props.cart;
-    const items = cart && cart.items;
-    const { busy } = this.state;
 
     return (
       <Fragment>

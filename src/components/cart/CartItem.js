@@ -147,7 +147,7 @@ export class CartItem extends Component {
             إزالة
           </span>
           <div className="media w-75">
-            {item.itemType == "Booklet" ? (
+            {item.itemType === "Booklet" ? (
               <div
                 className="light-silver-bg rounded border d-flex align-items-center justify-content-center mr-3"
                 style={{ width: 100, height: 100 }}
@@ -159,6 +159,7 @@ export class CartItem extends Component {
                   height="40"
                   width="40"
                   className="contain-img"
+                  alt="icon"
                 />
               </div>
             ) : (
@@ -167,6 +168,7 @@ export class CartItem extends Component {
                 src={item.imageUrl}
                 height="100"
                 width="100"
+                alt="icon"
               />
             )}
             <div className="media-body mt-2">
@@ -196,7 +198,7 @@ export class CartItem extends Component {
                   </label>
                 </div>
               )}
-              {item.itemType == "Course" ? (
+              {item.itemType === "Course" ? (
                 <React.Fragment>
                   {item.canBePaidInInstallments ? (
                     <span
@@ -224,7 +226,7 @@ export class CartItem extends Component {
             </div>
           </div>
           <div className="w-25">
-            {item.itemType == "Booklet" ? (
+            {item.itemType === "Booklet" ? (
               <React.Fragment>
                 <div className="d-flex flex-row justify-content-between align-items-center">
                   <label className="dark-text smaller mb-0">سعر الملزمة</label>
@@ -254,23 +256,23 @@ export class CartItem extends Component {
                       </label>
                       {this.state.editingInstallment && (
                         <p className="red-text smaller light-font-text mb-0">
-                          {item.canBePaidInInstallments == true &&
-                          this.state.installmentValdation == false &&
-                          this.state.priceValdation == false
+                          {item.canBePaidInInstallments === true &&
+                          this.state.installmentValdation === false &&
+                          this.state.priceValdation === false
                             ? " حدد قيمة القسط"
                             : null}
                         </p>
                       )}
                       {this.state.editingInstallment && (
                         <p className="red-text smaller light-font-text mb-0">
-                          {this.state.installmentValdation == true
+                          {this.state.installmentValdation === true
                             ? "القيمة أقل من الحد المسموح به"
                             : null}
                         </p>
                       )}{" "}
                       {this.state.editingInstallment && (
                         <p className="red-text smaller light-font-text mb-0">
-                          {this.state.priceValdation == true
+                          {this.state.priceValdation === true
                             ? "القيمة أعلى من الحد المسموح به"
                             : null}
                         </p>

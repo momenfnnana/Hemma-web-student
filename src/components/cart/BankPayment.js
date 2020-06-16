@@ -69,6 +69,17 @@ class BankPaymentComponent extends Component {
    * Handle submitting bank transfer payment form
    */
   myFormHandler = values => {
+    const cart = this.props.cart;
+    const itemsThatRequireShippingAddress = cart.items.filter(
+      i => i.requiresShippingAddress
+    );
+    const itemDetails = itemsThatRequireShippingAddress.map(obj => ({
+      id: obj.id,
+      shippingRecipient: values.shippingRecipient,
+      shippingCityId: values.shippingCityId,
+      shippingAddress: values.shippingAddress,
+      shippingPhone: values.shippingPhone
+    }));
     const data = {
       url: this.state.bankSlip,
       originBankName: values.originBankName,
@@ -79,12 +90,8 @@ class BankPaymentComponent extends Component {
       date: values.date
         ? values.date.utc().toISOString()
         : new Date(Date.UTC()),
-      shippingRecipient: values.shippingRecipient,
-      shippingCityId: values.shippingCityId,
-      shippingAddress: values.shippingAddress,
-      shippingPhone: values.shippingPhone
+      checkoutItemDetails: itemDetails
     };
-
     this.setState({ loading: true, disabled: true });
     this.props
       .checkoutWithBankTransfer(data)
@@ -132,7 +139,7 @@ class BankPaymentComponent extends Component {
   };
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit } = this.props;
     const cart = this.props.cart;
     const items = cart && cart.items;
     return (
@@ -235,6 +242,7 @@ class BankPaymentComponent extends Component {
                         }
                         className="contain-img"
                         width="100%"
+                        alt="camera"
                       />
                     )}
                     {this.state.imageLoader && (
@@ -247,6 +255,7 @@ class BankPaymentComponent extends Component {
                       src={process.env.PUBLIC_URL + "/assets/images/camera.png"}
                       className="contain-img"
                       height="40"
+                      alt="camera"
                     />
 
                     <p className="dark-silver-text light-font-text mt-3 small">
@@ -337,13 +346,14 @@ class BankPaymentComponent extends Component {
               src={process.env.PUBLIC_URL + "/assets/images/transfer.png"}
               className="contain-img"
               height="400"
+              alt="transfer"
             />
           </div>
         </div>
         {items && (
           <div className="row mb-5">
             <div className="col-12 text-center">
-              {items == undefined || items == 0 ? (
+              {items === undefined || items === 0 ? (
                 <button
                   className="btn light-outline-btn mt-5 w-25"
                   disabled={true}
@@ -355,7 +365,7 @@ class BankPaymentComponent extends Component {
                   className="btn light-outline-btn mt-5 w-25"
                   disabled={this.state.disabled}
                 >
-                  {this.state.loading == true ? (
+                  {this.state.loading === true ? (
                     <Loader type="ball-clip-rotate" />
                   ) : (
                     "إتمام الدفع"
