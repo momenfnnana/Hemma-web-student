@@ -145,23 +145,33 @@ export class Reply extends Component {
             </div>
           ) : (
             <React.Fragment>
-              {reply.type == "Text" ? (
-                <p className="dark-text smaller word-break mb-2">
-                  {reply.value}
-                </p>
-              ) : reply.type == "Voice" ? (
-                <audio controls className="w-100">
-                  <source src={reply.value} />
-                </audio>
-              ) : (
-                <img
-                  src={reply.value}
-                  height="200"
-                  width="400"
-                  className="contain-img"
-                />
-              )}
-            </React.Fragment>
+            {reply.type == "Text" ? (
+              <p className="dark-text smaller word-break mb-2">
+                {reply.value}
+              </p>
+            ) : reply.type == "Voice" ? (
+              <audio controls className="w-100">
+                <source src={reply.value} />
+              </audio>
+            ) :reply.type == "Image" ? (
+              <img
+                src={reply.value}
+                height="200"
+                width="400"
+                className="contain-img"
+              />
+            ): (
+              <video
+              height="200"
+              width="400"
+              className="video-container video-container-overlay"
+              autoPlay=""
+              controls
+            >
+            <source type="video/mp4" data-reactid=".0.1.0.0.0" src={reply.value}/>
+              </video>
+            )}
+          </React.Fragment>
           )}
         </div>
         <hr className="mt-0 mb-0" />
