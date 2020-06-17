@@ -333,13 +333,23 @@ export class Comment extends Component {
                   <audio controls className="w-100">
                     <source src={comment.value} />
                   </audio>
-                ) : (
+                ) :comment.type == "Image" ? (
                   <img
                     src={comment.value}
                     height="200"
                     width="400"
                     className="contain-img"
                   />
+                ): (
+                  <video
+                  height="200"
+                  width="400"
+                  className="video-container video-container-overlay"
+                  autoPlay=""
+                  controls
+                >
+                <source type="video/mp4" data-reactid=".0.1.0.0.0" src={comment.value}/>
+                  </video>
                 )}
               </React.Fragment>
             )}
@@ -387,6 +397,7 @@ export class Comment extends Component {
                         className="d-none"
                         id="uploadReplyImage"
                         type="file"
+                        accept="image/*"
                         onChange={this.handleFileChange}
                       />
                       <img
