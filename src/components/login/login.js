@@ -26,11 +26,9 @@ const validate = values => {
     errors.phone = "يجب تعبئة هذه الخانة";
   } else if (!/^[0-9]*$/.test(values.phone.phoneNumber)) {
     errors.phone = "هذه الخانة يجب أن تحتوي على أرقام فقط";
-  } else if (values.phone.phoneNumber.length < 10) {
-    errors.phone = "رقم الهاتف يجب أن يحتوي ١٠ خانات على الأقل";
-  } else if (values.phone.phoneNumber.length > 15) {
-    errors.phone = "رقم الهاتف يجب أن لا يزيد عن ١٥ خانة";
-  }
+  } else if (!/^0\d{9}$/.test(values.phone.phoneNumber)) {
+    errors.phone = "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
+  } 
   if (!values.password) {
     errors.password = "يجب تعبئة هذه الخانة";
   }
