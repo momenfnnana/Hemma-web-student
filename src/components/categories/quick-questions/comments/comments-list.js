@@ -224,6 +224,7 @@ export class CommentsListComponent extends Component {
                     className="d-none"
                     id="uploadImage"
                     type="file"
+                    accept="image/*"
                     onChange={this.handleFileChange}
                   />
                   <img

@@ -397,6 +397,7 @@ export class Comment extends Component {
                         className="d-none"
                         id="uploadReplyImage"
                         type="file"
+                        accept="image/*"
                         onChange={this.handleFileChange}
                       />
                       <img
