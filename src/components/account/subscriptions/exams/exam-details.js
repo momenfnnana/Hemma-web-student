@@ -197,12 +197,12 @@ class ExamDetailsComponent extends Component {
     return questions.map((question,index) => (
       <div
       className={
-        "box-layout d-flex text-center justify-content-center  flex-column p-1 br-0  clickable" + (this.state.selectedQuestion === index ? " bg-info" : "")
+        "box-layout d-flex text-center justify-content-center flex-column p-1 br-0 clickable" + (this.state.selectedQuestion === index ? " light-bg" : "")
          }
        onClick={() =>{this.goTo(question.id)}}>
         <h3 className="dark-text small mb-0"
         className={
-          "dark-text small mb-0" + (this.state.selectedQuestion === index ? " white-text" : "")
+          "small mb-0" + (this.state.selectedQuestion === index ? " text-white" : " dark-text")
            }
         > {question.id}</h3>
       </div>
