@@ -90,9 +90,6 @@ class BillingListComponent extends Component {
 
         return (
           <tr className="text-center" key={transaction.id}>
-            <td scope="row" className="light-font-text dark-silver-text small">
-              {transaction.type}
-            </td>
             <td className="en-text dark-silver-text small">
               {transaction.amount}
             </td>
@@ -101,7 +98,10 @@ class BillingListComponent extends Component {
               <span className="en-text">{hijriDate}</span>
             </td>
             <td className="light-font-text dark-silver-text small">
-              {transaction.status}
+              {transaction.status == "Pending" ? ("قيد المراجعة") :
+                transaction.status == "Successful" ? (" ناجحة") :
+                transaction.status == "Failed" ? ("مرفوضة") :
+                      null}
             </td>
           </tr>
         );
@@ -261,9 +261,6 @@ class BillingListComponent extends Component {
                           <thead className="silver-bg">
                             <tr className="text-center">
                               <th className="w-25 dark-silver-text small border-0">
-                                العملية
-                              </th>
-                              <th className="w-25 dark-silver-text small border-0">
                                 المبلغ
                               </th>
                               <th className="w-25 dark-silver-text small border-0">
@@ -315,7 +312,7 @@ class BillingListComponent extends Component {
                                 الحالة
                              </th>
                               <th className="w-20 dark-silver-text small border-0">
-                                ملاحظات الأدارة
+                                ملاحظات الادارة
                              </th>
                             </tr>
                           </thead>
