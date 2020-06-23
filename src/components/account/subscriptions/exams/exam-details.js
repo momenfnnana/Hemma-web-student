@@ -11,6 +11,8 @@ import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
 import ReactMomentCountDown from "react-moment-countdown";
+import Slider from "react-slick";
+import moment from 'moment'
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -25,10 +27,10 @@ class ExamDetailsComponent extends Component {
       answers: [],
       status: "",
       scoreDetails: [],
-      examDetails: [],
       selectedQuestionId: null,
       selectedQuestion: 0,
-      endCountdown: false
+      endCountdown: false,
+      isChecked: false,
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
@@ -89,6 +91,13 @@ class ExamDetailsComponent extends Component {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion - 1) % this.state.questions.length
+    });
+  };
+
+  goTo = (questionId) => {
+    this.setState({
+      selectedQuestion:
+      questionId - 1
     });
   };
 
@@ -181,6 +190,25 @@ class ExamDetailsComponent extends Component {
         console.log(error);
       });
   };
+  
+  renderQuestionsTitle() {
+
+    const questions = this.state.questions || [];
+    return questions.map((question,index) => (
+      <div
+      className={
+        "box-layout d-flex text-center justify-content-center flex-column p-1 br-0 clickable" + (this.state.selectedQuestion === index ? " light-bg" : "")
+         }
+       onClick={() =>{this.goTo(question.id)}}>
+        <h3 className="dark-text small mb-0"
+        className={
+          "small mb-0" + (this.state.selectedQuestion === index ? " text-white" : " dark-text")
+           }
+        > {question.id}</h3>
+      </div>
+    ));
+  }
+
 
   renderQuestions() {
     const questions = this.state.questions || [];
@@ -290,10 +318,21 @@ class ExamDetailsComponent extends Component {
     const questionsLength = this.state.questions.length;
     const answersLength = this.state.answers.length;
     const unansweredQuestions = questionsLength - answersLength;
-    const dueDate =
+    var timeInSeconds = 0;
+    for(let q of this.state.questions){
+      timeInSeconds += q.duration
+    }
+      const dueDate =
       this.state && this.state.examDetails && this.state.examDetails.dueAt;
-
     if (!dueDate) return null;
+    const settings = {
+      className: "center",
+      centerMode: true,
+      infinite: false,
+      slidesToShow: questionsLength,
+      speed: 500,
+      rtl: true,
+    };
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
@@ -332,7 +371,7 @@ class ExamDetailsComponent extends Component {
                           "00:00:00"
                         ) : (
                           <ReactMomentCountDown
-                            toDate={new Date(new Date(dueDate + "+0000"))}
+                          toDate={new Date(new Date(dueDate + "+0000" ))}
                             onCountdownEnd={this.onCountdownEnd}
                           />
                         )}
@@ -398,6 +437,24 @@ class ExamDetailsComponent extends Component {
                     )}
                   </div>
                 </div>
+                <div className="row">
+                  <div className="col-12">
+                  <div className="question-item">
+                  <Slider
+                    asNavFor={this.state.nav1}
+                    ref={slider => (this.slider2 = slider)}
+                    slidesToShow={3.5}
+                    swipeToSlide={true}
+                    focusOnSelect={true}
+                    {...settings}
+                    className="mb-3"
+                  >
+                    {this.renderQuestionsTitle()}
+                  </Slider>
+                  </div>
+
+                    </div>
+                    </div>
               </div>
               <HintModal
                 isHintOpen={this.state.isHintOpen}
