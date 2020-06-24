@@ -77,9 +77,7 @@ export class OnlinePaymentComponent extends Component {
     };
     this.setState({ loading: true });
     Api.cart
-      .initiateOnlineCheckout({
-        data
-      })
+      .initiateOnlineCheckout(data)
       .then(result => {
         this.setState({ loading: false });
 
