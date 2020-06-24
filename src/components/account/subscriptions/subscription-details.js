@@ -23,6 +23,11 @@ import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
 import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
+import { TraningList } from "./traning/traning-list";
+import { TraningResult } from "./traning/traning-result";
+
+import { StartTraning, StartTraningExam } from "./traning/start-traning";
+import { TraningExamDetails } from "./traning/traning-details";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -225,6 +230,26 @@ class SubscriptionDetailsComponent extends Component {
                     <Route
                       path="/course/content/:id/exam/:attemptId/result"
                       component={ExamResult}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/traning/list"
+                      component={TraningList}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/exam/traning/:examId"
+                      component={StartTraningExam}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/traning/:attemptId/details"
+                      component={TraningExamDetails}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/traning/:attemptId/result"
+                      component={TraningResult}
                       exact
                     />
                     {subscription && (

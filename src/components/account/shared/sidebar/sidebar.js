@@ -205,6 +205,24 @@ export class SidebarComponent extends Component {
                   الاختبارات الإلكترونية
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/course/content/${this.props.id}/traning/list`}
+                  activeClassName="active"
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  التدريبات
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>
