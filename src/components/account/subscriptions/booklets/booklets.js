@@ -174,7 +174,7 @@ export class BookletsComponent extends Component {
                   ) : this.state.booklet.agency == "SMSA" ?(
                     <a
                       className="btn blue-border-btn mr-2"
-                      href={`http://www.smsaexpress.com/Track.aspx?tracknumbers==${this.state.booklet.trackingId}`}
+                      href={`http://www.smsaexpress.com/Track.aspx?tracknumbers=${this.state.booklet.trackingId}`}
                       target="_blank"
                     >
                       تتبع
