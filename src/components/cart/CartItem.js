@@ -16,7 +16,8 @@ export class CartItem extends Component {
   constructor(props) {
     super(props);
     this.onSetInstallment = this.onSetInstallment.bind(this);
-    this.onTogglePackageOption = this.onTogglePackageOption.bind(this);
+    this.onToggleBlackAndWhiteOption = this.onToggleBlackAndWhiteOption.bind(this);
+    this.onToggleColorOption = this.onToggleColorOption.bind(this);
     this.onRemoveItem = this.onRemoveItem.bind(this);
     this.onToggleEditInstallment = this.onToggleEditInstallment.bind(this);
     this.onUpdateInstallmentInput = this.onUpdateInstallmentInput.bind(this);
@@ -53,10 +54,21 @@ export class CartItem extends Component {
   /**
    * Toggle the state of the package option of the current item
    */
-  onTogglePackageOption() {
+  onToggleBlackAndWhiteOption() {
     this.props.onUpdateItem({
       packageOption: !this.props.item.packageOption,
-      installment: this.props.item.installment
+      installment: this.props.item.installment,
+      bookletType : "BlackAndWhite"
+      
+    });
+  }
+
+  onToggleColorOption() {
+    this.props.onUpdateItem({
+      packageOption: !this.props.item.packageOption,
+      installment: this.props.item.installment,
+      bookletType : "Colored"
+      
     });
   }
 
@@ -185,18 +197,40 @@ export class CartItem extends Component {
                 )}
               </h6>
               {item.packageOption !== undefined && (
-                <div className="form-check mb-1">
+                <>
+                {item.availableInBlackAndWhite && 
+                  <div className="form-check mb-1">
                   <input
+                  name="packageOption"
                     className="form-check-input"
                     type="checkbox"
                     value=""
-                    onChange={this.onTogglePackageOption}
-                    checked={item.packageOption}
+                    onChange={this.onToggleBlackAndWhiteOption}
+                    checked={item.packageOption &&  item.bookletType == "BlackAndWhite"}
                   />
                   <label className="form-check-label smaller dark-silver-text">
-                    أرغب في الحصول على ملزمة مطبوعة
+                    أرغب في الحصول على ملزمة أبيض و أسود مطبوعة
                   </label>
                 </div>
+                }
+                
+                {item.availableInColor && 
+                  <div className="form-check mb-1">
+                  <input
+                  name = "packageOption"
+                    className="form-check-input"
+                    type="checkbox"
+                    value=""
+                    onChange={this.onToggleColorOption}
+                    checked={item.packageOption && item.bookletType == "Colored"}
+                  />
+                  <label className="form-check-label smaller dark-silver-text">
+                    أرغب في الحصول على ملزمة ملونة مطبوعة
+                  </label>
+                </div>
+               }
+               </>
+
               )}
               {item.itemType === "Course" ? (
                 <React.Fragment>

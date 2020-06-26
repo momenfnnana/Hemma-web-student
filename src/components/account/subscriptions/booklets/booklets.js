@@ -62,7 +62,7 @@ export class BookletsComponent extends Component {
     }
   }
 
-  onSubmit() {
+  onSubmit(type) {
    
     let token = localStorage.getItem("token");
     let headers = {
@@ -70,7 +70,8 @@ export class BookletsComponent extends Component {
     };
     let data = {
       type: "Booklet",
-      itemId:  this.state.booklet.id
+      itemId:  this.state.booklet.id,
+      bookletType : type
     };
     axios
       .post(`${apiBaseUrl}/cart/items`, data, { headers })
@@ -184,13 +185,26 @@ export class BookletsComponent extends Component {
                   {this.state.booklet &&
                   this.state.booklet.canBePurchased &&
                   this.state.booklet.availableInPrint ? (
-                    <button
+                    <>
+                    {this.state.booklet.availableInColor && (
+                      <button
+                      type="submit"
+                      className="btn blue-border-btn mr-1"
+                      onClick={()=>this.onSubmit("Colored")}
+                    >
+                      طلب الملزمة الملونة مطبوعة
+                    </button>
+                    )}
+                    {this.state.booklet.availableInBlackAndWhite && (
+                      <button
                       type="submit"
                       className="btn blue-border-btn"
-                      onClick={()=>this.onSubmit()}
+                      onClick={()=>this.onSubmit("BlackAndWhite")}
                     >
-                      طلب الملزمة مطبوعة
+                      طلب الملزمة الأبيض و الأسود مطبوعة
                     </button>
+                    )}
+                  </>
                     
                   ):null}
                   
