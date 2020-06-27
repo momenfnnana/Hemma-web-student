@@ -96,8 +96,7 @@ export class CourseDetails extends Component {
     };
     let data = {
       type: "Course",
-      itemId: id,
-      installment: 0
+      itemId: id
     };
     axios
       .post(`${apiBaseUrl}/cart/items`, data, { headers })
