@@ -17,7 +17,7 @@ class OnlineShippingAddressFormComponent extends Component {
 
   componentDidMount() {
     Api.cart
-      .getShippingCities()
+      .getCities()
       .then(cities => this.setState({ shippingCities: cities }));
   }
 
@@ -105,8 +105,7 @@ class OnlineShippingAddressFormComponent extends Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart,
-    formValues: state.form.onlinePayment && state.form.onlinePayment.values,
-    initialValues: state.form.cart && state.form.cart.values
+    formValues: state.form.onlinePayment && state.form.onlinePayment.values
   };
 }
 

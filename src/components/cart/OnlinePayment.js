@@ -59,17 +59,17 @@ export class OnlinePaymentComponent extends Component {
     );
   };
 
-  myFormHandler = () => {
+  myFormHandler = values => {
     const cart = this.props.cart;
     const itemsThatRequireShippingAddress = cart.items.filter(
       i => i.requiresShippingAddress
     );
     const itemDetails = itemsThatRequireShippingAddress.map(obj => ({
       id: obj.id,
-      shippingRecipient: this.props.cartValues.shippingRecipient,
-      shippingCityId: this.props.cartValues.shippingCityId,
-      shippingAddress: this.props.cartValues.shippingAddress,
-      shippingPhone: this.props.cartValues.shippingPhone
+      shippingRecipient: values.shippingRecipient,
+      shippingCityId: values.shippingCityId,
+      shippingAddress: values.shippingAddress,
+      shippingPhone: values.shippingPhone
     }));
     const data = {
       callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
