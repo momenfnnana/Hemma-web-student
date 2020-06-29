@@ -232,7 +232,7 @@ class SubscriptionDetailsComponent extends Component {
                       component={ExamResult}
                       exact
                     />
-                    <Route
+                    {/* <Route
                       path="/course/content/:id/traning/list"
                       component={TraningList}
                       exact
@@ -251,7 +251,7 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/traning/:attemptId/result"
                       component={TraningResult}
                       exact
-                    />
+                    /> */}
                     {subscription && (
                       <Route
                         path="/course/content/:id/chat"

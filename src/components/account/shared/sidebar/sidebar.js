@@ -205,7 +205,7 @@ export class SidebarComponent extends Component {
                   الاختبارات الإلكترونية
                 </NavLink>
               </li>
-              <li>
+              {/* <li>
                 <NavLink
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/traning/list`}
@@ -222,7 +222,7 @@ export class SidebarComponent extends Component {
                   />
                   التدريبات
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
