@@ -208,7 +208,7 @@ export class SidebarComponent extends Component {
               <li>
                 <NavLink
                   className="dark-text small"
-                  to={`/course/content/${this.props.id}/traning/list`}
+                  to={`/course/content/${this.props.id}/training/list`}
                   activeClassName="active"
                   className="dark-text small"
                 >

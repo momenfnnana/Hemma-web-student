@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-export class TraningPass extends Component {
+export class TrainingPass extends Component {
   render() {
     const courseId = this.props.courseId;
     const attemptId = this.props.attemptId;
@@ -42,14 +42,14 @@ export class TraningPass extends Component {
             <p className="dark-silver-text small en-text">{time}</p>
             <Link
               className="dark-text smaller mb-4"
-              to={`/course/content/${courseId}/traning/list`}
+              to={`/course/content/${courseId}/training/list`}
             >
               <u>الرجوع الى القائمة</u>
             </Link>
 
             <Link
               className="btn light-btn unset-height unset-line-height"
-              to={`/course/content/${courseId}/traning/${attemptId}/result`}
+              to={`/course/content/${courseId}/training/${attemptId}/result`}
             >
               التأكد من الإجابات
             </Link>

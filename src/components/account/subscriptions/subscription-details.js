@@ -23,11 +23,11 @@ import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
 import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
-import { TraningList } from "./traning/traning-list";
-import { TraningResult } from "./traning/traning-result";
+import { TrainingList } from "./training/training-list";
+import { TrainingResult } from "./training/training-result";
 
-import { StartTraning, StartTraningExam } from "./traning/start-traning";
-import { TraningExamDetails } from "./traning/traning-details";
+import { StartTraining, StartTrainingExam } from "./training/start-training";
+import { TrainingExamDetails } from "./training/training-details";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -233,23 +233,23 @@ class SubscriptionDetailsComponent extends Component {
                       exact
                     />
                     <Route
-                      path="/course/content/:id/traning/list"
-                      component={TraningList}
+                      path="/course/content/:id/training/list"
+                      component={TrainingList}
                       exact
                     />
                     <Route
-                      path="/course/content/:id/exam/traning/:examId"
-                      component={StartTraningExam}
+                      path="/course/content/:id/exam/training/:examId"
+                      component={StartTrainingExam}
                       exact
                     />
                     <Route
-                      path="/course/content/:id/traning/:attemptId/details"
-                      component={TraningExamDetails}
+                      path="/course/content/:id/training/:attemptId/details"
+                      component={TrainingExamDetails}
                       exact
                     />
                     <Route
-                      path="/course/content/:id/traning/:attemptId/result"
-                      component={TraningResult}
+                      path="/course/content/:id/training/:attemptId/result"
+                      component={TrainingResult}
                       exact
                     />
                     {subscription && (

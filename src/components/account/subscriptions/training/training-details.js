@@ -11,13 +11,13 @@ import "../styles.sass";
 import ReactMomentCountDown from "react-moment-countdown";
 import Slider from "react-slick";
 import { ExamFail } from "../exams/exam-fail";
-import { TraningPass } from "./traning-pass";
-import { TraningExamFail } from "./traning-fail";
+import { TrainingPass } from "./training-pass";
+import { TrainingExamFail } from "./training-fail";
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 // import MathType from '@wiris/mathtype-ckeditor5';
 
-class TraningExamDetailsComponent extends Component {
+class TrainingExamDetailsComponent extends Component {
     constructor() {
         super();
         this.state = {
@@ -365,13 +365,13 @@ class TraningExamDetailsComponent extends Component {
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
-          <TraningPass
+          <TrainingPass
             courseId={courseId}
             attemptId={attemptId}
             scoreDetails={this.state.scoreDetails}
           />
         ) : this.state.status == "Fail" ? (
-          <TraningExamFail
+          <TrainingExamFail
             courseId={courseId}
             attemptId={attemptId}
             scoreDetails={this.state.scoreDetails}
@@ -523,14 +523,14 @@ class TraningExamDetailsComponent extends Component {
 
 function mapStateToProps(state) {
     return {
-      formValues: state.form.TraningExamDetails && state.form.TraningExamDetails.values
+      formValues: state.form.TrainingExamDetails && state.form.TrainingExamDetails.values
     };
   }
   
-  TraningExamDetailsComponent = reduxForm({
-    form: "TraningExamDetails"
-  })(TraningExamDetailsComponent);
+  TrainingExamDetailsComponent = reduxForm({
+    form: "TrainingExamDetails"
+  })(TrainingExamDetailsComponent);
   
-  TraningExamDetailsComponent = connect(mapStateToProps)(TraningExamDetailsComponent);
+  TrainingExamDetailsComponent = connect(mapStateToProps)(TrainingExamDetailsComponent);
   
-export const TraningExamDetails = withRouter(TraningExamDetailsComponent); 
+export const TrainingExamDetails = withRouter(TrainingExamDetailsComponent); 
