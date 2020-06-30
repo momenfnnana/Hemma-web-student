@@ -533,7 +533,33 @@ export class CourseDetails extends Component {
                                     )
                                   )}
                               </span>{" "}
-                              ريال
+                              ريال (الأبيض و الأسود) 
+                            </li>
+                          ) : null}
+
+                          {this.state.details &&
+                          this.state.details.companionBook ? (
+                            <li className="small dark-text mb-2">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/diary.png"
+                                }
+                                className="mr-2"
+                                height="18"
+                                alt="Diary"
+                              />{" "}
+                              <span className="en-text">
+                                {this.state.details &&
+                                  this.state.details.companionBook &&
+                                  this.state.details.companionBook.coloredPrice &&
+                                  parseFloat(
+                                    this.state.details.companionBook.coloredPrice.toFixed(
+                                      2
+                                    )
+                                  )}
+                              </span>{" "}
+                              ريال (ملونة)
                             </li>
                           ) : null}
                         </ul>
