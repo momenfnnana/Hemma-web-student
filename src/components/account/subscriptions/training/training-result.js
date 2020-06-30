@@ -13,7 +13,7 @@ import {
 import "../styles.sass";
 import { SolutionModal } from "../exams/solution";
 
-class TraningResultComponent extends Component {
+class TrainingResultComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -219,10 +219,10 @@ function mapStateToProps(state) {
   };
 }
 
-TraningResultComponent = reduxForm({
-  form: "TraningResult"
-})(TraningResultComponent);
+TrainingResultComponent = reduxForm({
+  form: "TrainingResult"
+})(TrainingResultComponent);
 
-TraningResultComponent = connect(mapStateToProps)(TraningResultComponent);
+TrainingResultComponent = connect(mapStateToProps)(TrainingResultComponent);
 
-export const TraningResult = withRouter(TraningResultComponent);
+export const TrainingResult = withRouter(TrainingResultComponent);

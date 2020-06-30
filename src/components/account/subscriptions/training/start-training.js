@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 
-export class StartTraningExam extends Component {
+export class StartTrainingExam extends Component {
   state = {
     examDetails: []
   };
@@ -39,7 +39,7 @@ export class StartTraningExam extends Component {
       .post(`${apiBaseUrl}/Exams/Attempts`, data, { headers })
       .then(response => {
         this.props.history.push(
-          `/course/content/${courseId}/traning/${response.data.data.id}/details`
+          `/course/content/${courseId}/training/${response.data.data.id}/details`
         );
       })
       .catch(error => {
@@ -82,7 +82,7 @@ export class StartTraningExam extends Component {
               </button>
               <Link
                 className="dark-text smaller"
-                to={`/course/content/${courseId}/traning/list`}
+                to={`/course/content/${courseId}/training/list`}
               >
                 <u>الرجوع الى القائمة</u>
               </Link>
