@@ -129,6 +129,22 @@ class AgreementFormComponent extends Component {
                   <p className="light-font-text dark-text smaller">
                     ٨- طلب الدورة والاشتراك بها تعني موافقتك على الشروط.
                   </p>
+                  <h6 className="dark-text small">الملازم</h6>
+                  <p className="light-font-text dark-text smaller">
+                  ١- المنصة غير مسؤولة عن أي معلومات خاطئة في بيانات التوصيل .
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                  ٢- عند التأخير  في استلام الملزمة واسترجاع الشحنة يتحمل المشترك رسوم التوصيل للمرة الثانية .
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٣- عند طلب الملزمة لايحق لك استرجاعها، أو استرجاع الرسوم .
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٤- الملزمة خاصة بالمشترك فقط، ولا نحلل بيعها أو نشرها .
+                  </p>
+                  <p className="light-font-text dark-text smaller">
+                    ٥- مدة التوصيل من 7 الى ١٠ ايام عمل.
+                  </p>
                 </div>
               </div>
             </div>
