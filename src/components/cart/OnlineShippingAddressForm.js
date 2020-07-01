@@ -9,7 +9,13 @@ import { withRouter } from "react-router-dom";
 import { selectField } from "../shared/inputs/selectField";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
+const phoneValue = value => {
+  value = value || "";
+  const trimmed = value.replace(/\s/g, "");
+  const valid = /^05\d{8}$/.test(trimmed);
 
+  return valid ? undefined : "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ ب05";
+};
 class OnlineShippingAddressFormComponent extends Component {
   state = {
     shippingCities: []
@@ -67,7 +73,7 @@ class OnlineShippingAddressFormComponent extends Component {
                 name="shippingPhone"
                 component={inputField}
                 className="form-control border-left-0 pl-0 ltr-input en-input"
-                validate={required}
+                validate={required, phoneValue}
                 placeholder="051 234 5678"
                 type="number"
               />
