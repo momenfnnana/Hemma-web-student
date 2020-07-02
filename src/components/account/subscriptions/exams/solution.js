@@ -56,7 +56,6 @@ export class SolutionModal extends Component {
       }
     };
     const { isSolutionOpen, closeSolution } = this.props;
-    console.log(this.state.details);
 
     return (
       <React.Fragment>

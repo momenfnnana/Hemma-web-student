@@ -215,8 +215,6 @@ class CompetitionComponent extends Component {
             console.log("other error");
         }
       });
-
-    console.log("state is", this.state);
   }
 
   updateCityState = cityMissing => {
