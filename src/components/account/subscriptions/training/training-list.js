@@ -6,9 +6,9 @@ import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
-export class TraningList extends Component {
+export class TrainingList extends Component {
     state = {
-        traning: [],
+        training: [],
         isPageLoading: false
       };
     componentDidMount = () => {
@@ -23,7 +23,7 @@ export class TraningList extends Component {
         axios
           .get(url, { headers })
           .then(response => {
-            this.setState({ traning: response.data.data, isPageLoading: false });
+            this.setState({ training: response.data.data, isPageLoading: false });
           })
           .catch(error => {
             this.setState({ isPageLoading: false });
@@ -32,10 +32,10 @@ export class TraningList extends Component {
       };
 
 
-      renderTraning() {
-        const traning = this.state.traning || [];
+      renderTraining() {
+        const training = this.state.training || [];
         const courseId = this.props.match.params.id;
-        return traning.map(tra => {
+        return training.map(tra => {
           return (
             <React.Fragment>
               <tr>
@@ -50,7 +50,7 @@ export class TraningList extends Component {
                 </td>
                 <td>
                   <Link
-                    to={`/course/content/${courseId}/exam/traning/${tra.id}`}
+                    to={`/course/content/${courseId}/exam/training/${tra.id}`}
                     className="badge dark-bg text-white w-100"
                   >
                     اختبر الآن
@@ -85,7 +85,7 @@ export class TraningList extends Component {
 
         <div className="row no-gutters">
           <div className="col-12">
-            {this.state.traning == undefined || this.state.traning.length == 0 ? (
+            {this.state.training == undefined || this.state.training.length == 0 ? (
               <React.Fragment>
                 <div
                   className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
@@ -122,7 +122,7 @@ export class TraningList extends Component {
                       </th>
                     </tr>
                   </thead>
-                  <tbody>{this.renderTraning()}</tbody>
+                  <tbody>{this.renderTraining()}</tbody>
                 </Table>
               </div>
             )}

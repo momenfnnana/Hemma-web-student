@@ -140,7 +140,6 @@ export class CartItem extends Component {
 
   render() {
     const item = this.props.item;
-    console.log(item)
     if (!item) {
       return null;
     }
@@ -180,9 +179,13 @@ export class CartItem extends Component {
             )}
             <div className="media-body mt-2">
               <h6 className="mt-0 dark-text">
-                {item.bookletType == "Colored" ?
+                {item.itemType == "Booklet" && (
+                  item.bookletType == "Colored" ?
                   item.nameAr +" - ملونة" : item.nameAr + " - أبيض و أسود"
-                  }
+                )}
+                {item.itemType == "Course" &&(
+                  item.nameAr
+                )}
                 {item.packageOption && (
                   <span className="smaller red-text">
                     ( سعر الملزمة:{" "}

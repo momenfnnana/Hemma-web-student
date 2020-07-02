@@ -11,11 +11,13 @@ import "../styles.sass";
 import ReactMomentCountDown from "react-moment-countdown";
 import Slider from "react-slick";
 import { ExamFail } from "../exams/exam-fail";
-import { TraningPass } from "./traning-pass";
-import { TraningExamFail } from "./traning-fail";
+import { TrainingPass } from "./training-pass";
+import { TrainingExamFail } from "./training-fail";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import MathType from '@wiris/mathtype-ckeditor5';
 
-
-class TraningExamDetailsComponent extends Component {
+class TrainingExamDetailsComponent extends Component {
     constructor() {
         super();
         this.state = {
@@ -185,6 +187,8 @@ class TraningExamDetailsComponent extends Component {
         const correctAnswers = this.state.correctAnswer;
         const correctAnswer = correctAnswers[question.id - 1];
         const correct = this.state.isCorrect;
+        console.log(question.stem)
+       
         return (
           <React.Fragment>
             {question && (
@@ -195,12 +199,23 @@ class TraningExamDetailsComponent extends Component {
                 <hr className="mt-0 mb-0" />
                 <div className="row p-4 pb-2">
                   <div className="col-12">
-                    <div className="box-layout box-border shadow-sm p-3">
-                      <img
+                    <div className="box-layout box-border shadow-sm p-3" >
+                      <div dangerouslySetInnerHTML={{__html: question.stem}}></div>
+                      {/* <img
                         src={question.renderedStem}
                         className="contain-img"
                         width="90%"
-                      />
+                      /> */}
+                      {/* <CKEditor
+                          editor={ ClassicEditor }
+                          data={question.stem}
+                          disabled = "true"
+                          config={ {
+                            plugins: [ MathType ],
+                            toolbar: ['MathType' ],
+                            language: 'ar'
+                        } }
+                        /> */}
                     </div>
                   </div>
                 </div>
@@ -237,8 +252,7 @@ class TraningExamDetailsComponent extends Component {
                                   : "radio-custom"
                               }`}
                             />
-                            <label className="mb-0 dark-silver-text small ml-2">
-                              {value}
+                            <label className="mb-0 dark-silver-text small ml-2" dangerouslySetInnerHTML={{__html: value}}>
                             </label>
                           </div>
                         );
@@ -287,8 +301,7 @@ class TraningExamDetailsComponent extends Component {
                                 id={value}
                                 checked={selected}
                               />
-                              <label className="mb-0 dark-silver-text small ml-2">
-                                {value}
+                              <label className="mb-0 dark-silver-text small ml-2" dangerouslySetInnerHTML={{__html: value}}>
                               </label>
                             </div>
                           );
@@ -352,13 +365,13 @@ class TraningExamDetailsComponent extends Component {
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
-          <TraningPass
+          <TrainingPass
             courseId={courseId}
             attemptId={attemptId}
             scoreDetails={this.state.scoreDetails}
           />
         ) : this.state.status == "Fail" ? (
-          <TraningExamFail
+          <TrainingExamFail
             courseId={courseId}
             attemptId={attemptId}
             scoreDetails={this.state.scoreDetails}
@@ -510,14 +523,14 @@ class TraningExamDetailsComponent extends Component {
 
 function mapStateToProps(state) {
     return {
-      formValues: state.form.TraningExamDetails && state.form.TraningExamDetails.values
+      formValues: state.form.TrainingExamDetails && state.form.TrainingExamDetails.values
     };
   }
   
-  TraningExamDetailsComponent = reduxForm({
-    form: "TraningExamDetails"
-  })(TraningExamDetailsComponent);
+  TrainingExamDetailsComponent = reduxForm({
+    form: "TrainingExamDetails"
+  })(TrainingExamDetailsComponent);
   
-  TraningExamDetailsComponent = connect(mapStateToProps)(TraningExamDetailsComponent);
+  TrainingExamDetailsComponent = connect(mapStateToProps)(TrainingExamDetailsComponent);
   
-export const TraningExamDetails = withRouter(TraningExamDetailsComponent); 
+export const TrainingExamDetails = withRouter(TrainingExamDetailsComponent); 
