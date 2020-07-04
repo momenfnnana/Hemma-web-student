@@ -19,13 +19,18 @@ const FileInput = ({
   meta: omitMeta,
   ...props
 }) => (
-  <input
-    onChange={adaptFileEventToValue(onChange)}
-    onBlur={adaptFileEventToValue(onBlur)}
-    type="file"
-    {...inputProps}
-    {...props}
-  />
+  <>
+    <input
+      onChange={adaptFileEventToValue(onChange)}
+      onBlur={adaptFileEventToValue(onBlur)}
+      type="file"
+      {...inputProps}
+      {...props}
+    />
+    {omitMeta.touched && omitMeta.error && (
+      <small className="w-100 smaller">{omitMeta.error}</small>
+    )}
+  </>
 );
 
 class BankPaymentComponent extends Component {
@@ -219,15 +224,7 @@ class BankPaymentComponent extends Component {
             <h6 className="dark-silver-text smaller mt-2">
               يرجى التأكد من إرفاق صورة الحوالة
             </h6>
-            <Field
-              component={FileInput}
-              name="bankDoc"
-              className="d-none"
-              id="uploadImage"
-              onChange={this.onFileInputChange}
-              validate={required}
-            />
-            <label htmlFor="uploadImage" className="clickable w-100 mb-3">
+            <label htmlFor="uploadImage" className="clickable w-100 mb-0">
               <div
                 className="silver-bg pt-3 pb-3 pl-4 pr-4 rounded align-items-center justify-content-center d-flex flex-column"
                 style={{ minHeight: 200 }}
@@ -266,8 +263,16 @@ class BankPaymentComponent extends Component {
               </div>
             </label>
             <Field
+              component={FileInput}
+              name="bankDoc"
+              className="d-none"
+              id="uploadImage"
+              onChange={this.onFileInputChange}
+              validate={required}
+            />
+            <Field
               component={selectField}
-              className="form-control"
+              className="form-control mt-3"
               validate={required}
               name="originBankName"
             >
