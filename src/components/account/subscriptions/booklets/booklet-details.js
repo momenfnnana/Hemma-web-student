@@ -44,16 +44,6 @@ export class BookletDetailsComponent extends Component {
     const url = this.props.location.state.url;
     const name = this.props.location.state.name;
     const user = this.props && this.props.user;
-    const options = {
-      chunkWidth: 150,
-      chunkHeight: 60,
-      textAlign: 'left',
-      textBaseline: 'bottom',
-      globalAlpha: 0.20,
-      font: '14px Microsoft Yahei',
-      rotateAngle: -0.26,
-      fillStyle: '#666'
-    }
     const { numPages } = this.state;
     return (
       <React.Fragment>
