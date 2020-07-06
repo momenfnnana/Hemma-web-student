@@ -12,11 +12,14 @@ import { formatPrice } from "./helpers";
 import swal from "@sweetalert/with-react";
 import { apiBaseUrl } from "../../api/helpers";
 import axios from "axios";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
 class CartComponent extends Component {
   state = {
     busy: true,
-    modalIsOpen: false
+    modalIsOpen: false,
+    isPageLoading: false
   };
 
   openModal(id) {
@@ -31,34 +34,37 @@ class CartComponent extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
-  nextPopup(){
+  nextPopup() {
     swal("نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة", {
       buttons: {
-        ok:"موافق"
+        ok: "موافق"
       },
     })
-    .then((value) => {
-    this.handleCartCheckout()
-    });
+      .then((value) => {
+        this.handleCartCheckout()
+      });
   }
 
   componentDidMount() {
+    this.setState({ isPageLoading: true });
     // Fetch the cart again every time the user access the cart page
     this.props
       .getCart()
       .then(result => {
         this.setState({
-          busy: false
+          busy: false,
+          isPageLoading: false
         });
       })
       .catch(err => {
         console.error("Error while fetching the cart");
         this.setState({
-          busy: false
+          busy: false,
+          isPageLoading: false
         });
       });
   }
-  
+
   handleCartCheckout() {
     const cart = this.props.cart;
     const cartAmount = cart && cart.total;
@@ -120,11 +126,22 @@ class CartComponent extends Component {
                 </button>
               </div>
               <div className="col-md-8 mt-3">
-                {items && items.length === 0 ? (
-                  <EmptyCartPrompt />
+                {this.state.isPageLoading ? (
+                  <div
+                    className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+                    style={{ minHeight: 350 }}
+                  >
+                    <Loader type="ball-spin-fade-loader" className="dark-loader" />
+                  </div>
                 ) : (
-                  <CartItemsList />
-                )}
+                    <>
+                      {items && items.length === 0 ? (
+                        <EmptyCartPrompt />
+                      ) : (
+                          <CartItemsList />
+                        )}
+                    </>
+                  )}
               </div>
             </div>
             <AgreementForm
