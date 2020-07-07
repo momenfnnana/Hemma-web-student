@@ -85,17 +85,33 @@ export class QuickQuestion extends Component {
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
-              <div className="col-md-12 text-center">
-                <h5 className="dark-text mt-3">الأسئلة السريعة</h5>
-                <p className="dark-text mt-2 small w-40 mx-auto text-break">
-                  لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
-                  القدرات والتحصيلي بأعلى العلامات!
-                </p>
+              <div className="col-md-12 d-flex align-items-center ">
+                <div className="title-circle">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/questionMark.png"
+                    }
+                  />
+                </div>
+                <div
+                  className={
+                    "ar-text title-groups mb-0 ml-0" + " light-bg"
+                  }><h5 className=" mb-0 pl-5">الأسئلة السريعة</h5>
+                </div>
+
               </div>
             </div>
+            <div className="row ">
+              <div className="col-md-12"></div>
+              <p className="dark-text mt-2 small w-40 text-break">
+                لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
+                القدرات والتحصيلي بأعلى العلامات!
+                </p>
+                </div>
             <div className="row py-5">
               <div className="col-md-12">
-                <div className="row p-4 pb-2">
+                {/* <div className="row p-4 pb-2">
                   <div className="col-12">
                     <p className="smaller red-text d-flex align-items-center">
                       <img
@@ -111,7 +127,7 @@ export class QuickQuestion extends Component {
                       {this.state.details.description}
                     </p>
                   </div>
-                </div>
+                </div> */}
                 {question && (
                   <React.Fragment>
                     <div className="row p-4 pb-2">

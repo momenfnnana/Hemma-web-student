@@ -104,7 +104,8 @@ export class QuickQuestions extends Component {
       )
       .then(response => {
         this.setState({ questionsFavorites: response.data.data });
-      })
+      }
+      )
       .catch(error => {
         console.log(error);
       });
@@ -465,65 +466,63 @@ export class QuickQuestions extends Component {
       <section className="pt-5 pb-5">
         <div className="container">
           <div className="row">
-            <div className="col-9 d-flex align-items-center">
-              <h4 className="light-text mb-0">{this.state.details.name}</h4>
-            </div>
-            <div className="col-3 d-flex align-items-center justify-content-end">
-              {!this.state.isJoined && (
-                <button
-                  className="btn btn-sm unset-height small light-btn light-font-text"
-                  onClick={this.toggleJoin}
-                >
-                  إنضمام
-                </button>
-              )}
-              {this.state.isJoined && (
-                <button
-                  className="btn btn-sm unset-height small red-outline-btn light-font-text ml-2"
-                  onClick={this.toggleJoin}
-                >
-                  انسحاب
-                </button>
-              )}
-            </div>
-            <div className="col-md-12 mt-2">
-              {this.state.details.description ? (
-                <p className="dark-text small text-break w-75">
-                  {this.state.details.description}
-                </p>
-              ) : (
-                <p className="dark-text small text-break w-75">
-                  لا يوجد وصف للسؤال
-                </p>
-              )}
-            </div>
-            <div className="col-md-4 d-flex align-items-center">
-              <h6 className="dark-text mb-0">عدد الأعضاء:</h6>
-              <div className="members-circle en-text text-white ml-1">
-                {this.state.details.numberOfMembers}
+            <div className="col-md-2">
+              <div className={
+                      "question-box-layout  text-center" + (!this.state.isJoined  ? " bg-white" : "")
+                       }>
+              <div className="icon-circle mt-3 mb-3">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/heart-gradient.png"
+                      }
+                    />
+                  </div>
+              <div className="col-12  align-items-center">
+                <h5 className="dark-text mb-0">{this.state.details.name}</h5>
+              </div>
+              <div className="col-md-12 mt-2">
+                <h6 className=" ar-text smaller mid-text ">عدد الأعضاء: {this.state.details.numberOfMembers}</h6>
+              </div>
+              <div className="col-md-12 mt-2 mb-2">
+                {!this.state.isJoined && (
+                  <button
+                    className="btn btn-lg br-20 unset-height small light-btn light-font-text mb-3"
+                    onClick={this.toggleJoin}
+                  >
+                    إنضمام
+                  </button>
+                )}
+                {this.state.isJoined && (
+                  <button
+                    className="btn btn-lg br-20 unset-height small red-bg text-white mb-3"
+                    onClick={this.toggleJoin}
+                  >
+                    انسحاب
+                  </button>
+                )}
+                </div>
               </div>
             </div>
-            <div className="col-md-4 d-flex align-items-center">
-              <h6 className="dark-text">
-                عدد الأسئلة:{" "}
-                <span className="en-text">
-                  {this.state.details.numberOfQuickQuestion}
-                </span>{" "}
-                سؤال
-              </h6>
-            </div>
-          </div>
-          <div className="row pt-4">
-            <div className="col-md-12 text-center">
-              <h5 className="dark-text">الأسئلة السريعة</h5>
-              <p className="dark-silver-text small text-break mb-0">
-                احصل على آخر إصداراتنا في القدرات والتحصيلي
-              </p>
-            </div>
-          </div>
-          {this.state.isJoined && (
+            <div className="col-md-10">
+              <div className="col-md-12">
+                <h5 className="dark-text mt-2">الأسئلة السريعة</h5>
+                <p className="dark-silver-text small text-break mb-2">
+                  احصل على آخر إصداراتنا في القدرات والتحصيلي
+                        </p>
+              </div>
+              <div className="col-md-12 d-flex align-items-center mb-4">
+                <h6 className="dark-text">
+                  عدد الأسئلة المتاحة الآن على المجموعة:{" "}
+                  <span className="ar-text">
+                    {this.state.details.numberOfQuickQuestion}
+                  </span>{" "}
+                              سؤال
+                              </h6>
+              </div>
+              {this.state.isJoined && (
             <React.Fragment>
-              <div className="row pt-4">
+              <div className="row ">
                 <div className="col-md-12 d-flex align-items-center">
                   <div className="title-circle">
                     <img
@@ -533,47 +532,48 @@ export class QuickQuestions extends Component {
                       }
                     />
                   </div>
-                  <h5 className="dark-text mb-0">الاسئلة المفضلة</h5>
+                  <div className="ar-text  mb-0 title-groups">
+                    <h5 className=" mb-0 pl-5">الأسئلة المفضلة</h5>
+                    </div>
                 </div>
               </div>
 
               <div className="row pt-4">
                 {this.state.questionsFavorites == undefined ||
-                this.state.questionsFavorites.length == 0 ? (
-                  <div className="col-md-12">
-                    <div className="question-card">
-                      <div className="question-body">
-                        <div className="row">
-                          <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/red-heart.png"
-                              }
-                              height="25"
-                              className="contain-img mb-2"
-                            />
-                            <p className="mid-text light-font-text small text-break mb-0">
-                              لا يوجد لديك أسئلة مفضلة
+                  this.state.questionsFavorites.length == 0 ? (
+                    <div className="col-md-12">
+                      <div className="question-card">
+                        <div className="question-body">
+                          <div className="row">
+                            <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/red-heart.png"
+                                }
+                                height="25"
+                                className="contain-img mb-2"
+                              />
+                              <p className="mid-text light-font-text small text-break mb-0">
+                                لا يوجد لديك أسئلة مفضلة
                             </p>
-                            <p className="mid-text light-font-text small text-break mb-0">
-                              قم بإضافة الأسئلة الآن!
+                              <p className="mid-text light-font-text small text-break mb-0">
+                                قم بإضافة الأسئلة الآن!
                             </p>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <React.Fragment>
-                    {this.renderQuestionsFavorites()}
-                  </React.Fragment>
-                )}
+                  ) : (
+                    <React.Fragment>
+                      {this.renderQuestionsFavorites()}
+                    </React.Fragment>
+                  )}
               </div>
             </React.Fragment>
           )}
-
-          {this.state.isJoined && (
+               {this.state.isJoined && (
             <React.Fragment>
               <div className="row pt-4">
                 <div className="col-md-12 d-flex align-items-center">
@@ -585,7 +585,10 @@ export class QuickQuestions extends Component {
                       }
                     />
                   </div>
-                  <h5 className="dark-text mb-0">جميع الأسئلة</h5>
+                  <div 
+                  className={
+                    "ar-text title-groups mb-0" + " light-bg"
+                     }><h5 className=" mb-0 pl-5">جميع الأسئلة</h5></div>
                 </div>
               </div>
               <div className="row pt-4">{this.renderQuestion()}</div>
@@ -601,8 +604,8 @@ export class QuickQuestions extends Component {
                         {this.state.loading == true ? (
                           <Loader type="ball-beat" className="dark-loader" />
                         ) : (
-                          "تحميل المزيد"
-                        )}
+                            "تحميل المزيد"
+                          )}
                       </button>
                     </div>
                   )}
@@ -610,7 +613,9 @@ export class QuickQuestions extends Component {
               </div>
             </React.Fragment>
           )}
-        </div>
+            </div>
+          </div>
+              </div>
       </section>
     );
   }
