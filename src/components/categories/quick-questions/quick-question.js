@@ -84,7 +84,7 @@ export class QuickQuestion extends Component {
       <React.Fragment>
         <section className="pt-5 pb-5">
           <div className="container">
-            <div className="row">
+            <div className="row pl-4">
               <div className="col-md-12 d-flex align-items-center ">
                 <div className="title-circle">
                   <img
@@ -102,14 +102,16 @@ export class QuickQuestion extends Component {
 
               </div>
             </div>
-            <div className="row ">
-              <div className="col-md-12"></div>
+            <div className="row pl-4">
+              <div className="col-md-12">
               <p className="dark-text mt-2 small w-40 text-break">
                 لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
                 القدرات والتحصيلي بأعلى العلامات!
                 </p>
+              </div>
+              
                 </div>
-            <div className="row py-5">
+            <div className="row">
               <div className="col-md-12">
                 {/* <div className="row p-4 pb-2">
                   <div className="col-12">
@@ -132,7 +134,11 @@ export class QuickQuestion extends Component {
                   <React.Fragment>
                     <div className="row p-4 pb-2">
                       <div className="col-12">
-                        <div className="box-layout box-border shadow-sm p-3">
+                        <div
+                          className={
+                            "question-box-layout" + " bg-white br-20 box-border shadow-sm p-3"
+                          }
+                        >
                           <img
                             src={question.renderedStem}
                             className="contain-img"
@@ -142,7 +148,7 @@ export class QuickQuestion extends Component {
                       </div>
                     </div>
                     <div className="row pl-4 pr-4 pb-4">
-                      <div className="col-7">
+                      <div className="col-12">
                         <div className="row d-flex justify-content-between align-items-center mb-3">
                           <div className="col-md-12">
                             <p className="small dark-silver-text mb-0">
@@ -157,7 +163,11 @@ export class QuickQuestion extends Component {
                               const selected =
                                 answer && answer.selectedAnswer === key;
                               return (
-                                <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                                <div 
+                                className={
+                                  "question-box-layout" +  " bg-white br-20 h-40 d-flex align-items-center pr-2 pl-2 mb-2"
+                                   }
+                                >
                                   <input
                                     type="radio"
                                     label={value}
