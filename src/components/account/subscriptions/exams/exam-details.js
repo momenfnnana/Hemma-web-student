@@ -12,7 +12,7 @@ import axios from "axios";
 import "../styles.sass";
 import ReactMomentCountDown from "react-moment-countdown";
 import Slider from "react-slick";
-import moment from 'moment'
+import moment from "moment";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -30,7 +30,7 @@ class ExamDetailsComponent extends Component {
       selectedQuestionId: null,
       selectedQuestion: 0,
       endCountdown: false,
-      isChecked: false,
+      isChecked: false
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
@@ -94,10 +94,9 @@ class ExamDetailsComponent extends Component {
     });
   };
 
-  goTo = (questionId) => {
+  goTo = questionId => {
     this.setState({
-      selectedQuestion:
-      questionId - 1
+      selectedQuestion: questionId - 1
     });
   };
 
@@ -190,25 +189,34 @@ class ExamDetailsComponent extends Component {
         console.log(error);
       });
   };
-  
-  renderQuestionsTitle() {
 
+  renderQuestionsTitle() {
     const questions = this.state.questions || [];
-    return questions.map((question,index) => (
+    return questions.map((question, index) => (
       <div
-      className={
-        "box-layout d-flex text-center justify-content-center flex-column p-1 br-0 clickable" + (this.state.selectedQuestion === index ? " light-bg" : "")
-         }
-       onClick={() =>{this.goTo(question.id)}}>
-        <h3 className="dark-text small mb-0"
         className={
-          "small mb-0" + (this.state.selectedQuestion === index ? " text-white" : " dark-text")
-           }
-        > {question.id}</h3>
+          "box-layout d-flex text-center justify-content-center flex-column p-1 br-0 clickable" +
+          (this.state.selectedQuestion === index ? " light-bg" : "")
+        }
+        onClick={() => {
+          this.goTo(question.id);
+        }}
+      >
+        <h3
+          className="dark-text small mb-0"
+          className={
+            "small mb-0" +
+            (this.state.selectedQuestion === index
+              ? " text-white"
+              : " dark-text")
+          }
+        >
+          {" "}
+          {question.id}
+        </h3>
       </div>
     ));
   }
-
 
   renderQuestions() {
     const questions = this.state.questions || [];
@@ -226,11 +234,21 @@ class ExamDetailsComponent extends Component {
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
-                  <img
-                    src={question.renderedStem}
-                    className="contain-img"
-                    width="90%"
-                  />
+                  {question.encodedStem ? (
+                    <h6
+                      className="dark-text mb-0 encoded-text"
+                      dangerouslySetInnerHTML={{
+                        __html: question.encodedStem
+                      }}
+                    ></h6>
+                  ) : (
+                    <img
+                      src={question.renderedStem}
+                      className="contain-img"
+                      width="90%"
+                      alt="question"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -251,6 +269,7 @@ class ExamDetailsComponent extends Component {
                         src={process.env.PUBLIC_URL + "/assets/images/hint.png"}
                         height="17"
                         className="contain-img mr-2"
+                        alt="hint"
                       />
                       المساعدة
                     </button>
@@ -258,23 +277,29 @@ class ExamDetailsComponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    {Object.keys(question.choices).map(function(key) {
-                      const value = question.choices[key];
+                    {Object.keys(
+                      question.encodedChoices
+                        ? question.encodedChoices
+                        : question.choices
+                    ).map(function(key) {
+                      const value = question.encodedChoices
+                        ? question.encodedChoices[key]
+                        : question.choices[key];
                       const selected = answer && answer.selectedChoice === key;
                       return (
                         <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
                           <input
                             type="radio"
-                            label={value}
-                            className="small dark-silver-text light-font-text d-flex align-items-center"
+                            className="small dark-text light-font-text d-flex align-items-center"
                             name={`choice-${question.id}`}
                             onChange={() => this.onInput(question.id, key)}
                             id={value}
                             checked={selected}
                           />
-                          <label className="mb-0 dark-silver-text small ml-2">
-                            {value}
-                          </label>
+                          <label
+                            dangerouslySetInnerHTML={{ __html: value }}
+                            className="mb-0 dark-text small ml-2 encoded-text"
+                          ></label>
                         </div>
                       );
                     }, this)}
@@ -319,10 +344,10 @@ class ExamDetailsComponent extends Component {
     const answersLength = this.state.answers.length;
     const unansweredQuestions = questionsLength - answersLength;
     var timeInSeconds = 0;
-    for(let q of this.state.questions){
-      timeInSeconds += q.duration
+    for (let q of this.state.questions) {
+      timeInSeconds += q.duration;
     }
-      const dueDate =
+    const dueDate =
       this.state && this.state.examDetails && this.state.examDetails.dueAt;
     if (!dueDate) return null;
     const settings = {
@@ -331,7 +356,7 @@ class ExamDetailsComponent extends Component {
       infinite: false,
       slidesToShow: questionsLength,
       speed: 500,
-      rtl: true,
+      rtl: true
     };
     return (
       <React.Fragment>
@@ -371,7 +396,7 @@ class ExamDetailsComponent extends Component {
                           "00:00:00"
                         ) : (
                           <ReactMomentCountDown
-                          toDate={new Date(new Date(dueDate + "+0000" ))}
+                            toDate={new Date(new Date(dueDate + "+0000"))}
                             onCountdownEnd={this.onCountdownEnd}
                           />
                         )}
@@ -439,22 +464,21 @@ class ExamDetailsComponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-12">
-                  <div className="question-item">
-                  <Slider
-                    asNavFor={this.state.nav1}
-                    ref={slider => (this.slider2 = slider)}
-                    slidesToShow={3.5}
-                    swipeToSlide={true}
-                    focusOnSelect={true}
-                    {...settings}
-                    className="mb-3"
-                  >
-                    {this.renderQuestionsTitle()}
-                  </Slider>
+                    <div className="question-item">
+                      <Slider
+                        asNavFor={this.state.nav1}
+                        ref={slider => (this.slider2 = slider)}
+                        slidesToShow={3.5}
+                        swipeToSlide={true}
+                        focusOnSelect={true}
+                        {...settings}
+                        className="mb-3"
+                      >
+                        {this.renderQuestionsTitle()}
+                      </Slider>
+                    </div>
                   </div>
-
-                    </div>
-                    </div>
+                </div>
               </div>
               <HintModal
                 isHintOpen={this.state.isHintOpen}

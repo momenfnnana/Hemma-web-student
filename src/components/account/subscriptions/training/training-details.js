@@ -208,24 +208,19 @@ class TrainingExamDetailsComponent extends Component {
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: question.stem }}
-                  ></div>
-                  {/* <img
-                        src={question.renderedStem}
-                        className="contain-img"
-                        width="90%"
-                      /> */}
-                  {/* <CKEditor
-                          editor={ ClassicEditor }
-                          data={question.stem}
-                          disabled = "true"
-                          config={ {
-                            plugins: [ MathType ],
-                            toolbar: ['MathType' ],
-                            language: 'ar'
-                        } }
-                        /> */}
+                  {question.encodedStem ? (
+                    <h6
+                      className="dark-text mb-0 encoded-text"
+                      dangerouslySetInnerHTML={{ __html: question.encodedStem }}
+                    ></h6>
+                  ) : (
+                    <img
+                      src={question.renderedStem}
+                      className="contain-img"
+                      width="90%"
+                      alt="question"
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -244,28 +239,34 @@ class TrainingExamDetailsComponent extends Component {
                       )}
                       <div className="row">
                         <div className="col-md-12">
-                          {Object.keys(question.choices).map(function(key) {
-                            const value = question.choices[key];
+                          {Object.keys(
+                            question.encodedChoices
+                              ? question.encodedChoices
+                              : question.choices
+                          ).map(function(key) {
+                            const value = question.encodedChoices
+                              ? question.encodedChoices[key]
+                              : question.choices[key];
                             return (
                               <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
                                 <input
                                   type="radio"
                                   checked={
-                                    correctAnswer.correctChoice == key ||
-                                    answer.selectedChoice == key
+                                    correctAnswer.correctChoice === key ||
+                                    answer.selectedChoice === key
                                   }
                                   disabled
                                   className={`radio-custom ${
-                                    correctAnswer.correctChoice == key
+                                    correctAnswer.correctChoice === key
                                       ? "radio-success"
-                                      : answer.selectedChoice == key
+                                      : answer.selectedChoice === key
                                       ? "radio-failure"
                                       : "radio-custom"
                                   }`}
                                 />
                                 <label
-                                  className="mb-0 dark-silver-text small ml-2"
                                   dangerouslySetInnerHTML={{ __html: value }}
+                                  className="mb-0 dark-text small ml-2 encoded-text"
                                 ></label>
                               </div>
                             );
@@ -294,14 +295,15 @@ class TrainingExamDetailsComponent extends Component {
                                 }
                                 height="17"
                                 className="contain-img mr-2"
+                                alt="hint"
                               />
                               المساعدة
                             </button>
                           </div>
                         ) : null}
                       </div>
-                      {Object.keys(question.choices).map(function(key) {
-                        const value = question.choices[key];
+                      {Object.keys(question.encodedChoices).map(function(key) {
+                        const value = question.encodedChoices[key];
                         const selected =
                           answer && answer.selectedChoice === key;
                         return (
@@ -316,7 +318,7 @@ class TrainingExamDetailsComponent extends Component {
                               checked={selected}
                             />
                             <label
-                              className="mb-0 dark-silver-text small ml-2"
+                              className="mb-0 dark-text small ml-2 encoded-text"
                               dangerouslySetInnerHTML={{ __html: value }}
                             ></label>
                           </div>

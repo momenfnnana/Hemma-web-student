@@ -89,28 +89,23 @@ export class QuickQuestion extends Component {
                 <div className="title-circle">
                   <img
                     src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/questionMark.png"
+                      process.env.PUBLIC_URL + "/assets/images/questionMark.png"
                     }
                   />
                 </div>
-                <div
-                  className={
-                    "ar-text title-groups mb-0 ml-0" + " light-bg"
-                  }><h5 className=" mb-0 pl-5">الأسئلة السريعة</h5>
+                <div className={"ar-text title-groups mb-0 ml-0" + " light-bg"}>
+                  <h5 className=" mb-0 pl-5">الأسئلة السريعة</h5>
                 </div>
-
               </div>
             </div>
             <div className="row pl-4">
               <div className="col-md-12">
-              <p className="dark-text mt-2 small w-40 text-break">
-                لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
-                القدرات والتحصيلي بأعلى العلامات!
+                <p className="dark-text mt-2 small w-40 text-break">
+                  لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
+                  القدرات والتحصيلي بأعلى العلامات!
                 </p>
               </div>
-              
-                </div>
+            </div>
             <div className="row">
               <div className="col-md-12">
                 {/* <div className="row p-4 pb-2">
@@ -136,14 +131,25 @@ export class QuickQuestion extends Component {
                       <div className="col-12">
                         <div
                           className={
-                            "question-box-layout" + " bg-white br-20 box-border shadow-sm p-3"
+                            "question-box-layout" +
+                            " bg-white br-20 box-border shadow-sm p-3"
                           }
                         >
-                          <img
-                            src={question.renderedStem}
-                            className="contain-img"
-                            width="90%"
-                          />
+                          {question.encodedStem ? (
+                            <h6
+                              className="dark-text mb-0 encoded-text"
+                              dangerouslySetInnerHTML={{
+                                __html: question.encodedStem
+                              }}
+                            ></h6>
+                          ) : (
+                            <img
+                              src={question.renderedStem}
+                              className="contain-img"
+                              width="90%"
+                              alt="question"
+                            />
+                          )}
                         </div>
                       </div>
                     </div>
@@ -158,15 +164,22 @@ export class QuickQuestion extends Component {
                         </div>
                         <div className="row">
                           <div className="col-md-12">
-                            {Object.keys(question.choices).map(function(key) {
-                              const value = question.choices[key];
+                            {Object.keys(
+                              question.encodedChoices
+                                ? question.encodedChoices
+                                : question.choices
+                            ).map(function(key) {
+                              const value = question.encodedChoices
+                                ? question.encodedChoices[key]
+                                : question.choices[key];
                               const selected =
                                 answer && answer.selectedAnswer === key;
                               return (
-                                <div 
-                                className={
-                                  "question-box-layout" +  " bg-white br-20 h-40 d-flex align-items-center pr-2 pl-2 mb-2"
-                                   }
+                                <div
+                                  className={
+                                    "question-box-layout" +
+                                    " bg-white br-20 h-40 d-flex align-items-center pr-2 pl-2 mb-2"
+                                  }
                                 >
                                   <input
                                     type="radio"
@@ -179,9 +192,10 @@ export class QuickQuestion extends Component {
                                     id={value}
                                     checked={selected}
                                   />
-                                  <label className="mb-0 dark-silver-text small ml-2">
-                                    {value}
-                                  </label>
+                                  <label
+                                    dangerouslySetInnerHTML={{ __html: value }}
+                                    className="mb-0 dark-text small ml-2 encoded-text"
+                                  ></label>
                                 </div>
                               );
                             }, this)}

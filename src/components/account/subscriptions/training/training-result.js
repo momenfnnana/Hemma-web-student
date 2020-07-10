@@ -89,11 +89,21 @@ class TrainingResultComponent extends Component {
               <div className="row p-4 pb-2">
                 <div className="col-12">
                   <div className="box-layout box-border shadow-sm p-3">
-                    <img
-                      src={question.renderedStem}
-                      className="contain-img"
-                      width="90%"
-                    />
+                    {question.encodedStem ? (
+                      <h6
+                        className="dark-text mb-0 encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html: question.encodedStem
+                        }}
+                      ></h6>
+                    ) : (
+                      <img
+                        src={question.renderedStem}
+                        className="contain-img"
+                        width="90%"
+                        alt="question"
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -121,6 +131,7 @@ class TrainingResultComponent extends Component {
                           }
                           height="17"
                           className="contain-img mr-2"
+                          alt="hint"
                         />
                         طريقة الحل
                       </button>
@@ -128,28 +139,35 @@ class TrainingResultComponent extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-12">
-                      {Object.keys(question.choices).map(function(key) {
-                        const value = question.choices[key];
+                      {Object.keys(
+                        question.encodedChoices
+                          ? question.encodedChoices
+                          : question.choices
+                      ).map(function(key) {
+                        const value = question.encodedChoices
+                          ? question.encodedChoices[key]
+                          : question.choices[key];
                         return (
                           <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
                             <input
                               type="radio"
                               checked={
-                                question.correctChoice == key ||
-                                question.selectedChoice == key
+                                question.correctChoice === key ||
+                                question.selectedChoice === key
                               }
                               disabled
                               className={`radio-custom ${
-                                question.correctChoice == key
+                                question.correctChoice === key
                                   ? "radio-success"
-                                  : question.selectedChoice == key
+                                  : question.selectedChoice === key
                                   ? "radio-failure"
                                   : "radio-custom"
                               }`}
                             />
-                            <label className="mb-0 dark-silver-text small ml-2">
-                              {value}
-                            </label>
+                            <label
+                              dangerouslySetInnerHTML={{ __html: value }}
+                              className="mb-0 dark-text small ml-2 encoded-text"
+                            ></label>
                           </div>
                         );
                       }, this)}
