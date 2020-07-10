@@ -22,6 +22,7 @@ class AgreementFormComponent extends Component {
   }
 
   handleChange() {
+    this.scrollToBottom();
     this.setState({ checked: !this.state.checked });
     if (this.state.checked) {
       this.setState({ isDisabled: true });
@@ -63,6 +64,15 @@ class AgreementFormComponent extends Component {
     }
   }
 
+  scrollToBottom = () => {
+    this.divEnd &&
+      this.divEnd.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start"
+      });
+  };
+
   render() {
     const customStyles = {
       content: {
@@ -100,49 +110,50 @@ class AgreementFormComponent extends Component {
               <div className="col-12">
                 <div className="silver-bg p-3 rounded mt-3">
                   <h6 className="dark-text small">شروط الاشتراك في الدورة</h6>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ١- الدورة لشخص واحد فقط لانسمح بنظام (القطه) او الاشتراك
                     بحساب واحد
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٢- يمنع دخول أكثر من شخص أو أكثر من مستفيد إلى الحساب
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٣- الدورة online تتطلب وجود اتصال ممتاز ، ولانتحمل مسوؤلية
                     غير ذلك
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٤-لانسمح بتسجيل المحاضرات او حفظها .
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٥-الدورة بنظام الاشتراك وتبقى لفترة محددة.
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٦-لايمكن استرجاع الرسوم بعد بداية الدورة ، وفي حال تم طلب
                     الملزمة قبل بداية الدورة لايمكن استرجاع رسوم الدورة والملزمة
                     .
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٧- الملزمة مخصصة للمشترك في الدورة فقط ولايسمح بنشرها او
                     بيعها او الاستفادة منها مادياً
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٨- طلب الدورة والاشتراك بها تعني موافقتك على الشروط.
                   </p>
                   <h6 className="dark-text small">الملازم</h6>
-                  <p className="light-font-text dark-text smaller">
-                  ١- المنصة غير مسؤولة عن أي معلومات خاطئة في بيانات التوصيل .
+                  <p className="light-font-text dark-text smaller text-break">
+                    ١- المنصة غير مسؤولة عن أي معلومات خاطئة في بيانات التوصيل .
                   </p>
-                  <p className="light-font-text dark-text smaller">
-                  ٢- عند التأخير  في استلام الملزمة واسترجاع الشحنة يتحمل المشترك رسوم التوصيل للمرة الثانية .
+                  <p className="light-font-text dark-text smaller text-break">
+                    ٢- عند التأخير في استلام الملزمة واسترجاع الشحنة يتحمل
+                    المشترك رسوم التوصيل للمرة الثانية .
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٣- عند طلب الملزمة لايحق لك استرجاعها، أو استرجاع الرسوم .
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٤- الملزمة خاصة بالمشترك فقط، ولا نحلل بيعها أو نشرها .
                   </p>
-                  <p className="light-font-text dark-text smaller">
+                  <p className="light-font-text dark-text smaller text-break">
                     ٥- مدة التوصيل من 7 الى ١٠ ايام عمل.
                   </p>
                 </div>
@@ -180,6 +191,11 @@ class AgreementFormComponent extends Component {
               </div>
             </div>
           </div>
+          <div
+            ref={el => {
+              this.divEnd = el;
+            }}
+          />
         </Modal>
       </React.Fragment>
     );

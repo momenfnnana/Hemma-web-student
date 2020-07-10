@@ -76,7 +76,7 @@ class ShippingAddressFormComponent extends Component {
                   name="shippingPhone"
                   component={inputField}
                   className="form-control border-left-0 pl-0 ltr-input en-input"
-                  validate={required, phoneValue}
+                  validate={[required, phoneValue]}
                   placeholder="051 234 5678"
                   type="number"
                 />
@@ -88,7 +88,7 @@ class ShippingAddressFormComponent extends Component {
                   validate={required}
                   name="shippingCityId"
                 >
-                  <option selected disabled>
+                  <option value="" selected disabled>
                     اختر المدينة
                   </option>
                   {this.renderCities()}

@@ -23,11 +23,11 @@ import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
 import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
-import { TrainingList } from "./training/training-list";
-import { TrainingResult } from "./training/training-result";
+// import { TrainingList } from "./training/training-list";
+// import { TrainingResult } from "./training/training-result";
 
-import { StartTraining, StartTrainingExam } from "./training/start-training";
-import { TrainingExamDetails } from "./training/training-details";
+// import { StartTraining, StartTrainingExam } from "./training/start-training";
+// import { TrainingExamDetails } from "./training/training-details";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -232,7 +232,7 @@ class SubscriptionDetailsComponent extends Component {
                       component={ExamResult}
                       exact
                     />
-                    <Route
+                    {/* <Route
                       path="/course/content/:id/training/list"
                       component={TrainingList}
                       exact
@@ -251,7 +251,7 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/training/:attemptId/result"
                       component={TrainingResult}
                       exact
-                    />
+                    /> */}
                     {subscription && (
                       <Route
                         path="/course/content/:id/chat"
