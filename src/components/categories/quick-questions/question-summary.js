@@ -7,10 +7,9 @@ import { CommentsList } from "./comments/comments-list";
 import { Link } from "react-router-dom";
 import { ToastDemo } from "./toast-notification";
 
-
 export class QuestionSummary extends Component {
   state = {
-    details: [],
+    details: []
   };
 
   componentDidMount() {
@@ -36,7 +35,6 @@ export class QuestionSummary extends Component {
       });
   }
   render() {
-
     const question =
       this.state.details &&
       this.state.details.quickQuestion &&
@@ -58,7 +56,7 @@ export class QuestionSummary extends Component {
                 </p>
               </div>
               <div className="col-md-6 d-flex align-items-center justify-content-end">
-               <ToastDemo/>
+                <ToastDemo />
                 <Link
                   to={`/categories/details/${params.slug}/quick-questions/${this.state.details.categoryGroupId}`}
                   className="btn btn-sm unset-height small light-btn light-font-text"
@@ -71,7 +69,6 @@ export class QuestionSummary extends Component {
                 >
                   العودة إلى الرئيسية
                 </Link>
-
               </div>
             </div>
             {question && rateChoices && (
@@ -86,11 +83,21 @@ export class QuestionSummary extends Component {
                 <div className="row pb-4">
                   <div className="col-12">
                     <div className="box-layout box-border shadow-sm p-3">
-                      <img
-                        src={question.renderedStem}
-                        className="contain-img"
-                        width="90%"
-                      />
+                      {question.encodedStem ? (
+                        <h6
+                          className="dark-text mb-0 encoded-text"
+                          dangerouslySetInnerHTML={{
+                            __html: question.encodedStem
+                          }}
+                        ></h6>
+                      ) : (
+                        <img
+                          src={question.renderedStem}
+                          className="contain-img"
+                          width="90%"
+                          alt="question"
+                        />
+                      )}
                     </div>
                   </div>
                 </div>
