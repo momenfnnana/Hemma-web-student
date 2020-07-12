@@ -85,7 +85,7 @@ export class QuickQuestion extends Component {
       <React.Fragment>
         <section className="pt-5 pb-5">
           <div className="container">
-            <HeaderComponent/>
+            <HeaderComponent />
             <div className="row">
               <div className="col-md-12">
                 {question && (
@@ -128,13 +128,14 @@ export class QuickQuestion extends Component {
                         <div className="row">
                           <div className="col-md-12">
                             {Object.keys(
-                              question.encodedChoices
+                              question.encodedChoices.length > 0
                                 ? question.encodedChoices
                                 : question.choices
                             ).map(function(key) {
-                              const value = question.encodedChoices
-                                ? question.encodedChoices[key]
-                                : question.choices[key];
+                              const value =
+                                question.encodedChoices.length > 0
+                                  ? question.encodedChoices[key]
+                                  : question.choices[key];
                               const selected =
                                 answer && answer.selectedAnswer === key;
                               return (
