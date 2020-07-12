@@ -3,6 +3,7 @@ import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import "../styles.sass";
 import { CommentsList } from "./comments/comments-list";
+import Vimeo from "@u-wave/react-vimeo";
 
 export class LectureDetails extends Component {
   constructor(props) {
@@ -36,31 +37,30 @@ export class LectureDetails extends Component {
       .catch(error => {
         console.log(error);
       });
-
-    await axios
-      .get(`${apiBaseUrl}/content/lectures/${lectureId}/vdocipher_token`, {
-        headers
-      })
-      .then(response => {
-        const videoID = this.state.details && this.state.details.recordingUrl;
-        if (videoID) {
-          new window.VdoPlayer({
-            otp: response.data.data.otp,
-            playbackInfo: btoa(
-              JSON.stringify({
-                videoId: videoID
-              })
-            ),
-            theme: "9ae8bbe8dd964ddc9bdb932cca1cb59a",
-            // the container can be any DOM element on website
-            container: document.querySelector("#embedBox")
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
+        await axios
+        .get(`${apiBaseUrl}/content/lectures/${lectureId}/vdocipher_token`, {
+          headers
+        })
+        .then(response => {
+          const videoID = this.state.details && this.state.details.recordingUrl;
+          if (videoID) {
+            new window.VdoPlayer({
+              otp: response.data.data.otp,
+              playbackInfo: btoa(
+                JSON.stringify({
+                  videoId: videoID
+                })
+              ),
+              theme: "9ae8bbe8dd964ddc9bdb932cca1cb59a",
+              // the container can be any DOM element on website
+              container: document.querySelector("#embedBox")
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+   
     const courseId = this.props.match.params.id;
     axios
       .get(`${apiBaseUrl}/content/${courseId}/recorded_lectures`, { headers })
@@ -157,6 +157,8 @@ export class LectureDetails extends Component {
 
   render() {
     const lectureId = this.props.match.params.lectureId;
+    const { paused, volume } = this.state;
+    const videoUrl = this.state.details.recordingUrlVimeo;
 
     return (
       <React.Fragment>
@@ -176,14 +178,26 @@ export class LectureDetails extends Component {
                   {this.renderSections()}
                 </div>
                 <div className="col-9">
-                  {this.state.details && this.state.details.recordingUrl && (
-                    <div
-                      id="embedBox"
-                      style={{ height: "100%", width: "100%" }}
-                    ></div>
-                  )}
+                  {this.state.details && this.state.details.recordingUrl ?
+                    (
+                      <div
+                        id="embedBox"
+                        style={{ height: "100%", width: "100%" }}
+                      ></div>
+                    ) : (
+                      <>
+                      {videoUrl &&
+                      <Vimeo
+                        video={videoUrl}
+                        className="recorded-video"
+                        volume={volume}
+                        paused={paused}
+                        onPause={this.handlePlayerPause}
+                        onPlay={this.handlePlayerPlay}
+                      />}
+                      </>
+                    )}
                 </div>
-
                 <CommentsList lectureId={lectureId} />
               </div>
             </div>
