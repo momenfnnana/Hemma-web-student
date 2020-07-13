@@ -89,21 +89,12 @@ class ExamResultComponent extends Component {
               <div className="row p-4 pb-2">
                 <div className="col-12">
                   <div className="box-layout box-border shadow-sm p-3">
-                    {question.encodedStem ? (
-                      <h6
+                  <h6
                         className="dark-text mb-0 encoded-text"
                         dangerouslySetInnerHTML={{
                           __html: question.encodedStem
                         }}
                       ></h6>
-                    ) : (
-                      <img
-                        src={question.renderedStem}
-                        className="contain-img"
-                        width="90%"
-                        alt="question"
-                      />
-                    )}
                   </div>
                 </div>
               </div>
@@ -138,15 +129,8 @@ class ExamResultComponent extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-12">
-                      {Object.keys(
-                        question.encodedChoices.length > 0
-                          ? question.encodedChoices
-                          : question.choices
-                      ).map(function(key) {
-                        const value =
-                          question.encodedChoices.length > 0
-                            ? question.encodedChoices[key]
-                            : question.choices[key];
+                      {Object.keys( question.encodedChoices ).map(function(key) {
+                        const value = question.encodedChoices[key]
                         return (
                           <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
                             <input

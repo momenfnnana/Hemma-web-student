@@ -69,7 +69,7 @@ export class CommentsListComponent extends Component {
               const comment = response.data.data;
               this.setState(prevState => {
                 return {
-                  comments: prevState.comments.concat(comment)
+                  comments: [ comment, ...prevState.comments]
                 };
               });
               this.commentInput.value = "";
@@ -188,7 +188,7 @@ export class CommentsListComponent extends Component {
           const comment = response.data.data;
           this.setState(prevState => {
             return {
-              comments: prevState.comments.concat(comment)
+              comments: [ comment, ...prevState.comments]
             };
           });
           this.commentInput.value = "";

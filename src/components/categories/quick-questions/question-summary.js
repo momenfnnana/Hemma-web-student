@@ -59,21 +59,12 @@ export class QuestionSummary extends Component {
                 <div className="row pb-4 pl-4">
                   <div className="col-12">
                     <div className="box-layout box-border shadow-sm p-3">
-                      {question.encodedStem ? (
-                        <h6
+                    <h6
                           className="dark-text mb-0 encoded-text"
                           dangerouslySetInnerHTML={{
                             __html: question.encodedStem
                           }}
                         ></h6>
-                      ) : (
-                        <img
-                          src={question.renderedStem}
-                          className="contain-img"
-                          width="90%"
-                          alt="question"
-                        />
-                      )}
                     </div>
                   </div>
                 </div>
