@@ -139,13 +139,14 @@ class CompetitionComponent extends Component {
                 <div className="row">
                   <div className="col-md-12">
                     {Object.keys(
-                      question.encodedChoices
+                      question.encodedChoices.length > 0
                         ? question.encodedChoices
                         : question.choices
                     ).map(function(key) {
-                      const value = question.encodedChoices
-                        ? question.encodedChoices[key]
-                        : question.choices[key];
+                      const value =
+                        question.encodedChoices.length > 0
+                          ? question.encodedChoices[key]
+                          : question.choices[key];
                       const selected = answer && answer.selectedChoice === key;
                       return (
                         <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">

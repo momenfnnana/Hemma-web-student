@@ -4,8 +4,7 @@ import "react-sweet-progress/lib/style.css";
 import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
 import { CommentsList } from "./comments/comments-list";
-import { Link } from "react-router-dom";
-import { ToastDemo } from "./toast-notification";
+import { HeaderComponent } from "../../account/shared/quick-questions/header";
 
 export class QuestionSummary extends Component {
   state = {
@@ -47,30 +46,7 @@ export class QuestionSummary extends Component {
       <React.Fragment>
         <section className="pt-5 pb-5">
           <div className="container">
-            <div className="row">
-              <div className="col-md-6">
-                <h5 className="dark-text mt-3">الأسئلة السريعة</h5>
-                <p className="dark-text mt-2 small text-break">
-                  لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
-                  القدرات والتحصيلي بأعلى العلامات!
-                </p>
-              </div>
-              <div className="col-md-6 d-flex align-items-center justify-content-end">
-                <ToastDemo />
-                <Link
-                  to={`/categories/details/${params.slug}/quick-questions/${this.state.details.categoryGroupId}`}
-                  className="btn btn-sm unset-height small light-btn light-font-text"
-                >
-                  العودة إلى المجموعة
-                </Link>
-                <Link
-                  to="/"
-                  className="btn btn-sm unset-height small red-outline-btn light-font-text ml-2"
-                >
-                  العودة إلى الرئيسية
-                </Link>
-              </div>
-            </div>
+          <HeaderComponent/>
             {question && rateChoices && (
               <React.Fragment>
                 <div className="row pb-2">
@@ -80,7 +56,7 @@ export class QuestionSummary extends Component {
                     </p>
                   </div>
                 </div>
-                <div className="row pb-4">
+                <div className="row pb-4 pl-4">
                   <div className="col-12">
                     <div className="box-layout box-border shadow-sm p-3">
                       {question.encodedStem ? (
@@ -101,7 +77,7 @@ export class QuestionSummary extends Component {
                     </div>
                   </div>
                 </div>
-                <div className="row">
+                <div className="row pl-4">
                   <div className="col-7">
                     <div className="row d-flex justify-content-between align-items-center mb-3">
                       <div className="col-md-12">
@@ -110,7 +86,7 @@ export class QuestionSummary extends Component {
                         </p>
                       </div>
                     </div>
-                    <div className="row">
+                    <div className="row ">
                       <div className="col-md-12">
                         {Object.keys(rateChoices).map((item, i) => (
                           <div
@@ -178,12 +154,12 @@ export class QuestionSummary extends Component {
                 </div>
               </React.Fragment>
             )}
-            <div className="row">
+            <div className="row pl-4">
               <div className="col-md-12">
                 <hr />
               </div>
             </div>
-            <div className="row">
+            <div className="row pl-4">
               <CommentsList quickQuestionId={params.questionId} />
             </div>
           </div>
