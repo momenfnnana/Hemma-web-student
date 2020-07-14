@@ -73,19 +73,18 @@ export class SolutionModal extends Component {
                   طريقة الحل
                 </span>
 
-                <div className="box-layout p-3 d-flex align-items-center justify-content-center">
+                <div className="box-layout p-3 d-flex align-items-center">
                   {this.state.details[0] &&
                   this.state.details[0].solutionExplanation &&
                   this.state.details[0].solutionExplanation.type === "Text" ? (
-                    <img
-                      src={
-                        this.state.details[0] &&
-                        this.state.details[0].solutionExplanation &&
-                        this.state.details[0].solutionExplanation.renderedValue
-                      }
-                      width="90%"
-                      className="contain-img"
-                    />
+                    <div
+                      className="encoded-text"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          this.state.details[0] &&
+                          this.state.details[0].encodedSolutionExplanation
+                      }}
+                    ></div>
                   ) : this.state.details[0] &&
                     this.state.details[0].solutionExplanation &&
                     this.state.details[0].solutionExplanation.type ===
@@ -102,7 +101,9 @@ export class SolutionModal extends Component {
                       autoPlay
                     ></video>
                   ) : (
-                    <p className="dark-text mb-0">لا يوجد طريقة حل متوفرة</p>
+                    <p className="dark-text mb-0 text-center">
+                      لا يوجد طريقة حل متوفرة
+                    </p>
                   )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
