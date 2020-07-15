@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
-import { inputField } from "../../../shared/inputs/inputField";
-import { Field, reduxForm, Fields } from "redux-form";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 
@@ -26,7 +24,7 @@ export class HintModal extends Component {
         .then(response => {
           let questions = response.data.data.questions;
           let questionId = questions.filter(
-            question => question.id == nextProps.id
+            question => question.id === nextProps.id
           );
           this.setState({ details: questionId });
         })
@@ -51,11 +49,11 @@ export class HintModal extends Component {
       },
       overlay: {
         backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 2,
         zIndex: 20
       }
     };
     const { isHintOpen, closeHint } = this.props;
+    console.log(this.state.details[0]);
     return (
       <React.Fragment>
         <Modal
@@ -74,34 +72,34 @@ export class HintModal extends Component {
 
                 <div className="box-layout p-3">
                   {this.state.details[0] &&
-                  this.state.details[0].solutionExplanation &&
-                  this.state.details[0].solutionExplanation.type === "Text" ? (
-                    <img
-                      src={
-                        this.state.details[0] &&
-                        this.state.details[0].solutionExplanation &&
-                        this.state.details[0].solutionExplanation.renderedValue
-                      }
-                      width="90%"
-                      className="contain-img"
-                    />
+                  this.state.details[0].explanation &&
+                  this.state.details[0].explanation.type === "Text" ? (
+                    <div
+                      className="encoded-text"
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          this.state.details[0] &&
+                          this.state.details[0].encodedExplanation
+                      }}
+                    ></div>
                   ) : this.state.details[0] &&
-                    this.state.details[0].solutionExplanation &&
-                    this.state.details[0].solutionExplanation.type ===
-                      "Video" ? (
+                    this.state.details[0].explanation &&
+                    this.state.details[0].explanation.type === "Video" ? (
                     <video
                       width="100%"
                       height="240"
                       src={
                         this.state.details[0] &&
-                        this.state.details[0].solutionExplanation &&
-                        this.state.details[0].solutionExplanation.value
+                        this.state.details[0].explanation &&
+                        this.state.details[0].explanation.value
                       }
                       controls
                       autoPlay
                     ></video>
                   ) : (
-                    <p className="dark-text mb-0">لا يوجد مساعدة متوفرة</p>
+                    <p className="dark-text mb-0 text-center">
+                      لا يوجد مساعدة متوفرة
+                    </p>
                   )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
