@@ -14,6 +14,8 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
+import { PageLoader } from "../courses/page-loader";
+import ContentLoader from "react-content-loader";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -228,78 +230,79 @@ export class CategoryDetails extends Component {
   }
 
   renderLectures() {
-    const sortedLectures = this.state.lectures.sort(
-      (b, a) => a.scheduledAt - b.scheduledAt
-    );
-
-    return sortedLectures.map(lecture => {
-      const scheduledAt = new Date(lecture.scheduledAt);
-      //Date
-      var day = scheduledAt.getDate();
-      var month = scheduledAt.getMonth() + 1;
-      var year = scheduledAt.getFullYear();
-      var scheduledDate = year + "-" + month + "-" + day;
-      var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
-      //Time
-      var lectureTime = scheduledAt.getTime();
-      const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
-      const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
-      const time = `${hours}:${minutes}`;
-      var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
-
-      return (
-        <li
-          key={lecture.id}
-          className="list-group-item d-flex justify-content-between align-items-center"
-          dir="rtl"
-        >
-          <div className="media d-flex align-items-center">
-            <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
-              <FaGraduationCap className="text-white" size="34" />
-            </div>
-            <div className="media-body">
-              <h6 className="dark-text">{lecture.nameAr}</h6>
-              <div className="d-flex align-items-center">
-                <h5 className="mid-text small en-text d-flex align-items-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
-                    height="12"
-                    width="12"
-                    className="mr-1"
-                  />
-                  {hijriDate}
-                </h5>
-
-                <h5 className="mid-text small en-text d-flex align-items-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
-                    className="mr-1 ml-3"
-                    height="15"
-                    alt="Time"
-                  />
-                  <span dir="ltr">
-                    {time} {ampm}
-                  </span>
-                </h5>
-              </div>
-              {lecture.instructor && (
-                <p className="light-text small mb-0">
-                  {lecture.instructor && lecture.instructor.name}
-                </p>
-              )}
-            </div>
-          </div>
-          {lecture.broadcastUrl && (
-            <button
-              className="btn light-outline-btn unset-height"
-              onClick={() => this.openFreeLecture(lecture)}
-            >
-              انضم
-            </button>
-          )}
-        </li>
+    
+      const sortedLectures = this.state.lectures.sort(
+        (b, a) => a.scheduledAt - b.scheduledAt
       );
-    });
+  
+      return sortedLectures.map(lecture => {
+        const scheduledAt = new Date(lecture.scheduledAt);
+        //Date
+        var day = scheduledAt.getDate();
+        var month = scheduledAt.getMonth() + 1;
+        var year = scheduledAt.getFullYear();
+        var scheduledDate = year + "-" + month + "-" + day;
+        var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
+        //Time
+        var lectureTime = scheduledAt.getTime();
+        const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
+        const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
+        const time = `${hours}:${minutes}`;
+        var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
+  
+        return (
+          <li
+            key={lecture.id}
+            className="list-group-item d-flex justify-content-between align-items-center"
+            dir="rtl"
+          >
+            <div className="media d-flex align-items-center">
+              <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
+                <FaGraduationCap className="text-white" size="34" />
+              </div>
+              <div className="media-body">
+                <h6 className="dark-text">{lecture.nameAr}</h6>
+                <div className="d-flex align-items-center">
+                  <h5 className="mid-text small en-text d-flex align-items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
+                      height="12"
+                      width="12"
+                      className="mr-1"
+                    />
+                    {hijriDate}
+                  </h5>
+  
+                  <h5 className="mid-text small en-text d-flex align-items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
+                      className="mr-1 ml-3"
+                      height="15"
+                      alt="Time"
+                    />
+                    <span dir="ltr">
+                      {time} {ampm}
+                    </span>
+                  </h5>
+                </div>
+                {lecture.instructor && (
+                  <p className="light-text small mb-0">
+                    {lecture.instructor && lecture.instructor.name}
+                  </p>
+                )}
+              </div>
+            </div>
+            {lecture.broadcastUrl && (
+              <button
+                className="btn light-outline-btn unset-height"
+                onClick={() => this.openFreeLecture(lecture)}
+              >
+                انضم
+              </button>
+            )}
+          </li>
+        );
+      });
   }
 
   renderCompetitions() {
@@ -443,8 +446,8 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-
-            {this.state.lectures && this.state.lectures.length > 0 ? (
+            {/* this.state.lectures && this.state.lectures.length > 0 */}
+            {false ? (
               <div className="row pt-5 pb-4">
                 <div className="col-md-4">
                   <h4 className="dark-text mt-3">
@@ -460,7 +463,25 @@ export class CategoryDetails extends Component {
                   <Slider {...verticalCarousel}>{this.renderLectures()}</Slider>
                 </div>
               </div>
-            ) : null}
+            ) : (
+              <div className="row pt-5 pb-4">
+                <div className="col-md-4">
+                  <h4 className="dark-text mt-3">
+                    لأننا حابين نفيدكم قدمنا لكم
+                  </h4>
+                  <h4 className="light-text">محاضرات مجانية</h4>
+                  <p className="dark-silver-text small text-break">
+                    نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
+                    المزيد
+                  </p>
+                </div>
+                <div className="col-md-8">
+                  <ContentLoader height="106" className="mb-4">
+                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="106" />
+                  </ContentLoader>
+                </div>
+              </div>
+            )}
 
             <div className="row">
               <div className="col-12 pt-4">
