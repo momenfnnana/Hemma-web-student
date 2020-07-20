@@ -440,14 +440,28 @@ export class CategoryDetails extends Component {
                     alt={this.state.details.nameAr}
                   />
                 </div>
-                <h5 className="dark-text mt-3">{this.state.details.nameAr}</h5>
+                <h5 className="dark-text mt-3">
+                  {this.state.details.nameAr
+                  ?this.state.details.nameAr
+                  :( 
+                    <ContentLoader height="40" className="w-20 mx-auto">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="40" />
+                    </ContentLoader>
+                  )}
+                  </h5>
                 <p className="dark-text mt-2 small w-40 mx-auto">
-                  {this.state.details.descriptionAr}
+                  {this.state.details.descriptionAr
+                  ?this.state.details.descriptionAr
+                  :(
+                    <ContentLoader height="10" className="">
+                      <rect x="0" y="0" rx="5" ry="5" width="400" height="10" />
+                    </ContentLoader>
+                  )}
                 </p>
               </div>
             </div>
-            {/* this.state.lectures && this.state.lectures.length > 0 */}
-            {false ? (
+
+            {this.state.lectures && this.state.lectures.length > 0 ? (
               <div className="row pt-5 pb-4">
                 <div className="col-md-4">
                   <h4 className="dark-text mt-3">
