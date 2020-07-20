@@ -502,7 +502,27 @@ export class CategoryDetails extends Component {
                 <h5 className="dark-text">الدورات المتاحة</h5>
               </div>
             </div>
-            <div className="row pt-2 pb-3">{this.renderCards()}</div>
+            <div className="row pt-2 pb-3">
+              {this.state.courses === 0
+              ?<>
+                <div className="col-md-4">
+                  <ContentLoader height="300">
+                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                  </ContentLoader>
+                </div>
+                <div className="col-md-4">
+                  <ContentLoader height="300">
+                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                  </ContentLoader>
+                </div>
+                <div className="col-md-4">
+                  <ContentLoader height="300">
+                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                  </ContentLoader>
+                </div>
+              </>
+              :this.renderCards()}
+              </div>
             {!this.state.hideBtn && (
               <div className="row">
                 <div className="col-md-12 d-flex align-items-center justify-content-center">
