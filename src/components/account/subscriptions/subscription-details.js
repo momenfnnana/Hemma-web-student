@@ -23,6 +23,8 @@ import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
 import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
+import { AskQuestionsList } from "./ask-questions/ask-questions-list";
+import { AskQuestionDetails } from "./ask-questions/question-details";
 // import { TrainingList } from "./training/training-list";
 // import { TrainingResult } from "./training/training-result";
 
@@ -252,6 +254,16 @@ class SubscriptionDetailsComponent extends Component {
                       component={TrainingResult}
                       exact
                     /> */}
+
+                      <Route
+                      path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+
+                    <Route
+                      path="/course/content/askQuestions/details"
+                      component={AskQuestionDetails}
+                    />
                     {subscription && (
                       <Route
                         path="/course/content/:id/chat"

@@ -223,6 +223,24 @@ export class SidebarComponent extends Component {
                   التدريبات
                 </NavLink>
               </li> */}
+              <li>
+                <NavLink
+                  className="dark-text small"
+                  to={`/course/content/${this.props.id}/askQuestions/list`}
+                  activeClassName=""
+                  className="dark-text small"
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/question.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                  />
+                  اسأل مدرب
+                </NavLink>
+              </li>
             </ul>
           </div>
         </div>
