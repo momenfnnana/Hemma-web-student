@@ -125,7 +125,7 @@ export class CategoryDetails extends Component {
     Api.categories
       .getCompetitions(params.slug)
       .then(response => {
-        this.setState({ competitions: response, competitionsshimmerLoader: false });
+        this.setState({ competitions: response, competitionsShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -620,8 +620,7 @@ export class CategoryDetails extends Component {
                 </div>
               </React.Fragment>
             )}
-            {/* {this.state.competitionsShimmerLoader && ( */}
-            {true && (
+            {this.state.competitionsShimmerLoader && (
                 <div className="row pt-5 pb-4 d-flex align-items-center">
                   <div className="col-md-5">
                     <h4 className="dark-text">
