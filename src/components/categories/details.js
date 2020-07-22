@@ -43,6 +43,7 @@ export class CategoryDetails extends Component {
       shimmerLoader: true,
       coursesShimmerLoader: true,
       categoryGroupsShimmerLoader: true,
+      competitionsShimmerLoader: true,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -124,7 +125,7 @@ export class CategoryDetails extends Component {
     Api.categories
       .getCompetitions(params.slug)
       .then(response => {
-        this.setState({ competitions: response, shimmerLoader: false });
+        this.setState({ competitions: response, competitionsshimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -619,6 +620,36 @@ export class CategoryDetails extends Component {
                 </div>
               </React.Fragment>
             )}
+            {/* {this.state.competitionsShimmerLoader && ( */}
+            {true && (
+                <div className="row pt-5 pb-4 d-flex align-items-center">
+                  <div className="col-md-5">
+                    <h4 className="dark-text">
+                      مع همة تقدرون تتحدون أنفسكم مع{" "}
+                      <span className="light-text">المسابقات</span>
+                    </h4>
+                    <p className="dark-silver-text text-break mb-0">
+                      نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
+                      اقوى المنافسين
+                    </p>
+                  </div>
+                  <div className="col-md-4">
+                    <ContentLoader width="350px" height="100" style={{width: "350px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="350px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-3">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/competitions.png"
+                      }
+                      width="100%"
+                      className="contain-img"
+                    />
+                  </div>
+                </div>
+            )}
             {!this.state.competitions == undefined ||
               (!this.state.competitions.length == 0 && (
                 <div className="row pt-5 pb-4 d-flex align-items-center">
@@ -670,6 +701,7 @@ export class CategoryDetails extends Component {
                   </div>
                 </div>
               ))}
+            
           </div>
         </section>
       </React.Fragment>
