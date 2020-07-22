@@ -40,6 +40,8 @@ export class CategoryDetails extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
+      shimmerLoader: true,
+      coursesShimmerLoader: true,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -73,7 +75,8 @@ export class CategoryDetails extends Component {
           const nextUrl = `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`;
           this.setState({
             courses: newCourses,
-            nextPageUrl: nextUrl
+            nextPageUrl: nextUrl,
+            coursesShimmerLoader: false
           });
           if (newCourses.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
@@ -93,7 +96,7 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data, shimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -102,7 +105,7 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then(response => {
-        this.setState({ lectures: response.data.data });
+        this.setState({ lectures: response.data.data, shimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -111,7 +114,7 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}/publications`)
       .then(response => {
-        this.setState({ publications: response.data.data.data });
+        this.setState({ publications: response.data.data.data, shimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -120,7 +123,7 @@ export class CategoryDetails extends Component {
     Api.categories
       .getCompetitions(params.slug)
       .then(response => {
-        this.setState({ competitions: response });
+        this.setState({ competitions: response, shimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -131,7 +134,7 @@ export class CategoryDetails extends Component {
         `${apiBaseUrl}/CategoryGroups?category=${params.slug}`
       )
       .then(response => {
-        this.setState({ categoryGroups: response.data.data });
+        this.setState({ categoryGroups: response.data.data, shimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -472,7 +475,25 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-
+            {this.state.shimmerLoader && (
+              <div className="row pt-5 pb-4">
+              <div className="col-md-4">
+                <h4 className="dark-text mt-3">
+                  لأننا حابين نفيدكم قدمنا لكم
+                </h4>
+                <h4 className="light-text">محاضرات مجانية</h4>
+                <p className="dark-silver-text small text-break">
+                  نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
+                  المزيد
+                </p>
+              </div>
+              <div className="col-md-8">
+                <ContentLoader height="106" className="mb-4">
+                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="106" />
+                </ContentLoader>
+              </div>
+            </div>
+            )}
             {this.state.lectures && this.state.lectures.length > 0 ? (
               <div className="row pt-5 pb-4">
                 <div className="col-md-4">
@@ -489,52 +510,36 @@ export class CategoryDetails extends Component {
                   <Slider {...verticalCarousel}>{this.renderLectures()}</Slider>
                 </div>
               </div>
-            ) : (
-              <div className="row pt-5 pb-4">
-                <div className="col-md-4">
-                  <h4 className="dark-text mt-3">
-                    لأننا حابين نفيدكم قدمنا لكم
-                  </h4>
-                  <h4 className="light-text">محاضرات مجانية</h4>
-                  <p className="dark-silver-text small text-break">
-                    نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
-                    المزيد
-                  </p>
-                </div>
-                <div className="col-md-8">
-                  <ContentLoader height="106" className="mb-4">
-                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="106" />
-                  </ContentLoader>
-                </div>
-              </div>
-            )}
+            ) : null}
 
             <div className="row">
               <div className="col-12 pt-4">
                 <h5 className="dark-text">الدورات المتاحة</h5>
               </div>
             </div>
+            
             <div className="row pt-2 pb-3">
-              {this.state.courses === 0
-              ?<>
-                <div className="col-md-4">
-                  <ContentLoader height="300">
-                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                  </ContentLoader>
-                </div>
-                <div className="col-md-4">
-                  <ContentLoader height="300">
-                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                  </ContentLoader>
-                </div>
-                <div className="col-md-4">
-                  <ContentLoader height="300">
-                    <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                  </ContentLoader>
-                </div>
-              </>
-              :this.renderCards()}
+              {this.renderCards()}
               </div>
+              {this.state.coursesShimmerLoader && (
+              <div className="row pt-2 pb-3">
+                <div className="col-md-4">
+                    <ContentLoader height="300">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-4">
+                    <ContentLoader height="300">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-4">
+                    <ContentLoader height="300">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                    </ContentLoader>
+                  </div>
+                </div>
+                )}
             {!this.state.hideBtn && (
               <div className="row">
                 <div className="col-md-12 d-flex align-items-center justify-content-center">
