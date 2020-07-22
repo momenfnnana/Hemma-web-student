@@ -17,6 +17,7 @@ import "./styles.sass";
 import { PageLoader } from "../courses/page-loader";
 import ContentLoader from "react-content-loader";
 
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -431,14 +432,25 @@ export class CategoryDetails extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
-                <div className="half-circle-border d-flex justify-content-center align-items-center mx-auto">
-                  <img
+                <div className="half-circle-border mx-auto">
+                  {this.state.details.icon
+                  ?(
+                    <img
                     src={this.state.details.icon}
                     height="50"
                     width="50"
                     className="mt-3 contain-img"
                     alt={this.state.details.nameAr}
                   />
+                  )
+                  :(
+                    <ContentLoader
+                    viewBox="-55 -20 200 200"
+                    >
+                      <circle  cx="44" cy="42" r="38" />
+                    </ContentLoader>
+                  )}
+                  
                 </div>
                 <h5 className="dark-text mt-3">
                   {this.state.details.nameAr
