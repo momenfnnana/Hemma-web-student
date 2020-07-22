@@ -42,6 +42,7 @@ export class CategoryDetails extends Component {
       disabled: false,
       shimmerLoader: true,
       coursesShimmerLoader: true,
+      categoryGroupsShimmerLoader: true,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -134,7 +135,7 @@ export class CategoryDetails extends Component {
         `${apiBaseUrl}/CategoryGroups?category=${params.slug}`
       )
       .then(response => {
-        this.setState({ categoryGroups: response.data.data, shimmerLoader: false });
+        this.setState({ categoryGroups: response.data.data, categoryGroupsShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
@@ -587,6 +588,35 @@ export class CategoryDetails extends Component {
                   </div>
                 </div>
                 <div className="row pt-3">{this.renderCategoryGroups()}</div>
+              </React.Fragment>
+            )}
+            {this.state.categoryGroupsShimmerLoader && (
+              <React.Fragment>
+                <div className="row pt-5">
+                  <div className="col-12 text-center">
+                    <h3 className="dark-text">المجموعات</h3>
+                    <p className="dark-silver-text">
+                      بنقدملكم مجموعة من الأسئلة السريعة
+                    </p>
+                  </div>
+                </div>
+                <div className="row pt-3">
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                </div>
               </React.Fragment>
             )}
             {!this.state.competitions == undefined ||
