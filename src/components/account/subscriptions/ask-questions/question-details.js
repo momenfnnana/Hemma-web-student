@@ -1,27 +1,60 @@
 import React, { Component } from "react";
 import "react-sweet-progress/lib/style.css";
 import { CommentsList } from "./comments/comments-list";
+import axios from "axios";
+import { withRouter } from "react-router-dom";
+import { apiBaseUrl } from "../../../../api/helpers";
 
-export class AskQuestionDetails extends Component {
+class AskQuestionDetailsComponent extends Component {
   state = {
-    details: []
+    details: [],
   };
+
+  componentDidMount() {
+    let token = localStorage.getItem("token");
+    const quesionId = this.props.match.params.id;
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    axios
+      .get(`${apiBaseUrl}/AskQuestions/${this.props.match.params.id}`, {
+        headers,
+      })
+      .then((response) => {
+        this.setState({ details: response.data.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   render() {
     return (
       <React.Fragment>
-        <section className="pt-5 pb-5">
+        <section className="pb-5">
           <div className="container">
-              <React.Fragment>
+            <React.Fragment>
               <div className="row pb-4 pl-4">
-                  <div className="col-12">
-                    <div className="box-layout box-border shadow-sm p-3">
-                    <h6 className="dark-text mb-0 encoded-text">
-                        يظهر السؤال هنا
-                    </h6>
-                    </div>
+                <div className="col-12">
+                  <div>
+                    <h6 className="dark-text">السؤال</h6>
+                  </div>
+                  <div className="box-layout box-border shadow-sm p-3">
+                    {this.state.details.type == "Image" ? (
+                      <img
+                        src={this.state.details.content}
+                        width="600"
+                        height="400"
+                        className="contain-img"
+                      />
+                    ) : (
+                      <span className="ar-text">
+                        {this.state.details.content}
+                      </span>
+                    )}
                   </div>
                 </div>
-              </React.Fragment>
+              </div>
+            </React.Fragment>
             <div className="row pl-4">
               <div className="col-md-12">
                 <hr />
@@ -36,3 +69,4 @@ export class AskQuestionDetails extends Component {
     );
   }
 }
+export const AskQuestionDetails = withRouter(AskQuestionDetailsComponent);

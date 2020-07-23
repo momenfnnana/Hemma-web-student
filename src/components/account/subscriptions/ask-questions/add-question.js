@@ -8,17 +8,21 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import Axios from "axios";
+import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
+import { withRouter } from "react-router-dom";
 
-export default class AddQuestion extends Component {
+class AddQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
       question: "",
+      file: "",
+      questionType: "",
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleFileChange = this.handleFileChange.bind(this);
   }
 
   handleChange = (event) => {
@@ -26,8 +30,54 @@ export default class AddQuestion extends Component {
     this.setState({ question: value });
   };
 
+  handleFileChange = (event) => {
+    event.preventDefault();
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    let data = new FormData();
+
+    data.append("file", event.target.files[0]);
+    console.log(data);
+    axios
+      .post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
+        headers,
+      })
+      .then((response) => {
+        console.log(response);
+        this.setState({ file: response.data.data.url, questionType: "Image" });
+        if (this.state.file) {
+          const courseId = this.props.match.params.id;
+          let token = localStorage.getItem("token");
+          let headers = {
+            Authorization: `Bearer ${token}`,
+          };
+          let data = {
+            type: "Image",
+            content: this.state.file,
+          };
+          axios
+            .post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
+              headers,
+            })
+            .then((response) => {
+              this.props.toggleModal();
+            })
+            .catch((error) => {
+              this.setState({ disabled: false });
+              console.log(error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   handleSubmit(event) {
-    // const courseId = this.props.match.params.id;
+    event.preventDefault();
+    const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
@@ -36,18 +86,12 @@ export default class AddQuestion extends Component {
       type: "Text",
       content: this.state.question,
     };
-    Axios.post(
-      `${apiBaseUrl}/AskQuestions?courseId=4a54634e-907f-4236-8382-b803b3fd7363`,
-      data,
-      {
+    axios
+      .post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
         headers,
-      }
-    )
+      })
       .then(() => {
-        // this.props.history.push(
-        //   `/course/content/${courseId}/askQuestions/list`
-        // );
-        console.log("question added");
+        this.props.toggleModal();
       })
       .catch((error) => {
         console.log(error);
@@ -111,3 +155,5 @@ export default class AddQuestion extends Component {
     );
   }
 }
+
+export default withRouter(AddQuestion);

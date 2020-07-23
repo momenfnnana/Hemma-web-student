@@ -5,14 +5,26 @@ import classnames from "classnames";
 import AddQuestion from "./add-question";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
+import Loader from "react-loaders";
 
 class AskQuestionsListComponent extends Component {
+  page = 1;
+  limit = 10;
+  AllQuestionsLimit = 10;
+  allQuestionPage = 1;
+  endOfResults = false;
+  endOfAlllQuestionsResults = false;
   state = {
     isِAddQuestionOpen: false,
     allQuestions: [],
+    myQuestions: [],
     activeTab: "1",
+    hideBtn: false,
+    hideAllQuestionsBtn: false,
+    disabled: false,
+    nextPageUrl: `${apiBaseUrl}/AskQuestions/me?courseId=${this.props.match.params.id}&page=${this.page}&limit=${this.limit}`,
+    nextAllQuestionPageUrl: `${apiBaseUrl}/AskQuestions?courseId=${this.props.match.params.id}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`,
   };
-
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab });
@@ -31,20 +43,50 @@ class AskQuestionsListComponent extends Component {
   };
 
   componentDidMount() {
+    this.loadMore();
+    this.loadAllQuestios();
+  }
+
+  loadMore = async () => {
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    axios
-      .get(`${apiBaseUrl}/AskQuestions/me?courseId=${courseId}`, { headers })
-      .then((response) => {
-        this.setState({ myQuestions: response.data.data.data });
-        console.log(response.data.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfResults) {
+      axios
+        .get(this.state.nextPageUrl, { headers })
+        .then((response) => {
+          this.setState({ loading: false, disabled: false });
+          const myquestions = [
+            ...this.state.myQuestions,
+            ...response.data.data.data,
+          ];
+          this.endOfResults = response.data.data.data.itemCount < this.limit;
+          this.page++;
+          const nextUrl = `${apiBaseUrl}/AskQuestions/me?courseId=${courseId}&page=${this.page}&limit=${this.limit}`;
+          this.setState({
+            myQuestions: myquestions,
+            nextPageUrl: nextUrl,
+          });
+          if (myquestions.length == response.data.data.itemCount) {
+            this.setState({ hideBtn: true });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
+
+  loadAllQuestios() {
+    const courseId = this.props.match.params.id;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
     axios
       .get(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, { headers })
       .then((response) => {
@@ -53,6 +95,39 @@ class AskQuestionsListComponent extends Component {
       .catch((error) => {
         console.log(error);
       });
+    // const courseId = this.props.match.params.id;
+    // let token = localStorage.getItem("token");
+    // let headers = {
+    //   Authorization: `Bearer ${token}`,
+    // };
+    // this.setState({ loading: true, disabled: true });
+    // if (!this.endOfAlllQuestionsResults) {
+    //   axios
+    //     .get(this.state.nextAllQuestionPageUrl, { headers })
+    //     .then((response) => {
+    //       console.log("response =>", response);
+    //       // this.setState({ loading: false, disabled: false });
+    //       const Questions = [
+    //         ...this.state.allQuestions,
+    //         ...response.data.data.data,
+    //       ];
+    //       this.endOfAlllQuestionsResults =
+    //         response.data.data.data.itemCount < this.limit;
+    //       this.allQuestionPage++;
+    //       const nextUrl = `${apiBaseUrl}/AskQuestions?courseId=${courseId}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`;
+    //       this.setState({
+    //         myQuestions: Questions,
+    //         nextPageUrl: nextUrl,
+    //       });
+    //       if (Questions.length == response.data.data.itemCount) {
+    //         this.setState({ hideAllQuestionsBtn: true });
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //       // this.setState({ loading: false, disabled: false });
+    //     });
+    // }
   }
 
   renderMyQuestions() {
@@ -63,7 +138,15 @@ class AskQuestionsListComponent extends Component {
           <>
             <tr className="text-center">
               <td className="ar-text dark-silver-text small">
-                <span className="ar-text">{myQuestion.content}</span>
+                {myQuestion.type == "Image" ? (
+                  <img
+                    src={myQuestion.content}
+                    width="100"
+                    className="contain-img"
+                  />
+                ) : (
+                  <span className="ar-text">{myQuestion.content}</span>
+                )}
               </td>
               <td className="dark-silver-text small">
                 <span className="ar-text">
@@ -75,7 +158,7 @@ class AskQuestionsListComponent extends Component {
               <td className="light-font-text dark-silver-text small">
                 <Link
                   className="btn dark-outline-btn w-50"
-                  to="/course/content/askQuestions/details"
+                  to={`/course/content/askQuestions/details/${myQuestion.id}`}
                 >
                   تفاصيل
                 </Link>
@@ -94,7 +177,15 @@ class AskQuestionsListComponent extends Component {
         return (
           <tr className="text-center">
             <td className="en-text dark-silver-text small">
-              <span className="ar-text">{allQuestion.content}</span>
+              {allQuestion.type == "Image" ? (
+                <img
+                  src={allQuestion.content}
+                  width="100"
+                  className="contain-img"
+                />
+              ) : (
+                <span className="ar-text">{allQuestion.content}</span>
+              )}
             </td>
             <td className="dark-silver-text small">
               <span className="ar-text">
@@ -106,7 +197,7 @@ class AskQuestionsListComponent extends Component {
             <td className="light-font-text dark-silver-text small">
               <Link
                 className="btn dark-outline-btn w-50"
-                to="/course/content/askQuestions/details"
+                to={`/course/content/askQuestions/details/${allQuestion.id}`}
               >
                 تفاصيل
               </Link>
@@ -167,7 +258,8 @@ class AskQuestionsListComponent extends Component {
             <TabPane tabId="1">
               {this.state.activeTab == 1 ? (
                 <div className="row no-gutters">
-                  {!this.state.myQuestions == 0 ? (
+                  {this.state.myQuestions &&
+                  this.state.myQuestions.length !== 0 ? (
                     <div className="col-12">
                       <div className="box-layout shadow-sm">
                         <Table className="mb-0">
@@ -186,6 +278,24 @@ class AskQuestionsListComponent extends Component {
                           </thead>
                           <tbody>{this.renderMyQuestions()}</tbody>
                         </Table>
+                        {!this.state.hideBtn && (
+                          <div className="col-12 d-flex  justify-content-center">
+                            <button
+                              className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25 mb-3"
+                              onClick={this.loadMore}
+                              disabled={false}
+                            >
+                              {this.state.loading == true ? (
+                                <Loader
+                                  type="ball-beat"
+                                  className="dark-loader"
+                                />
+                              ) : (
+                                "تحميل المزيد"
+                              )}{" "}
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (
@@ -208,7 +318,8 @@ class AskQuestionsListComponent extends Component {
             <TabPane tabId="2">
               {this.state.activeTab == 2 ? (
                 <div className="row no-gutters">
-                  {!this.state.allQuestions.length == 0 ? (
+                  {this.state.allQuestions &&
+                  this.state.allQuestions.length !== 0 ? (
                     <div className="col-12">
                       <div className="box-layout shadow-sm">
                         <Table className="mb-0">
@@ -227,6 +338,24 @@ class AskQuestionsListComponent extends Component {
                           </thead>
                           <tbody>{this.renderAllQuestions()}</tbody>
                         </Table>
+                        {/* {!this.state.hideBtn && ( */}
+                        <div className="col-12 d-flex  justify-content-center">
+                          <button
+                            className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25 mb-3"
+                            onClick={this.loadMore}
+                            disabled={false}
+                          >
+                            {this.state.loading == true ? (
+                              <Loader
+                                type="ball-beat"
+                                className="dark-loader"
+                              />
+                            ) : (
+                              "تحميل المزيد"
+                            )}{" "}
+                          </button>
+                        </div>
+                        {/* )} */}
                       </div>
                     </div>
                   ) : (
