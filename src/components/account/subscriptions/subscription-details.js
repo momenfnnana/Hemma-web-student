@@ -261,7 +261,7 @@ class SubscriptionDetailsComponent extends Component {
                     />
 
                     <Route
-                      path="/course/content/askQuestions/details/:id"
+                      path="/course/content/:id/askQuestions/details/:id"
                       component={AskQuestionDetails}
                     />
                     {subscription && (

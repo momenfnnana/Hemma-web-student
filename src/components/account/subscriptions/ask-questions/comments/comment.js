@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { apiBaseUrl } from "../../../../../api/helpers";
 import axios from "axios";
+import { Reply } from "./reply";
+import { apiBaseUrl } from "../../../../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -16,7 +17,7 @@ export class Comment extends Component {
       file: "",
       replyType: "",
       commentValue: props.comment.value,
-      commentType: props.comment.type
+      commentType: props.comment.type,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -28,57 +29,57 @@ export class Comment extends Component {
     this.setState({
       showEditCommentForm: !this.state.showEditCommentForm,
       commentValue: this.props.comment.value,
-      commentType: this.props.comment.type
+      commentType: this.props.comment.type,
     });
   }
 
-  handleFileChange = event => {
+  handleFileChange = (event) => {
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = new FormData();
-    data.append("file", event.target.files[0]);
-    data.append("type", "Replies");
+    data.append("File", event.target.files[0]);
+    data.append("Type", "Replies");
     axios
-      .post(`${apiBaseUrl}/RecordedLectureComments/Uploads`, data, {
-        headers
+      .post(`${apiBaseUrl}/AskQuestionComments/Uploads`, data, {
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({ file: response.data.data.url, replyType: "Image" });
         let token = localStorage.getItem("token");
         let headers = {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         };
         let data = {
           type: "Image",
-          value: this.state.file
+          value: this.state.file,
         };
         axios
           .post(
-            `${apiBaseUrl}/RecordedLectureComments/${this.props.comment.id}/Replies`,
+            `${apiBaseUrl}/AskQuestionComments/${this.props.comment.id}/Replies`,
             data,
             {
-              headers
+              headers,
             }
           )
-          .then(response => {
+          .then((response) => {
             this.setState({
-              showAddReplyForm: !this.state.showAddReplyForm
+              showAddReplyForm: !this.state.showAddReplyForm,
             });
             const reply = response.data.data;
             this.props.comment.latestReply = reply;
-            this.setState(prevState => {
+            this.setState((prevState) => {
               return {
-                replies: prevState.replies.concat(reply)
+                replies: prevState.replies.concat(reply),
               };
             });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -98,15 +99,15 @@ export class Comment extends Component {
     const comment = this.props.comment;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     axios
-      .delete(`${apiBaseUrl}/RecordedLectureComments/Replies/${id}`, {
-        headers
+      .delete(`${apiBaseUrl}/AskQuestionComments/Replies/${id}`, {
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         let oldReplies = this.state.replies;
-        const replyIndex = oldReplies.findIndex(r => r.id === id);
+        const replyIndex = oldReplies.findIndex((r) => r.id === id);
         oldReplies.splice(replyIndex, 1);
 
         // Check if the delete reply is the latest one
@@ -116,7 +117,7 @@ export class Comment extends Component {
 
         this.setState({ replies: oldReplies });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -128,16 +129,16 @@ export class Comment extends Component {
       const commentId = this.props.comment.id;
       let token = localStorage.getItem("token");
       let headers = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
       axios
-        .get(`${apiBaseUrl}/RecordedLectureComments/${commentId}/Replies`, {
-          headers
+        .get(`${apiBaseUrl}/AskQuestionComments/${commentId}/Replies`, {
+          headers,
         })
-        .then(response => {
+        .then((response) => {
           this.setState({ replies: response.data.data, showFullReplies: true });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     } else {
@@ -149,7 +150,7 @@ export class Comment extends Component {
     this.setState({ showAddReplyForm: !this.state.showAddReplyForm });
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     let name = event.target.name;
     let value = event.target.value;
     this.setState({ [name]: value });
@@ -159,31 +160,27 @@ export class Comment extends Component {
     event.preventDefault();
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = {
       type: this.state.commentType,
-      value: this.state.commentValue
+      value: this.state.commentValue,
     };
     axios
-      .put(
-        `${apiBaseUrl}/RecordedLectureComments/${this.props.comment.id}`,
-        data,
-        {
-          headers
-        }
-      )
-      .then(response => {
+      .put(`${apiBaseUrl}/AskQuestionComments/${this.props.comment.id}`, data, {
+        headers,
+      })
+      .then((response) => {
         const comment = response.data.data;
         this.props.comment.value = comment.value;
         this.props.comment.type = comment.type;
         this.setState({
           showEditCommentForm: false,
           commentValue: comment.value,
-          commentValue: comment.type
+          commentValue: comment.type,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -192,54 +189,56 @@ export class Comment extends Component {
     event.preventDefault();
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = {
       type: "Text",
-      value: this.state.reply
+      value: this.state.reply,
     };
     axios
       .post(
-        `${apiBaseUrl}/RecordedLectureComments/${this.props.comment.id}/Replies`,
+        `${apiBaseUrl}/AskQuestionComments/${this.props.comment.id}/Replies`,
         data,
         {
-          headers
+          headers,
         }
       )
-      .then(response => {
+      .then((response) => {
         this.setState({
-          showAddReplyForm: !this.state.showAddReplyForm
+          showAddReplyForm: !this.state.showAddReplyForm,
         });
         const reply = response.data.data;
         this.props.comment.latestReply = reply;
-        this.setState(prevState => {
+        this.setState((prevState) => {
           return {
-            replies: prevState.replies.concat(reply)
+            replies: prevState.replies.concat(reply),
           };
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
-  // renderReplies() {
-  //   const replies = this.getReplies();
+  renderReplies() {
+    const replies = this.getReplies();
 
-  //   return replies.map(reply => {
-  //     return (
-  //       <Reply
-  //         reply={reply}
-  //         user={this.props.user}
-  //         onDelete={() => this.deleteReply(reply.id)}
-  //       />
-  //     );
-  //   });
-  // }
+    return replies.map((reply) => {
+      return (
+        <Reply
+          reply={reply}
+          user={this.props.user}
+          onDelete={() => this.deleteReply(reply.id)}
+        />
+      );
+    });
+  }
 
   render() {
     const comment = this.props.comment;
     let myIdentity = this.props.user && this.props.user.id;
+    let userId = this.props && this.props.userId;
+    console.log(this.props);
 
     // Comment date
     const createdAt = new Date(comment.createdAt);
@@ -332,22 +331,26 @@ export class Comment extends Component {
                   <audio controls className="w-100">
                     <source src={comment.value} />
                   </audio>
-                ) :comment.type == "Image" ? (
+                ) : comment.type == "Image" ? (
                   <img
                     src={comment.value}
                     height="200"
                     width="400"
                     className="contain-img"
                   />
-                ): (
+                ) : (
                   <video
-                  height="200"
-                  width="400"
-                  className="video-container video-container-overlay"
-                  autoPlay=""
-                  controls
-                >
-                <source type="video/mp4" data-reactid=".0.1.0.0.0" src={comment.value}/>
+                    height="200"
+                    width="400"
+                    className="video-container video-container-overlay"
+                    autoPlay=""
+                    controls
+                  >
+                    <source
+                      type="video/mp4"
+                      data-reactid=".0.1.0.0.0"
+                      src={comment.value}
+                    />
                   </video>
                 )}
               </React.Fragment>
@@ -360,18 +363,19 @@ export class Comment extends Component {
               >
                 <span className="en-text">{comment.replyCount}</span> ردود
               </h6>
-
-              <h6
-                className="light-text smaller d-flex align-items-center mb-0 clickable"
-                onClick={() => this.toggleRepliesForm()}
-              >
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/reply.png"}
-                  width="15"
-                  className="contain-img mr-2"
-                />
-                أضف رد على التعليق
-              </h6>
+              {myIdentity === userId ? (
+                <h6
+                  className="light-text smaller d-flex align-items-center mb-0 clickable"
+                  onClick={() => this.toggleRepliesForm()}
+                >
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/reply.png"}
+                    width="15"
+                    className="contain-img mr-2"
+                  />
+                  أضف رد على التعليق
+                </h6>
+              ) : null}
             </div>
           </div>
 
@@ -400,8 +404,7 @@ export class Comment extends Component {
                       />
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/dark-attachment.png"
+                          process.env.PUBLIC_URL + "/assets/images/picture.png"
                         }
                         height="30"
                         width="30"

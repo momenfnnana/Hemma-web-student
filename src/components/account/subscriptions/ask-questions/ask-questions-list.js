@@ -25,6 +25,7 @@ class AskQuestionsListComponent extends Component {
     nextPageUrl: `${apiBaseUrl}/AskQuestions/me?courseId=${this.props.match.params.id}&page=${this.page}&limit=${this.limit}`,
     nextAllQuestionPageUrl: `${apiBaseUrl}/AskQuestions?courseId=${this.props.match.params.id}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`,
   };
+
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab });
@@ -59,7 +60,7 @@ class AskQuestionsListComponent extends Component {
         .get(this.state.nextPageUrl, { headers })
         .then((response) => {
           this.setState({ loading: false, disabled: false });
-          const myquestions = [
+          const paginationMyQuestions = [
             ...this.state.myQuestions,
             ...response.data.data.data,
           ];
@@ -67,10 +68,10 @@ class AskQuestionsListComponent extends Component {
           this.page++;
           const nextUrl = `${apiBaseUrl}/AskQuestions/me?courseId=${courseId}&page=${this.page}&limit=${this.limit}`;
           this.setState({
-            myQuestions: myquestions,
+            myQuestions: paginationMyQuestions,
             nextPageUrl: nextUrl,
           });
-          if (myquestions.length == response.data.data.itemCount) {
+          if (paginationMyQuestions.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
           }
         })
@@ -81,54 +82,40 @@ class AskQuestionsListComponent extends Component {
     }
   };
 
-  loadAllQuestios() {
+  loadAllQuestios = async () => {
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    axios
-      .get(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, { headers })
-      .then((response) => {
-        this.setState({ allQuestions: response.data.data.data });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    // const courseId = this.props.match.params.id;
-    // let token = localStorage.getItem("token");
-    // let headers = {
-    //   Authorization: `Bearer ${token}`,
-    // };
-    // this.setState({ loading: true, disabled: true });
-    // if (!this.endOfAlllQuestionsResults) {
-    //   axios
-    //     .get(this.state.nextAllQuestionPageUrl, { headers })
-    //     .then((response) => {
-    //       console.log("response =>", response);
-    //       // this.setState({ loading: false, disabled: false });
-    //       const Questions = [
-    //         ...this.state.allQuestions,
-    //         ...response.data.data.data,
-    //       ];
-    //       this.endOfAlllQuestionsResults =
-    //         response.data.data.data.itemCount < this.limit;
-    //       this.allQuestionPage++;
-    //       const nextUrl = `${apiBaseUrl}/AskQuestions?courseId=${courseId}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`;
-    //       this.setState({
-    //         myQuestions: Questions,
-    //         nextPageUrl: nextUrl,
-    //       });
-    //       if (Questions.length == response.data.data.itemCount) {
-    //         this.setState({ hideAllQuestionsBtn: true });
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       // this.setState({ loading: false, disabled: false });
-    //     });
-    // }
-  }
+    this.setState({ loading: true, disabled: true });
+    if (!this.endOfAlllQuestionsResults) {
+      axios
+        .get(this.state.nextAllQuestionPageUrl, { headers })
+        .then((response) => {
+          this.setState({ loading: false, disabled: false });
+          const pagenationAllQuestions = [
+            ...this.state.allQuestions,
+            ...response.data.data.data,
+          ];
+          this.endOfAlllQuestionsResults =
+            response.data.data.data.itemCount < this.limit;
+          this.allQuestionPage++;
+          const nextUrl = `${apiBaseUrl}/AskQuestions?courseId=${courseId}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`;
+          this.setState({
+            allQuestions: pagenationAllQuestions,
+            nextAllQuestionPageUrl: nextUrl,
+          });
+          if (pagenationAllQuestions.length == response.data.data.itemCount) {
+            this.setState({ hideAllQuestionsBtn: true });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.setState({ loading: false, disabled: false });
+        });
+    }
+  };
 
   renderMyQuestions() {
     const myQuestions = this.state.myQuestions;
@@ -158,7 +145,7 @@ class AskQuestionsListComponent extends Component {
               <td className="light-font-text dark-silver-text small">
                 <Link
                   className="btn dark-outline-btn w-50"
-                  to={`/course/content/askQuestions/details/${myQuestion.id}`}
+                  to={`/course/content/${this.props.match.params.id}/askQuestions/details/${myQuestion.id}`}
                 >
                   تفاصيل
                 </Link>
@@ -197,7 +184,7 @@ class AskQuestionsListComponent extends Component {
             <td className="light-font-text dark-silver-text small">
               <Link
                 className="btn dark-outline-btn w-50"
-                to={`/course/content/askQuestions/details/${allQuestion.id}`}
+                to={`/course/content/${this.props.match.params.id}/askQuestions/details/${allQuestion.id}`}
               >
                 تفاصيل
               </Link>
@@ -338,24 +325,24 @@ class AskQuestionsListComponent extends Component {
                           </thead>
                           <tbody>{this.renderAllQuestions()}</tbody>
                         </Table>
-                        {/* {!this.state.hideBtn && ( */}
-                        <div className="col-12 d-flex  justify-content-center">
-                          <button
-                            className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25 mb-3"
-                            onClick={this.loadMore}
-                            disabled={false}
-                          >
-                            {this.state.loading == true ? (
-                              <Loader
-                                type="ball-beat"
-                                className="dark-loader"
-                              />
-                            ) : (
-                              "تحميل المزيد"
-                            )}{" "}
-                          </button>
-                        </div>
-                        {/* )} */}
+                        {!this.state.hideAllQuestionsBtn && (
+                          <div className="col-12 d-flex  justify-content-center">
+                            <button
+                              className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25 mb-3"
+                              onClick={this.loadAllQuestios}
+                              disabled={false}
+                            >
+                              {this.state.loading == true ? (
+                                <Loader
+                                  type="ball-beat"
+                                  className="dark-loader"
+                                />
+                              ) : (
+                                "تحميل المزيد"
+                              )}{" "}
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ) : (

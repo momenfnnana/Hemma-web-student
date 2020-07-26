@@ -16,7 +16,7 @@ class AddQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      question: "",
+      questions: [],
       file: "",
       questionType: "",
     };
@@ -45,7 +45,6 @@ class AddQuestion extends Component {
         headers,
       })
       .then((response) => {
-        console.log(response);
         this.setState({ file: response.data.data.url, questionType: "Image" });
         if (this.state.file) {
           const courseId = this.props.match.params.id;
@@ -63,6 +62,12 @@ class AddQuestion extends Component {
             })
             .then((response) => {
               this.props.toggleModal();
+              const newquestion = response.data.data;
+              this.setState((prevState) => {
+                return {
+                  questions: [newquestion, ...prevState.questions],
+                };
+              });
             })
             .catch((error) => {
               this.setState({ disabled: false });
@@ -76,7 +81,6 @@ class AddQuestion extends Component {
   };
 
   handleSubmit(event) {
-    event.preventDefault();
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
@@ -90,8 +94,11 @@ class AddQuestion extends Component {
       .post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
         headers,
       })
-      .then(() => {
+      .then((response) => {
         this.props.toggleModal();
+        this.props.history.push(
+          `/course/content/${courseId}/askQuestions/list`
+        );
       })
       .catch((error) => {
         console.log(error);

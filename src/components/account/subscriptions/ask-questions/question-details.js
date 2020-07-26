@@ -31,9 +31,9 @@ class AskQuestionDetailsComponent extends Component {
     return (
       <React.Fragment>
         <section className="pb-5">
-          <div className="container">
+          <div>
             <React.Fragment>
-              <div className="row pb-4 pl-4">
+              <div className="row">
                 <div className="col-12">
                   <div>
                     <h6 className="dark-text">السؤال</h6>
@@ -55,13 +55,13 @@ class AskQuestionDetailsComponent extends Component {
                 </div>
               </div>
             </React.Fragment>
-            <div className="row pl-4">
+            <div className="row">
               <div className="col-md-12">
                 <hr />
               </div>
             </div>
-            <div className="row pl-4">
-              <CommentsList />
+            <div className="row">
+              <CommentsList userId={this.state.details.studentId} />
             </div>
           </div>
         </section>
