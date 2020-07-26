@@ -23,6 +23,8 @@ import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
 import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
+import { AskQuestionsList } from "./ask-questions/ask-questions-list";
+import { AskQuestionDetails } from "./ask-questions/question-details";
 // import { TrainingList } from "./training/training-list";
 // import { TrainingResult } from "./training/training-result";
 
@@ -35,7 +37,7 @@ class SubscriptionDetailsComponent extends Component {
     this.state = {
       details: [],
       isInstallmentOpen: false,
-      isRefundOpen: false
+      isRefundOpen: false,
     };
   }
 
@@ -172,7 +174,7 @@ class SubscriptionDetailsComponent extends Component {
 
                     <Route
                       path="/course/content/:id/schedule"
-                      render={props => (
+                      render={(props) => (
                         <Schedule
                           courseName={subscription && subscription.nameAr}
                           {...props}
@@ -252,10 +254,20 @@ class SubscriptionDetailsComponent extends Component {
                       component={TrainingResult}
                       exact
                     /> */}
+
+                    <Route
+                      path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+
+                    <Route
+                      path="/course/content/:id/askQuestions/details/:id"
+                      component={AskQuestionDetails}
+                    />
                     {subscription && (
                       <Route
                         path="/course/content/:id/chat"
-                        render={props => (
+                        render={(props) => (
                           <UsersChatComponent
                             chatChannelSid={subscription.chatChannelSid}
                             forceInternalChat={subscription.forceInternalChat}
@@ -275,7 +287,7 @@ class SubscriptionDetailsComponent extends Component {
             {subscription && subscription.chatChannelSid && (
               <Route
                 path="/course/content/:id/live-stream/:lectureId"
-                render={props => (
+                render={(props) => (
                   <LiveStream
                     chatChannelSid={subscription.chatChannelSid}
                     {...props}
@@ -292,13 +304,12 @@ class SubscriptionDetailsComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    subscription: state.subscription
+    subscription: state.subscription,
   };
 }
 
-SubscriptionDetailsComponent = connect(
-  mapStateToProps,
-  { getSubscription }
-)(SubscriptionDetailsComponent);
+SubscriptionDetailsComponent = connect(mapStateToProps, { getSubscription })(
+  SubscriptionDetailsComponent
+);
 
 export const SubscriptionDetails = withRouter(SubscriptionDetailsComponent);
