@@ -233,12 +233,12 @@ class ExamDetailsComponent extends Component {
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
-                <h6
-                      className="dark-text mb-0 encoded-text"
-                      dangerouslySetInnerHTML={{
-                        __html: question.encodedStem
-                      }}
-                    ></h6>
+                  <h6
+                    className="dark-text mb-0 encoded-text"
+                    dangerouslySetInnerHTML={{
+                      __html: question.encodedStem
+                    }}
+                  ></h6>
                 </div>
               </div>
             </div>
@@ -267,9 +267,8 @@ class ExamDetailsComponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-             
                     {Object.keys(question.encodedChoices).map(function(key) {
-                      const value = question.encodedChoices[key]
+                      const value = question.encodedChoices[key];
                       const selected = answer && answer.selectedChoice === key;
                       return (
                         <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
@@ -289,7 +288,6 @@ class ExamDetailsComponent extends Component {
                         </div>
                       );
                     }, this)}
-               
                   </div>
                 </div>
               </div>

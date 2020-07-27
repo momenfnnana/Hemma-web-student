@@ -53,7 +53,6 @@ export class HintModal extends Component {
       }
     };
     const { isHintOpen, closeHint } = this.props;
-    console.log(this.state.details[0]);
     return (
       <React.Fragment>
         <Modal

@@ -9,7 +9,7 @@ import "./styles.sass";
 export class SidebarComponent extends Component {
   state = {
     isInstallmentOpen: false,
-    details: [],
+    details: []
   };
   componentDidMount() {
     if (this.props.authenticated) {
@@ -17,17 +17,17 @@ export class SidebarComponent extends Component {
     }
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
     const courseId = this.props.match.params.id;
     axios
       .get(`${apiBaseUrl}/content/${courseId}/remaining_payment_details`, {
-        headers,
+        headers
       })
-      .then((response) => {
+      .then(response => {
         this.setState({ details: response.data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -47,21 +47,20 @@ export class SidebarComponent extends Component {
 
   render() {
     const user = this.props.user;
-    const courseId = this.props.match.params.id;
     const channelID = this.props.chatChannelSid;
-
     return (
       <React.Fragment>
         <div className="sidebar mb-3">
           <div className="header">
             <div className="d-inline-flex align-items-center">
-              {this.props.user && this.props.user.gender == "Male" ? (
+              {this.props.user && this.props.user.gender === "Male" ? (
                 <img
                   src={
                     process.env.PUBLIC_URL + "/assets/images/male-avatar.png"
                   }
                   height="70"
                   className="mr-3 contain-img"
+                  alt="male-avatar"
                 />
               ) : (
                 <img
@@ -70,6 +69,7 @@ export class SidebarComponent extends Component {
                   }
                   height="70"
                   className="mr-3 contain-img"
+                  alt="female-avatar"
                 />
               )}
 
@@ -94,6 +94,7 @@ export class SidebarComponent extends Component {
                     height="18"
                     width="18"
                     className="mr-2 contain-img"
+                    alt="course-schedule"
                   />
                   جدول الدورة
                 </NavLink>
@@ -112,6 +113,7 @@ export class SidebarComponent extends Component {
                     height="22"
                     width="22"
                     className="mr-2 contain-img"
+                    alt="recorded-lectures"
                   />
                   المحاضرات المسجلة
                 </NavLink>
@@ -130,6 +132,7 @@ export class SidebarComponent extends Component {
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
+                    alt="booklet"
                   />
                   الملازم
                 </NavLink>
@@ -167,6 +170,7 @@ export class SidebarComponent extends Component {
                       height="20"
                       width="20"
                       className="mr-2 contain-img"
+                      alt="chat"
                     />
                     قروب التيليجرام
                   </NavLink>
@@ -183,6 +187,7 @@ export class SidebarComponent extends Component {
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
+                    alt="speed-ups"
                   />
                   مرفقات الدورة
                 </NavLink>
@@ -192,7 +197,6 @@ export class SidebarComponent extends Component {
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/exams/list`}
                   activeClassName="active"
-                  className="dark-text small"
                 >
                   <img
                     src={
@@ -201,6 +205,7 @@ export class SidebarComponent extends Component {
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
+                    alt="exams"
                   />
                   الاختبارات الإلكترونية
                 </NavLink>
@@ -210,15 +215,13 @@ export class SidebarComponent extends Component {
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/training/list`}
                   activeClassName="active"
-                  className="dark-text small"
                 >
                   <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
-                    }
+                    src={process.env.PUBLIC_URL + "/assets/images/training.png"}
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
+                    alt="training"
                   />
                   التدريبات
                 </NavLink>
@@ -228,13 +231,15 @@ export class SidebarComponent extends Component {
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/askQuestions/list`}
                   activeClassName="active"
-                  className="dark-text small"
                 >
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/question.png"}
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/ask-question.png"
+                    }
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
+                    alt="ask-question"
                   />
                   اسأل مدرب
                 </NavLink>
@@ -249,10 +254,13 @@ export class SidebarComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user,
+    user: state.user
   };
 }
 
-SidebarComponent = connect(mapStateToProps, { getUser })(SidebarComponent);
+SidebarComponent = connect(
+  mapStateToProps,
+  { getUser }
+)(SidebarComponent);
 
 export const Sidebar = withRouter(SidebarComponent);
