@@ -9,7 +9,7 @@ import "./styles.sass";
 export class SidebarComponent extends Component {
   state = {
     isInstallmentOpen: false,
-    details: []
+    details: [],
   };
   componentDidMount() {
     if (this.props.authenticated) {
@@ -17,17 +17,17 @@ export class SidebarComponent extends Component {
     }
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     const courseId = this.props.match.params.id;
     axios
       .get(`${apiBaseUrl}/content/${courseId}/remaining_payment_details`, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({ details: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -227,7 +227,7 @@ export class SidebarComponent extends Component {
                 <NavLink
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/askQuestions/list`}
-                  activeClassName=""
+                  activeClassName="active"
                   className="dark-text small"
                 >
                   <img
@@ -249,13 +249,10 @@ export class SidebarComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    user: state.user
+    user: state.user,
   };
 }
 
-SidebarComponent = connect(
-  mapStateToProps,
-  { getUser }
-)(SidebarComponent);
+SidebarComponent = connect(mapStateToProps, { getUser })(SidebarComponent);
 
 export const Sidebar = withRouter(SidebarComponent);

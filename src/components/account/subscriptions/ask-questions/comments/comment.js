@@ -238,8 +238,6 @@ export class Comment extends Component {
     const comment = this.props.comment;
     let myIdentity = this.props.user && this.props.user.id;
     let userId = this.props && this.props.userId;
-    console.log(this.props);
-
     // Comment date
     const createdAt = new Date(comment.createdAt);
     let day = createdAt.getDate();
