@@ -250,9 +250,10 @@ export class CommentsListComponent extends Component {
                   ارسال
                 </button>
               </form>
+              <div className="clearfix" />
             </>
           ) : null}
-          <div className="clearfix" />
+
           <div className="d-flex justify-content-between align-items-center responsive-col mt-4">
             <h6 className="dark-text small mb-0 mt-0">التعليقات</h6>
 
