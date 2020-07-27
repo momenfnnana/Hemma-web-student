@@ -205,7 +205,7 @@ export class SidebarComponent extends Component {
                   الاختبارات الإلكترونية
                 </NavLink>
               </li>
-              {/* <li>
+              <li>
                 <NavLink
                   className="dark-text small"
                   to={`/course/content/${this.props.id}/training/list`}
@@ -222,7 +222,7 @@ export class SidebarComponent extends Component {
                   />
                   التدريبات
                 </NavLink>
-              </li> */}
+              </li>
               <li>
                 <NavLink
                   className="dark-text small"
@@ -231,9 +231,7 @@ export class SidebarComponent extends Component {
                   className="dark-text small"
                 >
                   <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/question.png"
-                    }
+                    src={process.env.PUBLIC_URL + "/assets/images/question.png"}
                     height="20"
                     width="20"
                     className="mr-2 contain-img"
