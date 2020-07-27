@@ -40,10 +40,11 @@ export class CategoryDetails extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
-      shimmerLoader: true,
       coursesShimmerLoader: true,
+      lecturesShimmerLoader: true,
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
+      publicationsShimmerLoader: true,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -98,7 +99,7 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
-        this.setState({ details: response.data.data, shimmerLoader: false });
+        this.setState({ details: response.data.data});
       })
       .catch(error => {
         console.log(error);
@@ -107,19 +108,21 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then(response => {
-        this.setState({ lectures: response.data.data, shimmerLoader: false });
+        this.setState({ lectures: response.data.data, lecturesShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
+        this.setState({lecturesShimmerLoader: false})
       });
 
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}/publications`)
       .then(response => {
-        this.setState({ publications: response.data.data.data, shimmerLoader: false });
+        this.setState({ publications: response.data.data.data, publicationsShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
+        this.setState({publicationsShimmerLoader: false})
       });
 
     Api.categories
@@ -129,6 +132,7 @@ export class CategoryDetails extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({competitionsShimmerLoader: false})
       });
 
     axios
@@ -140,6 +144,7 @@ export class CategoryDetails extends Component {
       })
       .catch(error => {
         console.log(error);
+        this.setState({categoryGroupsShimmerLoader: false})
       });
 
     await this.loadMore();
@@ -477,7 +482,7 @@ export class CategoryDetails extends Component {
                 </p>
               </div>
             </div>
-            {this.state.shimmerLoader && (
+            {this.state.lecturesShimmerLoader && (
               <div className="row pt-5 pb-4">
               <div className="col-md-4">
                 <h4 className="dark-text mt-3">
@@ -513,17 +518,17 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
             ) : null}
-
-            <div className="row">
-              <div className="col-12 pt-4">
-                <h5 className="dark-text">الدورات المتاحة</h5>
-              </div>
-            </div>
             
-            <div className="row pt-2 pb-3">
-              {this.renderCards()}
+            {this.state.coursesShimmerLoader === true && (<>
+              <div className="row">
+                <div className="col-12 pt-4">
+                  <h5 className="dark-text">الدورات المتاحة</h5>
+                </div>
               </div>
-              {this.state.coursesShimmerLoader && (
+              
+              <div className="row pt-2 pb-3">
+                {this.renderCards()}
+                </div>
               <div className="row pt-2 pb-3">
                 <div className="col-md-4">
                     <ContentLoader height="300">
@@ -541,25 +546,102 @@ export class CategoryDetails extends Component {
                     </ContentLoader>
                   </div>
                 </div>
-                )}
-            {!this.state.hideBtn && (
+              
+              {!this.state.hideBtn && (
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.loadMore}
+                      disabled={this.state.disabled}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>)}
+            {this.state.courses.length > 0 && (<>
               <div className="row">
-                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                  <button
-                    className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                    onClick={this.loadMore}
-                    disabled={this.state.disabled}
-                  >
-                    {this.state.loading == true ? (
-                      <Loader type="ball-clip-rotate" />
-                    ) : (
-                      "عرض المزيد"
-                    )}
-                  </button>
+                <div className="col-12 pt-4">
+                  <h5 className="dark-text">الدورات المتاحة</h5>
+                </div>
+              </div>
+              
+              <div className="row pt-2 pb-3">
+                {this.renderCards()}
+                </div>
+                {this.state.coursesShimmerLoader && (
+                <div className="row pt-2 pb-3">
+                  <div className="col-md-4">
+                      <ContentLoader height="300">
+                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                      </ContentLoader>
+                    </div>
+                    <div className="col-md-4">
+                      <ContentLoader height="300">
+                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                      </ContentLoader>
+                    </div>
+                    <div className="col-md-4">
+                      <ContentLoader height="300">
+                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                      </ContentLoader>
+                    </div>
+                  </div>
+                  )}
+              {!this.state.hideBtn && (
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.loadMore}
+                      disabled={this.state.disabled}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>)}
+            
+            {this.state.publicationsShimmerLoader && (
+              <div className="row pt-5">
+                <div className="col-12 text-center">
+                  <h3 className="dark-text">إصداراتنا</h3>
+                  <p className="dark-silver-text">
+                    احصل على آخر إصداراتنا في القدرات والتحصيلي
+                  </p>
+                </div>
+
+                <div className="col-12">
+                  <Slider {...settings}>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                  </Slider>
+                  
                 </div>
               </div>
             )}
-            {this.state.publications && this.state.publications.length > 0 ? (
+            {this.state.publications.length > 0 && (
               <div className="row pt-5">
                 <div className="col-12 text-center">
                   <h3 className="dark-text">إصداراتنا</h3>
@@ -577,19 +659,6 @@ export class CategoryDetails extends Component {
                   />
                 </div>
               </div>
-            ) : null}
-            {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
-              <React.Fragment>
-                <div className="row pt-5">
-                  <div className="col-12 text-center">
-                    <h3 className="dark-text">المجموعات</h3>
-                    <p className="dark-silver-text">
-                      بنقدملكم مجموعة من الأسئلة السريعة
-                    </p>
-                  </div>
-                </div>
-                <div className="row pt-3">{this.renderCategoryGroups()}</div>
-              </React.Fragment>
             )}
             {this.state.categoryGroupsShimmerLoader && (
               <React.Fragment>
@@ -617,9 +686,38 @@ export class CategoryDetails extends Component {
                       <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
                     </ContentLoader>
                   </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
                 </div>
               </React.Fragment>
             )}
+            {this.state.categoryGroups.length > 0 && (
+              <React.Fragment>
+                <div className="row pt-5">
+                  <div className="col-12 text-center">
+                    <h3 className="dark-text">المجموعات</h3>
+                    <p className="dark-silver-text">
+                      بنقدملكم مجموعة من الأسئلة السريعة
+                    </p>
+                  </div>
+                </div>
+                <div className="row pt-3">{this.renderCategoryGroups()}</div>
+              </React.Fragment>
+            )}
+            
             {this.state.competitionsShimmerLoader && (
                 <div className="row pt-5 pb-4 d-flex align-items-center">
                   <div className="col-md-5">
@@ -649,8 +747,7 @@ export class CategoryDetails extends Component {
                   </div>
                 </div>
             )}
-            {!this.state.competitions == undefined ||
-              (!this.state.competitions.length == 0 && (
+            {this.state.competitions.length > 0 && (
                 <div className="row pt-5 pb-4 d-flex align-items-center">
                   <div className="col-md-5">
                     <h4 className="dark-text">
@@ -699,7 +796,7 @@ export class CategoryDetails extends Component {
                     />
                   </div>
                 </div>
-              ))}
+            )}
             
           </div>
         </section>
