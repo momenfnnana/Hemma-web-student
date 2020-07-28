@@ -14,6 +14,9 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
+import { PageLoader } from "../courses/page-loader";
+import ContentLoader from "react-content-loader";
+
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -37,6 +40,11 @@ export class CategoryDetails extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
+      coursesShimmerLoader: true,
+      lecturesShimmerLoader: true,
+      categoryGroupsShimmerLoader: true,
+      competitionsShimmerLoader: true,
+      publicationsShimmerLoader: true,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
     };
     this.openModal = this.openModal.bind(this);
@@ -70,7 +78,8 @@ export class CategoryDetails extends Component {
           const nextUrl = `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`;
           this.setState({
             courses: newCourses,
-            nextPageUrl: nextUrl
+            nextPageUrl: nextUrl,
+            coursesShimmerLoader: false
           });
           if (newCourses.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
@@ -90,7 +99,7 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data});
       })
       .catch(error => {
         console.log(error);
@@ -99,28 +108,31 @@ export class CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then(response => {
-        this.setState({ lectures: response.data.data });
+        this.setState({ lectures: response.data.data, lecturesShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
+        this.setState({lecturesShimmerLoader: false})
       });
 
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}/publications`)
       .then(response => {
-        this.setState({ publications: response.data.data.data });
+        this.setState({ publications: response.data.data.data, publicationsShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
+        this.setState({publicationsShimmerLoader: false})
       });
 
     Api.categories
       .getCompetitions(params.slug)
       .then(response => {
-        this.setState({ competitions: response });
+        this.setState({ competitions: response, competitionsShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
+        this.setState({competitionsShimmerLoader: false})
       });
 
     axios
@@ -128,10 +140,11 @@ export class CategoryDetails extends Component {
         `${apiBaseUrl}/CategoryGroups?category=${params.slug}`
       )
       .then(response => {
-        this.setState({ categoryGroups: response.data.data });
+        this.setState({ categoryGroups: response.data.data, categoryGroupsShimmerLoader: false });
       })
       .catch(error => {
         console.log(error);
+        this.setState({categoryGroupsShimmerLoader: false})
       });
 
     await this.loadMore();
@@ -228,78 +241,79 @@ export class CategoryDetails extends Component {
   }
 
   renderLectures() {
-    const sortedLectures = this.state.lectures.sort(
-      (b, a) => a.scheduledAt - b.scheduledAt
-    );
-
-    return sortedLectures.map(lecture => {
-      const scheduledAt = new Date(lecture.scheduledAt);
-      //Date
-      var day = scheduledAt.getDate();
-      var month = scheduledAt.getMonth() + 1;
-      var year = scheduledAt.getFullYear();
-      var scheduledDate = year + "-" + month + "-" + day;
-      var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
-      //Time
-      var lectureTime = scheduledAt.getTime();
-      const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
-      const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
-      const time = `${hours}:${minutes}`;
-      var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
-
-      return (
-        <li
-          key={lecture.id}
-          className="list-group-item d-flex justify-content-between align-items-center"
-          dir="rtl"
-        >
-          <div className="media d-flex align-items-center">
-            <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
-              <FaGraduationCap className="text-white" size="34" />
-            </div>
-            <div className="media-body">
-              <h6 className="dark-text">{lecture.nameAr}</h6>
-              <div className="d-flex align-items-center">
-                <h5 className="mid-text small en-text d-flex align-items-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
-                    height="12"
-                    width="12"
-                    className="mr-1"
-                  />
-                  {hijriDate}
-                </h5>
-
-                <h5 className="mid-text small en-text d-flex align-items-center">
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
-                    className="mr-1 ml-3"
-                    height="15"
-                    alt="Time"
-                  />
-                  <span dir="ltr">
-                    {time} {ampm}
-                  </span>
-                </h5>
-              </div>
-              {lecture.instructor && (
-                <p className="light-text small mb-0">
-                  {lecture.instructor && lecture.instructor.name}
-                </p>
-              )}
-            </div>
-          </div>
-          {lecture.broadcastUrl && (
-            <button
-              className="btn light-outline-btn unset-height"
-              onClick={() => this.openFreeLecture(lecture)}
-            >
-              انضم
-            </button>
-          )}
-        </li>
+    
+      const sortedLectures = this.state.lectures.sort(
+        (b, a) => a.scheduledAt - b.scheduledAt
       );
-    });
+  
+      return sortedLectures.map(lecture => {
+        const scheduledAt = new Date(lecture.scheduledAt);
+        //Date
+        var day = scheduledAt.getDate();
+        var month = scheduledAt.getMonth() + 1;
+        var year = scheduledAt.getFullYear();
+        var scheduledDate = year + "-" + month + "-" + day;
+        var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
+        //Time
+        var lectureTime = scheduledAt.getTime();
+        const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
+        const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
+        const time = `${hours}:${minutes}`;
+        var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
+  
+        return (
+          <li
+            key={lecture.id}
+            className="list-group-item d-flex justify-content-between align-items-center"
+            dir="rtl"
+          >
+            <div className="media d-flex align-items-center">
+              <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
+                <FaGraduationCap className="text-white" size="34" />
+              </div>
+              <div className="media-body">
+                <h6 className="dark-text">{lecture.nameAr}</h6>
+                <div className="d-flex align-items-center">
+                  <h5 className="mid-text small en-text d-flex align-items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
+                      height="12"
+                      width="12"
+                      className="mr-1"
+                    />
+                    {hijriDate}
+                  </h5>
+  
+                  <h5 className="mid-text small en-text d-flex align-items-center">
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
+                      className="mr-1 ml-3"
+                      height="15"
+                      alt="Time"
+                    />
+                    <span dir="ltr">
+                      {time} {ampm}
+                    </span>
+                  </h5>
+                </div>
+                {lecture.instructor && (
+                  <p className="light-text small mb-0">
+                    {lecture.instructor && lecture.instructor.name}
+                  </p>
+                )}
+              </div>
+            </div>
+            {lecture.broadcastUrl && (
+              <button
+                className="btn light-outline-btn unset-height"
+                onClick={() => this.openFreeLecture(lecture)}
+              >
+                انضم
+              </button>
+            )}
+          </li>
+        );
+      });
   }
 
   renderCompetitions() {
@@ -428,22 +442,65 @@ export class CategoryDetails extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
-                <div className="half-circle-border d-flex justify-content-center align-items-center mx-auto">
-                  <img
+                <div className="half-circle-border mx-auto">
+                  {this.state.details.icon
+                  ?(
+                    <img
                     src={this.state.details.icon}
                     height="50"
                     width="50"
                     className="mt-3 contain-img"
                     alt={this.state.details.nameAr}
                   />
+                  )
+                  :(
+                    <ContentLoader
+                    viewBox="-55 -20 200 200"
+                    >
+                      <circle  cx="44" cy="42" r="38" />
+                    </ContentLoader>
+                  )}
+                  
                 </div>
-                <h5 className="dark-text mt-3">{this.state.details.nameAr}</h5>
+                <h5 className="dark-text mt-3">
+                  {this.state.details.nameAr
+                  ?this.state.details.nameAr
+                  :( 
+                    <ContentLoader height="40" className="w-20 mx-auto">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="40" />
+                    </ContentLoader>
+                  )}
+                  </h5>
                 <p className="dark-text mt-2 small w-40 mx-auto">
-                  {this.state.details.descriptionAr}
+                  {this.state.details.descriptionAr
+                  ?this.state.details.descriptionAr
+                  :(
+                    <ContentLoader height="10" className="">
+                      <rect x="0" y="0" rx="5" ry="5" width="400" height="10" />
+                    </ContentLoader>
+                  )}
                 </p>
               </div>
             </div>
-
+            {this.state.lecturesShimmerLoader && (
+              <div className="row pt-5 pb-4">
+              <div className="col-md-4">
+                <h4 className="dark-text mt-3">
+                  لأننا حابين نفيدكم قدمنا لكم
+                </h4>
+                <h4 className="light-text">محاضرات مجانية</h4>
+                <p className="dark-silver-text small text-break">
+                  نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
+                  المزيد
+                </p>
+              </div>
+              <div className="col-md-8">
+                <ContentLoader height="106" className="mb-4">
+                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="106" />
+                </ContentLoader>
+              </div>
+            </div>
+            )}
             {this.state.lectures && this.state.lectures.length > 0 ? (
               <div className="row pt-5 pb-4">
                 <div className="col-md-4">
@@ -461,31 +518,130 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
             ) : null}
-
-            <div className="row">
-              <div className="col-12 pt-4">
-                <h5 className="dark-text">الدورات المتاحة</h5>
-              </div>
-            </div>
-            <div className="row pt-2 pb-3">{this.renderCards()}</div>
-            {!this.state.hideBtn && (
+            
+            {this.state.coursesShimmerLoader === true && (<>
               <div className="row">
-                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                  <button
-                    className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                    onClick={this.loadMore}
-                    disabled={this.state.disabled}
-                  >
-                    {this.state.loading == true ? (
-                      <Loader type="ball-clip-rotate" />
-                    ) : (
-                      "عرض المزيد"
-                    )}
-                  </button>
+                <div className="col-12 pt-4">
+                  <h5 className="dark-text">الدورات المتاحة</h5>
+                </div>
+              </div>
+              
+              <div className="row pt-2 pb-3">
+                {this.renderCards()}
+                </div>
+              <div className="row pt-2 pb-3">
+                <div className="col-md-4">
+                    <ContentLoader height="300">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-4">
+                    <ContentLoader height="300">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-4">
+                    <ContentLoader height="300">
+                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                    </ContentLoader>
+                  </div>
+                </div>
+              
+              {!this.state.hideBtn && (
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.loadMore}
+                      disabled={this.state.disabled}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>)}
+            {this.state.courses.length > 0 && (<>
+              <div className="row">
+                <div className="col-12 pt-4">
+                  <h5 className="dark-text">الدورات المتاحة</h5>
+                </div>
+              </div>
+              
+              <div className="row pt-2 pb-3">
+                {this.renderCards()}
+                </div>
+                {this.state.coursesShimmerLoader && (
+                <div className="row pt-2 pb-3">
+                  <div className="col-md-4">
+                      <ContentLoader height="300">
+                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                      </ContentLoader>
+                    </div>
+                    <div className="col-md-4">
+                      <ContentLoader height="300">
+                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                      </ContentLoader>
+                    </div>
+                    <div className="col-md-4">
+                      <ContentLoader height="300">
+                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
+                      </ContentLoader>
+                    </div>
+                  </div>
+                  )}
+              {!this.state.hideBtn && (
+                <div className="row">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.loadMore}
+                      disabled={this.state.disabled}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>)}
+            
+            {this.state.publicationsShimmerLoader && (
+              <div className="row pt-5">
+                <div className="col-12 text-center">
+                  <h3 className="dark-text">إصداراتنا</h3>
+                  <p className="dark-silver-text">
+                    احصل على آخر إصداراتنا في القدرات والتحصيلي
+                  </p>
+                </div>
+
+                <div className="col-12">
+                  <Slider {...settings}>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                    <ContentLoader height="200">
+                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
+                    </ContentLoader>
+                  </Slider>
+                  
                 </div>
               </div>
             )}
-            {this.state.publications && this.state.publications.length > 0 ? (
+            {this.state.publications.length > 0 && (
               <div className="row pt-5">
                 <div className="col-12 text-center">
                   <h3 className="dark-text">إصداراتنا</h3>
@@ -503,8 +659,52 @@ export class CategoryDetails extends Component {
                   />
                 </div>
               </div>
-            ) : null}
-            {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
+            )}
+            {this.state.categoryGroupsShimmerLoader && (
+              <React.Fragment>
+                <div className="row pt-5">
+                  <div className="col-12 text-center">
+                    <h3 className="dark-text">المجموعات</h3>
+                    <p className="dark-silver-text">
+                      بنقدملكم مجموعة من الأسئلة السريعة
+                    </p>
+                  </div>
+                </div>
+                <div className="row pt-3">
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-2">
+                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
+                    </ContentLoader>
+                  </div>
+                </div>
+              </React.Fragment>
+            )}
+            {this.state.categoryGroups.length > 0 && (
               <React.Fragment>
                 <div className="row pt-5">
                   <div className="col-12 text-center">
@@ -517,8 +717,37 @@ export class CategoryDetails extends Component {
                 <div className="row pt-3">{this.renderCategoryGroups()}</div>
               </React.Fragment>
             )}
-            {!this.state.competitions == undefined ||
-              (!this.state.competitions.length == 0 && (
+            
+            {this.state.competitionsShimmerLoader && (
+                <div className="row pt-5 pb-4 d-flex align-items-center">
+                  <div className="col-md-5">
+                    <h4 className="dark-text">
+                      مع همة تقدرون تتحدون أنفسكم مع{" "}
+                      <span className="light-text">المسابقات</span>
+                    </h4>
+                    <p className="dark-silver-text text-break mb-0">
+                      نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
+                      اقوى المنافسين
+                    </p>
+                  </div>
+                  <div className="col-md-4">
+                    <ContentLoader width="350px" height="100" style={{width: "350px", height: "100px"}}>
+                      <rect x="0" y="0" rx="5" ry="5" width="350px" height="100" />
+                    </ContentLoader>
+                  </div>
+                  <div className="col-md-3">
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/competitions.png"
+                      }
+                      width="100%"
+                      className="contain-img"
+                    />
+                  </div>
+                </div>
+            )}
+            {this.state.competitions.length > 0 && (
                 <div className="row pt-5 pb-4 d-flex align-items-center">
                   <div className="col-md-5">
                     <h4 className="dark-text">
@@ -567,7 +796,8 @@ export class CategoryDetails extends Component {
                     />
                   </div>
                 </div>
-              ))}
+            )}
+            
           </div>
         </section>
       </React.Fragment>
