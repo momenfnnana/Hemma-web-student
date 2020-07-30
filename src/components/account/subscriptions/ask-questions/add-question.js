@@ -31,7 +31,6 @@ class AddQuestion extends Component {
     let data = new FormData();
 
     data.append("file", event.target.files[0]);
-    console.log(data);
     axios
       .post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
         headers
@@ -54,12 +53,7 @@ class AddQuestion extends Component {
             })
             .then(response => {
               this.props.toggleModal();
-              const newquestion = response.data.data;
-              this.setState(prevState => {
-                return {
-                  questions: [newquestion, ...prevState.questions]
-                };
-              });
+              this.props.updateQuestions(response.data.data);
             })
             .catch(error => {
               this.setState({ disabled: false });
