@@ -10,59 +10,58 @@ class AddQuestion extends Component {
     this.state = {
       questions: [],
       file: "",
-      questionType: "",
+      questionType: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     let value = event.target.value;
     this.setState({ question: value });
   };
 
-  handleFileChange = (event) => {
+  handleFileChange = event => {
     event.preventDefault();
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
     let data = new FormData();
 
     data.append("file", event.target.files[0]);
-    console.log(data);
     axios
       .post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
-        headers,
+        headers
       })
-      .then((response) => {
+      .then(response => {
         this.setState({ file: response.data.data.url, questionType: "Image" });
         if (this.state.file) {
           const courseId = this.props.match.params.id;
           let token = localStorage.getItem("token");
           let headers = {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`
           };
           let data = {
             type: "Image",
-            content: this.state.file,
+            content: this.state.file
           };
           axios
             .post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
-              headers,
+              headers
             })
-            .then((response) => {
+            .then(response => {
               this.props.toggleModal();
               this.props.updateQuestions(response.data.data);
             })
-            .catch((error) => {
+            .catch(error => {
               this.setState({ disabled: false });
               console.log(error);
             });
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   };
@@ -72,21 +71,21 @@ class AddQuestion extends Component {
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
     let data = {
       type: "Text",
-      content: this.state.question,
+      content: this.state.question
     };
     axios
       .post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
-        headers,
+        headers
       })
-      .then((response) => {
+      .then(response => {
         this.props.toggleModal();
         this.props.updateQuestions(response.data.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
