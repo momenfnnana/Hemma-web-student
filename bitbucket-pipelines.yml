@@ -1,5 +1,6 @@
 pipelines:
-  default:
+  branches:
+    staging:  
     - step:
         name: Build
         size: 2x
