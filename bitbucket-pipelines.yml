@@ -19,18 +19,18 @@ pipelines:
         services:
           - docker
         script:
-          - export IMAGE_NAME=hemmaeducationa/admin:$BITBUCKET_COMMIT
-          - docker build -t hemmaeducationa/admin:latest -t $IMAGE_NAME -f Dockerfile .
+          - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
+          - docker build -t hemmaeducationa/student:latest -t $IMAGE_NAME -f Dockerfile .
           - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
           - docker push $IMAGE_NAME
-          - docker push hemmaeducationa/admin:latest
+          - docker push hemmaeducationa/student:latest
 
     - step:
         name: Deploying to Cluster
         image: atlassian/pipelines-kubectl
         script:
-          - export IMAGE_NAME=hemmaeducationa/admin:$BITBUCKET_COMMIT
-          - kubectl --kubeconfig=hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/admin-dep admin=$IMAGE_NAME --record=true
+          - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
+          - kubectl --kubeconfig=hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/student-dep student=$IMAGE_NAME --record=true
 
 definitions:
   services:
