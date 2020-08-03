@@ -2,19 +2,6 @@ pipelines:
   branches:
     staging:  
     - step:
-        name: Build
-        size: 2x
-        services:
-          - docker
-        image: node
-        script:
-          - unset CI
-          - yarn
-          - yarn build
-        artifacts:
-          - build/**
-
-    - step:
         name: Building and Pushing to Docker-Hub
         size: 2x
         services:
