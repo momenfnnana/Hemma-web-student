@@ -23,11 +23,13 @@ import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
 import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
-// import { TrainingList } from "./training/training-list";
-// import { TrainingResult } from "./training/training-result";
+import { AskQuestionsList } from "./ask-questions/ask-questions-list";
+import { AskQuestionDetails } from "./ask-questions/question-details";
+import { TrainingList } from "./training/training-list";
+import { TrainingResult } from "./training/training-result";
 
-// import { StartTraining, StartTrainingExam } from "./training/start-training";
-// import { TrainingExamDetails } from "./training/training-details";
+import { StartTrainingExam } from "./training/start-training";
+import { TrainingExamDetails } from "./training/training-details";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -232,7 +234,7 @@ class SubscriptionDetailsComponent extends Component {
                       component={ExamResult}
                       exact
                     />
-                    {/* <Route
+                    <Route
                       path="/course/content/:id/training/list"
                       component={TrainingList}
                       exact
@@ -251,7 +253,17 @@ class SubscriptionDetailsComponent extends Component {
                       path="/course/content/:id/training/:attemptId/result"
                       component={TrainingResult}
                       exact
-                    /> */}
+                    />
+
+                    <Route
+                      path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+
+                    <Route
+                      path="/course/content/:courseId/askQuestions/details/:id"
+                      component={AskQuestionDetails}
+                    />
                     {subscription && (
                       <Route
                         path="/course/content/:id/chat"

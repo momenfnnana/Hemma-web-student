@@ -1,12 +1,26 @@
-image: node
-
 pipelines:
-  default:
+  branches:
+    staging:  
     - step:
-        name: Build
+        name: Building and Pushing to Docker-Hub
+        size: 2x
+        services:
+          - docker
         script:
-          - unset CI
-          - npm install
-          - npm run build
-        artifacts:
-          - build/**
+          - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
+          - docker build -t hemmaeducationa/student:latest -t $IMAGE_NAME -f Dockerfile .
+          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
+          - docker push $IMAGE_NAME
+          - docker push hemmaeducationa/student:latest
+
+    - step:
+        name: Deploying to Cluster
+        image: atlassian/pipelines-kubectl
+        script:
+          - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
+          - kubectl --kubeconfig=hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/student-dep student=$IMAGE_NAME --record=true
+
+definitions:
+  services:
+    docker:
+      memory: 4096

@@ -30,6 +30,14 @@ export class CommentsListComponent extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
+
+    window.onscroll = () => {
+       if (
+        window.innerHeight + document.documentElement.scrollTop === document.documentElement.scrollHeight
+       ) {
+        this.loadMore();
+       }
+    }
   }
 
   handleFileChange = event => {
@@ -85,6 +93,7 @@ export class CommentsListComponent extends Component {
         console.log(error);
       });
   };
+ 
 
   loadMore = async () => {
     const lectureId = this.props.lectureId;
