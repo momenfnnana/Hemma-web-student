@@ -10,7 +10,7 @@ import {
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
-  DropdownItem
+  DropdownItem,
 } from "reactstrap";
 import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
@@ -24,13 +24,13 @@ class HeaderComponent extends Component {
     super(props);
     this.toggle = this.toggle.bind(this);
     this.state = {
-      isOpen: false
+      isOpen: false,
     };
   }
 
   toggle() {
     this.setState({
-      isOpen: !this.state.isOpen
+      isOpen: !this.state.isOpen,
     });
   }
 
@@ -66,7 +66,7 @@ class HeaderComponent extends Component {
     return (
       <React.Fragment>
         {/* TODO return the verify message */}
-    {/* {!this.props.phoneNumberConfirmed && this.props.authenticated && !this.props.location.pathname.startsWith(
+        {/* {!this.props.phoneNumberConfirmed && this.props.authenticated && !this.props.location.pathname.startsWith(
                 "/verify"
               ) ? (
           <div className="top-header dark-bg">
@@ -128,7 +128,7 @@ class HeaderComponent extends Component {
                 <Nav className="ml-auto" navbar>
                   <NavItem>
                     <NavLink
-                      className={"nav-link mid-text"}
+                      className={"nav-link"}
                       activeClassName="active"
                       to="/banks"
                     >
@@ -137,7 +137,7 @@ class HeaderComponent extends Component {
                   </NavItem>
                   <NavItem>
                     <NavLink
-                      className={"nav-link mid-text"}
+                      className={"nav-link"}
                       activeClassName="active"
                       to="/faq"
                     >
@@ -148,7 +148,7 @@ class HeaderComponent extends Component {
                     <React.Fragment>
                       <NavItem>
                         <NavLink
-                          className={"nav-link mid-text"}
+                          className={"nav-link"}
                           activeClassName="active"
                           to="/categories"
                         >
@@ -157,7 +157,7 @@ class HeaderComponent extends Component {
                       </NavItem>
                       <NavItem>
                         <NavLink
-                          className={"nav-link mid-text"}
+                          className={"nav-link"}
                           activeClassName="active"
                           to="/auth/login"
                         >
@@ -182,7 +182,7 @@ class HeaderComponent extends Component {
                     <React.Fragment>
                       <NavItem>
                         <NavLink
-                          className={"nav-link mid-text"}
+                          className={"nav-link "}
                           activeClassName="active"
                           to="/cart"
                         >
@@ -196,7 +196,7 @@ class HeaderComponent extends Component {
                       </NavItem>
                       <NavItem>
                         <NavLink
-                          className={"nav-link mid-text"}
+                          className={"nav-link "}
                           activeClassName="active"
                           to="/categories"
                         >
@@ -205,7 +205,7 @@ class HeaderComponent extends Component {
                       </NavItem>
                       <NavItem className="d-none d-sm-block">
                         <NavLink
-                          className={"nav-link mid-text"}
+                          className={"nav-link "}
                           activeClassName="active"
                           to="/course/content"
                         >
@@ -213,7 +213,7 @@ class HeaderComponent extends Component {
                         </NavLink>
                       </NavItem>{" "}
                       <UncontrolledDropdown nav inNavbar>
-                        <DropdownToggle className={"nav-link mid-text"} nav>
+                        <DropdownToggle className={"nav-link "} nav>
                           <img
                             src={"/assets/images/user-circle.png"}
                             height="18"
@@ -266,13 +266,12 @@ function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
     phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
-    user: state.user
+    user: state.user,
   };
 }
 
-HeaderComponent = connect(
-  mapStateToProps,
-  { signOutAction, getUser }
-)(HeaderComponent);
+HeaderComponent = connect(mapStateToProps, { signOutAction, getUser })(
+  HeaderComponent
+);
 
 export const Header = withRouter(HeaderComponent);

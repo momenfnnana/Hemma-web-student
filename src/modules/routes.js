@@ -7,7 +7,7 @@ import {
   Route,
   Switch,
   Redirect,
-  withRouter
+  withRouter,
 } from "react-router-dom";
 
 import { Verification } from "../components/verification/verification";
@@ -38,6 +38,7 @@ import { QuestionSummary } from "../components/categories/quick-questions/questi
 import { BillingCourses } from "../components/account/billings/billing-courses";
 import { BillingList } from "../components/account/billings/billing-list";
 import { connect } from "react-redux";
+import { InitiativesList } from "../components/initiative/initiatives-list";
 
 class AppBackground extends Component {
   render() {
@@ -47,7 +48,7 @@ class AppBackground extends Component {
     let imgPosition = null;
 
     if (path === "/home") {
-      img = "home-bg.png";
+      img = "pages-bg.png";
       imgSize = "100%";
       imgPosition = "center top";
     } else if (
@@ -84,7 +85,7 @@ class AppBackground extends Component {
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: imgSize,
-          backgroundPosition: imgPosition
+          backgroundPosition: imgPosition,
         }}
       >
         {this.props.children}
@@ -104,12 +105,12 @@ class MainRouterComponent extends Component {
             <Header />
             <Switch>
               <Route path="/home" component={Home} />
+              <Route path="/initiative/list" component={InitiativesList} />
               {!this.props.authenticated ? (
-              <Route path="/auth" component={Auth} />
-              ):(
-                <Redirect from="/auth"  to="/course/content" />
+                <Route path="/auth" component={Auth} />
+              ) : (
+                <Redirect from="/auth" to="/course/content" />
               )}
-              {/* <Route path="/auth" component={Auth}/> */}
               <Route
                 path="/verify"
                 exact
@@ -192,7 +193,7 @@ class MainRouterComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
   };
 }
 

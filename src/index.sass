@@ -9,6 +9,8 @@ $light-silver: #f2f2f2
 $dark-silver: #a9acb4
 $off-white: #fefefe
 $light-purple: #ddd6f2
+$light-yellow: #FDE67B
+$light-blue: #A8EBEF
 
 @font-face 
     font-family: GessLight 
@@ -306,7 +308,41 @@ a.btn
     border: 1px solid $red
     color: $red
     font-size: 13px
-    cursor: pointer              
+    cursor: pointer
+.yellow-btn
+    border-radius: 50px
+    border: 1px solid $light-yellow
+    color: $dark-blue
+    height: 40px
+    font-size: 13px
+    background-color: $light-yellow
+    &:hover, &:focus
+        background-color: $white
+        border: 1px solid $dark-blue
+        color: $dark-blue    
+.blue-btn
+    border-radius: 80px
+    border: 1px solid $light-blue
+    color: $dark-blue
+    height: 40px
+    font-size: 13px
+    background-color: $light-blue  
+    &:hover, &:focus
+        background-color: $light-blue
+        border: 1px solid $light-blue
+        color: $dark-blue
+
+
+.light-blue-btn
+    background-color: $light-blue;
+    border-color: $light-blue;
+    width: 100%;
+    margin-bottom: 4%;
+    &:hover, &:focus
+        background-color: $light-blue
+        border: 1px solid $light-blue
+        color: $white
+
 .intl-tel-input
     direction: ltr
     width: 100%
@@ -404,6 +440,10 @@ a.btn
    border: 1px solid #2bc3cc
    border-radius: 20px
    background-color: #2bc3cc
+.categories-box-layout
+   border: 1px solid #2bc3cc
+   border-radius: 20px
+   height: 250px
 .slick-prev:before, .slick-next:before
    color: $dark-blue
 .slick-list > .slick-track 
@@ -462,5 +502,29 @@ a.btn
     .artwork-img
         height: unset
         width: 100%                            
-
+.categories-group-layout
+   border: 1px solid #2bc3cc
+   border-radius: 20px
+   min-height: 140px
+   width: 100%
+   margin-bottom: 20px;
+   background-image: linear-gradient(to bottom, #79ccda, #8a9cd2)
+   h5, h6
+     text-align: center !important
+     margin-top: 20 !important
+     color: $white !important
+.label-btn
+    background-color: #4A3985;
+    border: 1px solid #4A3985;
+    border-radius: 50px;
+    color: white;
+    &:hover, &:focus
+        background-color: #4A3985
+        border: 1px solid $white
+        color: $white
+.lecture-box-layout
+   border: 1px solid #2bc3cc
+   border-radius: 20px
+   height: 150px
+   margin-bottom: 40px;
  
