@@ -39,6 +39,9 @@ import { BillingCourses } from "../components/account/billings/billing-courses";
 import { BillingList } from "../components/account/billings/billing-list";
 import { connect } from "react-redux";
 import { InitiativesList } from "../components/initiative/initiatives-list";
+import { EnterToLecture } from "../components/initiative/enter-lecture";
+import { InitiativesRole } from "../components/initiative/initiatives-role";
+import { InitiativesExam } from "../components/initiative/initiatives-exam";
 
 class AppBackground extends Component {
   render() {
@@ -60,7 +63,11 @@ class AppBackground extends Component {
       path.startsWith("/quick-questions") ||
       path.startsWith("/quick-question") ||
       path.startsWith("/question-summary") ||
-      path.startsWith("/faq")
+      path.startsWith("/faq") ||
+      path.startsWith("/initiative/list") ||
+      path.startsWith("/enter-To-Lecture") ||
+      path.startsWith("/initiative-role") ||
+      path.startsWith("/initiative-exam")
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
@@ -106,6 +113,9 @@ class MainRouterComponent extends Component {
             <Switch>
               <Route path="/home" component={Home} />
               <Route path="/initiative/list" component={InitiativesList} />
+              <Route path="/enter-To-Lecture" component={EnterToLecture} />
+              <Route path="/initiative-role" component={InitiativesRole} />
+              <Route path="/initiative-exam" component={InitiativesExam} />
               {!this.props.authenticated ? (
                 <Route path="/auth" component={Auth} />
               ) : (
