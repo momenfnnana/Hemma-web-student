@@ -116,7 +116,7 @@ class HomeComponent extends Component {
     const cats = this.state.categories;
     return (
       <React.Fragment>
-        <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+        <div className="row mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
             return (
               <div className="col-lg-3 col-6" key={cat.id}>
@@ -138,10 +138,12 @@ class HomeComponent extends Component {
                       src={cat.icon}
                       height="50%"
                       width="50%"
-                      className="contain-img mb-2"
+                      className="contain-img mb-2 font-size-30"
                       alt={cat.nameAr}
                     />
-                    <h6 className="dark-text text-center mb-0">{cat.nameAr}</h6>
+                    <h6 className="dark-text text-center mb-0 font-size-30">
+                      {cat.nameAr}
+                    </h6>
                   </div>
                 </Link>
               </div>
@@ -170,8 +172,10 @@ class HomeComponent extends Component {
                   />
                 </div>
                 <div className="col-lg-8 p-0 ml-2">
-                  <h5 className="text-center mb-2 mt-4">مجموعة الرياضيات</h5>
-                  <h6>وصف المجموعة</h6>
+                  <h5 className="text-center mb-2 mt-2 font-size-30">
+                    مجموعة الرياضيات
+                  </h5>
+                  <h6 className="font-size-20">وصف المجموعة</h6>
                 </div>
               </div>
             </Link>
@@ -191,8 +195,10 @@ class HomeComponent extends Component {
                   />
                 </div>
                 <div className="col-lg-8 p-0 ml-2">
-                  <h5 className="text-center mb-2 mt-4">مجموعة الرياضيات</h5>
-                  <h6>وصف المجموعة</h6>
+                  <h5 className="text-center mb-2 mt-2 font-size-30">
+                    مجموعة الرياضيات
+                  </h5>
+                  <h6 className="font-size-20">وصف المجموعة</h6>
                 </div>
               </div>
             </Link>
@@ -212,8 +218,10 @@ class HomeComponent extends Component {
                   />
                 </div>
                 <div className="col-lg-8 p-0 ml-2">
-                  <h5 className="text-center mb-2 mt-4">مجموعة الرياضيات</h5>
-                  <h6>وصف المجموعة</h6>
+                  <h5 className="text-center mb-2 mt-2 font-size-30">
+                    مجموعة الرياضيات
+                  </h5>
+                  <h6 className="font-size-20">وصف المجموعة</h6>
                 </div>
               </div>
             </Link>
@@ -357,15 +365,23 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
               <div className="col-md-8">
-                <h2 className="dark-text">تحتاج تدريب مكثف لاجتياز اختبارك؟</h2>
-                <h5>
+                <h2 className="dark-text font-size-60">
+                  تحتاج تدريب مكثف لاجتياز اختبارك؟
+                </h2>
+                <h5 className="font-size-30">
                   همه تقدم لك
-                  <span className="blue-text"> تدريب مكثف عن بعد </span>
+                  <span className="blue-text font-size-30">
+                    {" "}
+                    تدريب مكثف عن بعد{" "}
+                  </span>
                   يأهلك لاجتياز الاختبار بأعلى الدرجات
                 </h5>
-                <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
+                <h5 className="font-size-30">
+                  {" "}
+                  خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين
+                </h5>
                 <div className="mt-4">
-                  <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center">
+                  <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center font-size-20">
                     اشترك الان
                   </Button>
                 </div>
@@ -387,7 +403,7 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h2 className="dark-text mb-1">مجالاتنا</h2>
+                <h2 className="dark-text mb-1 font-size-50">مجالاتنا</h2>
               </div>
             </div>
             {this.renderCategories()}
@@ -396,13 +412,15 @@ class HomeComponent extends Component {
 
         <section className="pt-1">
           <div className="container">
-            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn p-5">
+            <div className="row mx-auto d-flex justify-content-center align-items-center">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
                 <Link
                   to="/initiative/details"
                   className="btn blue-btn justify-content-center d-flex align-items-center"
                 >
-                  <h2 className="m-2">مبادرات همه للتعريف بالائحة التعليمية</h2>
+                  <h2 className="m-2 font-size-60">
+                    مبادرات همه للتعريف بالائحة التعليمية
+                  </h2>
                 </Link>
               </div>
             </div>
@@ -412,15 +430,20 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h2 className="dark-text mb-1">مميزاتنا</h2>
-                <p>تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
+                <h2 className="dark-text mb-1 font-size-60">مميزاتنا</h2>
+                <p className="font-size-40">
+                  تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة
+                </p>
               </div>
               <div className="row h-100 d-flex align-items-center">
-                <div className="col-md-5">
-                  <h2 className="dark-text">
+                <div className="col-md-7">
+                  <h2 className="dark-text font-size-50">
                     حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
                   </h2>
-                  <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
+                  <h6 className="font-size-30">
+                    {" "}
+                    وهذا ما حققناه طيلة السنوات الماضية
+                  </h6>
                 </div>
                 <div className="col-md-5 white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
                   <div className="m-3">
@@ -468,9 +491,15 @@ class HomeComponent extends Component {
                 />
               </div>
               <div className="col-md-6">
-                <h2 className="dark-text">تدريب مكثف وأنت ببيتك</h2>
-                <h5>محتوى شامل يغنيك عن مختلف المراجع</h5>
-                <h5> محاضرات مباشرة تسجل لمتايعتها في اي وقت</h5>
+                <h2 className="dark-text font-size-50">
+                  تدريب مكثف وأنت ببيتك
+                </h2>
+                <h5 className="font-size-30">
+                  محتوى شامل يغنيك عن مختلف المراجع
+                </h5>
+                <h5 className="font-size-30">
+                  محاضرات مباشرة تسجل لمتايعتها في اي وقت
+                </h5>
               </div>
             </div>
           </div>
@@ -479,8 +508,8 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-6">
-                <h2 className="dark-text">مناقشات</h2>
-                <h5>
+                <h2 className="dark-text font-size-50">مناقشات</h2>
+                <h5 className="font-size-30">
                   محدده مسبقا تجمع المدربين والفريق وكل المشاركين ،أرسل
                   استفساراتك وشاركهم بالمناقشة بشكل حي ،كل الماقشات تحفظ للرجوع
                   اليها في أي وقت!
@@ -503,7 +532,9 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
-                <h2 className="dark-text mb-4">المجموعات المجانية</h2>
+                <h2 className="dark-text mb-4 font-size-60">
+                  المجموعات المجانية
+                </h2>
               </div>
             </div>
             {this.renderCategoriesGroup()}
