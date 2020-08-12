@@ -8,13 +8,9 @@ import { Card } from "../shared/card/card";
 import { apiBaseUrl } from "../../api/helpers";
 import "./styles.sass";
 import { connect } from "react-redux";
-import { NavLink, Route } from "react-router-dom";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import { GoogleLogin } from "react-google-login";
-import { Login } from "../login/login";
-import { Register } from "../register/register";
 import swal from "@sweetalert/with-react";
 import { loginWithTwitter } from "../auth/firebase";
+import { Button } from "reactstrap";
 
 var moment = require("moment");
 moment().format();
@@ -28,89 +24,89 @@ class HomeComponent extends Component {
   componentDidMount() {
     axios
       .get(`${apiBaseUrl}/categories`)
-      .then(response => {
+      .then((response) => {
         this.setState({ categories: response.data.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/courses/recent`)
-      .then(response => {
+      .then((response) => {
         this.setState({ courses: response.data.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/ratings/testimonials`)
-      .then(response => {
+      .then((response) => {
         this.setState({ testimonials: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
   renderCourses() {
-    return this.state.courses.map(course => (
+    return this.state.courses.map((course) => (
       <Card key={course.id} course={course} />
     ));
   }
-  responseGoogle = response => {
+  responseGoogle = (response) => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
     };
     if (!response.accessToken) return;
     axios
       .post(`${apiBaseUrl}/auth/login_with_google`, data)
-      .then(response => {
+      .then((response) => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
-      .catch(error => {
+      .catch((error) => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
 
         this.props.history.push("/auth/register");
       });
   };
 
-  responseFacebook = response => {
+  responseFacebook = (response) => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
     };
     if (!response.accessToken) return;
     axios
       .post(`${apiBaseUrl}/auth/login_with_facebook`, data)
-      .then(response => {
+      .then((response) => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
         this.props.history.push("/auth/register");
       });
   };
   twitterLogin = async () => {
     loginWithTwitter()
-      .then(token => {
+      .then((token) => {
         localStorage.setItem("token", token);
         window.location = "/";
       })
-      .catch(error => {
+      .catch((error) => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
         this.props.history.push("/auth/register");
       });
@@ -120,7 +116,7 @@ class HomeComponent extends Component {
     const cats = this.state.categories;
     return (
       <React.Fragment>
-        <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+        <div className="row mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
             return (
               <div className="col-lg-3 col-6" key={cat.id}>
@@ -128,24 +124,24 @@ class HomeComponent extends Component {
                   to={{
                     pathname: `/categories/details/${cat.slug}`,
                     state: {
-                      catId: cat.id
-                    }
+                      catId: cat.id,
+                    },
                   }}
                   key={cat.id}
                 >
                   <div
                     key={cat.id}
-                    className="shadow-box custom-height d-flex flex-column align-items-center justify-content-center clickable"
+                    className="categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2"
                   >
                     <img
                       key={cat.id}
                       src={cat.icon}
-                      height="30"
-                      width="30"
-                      className="contain-img mb-2"
+                      height="50%"
+                      width="50%"
+                      className="contain-img mb-2 font-size-30"
                       alt={cat.nameAr}
                     />
-                    <h6 className="dark-text small text-center mb-0">
+                    <h6 className="dark-text text-center mb-0 font-size-30">
                       {cat.nameAr}
                     </h6>
                   </div>
@@ -157,9 +153,86 @@ class HomeComponent extends Component {
       </React.Fragment>
     );
   }
+  renderCategoriesGroup() {
+    return (
+      <React.Fragment>
+        <div className="row">
+          <div className="col-lg-4 col-md-6">
+            <Link to="">
+              <div className="categories-group-layout d-flex clickable mb-2">
+                <div className="col-lg-4 p-0 ml-2">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/competitions.png"
+                    }
+                    height="100%"
+                    width="100%"
+                    className="contain-img mb-2"
+                    alt=""
+                  />
+                </div>
+                <div className="col-lg-8 p-0 ml-2">
+                  <h5 className="text-center mb-2 mt-2 font-size-30">
+                    مجموعة الرياضيات
+                  </h5>
+                  <h6 className="font-size-20">وصف المجموعة</h6>
+                </div>
+              </div>
+            </Link>
+          </div>
+          <div className="col-lg-4 col-md-6">
+            <Link to="">
+              <div className="categories-group-layout d-flex clickable mb-2">
+                <div className="col-lg-4 p-0 ml-2">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/competitions.png"
+                    }
+                    height="100%"
+                    width="100%"
+                    className="contain-img mb-2"
+                    alt=""
+                  />
+                </div>
+                <div className="col-lg-8 p-0 ml-2">
+                  <h5 className="text-center mb-2 mt-2 font-size-30">
+                    مجموعة الرياضيات
+                  </h5>
+                  <h6 className="font-size-20">وصف المجموعة</h6>
+                </div>
+              </div>
+            </Link>
+          </div>
+          <div className="col-lg-4 col-md-6">
+            <Link to="">
+              <div className="categories-group-layout d-flex clickable mb-2">
+                <div className="col-lg-4 p-0 ml-2">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/competitions.png"
+                    }
+                    height="100%"
+                    width="100%"
+                    className="contain-img mb-2"
+                    alt=""
+                  />
+                </div>
+                <div className="col-lg-8 p-0 ml-2">
+                  <h5 className="text-center mb-2 mt-2 font-size-30">
+                    مجموعة الرياضيات
+                  </h5>
+                  <h6 className="font-size-20">وصف المجموعة</h6>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
 
   renderTestimonials() {
-    return this.state.testimonials.map(testimonial => {
+    return this.state.testimonials.map((testimonial) => {
       let currentDate = new Date();
       let getCurrentDate =
         currentDate.getFullYear() +
@@ -229,25 +302,25 @@ class HomeComponent extends Component {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
-            infinite: false
-          }
+            infinite: false,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            initialSlide: 2
-          }
+            initialSlide: 2,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
 
     const testimonialsSettings = {
@@ -265,633 +338,227 @@ class HomeComponent extends Component {
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            infinite: false
-          }
+            infinite: false,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            initialSlide: 1
-          }
+            initialSlide: 1,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
 
     return (
       <React.Fragment>
-        {this.props.authenticated ? (
-          <section className="hero-section">
-            <div className="container">
-              <div className="row h-100 d-flex align-items-center">
-                <div className="col-md-4">
-                  <h2 className="purple-text">سلسلة بالبيد التعليمية</h2>
-                  <h2 className="purple-text">٢٥ عاماً في خدمة</h2>
-                  <h2 className="blue-text"> الطلاب و الطالبات</h2>
-                </div>
-                <div className="col-md-8 d-flex align-items-center justify-content-center">
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
-                    }
-                    width="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
-                    alt="artwork"
-
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section className="hero-section">
-            <div className="container">
-              <div className="row h-100 d-flex align-items-center">
-                <div className="col-md-12">
-                  <h2 className="purple-text text-center">
+        <section className="hero-section">
+          <div className="container">
+            <div className="row h-100 d-flex align-items-center">
+              <div className="col-md-8">
+                <h2 className="dark-text font-size-60">
+                  تحتاج تدريب مكثف لاجتياز اختبارك؟
+                </h2>
+                <h5 className="font-size-30">
+                  همه تقدم لك
+                  <span className="blue-text font-size-30">
                     {" "}
-                    سلسلة بالبيد التعليمية، ٢٥عاماً في خدمة الطلاب والطالبات{" "}
-                  </h2>
+                    تدريب مكثف عن بعد{" "}
+                  </span>
+                  يأهلك لاجتياز الاختبار بأعلى الدرجات
+                </h5>
+                <h5 className="font-size-30">
+                  {" "}
+                  خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين
+                </h5>
+                <div className="mt-4">
+                  <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center font-size-20">
+                    اشترك الان
+                  </Button>
                 </div>
               </div>
-            </div>
-            <div className="col-md-12">
-              <div className="container pb-5">
-                <div
-                  className="row align-items-center justify-content-center"
-                  style={{ minHeight: 550 }}
-                >
-                  <div className="col-md-6 col-12 order-md-1 order-2">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/login-artwork.png"
-                      }
-                      height="350"
-                      className="artwork-img"
-                      alt="artwork"
-                    />
-                  </div>
-                  <div className="col-md-6 col-12 order-md-2 order-1">
-                    <ul className="list-inline underlined-tabs mb-4 text-center">
-                      <li className="list-inline-item small">
-                        <NavLink
-                          className="dark-text"
-                          activeClassName="active"
-                          to="/home/login"
-                        >
-                          تسجيل دخول
-                        </NavLink>
-                      </li>
-                      <li className="list-inline-item small">
-                        <NavLink
-                          className="dark-text"
-                          activeClassName="active"
-                          to="/home/register"
-                        >
-                          إنشاء حساب
-                        </NavLink>
-                      </li>
-                    </ul>
-                    <Route
-                      exact
-                      path={["/", "/home", "/home/login"]}
-                      render={props => <Login {...props} />}
-                    />
-                    <Route
-                      exact
-                      path="/home/register"
-                      render={props => <Register {...props} />}
-                    />
-                    {this.props.location.pathname === "/" ||
-                    this.props.location.pathname === "/home" ||
-                    this.props.location.pathname === "/home/login" ? (
-                      <React.Fragment>
-                        <div className="pt-4 pb-4">
-                          <p className="text-center dark-text circle-border">
-                            أو
-                          </p>
-                        </div>
-                        <ul className="list-inline mb-0 text-center">
-                          <li className="list-inline-item">
-                            <GoogleLogin
-                              clientId="600035856994-8ogmo1qhb1fn8po54isgfnpn1q1lvdf1.apps.googleusercontent.com"
-                              render={renderProps => (
-                                <button
-                                  className="bg-transparent border-0 p-0 clickable"
-                                  onClick={renderProps.onClick}
-                                >
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/google-plus.png"
-                                    }
-                                    height="35"
-                                    alt="google-plus"
-                                  />
-                                </button>
-                              )}
-                              onSuccess={this.responseGoogle}
-                              onFailure={this.responseGoogle}
-                            />
-                          </li>
-                          <li className="list-inline-item">
-                            <FacebookLogin
-                              appId="381989645718539"
-                              callback={this.responseFacebook}
-                              autoLoad={false}
-                              fields="name,email,picture"
-                              render={renderProps => (
-                                <button
-                                  className="bg-transparent border-0 p-0 clickable"
-                                  onClick={renderProps.onClick}
-                                >
-                                  <img
-                                    src={
-                                      process.env.PUBLIC_URL +
-                                      "/assets/images/facebook.png"
-                                    }
-                                    height="35"
-                                    alt="facebook"
-                                  />
-                                </button>
-                              )}
-                            />
-                          </li>
-                          <li className="list-inline-item">
-                            <img
-                              onClick={this.twitterLogin}
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/twitter.png"
-                              }
-                              height="35"
-                              className="clickable"
-                              alt="twitter"
-                            />
-                          </li>
-                        </ul>
-                        <div className="text-center pt-4">
-                          <NavLink
-                            to="/forgot-password"
-                            className="dark-text small"
-                          >
-                            نسيت كلمة المرور؟
-                          </NavLink>
-                        </div>
-                      </React.Fragment>
-                    ) : null}
-                  </div>
-                </div>
+              <div className="col-md-3 d-flex align-items-center justify-content-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                  }
+                  width="100%"
+                  className="contain-img d-md-block d-none d-sm-none"
+                  alt="artwork"
+                />
               </div>
             </div>
-          </section>
-        )}
-        <section className="categories-section">
+          </div>
+        </section>
+        <section className="categories-section pt-0">
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h4 className="dark-text mb-1">منصاتنا</h4>
-                <p className="dark-text">
-                  تعرف على ابرز منصاتنا التعليمية القيمة{" "}
-                </p>
+                <h2 className="dark-text mb-1 font-size-50">مجالاتنا</h2>
               </div>
             </div>
             {this.renderCategories()}
           </div>
         </section>
 
-        <section className="journey-section">
+        <section className="pt-1">
           <div className="container">
-            <div className="row">
-              <div className="col-md-6">
-                <h4 className="dark-text mb-1">مميزاتنا</h4>
-                <p className="dark-text">
+            <div className="row mx-auto d-flex justify-content-center align-items-center">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
+                <Link
+                  to="/initiative/details"
+                  className="btn blue-btn justify-content-center d-flex align-items-center"
+                >
+                  <h2 className="m-2 font-size-60">
+                    مبادرات همه للتعريف بالائحة التعليمية
+                  </h2>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="pt-4">
+          <div className="container">
+            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                <h2 className="dark-text mb-1 font-size-60">مميزاتنا</h2>
+                <p className="font-size-40">
                   تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة
                 </p>
-                <div className="row">
-                  <div className="col-md-12">
-                    <div className="circle-desc active circle-desc1">
-                      <h6 className="dark-text">الاختبارات الإلكترونية</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        اختبارات الكترونية لكل دورة يتم تحديثها من قبل الفريق
-                        بشكل مستمر قارن نتائجك مرة بعد مرة خلك مستعد واختبر نفسك{" "}
-                      </p>
-                    </div>
-                    <div className="circle-desc circle-desc2">
-                      <h6 className="dark-text">المناقشات</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        جلسات مناقشات محدده مسبقا تجمع المدربين والفريق وكل
-                        المشاركين! أرسل استفسارك وشاركهم بالمناقشة بشكل حي، كل
-                        المناقشات تحفظ للرجوع إليها في أي وقت!
-                      </p>
-                    </div>
-                    <div className="circle-desc circle-desc3">
-                      <h6 className="dark-text">المحاضرات المسجلة</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        لو ما قدرت تحضر البث لا تشيل هم كل المحاضرات يتم تسجيلها
-                        وتنزل بعد البث، من خلال المحاضرات المسجلة ممكن تضيف
-                        استفساراتك وتشارك بالإجابة على استفسارات الطلبة الآخرين،
-                        الفريق التدريبي موجود على مدار الساعة للتحقق من صحة
-                        الإجابات والمساعدة
-                      </p>
-                    </div>
-
-                    <div className="circle-desc circle-desc4">
-                      <h6 className="dark-text">مرفقات الدورة</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        كل الملفات المتعلقة بالدورة في مكان واحد بشكل سهل ومبسط
-                        للتحميل
-                      </p>
-                    </div>
-
-                    <div className="circle-desc circle-desc5">
-                      <h6 className="dark-text">الدردشة الجماعية</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        كن على تواصل مع جميع الطلبة المشتركين في الدورة من خلال
-                        الدردشة الجماعية اطرح اسئلتك وتابع كل الاخبار المتعلقة
-                        بالدورة
-                      </p>
-                    </div>
-
-                    <div className="circle-desc circle-desc6">
-                      <h6 className="dark-text">الملازم</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        أفضل الملازم المعدة من قبل أفضل المدربين، تسهل عليك
-                        المشوار وتتابع من خلالها المادة، أيضا ممكن تطلب النسخة
-                        المطلوبة منها لتوصلك لباب البيت
-                      </p>
-                    </div>
-
-                    <div className="circle-desc circle-desc7">
-                      <h6 className="dark-text">المحتوى المجاني</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        اطلع على جزء بسيط من الخدمات المقدمة في منصة همة قبل
-                        الاشتراك من خلال المحتوى المجاني المتاح في المنصات
-                      </p>
-                    </div>
-
-                    <div className="circle-desc circle-desc8">
-                      <h6 className="dark-text">البث المباشر</h6>
-                      <p className="dark-text light-font-text small text-break">
-                        من أي مكان ممكن تحضر محاضراتك مع أفضل المدرسين تدخل
-                        الموقع في الوقت المحدد وتشاركنا البث
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
-              <div className="col-md-6 d-flex align-items-center justify-content-end">
-                <div className="circles-wrapper d-md-block d-lg-block d-none">
-                  <div className="dotCircle">
-                    <span className="item-dot active item-dot1" data-tab="1">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/exams.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="exams"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot2" data-tab="2">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/discussions.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="discussions"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot3" data-tab="3">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/recorded_videos.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="recorded-videos"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot4" data-tab="4">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/speed-up.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="speed-up"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot5" data-tab="5">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/chat.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="chat"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot6" data-tab="6">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/malzama.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="malzama"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot7" data-tab="7">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/free-content.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="free-content"
-                      />
-                      <span className="active-item"></span>
-                    </span>
-                    <span className="item-dot item-dot8" data-tab="8">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/live-streaming.png"
-                        }
-                        height="40"
-                        className="contain-img"
-                        alt="live-streaming"
-                      />
-                      <span className="active-item"></span>
-                    </span>
+              <div className="row h-100 d-flex align-items-center">
+                <div className="col-md-7">
+                  <h2 className="dark-text font-size-50">
+                    حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
+                  </h2>
+                  <h6 className="font-size-30">
+                    {" "}
+                    وهذا ما حققناه طيلة السنوات الماضية
+                  </h6>
+                </div>
+                <div className="col-md-5 white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
+                  <div className="m-3">
+                    <h6> اختبار المعلمين - الكيمياء</h6>
                   </div>
-
-                  <div className="circle-content">
-                    <div className="circle-item active circle-item1">
+                  <div>
+                    <h4 className="dark-text">
+                      تاريخ الاختبار:
+                      <span className="dark-text en-text"> 1441/03/30 </span>
+                    </h4>
+                    <h4 className="dark-text ">
+                      درجة التخصص:
+                      <span className="dark-text en-text"> 100 </span>
+                    </h4>
+                    <Button className="btn light-blue-btn justify-content-center d-flex align-items-center">
+                      التفاصيل
+                    </Button>
+                    {/* <div className="col-md-2 w-100 p-2 pb-0 mb-4 d-flex flex-column">
                       <img
+                        height="100%"
+                        width="100%"
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/exams.png"
+                          process.env.PUBLIC_URL + "/assets/images/trophy.png"
                         }
-                        height="70"
-                        className="contain-img mb-3"
-                        alt="exams"
+                        alt="trophy"
                       />
-                      <h6 className="dark-text">الاختبارات الإلكترونية</h6>
-                    </div>
-                    <div className="circle-item circle-item2">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/discussions.png"
-                        }
-                        height="70"
-                        className="contain-img mb-3"
-                        alt="discussions"
-                      />
-                      <h6 className="dark-text">المناقشات</h6>
-                    </div>
-                    <div className="circle-item circle-item3">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/recorded_videos.png"
-                        }
-                        height="40"
-                        className="contain-img mb-3"
-                        alt="recorded-videos"
-                      />
-                      <h6 className="dark-text">المحاضرات المسجلة</h6>
-                    </div>
-                    <div className="circle-item circle-item4">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/speed-up.png"
-                        }
-                        height="40"
-                        className="contain-img mb-3"
-                        alt="speed-up"
-                      />
-                      <h6 className="dark-text">مرفقات الدورة</h6>
-                    </div>
-                    <div className="circle-item circle-item5">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/chat.png"
-                        }
-                        height="40"
-                        className="contain-img mb-3"
-                        alt="chat"
-                      />
-                      <h6 className="dark-text">الدردشة الجماعية</h6>
-                    </div>
-                    <div className="circle-item circle-item6">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/malzama.png"
-                        }
-                        height="40"
-                        className="contain-img mb-3"
-                        alt="malzama"
-                      />
-                      <h6 className="dark-text">الملازم</h6>
-                    </div>
-                    <div className="circle-item circle-item7">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/free-content.png"
-                        }
-                        height="40"
-                        className="contain-img mb-3"
-                        alt="free-content"
-                      />
-                      <h6 className="dark-text">المحتوى المجاني</h6>
-                    </div>
-                    <div className="circle-item circle-item8">
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/features/live-streaming.png"
-                        }
-                        height="40"
-                        className="contain-img mb-3"
-                        alt="live-streaming"
-                      />
-                      <h6 className="dark-text">البث المباشر</h6>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
-        <section className="courses-section">
+        <section className="hero-section">
           <div className="container">
-            <div className="row mb-3">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h4 className="dark-text mb-1">ابرز الدورات</h4>
-                <p className="dark-text">
-                  تعرف على ابرز الدورات التعليمية القيمة
-                </p>
+            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+              <div className="col-md-6 d-flex align-items-center justify-content-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                  }
+                  width="100%"
+                  className="contain-img d-md-block d-none d-sm-none"
+                  alt="artwork"
+                />
               </div>
-            </div>
-            <div className="row">
-              <div className="col-md-12">
-                <Slider {...settings}>{this.renderCourses()}</Slider>
+              <div className="col-md-6">
+                <h2 className="dark-text font-size-50">
+                  تدريب مكثف وأنت ببيتك
+                </h2>
+                <h5 className="font-size-30">
+                  محتوى شامل يغنيك عن مختلف المراجع
+                </h5>
+                <h5 className="font-size-30">
+                  محاضرات مباشرة تسجل لمتايعتها في اي وقت
+                </h5>
               </div>
             </div>
           </div>
         </section>
-        <section className="steps-section">
+        <section className="hero-section">
+          <div className="container">
+            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+              <div className="col-md-6">
+                <h2 className="dark-text font-size-50">مناقشات</h2>
+                <h5 className="font-size-30">
+                  محدده مسبقا تجمع المدربين والفريق وكل المشاركين ،أرسل
+                  استفساراتك وشاركهم بالمناقشة بشكل حي ،كل الماقشات تحفظ للرجوع
+                  اليها في أي وقت!
+                </h5>
+              </div>
+              <div className="col-md-6 d-flex align-items-center justify-content-center">
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                  }
+                  width="100%"
+                  className="contain-img d-md-block d-none d-sm-none"
+                  alt="artwork"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section className="pt-0">
           <div className="container">
             <div className="row mb-3">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h4 className="dark-text mb-1">خطوات الإشتراك بالدورة</h4>
-                <p className="dark-text mb-5">
-                  يمكنك الان التسجيل بأحد دوراتنا باتباعك للخطوات التالية
-                </p>
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
+                <h2 className="dark-text mb-4 font-size-60">
+                  المجموعات المجانية
+                </h2>
               </div>
             </div>
-            <div className="row">
-              <div className="col-md-12">
-                <div class="steps">
-                  <div class="step step-one">
-                    <div class="step-content one">
-                      <h6 className="dark-text small">
-                        تسجيل حساب جديد، أو تسجيل دخول
-                      </h6>
-                      <p className="mid-text smaller text-break">
-                        في حال كان لديك حساب من قبل، يمكنك تسجيل الدخول والبدء
-                        بعملية الاشتراك، أما في حال ما عندك حساب ممكن تسجل حساب
-                        جديد من "إنشاء حساب" في أعلى الصفحة وتدخل المعلومات
-                        المطلوبة
-                      </p>
-                    </div>
-                  </div>
-                  <div class="step step-two minimized">
-                    <div class="step-content two">
-                      <h6 className="dark-text small">
-                        ابحث عن الدورة التي تحتاجها من خلال المنصات المتاحة
-                      </h6>
-                      <p className="mid-text smaller text-break">
-                        يمكنك ايجاد قائمة المنصات في الصفحة الرئيسية، وفي الشريط
-                        العلوي من الدورات الحالية، اختر المنصة التابعة للدورة
-                        الستعراض قائمة الدورات المتاحة.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="step step-three minimized">
-                    <div class="step-content three">
-                      <h6 className="dark-text small">
-                        راجع تفاصيل الدورة قبل الاشتراك
-                      </h6>
-                      <p className="mid-text smaller text-break">
-                        في داخل صفحة الدورة ستجد بعض التفاصيل مثل (أهداف الدورة،
-                        أساليب وطرق شرح المادة، جدول المحاضرات، معلومات المدرسين
-                        وبيانات الاشتراك) للاشتراك بالدورة، من خلال الضغط على
-                        "اشترك الآن" للانتقال الى مرحلة تأكيد مقعدك.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="step step-four minimized">
-                    <div class="step-content four">
-                      <h6 className="dark-text small">سلة الشراء</h6>
-                      <p className="mid-text smaller text-break">
-                        في صفحة "سلة الشراء" سيظهر لك تفاصيل الدورات المختارة،
-                        يمكنك مراجعة الطلب وإضافة كوبون في حال توفّره، والانتقال
-                        لمرحلة الدفع من خلال الضغط على "متابعة". أيضا يمكنك
-                        إضافة أي دورات أخرى ترغب في الاشتراك بها قبل المتابعة
-                        إلى السداد.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="step step-five minimized">
-                    <div class="step-content five">
-                      <h6 className="dark-text small">السداد</h6>
-                      <p className="mid-text smaller text-break">
-                        في صفحة "تأكيد الاشتراك" يمكنك اختيار طريقة الدفع وتعبئة
-                        المعلومات المطلوبة لتتمكن من تفعيل الدورة المحجوزة، بعد
-                        الانتهاء اضغط على "إتمام الدفع" ليتم نقلك الى صفحة
-                        التأكيد النهائي.
-                      </p>
-                    </div>
-                  </div>
-                  <div class="step step-six minimized">
-                    <div class="step-content six">
-                      <h6 className="dark-text small">قائمة دوراتي</h6>
-                      <p className="mid-text smaller text-break">
-                        تعرض قائمة دوراتي جميع الدورات التي قمت بالاشتراك بها
-                        وحالة الاشتراك لكل منها، يمكنك تصفح تفاصيل الدورة
-                        بالدخول إليها للوصول إلى المحاضرات المسجلة، الملزمة،
-                        المناقشات والكثير من الميزات التي ستساعدك في المادة.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {this.renderCategoriesGroup()}
           </div>
         </section>
         {!this.state.testimonials === undefined ||
-          (!this.state.testimonials.length === 0 && (
-            <section className="testimonials-section">
+          (this.state.testimonials.length != 0 && (
+            <section className="testimonials-section mb-5">
               <div className="container">
-                <div className="row">
-                  <div className="col-md-12">
-                    <h4 className="dark-text">قالوا عنا..</h4>
-                  </div>
-                </div>
                 <div className="row d-flex justify-content-center align-items-center">
-                  <div className="col-md-6 order-2">
+                  <div className="col-md-6">
+                    <h6 className="dark-text testimonials-title">قالوا عنا</h6>
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
-                      className="contain-img quotes-img"
-                      height="50"
-                      alt="quotes"
+                      className="contain-img"
+                      width="100%"
+                      height="150"
+                      alt="testimonials"
                     />
+                  </div>
+                  <div className="col-md-6">
                     <Slider {...testimonialsSettings}>
                       {this.renderTestimonials()}
                     </Slider>
-                  </div>
-                  <div className="col-md-6 order-1 order-md-3">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/testimonials.png"
-                      }
-                      className="contain-img"
-                      width="100%"
-                      height="250"
-                      alt="testimonials"
-                    />
                   </div>
                 </div>
               </div>
@@ -903,7 +570,7 @@ class HomeComponent extends Component {
 }
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
   };
 }
 
