@@ -43,7 +43,6 @@ class HomeComponent extends Component {
     axios
       .get(`${apiBaseUrl}/ratings/testimonials`)
       .then((response) => {
-        console.log(response);
         this.setState({ testimonials: response.data.data });
       })
       .catch((error) => {
@@ -400,7 +399,7 @@ class HomeComponent extends Component {
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn p-5">
                 <Link
-                  to="/initiative/list"
+                  to="/initiative/details"
                   className="btn blue-btn justify-content-center d-flex align-items-center"
                 >
                   <h2 className="m-2">مبادرات همه للتعريف بالائحة التعليمية</h2>
@@ -439,15 +438,17 @@ class HomeComponent extends Component {
                     <Button className="btn light-blue-btn justify-content-center d-flex align-items-center">
                       التفاصيل
                     </Button>
+                    {/* <div className="col-md-2 w-100 p-2 pb-0 mb-4 d-flex flex-column">
+                      <img
+                        height="100%"
+                        width="100%"
+                        src={
+                          process.env.PUBLIC_URL + "/assets/images/trophy.png"
+                        }
+                        alt="trophy"
+                      />
+                    </div> */}
                   </div>
-                </div>
-                <div className="col-md-2 w-100 p-2 pb-0 mb-4 d-flex flex-column">
-                  <img
-                    height="100%"
-                    width="100%"
-                    src={process.env.PUBLIC_URL + "/assets/images/trophy.png"}
-                    alt="trophy"
-                  />
                 </div>
               </div>
             </div>
@@ -510,16 +511,16 @@ class HomeComponent extends Component {
         </section>
         {!this.state.testimonials === undefined ||
           (this.state.testimonials.length != 0 && (
-            <section className="testimonials-section">
+            <section className="testimonials-section mb-5">
               <div className="container">
                 <div className="row d-flex justify-content-center align-items-center">
                   <div className="col-md-6">
-                    <h6 className="dark-text">قالوا عنا</h6>
+                    <h6 className="dark-text testimonials-title">قالوا عنا</h6>
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
                       className="contain-img"
                       width="100%"
-                      height="100"
+                      height="150"
                       alt="testimonials"
                     />
                   </div>

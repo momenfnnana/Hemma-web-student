@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { ShareInitiatives } from "./share-initiatives";
 import { Button } from "reactstrap";
 import AddInitiative from "./add-initiative";
-class InitiativesListComponent extends Component {
+class InitiativesDetailsComponent extends Component {
   state = {
     isModelOpen: false,
   };
@@ -37,7 +37,8 @@ class InitiativesListComponent extends Component {
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                     width="100%"
-                    className="contain-img d-md-block d-none d-sm-none pt-2"
+                    height="100%"
+                    className="contain-img d-md-block d-none d-sm-none"
                     alt="artwork"
                   />
                 </div>
@@ -48,7 +49,8 @@ class InitiativesListComponent extends Component {
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                       width="100%"
-                      className="contain-img d-md-block d-none d-sm-none pt-2"
+                      height="100%"
+                      className="contain-img d-md-block d-none d-sm-none"
                       alt="artwork"
                     />
                   </div>
@@ -60,7 +62,8 @@ class InitiativesListComponent extends Component {
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                       width="100%"
-                      className="contain-img d-md-block d-none d-sm-none pt-2"
+                      height="100%"
+                      className="contain-img d-md-block d-none d-sm-none"
                       alt="artwork"
                     />
                   </div>
@@ -272,4 +275,4 @@ class InitiativesListComponent extends Component {
     );
   }
 }
-export const InitiativesList = InitiativesListComponent;
+export const InitiativesDetails = InitiativesDetailsComponent;

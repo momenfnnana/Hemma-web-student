@@ -38,10 +38,10 @@ import { QuestionSummary } from "../components/categories/quick-questions/questi
 import { BillingCourses } from "../components/account/billings/billing-courses";
 import { BillingList } from "../components/account/billings/billing-list";
 import { connect } from "react-redux";
-import { InitiativesList } from "../components/initiative/initiatives-list";
 import { EnterToLecture } from "../components/initiative/enter-lecture";
 import { InitiativesRole } from "../components/initiative/initiatives-role";
 import { InitiativesExam } from "../components/initiative/initiatives-exam";
+import { InitiativesDetails } from "../components/initiative/initiatives-details";
 
 class AppBackground extends Component {
   render() {
@@ -64,7 +64,7 @@ class AppBackground extends Component {
       path.startsWith("/quick-question") ||
       path.startsWith("/question-summary") ||
       path.startsWith("/faq") ||
-      path.startsWith("/initiative/list") ||
+      path.startsWith("/initiative/details") ||
       path.startsWith("/enter-To-Lecture") ||
       path.startsWith("/initiative-role") ||
       path.startsWith("/initiative-exam")
@@ -112,7 +112,10 @@ class MainRouterComponent extends Component {
             <Header />
             <Switch>
               <Route path="/home" component={Home} />
-              <Route path="/initiative/list" component={InitiativesList} />
+              <Route
+                path="/initiative/details"
+                component={InitiativesDetails}
+              />
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
               <Route path="/initiative-role" component={InitiativesRole} />
               <Route path="/initiative-exam" component={InitiativesExam} />
