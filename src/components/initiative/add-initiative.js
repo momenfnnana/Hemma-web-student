@@ -19,7 +19,7 @@ class AddInitiative extends Component {
     return (
       <React.Fragment>
         <Modal
-          backdrop="true"
+          // backdrop="static"
           isOpen={this.props.isModelOpen}
           toggle={this.props.toggleModal}
           className="modal-dialog-centered"

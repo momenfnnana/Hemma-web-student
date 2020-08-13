@@ -19,7 +19,15 @@ class InitiativesRoleComponent extends Component {
                 </h4>
               </div>
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
-                <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center">
+                <Button className="btn w-25 yellow-btn justify-content-center d-flex light-text align-items-center">
+                  <div className="col-md-2 w-25 p-2 pb-0 mb-4 d-flex flex-column center-right">
+                    <img
+                      height="50px"
+                      width="50px"
+                      src={process.env.PUBLIC_URL + "/assets/images/click.png"}
+                      alt="trophy"
+                    />
+                  </div>
                   <h4>اضغط هنا</h4>
                 </Button>
               </div>

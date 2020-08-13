@@ -9,7 +9,7 @@ class ConfirmationAddInitiative extends Component {
     return (
       <React.Fragment>
         <Modal
-          backdrop="true"
+          // backdrop="true"
           isOpen={this.props.isConfirmationModelOpen}
           toggle={this.props.toggleConfirmationModal}
           className="modal-dialog-centered"

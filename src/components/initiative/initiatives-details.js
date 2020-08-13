@@ -3,13 +3,89 @@ import { Link } from "react-router-dom";
 import { ShareInitiatives } from "./share-initiatives";
 import { Button } from "reactstrap";
 import AddInitiative from "./add-initiative";
+import axios from "axios";
+import { apiBaseUrl } from "../../api/helpers";
+import ImportantQuiestions from "./important-questions";
 class InitiativesDetailsComponent extends Component {
   state = {
+    initiative: {},
+    freeLectures: [],
     isModelOpen: false,
+    isImportantQuiestionsModelOpen: false,
   };
+  componentDidMount() {
+    const {
+      match: { params },
+    } = this.props;
+    axios
+      .get(`${apiBaseUrl}/Initiatives/${params.id}`)
+      .then((response) => {
+        console.log(response.data.data);
+        this.setState({
+          details: response.data.data,
+          freeLectures: response.data.data.freeLectures,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
   toggleModal = () => {
     this.setState({ isModelOpen: !this.state.isModelOpen });
   };
+  toggleImportantModal = () => {
+    this.setState({
+      isImportantQuiestionsModelOpen: !this.state
+        .isImportantQuiestionsModelOpen,
+    });
+  };
+
+  renderfreeLecture() {
+    const freeLectures = this.state.freeLectures;
+    console.log(freeLectures);
+    return (
+      <React.Fragment>
+        <div className="row">
+          {freeLectures.map((freeLecture) => {
+            return (
+              <div className="col-lg-6">
+                <div className="lecture-box-layout">
+                  <div className="row">
+                    <div className="col-8 ">
+                      <h5 className="dark-text m-4">{freeLecture.nameAr}</h5>
+                    </div>
+                    <div className="col-4  d-flex align-items-center justify-content-end">
+                      <div className="share-label">
+                        <ShareInitiatives />
+                      </div>
+                    </div>
+                    <div className="col-md-6 d-flex align-items-center justify-content-center">
+                      <h6 className=" ar-text smaller mid-text ">1440/12/18</h6>
+                    </div>
+                    <div className="col-md-6 d-flex align-items-center justify-content-center">
+                      <h6 className=" ar-text smaller mid-text ">10:00 مساء</h6>
+                    </div>
+                    <div className="col-md-12 d-flex flex-column align-items-center justify-content-center center">
+                      <button
+                        onClick={this.toggleModal}
+                        className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3"
+                      >
+                        اشترك
+                      </button>
+                      <AddInitiative
+                        toggleModal={this.toggleModal}
+                        isModelOpen={this.state.isModelOpen}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </React.Fragment>
+    );
+  }
   render() {
     return (
       <React.Fragment>
@@ -23,12 +99,10 @@ class InitiativesDetailsComponent extends Component {
               </div>
             </div>
             <div className="row mb-5">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <div>
-                  <div className="btn w-100 yellow-btn ml-4">
-                    <h3>بالتعاون مع</h3>
-                  </div>
-                </div>
+              <div className="col-md-12  d-flex flex-column align-items-center justify-content-center">
+                <h5 className="dark-text w-50 mb-1 d-flex flex-column align-items-center justify-content-center yellow-div">
+                  بالتعاون مع
+                </h5>
               </div>
             </div>
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
@@ -74,7 +148,7 @@ class InitiativesDetailsComponent extends Component {
               <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
                 <div
                   className="btn w-100 ml-4 label-btn clickable"
-                  onClick={() => window.open("/initiative-role")}
+                  onClick={() => this.props.history.push("/initiative-role")}
                 >
                   <h3>لمعرفة الرتبة التي تم تسكينك عليها</h3>
                 </div>
@@ -82,14 +156,21 @@ class InitiativesDetailsComponent extends Component {
               <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
                 <div
                   className="btn w-100 ml-4 label-btn"
-                  onClick={() => window.open("/initiative-exam")}
+                  onClick={() => this.props.history.push("/initiative-exam")}
                 >
                   <h3>لمعرفة الاختبار المناسب لمؤهلك</h3>
                 </div>
               </div>
               <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
-                <div className="btn w-100 ml-4 label-btn">
+                <div
+                  className="btn w-100 ml-4 label-btn"
+                  onClick={this.toggleImportantModal}
+                >
                   <h3>أهم التساؤلات حول اللائحة التعليمية</h3>
+                  <ImportantQuiestions
+                    toggleImportantModal={this.toggleImportantModal}
+                    isImportantQuiestionsModelOpen={this.state.isImportantQuiestionsModelOpen}
+                  />
                 </div>
               </div>
             </div>
@@ -121,153 +202,7 @@ class InitiativesDetailsComponent extends Component {
         <section className="pt-5">
           <div className="container">
             <div className="row mx-auto d-flex justify-content-center align-items-center mb-5">
-              <div className="col-lg-6">
-                <div className="lecture-box-layout">
-                  <div className="row">
-                    <div className="col-10">
-                      <h5 className="dark-text m-4">
-                        التعريف بالمواد و الرتب والمزايا في اللائحة التعليمية
-                        الجديدة
-                      </h5>
-                    </div>
-                    <div className="col-2  d-flex align-items-center justify-content-end">
-                      <div className="share-label">
-                        <ShareInitiatives />
-                      </div>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">1440/12/18</h6>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">9:00 مساء</h6>
-                    </div>
-                    <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                      <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3">
-                        اشترك
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="lecture-box-layout">
-                  <div className="row">
-                    <div className="col-8 ">
-                      <h5 className="dark-text m-4">
-                        التعريف بالمواد و الرتب والمزايا في اللائحة التعليمية
-                        الجديدة
-                      </h5>
-                    </div>
-                    <div className="col-4  d-flex align-items-center justify-content-end">
-                      <div className="share-label">
-                        <ShareInitiatives />
-                      </div>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">1440/12/18</h6>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">9:00 مساء</h6>
-                    </div>
-                    <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                      <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3">
-                        اشترك
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="lecture-box-layout">
-                  <div className="row">
-                    <div className="col-8 ">
-                      <h5 className="dark-text m-4">
-                        التعريف بالمواد و الرتب والمزايا في اللائحة التعليمية
-                        الجديدة
-                      </h5>
-                    </div>
-                    <div className="col-4  d-flex align-items-center justify-content-end">
-                      <div className="share-label">
-                        <ShareInitiatives />
-                      </div>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">1440/12/18</h6>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">10:00 مساء</h6>
-                    </div>
-                    <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                      <button
-                        onClick={this.toggleModal}
-                        className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3"
-                      >
-                        اشترك
-                      </button>
-                      <AddInitiative
-                        toggleModal={this.toggleModal}
-                        isModelOpen={this.state.isModelOpen}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="lecture-box-layout">
-                  <div className="row">
-                    <div className="col-8 ">
-                      <h5 className="dark-text m-4">
-                        التعريف بالمواد و الرتب والمزايا في اللائحة التعليمية
-                        الجديدة
-                      </h5>
-                    </div>
-                    <div className="col-4  d-flex align-items-center justify-content-end">
-                      <div className="share-label">
-                        <ShareInitiatives />
-                      </div>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">1440/12/18</h6>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">9:00 مساء</h6>
-                    </div>
-                    <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                      <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3">
-                        اشترك
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="lecture-box-layout">
-                  <div className="row">
-                    <div className="col-8 ">
-                      <h5 className="dark-text m-4">
-                        التعريف بالمواد و الرتب والمزايا في اللائحة التعليمية
-                        الجديدة
-                      </h5>
-                    </div>
-                    <div className="col-4  d-flex align-items-center justify-content-end">
-                      <div className="share-label">
-                        <ShareInitiatives />
-                      </div>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">1440/12/18</h6>
-                    </div>
-                    <div className="col-md-6 d-flex align-items-center justify-content-center">
-                      <h6 className=" ar-text smaller mid-text ">9:00 مساء</h6>
-                    </div>
-                    <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                      <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3">
-                        اشترك
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {this.renderfreeLecture()}
             </div>
           </div>
         </section>

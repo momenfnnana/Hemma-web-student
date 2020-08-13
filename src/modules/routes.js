@@ -113,7 +113,7 @@ class MainRouterComponent extends Component {
             <Switch>
               <Route path="/home" component={Home} />
               <Route
-                path="/initiative/details"
+                path="/initiative/details/:id"
                 component={InitiativesDetails}
               />
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
