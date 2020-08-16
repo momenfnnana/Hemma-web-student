@@ -327,7 +327,6 @@ class HomeComponent extends Component {
         },
       ],
     };
-
     const testimonialsSettings = {
       infinite: true,
       slidesToShow: 1,
@@ -450,7 +449,7 @@ class HomeComponent extends Component {
                     وهذا ما حققناه طيلة السنوات الماضية
                   </h6>
                 </div>
-                <div className="col-md-5 white-bg box-layout w-100 p-2 pb-0 mb-4 d-flex flex-column">
+                <div className="col-md-5 white-bg box-layout w-50 p-2 pb-0 mb-4 d-flex flex-column">
                   <Slider {...settings}>
                     <div>
                       <img

@@ -9,7 +9,8 @@ class ImportantQuiestions extends Component {
   render() {
     const settings = {
       infinite: true,
-      speed: 500,
+      autoplay: true,
+      autoplaySpeed: 2000,
       slidesToShow: 1,
       slidesToScroll: 1,
     };

@@ -6,7 +6,9 @@ class AddInitiative extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      nationalId: "",
       isConfirmationModelOpen: false,
+      disabled: true,
     };
   }
 
@@ -15,11 +17,14 @@ class AddInitiative extends Component {
       isConfirmationModelOpen: !this.state.isConfirmationModelOpen,
     });
   };
+  handleChange = (event) => {
+    let value = event.target.value;
+    this.setState({ nationalId: value, disabled: false });
+  };
   render() {
     return (
       <React.Fragment>
         <Modal
-          // backdrop="static"
           isOpen={this.props.isModelOpen}
           toggle={this.props.toggleModal}
           className="modal-dialog-centered"
@@ -36,7 +41,9 @@ class AddInitiative extends Component {
             <ModalBody>
               <input
                 className="w-75 input-model mr-2 en-text pl-3"
+                name="nationalId"
                 type="text"
+                onChange={this.handleChange}
               ></input>
               <div>
                 <label className="dark-text small mb-0 mt-0 label-model">
@@ -48,12 +55,15 @@ class AddInitiative extends Component {
                 <Button
                   onClick={this.toggleConfirmationModal}
                   className="btn w-50 yellow-btn justify-content-center d-flex light-text align-items-center mt-5"
+                  disabled={this.state.disabled}
                 >
                   موافق
                 </Button>
                 <ConfirmationAddInitiative
                   toggleConfirmationModal={this.toggleConfirmationModal}
                   isConfirmationModelOpen={this.state.isConfirmationModelOpen}
+                  nationalId={this.state.nationalId}
+                  id={this.props.id}
                 />
               </div>
             </ModalBody>
