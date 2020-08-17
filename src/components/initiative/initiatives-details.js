@@ -266,7 +266,7 @@ class InitiativesDetailsComponent extends Component {
                   className="btn w-100 ml-4 label-btn clickable"
                   onClick={() => this.props.history.push("/initiative-role")}
                 >
-                  <h3>لمعرفة الرتبة التي تم تسكينك عليها</h3>
+                  <h4>لمعرفة الرتبة التي تم تسكينك عليها</h4>
                 </div>
               </div>
               <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
@@ -274,7 +274,7 @@ class InitiativesDetailsComponent extends Component {
                   className="btn w-100 ml-4 label-btn"
                   onClick={() => this.props.history.push("/initiative-exam")}
                 >
-                  <h3>لمعرفة الاختبار المناسب لمؤهلك</h3>
+                  <h4>لمعرفة الاختبار المناسب لمؤهلك</h4>
                 </div>
               </div>
               <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
@@ -282,7 +282,7 @@ class InitiativesDetailsComponent extends Component {
                   className="btn w-100 ml-4 label-btn"
                   onClick={this.toggleImportantModal}
                 >
-                  <h3>أهم التساؤلات حول اللائحة التعليمية</h3>
+                  <h4>أهم التساؤلات حول اللائحة التعليمية</h4>
                   <ImportantQuiestions
                     toggleImportantModal={this.toggleImportantModal}
                     isImportantQuiestionsModelOpen={
@@ -305,7 +305,7 @@ class InitiativesDetailsComponent extends Component {
               </div>
             </div>
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center blue-btn p-5">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center blue-btn">
                 <Link
                   to="/enter-To-Lecture"
                   className="btn blue-btn justify-content-center d-flex align-items-center"

@@ -162,10 +162,10 @@ class HomeComponent extends Component {
                       src={cat.icon}
                       height="50%"
                       width="50%"
-                      className="contain-img mb-2 font-size-30"
+                      className="contain-img mb-2 "
                       alt={cat.nameAr}
                     />
-                    <h6 className="dark-text text-center mb-0 font-size-30">
+                    <h6 className="dark-text text-center mb-0 ">
                       {cat.nameAr}
                     </h6>
                   </div>
@@ -369,23 +369,15 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
               <div className="col-md-8">
-                <h2 className="dark-text font-size-60">
-                  تحتاج تدريب مكثف لاجتياز اختبارك؟
-                </h2>
-                <h5 className="font-size-30">
+                <h2 className="dark-text">تحتاج تدريب مكثف لاجتياز اختبارك؟</h2>
+                <h5>
                   همه تقدم لك
-                  <span className="blue-text font-size-30">
-                    {" "}
-                    تدريب مكثف عن بعد{" "}
-                  </span>
+                  <span className="blue-text "> تدريب مكثف عن بعد </span>
                   يأهلك لاجتياز الاختبار بأعلى الدرجات
                 </h5>
-                <h5 className="font-size-30">
-                  {" "}
-                  خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين
-                </h5>
+                <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
                 <div className="mt-4">
-                  <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center font-size-20">
+                  <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center">
                     اشترك الان
                   </Button>
                 </div>
@@ -407,7 +399,7 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h2 className="dark-text mb-1 font-size-50">مجالاتنا</h2>
+                <h2 className="dark-text mb-1">مجالاتنا</h2>
               </div>
             </div>
             {this.renderCategories()}
@@ -422,9 +414,7 @@ class HomeComponent extends Component {
                   to={`/initiative/details/${this.state.initiatives.id}`}
                   className="btn blue-btn justify-content-center d-flex align-items-center"
                 >
-                  <h2 className="m-2 font-size-60">
-                    مبادرات همه للتعريف بالائحة التعليمية
-                  </h2>
+                  <h2 className="m-2">مبادرات همه للتعريف بالائحة التعليمية</h2>
                 </Link>
               </div>
             </div>
@@ -434,20 +424,15 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h2 className="dark-text mb-1 font-size-60">مميزاتنا</h2>
-                <p className="font-size-40">
-                  تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة
-                </p>
+                <h2 className="dark-text mb-1">مميزاتنا</h2>
+                <p>تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
               </div>
               <div className="row h-100 d-flex align-items-center">
                 <div className="col-md-7">
-                  <h2 className="dark-text font-size-50">
+                  <h2 className="dark-text">
                     حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
                   </h2>
-                  <h6 className="font-size-30">
-                    {" "}
-                    وهذا ما حققناه طيلة السنوات الماضية
-                  </h6>
+                  <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
                 </div>
                 <div className="col-md-5 white-bg box-layout w-50 p-2 pb-0 mb-4 d-flex flex-column">
                   <Slider {...settings}>
@@ -528,15 +513,9 @@ class HomeComponent extends Component {
                 />
               </div>
               <div className="col-md-6">
-                <h2 className="dark-text font-size-50">
-                  تدريب مكثف وأنت ببيتك
-                </h2>
-                <h5 className="font-size-30">
-                  محتوى شامل يغنيك عن مختلف المراجع
-                </h5>
-                <h5 className="font-size-30">
-                  محاضرات مباشرة تسجل لمتايعتها في اي وقت
-                </h5>
+                <h2 className="dark-text">تدريب مكثف وأنت ببيتك</h2>
+                <h5>محتوى شامل يغنيك عن مختلف المراجع</h5>
+                <h5>محاضرات مباشرة تسجل لمتايعتها في اي وقت</h5>
               </div>
             </div>
           </div>
@@ -545,8 +524,8 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-6">
-                <h2 className="dark-text font-size-50">مناقشات</h2>
-                <h5 className="font-size-30">
+                <h2 className="dark-text">مناقشات</h2>
+                <h5>
                   محدده مسبقا تجمع المدربين والفريق وكل المشاركين ،أرسل
                   استفساراتك وشاركهم بالمناقشة بشكل حي ،كل الماقشات تحفظ للرجوع
                   اليها في أي وقت!
@@ -569,9 +548,7 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
-                <h2 className="dark-text mb-4 font-size-60">
-                  المجموعات المجانية
-                </h2>
+                <h2 className="dark-text mb-4">المجموعات المجانية</h2>
               </div>
             </div>
             {this.renderCategoriesGroup()}
