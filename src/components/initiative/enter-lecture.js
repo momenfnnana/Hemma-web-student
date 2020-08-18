@@ -24,7 +24,7 @@ class EnterToLectureComponent extends Component {
         <hr className="w-50"></hr>
         <section className="pt-5 pb-5">
           <div className="container">
-            <div className="row mx-auto d-flex justify-content-center align-items-center">
+            <div className="row mx-auto d-flex justify-content-center align-items-center w-75">
               <div className="col-lg-3 col-6">
                 <Link
                   target="_blank"
@@ -39,38 +39,34 @@ class EnterToLectureComponent extends Component {
                       width="50%"
                       className="contain-img mb-2"
                     />
-                    <h1 className="dark-text text-center mb-0">
+                    <h3 className="dark-text text-center mb-0">
                       حمل تطبيق Zoom
-                    </h1>
+                    </h3>
                   </div>
                 </Link>
               </div>
               <div className="col-lg-3 col-6">
-                <Link to="">
-                  <div className="categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2">
-                    <div className="btn yellow-btn justify-content-center d-flex light-text align-items-center w-75">
-                      انضم
-                    </div>
-                    <h1 className="dark-text text-center mb-0">
-                      اضغط على طلمة انضم
-                    </h1>
+                <div className="categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center mb-2">
+                  <div className="btn yellow-div justify-content-center d-flex light-text align-items-center w-75">
+                    انضم
                   </div>
-                </Link>
+                  <h3 className="dark-text text-center mb-0">
+                    اضغط على كلمة انضم
+                  </h3>
+                </div>
               </div>
               <div className="col-lg-3 col-6">
-                <Link to="">
-                  <div className="categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                      height="50%"
-                      width="50%"
-                      className="contain-img mb-2"
-                    />
-                    <h1 className="dark-text text-center mb-0">
-                      ادخل اسمك وايميلك
-                    </h1>
-                  </div>
-                </Link>
+                <div className="categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center mb-2">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                    height="50%"
+                    width="50%"
+                    className="contain-img mb-2"
+                  />
+                  <h3 className="dark-text text-center mb-0">
+                    ادخل اسمك وايميلك
+                  </h3>
+                </div>
               </div>
             </div>
           </div>
