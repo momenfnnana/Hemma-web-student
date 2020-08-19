@@ -19,7 +19,14 @@ class InitiativesRoleComponent extends Component {
                 </h4>
               </div>
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
-                <Button className="btn w-25 yellow-btn justify-content-center d-flex light-text align-items-center">
+                <Link
+                  className="btn w-25 yellow-btn justify-content-center d-flex light-text align-items-center"
+                  to={{
+                    pathname:
+                      "https://edu.moe.gov.sa/Wadi/ElectronicServices/Faris/Pages/default.aspx",
+                  }}
+                  target="_blank"
+                >
                   <div className="col-md-2 w-25 p-2 pb-0 mb-4 d-flex flex-column center-right">
                     <img
                       height="50px"
@@ -29,7 +36,7 @@ class InitiativesRoleComponent extends Component {
                     />
                   </div>
                   <h4>اضغط هنا</h4>
-                </Button>
+                </Link>
               </div>
             </div>
           </div>
