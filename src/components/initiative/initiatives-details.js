@@ -317,17 +317,17 @@ class InitiativesDetailsComponent extends Component {
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="dark-text mb-1">
-                  محاضرات مجانية لتوضيح الائحة التعليمية
+                  محاضرات مجانية لتوضيح لائحة الوظائف
                 </h1>
               </div>
             </div>
-            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+            <div className="row w-60 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center blue-btn">
                 <Link
                   to="/enter-To-Lecture"
                   className="btn blue-btn justify-content-center d-flex align-items-center"
                 >
-                  <h2 className="m-2">خطوات المشاهدة للمحاضرات المجانية</h2>
+                  <h2 className="m-2">خطوات مشاهدة المحاضرات المجانية</h2>
                 </Link>
               </div>
             </div>
