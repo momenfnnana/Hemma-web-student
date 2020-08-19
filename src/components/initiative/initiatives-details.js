@@ -122,6 +122,17 @@ class InitiativesDetailsComponent extends Component {
 
   renderfreeLecture() {
     const freeLectures = this.state.freeLectures;
+    let today = new Date();
+    const date =
+      today.getFullYear() +
+      "-" +
+      (today.getMonth() + 1) +
+      "-" +
+      today.getDate();
+    const todayhour = `0${new Date().getHours()}`.slice(-2);
+    const hourtype = todayhour > 12 ? todayhour - 12 : todayhour;
+    const todayTime = hourtype + ":" + `0${new Date().getMinutes()}`.slice(-2);
+    var todayHijriDate = moment(date, "YYYY-MM-DD").format("iYYYY/iM/iD");
     return (
       <React.Fragment>
         <div className="row">
@@ -167,7 +178,9 @@ class InitiativesDetailsComponent extends Component {
                       </h6>
                     </div>
                     <div className="col-md-12 d-flex flex-column align-items-center justify-content-center center">
-                      {freeLecture.isJoined ? (
+                      {freeLecture.isJoined &&
+                      hijriDate === todayHijriDate &&
+                      todayTime >= time ? (
                         <Link
                           className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3"
                           target="_blank"
@@ -175,9 +188,9 @@ class InitiativesDetailsComponent extends Component {
                             pathname: `${freeLecture.broadcastUrl} `,
                           }}
                         >
-                          انضم
+                          انضم الآن
                         </Link>
-                      ) : (
+                      ) : freeLecture.isJoined == false ? (
                         <button
                           onClick={() => {
                             this.onSubmit(freeLecture.initiativeFreeLectureId);
@@ -185,6 +198,10 @@ class InitiativesDetailsComponent extends Component {
                           className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3"
                         >
                           اشترك
+                        </button>
+                      ) : (
+                        <button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3">
+                          تم الانضمام بنجاح
                         </button>
                       )}
                       <AddInitiative
