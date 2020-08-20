@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { apiBaseUrl } from "../../../api/helpers";
 import axios from "axios";
-import ReactMomentCountDown from "react-moment-countdown";
 import swal from "@sweetalert/with-react";
 import { Api } from "../../../api";
 import { SpecificSchools } from "./cases/specific-schools";
@@ -9,6 +8,7 @@ import { NotAllowed } from "./cases/not-allowed";
 import { CityMissing } from "./cases/city-missing";
 import { getCompetitionDetails } from "../../../actions";
 import { connect } from "react-redux";
+import Countdown from "react-countdown-now";
 
 class CompetitionComponent extends Component {
   constructor() {
@@ -22,33 +22,33 @@ class CompetitionComponent extends Component {
       notAllowed: false,
       cityMissing: false,
       specificSchools: false,
-      endCountdown: false
+      endCountdown: false,
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
   }
 
-  onCountdownEnd = attemptId => {
+  onCountdownEnd = (attemptId) => {
     this.setState({ endCountdown: true });
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = {
-      answers: this.state.answers
+      answers: this.state.answers,
     };
     axios
       .put(`${apiBaseUrl}/Competitions/Attempts/${attemptId}`, data, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           numberOfCorrectAnswers: response.data.data.numberOfCorrectAnswers,
           numberOfWrongAnswers: response.data.data.numberOfWrongAnswers,
-          attemptSubmitted: true
+          attemptSubmitted: true,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -60,7 +60,7 @@ class CompetitionComponent extends Component {
       this.props.competition.questions &&
       this.props.competition.questions.length;
     this.setState({
-      selectedQuestion: (this.state.selectedQuestion + 1) % questionsLength
+      selectedQuestion: (this.state.selectedQuestion + 1) % questionsLength,
     });
   };
 
@@ -71,7 +71,7 @@ class CompetitionComponent extends Component {
       this.props.competition.questions &&
       this.props.competition.questions.length;
     this.setState({
-      selectedQuestion: (this.state.selectedQuestion - 1) % questionsLength
+      selectedQuestion: (this.state.selectedQuestion - 1) % questionsLength,
     });
   };
 
@@ -79,10 +79,10 @@ class CompetitionComponent extends Component {
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
-    if (this.state.answers.some(answer => answer.id === id)) {
+    if (this.state.answers.some((answer) => answer.id === id)) {
       answers = [
-        ...this.state.answers.filter(answer => answer.id !== id),
-        answer
+        ...this.state.answers.filter((answer) => answer.id !== id),
+        answer,
       ];
     } else {
       answers = [...this.state.answers, answer];
@@ -96,7 +96,7 @@ class CompetitionComponent extends Component {
         this.props.competition.questions) ||
       [];
     const question = questions[this.state.selectedQuestion];
-    const answer = this.state.answers.find(a => a.id === question.id);
+    const answer = this.state.answers.find((a) => a.id === question.id);
 
     return (
       <React.Fragment>
@@ -111,10 +111,10 @@ class CompetitionComponent extends Component {
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
-                <h6
-                      className="dark-text mb-0 encoded-text"
-                      dangerouslySetInnerHTML={{ __html: question.encodedStem }}
-                    ></h6>
+                  <h6
+                    className="dark-text mb-0 encoded-text"
+                    dangerouslySetInnerHTML={{ __html: question.encodedStem }}
+                  ></h6>
                 </div>
               </div>
             </div>
@@ -129,8 +129,8 @@ class CompetitionComponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    {Object.keys( question.encodedChoices ).map(function(key) {
-                      const value =question.encodedChoices[key]
+                    {Object.keys(question.encodedChoices).map(function(key) {
+                      const value = question.encodedChoices[key];
                       const selected = answer && answer.selectedChoice === key;
                       return (
                         <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
@@ -165,39 +165,39 @@ class CompetitionComponent extends Component {
     );
   }
 
-  submitAnswers = attemptId => {
+  submitAnswers = (attemptId) => {
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = {
-      answers: this.state.answers
+      answers: this.state.answers,
     };
     axios
       .put(`${apiBaseUrl}/Competitions/Attempts/${attemptId}`, data, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           numberOfCorrectAnswers: response.data.data.numberOfCorrectAnswers,
           numberOfWrongAnswers: response.data.data.numberOfWrongAnswers,
-          attemptSubmitted: true
+          attemptSubmitted: true,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
   componentDidMount() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
 
     this.props
       .getCompetitionDetails(params.id)
-      .then(response => {})
-      .catch(error => {
+      .then((response) => {})
+      .catch((error) => {
         switch (error.response.data && error.response.data.message) {
           case "Student City not match the Competition City":
             this.setState({ specificSchools: true });
@@ -217,13 +217,13 @@ class CompetitionComponent extends Component {
       });
   }
 
-  updateCityState = cityMissing => {
+  updateCityState = (cityMissing) => {
     this.setState({ cityMissing: cityMissing });
   };
-  updateSchoolState = specificSchools => {
+  updateSchoolState = (specificSchools) => {
     this.setState({ specificSchools: specificSchools });
   };
-  updateDuplicateState = notAllowed => {
+  updateDuplicateState = (notAllowed) => {
     this.setState({ notAllowed: notAllowed });
   };
 
@@ -275,9 +275,10 @@ class CompetitionComponent extends Component {
                         {this.state.endCountdown ? (
                           "00:00:00"
                         ) : (
-                          <ReactMomentCountDown
-                            toDate={new Date(new Date(dueDate + "+0000"))}
-                            onCountdownEnd={this.onCountdownEnd}
+                          <Countdown
+                            date={new Date(new Date(dueDate + "+0000"))}
+                            onComplete={this.onCountdownEnd}
+                            daysInHours="false"
                           />
                         )}
 
@@ -427,12 +428,12 @@ class CompetitionComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    competition: state.competition
+    competition: state.competition,
   };
 }
 
 const actionCreators = {
-  getCompetitionDetails
+  getCompetitionDetails,
 };
 
 export const Competition = connect(

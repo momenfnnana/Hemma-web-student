@@ -8,7 +8,6 @@ import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
-import ReactMomentCountDown from "react-moment-countdown";
 import Slider from "react-slick";
 import { ExamFail } from "../exams/exam-fail";
 import { TrainingPass } from "./training-pass";
@@ -35,7 +34,7 @@ class TrainingExamDetailsComponent extends Component {
       endCountdown: false,
       isChecked: false,
       isCorrect: false,
-      correctAnswer: ""
+      correctAnswer: "",
     };
     this.onInput = this.onInput.bind(this);
     this.correct = this.correct.bind(this);
@@ -46,7 +45,7 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion + 1) % this.state.questions.length,
-      isCorrect: false
+      isCorrect: false,
     });
   };
 
@@ -54,14 +53,14 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion - 1) % this.state.questions.length,
-      isCorrect: false
+      isCorrect: false,
     });
   };
 
-  goTo = questionId => {
+  goTo = (questionId) => {
     this.setState({
       selectedQuestion: questionId - 1,
-      isCorrect: false
+      isCorrect: false,
     });
   };
 
@@ -69,10 +68,10 @@ class TrainingExamDetailsComponent extends Component {
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
-    if (this.state.answers.some(answer => answer.id === id)) {
+    if (this.state.answers.some((answer) => answer.id === id)) {
       answers = [
-        ...this.state.answers.filter(answer => answer.id !== id),
-        answer
+        ...this.state.answers.filter((answer) => answer.id !== id),
+        answer,
       ];
     } else {
       answers = [...this.state.answers, answer];
@@ -92,7 +91,7 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({ isConfirmExamOpen: false });
   };
 
-  openHintModal = id => {
+  openHintModal = (id) => {
     this.setState({ isHintOpen: true, selectedQuestionId: id });
   };
   closeHintModal = () => {
@@ -103,24 +102,24 @@ class TrainingExamDetailsComponent extends Component {
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     axios
       .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Sheet`, { headers })
-      .then(response => {
+      .then((response) => {
         this.setState({
           questions: response.data.data.questions,
           examDetails: response.data.data,
-          correctAnswer: response.data.data.answers
+          correctAnswer: response.data.data.answers,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     this.setState({
       nav1: this.slider1,
-      nav2: this.slider2
+      nav2: this.slider2,
     });
   };
 
@@ -128,17 +127,17 @@ class TrainingExamDetailsComponent extends Component {
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = {
-      answers: this.state.answers
+      answers: this.state.answers,
     };
     console.log(data);
     axios
       .post(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Submission`, data, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.data.status == "Pass") {
           this.setState({ status: "Pass", isConfirmExamOpen: false });
         } else if (response.data.data.status == "Fail") {
@@ -146,16 +145,16 @@ class TrainingExamDetailsComponent extends Component {
         }
         axios
           .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Scorecard`, {
-            headers
+            headers,
           })
-          .then(response => {
+          .then((response) => {
             this.setState({ scoreDetails: response.data.data });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isConfirmExamOpen: false });
         console.log(error);
       });
@@ -192,7 +191,7 @@ class TrainingExamDetailsComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
-    const answer = this.state.answers.find(a => a.id === question.id);
+    const answer = this.state.answers.find((a) => a.id === question.id);
     const correctAnswers = this.state.correctAnswer;
     const correctAnswer = correctAnswers[question.id - 1];
     const correct = this.state.isCorrect;
@@ -208,10 +207,10 @@ class TrainingExamDetailsComponent extends Component {
             <div className="row p-4 pb-2">
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
-                <h6
-                      className="dark-text mb-0 encoded-text"
-                      dangerouslySetInnerHTML={{ __html: question.encodedStem }}
-                    ></h6>
+                  <h6
+                    className="dark-text mb-0 encoded-text"
+                    dangerouslySetInnerHTML={{ __html: question.encodedStem }}
+                  ></h6>
                 </div>
               </div>
             </div>
@@ -230,8 +229,10 @@ class TrainingExamDetailsComponent extends Component {
                       )}
                       <div className="row">
                         <div className="col-md-12">
-                          {Object.keys( question.encodedChoices ).map(function(key) {
-                            const value =question.encodedChoices[key]
+                          {Object.keys(question.encodedChoices).map(function(
+                            key
+                          ) {
+                            const value = question.encodedChoices[key];
                             return (
                               <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
                                 <input
@@ -255,7 +256,8 @@ class TrainingExamDetailsComponent extends Component {
                                 ></label>
                               </div>
                             );
-                          }, this)}
+                          },
+                          this)}
                         </div>
                       </div>
                     </div>
@@ -288,8 +290,9 @@ class TrainingExamDetailsComponent extends Component {
                         ) : null}
                       </div>
                       {Object.keys(question.encodedChoices).map(function(key) {
-                        const value = question.encodedChoices[key]
-                        const selected = answer && answer.selectedChoice === key;
+                        const value = question.encodedChoices[key];
+                        const selected =
+                          answer && answer.selectedChoice === key;
                         return (
                           <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
                             <input
@@ -337,12 +340,12 @@ class TrainingExamDetailsComponent extends Component {
         width: "35%",
         height: "auto",
         borderWidth: 0,
-        padding: 20
+        padding: 20,
       },
       overlay: {
         backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 2
-      }
+        zIndex: 2,
+      },
     };
 
     const questionsLength = this.state.questions.length;
@@ -361,7 +364,7 @@ class TrainingExamDetailsComponent extends Component {
       infinite: false,
       slidesToShow: questionsLength,
       speed: 500,
-      rtl: true
+      rtl: true,
     };
     return (
       <React.Fragment>
@@ -451,7 +454,7 @@ class TrainingExamDetailsComponent extends Component {
                     <div className="question-item">
                       <Slider
                         asNavFor={this.state.nav1}
-                        ref={slider => (this.slider2 = slider)}
+                        ref={(slider) => (this.slider2 = slider)}
                         slidesToShow={3.5}
                         swipeToSlide={true}
                         focusOnSelect={true}
@@ -522,12 +525,12 @@ class TrainingExamDetailsComponent extends Component {
 function mapStateToProps(state) {
   return {
     formValues:
-      state.form.TrainingExamDetails && state.form.TrainingExamDetails.values
+      state.form.TrainingExamDetails && state.form.TrainingExamDetails.values,
   };
 }
 
 TrainingExamDetailsComponent = reduxForm({
-  form: "TrainingExamDetails"
+  form: "TrainingExamDetails",
 })(TrainingExamDetailsComponent);
 
 TrainingExamDetailsComponent = connect(mapStateToProps)(

@@ -10,9 +10,8 @@ import { ExamFail } from "./exam-fail";
 import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
-import ReactMomentCountDown from "react-moment-countdown";
 import Slider from "react-slick";
-import moment from "moment";
+import Countdown from "react-countdown-now";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -30,7 +29,7 @@ class ExamDetailsComponent extends Component {
       selectedQuestionId: null,
       selectedQuestion: 0,
       endCountdown: false,
-      isChecked: false
+      isChecked: false,
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
@@ -45,16 +44,16 @@ class ExamDetailsComponent extends Component {
       const attemptId = this.props.match.params.attemptId;
       let token = localStorage.getItem("token");
       let headers = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       };
       let data = {
-        answers: this.state.answers
+        answers: this.state.answers,
       };
       axios
         .post(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Submission`, data, {
-          headers
+          headers,
         })
-        .then(response => {
+        .then((response) => {
           if (response.data.data.status == "Pass") {
             this.setState({ status: "Pass", isConfirmExamOpen: false });
           } else if (response.data.data.status == "Fail") {
@@ -62,16 +61,16 @@ class ExamDetailsComponent extends Component {
           }
           axios
             .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Scorecard`, {
-              headers
+              headers,
             })
-            .then(response => {
+            .then((response) => {
               this.setState({ scoreDetails: response.data.data });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           this.setState({ isConfirmExamOpen: false });
           console.log(error);
         });
@@ -83,20 +82,20 @@ class ExamDetailsComponent extends Component {
   goToNext = () => {
     this.setState({
       selectedQuestion:
-        (this.state.selectedQuestion + 1) % this.state.questions.length
+        (this.state.selectedQuestion + 1) % this.state.questions.length,
     });
   };
 
   goToPrevious = () => {
     this.setState({
       selectedQuestion:
-        (this.state.selectedQuestion - 1) % this.state.questions.length
+        (this.state.selectedQuestion - 1) % this.state.questions.length,
     });
   };
 
-  goTo = questionId => {
+  goTo = (questionId) => {
     this.setState({
-      selectedQuestion: questionId - 1
+      selectedQuestion: questionId - 1,
     });
   };
 
@@ -104,10 +103,10 @@ class ExamDetailsComponent extends Component {
     const id = questionId;
     const answer = { id, selectedChoice };
     let answers;
-    if (this.state.answers.some(answer => answer.id === id)) {
+    if (this.state.answers.some((answer) => answer.id === id)) {
       answers = [
-        ...this.state.answers.filter(answer => answer.id !== id),
-        answer
+        ...this.state.answers.filter((answer) => answer.id !== id),
+        answer,
       ];
     } else {
       answers = [...this.state.answers, answer];
@@ -123,7 +122,7 @@ class ExamDetailsComponent extends Component {
     this.setState({ isConfirmExamOpen: false });
   };
 
-  openHintModal = id => {
+  openHintModal = (id) => {
     this.setState({ isHintOpen: true, selectedQuestionId: id });
   };
   closeHintModal = () => {
@@ -134,23 +133,23 @@ class ExamDetailsComponent extends Component {
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     axios
       .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Sheet`, { headers })
-      .then(response => {
+      .then((response) => {
         this.setState({
           questions: response.data.data.questions,
-          examDetails: response.data.data
+          examDetails: response.data.data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     this.setState({
       nav1: this.slider1,
-      nav2: this.slider2
+      nav2: this.slider2,
     });
   };
 
@@ -158,16 +157,16 @@ class ExamDetailsComponent extends Component {
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     let data = {
-      answers: this.state.answers
+      answers: this.state.answers,
     };
     axios
       .post(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Submission`, data, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.data.status == "Pass") {
           this.setState({ status: "Pass", isConfirmExamOpen: false });
         } else if (response.data.data.status == "Fail") {
@@ -175,16 +174,16 @@ class ExamDetailsComponent extends Component {
         }
         axios
           .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Scorecard`, {
-            headers
+            headers,
           })
-          .then(response => {
+          .then((response) => {
             this.setState({ scoreDetails: response.data.data });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isConfirmExamOpen: false });
         console.log(error);
       });
@@ -221,7 +220,7 @@ class ExamDetailsComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
-    const answer = this.state.answers.find(a => a.id === question.id);
+    const answer = this.state.answers.find((a) => a.id === question.id);
     return (
       <React.Fragment>
         {question && (
@@ -236,7 +235,7 @@ class ExamDetailsComponent extends Component {
                   <h6
                     className="dark-text mb-0 encoded-text"
                     dangerouslySetInnerHTML={{
-                      __html: question.encodedStem
+                      __html: question.encodedStem,
                     }}
                   ></h6>
                 </div>
@@ -317,12 +316,12 @@ class ExamDetailsComponent extends Component {
         width: "35%",
         height: "auto",
         borderWidth: 0,
-        padding: 20
+        padding: 20,
       },
       overlay: {
         backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 2
-      }
+        zIndex: 2,
+      },
     };
 
     const questionsLength = this.state.questions.length;
@@ -341,7 +340,7 @@ class ExamDetailsComponent extends Component {
       infinite: false,
       slidesToShow: questionsLength,
       speed: 500,
-      rtl: true
+      rtl: true,
     };
     return (
       <React.Fragment>
@@ -380,9 +379,10 @@ class ExamDetailsComponent extends Component {
                         {this.state.endCountdown ? (
                           "00:00:00"
                         ) : (
-                          <ReactMomentCountDown
-                            toDate={new Date(new Date(dueDate + "+0000"))}
-                            onCountdownEnd={this.onCountdownEnd}
+                          <Countdown
+                            date={new Date(new Date(dueDate + "+0000"))}
+                            onComplete={this.onCountdownEnd}
+                            daysInHours="false"
                           />
                         )}
                       </p>
@@ -452,7 +452,7 @@ class ExamDetailsComponent extends Component {
                     <div className="question-item">
                       <Slider
                         asNavFor={this.state.nav1}
-                        ref={slider => (this.slider2 = slider)}
+                        ref={(slider) => (this.slider2 = slider)}
                         slidesToShow={3.5}
                         swipeToSlide={true}
                         focusOnSelect={true}
@@ -522,12 +522,12 @@ class ExamDetailsComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.ExamDetails && state.form.ExamDetails.values
+    formValues: state.form.ExamDetails && state.form.ExamDetails.values,
   };
 }
 
 ExamDetailsComponent = reduxForm({
-  form: "ExamDetails"
+  form: "ExamDetails",
 })(ExamDetailsComponent);
 
 ExamDetailsComponent = connect(mapStateToProps)(ExamDetailsComponent);
