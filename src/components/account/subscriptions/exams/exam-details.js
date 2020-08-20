@@ -344,7 +344,6 @@ class ExamDetailsComponent extends Component {
     };
     const isSafari = navigator.userAgent.toLowerCase().indexOf("safari/");
 
-    console.log(isSafari);
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
