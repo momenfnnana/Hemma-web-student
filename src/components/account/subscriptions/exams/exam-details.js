@@ -342,6 +342,8 @@ class ExamDetailsComponent extends Component {
       speed: 500,
       rtl: true,
     };
+    const isSafari = navigator.userAgent.toLowerCase().indexOf("safari/");
+
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
@@ -379,11 +381,21 @@ class ExamDetailsComponent extends Component {
                         {this.state.endCountdown ? (
                           "00:00:00"
                         ) : (
-                          <Countdown
-                            date={new Date(new Date(dueDate + "+0000"))}
-                            onComplete={this.onCountdownEnd}
-                            daysInHours="false"
-                          />
+                          <>
+                            {isSafari === 104 ? (
+                              <Countdown
+                                date={new Date(new Date(dueDate))}
+                                onComplete={this.onCountdownEnd}
+                                daysInHours="false"
+                              />
+                            ) : (
+                              <Countdown
+                                date={new Date(new Date(dueDate + "+0000"))}
+                                onComplete={this.onCountdownEnd}
+                                daysInHours="false"
+                              />
+                            )}
+                          </>
                         )}
                       </p>
                     </div>
