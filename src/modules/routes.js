@@ -7,7 +7,7 @@ import {
   Route,
   Switch,
   Redirect,
-  withRouter
+  withRouter,
 } from "react-router-dom";
 
 import { Verification } from "../components/verification/verification";
@@ -38,6 +38,10 @@ import { QuestionSummary } from "../components/categories/quick-questions/questi
 import { BillingCourses } from "../components/account/billings/billing-courses";
 import { BillingList } from "../components/account/billings/billing-list";
 import { connect } from "react-redux";
+import { EnterToLecture } from "../components/initiative/enter-lecture";
+import { InitiativesRole } from "../components/initiative/initiatives-role";
+import { InitiativesExam } from "../components/initiative/initiatives-exam";
+import { InitiativesDetails } from "../components/initiative/initiatives-details";
 
 class AppBackground extends Component {
   render() {
@@ -47,7 +51,7 @@ class AppBackground extends Component {
     let imgPosition = null;
 
     if (path === "/home") {
-      img = "home-bg.png";
+      img = "pages-bg.png";
       imgSize = "100%";
       imgPosition = "center top";
     } else if (
@@ -59,7 +63,11 @@ class AppBackground extends Component {
       path.startsWith("/quick-questions") ||
       path.startsWith("/quick-question") ||
       path.startsWith("/question-summary") ||
-      path.startsWith("/faq")
+      path.startsWith("/faq") ||
+      path.startsWith("/initiative/details") ||
+      path.startsWith("/enter-To-Lecture") ||
+      path.startsWith("/initiative-role") ||
+      path.startsWith("/initiative-exam")
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
@@ -84,7 +92,7 @@ class AppBackground extends Component {
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: imgSize,
-          backgroundPosition: imgPosition
+          backgroundPosition: imgPosition,
         }}
       >
         {this.props.children}
@@ -104,12 +112,18 @@ class MainRouterComponent extends Component {
             <Header />
             <Switch>
               <Route path="/home" component={Home} />
+              <Route
+                path="/initiative/details/:id"
+                component={InitiativesDetails}
+              />
+              <Route path="/enter-To-Lecture" component={EnterToLecture} />
+              <Route path="/initiative-role" component={InitiativesRole} />
+              <Route path="/initiative-exam" component={InitiativesExam} />
               {!this.props.authenticated ? (
-              <Route path="/auth" component={Auth} />
-              ):(
-                <Redirect from="/auth"  to="/course/content" />
+                <Route path="/auth" component={Auth} />
+              ) : (
+                <Redirect from="/auth" to="/course/content" />
               )}
-              {/* <Route path="/auth" component={Auth}/> */}
               <Route
                 path="/verify"
                 exact
@@ -192,7 +206,7 @@ class MainRouterComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
   };
 }
 

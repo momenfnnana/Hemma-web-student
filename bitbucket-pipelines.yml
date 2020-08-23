@@ -1,4 +1,12 @@
 pipelines:
+  default:
+    - step:
+        name: Build
+        image: node:12.18.1
+        script:
+          - unset CI
+          - yarn
+          - yarn build
   branches:
     staging:  
     - step:
