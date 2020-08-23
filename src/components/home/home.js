@@ -155,7 +155,7 @@ class HomeComponent extends Component {
                 >
                   <div
                     key={cat.id}
-                    className="categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2"
+                    className="home-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2"
                   >
                     <img
                       key={cat.id}
@@ -165,9 +165,9 @@ class HomeComponent extends Component {
                       className="contain-img mb-2 "
                       alt={cat.nameAr}
                     />
-                    <h6 className="dark-text text-center mb-0 ">
+                    <h4 className="dark-text text-center mb-2 ">
                       {cat.nameAr}
-                    </h6>
+                    </h4>
                   </div>
                 </Link>
               </div>
@@ -222,9 +222,7 @@ class HomeComponent extends Component {
                     />
                   </div>
                   <div className="col-lg-8 p-0 ml-2">
-                    <h5 className="text-center mb-2 mt-2">
-                      {categoryGroup.name}
-                    </h5>
+                    <h5 className="text-center pt-4">{categoryGroup.name}</h5>
                     <h6>{categoryGroup.description}</h6>
                   </div>
                 </div>
@@ -387,7 +385,7 @@ class HomeComponent extends Component {
                   src={
                     process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
                   }
-                  width="100%"
+                  width="175%"
                   className="contain-img d-md-block d-none d-sm-none"
                   alt="artwork"
                 />
@@ -395,7 +393,7 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section>
-        <section className="categories-section pt-0">
+        <section className="categories-section pt-0 mb-5">
           <div className="container">
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
@@ -408,7 +406,7 @@ class HomeComponent extends Component {
 
         <section className="pt-1">
           <div className="container">
-            <div className="row mx-auto d-flex justify-content-center align-items-center">
+            <div className="row mx-auto d-flex justify-content-center align-items-center w-60">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
                 <Link
                   to={`/initiative/details/${this.state.initiatives.id}`}
@@ -423,7 +421,7 @@ class HomeComponent extends Component {
         <section className="pt-4">
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
                 <h2 className="dark-text mb-1">مميزاتنا</h2>
                 <p>تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
               </div>
@@ -563,7 +561,7 @@ class HomeComponent extends Component {
                     <h6 className="dark-text testimonials-title">قالوا عنا</h6>
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
-                      className="contain-img"
+                      className="testimonial-contain-img"
                       width="100%"
                       height="150"
                       alt="testimonials"
