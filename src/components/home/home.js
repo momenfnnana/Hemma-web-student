@@ -143,7 +143,7 @@ class HomeComponent extends Component {
         <div className="row mx-auto d-flex justify-content-center align-items-center">
           {cats.map((cat, i) => {
             return (
-              <div className="col-lg-3 col-6" key={cat.id}>
+              <div className="col-lg-3 col-6 mr-1" key={cat.id}>
                 <Link
                   to={{
                     pathname: `/categories/details/${cat.slug}`,
@@ -295,8 +295,8 @@ class HomeComponent extends Component {
   render() {
     const settings = {
       infinite: false,
-      slidesToShow: 3,
-      slidesToScroll: 3,
+      slidesToShow: 1,
+      slidesToScroll: 2,
       autoplay: true,
       autoplaySpeed: 2000,
       responsive: [
@@ -329,8 +329,6 @@ class HomeComponent extends Component {
       infinite: true,
       slidesToShow: 1,
       slidesToScroll: 1,
-      autoplay: true,
-      autoplaySpeed: 2500,
       fade: true,
       dots: true,
       arrows: false,
@@ -375,7 +373,7 @@ class HomeComponent extends Component {
                 </h5>
                 <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
                 <div className="mt-4">
-                  <Button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center">
+                  <Button className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center">
                     اشترك الان
                   </Button>
                 </div>
@@ -406,7 +404,7 @@ class HomeComponent extends Component {
 
         <section className="pt-1">
           <div className="container">
-            <div className="row mx-auto d-flex justify-content-center align-items-center w-60">
+            <div className="row mx-auto d-flex justify-content-center align-items-center w-75">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
                 <Link
                   to={`/initiative/details/${this.state.initiatives &&
@@ -426,14 +424,14 @@ class HomeComponent extends Component {
                 <h2 className="dark-text mb-1">مميزاتنا</h2>
                 <p>تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
               </div>
-              <div className="row h-100 d-flex align-items-center">
-                <div className="col-md-7">
+              <div className="row h-100 d-flex align-items-center mb-3">
+                <div className="col-md-7 col-12">
                   <h2 className="dark-text">
                     حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
                   </h2>
                   <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
                 </div>
-                <div className="col-md-5 white-bg box-layout w-50 p-2 pb-0 mb-4 d-flex flex-column">
+                <div className="col-md-5 col-12 white-bg slider-box">
                   <Slider {...settings}>
                     <div>
                       <img
@@ -441,9 +439,9 @@ class HomeComponent extends Component {
                           process.env.PUBLIC_URL +
                           "/assets/images/male-avatar.png"
                         }
-                        width="100%"
-                        height="100%"
-                        className="contain-img d-md-block d-none d-sm-none"
+                        width="50%"
+                        height="50%"
+                        className="contain-img "
                         alt="artwork"
                       />
                     </div>
@@ -452,9 +450,9 @@ class HomeComponent extends Component {
                         src={
                           process.env.PUBLIC_URL + "/assets/images/comments.png"
                         }
-                        width="100%"
-                        height="100%"
-                        className="contain-img d-md-block d-none d-sm-none"
+                        width="50%"
+                        height="50%"
+                        className="contain-img"
                         alt="artwork"
                       />
                     </div>
@@ -464,9 +462,9 @@ class HomeComponent extends Component {
                           process.env.PUBLIC_URL +
                           "/assets/images/female-avatar.png"
                         }
-                        width="100%"
-                        height="100%"
-                        className="contain-img d-md-block d-none d-sm-none"
+                        width="50%"
+                        height="50%"
+                        className="contain-img"
                         alt="artwork"
                       />
                     </div>
@@ -475,9 +473,9 @@ class HomeComponent extends Component {
                         src={
                           process.env.PUBLIC_URL + "/assets/images/smiley.png"
                         }
-                        width="100%"
-                        height="100%"
-                        className="contain-img d-md-block d-none d-sm-none"
+                        width="50%"
+                        height="50%"
+                        className="contain-img"
                         alt="artwork"
                       />
                     </div>
@@ -486,9 +484,9 @@ class HomeComponent extends Component {
                         src={
                           process.env.PUBLIC_URL + "/assets/images/smile.png"
                         }
-                        width="100%"
-                        height="100%"
-                        className="contain-img d-md-block d-none d-sm-none"
+                        width="50%"
+                        height="50%"
+                        className="contain-img"
                         alt="artwork"
                       />
                     </div>
@@ -498,7 +496,7 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section>
-        <section className="hero-section">
+        <section>
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-6 d-flex align-items-center justify-content-center">

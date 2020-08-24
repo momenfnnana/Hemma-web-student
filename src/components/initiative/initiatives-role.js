@@ -27,8 +27,9 @@ class InitiativesRoleComponent extends Component {
                   }}
                   target="_blank"
                 >
-                  <div className="col-md-2 w-25 p-2 pb-0 mb-4 d-flex flex-column center-right">
+                  <div className=" col-md-2 w-25 p-2 pb-0 mb-4 center-right d-md-block d-none">
                     <img
+                      className="d-none d-md-block"
                       height="50px"
                       width="50px"
                       src={process.env.PUBLIC_URL + "/assets/images/click.png"}
@@ -48,40 +49,40 @@ class InitiativesRoleComponent extends Component {
                 <div className="number-circle">
                   <h4 className="en-text">1</h4>
                 </div>
-                <div className={"ar-text role-groups mb-0 w-50" + " light-bg"}>
-                  <h5 className=" mb-0 pl-5">الدخول الى نظام فارس</h5>
+                <div className={"ar-text role-groups mb-0 w-75" + " light-bg"}>
+                  <h6 className=" mb-0 pl-5">الدخول الى نظام فارس</h6>
                 </div>
               </div>
               <div className="col-md-12 d-flex align-items-center justify-content-center mt-4">
                 <div className="number-circle">
                   <h4 className="en-text">2</h4>
                 </div>
-                <div className={"ar-text role-groups mb-0 w-50" + " light-bg"}>
-                  <h5 className=" mb-0 pl-5">صلاحية الخدمة الذاتية للموظف</h5>
+                <div className={"ar-text role-groups mb-0 w-75" + " light-bg"}>
+                  <h6 className=" mb-0 pl-5">صلاحية الخدمة الذاتية للموظف</h6>
                 </div>
               </div>
               <div className="col-md-12 d-flex align-items-center justify-content-center mt-4">
                 <div className="number-circle">
                   <h4 className="en-text">3</h4>
                 </div>
-                <div className={"ar-text role-groups mb-0 w-50" + " light-bg"}>
-                  <h5 className=" mb-0 pl-5">الرواتب والبدلات</h5>
+                <div className={"ar-text role-groups mb-0 w-75" + " light-bg"}>
+                  <h6 className=" mb-0 pl-5">الرواتب والبدلات</h6>
                 </div>
               </div>
               <div className="col-md-12 d-flex align-items-center justify-content-center mt-4">
                 <div className="number-circle">
                   <h4 className="en-text">4</h4>
                 </div>
-                <div className={"ar-text role-groups mb-0 w-50" + " light-bg"}>
-                  <h5 className=" mb-0 pl-5">تفاصيل الموظف</h5>
+                <div className={"ar-text role-groups mb-0 w-75" + " light-bg"}>
+                  <h6 className=" mb-0 pl-5">تفاصيل الموظف</h6>
                 </div>
               </div>
               <div className="col-md-12 d-flex align-items-center justify-content-center mt-4">
                 <div className="number-circle">
                   <h4 className="en-text">5</h4>
                 </div>
-                <div className={"ar-text role-groups mb-0 w-50" + " light-bg"}>
-                  <h5 className=" mb-0 pl-5">الوظيفة</h5>
+                <div className={"ar-text role-groups mb-0 w-75" + " light-bg"}>
+                  <h6 className=" mb-0 pl-5">الوظيفة</h6>
                 </div>
               </div>
             </div>

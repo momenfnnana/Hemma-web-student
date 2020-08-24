@@ -28,8 +28,9 @@ class InitiativesExamComponent extends Component {
                   }}
                   target="_blank"
                 >
-                  <div className="col-md-2 w-25 p-2 pb-0 mb-4 d-flex flex-column center-right">
+                  <div className="col-md-2 w-25 p-2 pb-0 mb-4 center-right d-md-block d-none">
                     <img
+                      className="d-none d-md-block"
                       height="50px"
                       width="50px"
                       src={process.env.PUBLIC_URL + "/assets/images/click.png"}
@@ -48,8 +49,9 @@ class InitiativesExamComponent extends Component {
                   }}
                   target="_blank"
                 >
-                  <div className="col-md-2 w-25 p-2 pb-0 mb-4 d-flex flex-column center-right">
+                  <div className="col-md-2 w-25 p-2 pb-0 mb-4 center-right d-md-block d-none">
                     <img
+                      className="d-none d-md-block"
                       height="50px"
                       width="50px"
                       src={process.env.PUBLIC_URL + "/assets/images/click.png"}
