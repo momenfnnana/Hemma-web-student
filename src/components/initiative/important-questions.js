@@ -9,8 +9,6 @@ class ImportantQuiestions extends Component {
   render() {
     const settings = {
       infinite: true,
-      autoplay: true,
-      autoplaySpeed: 5000,
       slidesToShow: 1,
       slidesToScroll: 1,
     };
@@ -37,7 +35,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/1.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img"
                     alt="artwork"
                   />
                 </div>
@@ -46,7 +44,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/2.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -55,7 +53,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/3.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -64,7 +62,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/4.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -73,7 +71,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/5.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -82,7 +80,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/6.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -91,7 +89,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/7.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -100,7 +98,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/8.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -109,7 +107,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/9.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -118,7 +116,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/10.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -127,7 +125,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/11.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -136,7 +134,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/12.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
@@ -145,7 +143,7 @@ class ImportantQuiestions extends Component {
                     src={process.env.PUBLIC_URL + "/assets/images/13.jpg"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img "
                     alt="artwork"
                   />
                 </div>
