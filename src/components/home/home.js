@@ -375,9 +375,12 @@ class HomeComponent extends Component {
                 </h5>
                 <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
                 <div className="mt-4">
-                  <Button className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center">
+                  <Link
+                    className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center"
+                    to="/categories"
+                  >
                     اشترك الان
-                  </Button>
+                  </Link>
                 </div>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-center">
