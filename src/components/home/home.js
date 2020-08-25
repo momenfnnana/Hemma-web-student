@@ -363,7 +363,7 @@ class HomeComponent extends Component {
 
     return (
       <React.Fragment>
-        <section className="hero-section">
+        <section>
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
               <div className="col-md-8">
@@ -385,9 +385,9 @@ class HomeComponent extends Component {
               <div className="col-md-3 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-1.png"
                   }
-                  width="190%"
+                  width="150%"
                   className="contain-img d-md-block d-none d-sm-none"
                   alt="artwork"
                 />
@@ -436,12 +436,22 @@ class HomeComponent extends Component {
                   <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
                 </div>
                 <div className="col-md-5 white-bg box-layout w-50 p-2 pb-0 mb-4 d-flex flex-column">
-                  <Slider {...settings}>
+                  <div>
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/slider-2.png"
+                      }
+                      width="100%"
+                      height="100%"
+                      className="contain-img d-md-block d-none d-sm-none"
+                      alt="artwork"
+                    />
+                  </div>
+                  {/* <Slider {...settings}>
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/male-avatar.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="100%"
                         height="100%"
@@ -452,7 +462,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/comments.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="100%"
                         height="100%"
@@ -463,8 +473,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/female-avatar.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="100%"
                         height="100%"
@@ -475,7 +484,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/smiley.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="100%"
                         height="100%"
@@ -483,18 +492,7 @@ class HomeComponent extends Component {
                         alt="artwork"
                       />
                     </div>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/smile.png"
-                        }
-                        width="100%"
-                        height="100%"
-                        className="contain-img d-md-block d-none d-sm-none"
-                        alt="artwork"
-                      />
-                    </div>
-                  </Slider>
+                  </Slider> */}
                 </div>
               </div>
             </div>
@@ -506,7 +504,7 @@ class HomeComponent extends Component {
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-2.png"
                   }
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
@@ -535,7 +533,7 @@ class HomeComponent extends Component {
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-3.png"
                   }
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
