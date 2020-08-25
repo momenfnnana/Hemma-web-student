@@ -182,7 +182,7 @@ class InitiativesDetailsComponent extends Component {
                       hijriDate === todayHijriDate &&
                       todayTime >= time ? (
                         <Link
-                          className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3"
+                          className="btn  yellow-btn justify-content-center d-flex light-text align-items-center m-3"
                           target="_blank"
                           to={{
                             pathname: `${freeLecture.broadcastUrl} `,
@@ -195,12 +195,12 @@ class InitiativesDetailsComponent extends Component {
                           onClick={() => {
                             this.onSubmit(freeLecture.initiativeFreeLectureId);
                           }}
-                          className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3"
+                          className="btn yellow-btn justify-content-center d-flex light-text align-items-center m-3"
                         >
                           اشترك
                         </button>
                       ) : (
-                        <button className="btn w-20 yellow-btn justify-content-center d-flex light-text align-items-center m-3">
+                        <button className="btn  yellow-btn justify-content-center d-flex light-text align-items-center m-3">
                           تم الانضمام بنجاح
                         </button>
                       )}
@@ -232,45 +232,45 @@ class InitiativesDetailsComponent extends Component {
               </div>
             </div>
             <div className="row mb-5">
-              <div className="col-md-12  d-flex flex-column align-items-center justify-content-center">
+              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <h5 className="dark-text w-50 mb-1 d-flex flex-column align-items-center justify-content-center yellow-div">
                   بالتعاون مع
                 </h5>
               </div>
             </div>
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-lg-4 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
                 <div className="categories-box-layout">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                     width="100%"
                     height="100%"
-                    className="contain-img d-md-block d-none d-sm-none"
+                    className="contain-img"
                     alt="artwork"
                   />
                 </div>
               </div>
-              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-lg-4 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
                 <div>
                   <div className="categories-box-layout">
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                       width="100%"
                       height="100%"
-                      className="contain-img d-md-block d-none d-sm-none"
+                      className="contain-img"
                       alt="artwork"
                     />
                   </div>
                 </div>
               </div>
-              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-lg-4 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
                 <div>
                   <div className="categories-box-layout">
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                       width="100%"
                       height="100%"
-                      className="contain-img d-md-block d-none d-sm-none"
+                      className="contain-img"
                       alt="artwork"
                     />
                   </div>
@@ -278,7 +278,7 @@ class InitiativesDetailsComponent extends Component {
               </div>
             </div>
             <div className="row mt-5 mb-5">
-              <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center mb-2">
                 <div
                   className="btn w-100 ml-4 label-btn clickable"
                   onClick={() => this.props.history.push("/initiative-role")}
@@ -286,7 +286,7 @@ class InitiativesDetailsComponent extends Component {
                   <h4>لمعرفة الرتبة التي تم تسكينك عليها</h4>
                 </div>
               </div>
-              <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center mb-2">
                 <div
                   className="btn w-100 ml-4 label-btn"
                   onClick={() => this.props.history.push("/initiative-exam")}
@@ -294,7 +294,7 @@ class InitiativesDetailsComponent extends Component {
                   <h4>لمعرفة الاختبار المناسب لمؤهلك</h4>
                 </div>
               </div>
-              <div className="col-md-4 d-flex flex-column align-items-center justify-content-center">
+              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center">
                 <div
                   className="btn w-100 ml-4 label-btn"
                   onClick={this.toggleImportantModal}
@@ -321,7 +321,7 @@ class InitiativesDetailsComponent extends Component {
                 </h1>
               </div>
             </div>
-            <div className="row w-60 mx-auto d-flex justify-content-center align-items-center">
+            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center blue-btn">
                 <Link
                   to="/enter-To-Lecture"

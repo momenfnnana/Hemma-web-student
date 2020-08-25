@@ -21,18 +21,18 @@ class EnterToLectureComponent extends Component {
             </div>
           </div>
         </section>
-        <hr className="w-50"></hr>
+        <hr className="w-70"></hr>
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-lg-3 col-6">
+              <div className="col-lg-3 col-12">
                 <Link
                   target="_blank"
                   to={{
                     pathname: "https://zoom.us/download",
                   }}
                 >
-                  <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable m-2">
+                  <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2">
                     <img
                       src={
                         process.env.PUBLIC_URL +
@@ -49,12 +49,10 @@ class EnterToLectureComponent extends Component {
                   </div>
                 </Link>
               </div>
-              <div className="col-lg-3 col-6">
+              <div className="col-lg-3 col-12">
                 <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center m-2">
                   <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/zoom-logo@3x.png"
-                    }
+                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                     height="50%"
                     width="50%"
                     className="contain-img mb-4"
@@ -67,7 +65,7 @@ class EnterToLectureComponent extends Component {
                   </h5>
                 </div>
               </div>
-              <div className="col-lg-3 col-6">
+              <div className="col-lg-3 col-12">
                 <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center m-2">
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
