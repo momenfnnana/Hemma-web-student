@@ -241,6 +241,15 @@ class HeaderComponent extends Component {
                             </NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
+                            <NavLink
+                              className="nav-link mid-text"
+                              activeClassName="active"
+                              to="/certificates"
+                            >
+                              الشهادات
+                            </NavLink>
+                          </DropdownItem>
+                          <DropdownItem className="p-0">
                             <a
                               className="nav-link clickable mid-text"
                               onClick={this.logout}

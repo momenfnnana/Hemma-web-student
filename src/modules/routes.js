@@ -42,6 +42,7 @@ import { EnterToLecture } from "../components/initiative/enter-lecture";
 import { InitiativesRole } from "../components/initiative/initiatives-role";
 import { InitiativesExam } from "../components/initiative/initiatives-exam";
 import { InitiativesDetails } from "../components/initiative/initiatives-details";
+import { CertificatesList } from "../components/account/certificates/certificates-list";
 
 class AppBackground extends Component {
   render() {
@@ -164,6 +165,11 @@ class MainRouterComponent extends Component {
               <Route path="/cart/checkout" component={requireAuth(Checkout)} />
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
+              <Route
+                path="/certificates"
+                exact
+                component={requireAuth(CertificatesList)}
+              />
               <Route
                 path="/billing"
                 exact
