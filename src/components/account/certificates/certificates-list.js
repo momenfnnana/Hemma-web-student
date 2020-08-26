@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
-import { withRouter } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
 import { Table } from "reactstrap";
 
@@ -45,7 +45,12 @@ class CertificatesListComponent extends Component {
         );
         return (
           <tr className="text-center" key={certificate.id}>
-            <td className="light-font-text dark-silver-text small">
+            <td
+              className="light-font-text dark-silver-text small clickable"
+              onClick={() => {
+                this.props.history.push(`/certificate/${certificate.id}`);
+              }}
+            >
               {certificate.courseOrLectureName}
             </td>
             <td className="dark-silver-text small">

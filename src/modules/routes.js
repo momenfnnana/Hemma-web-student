@@ -43,6 +43,8 @@ import { InitiativesRole } from "../components/initiative/initiatives-role";
 import { InitiativesExam } from "../components/initiative/initiatives-exam";
 import { InitiativesDetails } from "../components/initiative/initiatives-details";
 import { CertificatesList } from "../components/account/certificates/certificates-list";
+import { Certificate } from "../components/account/certificates/certificate";
+import { Preparing } from "../components/account/certificates/preparing";
 
 class AppBackground extends Component {
   render() {
@@ -169,6 +171,16 @@ class MainRouterComponent extends Component {
                 path="/certificates"
                 exact
                 component={requireAuth(CertificatesList)}
+              />
+              <Route
+                path="/InitiativeFreeLectures/:id/preparing"
+                exact
+                component={requireAuth(Preparing)}
+              />
+              <Route
+                path="/certificate/:id"
+                exact
+                component={requireAuth(Certificate)}
               />
               <Route
                 path="/billing"
