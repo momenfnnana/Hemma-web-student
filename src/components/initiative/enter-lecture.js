@@ -34,14 +34,18 @@ class EnterToLectureComponent extends Component {
                 >
                   <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2">
                     <img
-                      src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/zoom-logo@3x.png"
+                      }
                       height="50%"
                       width="50%"
                       className="contain-img mb-2"
                     />
-                    <h3 className="dark-text text-center mb-0">
-                      حمل تطبيق Zoom
-                    </h3>
+                    <h5 className="dark-text text-center mb-0">
+                      <span className="en-text">1- </span>
+                      حمل تطبيق Zoom.. دون تسجيل الدخول فيه
+                    </h5>
                   </div>
                 </Link>
               </div>
@@ -69,9 +73,10 @@ class EnterToLectureComponent extends Component {
                     width="50%"
                     className="contain-img mb-2"
                   />
-                  <h3 className="dark-text text-center mb-0">
+                  <h5 className="dark-text text-center mb-0">
+                    <span className="en-text">3- </span>
                     ادخل اسمك وايميلك
-                  </h3>
+                  </h5>
                 </div>
               </div>
             </div>

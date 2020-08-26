@@ -361,11 +361,13 @@ class HomeComponent extends Component {
 
     return (
       <React.Fragment>
-        <section className="hero-section">
+        <section>
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
               <div className="col-md-8">
-                <h2 className="dark-text">تحتاج تدريب مكثف لاجتياز اختبارك؟</h2>
+                <h2 className="dark-text mb-5">
+                  تحتاج تدريب مكثف لاجتياز اختبارك؟
+                </h2>
                 <h5>
                   همه تقدم لك
                   <span className="blue-text "> تدريب مكثف عن بعد </span>
@@ -373,17 +375,20 @@ class HomeComponent extends Component {
                 </h5>
                 <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
                 <div className="mt-4">
-                  <Button className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center">
+                  <Link
+                    className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center"
+                    to="/categories"
+                  >
                     اشترك الان
-                  </Button>
+                  </Link>
                 </div>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-1.png"
                   }
-                  width="175%"
+                  width="150%"
                   className="contain-img d-md-block d-none d-sm-none"
                   alt="artwork"
                 />
@@ -407,7 +412,8 @@ class HomeComponent extends Component {
             <div className="row mx-auto d-flex justify-content-center align-items-center w-75">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
                 <Link
-                  to={`/initiative/details/${this.state.initiatives.id}`}
+                  to={`/initiative/details/${this.state.initiatives &&
+                    this.state.initiatives.id}`}
                   className="btn blue-btn justify-content-center d-flex align-items-center"
                 >
                   <h2 className="m-2">مبادرات همه للتعريف بالائحة التعليمية</h2>
@@ -430,6 +436,19 @@ class HomeComponent extends Component {
                   </h2>
                   <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
                 </div>
+                <div className="col-md-5 white-bg box-layout w-50 p-2 pb-0 mb-4 d-flex flex-column">
+                  <div>
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/slider-2.png"
+                      }
+                      width="100%"
+                      height="100%"
+                      className="contain-img d-md-block d-none d-sm-none"
+                      alt="artwork"
+                    />
+                  </div>
+                  {/* <Slider {...settings}>
                 <div className="col-md-5 col-12 white-bg slider-box">
                   <Slider {...settings}>
                     <div>
@@ -447,7 +466,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/comments.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="50%"
                         height="50%"
@@ -458,8 +477,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/female-avatar.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="50%"
                         height="50%"
@@ -470,7 +488,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/smiley.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="50%"
                         height="50%"
@@ -481,7 +499,7 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/smile.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
                         }
                         width="50%"
                         height="50%"
@@ -489,7 +507,7 @@ class HomeComponent extends Component {
                         alt="artwork"
                       />
                     </div>
-                  </Slider>
+                  </Slider> */}
                 </div>
               </div>
             </div>
@@ -501,7 +519,7 @@ class HomeComponent extends Component {
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-2.png"
                   }
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
@@ -516,7 +534,7 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section>
-        <section className="hero-section">
+        {/* <section className="hero-section">
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-6">
@@ -530,7 +548,7 @@ class HomeComponent extends Component {
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-3.png"
                   }
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
@@ -539,7 +557,7 @@ class HomeComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         <section className="pt-0">
           <div className="container">
             <div className="row mb-3">
