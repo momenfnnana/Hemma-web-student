@@ -126,52 +126,54 @@ class CertificateComponent extends Component {
                 />
               </div>
               <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
-                <h1 className="ultra-text">
-                  <span className="dark-text"> شهادة الحضور </span>
-                  Certificate
+                <h1 className="ultra-text display-2">
+                  <span className="dark-text bustan-text"> شهادة الحضور </span>
+                  <span className="bickham-text">Certificate</span>
                 </h1>
               </div>
-              <div className="col-md-12 col-sm-12 mt-2">
-                <h4 className="ultra-text">
+              <div className="col-md-12 col-sm-12 mt-2 align-items-center justify-content-center d-flex flex-column">
+                <h4 className="ultra-green-text sans-text">
                   تشهد الإدارة العام للتعليم بمنطقة الرياض الممثلة في وحدة
                   ارتقاء تعليم الرياض
                 </h4>
               </div>
-              <div className="col-md-6 col-sm-6 d-flex flex-column mt-2">
-                <h5 className="dark-text">
+              <div className="col-md-6 col-sm-6 mt-2 align-items-center justify-content-center d-flex flex-column">
+                <h5 className="dark-text sans-text">
                   بأن المتدرب/ <span>{this.state.details.name}</span>
                 </h5>
               </div>
               <div className="col-md-6 col-sm-6 d-flex flex-column a mt-2">
-                <h5 className="dark-text">
+                <h5 className="dark-text sans-text">
                   بموجب رقم الهوية/
                   <span>{this.state.details.nationalId}</span>
                 </h5>
               </div>
 
               <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
-                <h3 className="ultra-text">
+                <h3 className="ultra-green-text sans-text">
                   قد حضر دورة تدريبية عن بعد بعنوان
                 </h3>
               </div>
-              <div className="col-md-12 col-sm-12 mt-2">
-                <h2 className="dark-text">
+              <div className="col-md-12 col-sm-12 mt-2 align-items-center justify-content-center d-flex flex-column">
+                <h1 className="dark-text sans-text ">
                   {this.state.details.courseOrLectureName}{" "}
-                </h2>
+                </h1>
               </div>
               <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
-                <h5>
+                <h5 className="sans-text">
                   في يوم {dayName} الموافق {hijriDate} بإجمالي ثلاث ساعات
                   تدريبية
                 </h5>
               </div>
               <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
-                <h3 className="ultra-text">متمنين له التوفيق</h3>
+                <h3 className="ultra-green-text sans-text ">
+                  متمنين له التوفيق
+                </h3>
               </div>
               <div className="col-md-12 col-sm-12 d-flex flex-column align-items-end justify-content-end mt-2">
-                <h6>
+                <h6 className="sans-text">
                   مساعد المدير العام للشؤون التعليمية
-                  <span className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-1">
+                  <span className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-1 sans-text">
                     أ/ عبدالله بن سعدالغانم
                   </span>
                 </h6>
