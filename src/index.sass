@@ -12,6 +12,7 @@ $light-purple: #ddd6f2
 $light-yellow: #FDE67B
 $light-blue: #A8EBEF
 $ultra-blue: #249db0
+$green-text: #199f8f
 
 @font-face 
     font-family: GessLight 
@@ -27,7 +28,18 @@ $ultra-blue: #249db0
     src: url("/assets/fonts/MontserratMedium.ttf")
 @font-face 
     font-family: MontserratRegular
-    src: url("/assets/fonts/MontserratRegular.ttf")          
+    src: url("/assets/fonts/MontserratRegular.ttf")
+
+@font-face 
+    font-family: BickhamRegular
+    src: url("/assets/fonts/BickhamRegular.ttf")      
+@font-face 
+    font-family: BustanBold
+    src: url("/assets/fonts/BustanBold.ttf")      
+@font-face 
+    font-family: TheSansArabBold
+    src: url("/assets/fonts/TheSansArabBold.ttf")    
+
 html,body 
     font-family: "GessMedium" 
     direction: rtl
@@ -97,7 +109,13 @@ p
 .en-text
     font-family: MontserratMedium
 .ar-text
-    font-family: "GessMedium"        
+    font-family: "GessMedium"
+.bickham-text
+    font-family: "BickhamRegular" 
+.bustan-text
+    font-family: "BustanBold"    
+.sans-text
+    font-family: "TheSansArabBold"                  
 .popover
     font-family: "GessMedium"    
 .dark-text
@@ -128,7 +146,9 @@ p
 .light-silver-text
     color: #fbfbfb
 .green-text
-    color: #109201            
+    color: #109201   
+.ultra-green-text
+    color: $green-text         
 .dark-bg
     background: $dark-blue
 .mid-bg
@@ -443,8 +463,8 @@ a.btn
     border: 1px solid $silver
     border-radius: 5px
     background-color: $white
-    max-width: 330px;
-    margin-right: 20px; 
+    max-width: 330px
+    margin-right: 20px
 .question-box-layout
     border: 1px solid #2bc3cc
     border-radius: 20px
@@ -456,19 +476,22 @@ a.btn
 .initiative-categories-box-layout
     border: 1px solid #2bc3cc
     border-radius: 20px
-    min-height: 300px;
+    min-height: 300px
     padding: 5px
+
+
 .certificate-box
     background-image: url("/assets/images/frame.png")
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-origin: content-box;
+    background-position: center
+    background-size: cover
+    background-repeat: no-repeat
+    background-origin: content-box
+
 .home-categories-box-layout
-    border: 3px solid #2bc3cc;
-    border-radius: 30px;
-    height: 250px;
-    width: 200px;
+    border: 3px solid #2bc3cc
+    border-radius: 30px
+    height: 250px
+    width: 200px
 
 .slick-prev:before, .slick-next:before
     color: $dark-blue
