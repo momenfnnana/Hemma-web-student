@@ -158,7 +158,7 @@ class InitiativesDetailsComponent extends Component {
             return (
               <div className="col-lg-6">
                 <div className="lecture-box-layout">
-                  <div className="row">
+                  <div className="row ">
                     <div className="col-8 ">
                       <h5 className="dark-text m-4">{freeLecture.nameAr}</h5>
                     </div>
@@ -227,7 +227,7 @@ class InitiativesDetailsComponent extends Component {
             <div className="row mb-4">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="dark-text mb-1">
-                  مبادرات همة للتعريف بالائحة التعليمية
+                  مبادرات همة للتعريف بلائحة الوظائف التعليمية
                 </h1>
               </div>
             </div>
@@ -299,7 +299,7 @@ class InitiativesDetailsComponent extends Component {
                   className="btn w-100 ml-4 label-btn"
                   onClick={this.toggleImportantModal}
                 >
-                  <h4>أهم التساؤلات حول اللائحة التعليمية</h4>
+                  <h4>أهم التساؤلات حول لائحة الوظائف التعليمية الجديدة</h4>
                   <ImportantQuiestions
                     toggleImportantModal={this.toggleImportantModal}
                     isImportantQuiestionsModelOpen={
@@ -317,7 +317,7 @@ class InitiativesDetailsComponent extends Component {
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="dark-text mb-1">
-                  محاضرات مجانية لتوضيح لائحة الوظائف
+                  محاضرات مجانية لتوضيح لائحة الوظائف التعليمية الجديدة
                 </h1>
               </div>
             </div>

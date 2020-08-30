@@ -23,114 +23,114 @@ class HomeComponent extends Component {
       courses: [],
       testimonials: [],
       initiatives: [],
-      categoryGroups: []
+      categoryGroups: [],
     };
   }
 
   componentDidMount() {
     axios
       .get(`${apiBaseUrl}/categories`)
-      .then(response => {
+      .then((response) => {
         this.setState({ categories: response.data.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/courses/recent`)
-      .then(response => {
+      .then((response) => {
         this.setState({ courses: response.data.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/ratings/testimonials`)
-      .then(response => {
+      .then((response) => {
         this.setState({ testimonials: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/Initiatives/singleInitiative`)
-      .then(response => {
+      .then((response) => {
         this.setState({ initiatives: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/CategoryGroups/random`)
-      .then(response => {
+      .then((response) => {
         this.setState({ categoryGroups: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
   renderCourses() {
-    return this.state.courses.map(course => (
+    return this.state.courses.map((course) => (
       <Card key={course.id} course={course} />
     ));
   }
-  responseGoogle = response => {
+  responseGoogle = (response) => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
     };
     if (!response.accessToken) return;
     axios
       .post(`${apiBaseUrl}/auth/login_with_google`, data)
-      .then(response => {
+      .then((response) => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
-      .catch(error => {
+      .catch((error) => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
 
         this.props.history.push("/auth/register");
       });
   };
 
-  responseFacebook = response => {
+  responseFacebook = (response) => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
     };
     if (!response.accessToken) return;
     axios
       .post(`${apiBaseUrl}/auth/login_with_facebook`, data)
-      .then(response => {
+      .then((response) => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
         this.props.history.push("/auth/register");
       });
   };
   twitterLogin = async () => {
     loginWithTwitter()
-      .then(token => {
+      .then((token) => {
         localStorage.setItem("token", token);
         window.location = "/";
       })
-      .catch(error => {
+      .catch((error) => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
         this.props.history.push("/auth/register");
       });
@@ -148,8 +148,8 @@ class HomeComponent extends Component {
                   to={{
                     pathname: `/categories/details/${cat.slug}`,
                     state: {
-                      catId: cat.id
-                    }
+                      catId: cat.id,
+                    },
                   }}
                   key={cat.id}
                 >
@@ -189,7 +189,7 @@ class HomeComponent extends Component {
         "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
         "error",
         {
-          button: "متابعة"
+          button: "متابعة",
         }
       );
     }
@@ -199,7 +199,7 @@ class HomeComponent extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          {categoryGroups.map(categoryGroup => {
+          {categoryGroups.map((categoryGroup) => {
             return (
               <div className="col-lg-4 col-md-6" key={categoryGroup.id}>
                 <div
@@ -235,7 +235,7 @@ class HomeComponent extends Component {
   }
 
   renderTestimonials() {
-    return this.state.testimonials.map(testimonial => {
+    return this.state.testimonials.map((testimonial) => {
       let currentDate = new Date();
       let getCurrentDate =
         currentDate.getFullYear() +
@@ -296,7 +296,7 @@ class HomeComponent extends Component {
     const settings = {
       infinite: false,
       slidesToShow: 1,
-      slidesToScroll: 2,
+      slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 2000,
       responsive: [
@@ -305,25 +305,25 @@ class HomeComponent extends Component {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
-            infinite: false
-          }
+            infinite: false,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            initialSlide: 2
-          }
+            initialSlide: 2,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
     const testimonialsSettings = {
       infinite: true,
@@ -338,34 +338,36 @@ class HomeComponent extends Component {
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            infinite: false
-          }
+            infinite: false,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            initialSlide: 1
-          }
+            initialSlide: 1,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1
-          }
-        }
-      ]
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
 
     return (
       <React.Fragment>
-        <section className="hero-section">
+        <section>
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
               <div className="col-md-8">
-                <h2 className="dark-text">تحتاج تدريب مكثف لاجتياز اختبارك؟</h2>
+                <h2 className="dark-text mb-5">
+                  تحتاج تدريب مكثف لاجتياز اختبارك؟
+                </h2>
                 <h5>
                   همه تقدم لك
                   <span className="blue-text "> تدريب مكثف عن بعد </span>
@@ -373,17 +375,20 @@ class HomeComponent extends Component {
                 </h5>
                 <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
                 <div className="mt-4">
-                  <Button className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center">
+                  <Link
+                    className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center"
+                    to="/categories"
+                  >
                     اشترك الان
-                  </Button>
+                  </Link>
                 </div>
               </div>
               <div className="col-md-3 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-1.png"
                   }
-                  width="175%"
+                  width="150%"
                   className="contain-img d-md-block d-none d-sm-none"
                   alt="artwork"
                 />
@@ -402,7 +407,7 @@ class HomeComponent extends Component {
           </div>
         </section>
 
-        <section className="pt-1">
+        {/* <section className="pt-1">
           <div className="container">
             <div className="row mx-auto d-flex justify-content-center align-items-center w-75">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
@@ -416,7 +421,7 @@ class HomeComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         <section className="pt-4">
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
@@ -436,10 +441,9 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/male-avatar.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider1.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img "
                         alt="artwork"
@@ -448,9 +452,9 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/comments.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider2.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img"
                         alt="artwork"
@@ -459,10 +463,9 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/female-avatar.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider3.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img"
                         alt="artwork"
@@ -471,20 +474,9 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/smiley.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider4.jpg"
                         }
-                        width="50%"
-                        height="50%"
-                        className="contain-img"
-                        alt="artwork"
-                      />
-                    </div>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/smile.png"
-                        }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img"
                         alt="artwork"
@@ -502,7 +494,7 @@ class HomeComponent extends Component {
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-2.png"
                   }
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
@@ -517,7 +509,7 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section>
-        <section className="hero-section">
+        {/* <section className="hero-section">
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-6">
@@ -531,7 +523,7 @@ class HomeComponent extends Component {
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
                   src={
-                    process.env.PUBLIC_URL + "/assets/images/home-artwork.png"
+                    process.env.PUBLIC_URL + "/assets/images/home-image-3.png"
                   }
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
@@ -540,7 +532,7 @@ class HomeComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         <section className="pt-0">
           <div className="container">
             <div className="row mb-3">
@@ -581,7 +573,7 @@ class HomeComponent extends Component {
 }
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
   };
 }
 
