@@ -296,7 +296,7 @@ class HomeComponent extends Component {
     const settings = {
       infinite: false,
       slidesToShow: 1,
-      slidesToScroll: 2,
+      slidesToScroll: 1,
       autoplay: true,
       autoplaySpeed: 2000,
       responsive: [
@@ -436,28 +436,14 @@ class HomeComponent extends Component {
                   </h2>
                   <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
                 </div>
-                <div className="col-md-5 white-bg box-layout w-50 p-2 pb-0 mb-4 d-flex flex-column">
-                  <div>
-                    <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/slider-2.png"
-                      }
-                      width="100%"
-                      height="100%"
-                      className="contain-img d-md-block d-none d-sm-none"
-                      alt="artwork"
-                    />
-                  </div>
-                  {/* <Slider {...settings}>
                 <div className="col-md-5 col-12 white-bg slider-box">
                   <Slider {...settings}>
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/male-avatar.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider1.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img "
                         alt="artwork"
@@ -466,9 +452,9 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider2.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img"
                         alt="artwork"
@@ -477,9 +463,9 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider3.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img"
                         alt="artwork"
@@ -488,26 +474,15 @@ class HomeComponent extends Component {
                     <div>
                       <img
                         src={
-                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
+                          process.env.PUBLIC_URL + "/assets/images/slider4.jpg"
                         }
-                        width="50%"
+                        width="100%"
                         height="50%"
                         className="contain-img"
                         alt="artwork"
                       />
                     </div>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/slider-3.png"
-                        }
-                        width="50%"
-                        height="50%"
-                        className="contain-img"
-                        alt="artwork"
-                      />
-                    </div>
-                  </Slider> */}
+                  </Slider>
                 </div>
               </div>
             </div>

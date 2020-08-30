@@ -68,7 +68,7 @@ class CertificateComponent extends Component {
         d-none d-md-block"
         >
           <div className="d-flex align-items-center justify-content-center ">
-            <div className="container px-5">
+            <div className="container">
               <div className="row">
                 <div className="col-12 mt-5 mb-1">
                   <ReactToPrint
@@ -105,72 +105,72 @@ class CertificateComponent extends Component {
               <div className="col-md-12 col-sm-12 mt-5">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/edu-gov.jpg"}
-                  width="31%"
-                  height="55%"
+                  width="30%"
+                  height="50%"
                   className="contain-img "
                   alt="artwork"
                 />
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/ertqa.jpg"}
-                  width="31%"
-                  height="55%"
+                  width="30%"
+                  height="50%"
                   className="contain-img "
                   alt="artwork"
                 />
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/hemma.jpg"}
-                  width="32%"
-                  height="45%"
+                  width="30%"
+                  height="50%"
                   className="contain-img "
                   alt="artwork"
                 />
               </div>
-              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
+              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="ultra-text display-2">
                   <span className="dark-text bustan-text"> شهادة الحضور </span>
                   <span className="bickham-text">Certificate</span>
                 </h1>
               </div>
-              <div className="col-md-12 col-sm-12 mt-2 align-items-center justify-content-center d-flex flex-column">
+              <div className="col-md-12 col-sm-12 mt-1 align-items-center justify-content-center d-flex flex-column">
                 <h4 className="ultra-green-text sans-text">
                   تشهد الإدارة العام للتعليم بمنطقة الرياض الممثلة في وحدة
                   ارتقاء تعليم الرياض
                 </h4>
               </div>
-              <div className="col-md-6 col-sm-6 mt-2 align-items-center justify-content-center d-flex flex-column">
+              <div className="col-md-6 col-sm-6 mt-1 align-items-center justify-content-center d-flex flex-column">
                 <h5 className="dark-text sans-text">
                   بأن المتدرب/ <span>{this.state.details.name}</span>
                 </h5>
               </div>
-              <div className="col-md-6 col-sm-6 d-flex flex-column a mt-2">
+              <div className="col-md-6 col-sm-6 d-flex flex-column a mt-1">
                 <h5 className="dark-text sans-text">
                   بموجب رقم الهوية/
                   <span>{this.state.details.nationalId}</span>
                 </h5>
               </div>
 
-              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
+              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-1">
                 <h3 className="ultra-green-text sans-text">
                   قد حضر دورة تدريبية عن بعد بعنوان
                 </h3>
               </div>
-              <div className="col-md-12 col-sm-12 mt-2 align-items-center justify-content-center d-flex flex-column">
+              <div className="col-md-12 col-sm-12 mt-1 align-items-center justify-content-center d-flex flex-column">
                 <h1 className="dark-text sans-text ">
                   {this.state.details.courseOrLectureName}{" "}
                 </h1>
               </div>
-              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
+              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-1">
                 <h5 className="sans-text">
                   في يوم {dayName} الموافق {hijriDate} بإجمالي ثلاث ساعات
                   تدريبية
                 </h5>
               </div>
-              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-2">
+              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-1">
                 <h3 className="ultra-green-text sans-text ">
                   متمنين له التوفيق
                 </h3>
               </div>
-              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-end justify-content-end mt-2">
+              <div className="col-md-12 col-sm-12 d-flex flex-column align-items-end justify-content-end mt-1">
                 <h6 className="sans-text">
                   مساعد المدير العام للشؤون التعليمية
                   <span className="col-md-12 col-sm-12 d-flex flex-column align-items-center justify-content-center mt-1 sans-text">

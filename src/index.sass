@@ -14,7 +14,7 @@ $light-blue: #A8EBEF
 $ultra-blue: #249db0
 $green-text: #199f8f
 
-@font-face 
+@font-face
     font-family: GessLight 
     src: url("/assets/fonts/GESSLight.otf") 
 @font-face 
@@ -359,10 +359,10 @@ a.btn
         border: 1px solid $light-blue
         color: $dark-blue
 .light-blue-btn
-    background-color: $light-blue;
-    border-color: $light-blue;
-    width: 100%;
-    margin-bottom: 4%;
+    background-color: $light-blue
+    border-color: $light-blue
+    width: 100%
+    margin-bottom: 4%
     &:hover, &:focus
         background-color: $light-blue
         border: 1px solid $light-blue
@@ -518,7 +518,13 @@ a.btn
 .accordion__title:hover
     transition: background-color ease-out 0.3s
 .btn-width
-    width: 120px      
+    width: 120px 
+@media print
+@page
+    size: auto;
+    margin: 0mm;
+
+
 @media only screen and (max-width: 767px)
     .btn-width
         width: unset
@@ -556,17 +562,17 @@ a.btn
     border-radius: 20px
     min-height: 140px
     width: 100%
-    margin-bottom: 20px;
+    margin-bottom: 20px
     background-image: linear-gradient(to bottom, #79ccda, #8a9cd2)
     h5, h6
         text-align: center !important
         margin-top: 20 !important
         color: $white !important
 .label-btn
-    background-color: #4A3985;
-    border: 1px solid #4A3985;
-    border-radius: 50px;
-    color: white;
+    background-color: #4A3985
+    border: 1px solid #4A3985
+    border-radius: 50px
+    color: white
     &:hover, &:focus
         background-color: #4A3985
         border: 1px solid $white
@@ -575,11 +581,11 @@ a.btn
     border: 1px solid #2bc3cc
     border-radius: 20px
     height: 150px
-    margin-bottom: 40px;
+    margin-bottom: 40px
 .share-label
     background-color: #FDE67B
-    width: 35px;
-    height: 35px;
+    width: 35px
+    height: 35px
     border-radius: 50px
     display: inline-flex
     align-items: center
@@ -589,31 +595,31 @@ a.btn
         height: 23px
         width: 100%
 .testimonials-title
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    text-align: center;
-    font-size: 40px;
-    padding-left: 45px;
+    position: absolute
+    top: 50%
+    width: 100%
+    text-align: center
+    font-size: 40px
+    padding-left: 45px
 
 .font-size-40
     font-size: 40px
 
 .center 
-    position: absolute;
-    bottom: 8px;
-    text-align: center;
-    font-size: 18px;
+    position: absolute
+    bottom: 8px
+    text-align: center
+    font-size: 18px
 
 .bottom-left 
-    position: absolute;
-    bottom: -109px;
-    left: 62px;
+    position: absolute
+    bottom: -109px
+    left: 62px
     .center 
 .center-right
-    position: absolute;
-    right: 425px;
-    top: 0px;
+    position: absolute
+    right: 425px
+    top: 0px
 
 .yellow-div
     border-radius: 50px
