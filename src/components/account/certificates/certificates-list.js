@@ -11,22 +11,21 @@ moment().format("iYYYY/iM/iD");
 
 class CertificatesListComponent extends Component {
   state = {
-    certificates: [],
+    certificates: []
   };
   componentDidMount() {
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
     axios
       .get(`${apiBaseUrl}/certificates`, { headers })
-      .then((response) => {
-        console.log(response);
+      .then(response => {
         this.setState({
-          certificates: response.data.data,
+          certificates: response.data.data
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -34,7 +33,7 @@ class CertificatesListComponent extends Component {
   renderCertificates() {
     const certificates = this.state.certificates;
     if (certificates) {
-      return certificates.map((certificate) => {
+      return certificates.map(certificate => {
         const date = new Date(certificate.date);
         var day = date.getDate();
         var month = date.getMonth() + 1;
