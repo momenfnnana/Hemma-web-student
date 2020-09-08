@@ -48,6 +48,9 @@ import { Preparing } from "../components/account/certificates/preparing";
 import { StartExam } from "../components/categories/quick-questions/exams/start-exam";
 import { ExamDetails } from "../components/categories/quick-questions/exams/exam-details";
 import { ExamResult } from "../components/categories/quick-questions/exams/exam-result";
+import { StartTrainingExam } from "../components/categories/quick-questions/training/start-training";
+import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
+import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
 
 class AppBackground extends Component {
   render() {
@@ -151,7 +154,7 @@ class MainRouterComponent extends Component {
                 component={StartExam}
               />
               <Route
-                path="/categories/quick-questions/:categoryGroupId/exam/details/:id"
+                path="/categories/:slug/:categoryGroupId/exam/details/:id"
                 exact
                 component={ExamDetails}
               />
@@ -159,6 +162,21 @@ class MainRouterComponent extends Component {
                 path="/categories/quick-questions/:categoryGroupId/exam/:id/result"
                 exact
                 component={ExamResult}
+              />
+              <Route
+                path="/categories/:slug/:categoryGroupId/training/:id"
+                exact
+                component={StartTrainingExam}
+              />
+              <Route
+                path="/categories/:slug/:categoryGroupId/training/details/:id"
+                exact
+                component={TrainingExamDetails}
+              />
+              <Route
+                path="/categories/quick-questions/:categoryGroupId/training/:id/result"
+                exact
+                component={TrainingResult}
               />
               <Route
                 path="/categories/details/:slug/competition/:id"

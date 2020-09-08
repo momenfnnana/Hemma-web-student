@@ -255,8 +255,9 @@ export class QuickQuestions extends Component {
       });
   }
   renderTraining() {
+    const slug = this.props.match.params.slug;
     const training = this.state.training || [];
-    const categoryGroupIdId = this.props.match.params.categoryGroupIdId;
+    const categoryGroupId = this.props.match.params.categoryGroupId;
     return training.map((tra) => {
       return (
         <React.Fragment>
@@ -272,8 +273,7 @@ export class QuickQuestions extends Component {
             </td>
             <td>
               <Link
-                // to={`/course/content/${courseId}/exam/training/${tra.id}`}
-                to=""
+                to={`/categories/${slug}/${categoryGroupId}/training/${tra.id}`}
                 className="badge dark-bg text-white w-100"
               >
                 اختبر الآن

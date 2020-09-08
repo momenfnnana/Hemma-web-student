@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-export class ExamPass extends Component {
+export class TrainingPass extends Component {
   render() {
     const slug = this.props.slug;
     const categoryGroupId = this.props.categoryGroupId;
@@ -50,7 +50,7 @@ export class ExamPass extends Component {
 
             <Link
               className="btn light-btn unset-height unset-line-height"
-              to={`/categories/quick-questions/${categoryGroupId}/exam/${attemptId}/result`}
+              to={`/categories/quick-questions/${categoryGroupId}/training/${attemptId}/result`}
             >
               التأكد من الإجابات
             </Link>

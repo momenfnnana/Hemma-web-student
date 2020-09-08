@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export class ExamFail extends Component {
   render() {
-    // const courseId = this.props.courseId;
+    const slug = this.props.slug;
     const attemptId = this.props.attemptId;
     const scoreDetails = this.props.scoreDetails;
     const categoryGroupId = this.props.categoryGroupId;
@@ -42,8 +42,7 @@ export class ExamFail extends Component {
             <p className="dark-silver-text small en-text">{time}</p>
             <Link
               className="dark-text smaller mb-4"
-              //   to={`/categories/details/${slug}/quick-questions/${categoryGroupId}`}
-              to=""
+              to={`/categories/details/${slug}/quick-questions/${categoryGroupId}`}
             >
               <u>الرجوع الى القائمة</u>
             </Link>

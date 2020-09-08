@@ -11,9 +11,9 @@ import {
   AccordionItemTitle,
 } from "react-accessible-accordion";
 import "../styles.sass";
-import { SolutionModal } from "./solution";
+import { SolutionModal } from "../exams/solution";
 
-class ExamResultComponent extends Component {
+class TrainingResultComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -125,6 +125,7 @@ class ExamResultComponent extends Component {
                           }
                           height="17"
                           className="contain-img mr-2"
+                          alt="hint"
                         />
                         طريقة الحل
                       </button>
@@ -188,8 +189,8 @@ class ExamResultComponent extends Component {
 
     return (
       <React.Fragment>
-        <div className="container">
-          <div className="row no-gutters mb-4">
+        <div className="container mb-3">
+          <div className="row no-gutters">
             <div className="col-12">
               <div className="box-layout shadow-sm h-100">
                 <div className="row p-4">
@@ -226,10 +227,10 @@ function mapStateToProps(state) {
   };
 }
 
-ExamResultComponent = reduxForm({
-  form: "ExamResult",
-})(ExamResultComponent);
+TrainingResultComponent = reduxForm({
+  form: "TrainingResult",
+})(TrainingResultComponent);
 
-ExamResultComponent = connect(mapStateToProps)(ExamResultComponent);
+TrainingResultComponent = connect(mapStateToProps)(TrainingResultComponent);
 
-export const ExamResult = withRouter(ExamResultComponent);
+export const TrainingResult = withRouter(TrainingResultComponent);

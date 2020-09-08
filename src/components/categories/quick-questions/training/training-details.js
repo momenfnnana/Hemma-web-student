@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { CustomInput } from "reactstrap";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
 import { connect } from "react-redux";
@@ -7,12 +8,10 @@ import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
 import Slider from "react-slick";
-import Countdown from "react-countdown-now";
-import { ExamPass } from "./exam-pass";
-import { ExamFail } from "./exam-fail";
-import { HintModal } from "./hint";
+import { TrainingExamFail } from "./training-fail";
+import { TrainingPass } from "./training-pass";
 
-class ExamDetailsComponent extends Component {
+class TrainingExamDetailsComponent extends Component {
   constructor() {
     super();
     this.state = {
@@ -29,66 +28,18 @@ class ExamDetailsComponent extends Component {
       selectedQuestion: 0,
       endCountdown: false,
       isChecked: false,
+      isCorrect: false,
+      correctAnswer: "",
     };
     this.onInput = this.onInput.bind(this);
-    this.onCountdownEnd = this.onCountdownEnd.bind(this);
+    this.correct = this.correct.bind(this);
   }
-
-  onCountdownEnd = () => {
-    this.setState({ endCountdown: true });
-    const questionsLength = this.state.questions.length;
-    const answersLength = this.state.answers.length;
-    const unansweredQuestions = questionsLength - answersLength;
-    if (unansweredQuestions == 0) {
-      const attemptId = this.props.match.params.id;
-      let token = localStorage.getItem("token");
-      let headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      let data = {
-        answers: this.state.answers,
-      };
-      axios
-        .post(
-          `${apiBaseUrl}/CategoryGroupExams/Attempts/${attemptId}/Submission`,
-          data,
-          {
-            headers,
-          }
-        )
-        .then((response) => {
-          if (response.data.data.status == "Pass") {
-            this.setState({ status: "Pass", isConfirmExamOpen: false });
-          } else if (response.data.data.status == "Fail") {
-            this.setState({ status: "Fail", isConfirmExamOpen: false });
-          }
-          axios
-            .get(
-              `${apiBaseUrl}/CategoryGroupExams/Attempts/${attemptId}/Scorecard`,
-              {
-                headers,
-              }
-            )
-            .then((response) => {
-              this.setState({ scoreDetails: response.data.data });
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
-        .catch((error) => {
-          this.setState({ isConfirmExamOpen: false });
-          console.log(error);
-        });
-    } else {
-      this.openConfirmExamModal();
-    }
-  };
 
   goToNext = () => {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion + 1) % this.state.questions.length,
+      isCorrect: false,
     });
   };
 
@@ -96,12 +47,14 @@ class ExamDetailsComponent extends Component {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion - 1) % this.state.questions.length,
+      isCorrect: false,
     });
   };
 
   goTo = (questionId) => {
     this.setState({
       selectedQuestion: questionId - 1,
+      isCorrect: false,
     });
   };
 
@@ -119,6 +72,10 @@ class ExamDetailsComponent extends Component {
     }
     this.setState({ answers });
   }
+
+  correct = () => {
+    this.setState({ isCorrect: true });
+  };
 
   openConfirmExamModal = () => {
     this.setState({ isConfirmExamOpen: true });
@@ -149,6 +106,7 @@ class ExamDetailsComponent extends Component {
         this.setState({
           questions: response.data.data.questions,
           examDetails: response.data.data,
+          correctAnswer: response.data.data.answers,
         });
       })
       .catch((error) => {
@@ -236,6 +194,10 @@ class ExamDetailsComponent extends Component {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
     const answer = this.state.answers.find((a) => a.id === question.id);
+    const correctAnswers = this.state.correctAnswer;
+    const correctAnswer = correctAnswers[question.id - 1];
+    const correct = this.state.isCorrect;
+
     return (
       <React.Fragment>
         {question && (
@@ -249,60 +211,110 @@ class ExamDetailsComponent extends Component {
                 <div className="box-layout box-border shadow-sm p-3">
                   <h6
                     className="dark-text mb-0 encoded-text"
-                    dangerouslySetInnerHTML={{
-                      __html: question.encodedStem,
-                    }}
+                    dangerouslySetInnerHTML={{ __html: question.encodedStem }}
                   ></h6>
                 </div>
               </div>
             </div>
-            <div className="row pl-4 pr-4 pb-4">
+            <div className="row pl-4 pr-4 ">
               <div className="col-7">
                 <div className="row d-flex justify-content-between align-items-center mb-3">
-                  <div className="col-md-6">
-                    <p className="small dark-silver-text mb-0">
-                      اختر الإجابة الصحيحة
-                    </p>
-                  </div>
-                  <div className="col-md-6">
-                    <button
-                      className="btn red-outline-btn btn-sm small float-right d-flex"
-                      onClick={() => this.openHintModal(question.id)}
-                    >
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/images/hint.png"}
-                        height="17"
-                        className="contain-img mr-2"
-                        alt="hint"
-                      />
-                      المساعدة
-                    </button>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-12">
-                    {Object.keys(question.encodedChoices).map(function(key) {
-                      const value = question.encodedChoices[key];
-                      const selected = answer && answer.selectedChoice === key;
-                      return (
-                        <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
-                          <input
-                            label={value}
-                            type="radio"
-                            className="small dark-text light-font-text d-flex align-items-center"
-                            name={`choice-${question.id}`}
-                            onChange={() => this.onInput(question.id, key)}
-                            id={value}
-                            checked={selected}
-                          />
-                          <label
-                            dangerouslySetInnerHTML={{ __html: value }}
-                            className="mb-0 dark-text small ml-2 encoded-text"
-                          ></label>
+                  {answer ? (
+                    <div className="col-md-12">
+                      {correctAnswer.correctChoice == answer.selectedChoice ? (
+                        <p className="small green-text mb-0">الإجابة صحيحة</p>
+                      ) : correctAnswer.correctChoice !==
+                        answer.selectedChoice ? (
+                        <p className="small red-text mb-0">الإجابة خاطئة</p>
+                      ) : (
+                        <p className="small red-text mb-0">لم تقم بالإجابة</p>
+                      )}
+                      <div className="row">
+                        <div className="col-md-12">
+                          {Object.keys(question.encodedChoices).map(function(
+                            key
+                          ) {
+                            const value = question.encodedChoices[key];
+                            return (
+                              <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                                <input
+                                  type="radio"
+                                  checked={
+                                    correctAnswer.correctChoice === key ||
+                                    answer.selectedChoice === key
+                                  }
+                                  disabled
+                                  className={`radio-custom ${
+                                    correctAnswer.correctChoice === key
+                                      ? "radio-success"
+                                      : answer.selectedChoice === key
+                                      ? "radio-failure"
+                                      : "radio-custom"
+                                  }`}
+                                />
+                                <label
+                                  dangerouslySetInnerHTML={{ __html: value }}
+                                  className="mb-0 dark-text small ml-2 encoded-text"
+                                ></label>
+                              </div>
+                            );
+                          },
+                          this)}
                         </div>
-                      );
-                    }, this)}
-                  </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="col-md-12">
+                      <div className="col-md-6">
+                        <p className="small dark-silver-text mb-0">
+                          اختر الإجابة الصحيحة
+                        </p>
+                      </div>
+                      <div className="row d-flex justify-content-between align-items-center mb-3">
+                        {!question.explanation.length == 0 ? (
+                          <div className="col-md-6">
+                            <button
+                              className="btn red-outline-btn btn-sm small float-right d-flex"
+                              onClick={() => this.openHintModal(question.id)}
+                            >
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  "/assets/images/hint.png"
+                                }
+                                height="17"
+                                className="contain-img mr-2"
+                                alt="hint"
+                              />
+                              المساعدة
+                            </button>
+                          </div>
+                        ) : null}
+                      </div>
+                      {Object.keys(question.encodedChoices).map(function(key) {
+                        const value = question.encodedChoices[key];
+                        const selected =
+                          answer && answer.selectedChoice === key;
+                        return (
+                          <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
+                            <input
+                              type="radio"
+                              label={value}
+                              className="small dark-silver-text light-font-text d-flex align-items-center"
+                              name={`choice-${question.id}`}
+                              onChange={() => this.onInput(question.id, key)}
+                              id={value}
+                              checked={selected}
+                            />
+                            <label
+                              className="mb-0 dark-text small ml-2 encoded-text"
+                              dangerouslySetInnerHTML={{ __html: value }}
+                            ></label>
+                          </div>
+                        );
+                      }, this)}
+                    </div>
+                  )}
                 </div>
               </div>
               {question.imageUrl && (
@@ -316,7 +328,6 @@ class ExamDetailsComponent extends Component {
       </React.Fragment>
     );
   }
-
   render() {
     const categoryGroupId = this.props.match.params.categoryGroupId;
     const slug = this.props.match.params.slug;
@@ -358,20 +369,18 @@ class ExamDetailsComponent extends Component {
       speed: 500,
       rtl: true,
     };
-    const isSafari = navigator.userAgent.toLowerCase().indexOf("safari/");
-
     return (
       <React.Fragment>
-        <div className="container">
+        <div className="container mb-3">
           {this.state.status == "Pass" ? (
-            <ExamPass
+            <TrainingPass
               slug={slug}
               categoryGroupId={categoryGroupId}
               attemptId={attemptId}
               scoreDetails={this.state.scoreDetails}
             />
           ) : this.state.status == "Fail" ? (
-            <ExamFail
+            <TrainingExamFail
               slug={slug}
               categoryGroupId={categoryGroupId}
               attemptId={attemptId}
@@ -385,38 +394,6 @@ class ExamDetailsComponent extends Component {
                     <div className="col-12 d-flex align-items-center justify-content-between">
                       <div>
                         <h6 className="mid-text mb-0">أسئلة الامتحان</h6>
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/silver-clock.png"
-                          }
-                          height="14"
-                          width="14"
-                          className="contain-img mr-1"
-                        />
-                        <p className="small en-text dark-silver-text mb-0">
-                          {this.state.endCountdown ? (
-                            "00:00:00"
-                          ) : (
-                            <>
-                              {isSafari === 104 ? (
-                                <Countdown
-                                  date={new Date(new Date(dueDate))}
-                                  onComplete={this.onCountdownEnd}
-                                  daysInHours="false"
-                                />
-                              ) : (
-                                <Countdown
-                                  date={new Date(new Date(dueDate + "+0000"))}
-                                  onComplete={this.onCountdownEnd}
-                                  daysInHours="false"
-                                />
-                              )}
-                            </>
-                          )}
-                        </p>
                       </div>
                     </div>
                   </div>
@@ -496,12 +473,6 @@ class ExamDetailsComponent extends Component {
                     </div>
                   </div>
                 </div>
-                <HintModal
-                  isHintOpen={this.state.isHintOpen}
-                  closeHint={this.closeHintModal}
-                  id={this.state.selectedQuestionId}
-                  attemptId={attemptId}
-                />
               </div>
             </div>
           )}
@@ -554,14 +525,17 @@ class ExamDetailsComponent extends Component {
 
 function mapStateToProps(state) {
   return {
-    formValues: state.form.ExamDetails && state.form.ExamDetails.values,
+    formValues:
+      state.form.TrainingExamDetails && state.form.TrainingExamDetails.values,
   };
 }
 
-ExamDetailsComponent = reduxForm({
-  form: "ExamDetails",
-})(ExamDetailsComponent);
+TrainingExamDetailsComponent = reduxForm({
+  form: "TrainingExamDetails",
+})(TrainingExamDetailsComponent);
 
-ExamDetailsComponent = connect(mapStateToProps)(ExamDetailsComponent);
+TrainingExamDetailsComponent = connect(mapStateToProps)(
+  TrainingExamDetailsComponent
+);
 
-export const ExamDetails = withRouter(ExamDetailsComponent);
+export const TrainingExamDetails = withRouter(TrainingExamDetailsComponent);
