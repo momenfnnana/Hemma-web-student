@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { MiniCartItem } from "./MiniCartItem";
-import { removeCartItem } from "../../actions";
+import { removeCartItem, getCart } from "../../actions";
 
 class MiniCartItemsListComponent extends Component {
   constructor(props) {
@@ -12,8 +12,9 @@ class MiniCartItemsListComponent extends Component {
   /**
    * Handle removing a cart item
    */
-  onRemoveItem(item) {
-    this.props.removeCartItem(item);
+  onRemoveItem(itemId) {
+    this.props.removeCartItem(itemId)
+      .then(() => this.props.getCart());
   }
   render() {
     const items = this.props.cart && this.props.cart.items;
@@ -30,7 +31,7 @@ class MiniCartItemsListComponent extends Component {
             <MiniCartItem
               key={item.id}
               item={item}
-              onRemoveItem={() => this.onRemoveItem(item)}
+              onRemoveItem={() => this.onRemoveItem(item.id)}
             />
           ))}
         </div>
@@ -46,7 +47,8 @@ function mapStateToProps(state) {
 }
 
 const actionCreators = {
-  removeCartItem
+  removeCartItem,
+  getCart
 };
 
 export const MiniCartItemsList = connect(

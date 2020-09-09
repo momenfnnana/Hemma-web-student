@@ -113,6 +113,7 @@ class SubscriptionDetailsComponent extends Component {
               </div>
             </div>
             <NewInstallment
+              subscription={subscription}
               isInstallmentOpen={this.state.isInstallmentOpen}
               closeInstallmentModal={this.closeInstallmentModal}
               courseId={courseId}

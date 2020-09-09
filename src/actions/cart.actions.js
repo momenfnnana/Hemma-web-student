@@ -22,17 +22,17 @@ export const addCoupon = coupon => {
   };
 };
 
-export const removeCoupon = coupon => {
+export const removeCoupon = couponId => {
   return {
     type: REMOVE_COUPON,
-    payload: Api.cart.removeCoupon(coupon)
+    payload: Api.cart.removeCoupon(couponId)
   };
 };
 
-export const removeCartItem = item => {
+export const removeCartItem = itemId => {
   return {
     type: REMOVE_CART_ITEM,
-    payload: Api.cart.removeCartItem(item)
+    payload: Api.cart.removeCartItem(itemId)
   };
 };
 

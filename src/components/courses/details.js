@@ -90,30 +90,22 @@ export class CourseDetails extends Component {
   }
 
   addToCart(id) {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      type: "Course",
-      itemId: id
-    };
-    axios
-      .post(`${apiBaseUrl}/cart/items`, data, { headers })
+    Api.cart.addCourse(id)
       .then(response => {
         this.props.history.push("/cart");
       })
       .catch(error => {
         switch (error.response.data && error.response.data.error) {
-          case "Duplicate":
+          case "ItemAlreadyAdded":
             this.props.history.push("/cart");
             break;
-          case "BadRequest":
-            swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "ItemAlreadyPurchased":
+          // "BadRequest" is no longer a valid error code, however, the error that was being shown should be for "ItemAlreadyAdded"
+          // case "BadRequest":
+          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+          //     button: "متابعة"
+          //   });
+          //   break;
+          case "UserHasActiveSubscription":
             Api.subscription
               .getSubscription(id)
               .then(res => {
@@ -132,7 +124,7 @@ export class CourseDetails extends Component {
                 }
               });
             break;
-          case "InactiveCourse":
+          case "NotPurchasable":
             swal(
               "عفواً",
               "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",

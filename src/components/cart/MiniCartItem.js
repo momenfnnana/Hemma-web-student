@@ -51,7 +51,7 @@ export class MiniCartItem extends Component {
                 <p className="dark-text smaller mr-2 mb-0">قيمة الدفع</p>
                 <p className="light-text mb-0">
                   <span className="en-text">
-                    {formatPrice(item.installment || item.price)}{" "}
+                    {formatPrice(item.installment || item.subtotal)}{" "}
                   </span>
                   ريال
                 </p>

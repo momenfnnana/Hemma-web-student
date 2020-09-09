@@ -3,7 +3,7 @@ import { MdClose } from "react-icons/md";
 import { formatPrice } from "./helpers";
 import { Api } from "../../api";
 
-export class CartItem extends Component {
+export class CourseInstallmentCartItem extends Component {
   state = {
     // Idicates whether the installment value is in edit mode
     editingInstallment: false,
@@ -46,23 +46,6 @@ export class CartItem extends Component {
   onSetInstallment(installment) {
     this.props.onSetInstallment(installment);
   }
-
-  onSetBookletColor = color => {
-    // Determine if this color is already selected
-    const selected = this.props.item.bookletType === color;
-    if (!selected) {
-      // Turn off package option
-      this.props.onUpdateItem({
-        packageOption: true,
-        bookletType: color
-      });
-    } else {
-      // Turn on package option and select this color
-      this.props.onUpdateItem({
-        packageOption: false
-      });
-    }
-  };
 
   /**
    * Toggle installment editing mode
@@ -141,102 +124,31 @@ export class CartItem extends Component {
     if (!item) {
       return null;
     }
+    const mandatory = !item.removable;
+
     return (
       <Fragment>
         <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item position-relative">
-          <span
+          {!mandatory && <span
             className="badge red-bg text-white smaller light-font-text clickable close-btn"
             onClick={this.onRemoveItem}
           >
             إزالة
-          </span>
+          </span>}
           <div className="media w-75">
-            {item.itemType === "Booklet" ? (
-              <div
-                className="light-silver-bg rounded border d-flex align-items-center justify-content-center mr-3"
-                style={{ width: 100, height: 100 }}
-              >
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/course-booklet.png"
-                  }
-                  height="40"
-                  width="40"
-                  className="contain-img"
-                  alt="icon"
-                />
-              </div>
-            ) : (
-              <img
-                className="mr-3 rounded cover-img"
-                src={item.imageUrl}
-                height="100"
-                width="100"
-                alt="icon"
-              />
-            )}
+            <img
+              className="mr-3 rounded cover-img"
+              src={item.imageUrl}
+              height="100"
+              width="100"
+              alt="icon"
+            />
             <div className="media-body mt-2">
               <h6 className="mt-0 dark-text">
-                {item.itemType == "Booklet" && (
-                  item.bookletType == "Colored" ?
-                  item.nameAr +" - ملونة" : item.nameAr + " - أبيض و أسود"
-                )}
-                {item.itemType == "Course" &&(
-                  item.nameAr
-                )}
-                {item.packageOption && (
-                  <span className="smaller red-text">
-                    ( سعر الملزمة:{" "}
-                    <span className="en-text">
-                      {formatPrice(item.packageOptionPrice)}
-                    </span>{" "}
-                    ر.س. )
-                  </span>
-                )}
+                قسط {item.nameAr} 
               </h6>
-              {item.packageOption !== undefined && (
-                <>
-                  {item.availableInBlackAndWhite && (
-                    <div className="form-check mb-1">
-                      <input
-                        name="packageOption"
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        onClick={() => this.onSetBookletColor("BlackAndWhite")}
-                        checked={
-                          item.packageOption &&
-                          item.bookletType === "BlackAndWhite"
-                        }
-                      />
-                      <label className="form-check-label smaller dark-silver-text">
-                        أرغب في الحصول على ملزمة أبيض و أسود مطبوعة
-                      </label>
-                    </div>
-                  )}
-
-                  {item.availableInColor && (
-                    <div className="form-check mb-1">
-                      <input
-                        name="packageOption"
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        onClick={() => this.onSetBookletColor("Colored")}
-                        checked={
-                          item.packageOption && item.bookletType === "Colored"
-                        }
-                      />
-                      <label className="form-check-label smaller dark-silver-text">
-                        أرغب في الحصول على ملزمة ملونة مطبوعة
-                      </label>
-                    </div>
-                  )}
-                </>
-              )}
-              {item.itemType === "Course" ? (
-                <React.Fragment>
-                  {item.canBePaidInInstallments ? (
+                {!mandatory && 
+                  <>
                     <span
                       className="badge blue-status light-font-text clickable"
                       onClick={this.onToggleEditInstallment}
@@ -244,48 +156,21 @@ export class CartItem extends Component {
                     >
                       {this.state.editingInstallment
                         ? "اعتمد القسط"
-                        : item.installment
-                        ? "تعديل القسط"
-                        : "سداد بالأقساط؟"}
+                        : "تعديل القسط"}
                     </span>
-                  ) : null}
-                  {item.installment && (
-                    <span
-                      className="badge blue-status light-font-text clickable ml-1"
-                      onClick={this.onPayFullAmount}
-                    >
-                      تسديد بالكامل
-                    </span>
-                  )}
-                </React.Fragment>
-              ) : null}
+                    {item.installment && (
+                      <span
+                        className="badge blue-status light-font-text clickable ml-1"
+                        onClick={this.onPayFullAmount}
+                      >
+                        تسديد بالكامل
+                      </span>
+                    )}
+                  </>}
             </div>
           </div>
           <div className="w-25">
-            {item.itemType === "Booklet" ? (
-              <React.Fragment>
-                <div className="d-flex flex-row justify-content-between align-items-center">
-                  <label className="dark-text smaller mb-0">سعر الملزمة</label>
-                  <div className="d-flex flex-column mx-auto">
-                    <h6 className="light-text text-center mb-0">
-                      <span className="en-text">{formatPrice(item.price)}</span>{" "}
-                      ريال
-                    </h6>
-                    {item.priceBeforeDiscount && (
-                      <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
-                        <span className="en-text">
-                          {formatPrice(item.priceBeforeDiscount)}
-                        </span>{" "}
-                        ريال
-                      </h6>
-                    )}
-                  </div>
-                </div>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                {item.canBePaidInInstallments && (
-                  <form className="mb-2 d-flex flex-row align-items-center">
+            <form className="mb-2 d-flex flex-row align-items-center">
                     <div className="flex-column">
                       <label className="dark-text smaller mb-0">
                         قيمة القسط
@@ -323,26 +208,29 @@ export class CartItem extends Component {
                       onChange={this.onUpdateInstallmentInput}
                     />
                   </form>
-                )}
+
+            {!mandatory &&
+              <>
                 <div className="d-flex flex-row justify-content-between align-items-center">
-                  <label className="dark-text smaller mb-0">سعر الاشتراك</label>
+                  <label className="dark-text smaller mb-0">سعر الدورة</label>
                   <div className="d-flex flex-column mx-auto">
                     <h6 className="light-text text-center mb-0">
-                      <span className="en-text">{formatPrice(item.price)}</span>{" "}
+                      <span className="en-text">{formatPrice(item.total)}</span>{" "}
                       ريال
                     </h6>
-                    {item.priceBeforeDiscount && (
-                      <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
-                        <span className="en-text">
-                          {formatPrice(item.priceBeforeDiscount)}
-                        </span>{" "}
-                        ريال
-                      </h6>
-                    )}
                   </div>
                 </div>
-              </React.Fragment>
-            )}
+
+                <div className="d-flex flex-row justify-content-between align-items-center">
+                  <label className="dark-text smaller mb-0">غير المدفوع</label>
+                  <div className="d-flex flex-column mx-auto">
+                    <h6 className="light-text text-center mb-0">
+                      <span className="en-text">{formatPrice(item.outstanding)}</span>{" "}
+                      ريال
+                    </h6>
+                  </div>
+                </div>
+              </>}
           </div>
         </div>
       </Fragment>

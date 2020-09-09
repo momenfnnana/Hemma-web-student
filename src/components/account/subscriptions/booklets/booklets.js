@@ -8,6 +8,7 @@ import { withRouter, Link } from "react-router-dom";
 import "../styles.sass";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import Loader from "react-loaders";
+import { Api } from "../../../../api";
 
 export class BookletsComponent extends Component {
   constructor(props) {
@@ -62,17 +63,7 @@ export class BookletsComponent extends Component {
   }
 
   onSubmit(type) {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      type: "Booklet",
-      itemId: this.state.booklet.id,
-      bookletType: type
-    };
-    axios
-      .post(`${apiBaseUrl}/cart/items`, data, { headers })
+    Api.cart.addBooklet(this.state.booklet.id, type)
       .then(response => {
         this.props.history.push("/cart");
       })
