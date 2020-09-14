@@ -19,7 +19,7 @@ class CartComponent extends Component {
   state = {
     busy: true,
     modalIsOpen: false,
-    isPageLoading: false
+    isPageLoading: false,
   };
 
   openModal(id) {
@@ -35,14 +35,16 @@ class CartComponent extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
   nextPopup() {
-    swal("نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة", {
-      buttons: {
-        ok: "موافق"
-      },
-    })
-      .then((value) => {
-        this.handleCartCheckout()
-      });
+    swal(
+      "نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة",
+      {
+        buttons: {
+          ok: "موافق",
+        },
+      }
+    ).then((value) => {
+      this.handleCartCheckout();
+    });
   }
 
   componentDidMount() {
@@ -50,17 +52,17 @@ class CartComponent extends Component {
     // Fetch the cart again every time the user access the cart page
     this.props
       .getCart()
-      .then(result => {
+      .then((result) => {
         this.setState({
           busy: false,
-          isPageLoading: false
+          isPageLoading: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error while fetching the cart");
         this.setState({
           busy: false,
-          isPageLoading: false
+          isPageLoading: false,
         });
       });
   }
@@ -71,7 +73,7 @@ class CartComponent extends Component {
 
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     if (cartAmount == 0) {
       let data = {
@@ -81,18 +83,18 @@ class CartComponent extends Component {
         accountHolderName: "No_PAYMENT",
         accountNumber: "No_PAYMENT",
         amount: 0,
-        date: new Date()
+        date: new Date(),
       };
       axios
         .post(`${apiBaseUrl}/cart/checkout_with_bank_transfer`, data, {
-          headers
+          headers,
         })
-        .then(response => {
+        .then((response) => {
           this.props.history.push("/course/content");
         })
-        .catch(error => {
+        .catch((error) => {
           swal("عفواً", "خدث خطأ ما", "error", {
-            button: "متابعة"
+            button: "متابعة",
           });
         });
     } else {
@@ -120,7 +122,11 @@ class CartComponent extends Component {
                 <button
                   className="btn light-outline-btn mt-4 w-100"
                   disabled={!items || items.length === 0}
-                  onClick={() => formatPrice(cart.total) ? this.openModal() : this.nextPopup()}
+                  onClick={() =>
+                    formatPrice(cart.total)
+                      ? this.handleCartCheckout() // this.openModal()
+                      : this.nextPopup()
+                  }
                 >
                   متابعة
                 </button>
@@ -131,17 +137,20 @@ class CartComponent extends Component {
                     className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
                     style={{ minHeight: 350 }}
                   >
-                    <Loader type="ball-spin-fade-loader" className="dark-loader" />
+                    <Loader
+                      type="ball-spin-fade-loader"
+                      className="dark-loader"
+                    />
                   </div>
                 ) : (
-                    <>
-                      {items && items.length === 0 ? (
-                        <EmptyCartPrompt />
-                      ) : (
-                          <CartItemsList />
-                        )}
-                    </>
-                  )}
+                  <>
+                    {items && items.length === 0 ? (
+                      <EmptyCartPrompt />
+                    ) : (
+                      <CartItemsList />
+                    )}
+                  </>
+                )}
               </div>
             </div>
             <AgreementForm
@@ -177,10 +186,7 @@ function mapStateToProps(state) {
 const actionCreators = {
   getCart,
   addCoupon,
-  removeCoupon
+  removeCoupon,
 };
 
-export const Cart = connect(
-  mapStateToProps,
-  actionCreators
-)(CartComponent);
+export const Cart = connect(mapStateToProps, actionCreators)(CartComponent);

@@ -4,7 +4,7 @@ import {
   Accordion,
   AccordionItem,
   AccordionItemTitle,
-  AccordionItemBody
+  AccordionItemBody,
 } from "react-accessible-accordion";
 import swal from "@sweetalert/with-react";
 import ReactPlayer from "react-player";
@@ -31,7 +31,7 @@ export class CourseDetails extends Component {
       recordingUrl: null,
       selectedLecture: null,
       isPageLoading: false,
-      confirm: false
+      confirm: false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -44,10 +44,10 @@ export class CourseDetails extends Component {
       {
         buttons: {
           cancel: "الغاء",
-          ok: "موافق"
-        }
+          ok: "موافق",
+        },
       }
-    ).then(value => {
+    ).then((value) => {
       switch (value) {
         case "ok":
           this.addToCart(this.state.details.id);
@@ -61,7 +61,7 @@ export class CourseDetails extends Component {
     this.setState({
       recordingModalIsOpen: !this.state.recordingModalIsOpen,
       recordingUrl: url,
-      selectedLecture: id
+      selectedLecture: id,
     });
   }
 
@@ -76,25 +76,26 @@ export class CourseDetails extends Component {
   componentDidMount() {
     this.setState({ isPageLoading: true });
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     axios
       .get(`${apiBaseUrl}/courses/${params.slug}`)
-      .then(response => {
+      .then((response) => {
         this.setState({ details: response.data.data, isPageLoading: false });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isPageLoading: false });
         console.log(error);
       });
   }
 
   addToCart(id) {
-    Api.cart.addCourse(id)
-      .then(response => {
+    Api.cart
+      .addCourse(id)
+      .then((response) => {
         this.props.history.push("/cart");
       })
-      .catch(error => {
+      .catch((error) => {
         switch (error.response.data && error.response.data.error) {
           case "ItemAlreadyAdded":
             this.props.history.push("/cart");
@@ -108,14 +109,14 @@ export class CourseDetails extends Component {
           case "UserHasActiveSubscription":
             Api.subscription
               .getSubscription(id)
-              .then(res => {
-                this.props.history.push(`/course/content/${id}/schedule`);
+              .then((res) => {
+                this.props.history.push(`/course/content`);
               })
-              .catch(error => {
+              .catch((error) => {
                 switch (error.response.data && error.response.data.error) {
                   case "UserNotSubscribed":
                     swal("عفواً", "لا يمكن شراء الدورة أكثر من مرة", "error", {
-                      button: "متابعة"
+                      button: "متابعة",
                     });
                     break;
                   default:
@@ -130,13 +131,13 @@ export class CourseDetails extends Component {
               "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",
               "error",
               {
-                button: "متابعة"
+                button: "متابعة",
               }
             );
             break;
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
         }
@@ -146,7 +147,7 @@ export class CourseDetails extends Component {
   renderFeatures() {
     const features = this.state.details.features;
     if (features) {
-      return features.map(feature => (
+      return features.map((feature) => (
         <React.Fragment key={feature.id}>
           <div
             className="col-md-6 col-12 align-items-center pb-2"
@@ -166,7 +167,7 @@ export class CourseDetails extends Component {
     const sections = this.state.details.sections;
 
     if (sections) {
-      return sections.map(section => (
+      return sections.map((section) => (
         <div className="row mt-3" key={section.id}>
           <div className="col-12">
             <div className="card section-card" key={section.id}>
@@ -186,7 +187,7 @@ export class CourseDetails extends Component {
       a.order > b.order ? 1 : -1
     );
     if (sortedChapters) {
-      return sortedChapters.map(chapter => (
+      return sortedChapters.map((chapter) => (
         <Accordion key={chapter.id}>
           <AccordionItem expanded={true}>
             <AccordionItemTitle>
@@ -207,7 +208,7 @@ export class CourseDetails extends Component {
   renderInstructors() {
     const instructors = this.state.details && this.state.details.instructors;
     if (instructors) {
-      return instructors.map(instructor => (
+      return instructors.map((instructor) => (
         <div
           className="white-bg border-bottom d-flex align-items-center mh-55 p-3"
           key={instructor.id}
@@ -256,7 +257,7 @@ export class CourseDetails extends Component {
       a.order > b.order ? 1 : -1
     );
     if (sortedLectures) {
-      return sortedLectures.map(lecture => {
+      return sortedLectures.map((lecture) => {
         return (
           <React.Fragment key={lecture.id}>
             <div className="list-group-item bg-transparent small dark-silver-text light-font-text">
@@ -339,12 +340,12 @@ export class CourseDetails extends Component {
         transform: "translate(-50%, -50%)",
         width: "50%",
         height: "50%",
-        borderWidth: 0
+        borderWidth: 0,
       },
       overlay: {
         backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 2
-      }
+        zIndex: 2,
+      },
     };
 
     var date = new Date(this.state.details.startsAt);
@@ -525,7 +526,7 @@ export class CourseDetails extends Component {
                                     )
                                   )}
                               </span>{" "}
-                              ريال (الأبيض و الأسود) 
+                              ريال (الأبيض و الأسود)
                             </li>
                           ) : null}
 
@@ -544,7 +545,8 @@ export class CourseDetails extends Component {
                               <span className="en-text">
                                 {this.state.details &&
                                   this.state.details.companionBook &&
-                                  this.state.details.companionBook.coloredPrice &&
+                                  this.state.details.companionBook
+                                    .coloredPrice &&
                                   parseFloat(
                                     this.state.details.companionBook.coloredPrice.toFixed(
                                       2
