@@ -23,114 +23,114 @@ class HomeComponent extends Component {
       courses: [],
       testimonials: [],
       initiatives: [],
-      categoryGroups: [],
+      categoryGroups: []
     };
   }
 
   componentDidMount() {
     axios
       .get(`${apiBaseUrl}/categories`)
-      .then((response) => {
+      .then(response => {
         this.setState({ categories: response.data.data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/courses/recent`)
-      .then((response) => {
+      .then(response => {
         this.setState({ courses: response.data.data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/ratings/testimonials`)
-      .then((response) => {
+      .then(response => {
         this.setState({ testimonials: response.data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/Initiatives/singleInitiative`)
-      .then((response) => {
+      .then(response => {
         this.setState({ initiatives: response.data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
     axios
       .get(`${apiBaseUrl}/CategoryGroups/random`)
-      .then((response) => {
+      .then(response => {
         this.setState({ categoryGroups: response.data.data });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
 
   renderCourses() {
-    return this.state.courses.map((course) => (
+    return this.state.courses.map(course => (
       <Card key={course.id} course={course} />
     ));
   }
-  responseGoogle = (response) => {
+  responseGoogle = response => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
     };
     if (!response.accessToken) return;
     axios
       .post(`${apiBaseUrl}/auth/login_with_google`, data)
-      .then((response) => {
+      .then(response => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
-      .catch((error) => {
+      .catch(error => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة",
+          button: "متابعة"
         });
 
         this.props.history.push("/auth/register");
       });
   };
 
-  responseFacebook = (response) => {
+  responseFacebook = response => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
+      deviceId: deviceId && deviceId != "undefined" ? deviceId : null
     };
     if (!response.accessToken) return;
     axios
       .post(`${apiBaseUrl}/auth/login_with_facebook`, data)
-      .then((response) => {
+      .then(response => {
         localStorage.setItem("token", response.data.data.token);
         window.location = "/";
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة",
+          button: "متابعة"
         });
         this.props.history.push("/auth/register");
       });
   };
   twitterLogin = async () => {
     loginWithTwitter()
-      .then((token) => {
+      .then(token => {
         localStorage.setItem("token", token);
         window.location = "/";
       })
-      .catch((error) => {
+      .catch(error => {
         swal("عفواً", "هذا المستخدم غير موجود", "error", {
-          button: "متابعة",
+          button: "متابعة"
         });
         this.props.history.push("/auth/register");
       });
@@ -148,8 +148,8 @@ class HomeComponent extends Component {
                   to={{
                     pathname: `/categories/details/${cat.slug}`,
                     state: {
-                      catId: cat.id,
-                    },
+                      catId: cat.id
+                    }
                   }}
                   key={cat.id}
                 >
@@ -189,7 +189,7 @@ class HomeComponent extends Component {
         "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
         "error",
         {
-          button: "متابعة",
+          button: "متابعة"
         }
       );
     }
@@ -199,7 +199,7 @@ class HomeComponent extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          {categoryGroups.map((categoryGroup) => {
+          {categoryGroups.map(categoryGroup => {
             return (
               <div className="col-lg-4 col-md-6" key={categoryGroup.id}>
                 <div
@@ -235,7 +235,7 @@ class HomeComponent extends Component {
   }
 
   renderTestimonials() {
-    return this.state.testimonials.map((testimonial) => {
+    return this.state.testimonials.map(testimonial => {
       let currentDate = new Date();
       let getCurrentDate =
         currentDate.getFullYear() +
@@ -305,25 +305,25 @@ class HomeComponent extends Component {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
-            infinite: false,
-          },
+            infinite: false
+          }
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
-            initialSlide: 2,
-          },
+            initialSlide: 2
+          }
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1,
-          },
-        },
-      ],
+            slidesToScroll: 1
+          }
+        }
+      ]
     };
     const testimonialsSettings = {
       infinite: true,
@@ -338,25 +338,25 @@ class HomeComponent extends Component {
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            infinite: false,
-          },
+            infinite: false
+          }
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 1,
             slidesToScroll: 1,
-            initialSlide: 1,
-          },
+            initialSlide: 1
+          }
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 1,
-            slidesToScroll: 1,
-          },
-        },
-      ],
+            slidesToScroll: 1
+          }
+        }
+      ]
     };
 
     return (
@@ -533,16 +533,18 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section> */}
-        <section className="pt-0">
-          <div className="container">
-            <div className="row mb-3">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
-                <h2 className="dark-text mb-4">المجموعات المجانية</h2>
+        {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
+          <section className="pt-0">
+            <div className="container">
+              <div className="row mb-3">
+                <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
+                  <h2 className="dark-text mb-4">المجموعات المجانية</h2>
+                </div>
               </div>
+              {this.renderCategoriesGroup()}
             </div>
-            {this.renderCategoriesGroup()}
-          </div>
-        </section>
+          </section>
+        )}
         {!this.state.testimonials === undefined ||
           (this.state.testimonials.length != 0 && (
             <section className="testimonials-section mb-5">
@@ -573,7 +575,7 @@ class HomeComponent extends Component {
 }
 function mapStateToProps(state) {
   return {
-    authenticated: state.auth.authenticated,
+    authenticated: state.auth.authenticated
   };
 }
 
