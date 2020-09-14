@@ -92,11 +92,23 @@ class CartSummaryComponent extends Component {
           throw error;
         }
       })
-      .catch(error => {
-        swal("عفواً", "يرجى التحقق من صحة الكوبون المدخل", "error", {
-          button: "متابعة"
-        });
+      .catch(e => {
+        const error = e.response && e.response.data && e.response.data.error;
+        if (error === "CouponAlreadyAdded") {
+          swal("عفواً", "الكوبون المدخل مضاف مسبقا", "error", {
+            button: "متابعة"
+          });
+        } else if (error === "CouponExpired") {
+          swal("عفواً", "هذا الكوبون منتهي الصلاحية", "error", {
+            button: "متابعة"
+          });
+        } else {
+          swal("عفواً", "يرجى التحقق من صحة الكوبون المدخل", "error", {
+            button: "متابعة"
+          });
+        }
       })
+      .then(() => this.props.getCart())
       .then(() => {
         this.setState({
           couponInputValue: ""
@@ -107,8 +119,9 @@ class CartSummaryComponent extends Component {
   /**
    * Handle removing a coupon
    */
-  onRemoveCoupon(coupon) {
-    this.props.removeCoupon(coupon);
+  onRemoveCoupon(couponId) {
+    this.props.removeCoupon(couponId)
+      .then(() => this.props.getCart());
   }
 
   /**
@@ -166,7 +179,7 @@ class CartSummaryComponent extends Component {
       >
         <label
           className="red-text smaller mb-0 clickable"
-          onClick={() => this.onRemoveCoupon(coupon.key)}
+          onClick={() => this.onRemoveCoupon(coupon.id)}
         >
           إزالة الكوبون{" "}
         </label>

@@ -35,14 +35,16 @@ class CartComponent extends Component {
     this.closeModal = this.closeModal.bind(this);
   }
   nextPopup() {
-    swal("نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة", {
-      buttons: {
-        ok: "موافق"
-      },
-    })
-      .then((value) => {
-        this.handleCartCheckout()
-      });
+    swal(
+      "نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة",
+      {
+        buttons: {
+          ok: "موافق"
+        }
+      }
+    ).then(value => {
+      this.handleCartCheckout();
+    });
   }
 
   componentDidMount() {
@@ -120,7 +122,11 @@ class CartComponent extends Component {
                 <button
                   className="btn light-outline-btn mt-4 w-100"
                   disabled={!items || items.length === 0}
-                  onClick={() => formatPrice(cart.total) ? this.openModal() : this.nextPopup()}
+                  onClick={() =>
+                    formatPrice(cart.total)
+                      ? this.openModal()
+                      : this.nextPopup()
+                  }
                 >
                   متابعة
                 </button>
@@ -131,17 +137,20 @@ class CartComponent extends Component {
                     className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
                     style={{ minHeight: 350 }}
                   >
-                    <Loader type="ball-spin-fade-loader" className="dark-loader" />
+                    <Loader
+                      type="ball-spin-fade-loader"
+                      className="dark-loader"
+                    />
                   </div>
                 ) : (
-                    <>
-                      {items && items.length === 0 ? (
-                        <EmptyCartPrompt />
-                      ) : (
-                          <CartItemsList />
-                        )}
-                    </>
-                  )}
+                  <>
+                    {items && items.length === 0 ? (
+                      <EmptyCartPrompt />
+                    ) : (
+                      <CartItemsList />
+                    )}
+                  </>
+                )}
               </div>
             </div>
             <AgreementForm

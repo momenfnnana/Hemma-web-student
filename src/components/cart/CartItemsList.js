@@ -1,7 +1,10 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { removeCartItem, updateCartItem } from "../../actions";
-import { CartItem } from "./CartItem";
+import { removeCartItem, updateCartItem, getCart } from "../../actions";
+import { Api } from "../../api";
+import { BookletCartItem } from "./BookletCartItem";
+import { CourseCartItem } from "./CourseCartItem";
+import { CourseInstallmentCartItem } from "./CourseInstallmentCartItem";
 
 class CartItemsListComponent extends Component {
   constructor(props) {
@@ -17,11 +20,33 @@ class CartItemsListComponent extends Component {
     this.props.updateCartItem(item, data);
   }
 
+  onSetPackageOption = (itemId, value, type = null) => {
+    if (value) {
+      Api.cart.setPackageOption(itemId, value)
+        .then(() => Api.cart.setBookletType(itemId, type))
+        .then(this.props.getCart);
+    } else {
+      Api.cart.setPackageOption(itemId, value)
+        .then(this.props.getCart);
+    }
+  }
+
+  onSetInstallment = (itemId, installment) => {
+    Api.cart.setInstallment(itemId, installment)
+      .then(this.props.getCart);
+  }
+
+  onSetBookletType = (itemId, type) => {
+    Api.cart.setBookletType(itemId, type)
+      .then(this.props.getCart);
+  }
+
   /**
    * Handle removing a cart item
    */
-  onRemoveItem(item) {
-    this.props.removeCartItem(item);
+  onRemoveItem(itemId) {
+    this.props.removeCartItem(itemId)
+      .then(() => this.props.getCart());
   }
 
   /**
@@ -33,14 +58,32 @@ class CartItemsListComponent extends Component {
         <div className="col-12">
           <h6 className="dark-text">قائمة الدورات</h6>
           {items &&
-            items.map((item, i) => (
-              <CartItem
-                key={item.id}
-                item={item}
-                onUpdateItem={data => this.onUpdateItem(item, data)}
-                onRemoveItem={() => this.onRemoveItem(item)}
-              />
-            ))}
+            items.map((item, i) =>
+              <>
+                {item.type === "Course" && 
+                  <CourseCartItem
+                    key={item.id}
+                    item={item}
+                    onSetPackageOption={(value, type) => this.onSetPackageOption(item.id, value, type)}
+                    onSetBookletType={type => this.onSetBookletType(item.id, type)}
+                    onSetInstallment={installment => this.onSetInstallment(item.id, installment)}
+                    onRemoveItem={() => this.onRemoveItem(item.id)} />}
+                
+                {item.type === "Booklet" && 
+                  <BookletCartItem
+                    key={item.id}
+                    item={item}
+                    onSetBookletType={type => this.onSetBookletType(item.id, type)}
+                    onRemoveItem={() => this.onRemoveItem(item.id)} />}
+
+                {item.type === "Installment" &&
+                  <CourseInstallmentCartItem
+                    key={item.id}
+                    item={item}
+                    onSetInstallment={installment => this.onSetInstallment(item.id, installment)}
+                    onRemoveItem={() => this.onRemoveItem(item.id)} />}
+              </>
+            )}
         </div>
       </div>
     );
@@ -65,7 +108,8 @@ function mapStateToProps(state) {
 
 const actionCreators = {
   removeCartItem,
-  updateCartItem
+  updateCartItem,
+  getCart,
 };
 
 export const CartItemsList = connect(

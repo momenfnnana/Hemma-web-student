@@ -7,6 +7,7 @@ import swal from "@sweetalert/with-react";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import { numberField } from "../../../shared/inputs/numberField";
+import { Api } from "../../../../api";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 
@@ -40,17 +41,7 @@ export class NewInstallmentComponent extends Component {
     }
   }
   onSubmit(values) {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      type: "CourseInstallment",
-      itemId: this.props.courseId,
-      installment: values.installment
-    };
-    axios
-      .post(`${apiBaseUrl}/cart/items`, data, { headers })
+    Api.cart.addInstallment(this.props.subscription.subscriptionId, values.installment)
       .then(response => {
         this.props.closeInstallmentModal();
         this.props.history.push("/cart");

@@ -6,6 +6,7 @@ import { apiBaseUrl } from "../../../api/helpers";
 import { Link } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
+import { Table } from "reactstrap";
 
 var moment = require("moment");
 moment().format();
@@ -17,6 +18,8 @@ export class QuickQuestions extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      exams: [],
+      training: [],
       percent: 25,
       details: [],
       isJoined: null,
@@ -24,7 +27,7 @@ export class QuickQuestions extends Component {
       questionsFavorites: [],
       disabled: false,
       hideBtn: false,
-      nextPageUrl: `${apiBaseUrl}/QuickQuestions?categoryGroupId=${this.props.match.params.categoryGroupId}&page=${this.page}&limit=${this.limit}`
+      nextPageUrl: `${apiBaseUrl}/QuickQuestions?categoryGroupId=${this.props.match.params.categoryGroupId}&page=${this.page}&limit=${this.limit}`,
     };
     this.toggleJoin = this.toggleJoin.bind(this);
     this.toggleFavorite = this.toggleFavorite.bind(this);
@@ -32,37 +35,37 @@ export class QuickQuestions extends Component {
 
   loadMore = async () => {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     this.setState({ loading: true, disabled: true });
     if (!this.endOfResults) {
       axios
         .get(this.state.nextPageUrl, { headers })
-        .then(response => {
+        .then((response) => {
           this.setState({
             loading: false,
-            disabled: false
+            disabled: false,
           });
           const newQuestions = [
             ...this.state.quickQuestions,
-            ...response.data.data.data
+            ...response.data.data.data,
           ];
           this.endOfResults = response.data.data.itemCount < this.limit;
           this.page++;
           const nextUrl = `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}&page=${this.page}&limit=${this.limit}`;
           this.setState({
             quickQuestions: newQuestions,
-            nextPageUrl: nextUrl
+            nextPageUrl: nextUrl,
           });
           if (newQuestions.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.setState({ loading: false, disabled: false });
         });
@@ -71,26 +74,26 @@ export class QuickQuestions extends Component {
 
   async componentDidMount() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
 
     await this.loadMore();
 
     axios
       .get(`${apiBaseUrl}/CategoryGroups/${params.categoryGroupId}`, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         this.setState({
           details: response.data.data,
-          isJoined: response.data.data.isJoined
+          isJoined: response.data.data.isJoined,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
@@ -98,44 +101,72 @@ export class QuickQuestions extends Component {
       .get(
         `${apiBaseUrl}/QuickQuestionFavorites?categoryGroupId=${params.categoryGroupId}`,
         {
-          headers
+          headers,
         }
       )
-      .then(response => {
+      .then((response) => {
         this.setState({ questionsFavorites: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get(
+        `${apiBaseUrl}/CategoryGroupExams?categoryGroupId=${params.categoryGroupId}&type=Exam`,
+        {
+          headers,
+        }
+      )
+      .then((response) => {
+        this.setState({ exams: response.data.data });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get(
+        `${apiBaseUrl}/CategoryGroupExams?categoryGroupId=${params.categoryGroupId}&type=Training`,
+        {
+          headers,
+        }
+      )
+      .then((response) => {
+        this.setState({ training: response.data.data });
+      })
+      .catch((error) => {
         console.log(error);
       });
   }
 
   toggleJoin() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     axios
       .put(
         `${apiBaseUrl}/CategoryGroups/${params.categoryGroupId}/ToggleJoin`,
         {},
         {
-          headers
+          headers,
         }
       )
-      .then(response => {
+      .then((response) => {
         axios
           .get(`${apiBaseUrl}/CategoryGroups/${params.categoryGroupId}`, {
-            headers
+            headers,
           })
-          .then(response => {
+          .then((response) => {
             this.setState({
-              details: response.data.data
+              details: response.data.data,
             });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
         this.setState({ isJoined: !this.state.isJoined });
@@ -144,13 +175,13 @@ export class QuickQuestions extends Component {
             .get(
               `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}&page=1&limit=6`,
               {
-                headers
+                headers,
               }
             )
-            .then(response => {
+            .then((response) => {
               this.setState({ quickQuestions: response.data.data.data });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
 
@@ -158,50 +189,50 @@ export class QuickQuestions extends Component {
             .get(
               `${apiBaseUrl}/QuickQuestionFavorites?categoryGroupId=${params.categoryGroupId}`,
               {
-                headers
+                headers,
               }
             )
-            .then(response => {
+            .then((response) => {
               this.setState({ questionsFavorites: response.data.data });
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
 
   toggleFavorite(questionId) {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     axios
       .put(
         `${apiBaseUrl}/QuickQuestionFavorites/${questionId}/ToggleFavorite`,
         {},
         {
-          headers
+          headers,
         }
       )
-      .then(response => {
+      .then((response) => {
         axios
           .get(
             `${apiBaseUrl}/QuickQuestions?categoryGroupId=${params.categoryGroupId}&page=1&limit=6`,
             {
-              headers
+              headers,
             }
           )
-          .then(response => {
+          .then((response) => {
             this.setState({ quickQuestions: response.data.data.data });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
 
@@ -209,26 +240,104 @@ export class QuickQuestions extends Component {
           .get(
             `${apiBaseUrl}/QuickQuestionFavorites?categoryGroupId=${params.categoryGroupId}`,
             {
-              headers
+              headers,
             }
           )
-          .then(response => {
+          .then((response) => {
             this.setState({ questionsFavorites: response.data.data });
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
+  }
+  renderTraining() {
+    const slug = this.props.match.params.slug;
+    const training = this.state.training || [];
+    const categoryGroupId = this.props.match.params.categoryGroupId;
+    return training.map((tra) => {
+      return (
+        <React.Fragment>
+          <tr>
+            <td scope="row" className="dark-silver-text small">
+              {tra.title}
+            </td>
+            <td className="en-text dark-silver-text small text-center">
+              {tra.totalQuestions}
+            </td>
+            <td className="en-text dark-silver-text small text-center">
+              {tra.totalAttempts}
+            </td>
+            <td>
+              <Link
+                to={`/categories/${slug}/${categoryGroupId}/training/${tra.id}`}
+                className="badge dark-bg text-white w-100"
+              >
+                اختبر الآن
+              </Link>
+            </td>
+          </tr>
+        </React.Fragment>
+      );
+    });
+  }
+
+  renderExams() {
+    const exams = this.state.exams || [];
+    const categoryGroupId = this.props.match.params.categoryGroupId;
+    const slug = this.props.match.params.slug;
+
+    return exams.map((exam) => {
+      const examTime = exam.totalTime;
+      const totalTime = Number(examTime);
+
+      var h = Math.floor(totalTime / 3600);
+      var m = Math.floor((totalTime % 3600) / 60);
+      var s = Math.floor((totalTime % 3600) % 60);
+      var time =
+        ("0" + h).slice(-2) +
+        ":" +
+        ("0" + m).slice(-2) +
+        ":" +
+        ("0" + s).slice(-2);
+
+      return (
+        <React.Fragment>
+          <tr>
+            <td scope="row" className="dark-silver-text small">
+              {exam.title}
+            </td>
+            <td className="dark-silver-text small text-center">
+              <span className="en-text">{time}</span>
+            </td>
+            <td className="en-text dark-silver-text small text-center">
+              {exam.totalQuestions}
+            </td>
+            <td className="en-text dark-silver-text small text-center">
+              {exam.totalAttempts}
+            </td>
+            <td>
+              <Link
+                to={`/categories/${slug}/${categoryGroupId}/exam/${exam.id}`}
+                className="badge dark-bg text-white w-100"
+              >
+                اختبر الآن
+              </Link>
+            </td>
+          </tr>
+        </React.Fragment>
+      );
+    });
   }
 
   renderQuestion() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
-    return this.state.quickQuestions.map(question => {
+    return this.state.quickQuestions.map((question) => {
       let currentDate = new Date();
       let getCurrentDate =
         currentDate.getFullYear() +
@@ -266,7 +375,6 @@ export class QuickQuestions extends Component {
           (question.numberOfCorrectAnswers / totalQuestionsNumber) * 100
         );
       }
-
       return (
         <React.Fragment>
           <div className="col-md-6 d-flex align-items-center" key={question.id}>
@@ -347,8 +455,8 @@ export class QuickQuestions extends Component {
                         theme={{
                           success: {
                             symbol: correctQuestionsRatio + "%",
-                            color: "#2bc3cc"
-                          }
+                            color: "#2bc3cc",
+                          },
                         }}
                       />
                     </div>
@@ -366,8 +474,8 @@ export class QuickQuestions extends Component {
                         theme={{
                           error: {
                             symbol: wrongQuestionsRatio + "%",
-                            color: "#f66271"
-                          }
+                            color: "#f66271",
+                          },
                         }}
                       />
                     </div>
@@ -383,9 +491,9 @@ export class QuickQuestions extends Component {
 
   renderQuestionsFavorites() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
-    return this.state.questionsFavorites.map(question => {
+    return this.state.questionsFavorites.map((question) => {
       return (
         <React.Fragment>
           <div
@@ -589,25 +697,187 @@ export class QuickQuestions extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="row pt-4">{this.renderQuestion()}</div>
-                  <div className="row">
-                    <div className="col-md-12">
-                      {!this.state.hideBtn && (
-                        <div className="d-flex align-items-center justify-content-center">
-                          <button
-                            className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
-                            onClick={this.loadMore}
-                            disabled={this.state.disabled}
-                          >
-                            {this.state.loading === true ? (
-                              <Loader
-                                type="ball-beat"
-                                className="dark-loader"
-                              />
-                            ) : (
-                              "تحميل المزيد"
+                  <div className="row pt-4">
+                    {this.state.quickQuestions === undefined ||
+                    this.state.quickQuestions.length === 0 ? (
+                      <div className="col-md-12">
+                        <div className="question-card">
+                          <div className="question-body">
+                            <div className="row">
+                              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
+                                <h2 className="mid-text light-font-text  text-break mb-0">
+                                  لا يوجد أسئلة
+                                </h2>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <React.Fragment>
+                        <div className="row pt-4">{this.renderQuestion()}</div>
+                        <div className="row">
+                          <div className="col-md-12">
+                            {!this.state.hideBtn && (
+                              <div className="d-flex align-items-center justify-content-center">
+                                <button
+                                  className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25"
+                                  onClick={this.loadMore}
+                                  disabled={this.state.disabled}
+                                >
+                                  {this.state.loading === true ? (
+                                    <Loader
+                                      type="ball-beat"
+                                      className="dark-loader"
+                                    />
+                                  ) : (
+                                    "تحميل المزيد"
+                                  )}
+                                </button>
+                              </div>
                             )}
-                          </button>
+                          </div>
+                        </div>
+                      </React.Fragment>
+                    )}
+                  </div>
+                </React.Fragment>
+              )}
+              {this.state.isJoined && (
+                <React.Fragment>
+                  <div className="row pt-4">
+                    <div className="col-md-12 d-flex align-items-center pb-4">
+                      <div className="title-circle">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/questionMark.png"
+                          }
+                          alt="question-mark"
+                        />
+                      </div>
+                      <div
+                        className={"ar-text title-groups mb-0" + " light-bg"}
+                      >
+                        <h5 className=" mb-0 pl-5">الاختبارات</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row no-gutters">
+                    <div className="col-12">
+                      {this.state.exams == undefined ||
+                      this.state.exams.length == 0 ? (
+                        <React.Fragment>
+                          <div
+                            className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
+                            style={{ height: 300 }}
+                          >
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/empty-exams.png"
+                              }
+                              height="80"
+                              className="contain-img mb-3"
+                            />
+                            <p className="dark-silver-text mt-0 mb-0">
+                              لا يوجد اختبارات متاحة
+                            </p>
+                          </div>
+                        </React.Fragment>
+                      ) : (
+                        <div className="box-layout shadow-sm">
+                          <Table className="mb-0">
+                            <thead className="silver-bg">
+                              <tr>
+                                <th className="w-40 dark-silver-text small border-0">
+                                  الامتحان
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  مدة الامتحان
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  عدد الأسئلة
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  عدد المحاولات
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  تحكم
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>{this.renderExams()}</tbody>
+                          </Table>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </React.Fragment>
+              )}
+              {this.state.isJoined && (
+                <React.Fragment>
+                  <div className="row pt-4">
+                    <div className="col-md-12 d-flex align-items-center pb-4">
+                      <div className="title-circle">
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/questionMark.png"
+                          }
+                          alt="question-mark"
+                        />
+                      </div>
+                      <div
+                        className={"ar-text title-groups mb-0" + " light-bg"}
+                      >
+                        <h5 className=" mb-0 pl-5">التدريبات</h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row no-gutters">
+                    <div className="col-12">
+                      {this.state.training == undefined ||
+                      this.state.training.length == 0 ? (
+                        <React.Fragment>
+                          <div
+                            className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
+                            style={{ height: 300 }}
+                          >
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/empty-exams.png"
+                              }
+                              height="80"
+                              className="contain-img mb-3"
+                            />
+                            <p className="dark-silver-text mt-0 mb-0">
+                              لا يوجد تدريبات متاحة
+                            </p>
+                          </div>
+                        </React.Fragment>
+                      ) : (
+                        <div className="box-layout shadow-sm">
+                          <Table className="mb-0">
+                            <thead className="silver-bg">
+                              <tr>
+                                <th className="w-10 dark-silver-text small border-0">
+                                  الامتحان
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  عدد الأسئلة
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  عدد المحاولات
+                                </th>
+                                <th className="w-15 dark-silver-text small border-0 text-center">
+                                  تحكم
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>{this.renderTraining()}</tbody>
+                          </Table>
                         </div>
                       )}
                     </div>
