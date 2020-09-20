@@ -25,58 +25,63 @@ class EnterToLectureComponent extends Component {
         <section className="pt-5 pb-5">
           <div className="container">
             <div className="row mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-lg-3 col-12">
-                <Link
+              <div
+                className="col-lg-4 col-12 clicable"
+                onClick={() =>
+                  window.open("https://zoom.us/download", "_blank")
+                }
+                target="_blank"
+              >
+                {/* <Link
                   target="_blank"
                   to={{
                     pathname: "https://zoom.us/download",
                   }}
-                >
-                  <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/zoom-logo@3x.png"
-                      }
-                      height="50%"
-                      width="50%"
-                      className="contain-img mb-2"
-                    />
-                    <h5 className="dark-text text-center mb-0">
-                      <span className="en-text">1- </span>
-                      حمل تطبيق Zoom.. دون تسجيل الدخول فيه
-                    </h5>
-                  </div>
-                </Link>
-              </div>
-              <div className="col-lg-3 col-12">
-                <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center m-2">
+                > */}
+                <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2">
+                  <h5 className="text-center mb-0">
+                    <span className="en-text">1- </span>
+                    تحميل
+                    <span className="light-text"> تطبيق زوم </span>
+                    دون تسجيل الدخول اليه
+                  </h5>
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/zoom-logo@3x.png"
+                    }
                     height="50%"
                     width="50%"
-                    className="contain-img mb-4"
+                    className="contain-img mb-2"
                   />
-                  <h5 className="dark-text text-center mb-0">
+                </div>
+                {/* </Link> */}
+              </div>
+              <div className="col-lg-4 col-12">
+                <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center m-2">
+                  <h5 className=" text-center mb-0">
                     <span className="en-text">2- </span>
-                    الدخول الى موقع منصة همة بعد مايتم اشتراكك في المحاضرة راح
-                    تتغير كلمة اشترك الى انضم من خلال النقر عليها راح تقدر تدخل
-                    المحاضرة
+                    الدخول الى
+                    <span className="dark-text"> موقع منصة همة </span>
+                    بعد مايتم اشتراكك في المحاضرة راح تتغير كلمة اشترك الى انضم
+                    من خلال النقر عليها راح تقدر تدخل المحاضرة
                   </h5>
+                  <div className="btn yellow-btn justify-content-center d-flex light-text align-items-center m-3">
+                    انضم الآن
+                  </div>
                 </div>
               </div>
-              <div className="col-lg-3 col-12">
+              <div className="col-lg-4 col-12">
                 <div className="initiative-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center m-2">
+                  <h5 className="text-center mb-0">
+                    <span className="en-text">3- </span>
+                    ادخل اسمك وايميلك
+                  </h5>
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                     height="50%"
                     width="50%"
                     className="contain-img mb-2"
                   />
-                  <h5 className="dark-text text-center mb-0">
-                    <span className="en-text">3- </span>
-                    ادخل اسمك وايميلك
-                  </h5>
                 </div>
               </div>
             </div>

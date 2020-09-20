@@ -10,20 +10,26 @@ class InitiativesRoleComponent extends Component {
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
                 <h1 className="dark-text mb-4">
-                  لمعرفة الرتبة التي تم تسكينك عليها
+                  تعرف أكثر على تطبيق ميكروسوفت تيمز
                 </h1>
               </div>
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
+              {/* <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
+                <h1 className="dark-text mb-4">
+                  لمعرفة الرتبة التي تم تسكينك عليها
+                </h1>
+              </div> */}
+              {/* <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
                 <h4 className="ultra-text mb-4">
                   لمعرفة الرتبة التي تم تسكينك عليها اتبع الخطوات التالية :
                 </h4>
-              </div>
+              </div> */}
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
                 <Link
                   className="btn w-25 yellow-btn justify-content-center d-flex light-text align-items-center"
                   to={{
                     pathname:
-                      "https://edu.moe.gov.sa/Wadi/ElectronicServices/Faris/Pages/default.aspx",
+                      // "https://edu.moe.gov.sa/Wadi/ElectronicServices/Faris/Pages/default.aspx",
+                      "/assets/pdf/Attachment.pdf",
                   }}
                   target="_blank"
                 >
@@ -42,7 +48,7 @@ class InitiativesRoleComponent extends Component {
             </div>
           </div>
         </section>
-        <section>
+        {/* <section>
           <div className="container pb-5">
             <div className="row mb-3">
               <div className="col-md-12 d-flex align-items-center justify-content-center mt-4">
@@ -87,7 +93,7 @@ class InitiativesRoleComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
       </React.Fragment>
     );
   }
