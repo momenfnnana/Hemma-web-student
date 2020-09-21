@@ -10,7 +10,7 @@ class EnterToLectureComponent extends Component {
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <div className="initiative-icon-circle mt-3 mb-3">
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/how_icon.png"}
+                    src={process.env.PUBLIC_URL + "/assets/images/howIcon.png"}
                     alt="logo"
                     width="100%"
                     height="100%"
