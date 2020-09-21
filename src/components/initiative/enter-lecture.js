@@ -10,8 +10,10 @@ class EnterToLectureComponent extends Component {
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <div className="initiative-icon-circle mt-3 mb-3">
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                    src={process.env.PUBLIC_URL + "/assets/images/how_icon.png"}
                     alt="logo"
+                    width="100%"
+                    height="100%"
                   />
                 </div>
               </div>
@@ -46,12 +48,10 @@ class EnterToLectureComponent extends Component {
                     دون تسجيل الدخول اليه
                   </h5>
                   <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/zoom-logo@3x.png"
-                    }
-                    height="50%"
-                    width="50%"
-                    className="contain-img mb-2"
+                    src={process.env.PUBLIC_URL + "/assets/images/zoom.png"}
+                    height="100%"
+                    width="100%"
+                    className="contain-img mt-2"
                   />
                 </div>
                 {/* </Link> */}
@@ -65,9 +65,12 @@ class EnterToLectureComponent extends Component {
                     بعد مايتم اشتراكك في المحاضرة راح تتغير كلمة اشترك الى انضم
                     من خلال النقر عليها راح تقدر تدخل المحاضرة
                   </h5>
-                  <div className="btn yellow-btn justify-content-center d-flex light-text align-items-center m-3">
-                    انضم الآن
-                  </div>
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/join.png"}
+                    height="50%"
+                    width="40%"
+                    className="contain-img mt-2"
+                  />
                 </div>
               </div>
               <div className="col-lg-4 col-12">
@@ -77,10 +80,13 @@ class EnterToLectureComponent extends Component {
                     ادخل اسمك وايميلك
                   </h5>
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                    height="50%"
-                    width="50%"
-                    className="contain-img mb-2"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/loginTemplete.png"
+                    }
+                    height="100%"
+                    width="100%"
+                    className="contain-img mt-2 p-3"
                   />
                 </div>
               </div>
