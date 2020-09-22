@@ -17,7 +17,7 @@ export class Card extends Component {
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
-    const instructor = course.instructors.map(instructor => (
+    const instructor = course.instructors.map((instructor) => (
       <React.Fragment key={instructor.id}>
         <div className="col-md-6 light-font-text small light-text d-flex align-items-center mb-0">
           <img
@@ -71,12 +71,30 @@ export class Card extends Component {
                   />
                   <span className="en-text">{hijriDate}</span>{" "}
                 </li>
-                <li className="list-inline-item light-font-text small dark-text d-inline-flex align-items-center float-right">
-                  <span className="en-text mr-1">
-                    {course.price && parseFloat(course.price.toFixed(2))}
-                  </span>
-                  ريال
-                </li>
+                {course.originalPrice ? (
+                  <>
+                    <li className="list-inline-item light-font-text small red-text d-inline-flex align-items-center float-right">
+                      <span className="en-text mr-1">
+                        {course.price && parseFloat(course.price.toFixed(2))}
+                      </span>
+                      ريال
+                    </li>
+                    <li className="list-inline-item light-font-text small d-inline-flex align-items-center float-right mr-1 crossed-line dark-text">
+                      <span className="en-text mr-1">
+                        {course.originalPrice &&
+                          parseFloat(course.originalPrice.toFixed(2))}
+                        <span className="ar-text mr-1">ريال</span>
+                      </span>
+                    </li>
+                  </>
+                ) : (
+                  <li className="list-inline-item light-font-text small dark-text d-inline-flex align-items-center float-right mr-1">
+                    <span className="en-text mr-1">
+                      {course.price && parseFloat(course.price.toFixed(2))}
+                    </span>
+                    ريال
+                  </li>
+                )}
               </ul>
             </div>
             <p className="card-description dark-text light-font-text smaller mb-0 text-center text-break">

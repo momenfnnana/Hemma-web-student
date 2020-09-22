@@ -11,7 +11,7 @@ export class CourseCartItem extends Component {
     tempInstallment: null,
     tooltipOpen: false,
     installmentValdation: false,
-    priceValdation: false
+    priceValdation: false,
   };
 
   constructor(props) {
@@ -32,7 +32,7 @@ export class CourseCartItem extends Component {
     ) {
       return {
         editingInstallment: false,
-        tempInstallment: null
+        tempInstallment: null,
       };
     }
     return null;
@@ -47,7 +47,7 @@ export class CourseCartItem extends Component {
     this.props.onSetInstallment(installment);
   }
 
-  onSetBookletColor = color => {
+  onSetBookletColor = (color) => {
     // Determine if a color is already selected
     const selected = this.props.item.bookletType;
 
@@ -73,7 +73,7 @@ export class CourseCartItem extends Component {
       this.setState({
         editingInstallment: true,
         tempInstallment:
-          this.props.item.minimumInstallment || this.props.item.subtotal || 0
+          this.props.item.minimumInstallment || this.props.item.subtotal || 0,
       });
     } else {
       // disable input and submit installment
@@ -81,7 +81,7 @@ export class CourseCartItem extends Component {
 
       this.setState({
         editingInstallment: false,
-        tempInstallment: null
+        tempInstallment: null,
       });
     }
   }
@@ -137,6 +137,7 @@ export class CourseCartItem extends Component {
 
   render() {
     const item = this.props.item;
+    console.log(item);
     if (!item) {
       return null;
     }
@@ -158,10 +159,8 @@ export class CourseCartItem extends Component {
               alt="icon"
             />
             <div className="media-body mt-2">
-              <h6 className="mt-0 dark-text">
-                {item.nameAr}
-              </h6>
-              {item.bookletAvailable &&
+              <h6 className="mt-0 dark-text">{item.nameAr}</h6>
+              {item.bookletAvailable && (
                 <>
                   {item.bookletAvailableInBlackAndWhite && (
                     <div className="form-check mb-1">
@@ -195,8 +194,7 @@ export class CourseCartItem extends Component {
                     </div>
                   )}
                 </>
-              }
-
+              )}
 
               {item.canBePaidInInstallments ? (
                 <span
@@ -219,17 +217,13 @@ export class CourseCartItem extends Component {
                   تسديد بالكامل
                 </span>
               )}
-
-
             </div>
           </div>
           <div className="w-25">
             {item.canBePaidInInstallments && (
               <form className="mb-2 d-flex flex-row align-items-center">
                 <div className="flex-column">
-                  <label className="dark-text smaller mb-0">
-                    قيمة القسط
-                  </label>
+                  <label className="dark-text smaller mb-0">قيمة القسط</label>
                   {this.state.editingInstallment && (
                     <p className="red-text smaller light-font-text mb-0">
                       {item.canBePaidInInstallments === true &&
