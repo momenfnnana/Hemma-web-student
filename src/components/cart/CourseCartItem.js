@@ -137,7 +137,6 @@ export class CourseCartItem extends Component {
 
   render() {
     const item = this.props.item;
-    console.log(item);
     if (!item) {
       return null;
     }
@@ -261,10 +260,29 @@ export class CourseCartItem extends Component {
             <div className="d-flex flex-row justify-content-between align-items-center">
               <label className="dark-text smaller mb-0">سعر الاشتراك</label>
               <div className="d-flex flex-column mx-auto">
-                <h6 className="light-text text-center mb-0">
-                  <span className="en-text">{formatPrice(item.subtotal)}</span>{" "}
-                  ريال
-                </h6>
+                {item.originalPrice ? (
+                  <>
+                    <h6 className="light-text text-center mb-0 crossed-line">
+                      <span className="en-text">
+                        {formatPrice(item.originalPrice)}
+                      </span>{" "}
+                      ريال
+                    </h6>
+                    <h6 className="light-text text-center mb-0 red-text">
+                      <span className="en-text">
+                        {formatPrice(item.subtotal)}
+                      </span>{" "}
+                      ريال
+                    </h6>
+                  </>
+                ) : (
+                  <h6 className="light-text text-center mb-0">
+                    <span className="en-text">
+                      {formatPrice(item.subtotal)}
+                    </span>{" "}
+                    ريال
+                  </h6>
+                )}
                 {item.subtotalBeforeDiscount && (
                   <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
                     <span className="en-text">
