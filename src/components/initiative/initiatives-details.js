@@ -226,59 +226,52 @@ class InitiativesDetailsComponent extends Component {
           <div className="container">
             <div className="row mb-4">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h1 className="dark-text mb-1">
-                  مبادرات همة للتعريف بلائحة الوظائف التعليمية
-                </h1>
+                <h1 className="dark-text mb-1">مبادرات همة</h1>
               </div>
             </div>
-            <div className="row mb-5">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h5 className="dark-text w-50 mb-1 d-flex flex-column align-items-center justify-content-center yellow-div">
-                  بالتعاون مع
-                </h5>
+
+            <div className="row w-100 mx-auto d-flex justify-content-center align-items-center">
+              <div className="col-lg-12 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
+                <div className="initiative-main-title-layout">
+                  <h3 className="p-4">
+                    مبادرة همة للتعريف بكيفية التعامل مع تطبيق ميكروسوفت تيمز
+                    بالتزامن مع منصة مدرستي
+                  </h3>
+                </div>
               </div>
             </div>
-            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-lg-4 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
-                <div className="categories-box-layout">
+            <div className="row mt-5">
+              <div className="col-lg-12 d-flex  align-items-center justify-content-center mb-2">
+                <div className="zoom-circle">
                   <img
-                    src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                    width="100%"
-                    height="100%"
-                    className="contain-img"
-                    alt="artwork"
+                    height="14"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/assets/images/microsoft-teams.png"
+                    }
+                    alt="favourite"
                   />
                 </div>
-              </div>
-              <div className="col-lg-4 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
-                <div>
-                  <div className="categories-box-layout">
+                <div
+                  className="btn w-50 ml-4 label-btn clickable mb-2"
+                  onClick={() => this.props.history.push("/initiative-role")}
+                >
+                  <h4>تعرف أكثر على تطبيق ميكروسوفت تيمز</h4>
+                  {/* <div className="categories-box-layout">
                     <img
-                      src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                      src={
+                        process.env.PUBLIC_URL +
+                        "/assets/images/microsoft-teams.png"
+                      }
                       width="100%"
                       height="100%"
                       className="contain-img"
                       alt="artwork"
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
-              <div className="col-lg-4 col-12 d-flex flex-column align-items-center justify-content-center mb-1">
-                <div>
-                  <div className="categories-box-layout">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-                      width="100%"
-                      height="100%"
-                      className="contain-img"
-                      alt="artwork"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="row mt-5 mb-5">
-              <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center mb-2">
+              {/* <div className="col-lg-4 d-flex flex-column align-items-center justify-content-center mb-2">
                 <div
                   className="btn w-100 ml-4 label-btn clickable"
                   onClick={() => this.props.history.push("/initiative-role")}
@@ -307,7 +300,7 @@ class InitiativesDetailsComponent extends Component {
                     }
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -317,7 +310,8 @@ class InitiativesDetailsComponent extends Component {
             <div className="row mb-3">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
                 <h1 className="dark-text mb-1">
-                  محاضرات مجانية لتوضيح لائحة الوظائف التعليمية الجديدة
+                  محاضرات مجانية للتعريف بكيفية التعامل مع ميكروسوفت تيمز
+                  بالتزامن مع منصة مدرستي
                 </h1>
               </div>
             </div>
