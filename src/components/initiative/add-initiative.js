@@ -35,7 +35,7 @@ class AddInitiative extends Component {
               className="bg-light dark-text small mb-0 mt-0"
             >
               <div className="dark-text">
-                <h4>ادخل رقم الهوية</h4>
+                <h4>الرجاء إدخال رقم الهوية</h4>
               </div>
             </ModalHeader>
             <ModalBody>
@@ -47,7 +47,7 @@ class AddInitiative extends Component {
               ></input>
               <div>
                 <label className="dark-text small mb-0 mt-0 label-model">
-                  تأكد من صحة ادخالك لرقم الهوية ،سيتم ارفقته بالشهادة
+                  تأكد من صحة ادخالك لرقم الهوية
                 </label>
               </div>
               <div className="position-relative"></div>
