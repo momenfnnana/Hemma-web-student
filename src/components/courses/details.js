@@ -422,13 +422,34 @@ export class CourseDetails extends Component {
                       <div className="container">
                         <div className="d-inline-flex align-items-center">
                           <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
-                          <h4 className="mid-text">
-                            <span className="en-text">
-                              {this.state.details.price &&
-                                parseFloat(this.state.details.price.toFixed(2))}
-                            </span>{" "}
-                            ريال
-                          </h4>
+                          {this.state.details.originalPrice ? (
+                            <h5 className="mid-text">
+                              <span className="en-text mr-1 crossed-line">
+                                {this.state.details.originalPrice &&
+                                  parseFloat(
+                                    this.state.details.originalPrice.toFixed(2)
+                                  )}{" "}
+                                <span className="ar-text">ريال</span>
+                              </span>
+                              <span className="en-text red-text">
+                                {this.state.details.price &&
+                                  parseFloat(
+                                    this.state.details.price.toFixed(2)
+                                  )}{" "}
+                                <span className="ar-text red-text">ريال</span>
+                              </span>
+                            </h5>
+                          ) : (
+                            <h4 className="mid-text">
+                              <span className="en-text">
+                                {this.state.details.price &&
+                                  parseFloat(
+                                    this.state.details.price.toFixed(2)
+                                  )}
+                              </span>{" "}
+                              ريال
+                            </h4>
+                          )}
                         </div>
                         {this.state.details.purchasable && (
                           <button
