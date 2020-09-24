@@ -90,7 +90,6 @@ class CartComponent extends Component {
           headers,
         })
         .then((response) => {
-          console.log(response);
           this.props.history.push("/course/content");
         })
         .catch((error) => {
