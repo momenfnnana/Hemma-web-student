@@ -16,7 +16,7 @@ export class BookletsComponent extends Component {
     this.state = {
       booklets: [],
       booklet: {},
-      isPageLoading: false
+      isPageLoading: false,
     };
   }
 
@@ -26,7 +26,7 @@ export class BookletsComponent extends Component {
 
   toggleTooltip() {
     this.setState({
-      tooltipOpen: !this.state.tooltipOpen
+      tooltipOpen: !this.state.tooltipOpen,
     });
   }
 
@@ -39,18 +39,18 @@ export class BookletsComponent extends Component {
 
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     axios
       .get(`${apiBaseUrl}/content/${courseId}/booklet`, { headers })
-      .then(response => {
+      .then((response) => {
         this.setState({
           booklets: response.data.data.parts,
           isPageLoading: false,
-          booklet: response.data.data
+          booklet: response.data.data,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ isPageLoading: false });
         console.log(error);
       });
@@ -63,31 +63,35 @@ export class BookletsComponent extends Component {
   }
 
   onSubmit(type) {
-    Api.cart.addBooklet(this.state.booklet.id, type)
-      .then(response => {
+    Api.cart
+      .addBooklet(this.state.booklet.id, type)
+      .then((response) => {
         this.props.history.push("/cart");
       })
-      .catch(error => {
+      .catch((error) => {
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
             swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
           case "BadRequest":
             swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
           case "ItemAlreadyPurchased":
             swal("عفواً", "هذه الملزمة موجودة ضمن قائمة دوراتك", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
+            break;
+          case "ItemAlreadyAdded":
+            this.props.history.push("/cart");
             break;
 
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
         }
@@ -98,7 +102,7 @@ export class BookletsComponent extends Component {
     const booklets = this.state.booklets;
     const courseId = this.props.match.params.id;
 
-    return booklets.map(booklet => {
+    return booklets.map((booklet) => {
       return (
         <div
           to={`/course/content/${courseId}/booklets/${booklet.id}`}
@@ -107,7 +111,7 @@ export class BookletsComponent extends Component {
               `/course/content/${courseId}/booklets/${booklet.id}`,
               {
                 name: booklet.name,
-                url: booklet.url
+                url: booklet.url,
               }
             )
           }
@@ -234,13 +238,10 @@ export class BookletsComponent extends Component {
 function mapStateToProps(state) {
   return {
     authenticated: state.auth.authenticated,
-    user: state.user
+    user: state.user,
   };
 }
 
-BookletsComponent = connect(
-  mapStateToProps,
-  { getUser }
-)(BookletsComponent);
+BookletsComponent = connect(mapStateToProps, { getUser })(BookletsComponent);
 
 export const Booklets = withRouter(BookletsComponent);
