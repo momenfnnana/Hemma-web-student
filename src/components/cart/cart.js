@@ -19,7 +19,7 @@ class CartComponent extends Component {
   state = {
     busy: true,
     modalIsOpen: false,
-    isPageLoading: false
+    isPageLoading: false,
   };
 
   openModal(id) {
@@ -39,10 +39,10 @@ class CartComponent extends Component {
       "نفيدك أنه تم اشتراكك في الدورة لمزيد من المعلومات أدخل على أيقونة (مرفقات الدورة) ستجد ملف يحتوي أهم التفاصيل عن الدورة",
       {
         buttons: {
-          ok: "موافق"
-        }
+          ok: "موافق",
+        },
       }
-    ).then(value => {
+    ).then((value) => {
       this.handleCartCheckout();
     });
   }
@@ -52,17 +52,17 @@ class CartComponent extends Component {
     // Fetch the cart again every time the user access the cart page
     this.props
       .getCart()
-      .then(result => {
+      .then((result) => {
         this.setState({
           busy: false,
-          isPageLoading: false
+          isPageLoading: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error while fetching the cart");
         this.setState({
           busy: false,
-          isPageLoading: false
+          isPageLoading: false,
         });
       });
   }
@@ -73,7 +73,7 @@ class CartComponent extends Component {
 
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     if (cartAmount == 0) {
       let data = {
@@ -83,18 +83,18 @@ class CartComponent extends Component {
         accountHolderName: "No_PAYMENT",
         accountNumber: "No_PAYMENT",
         amount: 0,
-        date: new Date()
+        date: new Date(),
       };
       axios
-        .post(`${apiBaseUrl}/cart/checkout_with_bank_transfer`, data, {
-          headers
+        .post(`${apiBaseUrl}/cart_v2/checkout_with_bank_transfer`, data, {
+          headers,
         })
-        .then(response => {
+        .then((response) => {
           this.props.history.push("/course/content");
         })
-        .catch(error => {
+        .catch((error) => {
           swal("عفواً", "خدث خطأ ما", "error", {
-            button: "متابعة"
+            button: "متابعة",
           });
         });
     } else {
@@ -186,10 +186,7 @@ function mapStateToProps(state) {
 const actionCreators = {
   getCart,
   addCoupon,
-  removeCoupon
+  removeCoupon,
 };
 
-export const Cart = connect(
-  mapStateToProps,
-  actionCreators
-)(CartComponent);
+export const Cart = connect(mapStateToProps, actionCreators)(CartComponent);
