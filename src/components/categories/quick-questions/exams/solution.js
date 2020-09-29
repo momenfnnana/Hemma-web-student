@@ -103,6 +103,19 @@ export class SolutionModal extends Component {
                       controls
                       autoPlay
                     ></video>
+                  ) : this.state.details[0] &&
+                    this.state.details[0].solutionExplanation &&
+                    this.state.details[0].solutionExplanation.type ===
+                      "Image" ? (
+                    <image
+                      width="100%"
+                      height="240"
+                      src={
+                        this.state.details[0] &&
+                        this.state.details[0].solutionExplanation &&
+                        this.state.details[0].solutionExplanation.value
+                      }
+                    ></image>
                   ) : (
                     <p className="dark-text mb-0 text-center">
                       لا يوجد طريقة حل متوفرة
