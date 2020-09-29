@@ -175,7 +175,7 @@ class ExamResultComponent extends Component {
   }
 
   render() {
-    const attemptId = this.props.match.params.attemptId;
+    const attemptId = this.props.match.params.id;
     const courseId = this.props.match.params.id;
     const settings = {
       className: "center",
