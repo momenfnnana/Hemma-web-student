@@ -14,31 +14,31 @@ import {
   loginAction,
   signupUser,
   sendToken,
-  loginFailed
+  loginFailed,
 } from "../../actions/login.actions";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
 import axios from "axios";
 import { apiBaseUrl } from "../../api/helpers";
 
-const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
-const maxLength = max => value =>
+const required = (value) => (value ? undefined : "يجب تعبئة هذه الخانة");
+const maxLength = (max) => (value) =>
   value && value.length > max
     ? `كلمة المرور يجب أن لا تزيد عن ${max} خانات`
     : undefined;
 const maxLength10 = maxLength(10);
-export const minLength = min => value =>
+export const minLength = (min) => (value) =>
   value && value.length < min
     ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
     : undefined;
-const nameValue = value => {
+const nameValue = (value) => {
   value = value || "";
   const trimmed = value.replace(/\s/g, "");
   const valid = /^[\u0621-\u064A\w]{5,}$/.test(trimmed);
 
   return valid ? undefined : "الاسم يجب أن يحتوي ٥ أحرف على الأقل";
 };
-const phoneValue = value => {
+const phoneValue = (value) => {
   value = value.phoneNumber || "";
   const trimmed = value.replace(/\s/g, "");
   const valid = /^0\d{9}$/.test(trimmed);
@@ -47,7 +47,7 @@ const phoneValue = value => {
 };
 
 export const minLength4 = minLength(4);
-const emailValue = value =>
+const emailValue = (value) =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "يرجى إدخال البريد الإلكتروني بصيغة صحيحة"
     : undefined;
@@ -66,7 +66,7 @@ class RegisterComponent extends Component {
       educationalEntities: [],
       selected: null,
       nationalities: [],
-      isPageLoading: false
+      isPageLoading: false,
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
@@ -75,7 +75,7 @@ class RegisterComponent extends Component {
     this.setState({ hidden: !this.state.hidden });
   }
 
-  myFormHandler = values => {
+  myFormHandler = (values) => {
     const request = this.props.signupUser({
       countryCode: values.phone.countryCode,
       phoneNumber: values.phone.phoneNumber,
@@ -86,33 +86,33 @@ class RegisterComponent extends Component {
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
       saCityId: values.saCityId,
-      nationalityId: values.nationalityId
+      nationalityId: values.nationalityId,
     });
     this.setState({ loading: true });
     request
-      .then(action => {
-        this.props.history.push("/");
-        // this.setState({ loading: false, isPageLoading: true });
+      .then((action) => {
+        // this.props.history.push("/");
+        this.setState({ loading: false, isPageLoading: true });
 
-        // if (!this.props.phoneNumberConfirmed) {
-        //   this.props
-        //     .sendToken()
-        //     .then(() => {
-        //       this.props.history.push("/verify");
-        //     })
-        //     .catch(error => {
-        //       this.props.history.push("/");
-        //     });
-        // } else {
-        //   this.props.history.push("/");
-        // }
+        if (!this.props.phoneNumberConfirmed) {
+          this.props
+            .sendToken()
+            .then(() => {
+              this.props.history.push("/verify");
+            })
+            .catch((error) => {
+              this.props.history.push("/");
+            });
+        } else {
+          this.props.history.push("/");
+        }
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ loading: false });
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
             swal("عفواً", "هذا المستخدم مسجل سابقاً", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
 
@@ -123,14 +123,14 @@ class RegisterComponent extends Component {
   };
 
   componentDidMount() {
-    Api.auth.getCities().then(cities => this.setState({ cities: cities }));
-    axios.get(`${apiBaseUrl}/Nationalities/lookup`).then(response => {
+    Api.auth.getCities().then((cities) => this.setState({ cities: cities }));
+    axios.get(`${apiBaseUrl}/Nationalities/lookup`).then((response) => {
       this.setState({ nationalities: response.data.data });
     });
   }
 
   renderNationalities() {
-    return this.state.nationalities.map(nationality => (
+    return this.state.nationalities.map((nationality) => (
       <option key={nationality.id} value={nationality.id}>
         {" "}
         {nationality.name}{" "}
@@ -139,7 +139,7 @@ class RegisterComponent extends Component {
   }
 
   renderCities() {
-    return this.state.cities.map(city => (
+    return this.state.cities.map((city) => (
       <option key={city.id} value={city.id}>
         {" "}
         {city.nameAr}{" "}
@@ -148,7 +148,7 @@ class RegisterComponent extends Component {
   }
 
   renderEntities() {
-    return this.state.educationalEntities.map(entity => (
+    return this.state.educationalEntities.map((entity) => (
       <option key={entity.id} value={entity.id}>
         {" "}
         {entity.name}{" "}
@@ -156,30 +156,30 @@ class RegisterComponent extends Component {
     ));
   }
 
-  handleCitiesChange = event => {
+  handleCitiesChange = (event) => {
     this.setState({ selectedCity: event.target.value });
     axios
       .get(
         `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${event.target.value}&EducationalLevel=${this.state.selectedLevel}`
       )
-      .then(response => {
+      .then((response) => {
         this.setState({ educationalEntities: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
 
-  handleLevelChange = event => {
+  handleLevelChange = (event) => {
     this.setState({ selectedLevel: event.target.value });
     axios
       .get(
         `${apiBaseUrl}/EducationalEntities/lookup?SACityId=${this.state.selectedCity}&EducationalLevel=${event.target.value}`
       )
-      .then(response => {
+      .then((response) => {
         this.setState({ educationalEntities: response.data.data });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -228,7 +228,7 @@ class RegisterComponent extends Component {
                   validate={required}
                   options={[
                     { title: "ذكر", value: "male" },
-                    { title: "أنثى", value: "female" }
+                    { title: "أنثى", value: "female" },
                   ]}
                 />{" "}
               </div>{" "}
@@ -350,17 +350,19 @@ function mapStateToProps(state) {
   return {
     formValues: state.form.Register && state.form.Register.values,
     phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
-    authenticated: state.auth.authenticated
+    authenticated: state.auth.authenticated,
   };
 }
 
 RegisterComponent = reduxForm({
-  form: "Register"
+  form: "Register",
 })(RegisterComponent);
 
-RegisterComponent = connect(
-  mapStateToProps,
-  { signupUser, loginAction, sendToken, loginFailed }
-)(RegisterComponent);
+RegisterComponent = connect(mapStateToProps, {
+  signupUser,
+  loginAction,
+  sendToken,
+  loginFailed,
+})(RegisterComponent);
 
 export const Register = RegisterComponent;
