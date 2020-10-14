@@ -406,8 +406,8 @@ class HomeComponent extends Component {
             {this.renderCategories()}
           </div>
         </section>
-
-        <section className="pt-1">
+        {/* TODO hide initiative */}
+        {/* <section className="pt-1">
           <div className="container">
             <div className="row mx-auto d-flex justify-content-center align-items-center w-50">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
@@ -421,7 +421,7 @@ class HomeComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
         <section className="pt-4">
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
