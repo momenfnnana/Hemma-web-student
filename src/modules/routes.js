@@ -121,13 +121,15 @@ class MainRouterComponent extends Component {
             <Header />
             <Switch>
               <Route path="/home" component={Home} />
-              <Route
+              {/* TODO hide initiative */}
+              {/* <Route
                 path="/initiative/details/:id"
                 component={InitiativesDetails}
-              />
+              /> */}
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
-              <Route path="/initiative-role" component={InitiativesRole} />
-              <Route path="/initiative-exam" component={InitiativesExam} />
+              {/* TODO hide initiative */}
+              {/* <Route path="/initiative-role" component={InitiativesRole} /> */}
+              {/* <Route path="/initiative-exam" component={InitiativesExam} /> */}
               {!this.props.authenticated ? (
                 <Route path="/auth" component={Auth} />
               ) : (
@@ -208,11 +210,12 @@ class MainRouterComponent extends Component {
                 exact
                 component={requireAuth(CertificatesList)}
               />
-              <Route
+              {/* TODO hide initiative */}
+              {/* <Route
                 path="/InitiativeFreeLectures/:id/preparing"
                 exact
                 component={requireAuth(Preparing)}
-              />
+              /> */}
               <Route
                 path="/certificate/:id"
                 exact
