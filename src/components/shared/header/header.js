@@ -65,10 +65,9 @@ class HeaderComponent extends Component {
     const user = this.props.user;
     return (
       <React.Fragment>
-        {/* TODO return the verify message */}
-        {/* {!this.props.phoneNumberConfirmed && this.props.authenticated && !this.props.location.pathname.startsWith(
-                "/verify"
-              ) ? (
+        {!this.props.phoneNumberConfirmed &&
+        this.props.authenticated &&
+        !this.props.location.pathname.startsWith("/verify") ? (
           <div className="top-header dark-bg">
             <div className="container">
               <div className="row">
@@ -86,7 +85,7 @@ class HeaderComponent extends Component {
               </div>
             </div>
           </div>
-        ) : null} */}
+        ) : null}
 
         <div className="header">
           <Navbar
