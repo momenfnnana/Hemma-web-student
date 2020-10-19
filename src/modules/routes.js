@@ -51,6 +51,7 @@ import { ExamResult } from "../components/categories/quick-questions/exams/exam-
 import { StartTrainingExam } from "../components/categories/quick-questions/training/start-training";
 import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
 import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
+import { Healthy } from "../components/shared/healthy";
 
 class AppBackground extends Component {
   render() {
@@ -120,6 +121,13 @@ class MainRouterComponent extends Component {
           <AppBackground>
             <Header />
             <Switch>
+              {/* Start Healty check from FE/BE side  */}
+              <Route path="/health">
+                <h3>App is Healthy</h3>
+              </Route>
+              <Route exact path="/ready" component={Healthy} />
+              {/* End Healty check from FE/BE side  */}
+
               <Route path="/home" component={Home} />
               {/* TODO hide initiative */}
               {/* <Route
@@ -249,8 +257,8 @@ class MainRouterComponent extends Component {
               {!this.props.authenticated ? (
                 <Redirect from="/" exact to="/home" />
               ) : (
-                <Redirect from="/" exact to="/course/content" />
-              )}
+                  <Redirect from="/" exact to="/course/content" />
+                )}
               <Redirect to="/not-found" />
             </Switch>
             <Footer />
