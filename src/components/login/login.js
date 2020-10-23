@@ -7,11 +7,13 @@ import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
 import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
+import { apiBaseUrl } from "../../api/helpers";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import {
   loginAction,
   sendToken,
-  loginFailed
+  loginFailed,
+  
 } from "../../actions/login.actions";
 import axios from "axios";
 import { Helmet } from "react-helmet";
@@ -36,13 +38,16 @@ const validate = values => {
 };
 
 class LoginComponent extends Component {
+
   constructor(props) {
     super(props);
 
     this.state = {
       hidden: true,
       password: "",
-      loading: false
+      loading: false,
+      subscriptions: [],
+      nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=1&Limit=50&SubscriptionStatus=${this.props.subscriptionStatus}`
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
@@ -61,19 +66,10 @@ class LoginComponent extends Component {
 
     request
       .then(action => {
+
+        GetUserSubscriptions(this.props);
         this.setState({ loading: false });
-        if (!this.props.phoneNumberConfirmed) {
-          this.props
-            .sendToken()
-            .then(response => {
-              this.props.history.push("/verify");
-            })
-            .catch(error => {
-              this.props.history.push("/");
-            });
-        } else {
-          this.props.history.push("/");
-        }
+      
       })
       .catch(error => {
         this.setState({ loading: false });
@@ -166,6 +162,50 @@ function mapStateToProps(state) {
   };
 }
 
+function GetUserSubscriptions(prop)
+{ 
+  let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+      axios 
+        .get(`${apiBaseUrl}/courses/purchased?Page=1&Limit=50&SubscriptionStatus=Active`, { headers })
+        .then(response => {
+debugger;
+          if (!prop.phoneNumberConfirmed) {
+            prop
+              .sendToken() 
+              .then(response => {
+                prop.history.push("/verify");
+
+              })
+              .catch(error => {
+            
+                //GetUserSubscriptions();
+                //this.props.history.push("/");
+              });
+          } else {
+        
+            if(response.data.data.data==undefined||
+              response.data.data.data.length==0)
+              {
+                prop.history.push("/categories");
+                
+              }
+              else
+              {
+                prop.history.push("/course/content");
+              }
+            //this.props.history.push("/");
+          }
+
+        
+        }).catch(err=>{
+          
+
+        });
+
+}
 LoginComponent = reduxForm({
   form: "Login",
   validate
