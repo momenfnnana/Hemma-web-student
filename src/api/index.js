@@ -6,6 +6,7 @@ import { UserApiEndpoints } from "./user.api";
 import { TwilioApiEndpoints } from "./twilio.api";
 import { SubscriptionApiEndpoints } from "./subscription.api";
 import { CategoriesApiEndpoints } from "./categories.api";
+import { readyApiEndpoints } from "./health.api";
 
 export const Api = {
   ...helpers,
@@ -15,5 +16,6 @@ export const Api = {
   user: UserApiEndpoints,
   twilio: TwilioApiEndpoints,
   subscription: SubscriptionApiEndpoints,
-  categories: CategoriesApiEndpoints
+  categories: CategoriesApiEndpoints,
+  healthy:readyApiEndpoints
 };

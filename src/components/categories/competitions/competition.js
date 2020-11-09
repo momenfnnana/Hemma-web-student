@@ -236,7 +236,6 @@ class CompetitionComponent extends Component {
       competitionDetails && competitionDetails.competitionAttemptId;
 
     const dueDate = competitionDetails && competitionDetails.dueAt;
-
     // if (!dueDate) return null;
 
     const questionsLength =
@@ -279,7 +278,7 @@ class CompetitionComponent extends Component {
                           "00:00:00"
                         ) : (
                           <Countdown
-                            date={new Date(new Date(dueDate + "+0000"))}
+                            date={new Date(new Date(dueDate))}
                             onComplete={this.onCountdownEnd}
                             daysInHours="false"
                           />

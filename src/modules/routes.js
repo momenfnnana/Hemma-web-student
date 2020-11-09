@@ -51,6 +51,7 @@ import { ExamResult } from "../components/categories/quick-questions/exams/exam-
 import { StartTrainingExam } from "../components/categories/quick-questions/training/start-training";
 import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
 import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
+import { Healthy } from "../components/shared/healthy";
 
 class AppBackground extends Component {
   render() {
@@ -120,14 +121,23 @@ class MainRouterComponent extends Component {
           <AppBackground>
             <Header />
             <Switch>
+              {/* Start Healty check from FE/BE side  */}
+              <Route path="/health">
+                <h3>App is Healthy</h3>
+              </Route>
+              <Route exact path="/ready" component={Healthy} />
+              {/* End Healty check from FE/BE side  */}
+
               <Route path="/home" component={Home} />
-              <Route
+              {/* TODO hide initiative */}
+              {/* <Route
                 path="/initiative/details/:id"
                 component={InitiativesDetails}
-              />
+              /> */}
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
-              <Route path="/initiative-role" component={InitiativesRole} />
-              <Route path="/initiative-exam" component={InitiativesExam} />
+              {/* TODO hide initiative */}
+              {/* <Route path="/initiative-role" component={InitiativesRole} /> */}
+              {/* <Route path="/initiative-exam" component={InitiativesExam} /> */}
               {!this.props.authenticated ? (
                 <Route path="/auth" component={Auth} />
               ) : (
@@ -208,11 +218,12 @@ class MainRouterComponent extends Component {
                 exact
                 component={requireAuth(CertificatesList)}
               />
-              <Route
+              {/* TODO hide initiative */}
+              {/* <Route
                 path="/InitiativeFreeLectures/:id/preparing"
                 exact
                 component={requireAuth(Preparing)}
-              />
+              /> */}
               <Route
                 path="/certificate/:id"
                 exact
@@ -246,8 +257,8 @@ class MainRouterComponent extends Component {
               {!this.props.authenticated ? (
                 <Redirect from="/" exact to="/home" />
               ) : (
-                <Redirect from="/" exact to="/course/content" />
-              )}
+                  <Redirect from="/" exact to="/course/content" />
+                )}
               <Redirect to="/not-found" />
             </Switch>
             <Footer />
