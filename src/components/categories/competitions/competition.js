@@ -97,7 +97,6 @@ class CompetitionComponent extends Component {
       [];
     const question = questions[this.state.selectedQuestion];
     const answer = this.state.answers.find((a) => a.id === question.id);
-
     return (
       <React.Fragment>
         {question && (
@@ -113,7 +112,7 @@ class CompetitionComponent extends Component {
                 <div className="box-layout box-border shadow-sm p-3">
                   <h6
                     className="dark-text mb-0 encoded-text"
-                    dangerouslySetInnerHTML={{ __html: question.encodedStem }}
+                    dangerouslySetInnerHTML={{ __html: question.stem }}
                   ></h6>
                 </div>
               </div>
@@ -129,8 +128,8 @@ class CompetitionComponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-md-12">
-                    {Object.keys(question.encodedChoices).map(function(key) {
-                      const value = question.encodedChoices[key];
+                    {Object.keys(question.choices).map(function(key) {
+                      const value = question.choices[key];
                       const selected = answer && answer.selectedChoice === key;
                       return (
                         <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
@@ -198,7 +197,11 @@ class CompetitionComponent extends Component {
       .getCompetitionDetails(params.id)
       .then((response) => {})
       .catch((error) => {
-        switch (error.response.data && error.response.data.message) {
+        switch (
+          error.response &&
+          error.response.data &&
+          error.response.data.message
+        ) {
           case "Student City not match the Competition City":
             this.setState({ specificSchools: true });
             break;
@@ -233,14 +236,14 @@ class CompetitionComponent extends Component {
       competitionDetails && competitionDetails.competitionAttemptId;
 
     const dueDate = competitionDetails && competitionDetails.dueAt;
-    if (!dueDate) return null;
+
+    // if (!dueDate) return null;
 
     const questionsLength =
       this.props &&
       this.props.competition &&
       this.props.competition.questions &&
       this.props.competition.questions.length;
-
     return (
       <section className="pt-5 pb-5">
         <div className="container">
