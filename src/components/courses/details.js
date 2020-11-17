@@ -138,7 +138,9 @@ export class CourseDetails extends Component {
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة",
-            });
+            }).then((response) => {
+                window.location = "/auth/login";
+      });;
             break;
         }
       });
