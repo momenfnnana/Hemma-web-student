@@ -140,7 +140,7 @@ export class CourseDetails extends Component {
               button: "متابعة",
             }).then((response) => {
                 window.location = "/auth/login";
-      });;
+      });
             break;
         }
       });
