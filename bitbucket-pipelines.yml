@@ -1,14 +1,32 @@
+image: node:12.18.1-slim
+
+definitions:
+  services:
+    docker:
+      memory: 4096
+  build: &build
+    step:
+      name: Build
+      caches:
+        - node
+      size: 2x
+      script:
+        - export NODE_OPTIONS=--max_old_space_size=8192
+        - unset CI
+        - yarn --ignore-optional
+        - yarn cache clean
+        - cp ./scripts/.env.stg .env
+        - yarn build
+      artifacts:
+        - "build/**"
+        
 pipelines:
   default:
-    - step:
-        name: Build
-        image: node:12.18.1
-        script:
-          - unset CI
-          - npm i
-          - npm run build
+    - <<: *build
   branches:
     staging:
+      - <<: *build
+
       - step:
           name: Building and Pushing to Docker-Hub
           size: 2x
@@ -16,7 +34,7 @@ pipelines:
             - docker
           script:
             - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
-            - docker build -t hemmaeducationa/student:latest -t $IMAGE_NAME -f Dockerfile .
+            - docker build -t hemmaeducationa/student:latest -t $IMAGE_NAME -f ./scripts/Dockerfile .
             - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
             - docker push $IMAGE_NAME
             - docker push hemmaeducationa/student:latest
@@ -26,9 +44,4 @@ pipelines:
           image: atlassian/pipelines-kubectl
           script:
             - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
-            - kubectl --kubeconfig=hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/student-dep student=$IMAGE_NAME --record=true
-
-definitions:
-  services:
-    docker:
-      memory: 4096
+            - kubectl --kubeconfig=./scripts/hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/student-dep student=$IMAGE_NAME --record=true

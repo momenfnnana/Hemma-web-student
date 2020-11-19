@@ -12,6 +12,7 @@ import {
 } from "react-accessible-accordion";
 import "../styles.sass";
 import { SolutionModal } from "./solution";
+import * as Sentry from "@sentry/react";
 
 class ExamResultComponent extends Component {
   constructor() {
@@ -42,25 +43,29 @@ class ExamResultComponent extends Component {
   };
 
   componentDidMount = () => {
-    const attemptId = this.props.match.params.id;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    axios
-      .get(
-        `${apiBaseUrl}/CategoryGroupExams/Attempts/${attemptId}/DetailedScorecard`,
-        {
-          headers,
-        }
-      )
-      .then((response) => {
-        this.setState({ questions: response.data.data.questions });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    try {
+      const attemptId = this.props.match.params.id;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(
+          `${apiBaseUrl}/CategoryGroupExams/Attempts/${attemptId}/DetailedScorecard`,
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          this.setState({ questions: response.data.data.questions });
+        })
+        .catch((error) => {
+          console.log(error);
+          Sentry.captureException(error);
+        });
+    } catch (err) {
+      Sentry.captureException(err);
+    }
     this.setState({
       nav1: this.slider1,
       nav2: this.slider2,
@@ -78,9 +83,8 @@ class ExamResultComponent extends Component {
               <div className="d-flex justify-content-between align-items-center w-100">
                 <div className="d-flex flex-column">
                   <h6
-                    className={`small mb-1 ${
-                      question.isCorrect == true ? "green-text" : "red-text"
-                    }`}
+                    className={`small mb-1 ${question.isCorrect == true ? "green-text" : "red-text"
+                      }`}
                   >
                     السؤال {question.id}
                   </h6>
@@ -110,8 +114,8 @@ class ExamResultComponent extends Component {
                       ) : question.correctChoice !== question.selectedChoice ? (
                         <p className="small red-text mb-0">الإجابة خاطئة</p>
                       ) : (
-                        <p className="small red-text mb-0">لم تقم بالإجابة</p>
-                      )}
+                            <p className="small red-text mb-0">لم تقم بالإجابة</p>
+                          )}
                     </div>
 
                     <div className="col-md-6">
@@ -132,7 +136,7 @@ class ExamResultComponent extends Component {
                   </div>
                   <div className="row">
                     <div className="col-md-12">
-                      {Object.keys(question.encodedChoices).map(function(key) {
+                      {Object.keys(question.encodedChoices).map(function (key) {
                         const value = question.encodedChoices[key];
                         return (
                           <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
@@ -143,13 +147,12 @@ class ExamResultComponent extends Component {
                                 question.selectedChoice === key
                               }
                               disabled
-                              className={`radio-custom ${
-                                question.correctChoice === key
-                                  ? "radio-success"
-                                  : question.selectedChoice === key
+                              className={`radio-custom ${question.correctChoice === key
+                                ? "radio-success"
+                                : question.selectedChoice === key
                                   ? "radio-failure"
                                   : "radio-custom"
-                              }`}
+                                }`}
                             />
                             <label
                               dangerouslySetInnerHTML={{ __html: value }}
