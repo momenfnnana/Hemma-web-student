@@ -58,6 +58,7 @@ class TrainingResultComponent extends Component {
         })
         .catch(error => {
           console.log(error);
+          Sentry.captureException(error);
         });
     } catch (err) {
       Sentry.captureException(err);
@@ -145,10 +146,10 @@ class TrainingResultComponent extends Component {
                               }
                               disabled
                               className={`radio-custom ${question.correctChoice === key
-                                  ? "radio-success"
-                                  : question.selectedChoice === key
-                                    ? "radio-failure"
-                                    : "radio-custom"
+                                ? "radio-success"
+                                : question.selectedChoice === key
+                                  ? "radio-failure"
+                                  : "radio-custom"
                                 }`}
                             />
                             <label

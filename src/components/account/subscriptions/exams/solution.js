@@ -34,6 +34,7 @@ export class SolutionModal extends Component {
           })
           .catch(error => {
             console.log(error);
+            Sentry.captureException(error);
           });
       }
     } catch (err) {
