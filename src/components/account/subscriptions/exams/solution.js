@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
-import { inputField } from "../../../shared/inputs/inputField";
-import { Field, reduxForm, Fields } from "redux-form";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import * as Sentry from "@sentry/react";
@@ -42,6 +40,12 @@ export class SolutionModal extends Component {
     }
     return true;
   }
+
+  onError = (e) => {
+    Sentry.captureException(e);
+  }
+
+
   render() {
     const customStyles = {
       content: {
@@ -105,6 +109,7 @@ export class SolutionModal extends Component {
                           }
                           controls
                           autoPlay
+                          onError={(e) => this.onError(e)}
                         ></video>
                       ) : (
                         <p className="dark-text mb-0 text-center">

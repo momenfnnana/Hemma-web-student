@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../../api/helpers";
+import * as Sentry from "@sentry/react";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 export class Reply extends Component {
@@ -66,6 +68,11 @@ export class Reply extends Component {
           console.log(error);
         });
     }
+  }
+
+
+  onError = (e) => {
+    Sentry.captureException(e);
   }
 
   render() {
@@ -143,39 +150,40 @@ export class Reply extends Component {
               </form>
             </div>
           ) : (
-            <React.Fragment>
-              {reply.type == "Text" ? (
-                <p className="dark-text smaller word-break mb-2">
-                  {reply.value}
-                </p>
-              ) : reply.type == "Voice" ? (
-                <audio controls className="w-100">
-                  <source src={reply.value} />
-                </audio>
-              ) : reply.type == "Image" ? (
-                <img
-                  src={reply.value}
-                  height="200"
-                  width="400"
-                  className="contain-img"
-                />
-              ) : (
-                <video
-                  height="200"
-                  width="400"
-                  className="video-container video-container-overlay"
-                  autoPlay=""
-                  controls
-                >
-                  <source
-                    type="video/mp4"
-                    data-reactid=".0.1.0.0.0"
+              <React.Fragment>
+                {reply.type == "Text" ? (
+                  <p className="dark-text smaller word-break mb-2">
+                    {reply.value}
+                  </p>
+                ) : reply.type == "Voice" ? (
+                  <audio controls className="w-100">
+                    <source src={reply.value} />
+                  </audio>
+                ) : reply.type == "Image" ? (
+                  <img
                     src={reply.value}
+                    height="200"
+                    width="400"
+                    className="contain-img"
                   />
-                </video>
-              )}
-            </React.Fragment>
-          )}
+                ) : (
+                        <video
+                          height="200"
+                          width="400"
+                          className="video-container video-container-overlay"
+                          autoPlay=""
+                          controls
+                          onError={(e) => this.onError(e)}
+                        >
+                          <source
+                            type="video/mp4"
+                            data-reactid=".0.1.0.0.0"
+                            src={reply.value}
+                          />
+                        </video>
+                      )}
+              </React.Fragment>
+            )}
         </div>
         <hr className="mt-0 mb-0" />
       </React.Fragment>

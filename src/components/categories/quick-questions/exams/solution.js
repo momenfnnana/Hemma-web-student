@@ -45,6 +45,12 @@ export class SolutionModal extends Component {
     }
     return true;
   }
+
+
+  onError = (e) => {
+    Sentry.captureException(e);
+  }
+
   render() {
     const customStyles = {
       content: {
@@ -108,6 +114,7 @@ export class SolutionModal extends Component {
                           }
                           controls
                           autoPlay
+                          onError={(e) => this.onError(e)}
                         ></video>
                       ) : this.state.details[0] &&
                         this.state.details[0].solutionExplanation &&
