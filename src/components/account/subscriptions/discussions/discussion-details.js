@@ -102,7 +102,7 @@ export class DiscussionDetailsComponent extends Component {
           this.state.discussionDetails.chatChannelSid && (
             <UsersChatComponent
               chatChannelSid={this.state.discussionDetails.chatChannelSid}
-              forceInternalChat={false}
+              forceInternalChat={true}
             />
           )}
       </React.Fragment>

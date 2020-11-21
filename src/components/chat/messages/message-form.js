@@ -4,9 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import mime from "mime-types";
 import { ReactMic } from "react-mic";
 import { Picker, emojiIndex } from "emoji-mart";
+import ProgressBar from "react-animated-progress-bar";
 import "emoji-mart/css/emoji-mart.css";
-import ProgressBar from "./progress-bar";
-
 class MessageForm extends React.Component {
   constructor(props) {
     super(props);
@@ -18,27 +17,31 @@ class MessageForm extends React.Component {
       authorized: ["image/jpeg", "image/png"],
       storageRef: firebase.storage().ref(),
       uploadState: "",
-      percentUploaded: 0,
       blobObject: null,
       isRecording: false,
       isPaused: false,
+      errors: [],
     };
   }
 
-  handleChange = (e) => {
-    this.setState({
-      message: e.target.value,
-    });
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value, errors: [] });
+  };
+
+  handleKeyDown = (event) => {
+    if (event.ctrlKey && event.keyCode === 13) {
+      this.sendMessage();
+    }
   };
 
   createMessage = (fileUrl = null) => {
-    console.log(fileUrl)
+    console.log(fileUrl);
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: this.props.user,
     };
     if (fileUrl !== null) {
-      if (fileUrl.includes('audio')) {
+      if (fileUrl.includes("audio")) {
         message["audio"] = fileUrl;
       } else {
         message["image"] = fileUrl;
@@ -52,14 +55,23 @@ class MessageForm extends React.Component {
   sendMessage = (e) => {
     e.preventDefault();
     const { messagesRef } = this.props;
-    const { channel } = this.state;
-    messagesRef
-      .child(channel.id)
-      .push()
-      .set(this.createMessage())
-      .then(() => {
-        this.setState({ message: "" });
+    const { channel, message } = this.state;
+
+    if (message) {
+      messagesRef
+        .child(channel.id)
+        .push()
+        .set(this.createMessage())
+        .then(() => {
+          this.setState({ message: "", errors: [] });
+        });
+    } else {
+      this.setState({
+        errors: this.state.errors.concat({
+          message: "يرجى تعبئة خانة الرسالة",
+        }),
       });
+    }
   };
 
   handleAddEmoji = (emoji) => {
@@ -88,16 +100,6 @@ class MessageForm extends React.Component {
     this.setState({ emojiPicker: !this.state.emojiPicker });
   };
 
-  sendFile = (file) => {
-    if (file !== null) {
-      if (this.isAuthorized(file.name)) {
-        const metadata = { contentType: mime.lookup(file.name) };
-        this.uploadFile(file, metadata);
-        this.clearFile();
-      }
-    }
-  };
-
   addFile = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -107,8 +109,6 @@ class MessageForm extends React.Component {
 
   isAuthorized = (filename) =>
     this.state.authorized.includes(mime.lookup(filename));
-
-  clearFile = () => this.setState({ file: null });
 
   uploadFile = (file, metadata) => {
     const pathToUpload = this.state.channel.id;
@@ -121,31 +121,31 @@ class MessageForm extends React.Component {
         uploadTask: this.state.storageRef.child(filePath).put(file, metadata),
       },
       () => {
-        this.state.uploadTask.on(
-          "state_changed",
-          (snap) => {
-            const percentUploaded = Math.round(
-              (snap.bytesTransferred / snap.totalBytes) * 100
-            );
-            this.setState({ percentUploaded });
-          },
-          (err) => {
-            console.error(err);
-          },
-          () => {
-            this.state.uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then((downloadUrl) => {
-                this.sendFileMessage(downloadUrl, ref, pathToUpload);
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          }
-        );
+        this.state.uploadTask.on("state_changed", () => {
+          this.state.uploadTask.snapshot.ref
+            .getDownloadURL()
+            .then((downloadUrl) => {
+              this.sendFileMessage(downloadUrl, ref, pathToUpload);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        });
       }
     );
   };
+
+  sendFile = (file) => {
+    if (file !== null) {
+      if (this.isAuthorized(file.name)) {
+        const metadata = { contentType: mime.lookup(file.name) };
+        this.uploadFile(file, metadata);
+        this.clearFile();
+      }
+    }
+  };
+
+  clearFile = () => this.setState({ file: null });
 
   sendFileMessage = (fileUrl, ref, pathToUpload) => {
     ref
@@ -162,7 +162,6 @@ class MessageForm extends React.Component {
 
   startOrPauseRecording = () => {
     const { isPaused, isRecording } = this.state;
-
     if (isPaused) {
       this.setState({ isPaused: false });
     } else if (isRecording) {
@@ -181,62 +180,80 @@ class MessageForm extends React.Component {
     const ref = this.props.messagesRef;
     const filePath = `audio/${pathToUpload}/${uuidv4()}.mp3`;
     const metadata = {
-      contentType: 'audio/mp3',
+      contentType: "audio/mp3",
     };
 
     this.setState(
       {
         uploadState: "uploading",
-        uploadTask: this.state.storageRef.child(filePath).put(blobObject.blob, metadata),
+        uploadTask: this.state.storageRef
+          .child(filePath)
+          .put(blobObject.blob, metadata),
       },
       () => {
-        this.state.uploadTask.on(
-          "state_changed",
-          (snap) => {
-            const percentUploaded = Math.round(
-              (snap.bytesTransferred / snap.totalBytes) * 100
-            );
-            this.setState({ percentUploaded });
-          },
-          (err) => {
-            console.error(err);
-          },
-          () => {
-            this.state.uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then((downloadUrl) => {
-                this.sendFileMessage(downloadUrl, ref, pathToUpload);
-              })
-              .catch((err) => {
-                console.error(err);
-              });
-          }
-        );
+        this.state.uploadTask.on("state_changed", () => {
+          this.state.uploadTask.snapshot.ref
+            .getDownloadURL()
+            .then((downloadUrl) => {
+              this.sendFileMessage(downloadUrl, ref, pathToUpload);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        });
       }
+    );
+  };
+
+  renderErrors() {
+    return (
+      this.state.errors &&
+      this.state.errors.length > 0 &&
+      this.state.errors.map((error, index) => (
+        <small className="text-red" key={index}>
+          {error.message}
+        </small>
+      ))
     );
   }
 
   render() {
-    const { emojiPicker, message, uploadState, percentUploaded, isRecording, isPaused } = this.state;
+    const {
+      emojiPicker,
+      message,
+      uploadState,
+      isRecording,
+      isPaused,
+    } = this.state;
     return (
       <div className="chat-message">
         <form>
           {uploadState === "uploading" ? (
             <ProgressBar
-              uploadState={uploadState}
-              percentUploaded={percentUploaded}
+              width="100%"
+              height="10px"
+              rect
+              fontColor="gray"
+              percentage="100"
+              rectPadding="1px"
+              rectBorderRadius="20px"
+              trackPathColor="transparent"
+              bgColor="#333333"
+              trackBorderColor="grey"
             />
           ) : (
               <div className="input-chat">
-                <textarea
+                <input
                   className="form-control light-font-text small"
                   type="text"
                   name="message"
-                  id="message"
-                  onChange={(e) => this.handleChange(e)}
+                  onChange={this.handleChange}
+                  onKeyDown={this.handleKeyDown}
                   ref={(node) => (this.messageInputRef = node)}
                   value={message}
+                  autoComplete="off"
                 />
+                {this.renderErrors()}
                 <button
                   type="submit"
                   className="btn light-btn"
@@ -284,7 +301,10 @@ class MessageForm extends React.Component {
                       />
                     </li>
                     <li className="list-inline-item clickable">
-                      <label htmlFor="attachFile" className="clickable w-100">
+                      <label
+                        htmlFor="attachFile"
+                        className="clickable w-100 mb-0"
+                      >
                         <img
                           src={
                             process.env.PUBLIC_URL +
