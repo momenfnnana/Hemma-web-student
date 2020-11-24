@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
-import { getChatToken } from "../../../../actions/twilio.actions";
 import UsersChatComponent from "../../../chat/chat";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
@@ -126,7 +125,6 @@ DiscussionDetailsComponent = reduxForm({
 
 DiscussionDetailsComponent = connect(mapStateToProps, {
   getUser,
-  getChatToken,
 })(DiscussionDetailsComponent);
 
 export const DiscussionDetails = withRouter(DiscussionDetailsComponent);

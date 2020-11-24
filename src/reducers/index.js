@@ -4,7 +4,6 @@ import { reducer as formReducer } from "redux-form";
 import { cartReducer } from "./cart.reducer";
 import { authReducer } from "./auth.reducer";
 import { userReducer } from "./user.reducer";
-import { twilioReducer } from "./twilio.reducer";
 import { channelReducer } from "./chat.reducer";
 import { subscriptionReducer } from "./subscription.reducer";
 import { categoriesReducer } from "./categories.reducer";
@@ -15,7 +14,6 @@ export const hemmaReducer = combineReducers({
   cart: cartReducer,
   auth: authReducer,
   user: userReducer,
-  twilio: twilioReducer,
   channel: channelReducer,
   subscription: subscriptionReducer,
   competition: categoriesReducer
