@@ -93,7 +93,6 @@ export class SpeedUpModalComponent extends Component {
                 <a
                   className="btn light-btn btn-sm pl-4 pr-4"
                   href={file.url}
-                  target="_blank"
                 >
                   تحميل
                 </a>
@@ -122,7 +121,6 @@ export class SpeedUpModalComponent extends Component {
                 <a
                   className="btn light-btn btn-sm pl-4 pr-4"
                   href={file.url}
-                  target="_blank"
                 >
                   تحميل
                 </a>
