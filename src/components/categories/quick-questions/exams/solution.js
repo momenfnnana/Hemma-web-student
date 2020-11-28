@@ -13,6 +13,7 @@ export class SolutionModal extends Component {
       details: [],
     };
   }
+
   shouldComponentUpdate(nextProps, nextState) {
     try {
       const attemptId = this.props.attemptId;
@@ -31,7 +32,7 @@ export class SolutionModal extends Component {
           .then((response) => {
             let questions = response.data.data.questions;
             let questionId = questions.filter(
-              (question) => question.id == nextProps.id
+              (question) => question.id === nextProps.id
             );
             this.setState({ details: questionId });
           })
@@ -46,9 +47,14 @@ export class SolutionModal extends Component {
     return true;
   }
 
+  componentDidMount() {
+    this.onVideoError()
+  }
 
-  onError = (e) => {
-    Sentry.captureException('An error occured while playing the video ', e);
+  onVideoError = () => {
+    this.videoNode.on('error', function (event) {
+      Sentry.captureException(`An error occurred in ${window.location.href} while playing the video `, event,);
+    });
   }
 
   render() {
@@ -114,7 +120,7 @@ export class SolutionModal extends Component {
                           }
                           controls
                           autoPlay
-                          onError={(e) => this.onError(e)}
+                          ref={node => this.videoNode = node}
                         ></video>
                       ) : this.state.details[0] &&
                         this.state.details[0].solutionExplanation &&

@@ -37,9 +37,14 @@ export class HintModal extends Component {
     return true;
   }
 
+  componentDidMount() {
+    this.onVideoError()
+  }
 
-  onError = (e) => {
-    Sentry.captureException('An error occured while playing the video ', e);
+  onVideoError = () => {
+    this.videoNode.on('error', function (event) {
+      Sentry.captureException(`An error occurred in ${window.location.href} while playing the video `, event,);
+    });
   }
 
   render() {
@@ -102,7 +107,7 @@ export class HintModal extends Component {
                           }
                           controls
                           autoPlay
-                          onError={(e) => this.onError(e)}
+                          ref={node => this.videoNode = node}
                         ></video>
                       ) : (
                         <p className="dark-text mb-0 text-center">
