@@ -5,7 +5,7 @@ import { Field, reduxForm, Fields } from "redux-form";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import * as Sentry from "@sentry/react";
-
+import ReactPlayer from "react-player"
 export class SolutionModal extends Component {
   constructor(props) {
     super(props);
@@ -104,18 +104,18 @@ export class SolutionModal extends Component {
                       this.state.details[0].solutionExplanation &&
                       this.state.details[0].solutionExplanation.type ===
                       "Video" ? (
-                        <video
+                        <ReactPlayer
                           width="100%"
                           height="240"
-                          src={
+                          url={
                             this.state.details[0] &&
                             this.state.details[0].solutionExplanation &&
                             this.state.details[0].solutionExplanation.value
                           }
-                          controls
-                          autoPlay
+                          controls="true"
+                          playing="true"
                           onError={(e) => this.onError(e)}
-                        ></video>
+                        />
                       ) : this.state.details[0] &&
                         this.state.details[0].solutionExplanation &&
                         this.state.details[0].solutionExplanation.type ===
