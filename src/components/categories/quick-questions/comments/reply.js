@@ -72,7 +72,7 @@ export class Reply extends Component {
 
 
   onError = (e) => {
-    Sentry.captureException(e);
+    Sentry.captureException('An error occured while playing the video ', e);
   }
 
   render() {

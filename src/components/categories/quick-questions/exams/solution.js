@@ -13,6 +13,7 @@ export class SolutionModal extends Component {
       details: [],
     };
   }
+
   shouldComponentUpdate(nextProps, nextState) {
     try {
       const attemptId = this.props.attemptId;
@@ -31,7 +32,7 @@ export class SolutionModal extends Component {
           .then((response) => {
             let questions = response.data.data.questions;
             let questionId = questions.filter(
-              (question) => question.id == nextProps.id
+              (question) => question.id === nextProps.id
             );
             this.setState({ details: questionId });
           })
@@ -48,8 +49,9 @@ export class SolutionModal extends Component {
 
 
   onError = (e) => {
-    Sentry.captureException(e);
+    Sentry.captureException('An error occured while playing the video ', e, e.target.error);
   }
+
 
   render() {
     const customStyles = {

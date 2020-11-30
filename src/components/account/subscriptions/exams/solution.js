@@ -42,10 +42,10 @@ export class SolutionModal extends Component {
     return true;
   }
 
-  onError = (e) => {
-    Sentry.captureException(e);
-  }
 
+  onError = (e) => {
+    Sentry.captureException('An error occured while playing the video ', e, e.target.error);
+  }
 
   render() {
     const customStyles = {
