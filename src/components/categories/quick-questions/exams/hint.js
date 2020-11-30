@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import * as Sentry from "@sentry/react";
-
+import ReactPlayer from "react-player";
 
 export class HintModal extends Component {
   constructor(props) {
@@ -92,18 +92,18 @@ export class HintModal extends Component {
                     ) : this.state.details[0] &&
                       this.state.details[0].explanation &&
                       this.state.details[0].explanation.type === "Video" ? (
-                        <video
-                          width="100%"
-                          height="240"
-                          src={
-                            this.state.details[0] &&
-                            this.state.details[0].explanation &&
-                            this.state.details[0].explanation.value
-                          }
-                          controls
-                          autoPlay
-                          onError={(e) => this.onError(e)}
-                        ></video>
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          this.state.details[0] &&
+                          this.state.details[0].explanation &&
+                          this.state.details[0].explanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
                       ) : (
                         <p className="dark-text mb-0 text-center">
                           لا يوجد مساعدة متوفرة

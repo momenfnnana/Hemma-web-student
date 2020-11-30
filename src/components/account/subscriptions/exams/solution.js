@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import * as Sentry from "@sentry/react";
+import ReactPlayer from "react-player";
 
 export class SolutionModal extends Component {
   constructor(props) {
@@ -99,18 +100,18 @@ export class SolutionModal extends Component {
                       this.state.details[0].solutionExplanation &&
                       this.state.details[0].solutionExplanation.type ===
                       "Video" ? (
-                        <video
-                          width="100%"
-                          height="240"
-                          src={
-                            this.state.details[0] &&
-                            this.state.details[0].solutionExplanation &&
-                            this.state.details[0].solutionExplanation.value
-                          }
-                          controls
-                          autoPlay
-                          onError={(e) => this.onError(e)}
-                        ></video>
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          this.state.details[0] &&
+                          this.state.details[0].solutionExplanation &&
+                          this.state.details[0].solutionExplanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
                       ) : (
                         <p className="dark-text mb-0 text-center">
                           لا يوجد طريقة حل متوفرة
