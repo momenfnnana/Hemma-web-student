@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { getUser } from "../../../../actions/user.actions";
 import UsersChatComponent from "../../../chat/chat";
 import { apiBaseUrl } from "../../../../api/helpers";
-import { reduxForm } from "redux-form";
 import axios from "axios";
 import "./styles.sass";
 
@@ -109,23 +106,5 @@ export class DiscussionDetailsComponent extends Component {
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    formValues:
-      state.form.DiscussionDetails && state.form.DiscussionDetails.values,
-    authenticated: state.auth.authenticated,
-    user: state.user,
-    twilio: state.twilio,
-  };
-}
-
-DiscussionDetailsComponent = reduxForm({
-  form: "DiscussionDetails",
-})(DiscussionDetailsComponent);
-
-DiscussionDetailsComponent = connect(mapStateToProps, {
-  getUser,
-})(DiscussionDetailsComponent);
 
 export const DiscussionDetails = withRouter(DiscussionDetailsComponent);
