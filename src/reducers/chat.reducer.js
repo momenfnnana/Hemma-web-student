@@ -1,14 +1,16 @@
-import { CHANGE_CHANNEL } from "../actions";
+import { SET_CURRENT_CHANNEL } from "../actions";
 
-const initialState = {
-  channelType: null,
-  channelId: 0
+const initialChannelState = {
+  currentChannel: null,
 };
 
-export const chatReducer = (state = initialState, action) => {
+export const channelReducer = (state = initialChannelState, action) => {
   switch (action.type) {
-    case CHANGE_CHANNEL:
-      return action.payload;
+    case SET_CURRENT_CHANNEL:
+      return {
+        ...state,
+        currentChannel: action.payload.currentChannel
+      };
 
     default:
       return state;
