@@ -35,7 +35,6 @@ class MessageForm extends React.Component {
   };
 
   createMessage = (fileUrl = null) => {
-    console.log(fileUrl);
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: this.props.user,

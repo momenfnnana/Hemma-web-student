@@ -98,10 +98,11 @@ export class DiscussionDetailsComponent extends Component {
           </div>
         </div>
         {this.state.discussionDetails &&
-          this.state.discussionDetails.chatChannelSid && (
+          this.state.discussionDetails.forceInternalChat && (
             <UsersChatComponent
               chatChannelSid={this.state.discussionDetails.chatChannelSid}
-              forceInternalChat={true}
+              forceInternalChat={this.state.discussionDetails.forceInternalChat}
+              active={this.state.discussionDetails && this.state.discussionDetails.active}
             />
           )}
       </React.Fragment>

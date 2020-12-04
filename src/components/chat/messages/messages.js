@@ -55,7 +55,7 @@ class Messages extends React.Component {
 
   render() {
     const { messagesRef, messages } = this.state;
-    const { channel, user } = this.props;
+    const { channel, user, active } = this.props;
     return (
       <React.Fragment>
         <div className="chat-history">
@@ -86,7 +86,8 @@ class Messages extends React.Component {
               </>
             )}
         </div>
-        <MessageForm messagesRef={messagesRef} channel={channel} user={user} />
+        {active &&
+          <MessageForm messagesRef={messagesRef} channel={channel} user={user} />}
       </React.Fragment>
     );
   }

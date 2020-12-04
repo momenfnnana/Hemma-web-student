@@ -35,7 +35,7 @@ class UsersChatComponent extends Component {
 
   render() {
     const { messagesRef, loading } = this.state;
-    const { channel, user, forceInternalChat } = this.props;
+    const { channel, user, forceInternalChat, active } = this.props;
     return (
       <React.Fragment>
         {forceInternalChat ?
@@ -65,6 +65,7 @@ class UsersChatComponent extends Component {
                               messagesRef={messagesRef}
                               channel={channel}
                               user={user}
+                              active={active}
                             />
                           </div>
                         </div>
