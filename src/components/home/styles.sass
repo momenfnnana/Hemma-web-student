@@ -9,21 +9,42 @@ $light-silver: #f2f2f2
 $dark-silver: #a9acb4
 $off-white: #fefefe 
 
-.hero-section, .categories-section,.journey-section,.courses-section,.steps-section,.testimonials-section
-  padding-top: 100px
-  padding-bottom: 50px
-.hero-section
-  .purple-text
-    color: #6d68af
-  .blue-text
-    color: #6999cd    
-.journey-section
-  background-image: url("/assets/images/shape-bg.png")
-  background-size: contain
-  background-repeat: no-repeat
-.section-padder
-   padding-top: 100px
-   padding-bottom: 50px   
+.section-padding
+  padding: 50px 0 80px 0
+  &.testimonials-section
+    padding: 50px 0 150px 0
+
+.categories-box
+  border: 2px solid #2bc3cc
+  border-radius: 30px
+  height: 200px
+  width: 100%
+  padding: 15px
+  margin-bottom: 30px
+  img
+    height: 80px
+    width: 80px
+    object-fit: contain
+    margin-bottom: 15px
+  h6
+    font-size: 22px
+
+.slider-box
+  border: 1px solid $silver
+  border-radius: 5px
+  max-width: 330px
+
+.category-group-box
+  border-radius: 20px
+  min-height: 150px
+  width: 100%
+  margin-bottom: 30px
+  background-image: linear-gradient(to bottom, #79ccda, #8a9cd2)
+  padding: 20px
+  img
+    width: 100%
+    height: 100%
+
 .carousel-indicators
   bottom: -50px
   li
@@ -39,105 +60,39 @@ $off-white: #fefefe
   -ms-transform: translateY(-50%)
   transform: translateY(-50%)
 .testimonials-section
-  .quotes-img
-    position: absolute
-    z-index: 999999
-    top: -25px
-    right: -5px
+  .quotes
+    position: relative
+    img
+      width: 100%
+      object-fit: contain
+      height: 220px
+      opacity: 0.3
+    h1
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      z-index: 10
   .slick-slider
     .slick-list
       overflow: visible
     .slick-dots
-      bottom: -50px 
+      bottom: -50px
       li
-        width: 10px 
+        width: 10px
         button:before
-          color: #6c53bf 
+          color: #6c53bf
           font-size: 10px
-  .testimonial-slide  
+  .testimonial-slide
     background: $white
     width: 100%
     border-radius: 12px
     box-shadow: 15px 15px #f2fafc
-    border: 1px solid #f2fafc 
+    border: 1px solid #f2fafc
     height: 180px
     padding: 10px 20px 10px 20px
     display: inline-flex !important
     justify-content: center !important
     flex-direction: column !important
     p
-      word-break: break-word  
-
-.steps
-  width: 100%
-  position: relative
-  margin: auto
-  &::before
-    content: ''
-    position: absolute
-    top: 0
-    height: 1px
-    width: 100%
-    right: calc(50px / 2)
-    z-index: 1
-    border-bottom: 1px dashed rgb(198, 198, 198)
-.step
-  transition: all 0.4s ease-in-out
-  background-color: #FFF
-  display: inline-block
-  width: 40%
-  &::before
-    content: ''
-    position: absolute
-    height: 30px
-    width: 30px
-    background-color: #4b3a85
-    border-radius: 15px
-    transform: translateY(-45%)
-    z-index: 2
-    color: #fff
-    text-align: center
-    display: flex
-    align-items: center
-    justify-content: center
-  &.minimized
-    transition: background-color 0.3s ease-in-out
-    cursor: pointer
-    width: calc(60% / 5)
-    &::before
-      background-color: #ebebeb
-      color: #b7b7b7    
-  &.step-one
-    &::before
-      content: '1'  
-  &.step-two
-    &::before
-      content: '2'  
-  &.step-three
-    &::before
-      content: '3'
-  &.step-four
-    &::before
-      content: '4'
-  &.step-five
-    &::before
-      content: '5'
-  &.step-six
-    &::before
-      content: '6'
-.step-content
-  transition: all 0.3s ease-in-out
-  overflow: hidden
-  position: relative
-.step.minimized > .step-content
-  width: 0px
-.step-content
-  &.one, &.two, &.three, &.four, &.five, &.six
-    height: 100px
-    width: 100%
-    margin-top: 35px
-
-@media only screen and (max-width: 767px)
-  .steps
-    &::before
-      content: none
+      word-break: break-word
