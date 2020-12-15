@@ -2,15 +2,14 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { Card } from "../shared/card/card";
 import { apiBaseUrl } from "../../api/helpers";
-import "./styles.sass";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import { loginWithTwitter } from "../auth/firebase";
-import { Button } from "reactstrap";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./styles.sass";
 
 var moment = require("moment");
 moment().format();
@@ -105,7 +104,7 @@ class HomeComponent extends Component {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
       accessToken: response.accessToken,
-      deviceId: deviceId && deviceId != "undefined" ? deviceId : null,
+      deviceId: deviceId && deviceId !== "undefined" ? deviceId : null,
     };
     if (!response.accessToken) return;
     axios
@@ -140,34 +139,19 @@ class HomeComponent extends Component {
     const cats = this.state.categories;
     return (
       <React.Fragment>
-        <div className="row mx-auto d-flex justify-content-center align-items-center">
-          {cats.map((cat, i) => {
+        <div className="row d-flex justify-content-center align-items-center">
+          {cats.map((cat) => {
             return (
-              <div className="col-lg-3 col-6 mr-1" key={cat.id}>
-                <Link
-                  to={{
-                    pathname: `/categories/details/${cat.slug}`,
-                    state: {
-                      catId: cat.id,
-                    },
-                  }}
-                  key={cat.id}
-                >
-                  <div
-                    key={cat.id}
-                    className="home-categories-box-layout custom-height d-flex flex-column align-items-center justify-content-center clickable mb-2"
-                  >
-                    <img
-                      key={cat.id}
-                      src={cat.icon}
-                      height="50%"
-                      width="50%"
-                      className="contain-img mb-2 "
-                      alt={cat.nameAr}
-                    />
-                    <h4 className="dark-text text-center mb-2 ">
-                      {cat.nameAr}
-                    </h4>
+              <div className="col-lg-3 col-6" key={cat.id}>
+                <Link to={{
+                  pathname: `/categories/details/${cat.slug}`,
+                  state: {
+                    catId: cat.id,
+                  },
+                }}>
+                  <div className="categories-box d-flex flex-column align-items-center justify-content-center clickable shadow-sm">
+                    <img src={cat.icon} alt={cat.nameAr} />
+                    <h6 className="dark-text text-center word-break mb-0">{cat.nameAr}</h6>
                   </div>
                 </Link>
               </div>
@@ -177,6 +161,7 @@ class HomeComponent extends Component {
       </React.Fragment>
     );
   }
+
   categoryGroupRedirection(CategoryGroup, slug) {
     let token = localStorage.getItem("token");
     if (token) {
@@ -203,27 +188,24 @@ class HomeComponent extends Component {
             return (
               <div className="col-lg-4 col-md-6" key={categoryGroup.id}>
                 <div
-                  className="categories-group-layout d-flex clickable mb-2"
+                  className="category-group-box clickable shadow-sm d-flex align-items-center"
                   onClick={() =>
                     this.categoryGroupRedirection(
                       categoryGroup.id,
-                      categoryGroup.category.slug
-                    )
-                  }
-                >
-                  <div className="col-lg-4 p-0 ml-2">
-                    <img
-                      key={categoryGroup.id}
-                      src={categoryGroup.icon}
-                      height="100%"
-                      width="100%"
-                      className="contain-img mb-2"
-                      alt=""
-                    />
-                  </div>
-                  <div className="col-lg-8 p-0 ml-2">
-                    <h5 className="text-center pt-4">{categoryGroup.name}</h5>
-                    <h6>{categoryGroup.description}</h6>
+                      categoryGroup.category.slug)}>
+                  <div className="row">
+                    <div className="col-lg-4">
+                      <img
+                        key={categoryGroup.id}
+                        src={categoryGroup.icon}
+                        className="contain-img"
+                        alt={categoryGroup.name}
+                      />
+                    </div>
+                    <div className="col-lg-8 d-flex flex-column justify-content-center">
+                      <h5 className="text-white">{categoryGroup.name}</h5>
+                      <p className="text-white mb-0 word-break">{categoryGroup.description}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -235,7 +217,7 @@ class HomeComponent extends Component {
   }
 
   renderTestimonials() {
-    return this.state.testimonials.map((testimonial) => {
+    return this.state.testimonials.map((testimonial, index) => {
       let currentDate = new Date();
       let getCurrentDate =
         currentDate.getFullYear() +
@@ -256,7 +238,7 @@ class HomeComponent extends Component {
       let weeks = Math.floor(diff.asWeeks());
       let days = diff.days() % 7;
       return (
-        <div className="testimonial-slide" dir="rtl">
+        <div key={index} className="testimonial-slide" dir="rtl">
           <div className="row">
             <div className="col-md-12 mb-3">
               <p className="light-font-text small mid-text mb-0">
@@ -275,15 +257,15 @@ class HomeComponent extends Component {
                 </p>
               </div>
               <p className="light-font-text small dark-silver-text mb-0">
-                {weeks == "0" ? (
+                {weeks === "0" ? (
                   <React.Fragment>
                     قبل <span className="en-text">{days}</span> أيام
                   </React.Fragment>
                 ) : (
-                  <React.Fragment>
-                    قبل <span className="en-text">{weeks}</span> أسابيع
-                  </React.Fragment>
-                )}
+                    <React.Fragment>
+                      قبل <span className="en-text">{weeks}</span> أسابيع
+                    </React.Fragment>
+                  )}
               </p>
             </div>
           </div>
@@ -361,34 +343,29 @@ class HomeComponent extends Component {
 
     return (
       <React.Fragment>
-        <section>
+        <section className="section-padding">
           <div className="container">
             <div className="row h-100 d-flex align-items-center">
-              <div className="col-md-8">
-                <h2 className="dark-text mb-5">
+              <div className="col-md-7">
+                <h2 className="dark-text mb-3">
                   تحتاج تدريب مكثف لاجتياز اختبارك؟
                 </h2>
-                <h5>
-                  همه تقدم لك
-                  <span className="blue-text "> تدريب مكثف عن بعد </span>
-                  يأهلك لاجتياز الاختبار بأعلى الدرجات
-                </h5>
-                <h5> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</h5>
-                <div className="mt-4">
-                  <Link
-                    className="btn w-40 yellow-btn justify-content-center d-flex light-text align-items-center"
-                    to="/categories"
-                  >
-                    اشترك الان
+                <p className="mid-text word-break lead mb-1">
+                  همّة تقدم لك
+                  تدريب مكثف عن بعد
+                  يؤهلك لاجتياز الاختبار بأعلى الدرجات
+                </p>
+                <p className="mid-text word-break lead"> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</p>
+                <Link
+                  className="btn yellow-btn btn-width mt-4"
+                  to="/categories">
+                  اشترك الان
                   </Link>
-                </div>
               </div>
-              <div className="col-md-3 d-flex align-items-center justify-content-center">
+              <div className="col-md-5 d-flex align-items-center justify-content-center">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/home-image-1.png"
-                  }
-                  width="150%"
+                  src={process.env.PUBLIC_URL + "/assets/images/home-image-1.png"}
+                  width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
                   alt="artwork"
                 />
@@ -396,11 +373,11 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section>
-        <section className="categories-section pt-0 mb-5">
+        <section className="section-padding">
           <div className="container">
             <div className="row mb-3">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center">
-                <h2 className="dark-text mb-1">مجالاتنا</h2>
+              <div className="col-md-12 text-center">
+                <h2 className="dark-text">مجالاتنا</h2>
               </div>
             </div>
             {this.renderCategories()}
@@ -422,89 +399,71 @@ class HomeComponent extends Component {
             </div>
           </div>
         </section> */}
-        <section className="pt-4">
+        <section className="section-padding">
           <div className="container">
-            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                <h2 className="dark-text mb-1">مميزاتنا</h2>
-                <p>تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
+            <div className="row">
+              <div className="col-md-12 text-center">
+                <h2 className="dark-text">مميزاتنا</h2>
+                <p className="mid-text lead">تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
               </div>
-              <div className="row h-100 d-flex align-items-center mb-3">
-                <div className="col-md-7 col-12">
-                  <h2 className="dark-text">
-                    حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
-                  </h2>
-                  <h6> وهذا ما حققناه طيلة السنوات الماضية</h6>
-                </div>
-                <div className="col-md-5 col-12 white-bg slider-box">
-                  <Slider {...settings}>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/slider1.jpg"
-                        }
-                        width="100%"
-                        height="50%"
-                        className="contain-img "
-                        alt="artwork"
-                      />
-                    </div>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/slider2.jpg"
-                        }
-                        width="100%"
-                        height="50%"
-                        className="contain-img"
-                        alt="artwork"
-                      />
-                    </div>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/slider3.jpg"
-                        }
-                        width="100%"
-                        height="50%"
-                        className="contain-img"
-                        alt="artwork"
-                      />
-                    </div>
-                    <div>
-                      <img
-                        src={
-                          process.env.PUBLIC_URL + "/assets/images/slider4.jpg"
-                        }
-                        width="100%"
-                        height="50%"
-                        className="contain-img"
-                        alt="artwork"
-                      />
-                    </div>
-                  </Slider>
-                </div>
+            </div>
+            <div className="row d-flex align-items-center mt-4">
+              <div className="col-md-8 col-12">
+                <h3 className="dark-text">
+                  حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
+                  </h3>
+                <h6 className="mid-text lead mb-0"> وهذا ما حققناه طيلة السنوات الماضية</h6>
+              </div>
+              <div className="col-md-4 col-12 slider-box shadow-sm bg-white">
+                <Slider {...settings}>
+                  <div>
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/slider1.jpg"}
+                      width="100%"
+                      className="contain-img"
+                      alt="artwork" />
+                  </div>
+                  <div>
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/slider2.jpg"}
+                      width="100%"
+                      className="contain-img"
+                      alt="artwork" />
+                  </div>
+                  <div>
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/slider3.jpg"}
+                      width="100%"
+                      className="contain-img"
+                      alt="artwork" />
+                  </div>
+                  <div>
+                    <img
+                      src={process.env.PUBLIC_URL + "/assets/images/slider4.jpg"}
+                      width="100%"
+                      className="contain-img"
+                      alt="artwork" />
+                  </div>
+                </Slider>
               </div>
             </div>
           </div>
         </section>
-        <section>
+        <section className="section-padding">
           <div className="container">
-            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
+            <div className="row">
               <div className="col-md-6 d-flex align-items-center justify-content-center">
                 <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/home-image-2.png"
-                  }
+                  src={process.env.PUBLIC_URL + "/assets/images/home-image-2.png"}
                   width="100%"
                   className="contain-img d-md-block d-none d-sm-none"
                   alt="artwork"
                 />
               </div>
-              <div className="col-md-6">
-                <h2 className="dark-text">تدريب مكثف وأنت ببيتك</h2>
-                <h5>محتوى شامل يغنيك عن مختلف المراجع</h5>
-                <h5>محاضرات مباشرة تسجل لمتايعتها في اي وقت</h5>
+              <div className="col-md-6 d-flex justify-content-center flex-column text-center">
+                <h2 className="dark-text mb-3">تدريب مكثف وأنت ببيتك</h2>
+                <p className="mid-text lead mb-1">محتوى شامل يغنيك عن مختلف المراجع</p>
+                <p className="mid-text lead mb-0">محاضرات مباشرة تسجل لمتايعتها في اي وقت</p>
               </div>
             </div>
           </div>
@@ -534,11 +493,11 @@ class HomeComponent extends Component {
           </div>
         </section> */}
         {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
-          <section className="pt-0">
+          <section className="section-padding">
             <div className="container">
               <div className="row mb-3">
-                <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mt-4">
-                  <h2 className="dark-text mb-4">المجموعات المجانية</h2>
+                <div className="col-md-12 text-center">
+                  <h2 className="dark-text">المجموعات المجانية</h2>
                 </div>
               </div>
               {this.renderCategoriesGroup()}
@@ -546,19 +505,18 @@ class HomeComponent extends Component {
           </section>
         )}
         {!this.state.testimonials === undefined ||
-          (this.state.testimonials.length != 0 && (
-            <section className="testimonials-section mb-5">
+          (this.state.testimonials.length !== 0 && (
+            <section className="section-padding testimonials-section">
               <div className="container">
                 <div className="row d-flex justify-content-center align-items-center">
                   <div className="col-md-6">
-                    <h6 className="dark-text testimonials-title">قالوا عنا</h6>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
-                      className="testimonial-contain-img"
-                      width="100%"
-                      height="150"
-                      alt="testimonials"
-                    />
+                    <div className="quotes">
+                      <h1 className="dark-text mb-0">قالوا عنا</h1>
+                      <img
+                        src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
+                        alt="testimonials"
+                      />
+                    </div>
                   </div>
                   <div className="col-md-6">
                     <Slider {...testimonialsSettings}>

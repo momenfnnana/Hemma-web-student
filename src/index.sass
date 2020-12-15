@@ -167,9 +167,6 @@ p
     object-position: left
 .contain-img
     object-fit: contain
-.testimonial-contain-img
-    object-fit: contain
-    opacity: 0.4
 .smaller
     font-size: 65% !important
 .font-16
@@ -341,13 +338,15 @@ a.btn
     border-radius: 50px
     border: 1px solid $light-yellow
     color: $dark-blue
-    height: 40px
-    font-size: 13px
     background-color: $light-yellow
+    height: 45px
+    line-height: 2 !important
     &:hover, &:focus
         background-color: $white
-        border: 1px solid $dark-blue
+        border: 1px solid $light-yellow
         color: $dark-blue
+    &.btn-width
+        min-width: 260px
 .blue-btn
     border-radius: 80px
     border: 1px solid $light-blue
@@ -460,12 +459,6 @@ a.btn
     border: 1px solid $silver
     border-radius: 5px
     background-color: $white
-.slider-box
-    border: 1px solid $silver
-    border-radius: 5px
-    background-color: $white
-    max-width: 330px
-    margin-right: 20px
 .question-box-layout
     border: 1px solid #2bc3cc
     border-radius: 20px
@@ -491,12 +484,6 @@ a.btn
     background-size: cover
     background-repeat: no-repeat
     background-origin: content-box
-
-.home-categories-box-layout
-    border: 3px solid #2bc3cc
-    border-radius: 30px
-    height: 250px
-    width: 200px
 
 .slick-prev:before, .slick-next:before
     color: $dark-blue
@@ -532,6 +519,8 @@ a.btn
 @media only screen and (max-width: 767px)
     .btn-width
         width: unset
+    .yellow-btn.btn-width
+        min-width: 100%
     .w-25, .w-75, .w-40, .w-35
         width: 100% !important
     .navbar-light .navbar-toggler
@@ -561,18 +550,6 @@ a.btn
     .artwork-img
         height: unset
         width: 100%
-.categories-group-layout
-    border: 1px solid #2bc3cc
-    border-radius: 20px
-    min-height: 140px
-    width: 100%
-    margin-bottom: 20px
-    background-image: linear-gradient(to bottom, #79ccda, #8a9cd2)
-    h5, h6
-        text-align: center !important
-        margin-top: 20 !important
-        color: $white !important
-
 .initiative-main-title-layout
     border: 1px solid #2bc3cc
     border-radius: 70px
@@ -610,13 +587,6 @@ a.btn
         object-fit: contain
         height: 23px
         width: 100%
-.testimonials-title
-    position: absolute
-    top: 50%
-    width: 100%
-    text-align: center
-    font-size: 40px
-    padding-left: 45px
 
 .font-size-40
     font-size: 40px
