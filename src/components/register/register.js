@@ -98,7 +98,7 @@ class RegisterComponent extends Component {
           this.props
             .sendToken()
             .then(() => {
-              this.props.history.push("/verify");
+              this.props.history.push("/home");
             })
             .catch((error) => {
               this.props.history.push("/");
