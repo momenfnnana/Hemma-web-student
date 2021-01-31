@@ -426,7 +426,7 @@ class HomeComponent extends Component {
           <div className="container">
             <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center mb-5">
-                <h2 className="dark-text mb-1">ssمميزاتنا</h2>
+                <h2 className="dark-text mb-1">مميزاتنا</h2>
                 <p>تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
               </div>
               <div className="row h-100 d-flex align-items-center mb-3">
