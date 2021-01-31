@@ -42,10 +42,22 @@ class LoginComponent extends Component {
     this.state = {
       hidden: true,
       password: "",
-      loading: false
+      loading: false,
+      isChecked: false,
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
+  componentDidMount() {
+    const checked= localStorage.getItem('checkbox');
+    if (checked ) {
+        this.setState({
+            isChecked: true,
+        })
+        const stored = JSON.parse(localStorage.getItem('account'));
+        {this.myFormHandler(stored)}
+       
+    }
+}
 
   togglePasswordShow() {
     this.setState({ hidden: !this.state.hidden });
@@ -72,6 +84,11 @@ class LoginComponent extends Component {
               this.props.history.push("/");
             });
         } else {
+          //save data
+          if (this.state.isChecked) {
+            localStorage.setItem('account',JSON.stringify(values));
+            localStorage.setItem('checkbox',this.state.isChecked);  
+             }
           this.props.history.push("/");
         }
       })
@@ -90,7 +107,11 @@ class LoginComponent extends Component {
         }
       });
   };
-
+  onChangeCheckbox = (e) => {
+    this.setState({
+      isChecked : e.target.checked
+    })
+  }
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
@@ -140,7 +161,10 @@ class LoginComponent extends Component {
               />
             )}
           </div>
-
+          <div>
+          <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
+          <label>تذكرني</label>
+          </div>
           <button
             type="submit"
             className="btn dark-outline-btn w-100 justify-content-center d-flex align-items-center"

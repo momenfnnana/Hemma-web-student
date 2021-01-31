@@ -34,7 +34,6 @@ export class ExamsList extends Component {
 createCourseLink(courseId,examid)
 {
   let baseUrl = process.env.PUBLIC_URL;
-  console.log("tes",process.env);
   return baseUrl+ `/course/content/${courseId}/exam/${examid}`
 }
   renderExams() {
