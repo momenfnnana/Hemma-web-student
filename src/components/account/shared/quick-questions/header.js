@@ -20,7 +20,7 @@ export class HeaderComponent extends Component {
             </div>
           </div>
           <div className="col-md-6 d-flex align-items-center justify-content-end">
-            <ToastDemo />
+            <ToastDemo copyLink={{ btnName:'مشاركة السؤال',link:window.location.href}}/>
             {/* TODO */}
             {/* <Link
                             to={`/categories/details/${params.slug}/quick-questions/${this.state.details.categoryGroupId}`}
