@@ -211,6 +211,8 @@ class MainRouterComponent extends Component {
               <Route path="/course/details/:slug" component={CourseDetails} />
               <Route path="/cart" exact component={requireAuth(Cart)} />
               <Route path="/cart/checkout" component={requireAuth(Checkout)} />
+              <Route path="/cart/anonymouscheckout" component={Checkout} />
+
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
               <Route

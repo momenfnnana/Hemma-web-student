@@ -21,6 +21,9 @@ class CheckoutComponent extends Component {
 
   constructor(props) {
     super(props);
+    console.log("querycon",this.props.location.query);
+    console.log("hashcon",this.props.location.hash);
+
     this.setActiveTab = this.setActiveTab.bind(this);
   }
 
@@ -31,7 +34,18 @@ class CheckoutComponent extends Component {
     this.setState({ activeTab: tab });
   }
 
+  setTokenforAnonymous(hashRoute)
+  {
+      if(hashRoute && hashRoute !== "")
+      {
+          let tokenAnonymous = hashRoute.split("=");
+          localStorage.setItem("token",tokenAnonymous[1]);
+      }
+  }
+
   componentDidMount() {
+    console.log("hashcon",this.props.location.hash);
+    this.setTokenforAnonymous(this.props.location.hash);
     this.props
       .getCart()
       .then(result => {
