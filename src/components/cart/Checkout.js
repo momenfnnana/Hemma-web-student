@@ -31,7 +31,21 @@ class CheckoutComponent extends Component {
     this.setState({ activeTab: tab });
   }
 
+  setTokenforAnonymous(hashRoute)
+  {
+      if(hashRoute && hashRoute !== "")
+      {
+          let tokenAnonymous = hashRoute.split("=");
+          localStorage.setItem("token",tokenAnonymous[1]);
+      }
+  }
+
   componentDidMount() {
+    this.setTokenforAnonymous(this.props.location.hash);
+    if(this.props.location.pathname == "/cart/anonymouscheckout")
+    {
+      this.setState({ activeTab: 'online' });
+    }
     this.props
       .getCart()
       .then(result => {
@@ -49,6 +63,7 @@ class CheckoutComponent extends Component {
 
   render() {
     const cart = this.props.cart;
+    const path = this.props.location.pathname;
 
     return (
       <Fragment>
@@ -98,7 +113,8 @@ class CheckoutComponent extends Component {
                 <div className="row">
                   <div className="col-12">
                     <Nav tabs className="custom-tabs w-50 mx-auto">
-                      <NavItem>
+                    { path !== '/cart/anonymouscheckout' && 
+                         <NavItem>
                         <NavLink
                           className={classnames({
                             active: this.state.activeTab === "bank"
@@ -107,7 +123,7 @@ class CheckoutComponent extends Component {
                         >
                           تحويل بنكي
                         </NavLink>
-                      </NavItem>
+                      </NavItem>}
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -134,7 +150,7 @@ class CheckoutComponent extends Component {
             </div>
           </div>
         </section>
-
+        {path !== '/cart/anonymouscheckout' && 
         <section className="courses-section section-padder">
           <div className="container">
             <div className="row">
@@ -148,7 +164,7 @@ class CheckoutComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section>}
       </Fragment>
     );
   }

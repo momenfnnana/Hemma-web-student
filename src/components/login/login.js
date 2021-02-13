@@ -62,7 +62,9 @@ class LoginComponent extends Component {
     request
       .then(action => {
         this.setState({ loading: false });
-        if (!this.props.phoneNumberConfirmed) {
+        this.props.history.push("/");
+
+       /* if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
             .then(response => {
@@ -72,8 +74,8 @@ class LoginComponent extends Component {
               this.props.history.push("/");
             });
         } else {
-          this.props.history.push("/");
-        }
+          //this.props.history.push("/");
+        }*/
       })
       .catch(error => {
         this.setState({ loading: false });

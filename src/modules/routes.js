@@ -107,7 +107,9 @@ class AppBackground extends Component {
           backgroundPosition: imgPosition,
         }}
       >
+        {path !== '/cart/anonymouscheckout' && <Header/>}
         {this.props.children}
+        {path !== '/cart/anonymouscheckout' && <Footer />}
       </div>
     );
   }
@@ -121,7 +123,6 @@ class MainRouterComponent extends Component {
       <BrowserRouter>
         <ScrollToTop>
           <AppBackground>
-            <Header />
             <Switch>
               {/* Start Healty check from FE/BE side  */}
               <Route path="/health">
@@ -215,6 +216,7 @@ class MainRouterComponent extends Component {
               <Route path="/course/details/:slug" component={CourseDetails} />
               <Route path="/cart" exact component={requireAuth(Cart)} />
               <Route path="/cart/checkout" component={requireAuth(Checkout)} />
+              <Route path="/cart/anonymouscheckout" component={Checkout} />
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
               <Route
@@ -265,7 +267,6 @@ class MainRouterComponent extends Component {
                 )}
               <Redirect to="/not-found" />
             </Switch>
-            <Footer />
           </AppBackground>
         </ScrollToTop>
       </BrowserRouter>
