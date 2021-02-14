@@ -15,12 +15,14 @@ export class OnlinePaymentComponent extends Component {
     super(props, context);
 
     this.state = {
+      CardNumberType : "",
       creditCardType: "",
       creditCardRawValue: "",
       dateRawValue: "",
       cardHolderName: "",
       cvv: "",
-      loading: false
+      loading: false,
+      BankAccount : []
     };
 
     this.onCreditCardChange = this.onCreditCardChange.bind(this);
@@ -32,7 +34,25 @@ export class OnlinePaymentComponent extends Component {
   }
 
   onCreditCardChange(event) {
-    this.setState({ creditCardRawValue: event.target.rawValue });
+    if(event.target.rawValue.length == 6)
+    {
+      console.log(this.state.BankAccount);
+      var check = this.state.BankAccount.filter(c=>c.bin ==event.target.rawValue ) 
+      console.log(check);
+      if(check.length>0)
+      {
+        this.setState({ CardNumberType:"mada" });
+      }
+      else
+      {
+        this.setState({ CardNumberType:"" });
+      }
+    }
+    else if(event.target.rawValue.length < 6)
+    {
+      this.setState({ CardNumberType:"" });
+    }
+      this.setState({ creditCardRawValue: event.target.rawValue });
   }
 
   onCreditCardTypeChanged(type) {
@@ -165,6 +185,15 @@ export class OnlinePaymentComponent extends Component {
         }
       });
   };
+  componentDidMount()
+  {
+    Api.cart
+    .getCardType()
+    .then(result => {
+      console.log(result)
+this.setState({BankAccount : result});
+    });
+  }
   render() {
     const { handleSubmit, submitting } = this.props;
 
@@ -183,8 +212,16 @@ export class OnlinePaymentComponent extends Component {
                     }}
                     onChange={this.onCreditCardChange}
                     className="form-control ltr-input position-relative"
-                  />
-                  {this.state.creditCardType == "mastercard" ? (
+                  /> {this.state.CardNumberType == "mada" ? (
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/discover.png"
+                      }
+                      width="30"
+                      width="30"
+                      className="payment-img"
+                    />
+                  ):this.state.creditCardType == "mastercard" ? (
                     <img
                       src={
                         process.env.PUBLIC_URL + "/assets/images/mastercard.png"
