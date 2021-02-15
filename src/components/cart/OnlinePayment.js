@@ -199,6 +199,14 @@ this.setState({BankAccount : result});
 
     return (
       <div className="row mt-5">
+        <div className="col-12 mada-img" >
+        <img src={
+                        process.env.PUBLIC_URL + "/assets/images/mada.png"
+                      }
+                width="100"
+                height="100"
+                      />
+        </div>
         <div className="col-12 d-flex justify-content-center">
           <form className="w-60" onSubmit={handleSubmit(this.myFormHandler)}>
             <div className="row">
@@ -215,7 +223,7 @@ this.setState({BankAccount : result});
                   /> {this.state.CardNumberType == "mada" ? (
                     <img
                       src={
-                        process.env.PUBLIC_URL + "/assets/images/discover.png"
+                        process.env.PUBLIC_URL + "/assets/images/mada.png"
                       }
                       width="30"
                       width="30"
