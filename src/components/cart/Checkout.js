@@ -21,10 +21,9 @@ class CheckoutComponent extends Component {
 
   constructor(props) {
     super(props);
-    console.log("querycon",this.props.location.query);
-    console.log("hashcon",this.props.location.hash);
-
+    
     this.setActiveTab = this.setActiveTab.bind(this);
+   
   }
 
   /**
@@ -44,8 +43,11 @@ class CheckoutComponent extends Component {
   }
 
   componentDidMount() {
-    console.log("hashcon",this.props.location.hash);
     this.setTokenforAnonymous(this.props.location.hash);
+    if(this.props.location.pathname == "/cart/anonymouscheckout")
+    {
+      this.setState({ activeTab: 'online' });
+    }
     this.props
       .getCart()
       .then(result => {
@@ -63,6 +65,7 @@ class CheckoutComponent extends Component {
 
   render() {
     const cart = this.props.cart;
+    const path = this.props.location.pathname;
 
     return (
       <Fragment>
@@ -112,7 +115,8 @@ class CheckoutComponent extends Component {
                 <div className="row">
                   <div className="col-12">
                     <Nav tabs className="custom-tabs w-50 mx-auto">
-                      <NavItem>
+                      { path !== '/cart/anonymouscheckout' && 
+                       <NavItem>
                         <NavLink
                           className={classnames({
                             active: this.state.activeTab === "bank"
@@ -121,7 +125,7 @@ class CheckoutComponent extends Component {
                         >
                           تحويل بنكي
                         </NavLink>
-                      </NavItem>
+                      </NavItem> }
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -149,6 +153,7 @@ class CheckoutComponent extends Component {
           </div>
         </section>
 
+        {path !== '/cart/anonymouscheckout' && 
         <section className="courses-section section-padder">
           <div className="container">
             <div className="row">
@@ -162,7 +167,8 @@ class CheckoutComponent extends Component {
               </div>
             </div>
           </div>
-        </section>
+        </section>}
+        
       </Fragment>
     );
   }
