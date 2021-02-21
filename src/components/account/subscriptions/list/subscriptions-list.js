@@ -100,6 +100,15 @@ class SubscriptionsListComponent extends Component {
                       button: "متابعة"
                     }
                   )
+                  : subscription.groupCouponPrivent  == true
+                ?  swal(
+                    "عفواً",
+                    "تفاصيل الدورة غير متاحة بسبب عدم أكتمال عدد الكوبون",
+                    "error",
+                    {
+                      button: "متابعة"
+                    }
+                  )
                 : this.props.history.push(
                     `/course/content/${subscription.course.id}`
                   );
