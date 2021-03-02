@@ -77,7 +77,7 @@ createCourseLink(courseId,examid)
               >
                 اختبر الآن
               </Link>
-              <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createCourseLink(courseId,exam.id)}} />
+             {/* <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createCourseLink(courseId,exam.id)}} />*/}
             </td>
           </tr>
         </React.Fragment>
