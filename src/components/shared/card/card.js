@@ -43,6 +43,15 @@ export class Card extends Component {
               <h6 className="card-title small mid-text" key={course.id}>
                 {course.nameAr}
               </h6>
+              {course.relatedDiscound ?
+               ( <h5 className="small light-font-text dark-text">
+                   نقدر لك ولاءك لهمة ورجوعك لنا مره اخرى، لهذا تم تقديم لك خصم خاص 
+                   &nbsp;{course.relatedDiscound} %&nbsp;
+                  بسبب أشتراكك فى  
+                  &nbsp;{course.relatedDiscoundCourse} &nbsp;
+                    </h5>
+              ):null}
+              
               {course.instructors == undefined ||
               course.instructors == 0 ? null : (
                 <div className="card-subtitle">
