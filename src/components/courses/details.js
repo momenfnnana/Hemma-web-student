@@ -474,13 +474,17 @@ export class CourseDetails extends Component {
                              
                         </div>
                         {this.state.discountprecentage>0 && (
-                        <div> 
-                            سعر الاشتراك بعد الخصم :
-                            <span>{this.getCourseAfterdiscount(this.state.discountcourse.discountPrecentage,this.state.details.price)}</span>
-                            <span>ريال</span><p></p>
-                            <span>{this.state.discountcourse.courseName} :</span>
-                            <span>{this.state.discountcourse.discountPrecentage}%</span>
-                        </div> 
+                        <h5 className="small light-font-text dark-text">
+
+                          نقدر لك ولاءك لهمة ورجوعك لنا مره اخرى، لهذا تم تقديم لك خصم خاص 
+    
+                          &nbsp;{this.state.discountcourse.discountPrecentage} %&nbsp;
+
+                           بسبب أشتراكك فى  
+
+                          &nbsp;{this.state.discountcourse.courseName} &nbsp;
+
+                        </h5>
 
                         )}
                         
