@@ -91,21 +91,21 @@ class RegisterComponent extends Component {
     this.setState({ loading: true });
     request
       .then((action) => {
-        // this.props.history.push("/");
-        this.setState({ loading: false, isPageLoading: true });
 
-        if (!this.props.phoneNumberConfirmed) {
+        this.setState({ loading: false, isPageLoading: true });
+        this.props.history.push("/");
+        /*if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
             .then(() => {
-              this.props.history.push("/verify");
+              this.props.history.push("/home");
             })
             .catch((error) => {
               this.props.history.push("/");
             });
         } else {
           this.props.history.push("/");
-        }
+        }*/
       })
       .catch((error) => {
         this.setState({ loading: false });

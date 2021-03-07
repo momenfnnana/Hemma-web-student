@@ -13,6 +13,8 @@ import {
 import { Verification } from "../components/verification/verification";
 import { Categories } from "../components/categories/list";
 import { Home } from "../components/home/home";
+import { PrivacyPolicy } from "../components/privacypolicy/privacypolicy";
+
 import { CategoryDetails } from "../components/categories/details";
 import { CourseDetails } from "../components/courses/details";
 import { forgotPassword } from "../components/phone-reset/forgot-password/forgot-password";
@@ -129,8 +131,10 @@ class MainRouterComponent extends Component {
               </Route>
               <Route exact path="/ready" component={Healthy} />
               {/* End Healty check from FE/BE side  */}
-
+              
               <Route path="/home" component={Home} />
+              <Route path="/privacypolicy" component={PrivacyPolicy} />
+
               {/* TODO hide initiative */}
               { <Route
                 path="/initiative/details/:id"
