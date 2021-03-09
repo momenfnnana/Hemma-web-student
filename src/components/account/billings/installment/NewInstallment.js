@@ -69,7 +69,13 @@ export class NewInstallmentComponent extends Component {
               button: "متابعة"
             });
             break;
-
+            case "ItemAlreadyAdded":
+              swal("عفواً", "القسط مضاف سابقًا إلى سلة التسوق", "error", {
+                button: "متابعة"
+              });
+              break;
+  
+            
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة"
