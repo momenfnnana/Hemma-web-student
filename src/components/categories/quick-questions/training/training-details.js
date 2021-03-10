@@ -15,6 +15,7 @@ class TrainingExamDetailsComponent extends Component {
   constructor() {
     super();
     this.state = {
+      isSolutionOpen: false,
       isConfirmExamOpen: false,
       isHintOpen: false,
       examDetails: [],
@@ -39,7 +40,7 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion + 1) % this.state.questions.length,
-      isCorrect: false,
+      isCorrect: false,isSolutionOpen: false 
     });
   };
 
@@ -76,7 +77,12 @@ class TrainingExamDetailsComponent extends Component {
   correct = () => {
     this.setState({ isCorrect: true });
   };
-
+  showSolution = () =>{
+    this.setState({ isSolutionOpen: true });
+  }
+  closeSolution = () =>{
+    this.setState({ isSolutionOpen: false });
+  }
   openConfirmExamModal = () => {
     this.setState({ isConfirmExamOpen: true });
   };
@@ -197,6 +203,24 @@ class TrainingExamDetailsComponent extends Component {
     const correctAnswers = this.state.correctAnswer;
     const correctAnswer = correctAnswers[question.id - 1];
     const correct = this.state.isCorrect;
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "35%",
+        height: "auto",
+        borderWidth: 0,
+        padding: 20,
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 2,
+      },
+    };
 
     return (
       <React.Fragment>
@@ -323,7 +347,26 @@ class TrainingExamDetailsComponent extends Component {
                 </div>
               )}
             </div>
+            <Modal
+           style={customStyles}
+           ariaHideApp={false}
+           isOpen={this.state.isSolutionOpen}
+           onRequestClose={this.goToNext}
+           closeConfirmExam={this.goToNext}
+         >
+             <h6 className="dark-text mb-4 mt-0">
+                  الإجابة الصحيحة
+                 </h6>
+<p>{ question.encodedChoices[correctAnswer.correctChoice] }</p>
+           <h6
+                   className="dark-silver-text small mt-3 mb-0 clickable"
+                   onClick={this.goToNext}
+                 >
+                   أغلاق
+                 </h6>
+         </Modal>
           </React.Fragment>
+       
         )}
       </React.Fragment>
     );
@@ -447,7 +490,7 @@ class TrainingExamDetailsComponent extends Component {
                         <div>
                           <button
                             className="btn light-btn"
-                            onClick={this.goToNext}
+                            onClick={this.showSolution}
                           >
                             التالي
                           </button>
@@ -484,6 +527,7 @@ class TrainingExamDetailsComponent extends Component {
             onRequestClose={this.closeConfirmExamModal}
             closeConfirmExam={this.closeConfirmExamModal}
           >
+          
             <div className="container h-100 pt-3 pb-3 w-75 mx-auto">
               <div className="row">
                 <div className="col-12 d-flex align-items-center justify-content-center flex-column text-center">
@@ -517,6 +561,7 @@ class TrainingExamDetailsComponent extends Component {
               </div>
             </div>
           </Modal>
+         
         </div>
       </React.Fragment>
     );
