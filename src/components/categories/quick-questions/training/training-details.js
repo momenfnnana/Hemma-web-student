@@ -10,7 +10,7 @@ import "../styles.sass";
 import Slider from "react-slick";
 import { TrainingExamFail } from "./training-fail";
 import { TrainingPass } from "./training-pass";
-
+import ReactPlayer from "react-player";
 class TrainingExamDetailsComponent extends Component {
   constructor() {
     super();
@@ -211,14 +211,13 @@ class TrainingExamDetailsComponent extends Component {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        width: "35%",
+        width: "50%",
         height: "auto",
         borderWidth: 0,
-        padding: 20,
       },
       overlay: {
         backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 2,
+        zIndex: 20,
       },
     };
 
@@ -288,12 +287,22 @@ class TrainingExamDetailsComponent extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="col-md-12">
+                    <div className="col-md-12 row">
                       <div className="col-md-6">
                         <p className="small dark-silver-text mb-0">
                           اختر الإجابة الصحيحة
                         </p>
                       </div>
+                      {!question.solutionExplanation.value == 0 ? (
+                          <div className="col-md-6">
+                            <button
+                              className="btn red-outline-btn btn-sm small float-right d-flex"
+                              onClick={() => this.showSolution()}
+                            >
+                              طريقة الحل 
+                            </button>
+                          </div>
+                        ) : null}
                       <div className="row d-flex justify-content-between align-items-center mb-3">
                         {!question.explanation.length == 0 ? (
                           <div className="col-md-6">
@@ -315,6 +324,9 @@ class TrainingExamDetailsComponent extends Component {
                           </div>
                         ) : null}
                       </div>
+                      {/* <div className="row d-flex justify-content-between align-items-center mb-3"> */}
+                       
+                      {/* </div> */}
                       {Object.keys(question.encodedChoices).map(function(key) {
                         const value = question.encodedChoices[key];
                         const selected =
@@ -348,23 +360,58 @@ class TrainingExamDetailsComponent extends Component {
               )}
             </div>
             <Modal
-           style={customStyles}
-           ariaHideApp={false}
-           isOpen={this.state.isSolutionOpen}
-           onRequestClose={this.goToNext}
-           closeConfirmExam={this.goToNext}
-         >
-             <h6 className="dark-text mb-4 mt-0">
-                  الإجابة الصحيحة
-                 </h6>
-<p>{ question.encodedChoices[correctAnswer.correctChoice] }</p>
-           <h6
-                   className="dark-silver-text small mt-3 mb-0 clickable"
-                   onClick={this.goToNext}
-                 >
-                   أغلاق
-                 </h6>
-         </Modal>
+          style={customStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isSolutionOpen}
+          onRequestClose={this.closeSolution}
+          closeHint={this.closeSolution}
+        >
+          <div className="container pt-4 pb-3">
+            <div className="row">
+              <div className="col-md-12 col-12">
+                <span className="badge red-bg text-white mb-3 hint-badge">
+                  طريقة الحل 
+                </span>
+
+                <div className="box-layout p-3">
+                  {
+                    question.solutionExplanation.type === "Text" ? (
+                      <div
+                        className="encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                          question.solutionExplanation.value,
+                        }}
+                      ></div>
+                    ) : question.solutionExplanation.type === "Video" ? (
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          question.solutionExplanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
+                      ) : (
+                        <p className="dark-text mb-0 text-center">
+                          لا يوجد طريقة للحل متوفرة
+                        </p>
+                      )}
+                </div>
+                <div className="d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn light-btn unset-height w-25 mt-4"
+                    onClick={this.closeSolution}
+                  >
+                    العودة للسؤال
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
           </React.Fragment>
        
         )}
@@ -490,7 +537,7 @@ class TrainingExamDetailsComponent extends Component {
                         <div>
                           <button
                             className="btn light-btn"
-                            onClick={this.showSolution}
+                            onClick={this.goToNext}
                           >
                             التالي
                           </button>
