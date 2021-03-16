@@ -40,7 +40,7 @@ class LoginComponent extends Component {
     super(props);
 
     this.state = {
-      hidden: true,
+      hidden: false,
       password: "",
       loading: false
     };
