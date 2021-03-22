@@ -264,6 +264,8 @@ class ExamDetailsComponent extends Component {
                       اختر الإجابة الصحيحة
                     </p>
                   </div>
+                  <div>
+                  { question && question.allowHint  && Object.keys(question.explanation).length > 0 ?(
                   <div className="col-md-6">
                     <button
                       className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -278,6 +280,8 @@ class ExamDetailsComponent extends Component {
                       المساعدة
                     </button>
                   </div>
+                   ) : null}
+                 </div>
                 </div>
                 <div className="row">
                   <div className="col-md-12">

@@ -10,6 +10,7 @@ import "../styles.sass";
 import Slider from "react-slick";
 import { TrainingExamFail } from "./training-fail";
 import { TrainingPass } from "./training-pass";
+import { HintModal } from "../exams/hint";
 import ReactPlayer from "react-player";
 class TrainingExamDetailsComponent extends Component {
   constructor() {
@@ -293,7 +294,7 @@ class TrainingExamDetailsComponent extends Component {
                           اختر الإجابة الصحيحة
                         </p>
                       </div>
-                      {!question.solutionExplanation.value == 0 ? (
+                      {/* { question && question.solutionExplanation.length > 0 && question.allowSolutionExplanation?(
                           <div className="col-md-6">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -302,9 +303,9 @@ class TrainingExamDetailsComponent extends Component {
                               طريقة الحل 
                             </button>
                           </div>
-                        ) : null}
+                        ) : null} */}
                       <div className="row d-flex justify-content-between align-items-center mb-3">
-                        {!question.explanation.length == 0 ? (
+                      { question  && question.allowHint  && Object.keys(question.explanation).length>0?(
                           <div className="col-md-6">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -375,20 +376,20 @@ class TrainingExamDetailsComponent extends Component {
 
                 <div className="box-layout p-3">
                   {
-                    question.solutionExplanation.type === "Text" ? (
+                   question.explanation && question.explanation.type === "Text" ? (
                       <div
                         className="encoded-text"
                         dangerouslySetInnerHTML={{
                           __html:
-                          question.solutionExplanation.value,
+                          question.explanation.value,
                         }}
                       ></div>
-                    ) : question.solutionExplanation.type === "Video" ? (
+                    ) : question.explanation.type === "Video" ? (
                         <ReactPlayer
                         width="100%"
                         height="240"
                         url={
-                          question.solutionExplanation.value
+                          question.explanation.value
                         }
                         controls="true"
                         playing="true"
@@ -396,7 +397,7 @@ class TrainingExamDetailsComponent extends Component {
                       />
                       ) : (
                         <p className="dark-text mb-0 text-center">
-                          لا يوجد طريقة للحل متوفرة
+                         {/*  لا يوجد طريقة للحل متوفرة*/}
                         </p>
                       )}
                 </div>
@@ -608,7 +609,12 @@ class TrainingExamDetailsComponent extends Component {
               </div>
             </div>
           </Modal>
-         
+          <HintModal
+                  isHintOpen={this.state.isHintOpen}
+                  closeHint={this.closeHintModal}
+                  id={this.state.selectedQuestionId}
+                  attemptId={attemptId}
+                />
         </div>
       </React.Fragment>
     );
