@@ -72,9 +72,11 @@ class TrainingResultComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
+    debugger;
     return (
       <Accordion className="quiz-accordion">
-        {questions.map(question => (
+        {questions.map(question => ( 
+         
           <AccordionItem>
             <AccordionItemTitle>
               <div className="d-flex justify-content-between align-items-center w-100">
@@ -114,7 +116,9 @@ class TrainingResultComponent extends Component {
                             <p className="small red-text mb-0">لم تقم بالإجابة</p>
                           )}
                     </div>
-
+                  
+                    { question && question.solutionExplanation.value.length > 0 && question.allowSolutionExplanation ?(
+                    
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -131,6 +135,7 @@ class TrainingResultComponent extends Component {
                         طريقة الحل
                       </button>
                     </div>
+                      ) : null}
                   </div>
                   <div className="row">
                     <div className="col-md-12">
