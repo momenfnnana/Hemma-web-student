@@ -142,7 +142,17 @@ class BankPaymentComponent extends Component {
         }
       });
   };
-
+  // cancelCourse = () => { 
+  //   debugger;
+   
+  // }
+  componentDidMount()
+  {
+    var list = document.getElementsByClassName("form-control");
+    for (var item of list) {
+      item.value ="";
+    }
+  }
   render() {
     const { handleSubmit } = this.props;
     const cart = this.props.cart;
@@ -355,6 +365,9 @@ class BankPaymentComponent extends Component {
             />
           </div>
         </div>
+        {/* <button onClick={this.cancelCourse}>
+          reset
+        </button> */}
         {items && (
           <div className="row mb-5">
             <div className="col-12 text-center">
