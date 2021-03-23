@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { MiniCartItem } from "./MiniCartItem";
 import { removeCartItem, getCart } from "../../actions";
+import { withRouter, Link } from "react-router-dom";
 
 class MiniCartItemsListComponent extends Component {
   constructor(props) {
@@ -18,8 +19,11 @@ class MiniCartItemsListComponent extends Component {
   }
   render() {
     const items = this.props.cart && this.props.cart.items;
-
+debugger;
     if (!items) return null;
+    if(items.length == 0) {
+      this.props.history.push("/cart");
+    }
 
     return (
       <div className="off-white-bg box-layout w-100 radius-bottom-0">
@@ -50,8 +54,6 @@ const actionCreators = {
   removeCartItem,
   getCart
 };
-
-export const MiniCartItemsList = connect(
-  mapStateToProps,
-  actionCreators
-)(MiniCartItemsListComponent);
+MiniCartItemsListComponent = connect(  mapStateToProps,
+  actionCreators) (MiniCartItemsListComponent)
+export const MiniCartItemsList = withRouter(MiniCartItemsListComponent)
