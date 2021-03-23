@@ -74,7 +74,11 @@ export class NewInstallmentComponent extends Component {
                 button: "متابعة"
               });
               break;
-  
+              case "CourseIsPaidOff":
+                swal("عفواً", " القسط مدفوع سابقاً تحت المراجعة ", "error", {
+                  button: "متابعة"
+                });
+                break;
             
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
