@@ -39,9 +39,10 @@ const nameValue = (value) => {
   return valid ? undefined : "الاسم يجب أن يحتوي ٥ أحرف على الأقل";
 };
 const phoneValue = (value) => {
+  var code = value.countryCode;
   value = value.phoneNumber || "";
   const trimmed = value.replace(/\s/g, "");
-  const valid = /^0\d{9}$/.test(trimmed);
+  const valid = (/^0\d{9}$/.test(trimmed)&& code != "eg")||(/^0\d{10}$/.test(trimmed) && code == "eg");
 
   return valid ? undefined : "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
 };
