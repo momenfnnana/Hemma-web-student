@@ -39,6 +39,7 @@ export class CourseDetails extends Component {
     this.closeModal = this.closeModal.bind(this);
     this.toggleRecordingModal = this.toggleRecordingModal.bind(this);
     this.getCourseAfterdiscount=this.getCourseAfterdiscount.bind(this);
+    this.gotoDetails=this.gotoDetails.bind(this);
   }
 
   confirmationPopup() {
@@ -59,7 +60,9 @@ export class CourseDetails extends Component {
       }
     });
   }
-
+  gotoDetails(id){
+    this.props.history.push(`/course/content/${id}`);
+  }
   toggleRecordingModal(url, id) {
     this.setState({
       recordingModalIsOpen: !this.state.recordingModalIsOpen,
@@ -85,7 +88,8 @@ export class CourseDetails extends Component {
     const {
       match: { params },
     } = this.props;
-    axios
+    
+    getAuthenticatedAxios()
       .get(`${apiBaseUrl}/courses/${params.slug}`)
       .then((response) => {
         this.setState({ details: response.data.data, isPageLoading: false });
@@ -109,6 +113,7 @@ export class CourseDetails extends Component {
       });
       
   }
+  
 
   addToCart(id) {
     Api.cart
@@ -488,7 +493,24 @@ export class CourseDetails extends Component {
 
                         )}
                         
-                        {this.state.details.purchasable && (
+                        {this.state.details.paymentStatus==="FullyPaid" || this.state.details.paymentStatus=="PartiallyPaid"? 
+                        (<button
+                          type="button"
+                          className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
+                          onClick={() => this.gotoDetails(this.state.details.id)}
+                          
+                        >
+                          اذهب لتفاصيل الدورة
+                        </button>
+                        ):this.state.details.paymentStatus=="Pending"?(
+                          <button
+                          type="button"
+                          className="btn light-outline-btn w-100 align-self-center mt-2 mb-3" disabled
+                        >
+                          قيد المراجعه
+                        </button>
+                        ): (
+                          this.state.details.purchasable && (
                           <button
                             type="button"
                             className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
@@ -496,7 +518,9 @@ export class CourseDetails extends Component {
                           >
                             اشترك الآن
                           </button>
-                        )}
+                        ))
+                      }
+                       
 
                         <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
                         <ul className="list-unstyled">
