@@ -50,6 +50,7 @@ export class NewInstallmentComponent extends Component {
         });
       })
       .catch(error => {
+        debugger;
         this.props.closeInstallmentModal();
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
@@ -74,8 +75,11 @@ export class NewInstallmentComponent extends Component {
                 button: "متابعة"
               });
               break;
-  
-            
+              case "AmountNotValid":
+                swal("عفواً", "القيمة التى تريد دفعها  اقل من اقل قيمة للقسط ", "error", {
+                  button: "متابعة"
+                });
+                break;
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة"
