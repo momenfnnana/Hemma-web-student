@@ -72,7 +72,7 @@ class TrainingResultComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
-    debugger;
+   
     return (
       <Accordion className="quiz-accordion">
         {questions.map(question => ( 
@@ -117,7 +117,7 @@ class TrainingResultComponent extends Component {
                           )}
                     </div>
                   
-                    { question && question.solutionExplanation.value.length > 0 && question.allowSolutionExplanation ?(
+                    { question  && question.allowSolutionExplanation ?(
                     
                     <div className="col-md-6">
                       <button
