@@ -117,7 +117,7 @@ class ExamResultComponent extends Component {
                             <p className="small red-text mb-0">لم تقم بالإجابة</p>
                           )}
                     </div>
-                    { question && question.allowSolutionExplanation && question.solutionExplanation.value.length > 0?(
+                    { question && question.allowSolutionExplanation?(
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"

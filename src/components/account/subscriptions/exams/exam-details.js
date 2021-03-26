@@ -252,7 +252,7 @@ class ExamDetailsComponent extends Component {
                   <div>
                  
                  {/* { !(Object.keys(question.explanation).length == 0 )?( */ } 
-                  { question && question.allowHint && question.explanation.value.length > 0 ?(
+                  { question && question.allowHint  ?(
                   <div className="col-md-6">
                     <button
                       className="btn red-outline-btn btn-sm small float-right d-flex"
