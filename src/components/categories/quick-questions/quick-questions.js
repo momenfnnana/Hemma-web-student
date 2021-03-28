@@ -709,7 +709,7 @@ export class QuickQuestions extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="row pt-4">
+                  <div className="">
                     {this.state.quickQuestions === undefined ||
                     this.state.quickQuestions.length === 0 ? (
                       <div className="col-md-12">
