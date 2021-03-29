@@ -384,7 +384,7 @@ class HomeComponent extends Component {
           </div>
         </section>
         {/* TODO hide initiative */}
-        { <section className="pt-1">
+        {/* <section className="pt-1">
           <div className="container">
             <div className="row mx-auto d-flex justify-content-center align-items-center w-50">
               <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
@@ -398,7 +398,7 @@ class HomeComponent extends Component {
               </div>
             </div>
           </div>
-        </section> }
+                  </section> */}
         <section className="section-padding">
           <div className="container">
             <div className="row">

@@ -67,13 +67,18 @@ class SubscriptionDetailsComponent extends Component {
   createChannel = () => {
     const { channelsRef } = this.state;
     const { chatChannelSid } = this.props.subscription.subscription;
+    const { forceInternalChat } = this.props.subscription.subscription;
+
     const key = chatChannelSid;
     const newChannel = {
       id: key,
     };
+if(forceInternalChat == true)
+{
     channelsRef
       .child(key)
       .update(newChannel)
+}
   };
 
   render() {
@@ -286,7 +291,8 @@ class SubscriptionDetailsComponent extends Component {
                           render={(props) => (
                             <UsersChatComponent
                               chatChannelSid={subscription.chatChannelSid}
-                              forceInternalChat={true}
+                              forceInternalChat={subscription.forceInternalChat}
+                              externalChannelUrl={subscription.externalChannelUrl}
                               {...props}
                             />
                           )}

@@ -11,7 +11,11 @@ import jwtDecode from "jwt-decode";
 export const authReducer = (state = null, action) => {
   if (!state) {
     // check if user is logged in
-    const token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
+    if (token == undefined || token == 'undefined') {
+      localStorage.removeItem("token");
+      token = null;
+    }
     const state = {
       ...extractTokenInfo(token),
       authenticated: token !== null
