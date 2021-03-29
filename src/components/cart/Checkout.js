@@ -21,7 +21,9 @@ class CheckoutComponent extends Component {
 
   constructor(props) {
     super(props);
+    
     this.setActiveTab = this.setActiveTab.bind(this);
+   
   }
 
   /**
@@ -113,8 +115,8 @@ class CheckoutComponent extends Component {
                 <div className="row">
                   <div className="col-12">
                     <Nav tabs className="custom-tabs w-50 mx-auto">
-                    { path !== '/cart/anonymouscheckout' && 
-                         <NavItem>
+                      { path !== '/cart/anonymouscheckout' && 
+                       <NavItem>
                         <NavLink
                           className={classnames({
                             active: this.state.activeTab === "bank"
@@ -123,7 +125,7 @@ class CheckoutComponent extends Component {
                         >
                           تحويل بنكي
                         </NavLink>
-                      </NavItem>}
+                      </NavItem> }
                       <NavItem>
                         <NavLink
                           className={classnames({
@@ -150,6 +152,7 @@ class CheckoutComponent extends Component {
             </div>
           </div>
         </section>
+
         {path !== '/cart/anonymouscheckout' && 
         <section className="courses-section section-padder">
           <div className="container">
@@ -165,6 +168,7 @@ class CheckoutComponent extends Component {
             </div>
           </div>
         </section>}
+        
       </Fragment>
     );
   }

@@ -98,6 +98,7 @@ class AppBackground extends Component {
     if (!img) return <div>{this.props.children}</div>;
 
     return (
+
       <div
         className="wrapper-bg"
         style={{
@@ -135,14 +136,14 @@ class MainRouterComponent extends Component {
               <Route path="/privacypolicy" component={PrivacyPolicy} />
 
               {/* TODO hide initiative */}
-              {/* <Route
+              { <Route
                 path="/initiative/details/:id"
                 component={InitiativesDetails}
-              /> */}
+              /> }
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
               {/* TODO hide initiative */}
-              {/* <Route path="/initiative-role" component={InitiativesRole} /> */}
-              {/* <Route path="/initiative-exam" component={InitiativesExam} /> */}
+              { <Route path="/initiative-role" component={InitiativesRole} /> }
+              { <Route path="/initiative-exam" component={InitiativesExam} /> }
               {!this.props.authenticated ? (
                 <Route path="/auth" component={Auth} />
               ) : (
@@ -217,6 +218,7 @@ class MainRouterComponent extends Component {
               <Route path="/cart" exact component={requireAuth(Cart)} />
               <Route path="/cart/checkout" component={requireAuth(Checkout)} />
               <Route path="/cart/anonymouscheckout" component={Checkout} />
+
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
               <Route
@@ -225,11 +227,11 @@ class MainRouterComponent extends Component {
                 component={requireAuth(CertificatesList)}
               />
               {/* TODO hide initiative */}
-              {/* <Route
+              { <Route
                 path="/InitiativeFreeLectures/:id/preparing"
                 exact
                 component={requireAuth(Preparing)}
-              /> */}
+              /> }
               <Route
                 path="/certificate/:id"
                 exact

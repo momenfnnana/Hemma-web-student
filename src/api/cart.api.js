@@ -69,7 +69,10 @@ export const CartApiEndpoints = {
     getAuthenticatedAxios()
       .post(`cart_v2/initiate_card_payment`, data)
       .then(getDataFromResponse),
-
+  getCardType: ()=>
+      getAuthenticatedAxios()
+        .get(`cart_v2/Get_Card_type`)
+        .then(getDataFromResponse),
   checkoutWithBankTransfer: data =>
     getAuthenticatedAxios()
       .post(`cart_v2/checkout_with_bank_transfer`, data)
