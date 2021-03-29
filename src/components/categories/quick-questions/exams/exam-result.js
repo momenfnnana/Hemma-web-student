@@ -117,7 +117,7 @@ class ExamResultComponent extends Component {
                             <p className="small red-text mb-0">لم تقم بالإجابة</p>
                           )}
                     </div>
-
+                    { question && question.allowSolutionExplanation?(
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -133,6 +133,7 @@ class ExamResultComponent extends Component {
                         طريقة الحل
                       </button>
                     </div>
+                    ) : null}
                   </div>
                   <div className="row">
                     <div className="col-md-12">

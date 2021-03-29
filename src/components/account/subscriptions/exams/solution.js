@@ -114,7 +114,7 @@ export class SolutionModal extends Component {
                       />
                       ) : (
                         <p className="dark-text mb-0 text-center">
-                          لا يوجد طريقة حل متوفرة
+                         {/* لا يوجد طريقة حل متوفرة*/}
                         </p>
                       )}
                 </div>

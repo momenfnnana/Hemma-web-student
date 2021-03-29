@@ -37,14 +37,16 @@ export const authReducer = (state = null, action) => {
       };
     case AUTHENTICATE_USER:
       // store the token
-      localStorage.setItem("token", action.payload.token);
+    
       if (action.error) return state;
+      localStorage.setItem("token", action.payload.value.data.token);
       return {
         ...state,
-        ...extractTokenInfo(action.payload.token),
+        ...extractTokenInfo(action.payload.value.data.token),
         token: action.payload.token,
         authenticated: true
       };
+      
     case UNAUTHENTICATED:
       // remove the token
       localStorage.removeItem("token");

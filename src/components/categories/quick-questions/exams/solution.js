@@ -30,14 +30,16 @@ export class SolutionModal extends Component {
             }
           )
           .then((response) => {
+            debugger;
             let questions = response.data.data.questions;
             let questionId = questions.filter(
               (question) => question.id === nextProps.id
             );
+            console.log("test",questionId);
             this.setState({ details: questionId });
           })
           .catch((error) => {
-            console.log(error);
+            
             Sentry.captureException(error);
           });
       }
@@ -133,7 +135,7 @@ export class SolutionModal extends Component {
                           ></image>
                         ) : (
                           <p className="dark-text mb-0 text-center">
-                            لا يوجد طريقة حل متوفرة
+                           {/* لا يوجد طريقة حل متوفرة*/}
                           </p>
                         )}
                 </div>

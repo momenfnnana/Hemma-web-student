@@ -200,11 +200,23 @@ this.setState({BankAccount : result});
     return (
       <div className="row mt-5">
         <div className="col-12 mada-img" >
-        <img src={
+        <img className="padding-img" src={
                         process.env.PUBLIC_URL + "/assets/images/mada.png"
                       }
                 width="100"
                 height="100"
+                      />
+          <img className="padding-img" src={
+                        process.env.PUBLIC_URL + "/assets/images/mastercard.png"
+                      }
+                width="80"
+                height="80"
+                      />
+            <img className="padding-img" src={
+                        process.env.PUBLIC_URL + "/assets/images/visa.png"
+                      }
+                width="80"
+                height="80"
                       />
         </div>
         <div className="col-12 d-flex justify-content-center">
