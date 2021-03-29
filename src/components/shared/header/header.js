@@ -158,6 +158,15 @@ class HeaderComponent extends Component {
                         <NavLink
                           className={"nav-link"}
                           activeClassName="active"
+                          to="/booklet"
+                        >
+                          بيع الملازم
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link"}
+                          activeClassName="active"
                           to="/auth/login"
                         >
                           تسجيل الدخول
@@ -200,6 +209,15 @@ class HeaderComponent extends Component {
                           to="/categories"
                         >
                           الدورات الحالية
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link"}
+                          activeClassName="active"
+                          to="/booklet"
+                        >
+                          بيع الملازم
                         </NavLink>
                       </NavItem>
                       <NavItem className="d-none d-sm-block">

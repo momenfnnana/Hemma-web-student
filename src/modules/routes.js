@@ -52,6 +52,8 @@ import { StartTrainingExam } from "../components/categories/quick-questions/trai
 import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
 import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
 import { Healthy } from "../components/shared/healthy";
+import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
+import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
 
 class AppBackground extends Component {
   render() {
@@ -154,10 +156,16 @@ class MainRouterComponent extends Component {
               <Route path="/forgot-password" component={forgotPassword} />
               <Route path="/reset-password" component={resetPassword} />
               <Route path="/categories" exact component={Categories} />
+              <Route path="/booklet" exact component={BookletComponent} />
               <Route
                 path="/categories/details/:slug"
                 exact
                 component={CategoryDetails}
+              />
+               <Route
+                path="/booklet/details/:slug"
+                exact
+                component={BookletDetailsComponent}
               />
               <Route
                 path="/categories/:slug/:categoryGroupId/exam/:id"

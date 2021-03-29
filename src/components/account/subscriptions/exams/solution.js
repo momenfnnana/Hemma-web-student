@@ -28,6 +28,8 @@ export class SolutionModal extends Component {
           let questionId = questions.filter(
             question => question.id == nextProps.id
           );
+          
+          debugger;
           this.setState({ details: questionId });
         })
         .catch(error => {

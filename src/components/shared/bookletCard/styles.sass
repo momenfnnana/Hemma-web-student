@@ -1,0 +1,236 @@
+.course-card
+  background-color: #FFF
+  min-height: 300px
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1)
+  overflow: hidden
+  -webkit-transition: box-shadow 0.5s
+  transition: box-shadow 0.5s
+  &:hover
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.3)
+
+.card-thumb
+  height: 180px
+  object-fit: cover
+  overflow: hidden
+  background-color: #FFF
+  -webkit-transition: height 0.5s
+  transition: height 0.5s
+  img
+    width: 40%
+    display: block
+    opacity: 1
+    -webkit-transform: scale(1)
+    transform: scale(1)
+    -webkit-transition: opacity 0.5s, -webkit-transform 0.5s
+    transition: opacity 0.5s, -webkit-transform 0.5s
+    transition: opacity 0.5s, transform 0.5s
+    transition: opacity 0.5s, transform 0.5s, -webkit-transform 0.5s
+    height: 180px
+    object-fit: cover
+
+.course-card:hover .card-thumb
+  height: 130px
+  img
+    opacity: 0.6
+    -webkit-transform: scale(1.2)
+    transform: scale(1.2)
+
+.course-card
+  .card-body
+    position: relative
+    height: 100px
+    padding: 20px
+    -webkit-transition: height 0.5s
+    transition: height 0.5s
+
+.course-card:hover .card-body
+  height: 150px
+
+.card-title
+  margin: 0
+  padding: 0 0 10px 0
+
+.card-subtitle
+  margin: 0
+  padding: 0 0 10px 0
+
+.card-description
+  position: absolute
+  left: 20px
+  right: 20px
+  bottom: 20px
+  opacity: 0
+  -webkit-transform: translateY(45px)
+  transform: translateY(45px)
+  -webkit-transition: opacity 0.3s, -webkit-transform 0.3s
+  transition: opacity 0.3s, -webkit-transform 0.3s
+  transition: opacity 0.3s, transform 0.3s
+  transition: opacity 0.3s, transform 0.3s, -webkit-transform 0.3s
+  -webkit-transition-delay: 0s
+  transition-delay: 0s
+
+.course-card:hover .card-description
+  opacity: 1
+  -webkit-transform: translateY(0px)
+  transform: translateY(0px)
+  -webkit-transition-delay: 0.2s
+  transition-delay: 0.2s
+
+.price-badge
+  background-color: #7bd8dc;
+  border-radius: 25px;
+  min-width: 172px;
+  min-height: 39px;
+  text-align: center;
+  margin: 2%;
+  color: #4A3985;
+  padding-top: 7px;
+  font-family:TheSans
+
+.add-to-collection
+  background-color: #FF6575;
+  border: #FF6575;
+  border-radius: 25px;
+  min-width: 172px;
+  min-height: 39px;
+  text-align: center;
+  font-size: 12px;
+  margin: 2%;
+  color: #FFFFFF;
+  padding-top: 7px;
+  padding-right: 22%;
+  cursor: pointer;
+
+.add-to-collection-max
+  background-color: #FF6575;
+  border: #FF6575;
+  border-radius: 25px;
+  min-width: 289px;
+  min-height: 36px;
+  text-align: center;
+  font-size: 14px;
+  margin: 2%;
+  color: #FFFFFF;
+  padding-top: 7px;
+  padding-right: 16%;
+  cursor: pointer;
+    
+
+span.icon
+  background: url(/assets/images/heart.png) no-repeat;
+  background-color: white;
+  background-position: center;
+  float: right;
+  width: 40px;
+  border-radius: 25px;
+  height: 40px;
+  padding: 0px;
+  font-size: 14px;
+  transform: translate(-1px, -115%);
+  cursor: pointer;
+ 
+    
+.card-img   
+  vertical-align: top;
+  height: 100%;
+
+.card-container
+  margin: 1%;
+
+.booklet-description
+  font-size: 25px;
+  color: #4A3985;
+
+#link
+  color: #4A3985;
+  cursor: pointer;
+
+.search-input
+  border-radius: 25px;
+  border-color: #4A3985;
+  width: 100%;
+  border-style: solid;
+  padding-right: 2%;
+
+.platform-list
+  border-radius: 25px;
+  border-color: #4A3985;
+  border-style: solid;
+  width: 100%;
+  min-height: 32px;
+  border-width: 2px;
+  font-family: initial;
+  padding-right: 2%;
+  color: #c2bcd6;
+  font-family: inherit;
+  font-size: 10px;
+
+.platform-list option
+  color: #c2bcd6;  
+
+
+::placeholder
+  color: #4A3985;
+  opacity: 34%;
+  font-size: 10px;
+  padding: 3%;
+
+.top-padd
+  padding-top: 20%;
+
+.search-btn
+  transform: translate(19%, -93%);
+  border: none;
+  border-radius: 50px;
+  float: left;
+  opacity: 50%;
+  background-color: #fffefe00;
+  cursor: pointer;
+
+.min-top-padd   
+  margin-top: 5%;
+
+.price-title
+  color: #4A3985;
+  font-size: 14px;
+
+.marg-top-10
+  margin-top: 10%;
+
+.marg-top-5
+  margin-top: 5%;
+
+.pad-5  
+  padding: 5%;
+  
+.price-value
+  color: #00ACC1;
+  font-size: 14px;
+  margin-right: 6%;
+
+.lable-height
+  height: 42px;  
+.category-title
+  color: #00ACC1;
+  font-size: 24px
+  margin: 20px;
+.z-marg-bottom
+  max-height: 43px;  
+
+  
+
+  
+
+
+    
+
+
+  
+
+            
+    
+    
+
+
+
+       
