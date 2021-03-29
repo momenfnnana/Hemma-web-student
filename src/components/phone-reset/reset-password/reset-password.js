@@ -32,7 +32,7 @@ class resetPasswordComponent extends Component {
     super(props);
 
     this.state = {
-      hidden: true,
+      hidden: false,
       password: "",
       loading: false,
       disabled: false

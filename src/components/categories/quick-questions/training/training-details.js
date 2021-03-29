@@ -10,11 +10,13 @@ import "../styles.sass";
 import Slider from "react-slick";
 import { TrainingExamFail } from "./training-fail";
 import { TrainingPass } from "./training-pass";
-
+import { HintModal } from "../exams/hint";
+import ReactPlayer from "react-player";
 class TrainingExamDetailsComponent extends Component {
   constructor() {
     super();
     this.state = {
+      isSolutionOpen: false,
       isConfirmExamOpen: false,
       isHintOpen: false,
       examDetails: [],
@@ -39,7 +41,7 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({
       selectedQuestion:
         (this.state.selectedQuestion + 1) % this.state.questions.length,
-      isCorrect: false,
+      isCorrect: false,isSolutionOpen: false 
     });
   };
 
@@ -76,7 +78,12 @@ class TrainingExamDetailsComponent extends Component {
   correct = () => {
     this.setState({ isCorrect: true });
   };
-
+  showSolution = () =>{
+    this.setState({ isSolutionOpen: true });
+  }
+  closeSolution = () =>{
+    this.setState({ isSolutionOpen: false });
+  }
   openConfirmExamModal = () => {
     this.setState({ isConfirmExamOpen: true });
   };
@@ -197,6 +204,23 @@ class TrainingExamDetailsComponent extends Component {
     const correctAnswers = this.state.correctAnswer;
     const correctAnswer = correctAnswers[question.id - 1];
     const correct = this.state.isCorrect;
+    const customStyles = {
+      content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+        width: "50%",
+        height: "auto",
+        borderWidth: 0,
+      },
+      overlay: {
+        backgroundColor: "rgba(0,0,0,0.8)",
+        zIndex: 20,
+      },
+    };
 
     return (
       <React.Fragment>
@@ -264,14 +288,24 @@ class TrainingExamDetailsComponent extends Component {
                       </div>
                     </div>
                   ) : (
-                    <div className="col-md-12">
+                    <div className="col-md-12 row">
                       <div className="col-md-6">
                         <p className="small dark-silver-text mb-0">
                           اختر الإجابة الصحيحة
                         </p>
                       </div>
+                      {/* { question && question.solutionExplanation.length > 0 && question.allowSolutionExplanation?(
+                          <div className="col-md-6">
+                            <button
+                              className="btn red-outline-btn btn-sm small float-right d-flex"
+                              onClick={() => this.showSolution()}
+                            >
+                              طريقة الحل 
+                            </button>
+                          </div>
+                        ) : null} */}
                       <div className="row d-flex justify-content-between align-items-center mb-3">
-                        {!question.explanation.length == 0 ? (
+                      { question  && question.allowHint ?(
                           <div className="col-md-6">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -291,6 +325,9 @@ class TrainingExamDetailsComponent extends Component {
                           </div>
                         ) : null}
                       </div>
+                      {/* <div className="row d-flex justify-content-between align-items-center mb-3"> */}
+                       
+                      {/* </div> */}
                       {Object.keys(question.encodedChoices).map(function(key) {
                         const value = question.encodedChoices[key];
                         const selected =
@@ -323,7 +360,61 @@ class TrainingExamDetailsComponent extends Component {
                 </div>
               )}
             </div>
+            <Modal
+          style={customStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isSolutionOpen}
+          onRequestClose={this.closeSolution}
+          closeHint={this.closeSolution}
+        >
+          <div className="container pt-4 pb-3">
+            <div className="row">
+              <div className="col-md-12 col-12">
+                <span className="badge red-bg text-white mb-3 hint-badge">
+                  طريقة الحل 
+                </span>
+
+                <div className="box-layout p-3">
+                  {
+                   question.explanation && question.explanation.type === "Text" ? (
+                      <div
+                        className="encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                          question.explanation.value,
+                        }}
+                      ></div>
+                    ) : question.explanation.type === "Video" ? (
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          question.explanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
+                      ) : (
+                        <p className="dark-text mb-0 text-center">
+                         {/*  لا يوجد طريقة للحل متوفرة*/}
+                        </p>
+                      )}
+                </div>
+                <div className="d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn light-btn unset-height w-25 mt-4"
+                    onClick={this.closeSolution}
+                  >
+                    العودة للسؤال
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
           </React.Fragment>
+       
         )}
       </React.Fragment>
     );
@@ -484,6 +575,7 @@ class TrainingExamDetailsComponent extends Component {
             onRequestClose={this.closeConfirmExamModal}
             closeConfirmExam={this.closeConfirmExamModal}
           >
+          
             <div className="container h-100 pt-3 pb-3 w-75 mx-auto">
               <div className="row">
                 <div className="col-12 d-flex align-items-center justify-content-center flex-column text-center">
@@ -517,6 +609,12 @@ class TrainingExamDetailsComponent extends Component {
               </div>
             </div>
           </Modal>
+          <HintModal
+                  isHintOpen={this.state.isHintOpen}
+                  closeHint={this.closeHintModal}
+                  id={this.state.selectedQuestionId}
+                  attemptId={attemptId}
+                />
         </div>
       </React.Fragment>
     );
