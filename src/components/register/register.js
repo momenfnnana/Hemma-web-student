@@ -94,8 +94,7 @@ class RegisterComponent extends Component {
       .then((action) => {
 
         this.setState({ loading: false, isPageLoading: true });
-        this.props.history.push("/");
-        /*if (!this.props.phoneNumberConfirmed) {
+        if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
             .then(() => {
@@ -106,7 +105,7 @@ class RegisterComponent extends Component {
             });
         } else {
           this.props.history.push("/");
-        }*/
+        }
       })
       .catch((error) => {
         this.setState({ loading: false });
