@@ -1,10 +1,25 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { Link } from "react-router-dom";
+import swal from "@sweetalert/with-react";
+import Moment from "moment";
+import { Link,useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
+import PropTypes from "prop-types";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class Card extends Component {
+class CardComponent extends Component {
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  };
+  constructor(props) {
+    super(props);
+  }
+  
+             
   render() {
     const course = this.props.course;
     var date = new Date(course.startsAt);
@@ -12,8 +27,9 @@ export class Card extends Component {
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     var courseDate = year + "-" + month + "-" + day;
+    var  mycurrentDate = Moment().format("DD-MM-YYYY hh:mm:ss");
     var hijriDate = moment(courseDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
-
+    const { match, location, history } = this.props;
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
@@ -34,8 +50,17 @@ export class Card extends Component {
     ));
     return (
       <React.Fragment>
-        <Link to={`/course/details/${course.slug}`} key={course.id}>
-          <div className="card course-card shadow-sm m-2 border-0" dir="rtl">
+       
+          <div className="card course-card shadow-sm m-2 border-0" dir="rtl" onClick={() => {
+               course.endsAt > mycurrentDate ?  history.push(`/course/details/${course.slug}`):
+               swal(
+                   "عفواً",
+                   "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",
+                   "error",
+                  {
+                    button: "متابعة"
+                  }
+                  ) }} >
             <header className="card-thumb">
               <img key={course.id} src={course.bannerUrl} alt={course.nameAr} />
             </header>
@@ -110,8 +135,10 @@ export class Card extends Component {
               {desc}
             </p>
           </div>
-        </Link>
+       
+        
       </React.Fragment>
     );
   }
 }
+export const Card = withRouter(CardComponent);
