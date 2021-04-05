@@ -27,8 +27,8 @@ class CardComponent extends Component {
     var month = date.getMonth() + 1;
     var year = date.getFullYear();
     var courseDate = year + "-" + month + "-" + day;
-    var  mycurrentDate = Moment().format("DD-MM-YYYY hh:mm:ss");
     var hijriDate = moment(courseDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
+
     const { match, location, history } = this.props;
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
@@ -52,7 +52,7 @@ class CardComponent extends Component {
       <React.Fragment>
        
           <div className="card course-card shadow-sm m-2 border-0" dir="rtl" onClick={() => {
-               course.endsAt > mycurrentDate ?  history.push(`/course/details/${course.slug}`):
+               new Date(course.endsAt) > new Date() ?  history.push(`/course/details/${course.slug}`):
                swal(
                    "عفواً",
                    "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",
