@@ -110,7 +110,7 @@ class AppBackground extends Component {
       >
         {path !== '/cart/anonymouscheckout' && <Header/>}
         {this.props.children}
-        {/* {path !== '/cart/anonymouscheckout' && <Footer />} */}
+        {path !== '/cart/anonymouscheckout' && <Footer />}
       </div>
     );
   }

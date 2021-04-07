@@ -884,52 +884,9 @@ if(indxcourse < 3)
     </section>
     {/* <!-- End The Main Success OF Hemma  -->
 
-    <!-- ################################################################ -->
+    <!-- ################################################################ -->*/}
     
-    <!-- Start The Main Footer --> */}
-    <section id="footer" className="footer pt-5">
-      <div className="container">
-        <div className="row">
-          <div className="col-lg-9">
-            <div className="row">
-              <div className="col-lg-3">
-                <a className="hemma-logo d-block cursor-pointer">
-                  <img src={process.env.PUBLIC_URL + "/assets/images/logo.png"} height="80"/>
-                </a>
-              </div>
-              <div className="col-lg-3">
-                <ul className="hemma-links list-unstyled">
-                  <li><a  href="/categories" className="font-weight-bold main-color cursor-pointer link-hover">منصات همة</a></li>
-                  <li><a  href="/faq" className="font-weight-bold main-color cursor-pointer link-hover">ألاسئلة المتكررة</a></li>
-                  <li><a className="font-weight-bold main-color cursor-pointer link-hover">بيع الملازم</a></li>
-                  <li><a className="font-weight-bold main-color cursor-pointer link-hover">أنضم كمدرب</a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <h5 className="hemma-msg font-weight-bold main-color text-center mb-2 ml-5">خلينا على تواصل</h5>
-            <ul className="hemma-socials list-unstyled d-flex align-items-center justify-content-end m-0 mb-2">
-              <li>
-                <a className="cursor-pointer mr-2"><img src={process.env.PUBLIC_URL + "/assets/images/whatsapp.png"} className="social-hover" width="30" alt="Whatsapp"/></a>
-              </li>
-              <li><a className="cursor-pointer mx-2"><img  src={process.env.PUBLIC_URL + "/assets/images/snapchat.png"} className="social-hover" width="25" alt="Snapchat"/></a></li>
-              <li><a className="cursor-pointer mx-2"><img src={process.env.PUBLIC_URL + "/assets/images/instagram.png"} className="social-hover" width="25" alt="Instagram"/></a></li>
-              <li><a className="cursor-pointer mx-2"><img src={process.env.PUBLIC_URL + "/assets/images/twitter.png"} className="social-hover" width="30" alt="Twitter"/></a></li>
-              <li><a className="cursor-pointer ml-2"><img src={process.env.PUBLIC_URL + "/assets/images/youtube.png"} className="social-hover" width="30" alt="Youtube"/></a></li>
-            </ul>
-            <h5 className="hemma-phone d-flex align-items-center justify-content-end">
-              <span className="font-weight-bold main-color mr-4">920033076</span>
-              <img  src={process.env.PUBLIC_URL + "/assets/images/phone-call.png"}  width="20" alt="Phone Number"/>
-            </h5>
-          </div>
-        </div>
-        <div className="text-center text-muted font-weight-bold py-3">
-          جميع الحقوق محفوظة &copy; منصة <span className="line-yellow">همة</span>
-        </div>
-      </div>
-    </section>
-    {/* <!-- End The Main Footer --></li> */}
+   
     
       </React.Fragment>
     );
