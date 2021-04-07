@@ -1,10 +1,25 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { Link } from "react-router-dom";
+import swal from "@sweetalert/with-react";
+import Moment from "moment";
+import { Link,useHistory } from "react-router-dom";
+import { withRouter } from "react-router";
+import PropTypes from "prop-types";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class Card extends Component {
+class CardComponent extends Component {
+  static propTypes = {
+    match: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
+  };
+  constructor(props) {
+    super(props);
+  }
+  
+             
   render() {
     const course = this.props.course;
     var date = new Date(course.startsAt);
@@ -14,6 +29,7 @@ export class Card extends Component {
     var courseDate = year + "-" + month + "-" + day;
     var hijriDate = moment(courseDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
 
+    const { match, location, history } = this.props;
     var desc = course.descriptionAr;
     if (desc.length > 10) desc = desc.substring(0, 100) + "...";
 
@@ -143,3 +159,4 @@ export class Card extends Component {
     );
   }
 }
+export const Card = withRouter(CardComponent);
