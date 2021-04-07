@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
-import { Link, withRouter } from "react-router-dom";
+import { Link, withRouter,Redirect } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
 import { getProfile } from "../../../actions";
@@ -9,6 +9,7 @@ import classnames from "classnames";
 import { SubscriptionsList } from "./list/subscriptions-list";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
+
 
 export class SubscriptionsComponent extends Component {
   constructor(props) {
@@ -39,6 +40,7 @@ export class SubscriptionsComponent extends Component {
       })
       .then(response => {
         this.setState({ subscriptions: response.data.data, isPageLoading: false });
+       
       })
       .catch(error => {
         this.setState({ isPageLoading: false });
@@ -93,9 +95,10 @@ export class SubscriptionsComponent extends Component {
                     </div>
                   ) : (
                       <>
-                        {this.state.subscriptions == undefined ||
-                          this.state.subscriptions.length == 0 ? (
+                       {/* {this.state.subscriptions == undefined || this.state.subscriptions.length == 0?(*/}
+                        {this.state.subscriptions.itemCount==0 ? (
                             <React.Fragment>
+                              <Redirect  exact to="/home" />
                               <div
                                 className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
                                 style={{ height: 300 }}
