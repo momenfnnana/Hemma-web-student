@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component,useEffect ,useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
@@ -9,7 +9,15 @@ import swal from "@sweetalert/with-react";
 import { loginWithTwitter } from "../auth/firebase";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./styles.sass";
+// import "./styles.sass";
+import AOS from 'aos';
+import Glide from '@glidejs/glide'
+// Required Core Stylesheet
+// import "public/assets/css/glide.core.min.css";
+
+// // Optional Theme Stylesheet
+// import "public/assets/css/glide.theme.min.css";
+
 
 var moment = require("moment");
 moment().format();
@@ -25,7 +33,7 @@ class HomeComponent extends Component {
       categoryGroups: [],
     };
   }
-
+  
   componentDidMount() {
     axios
       .get(`${apiBaseUrl}/categories`)
@@ -71,6 +79,47 @@ class HomeComponent extends Component {
       .catch((error) => {
         console.log(error);
       });
+     
+      var forEach = function (t, o, r) { if ("[object Object]" === Object.prototype.toString.call(t)) for (var c in t) Object.prototype.hasOwnProperty.call(t, c) && o.call(r, t[c], c, t); else for (var e = 0, l = t.length; l > e; e++)o.call(r, t[e], e, t) };
+
+      var hamburgers = document.querySelectorAll(".hamburger");
+      if (hamburgers.length > 0) {
+        forEach(hamburgers, function (hamburger) {
+          hamburger.addEventListener("click", function () {
+            this.classList.toggle("is-active");
+          }, false);
+        });
+      }
+      AOS.init();
+      // new Glide(".glide", {
+      //   peek: 50,
+      //   perView: 3,
+      //   type: "carousel"
+      // }).mount();
+      const myOptions = {
+        type: 'carousel',
+        startAt: 1,
+        perView: 3,
+        focusAt: 'center',
+        gap: 20,
+        autoplay: 4000,
+        // animationTimingFunc: 'ease-in-out',
+        animationDuration: 800,
+        // peek: {
+        //   before: 100,
+        //   after: 100
+        // },
+        hoverpause: false,
+        keyboard: true,
+        direction: 'rtl',
+        breakpoints: {
+  
+          1024: {perView: 2},
+          600: {perView: 1}
+        }
+      }
+      new Glide('.glide',myOptions).mount()
+      
   }
 
   renderCourses() {
@@ -139,7 +188,7 @@ class HomeComponent extends Component {
     const cats = this.state.categories;
     return (
       <React.Fragment>
-        <div className="row d-flex justify-content-center align-items-center">
+        {/* <div className="row d-flex justify-content-center align-items-center">
           {cats.map((cat) => {
             return (
               <div className="col-lg-3 col-6" key={cat.id}>
@@ -157,7 +206,104 @@ class HomeComponent extends Component {
               </div>
             );
           })}
-        </div>
+        </div> */}
+         
+         {cats.map((cat,indexcat) => {
+           if(indexcat < 3){
+
+          console.log(cat);
+            return (
+        <div className="col-lg-4 card-pos" key={cat.id}>
+              <div className="card">
+
+                <div className="title-card">
+                 
+                  <Link
+                    to={{
+                      pathname: `/categories/details/${cat.slug}`,
+                      state: {
+                        catId: cat.id
+                      }
+                    }}
+                    key={cat.id}
+                  //className="btn dark-btn unset-height unset-line-height br-5"
+                  >
+                    <h3>  {cat.nameAr} </h3>
+                   </Link>
+                  
+                    {/* <a href="/categories/details/">{cat.nameAr}</a> */}
+                 
+                </div>
+
+                <div className="text-card text-center mb-4">
+                  <h5 className="h6">
+                    <span className="d-block">دورات ولقاءات لتطوير صناع المستقبل</span>
+                    <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
+                  </h5>
+                </div>
+                   {cat.childCatgories.length > 0 ?
+                    ( <div className="buttons-card d-flex align-items-center flex-wrap justify-content-center">
+{cat.childCatgories.map((child,indx)=>{
+if(indx < 3)
+{
+  return(
+    
+ <Link
+                    to={{
+                      pathname: `/course/details/${child.slug}`,
+                      state: {
+                        catId: cat.id
+                      }
+                    }}
+                    key={cat.id}
+                  className="btn-card mx-2 mb-2"
+                  >
+                     {child.nameAr}
+                   </Link>
+  
+   
+    // <a href="" className="btn-card mx-2 mb-2">{child.nameAr}</a>
+      );
+}
+  return null;
+})}
+                   
+                  {/* <a className="btn-card mx-2 mb-2">التطوير المهني</a>
+                  <a className="btn-card mx-2 mb-2">مجتمع همة التعليمى</a> */}
+                  </div>): (<div className="buttons-card d-flex align-items-center flex-wrap justify-content-center">
+{cat.courses.map((course,indxcourse)=>{
+if(indxcourse < 3)
+{
+  return(
+    
+ <Link
+                    to={{
+                      pathname: `/course/details/${course.slug}`,
+                      state: {
+                        catId: cat.id
+                      }
+                    }}
+                    key={cat.id}
+                  className="btn-card mx-2 mb-2"
+                  >
+                     {course.nameAr}
+                   </Link>
+  
+   
+    // <a href="" className="btn-card mx-2 mb-2">{child.nameAr}</a>
+      );
+}
+  return null;
+})}
+                   
+                  {/* <a className="btn-card mx-2 mb-2">التطوير المهني</a>
+                  <a className="btn-card mx-2 mb-2">مجتمع همة التعليمى</a> */}
+                  </div>)
+                   }
+              </div>
+            </div>
+              );
+  }})}
       </React.Fragment>
     );
   }
@@ -342,191 +488,406 @@ class HomeComponent extends Component {
     };
 
     return (
+      
       <React.Fragment>
-        <section className="section-padding">
-          <div className="container">
-            <div className="row h-100 d-flex align-items-center">
-              <div className="col-md-7">
-                <h2 className="dark-text mb-3">
-                  تحتاج تدريب مكثف لاجتياز اختبارك؟
-                </h2>
-                <p className="mid-text word-break lead mb-1">
-                  همّة تقدم لك
-                  تدريب مكثف عن بعد
-                  يؤهلك لاجتياز الاختبار بأعلى الدرجات
-                </p>
-                <p className="mid-text word-break lead"> خبرة أكثر من 25 سنة في خدمة الطلاب والمعلمين</p>
-                <Link
-                  className="btn yellow-btn btn-width mt-4"
-                  to="/categories">
-                  اشترك الان
-                  </Link>
-              </div>
-              <div className="col-md-5 d-flex align-items-center justify-content-center">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/home-image-1.png"}
-                  width="100%"
-                  className="contain-img d-md-block d-none d-sm-none"
-                  alt="artwork"
-                />
-              </div>
-            </div>
+       <section id="hemma-banner" className="main-banner">
+      
+      {/* <!-- Start The Main Banner Text --> */}
+      <div className="banner-info overlay-bg d-flex align-items-center justify-content-center flex-column">
+        <div className="container">
+          <div className="banner-text text-white">
+            <h1 className="h1 m-0 mb-4">
+              <span className="d-block">منصة رقمية لتطوير المعلمين والطلاب</span>
+              <span className="d-block">والتدريب على اختبارات قياس</span>
+            </h1>
+            <h2 className="h2 m-0">أكثر من 25 سنة فى خدمة الطلاب والمعلمين</h2>
           </div>
-        </section>
-        <section className="section-padding">
-          <div className="container">
-            <div className="row mb-3">
-              <div className="col-md-12 text-center">
-                <h2 className="dark-text">مجالاتنا</h2>
-              </div>
-            </div>
-            {this.renderCategories()}
+        </div>
+      </div>
+      {/* <!-- End The Main Banner Text --> */}
+
+      {/* <!-- Start The Main Cards OF Banner --> */}
+      <div className="banner-cards">
+        <div className="container container-pos">
+          <div className="row">
+          {this.renderCategories()}
           </div>
-        </section>
-        {/* TODO hide initiative */}
-        {/* <section className="pt-1">
-          <div className="container">
-            <div className="row mx-auto d-flex justify-content-center align-items-center w-50">
-              <div className="col-md-12 d-flex flex-column align-items-center justify-content-center ar-text title-groups blue-btn mb-3">
-                <Link
-                  to={`/initiative/details/${this.state.initiatives &&
-                    this.state.initiatives.id}`}
-                  className="btn blue-btn justify-content-center d-flex align-items-center"
-                >
-                  <h2 className="m-2">مبادرات همة </h2>
-                </Link>
+        </div>
+      </div>
+      {/* <!-- End The Main Cards OF Banner --> */}
+    </section>
+    {/* <!-- End The Main Banner -->
+
+    <!-- ################################################################ -->
+
+    <!-- Start The Free Interviews  --> */}
+   <section id="free-interview" className="free-interview">
+      <div className="container">
+        <header className="mb-5">
+          <h2 className="h2 text-center main-color font-weight-bold title-shadow-purple"
+          data-aos="zoom-in"
+          data-aos-duration="500">لقاءات مجانيه</h2>
+        </header>
+        <div className="row overflow-hidden">
+          <div className="col-lg-6" 
+          data-aos="fade-up" 
+          data-aos-anchor-placement="top-bottom" 
+          data-aos-delay="50"
+          data-aos-offset="100"
+          data-aos-duration="1000">
+            <div className="free-card mb-4 py-3 card-bg-color d-flex align-items-center justify-content-center">
+              <div className="free-icon mr-4">
+                <img src={process.env.PUBLIC_URL + "/assets/images/inter1.png"} alt="interview-img" width="50"/>
               </div>
-            </div>
-          </div>
-                  </section> */}
-        <section className="section-padding">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12 text-center">
-                <h2 className="dark-text">مميزاتنا</h2>
-                <p className="mid-text lead">تتمتع منصتنا بمجموعة من المميزات التي تجعلها في المقدمة</p>
-              </div>
-            </div>
-            <div className="row d-flex align-items-center mt-4">
-              <div className="col-md-8 col-12">
-                <h3 className="dark-text">
-                  حملنا على عاتقنا أمانة الوصول بالمشتركين الى اعلى الدرجات
-                  </h3>
-                <h6 className="mid-text lead mb-0"> وهذا ما حققناه طيلة السنوات الماضية</h6>
-              </div>
-              <div className="col-md-4 col-12 slider-box shadow-sm bg-white">
-                <Slider {...settings}>
-                  <div>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/slider1.jpg"}
-                      width="100%"
-                      className="contain-img"
-                      alt="artwork" />
+              <div>
+                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
+                <div className="d-flex align-items-center mb-3">
+                  <div className="d-flex align-items-center mr-3">
+                    <i className="far fa-calendar-alt"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
                   </div>
-                  <div>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/slider2.jpg"}
-                      width="100%"
-                      className="contain-img"
-                      alt="artwork" />
-                  </div>
-                  <div>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/slider3.jpg"}
-                      width="100%"
-                      className="contain-img"
-                      alt="artwork" />
-                  </div>
-                  <div>
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/slider4.jpg"}
-                      width="100%"
-                      className="contain-img"
-                      alt="artwork" />
-                  </div>
-                </Slider>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section className="section-padding">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-6 d-flex align-items-center justify-content-center">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/home-image-2.png"}
-                  width="100%"
-                  className="contain-img d-md-block d-none d-sm-none"
-                  alt="artwork"
-                />
-              </div>
-              <div className="col-md-6 d-flex justify-content-center flex-column text-center">
-                <h2 className="dark-text mb-3">تدريب مكثف وأنت ببيتك</h2>
-                <p className="mid-text lead mb-1">محتوى شامل يغنيك عن مختلف المراجع</p>
-                <p className="mid-text lead mb-0">محاضرات مباشرة تسجل لمتايعتها في اي وقت</p>
-              </div>
-            </div>
-          </div>
-        </section>
-        {/* <section className="hero-section">
-          <div className="container">
-            <div className="row w-75 mx-auto d-flex justify-content-center align-items-center">
-              <div className="col-md-6">
-                <h2 className="dark-text">مناقشات</h2>
-                <h5>
-                  محدده مسبقا تجمع المدربين والفريق وكل المشاركين ،أرسل
-                  استفساراتك وشاركهم بالمناقشة بشكل حي ،كل الماقشات تحفظ للرجوع
-                  اليها في أي وقت!
-                </h5>
-              </div>
-              <div className="col-md-6 d-flex align-items-center justify-content-center">
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/home-image-3.png"
-                  }
-                  width="100%"
-                  className="contain-img d-md-block d-none d-sm-none"
-                  alt="artwork"
-                />
-              </div>
-            </div>
-          </div>
-        </section> */}
-        {this.state.categoryGroups && this.state.categoryGroups.length > 0 && (
-          <section className="section-padding">
-            <div className="container">
-              <div className="row mb-3">
-                <div className="col-md-12 text-center">
-                  <h2 className="dark-text">المجموعات المجانية</h2>
-                </div>
-              </div>
-              {this.renderCategoriesGroup()}
-            </div>
-          </section>
-        )}
-        {!this.state.testimonials === undefined ||
-          (this.state.testimonials.length !== 0 && (
-            <section className="section-padding testimonials-section">
-              <div className="container">
-                <div className="row d-flex justify-content-center align-items-center">
-                  <div className="col-md-6">
-                    <div className="quotes">
-                      <h1 className="dark-text mb-0">قالوا عنا</h1>
-                      <img
-                        src={process.env.PUBLIC_URL + "/assets/images/quotes.png"}
-                        alt="testimonials"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <Slider {...testimonialsSettings}>
-                      {this.renderTestimonials()}
-                    </Slider>
+                  <div className="d-flex align-items-center">
+                    <i className="far fa-clock"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
                   </div>
                 </div>
+                <a className="btn-card-outline">أنضم</a>
               </div>
-            </section>
-          ))}
+            </div>
+          </div>
+          <div className="col-lg-6" 
+          data-aos="fade-up" 
+          data-aos-anchor-placement="center-bottom" 
+          data-aos-delay="100"
+          data-aos-offset="100"
+          data-aos-duration="1000">
+            <div className="free-card mb-4 py-3 card-bg-color d-flex align-items-center justify-content-center">
+              <div className="free-icon mr-4"> 
+                <img src={process.env.PUBLIC_URL + "/assets/images/inter1.png"}  alt="interview-img" width="50"/>
+              </div>
+              <div>
+                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
+                <div className="d-flex align-items-center mb-3">
+                  <div className="d-flex align-items-center mr-3">
+                    <i className="far fa-calendar-alt"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <i className="far fa-clock"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
+                  </div>
+                </div>
+                <a className="btn-card-outline">أنضم</a>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-6" 
+          data-aos="fade-up" 
+          data-aos-anchor-placement="top-bottom" 
+          data-aos-delay="150"
+          data-aos-offset="100"
+          data-aos-duration="1000">
+            <div className="free-card mb-4 py-3 card-bg-color d-flex align-items-center justify-content-center">
+              <div className="free-icon mr-4"> 
+                <img src={process.env.PUBLIC_URL + "/assets/images/inter1.png"} alt="interview-img" width="50"/>
+              </div>
+              <div>
+                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
+                <div className="d-flex align-items-center mb-3">
+                  <div className="d-flex align-items-center mr-3">
+                    <i className="far fa-calendar-alt"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <i className="far fa-clock"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
+                  </div>
+                </div>
+                <a className="btn-card-outline">أنضم</a>
+              </div>
+            </div>
+          </div>
+          <div className="col-lg-6" 
+          data-aos="fade-up" 
+          data-aos-anchor-placement="center-bottom" 
+          data-aos-delay="200"
+          data-aos-offset="100"
+          data-aos-duration="1000">
+            <div className="free-card mb-4 py-3 card-bg-color d-flex align-items-center justify-content-center">
+              <div className="free-icon mr-4"> 
+                <img src={process.env.PUBLIC_URL + "/assets/images/inter1.png"} alt="interview-img" width="50"/>
+              </div>
+              <div>
+                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
+                <div className="d-flex align-items-center mb-3">
+                  <div className="d-flex align-items-center mr-3">
+                    <i className="far fa-calendar-alt"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
+                  </div>
+                  <div className="d-flex align-items-center">
+                    <i className="far fa-clock"></i>
+                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
+                  </div>
+                </div>
+                <a className="btn-card-outline">أنضم</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {/* <!-- End The Free Interviews  -->
+
+    <!-- ################################################################ -->
+
+    <!-- Start More Info About Hemma --> */}
+    <section id="more-details" className="more-details mb-4 overflow-x-hidden">
+      <div className="container">
+        <header className="mb-5">
+          <h3 className="h3 text-center main-color font-weight-bold title-shadow-purple mb-2" 
+          data-aos="fade-right"
+          data-aos-offset="100"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-sine">اجعل رحلتك التعليميه عميقة ومكثفة من خلال محتوى همة الاحترافى</h3>
+          <h3 className="h3 text-center font-weight-bold" 
+          data-aos="fade-left"
+          data-aos-offset="100"
+          data-aos-duration="1000"
+          data-aos-easing="ease-in-sine">وفرنا لك أفضل المميزات لعملية تعليمية فعالة</h3>
+        </header>
+        <div className="row">
+          <div className="col-lg-3" data-aos="fade-right" data-aos-delay="50" data-aos-duration="1000">
+            <div className="text-center mb-4">
+              <div className="icon"></div>
+              <h5 className="main-color font-weight-bold title-shadow-purple">متابعة مستمرة</h5>
+              <p className="description-card m-0 font-weight-bold">من خلال خدمات الدعم المقدمة خلال رحلتك التعليمية معنا</p>
+            </div>
+          </div>
+          <div className="col-lg-3" data-aos="fade-down" data-aos-delay="200" data-aos-duration="1000">
+            <div className="text-center mb-4">
+              <div className="icon"></div>
+              <h5 className="main-color font-weight-bold title-shadow-purple">محتوى معد باحترافيه</h5>
+              <p className="description-card m-0 font-weight-bold">دورات مصممة بواسطة خبراء محترفين ومتخصصين</p>
+            </div>
+          </div>
+          <div className="col-lg-3" data-aos="fade-down" data-aos-delay="200" data-aos-duration="1000">
+            <div className="text-center mb-4">
+              <div className="icon"></div>
+              <h5 className="main-color font-weight-bold title-shadow-purple">تدريب مكثف وأنت في بيتك</h5>
+              <p className="description-card m-0 font-weight-bold">محتوى شامل يغنيك عن مختلف المراجع</p>
+            </div>
+          </div>
+          <div className="col-lg-3" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000">
+            <div className="text-center mb-4">
+              <div className="icon"></div>
+              <h5 className="main-color font-weight-bold title-shadow-purple">نماذج محاكية للاختبارات</h5>
+              <p className="description-card m-0 font-weight-bold">تطبيقات محاكية عملية من خلال نماذج حديثة للاختبار</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {/* <!-- End More Info About Hemma -->
+
+    <!-- ################################################################ -->
+
+    <!-- Start How Hemma Faciliate Its Mission --> */}
+    <section id="more-about" className="more-about">
+      <div className="about-wrapper overlay-bg d-flex flex-column align-items-center justify-content-center">
+        <div className="container">
+          <div className="about-hemma">
+            <header className="mb-5" 
+            data-aos="fade-up"
+            data-aos-offset="100"
+            data-aos-duration="1000"
+            data-aos-anchor-placement="bottom-bottom">
+              <h3 className="h3 text-center font-weight-bold mb-2">كيف سهلت همة الاختبارات على الالاف خلال 25 عام؟</h3>
+              <h3 className="h3 text-center font-weight-bold">! هنا نستعرض بعض الارقام والتى نعدها مصدر اعتزاز</h3>
+            </header>
+            <div className="row overflow-hidden">
+              <div className="col-lg-3" data-aos="flip-right" data-aos-delay="50" data-aos-duration="1000">
+                <div className="text-center mb-4">
+                  <h2 className="about-head line-yellow font-weight-bold text-shadow">متابعة مستمرة</h2>
+                  <p className="font-weight-bold m-0">بدأت خدمتنا للطلاب والمعلمين فى (1415 ه) ووصلنا لكل بيت </p>
+                </div>
+              </div>
+              <div className="col-lg-3" data-aos="flip-down" data-aos-delay="200" data-aos-duration="1000">
+                <div className="text-center mb-4">
+                  <h2 className="about-head line-yellow font-weight-bold text-shadow">3 مليون</h2>
+                  <p className="font-weight-bold m-0">مجموع المستفيدين من خدامتنا تجاوز 3 مليون مستفيد </p>
+                </div>
+              </div>
+              <div className="col-lg-3" data-aos="flip-up" data-aos-delay="200" data-aos-duration="1000">
+                <div className="text-center mb-4">
+                  <h2 className="about-head line-yellow font-weight-bold text-shadow">95%</h2>
+                  <p className="font-weight-bold m-0">من مشتركينا حققوا 95% مايطمحوا له من درجات</p>
+                </div>
+              </div>
+              <div className="col-lg-3" data-aos="flip-left" data-aos-delay="200" data-aos-duration="1000">
+                <div className="text-center mb-4">
+                  <h2 className="about-head line-yellow font-weight-bold text-shadow">200 ألف</h2>
+                  <p className="font-weight-bold m-0">أكثر من 200.200 ألف مشترك فى الموقع</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {/* <!-- End How Hemma Faciliate Its Mission -->
+
+    <!-- ################################################################ -->
+
+    <!-- Start The Main Success OF Hemma  --> */}
+    <section id="success-wrapper" className="success-wrapper">
+      <div className="container py-5">
+        <header className="mb-5">
+          <h3 className="h3 text-center font-weight-bold main-color mb-2">نجاحات مع همة</h3>
+        </header>
+        <div className="glide">
+          <div className="glide__track" data-glide-el="track">
+            <ul className="glide__slides py-2">
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+              <li className="glide__slide">
+                <div className="sider-items">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">أم لجين</h4>
+                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
+                  <div className="text-muted">
+                    <time datetime="">7:05 PM</time>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          {/* <!-- <div className="glide__arrows" data-glide-el="controls">
+            <button className="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+            <button className="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+          </div> --> */}
+          <div className="glide__bullets" data-glide-el="controls[nav]">
+            <button className="glide__bullet" data-glide-dir="=0"></button>
+            <button className="glide__bullet" data-glide-dir="=1"></button>
+            <button className="glide__bullet" data-glide-dir="=2"></button>
+            <button className="glide__bullet" data-glide-dir="=3"></button>
+            <button className="glide__bullet" data-glide-dir="=4"></button>
+            <button className="glide__bullet" data-glide-dir="=5"></button>
+            <button className="glide__bullet" data-glide-dir="=6"></button>
+            <button className="glide__bullet" data-glide-dir="=7"></button>
+            <button className="glide__bullet" data-glide-dir="=8"></button>
+            <button className="glide__bullet" data-glide-dir="=9"></button>
+            <button className="glide__bullet" data-glide-dir="=10"></button>
+          </div>
+        </div>
+        <div className="d-flex align-items-center justify-content-center mt-5">
+          <a className="btn-yellow">المزيد من النجاحات</a>
+        </div>
+      </div>
+    </section>
+    {/* <!-- End The Main Success OF Hemma  -->
+
+    <!-- ################################################################ -->*/}
+    
+   
+    
       </React.Fragment>
     );
   }
