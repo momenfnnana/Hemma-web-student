@@ -36,9 +36,9 @@ class HomeComponent extends Component {
   
   componentDidMount() {
     axios
-      .get(`${apiBaseUrl}/categories`)
+      .get(`${apiBaseUrl}/categories/Main_Category`)
       .then((response) => {
-        this.setState({ categories: response.data.data.data });
+        this.setState({ categories: response.data.data });
       })
       .catch((error) => {
         console.log(error);
@@ -237,8 +237,8 @@ class HomeComponent extends Component {
 
                 <div className="text-card text-center mb-4">
                   <h5 className="h6">
-                    <span className="d-block">دورات ولقاءات لتطوير صناع المستقبل</span>
-                    <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
+                    <span className="d-block">{cat.descriptionAr}</span>
+                    {/* <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span> */}
                   </h5>
                 </div>
                    {cat.childCatgories.length > 0 ?
