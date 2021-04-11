@@ -49,6 +49,7 @@ class HeaderComponent extends Component {
       localStorage.clear();
       this.props.history.push("/auth/login");
     }
+   
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -266,7 +267,7 @@ class HeaderComponent extends Component {
           </Navbar>
         </div> */}
         {/* <!-- Start The Hemma Navbar --> */}
-    <nav className="navbar navbar-expand-lg navbar-light bg-white py-0">
+    <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-white py-0">
       <div className="container-fluid">
 
         {/* <!-- Start The Main Hemma Logo --> */}
@@ -274,7 +275,7 @@ class HeaderComponent extends Component {
           <img src="https://hemma.sa/assets/images/logo.png" height="60"/>
         </Link> */}
         <Link to="/home" className="navbar-brand mr-0">
-                <img
+                <img className="logo-img"
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="60"
                 />
@@ -413,6 +414,9 @@ class HeaderComponent extends Component {
         </div>
         {/* <!-- End The Main Links Of Hemma --> */}
 
+      </div>
+      <div class="progressbar-wrapper">
+        <div class="progressbar-line"></div>
       </div>
     </nav>
     {/* <!-- End The Hemma Navbar </nav>-->*/}
