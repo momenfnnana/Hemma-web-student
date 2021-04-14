@@ -106,7 +106,7 @@ export class HintModal extends Component {
                       />
                       ) : (
                         <p className="dark-text mb-0 text-center">
-                          لا يوجد مساعدة متوفرة
+                          {/*لا يوجد مساعدة متوفرة*/}
                         </p>
                       )}
                 </div>

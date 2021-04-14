@@ -16,7 +16,7 @@ import { Api } from "../../api";
 import RecordingVideo from "./recording-video";
 import "./styles.sass";
 import { PageLoader } from "./page-loader";
-
+import { getAuthenticatedAxios, getDataFromResponse } from "../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -32,10 +32,14 @@ export class CourseDetails extends Component {
       selectedLecture: null,
       isPageLoading: false,
       confirm: false,
+      discountcourse:{},
+      discountprecentage:0,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.toggleRecordingModal = this.toggleRecordingModal.bind(this);
+    this.getCourseAfterdiscount=this.getCourseAfterdiscount.bind(this);
+    this.gotoDetails=this.gotoDetails.bind(this);
   }
 
   confirmationPopup() {
@@ -56,7 +60,9 @@ export class CourseDetails extends Component {
       }
     });
   }
-
+  gotoDetails(id){
+    this.props.history.push(`/course/content/${id}`);
+  }
   toggleRecordingModal(url, id) {
     this.setState({
       recordingModalIsOpen: !this.state.recordingModalIsOpen,
@@ -72,22 +78,42 @@ export class CourseDetails extends Component {
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
-
+  getCourseAfterdiscount(discountvalue,originalprice)
+  {
+    const result=(1-(discountvalue/100))*originalprice;
+    return result;
+  }
   componentDidMount() {
     this.setState({ isPageLoading: true });
     const {
       match: { params },
     } = this.props;
-    axios
+    
+    getAuthenticatedAxios()
       .get(`${apiBaseUrl}/courses/${params.slug}`)
       .then((response) => {
         this.setState({ details: response.data.data, isPageLoading: false });
+
+        getAuthenticatedAxios()
+      .get(`${apiBaseUrl}/content/${this.state.details.id}/highdiscount`)
+      .then((response) => {
+        this.setState(
+          { discountcourse: response.data.data,
+            discountprecentage:response.data.data.discountPrecentage,
+            isPageLoading: false });
+       })
+      .catch((error) => {
+        this.setState({ isPageLoading: false });
+        console.log(error);
+      });
       })
       .catch((error) => {
         this.setState({ isPageLoading: false });
         console.log(error);
       });
+      
   }
+  
 
   addToCart(id) {
     Api.cart
@@ -449,9 +475,42 @@ export class CourseDetails extends Component {
                               </span>{" "}
                               ريال
                             </h4>
-                          )}
+                          )} 
+                             
                         </div>
-                        {this.state.details.purchasable && (
+                        {this.state.discountprecentage>0 && (
+                        <h5 className="small light-font-text dark-text">
+
+                          نقدر لك ولاءك لهمة ورجوعك لنا مره اخرى، لهذا تم تقديم لك خصم خاص 
+    
+                          &nbsp;{this.state.discountcourse.discountPrecentage} %&nbsp;
+
+                           بسبب أشتراكك فى  
+
+                          &nbsp;{this.state.discountcourse.courseName} &nbsp;
+
+                        </h5>
+
+                        )}
+                        
+                        {this.state.details.paymentStatus==="FullyPaid" || this.state.details.paymentStatus=="PartiallyPaid"? 
+                        (<button
+                          type="button"
+                          className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
+                          onClick={() => this.gotoDetails(this.state.details.id)}
+                          
+                        >
+                          اذهب لتفاصيل الدورة
+                        </button>
+                        ):this.state.details.paymentStatus=="Pending"?(
+                          <button
+                          type="button"
+                          className="btn light-outline-btn w-100 align-self-center mt-2 mb-3" disabled
+                        >
+                          قيد المراجعه
+                        </button>
+                        ): (
+                          this.state.details.purchasable && (
                           <button
                             type="button"
                             className="btn light-outline-btn w-100 align-self-center mt-2 mb-3"
@@ -459,7 +518,10 @@ export class CourseDetails extends Component {
                           >
                             اشترك الآن
                           </button>
-                        )}
+                        ))
+                      }
+                       
+
                         <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
                         <ul className="list-unstyled">
                           {this.state.details &&
