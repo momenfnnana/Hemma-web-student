@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
 import { Table } from "reactstrap";
+import { ToastDemo } from "./toast-notification";
 
 var moment = require("moment");
 moment().format();
@@ -139,7 +140,16 @@ export class QuickQuestions extends Component {
         console.log(error);
       });
   }
-
+  createTrainingLink(slug,categoryGroupId,traId)
+  {
+    let baseUrl = process.env.PUBLIC_URL;
+    return baseUrl+ `/categories/${slug}/${categoryGroupId}/training/${traId}`
+  }
+  createExamLink(slug,categoryGroupId,examId)
+  {
+  let baseUrl = process.env.PUBLIC_URL;
+  return baseUrl+ `/categories/${slug}/${categoryGroupId}/exam/${examId}`
+  }
   toggleJoin() {
     const {
       match: { params },
@@ -278,6 +288,7 @@ export class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
+              <ToastDemo copyLink={{ btnName:'مشاركة التدريب',link:this.createTrainingLink(slug,categoryGroupId,tra.id)}} />
             </td>
           </tr>
         </React.Fragment>
@@ -326,6 +337,7 @@ export class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
+              <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createExamLink(slug,categoryGroupId,exam.id)}} />
             </td>
           </tr>
         </React.Fragment>
@@ -697,7 +709,7 @@ export class QuickQuestions extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="row pt-4">
+                  <div className="">
                     {this.state.quickQuestions === undefined ||
                     this.state.quickQuestions.length === 0 ? (
                       <div className="col-md-12">

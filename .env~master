@@ -1,0 +1,3 @@
+SKIP_PREFLIGHT_CHECK=true
+PUBLIC_URL=http://localhost:3000
+REACT_APP_API_ENDPOINT=https://api.hemma.sa/api/v1

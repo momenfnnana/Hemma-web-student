@@ -28,9 +28,12 @@ const validate = values => {
     errors.phone = "يجب تعبئة هذه الخانة";
   } else if (!/^[0-9]*$/.test(values.phone.phoneNumber)) {
     errors.phone = "هذه الخانة يجب أن تحتوي على أرقام فقط";
-  } else if (!/^0\d{9}$/.test(values.phone.phoneNumber)) {
+  } else if (!/^0\d{9}$/.test(values.phone.phoneNumber)  && values.phone.countryCode !="eg") {
     errors.phone = "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
   } 
+ else if (!/^0\d{10}$/.test(values.phone.phoneNumber) && values.phone.countryCode =="eg") {
+  errors.phone = "رقم الهاتف يجب أن يحتوي 11 ارقام وان يبدأ بصفر";
+ }
   if (!values.password) {
     errors.password = "يجب تعبئة هذه الخانة";
   }
@@ -43,7 +46,7 @@ class LoginComponent extends Component {
     super(props);
 
     this.state = {
-      hidden: true,
+      hidden: false,
       password: "",
       loading: false,
       subscriptions: [],
@@ -69,7 +72,19 @@ class LoginComponent extends Component {
 
         GetUserSubscriptions(this.props);
         this.setState({ loading: false });
-      
+
+        if (!this.props.phoneNumberConfirmed) {
+          this.props
+            .sendToken()
+            .then(response => {
+              this.props.history.push("/verify");
+            })
+            .catch(error => {
+              this.props.history.push("/");
+            });
+        } else {
+          this.props.history.push("/");
+        }
       })
       .catch(error => {
         this.setState({ loading: false });

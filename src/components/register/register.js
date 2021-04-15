@@ -39,9 +39,10 @@ const nameValue = (value) => {
   return valid ? undefined : "الاسم يجب أن يحتوي ٥ أحرف على الأقل";
 };
 const phoneValue = (value) => {
+  var code = value.countryCode;
   value = value.phoneNumber || "";
   const trimmed = value.replace(/\s/g, "");
-  const valid = /^0\d{9}$/.test(trimmed);
+  const valid = (/^0\d{9}$/.test(trimmed)&& code != "eg")||(/^0\d{10}$/.test(trimmed) && code == "eg");
 
   return valid ? undefined : "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
 };
@@ -57,7 +58,7 @@ class RegisterComponent extends Component {
     super(props);
 
     this.state = {
-      hidden: true,
+      hidden: false,
       password: "",
       loading: false,
       cities: [],
@@ -91,14 +92,13 @@ class RegisterComponent extends Component {
     this.setState({ loading: true });
     request
       .then((action) => {
-        // this.props.history.push("/");
-        this.setState({ loading: false, isPageLoading: true });
 
+        this.setState({ loading: false, isPageLoading: true });
         if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
             .then(() => {
-              this.props.history.push("/verify");
+              this.props.history.push("/home");
             })
             .catch((error) => {
               this.props.history.push("/");

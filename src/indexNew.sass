@@ -1,0 +1,354 @@
+
+/* Start Some Main Helper Classess */
+.bg-white { background-color: #FFF !important}
+.main-color { color: var(--main-color) !important }
+.card-bg-color { background-color: var(--card-color) }
+.color-yellow {color: var(--color-yellow)}
+
+.border-radius { border-radius: 100px; }
+.bordered {border: 1px solid var(--main-color)}
+
+.font-size-14 {font-size: 14px;}
+.text-shadow {text-shadow: 0 3px rgba(0,0,0, .3)}
+.title-shadow-purple { text-shadow: 0 0 3px rgb(75 58 133 / 50%)}
+.description-card {font-size: 18px}
+
+.overflow-x-hidden {overflow-x: hidden;}
+.overflow-y-hidden {overflow-y: hidden;}
+.overflow-hidden {overflow: hidden;}
+
+.link-hover {transition: all .2s ease-in-out}
+.link-hover:hover {color: var(--sub-color) !important}
+
+.social-hover {transition: all .2s ease-in-out;}
+.social-hover:hover {transform: scale(1.2)}
+
+.cursor-pointer { cursor: pointer !important}
+
+.overlay-bg {position: relative}
+.overlay-bg:after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background-color: var(--main-color-rgba);
+  position: absolute;
+  top: 0; left: 0;
+  z-index: 1
+}
+
+.line-yellow {position: relative; display: inline-block;}
+.line-yellow:after {
+  content: '';
+  position: absolute; 
+  top: 60%; left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 10px;
+  background-color: var(--color-yellow)
+}
+
+/* Buttons of Cards */
+.btn-card {
+  display: block;
+  min-width: 130px;
+  text-align: center;
+  background-color: var(--main-color);
+  color: #FFF !important;
+  border-radius: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: .8rem;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer
+}
+.btn-card:hover {
+  background-color: #FFF;
+  color: var(--main-color) !important;
+}
+/* Buttons of Card Outline */
+.btn-card-outline {
+  display: block;
+  width: 200px;
+  text-align: center;
+  background-color: transparent;
+  color: var(--main-color) !important;
+  border: 1px solid var(--main-color);
+  border-radius: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: .8rem;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer
+}
+.btn-card-outline:hover {
+  background-color: var(--main-color);
+  color: #FFF !important
+}
+/* Buttons of Yellow Color */
+.btn-yellow {
+  display: block;
+  width: 200px;
+  text-align: center;
+  background-color: var(--color-yellow);
+  color: var(--main-color) !important;
+  border: 1px solid transparent;
+  border-radius: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+  font-size: .8rem;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer
+}
+.btn-yellow:hover {
+  background-color: var(--main-color);
+  color: #FFF !important
+}
+/* End Some MainHelper Classess */
+
+/* _____________________________________________________ */
+/* _____________________________________________________ */
+
+/* Start The Navbar Style */
+.navbar .navbar-brand {cursor: pointer}
+.navbar .navbar-nav .nav-item .nav-link {
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--main-color) !important;
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -ms-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+.navbar .navbar-nav .nav-item .nav-link:hover,
+.navbar-light .navbar-nav .nav-link.active {
+  color: var(--sub-color) !important
+}
+/* End The Navbar Style */
+
+/* _____________________________________________________ */
+/* _____________________________________________________ */
+
+/* Start The Main banner Style */
+.main-banner {
+  position: relative;
+}
+.main-banner .banner-info,
+.about-wrapper {
+  width: 100%;
+  color: #FFF;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  min-height: 500px;
+  background-image: url(https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=753&q=80);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+.about-wrapper {padding: 40px 0 20px; background-attachment: fixed;}
+
+.main-banner .banner-info .banner-text {
+  position: relative;
+  z-index: 2;
+  top: -90px;
+}
+.banner-cards .card-pos {
+  transform: translateY(-150px);
+  position: relative;
+  z-index: 10;
+}
+.banner-cards .card-pos:nth-of-type(2) {transform: translateY(-200px);}
+.banner-cards .card {
+  padding: 0 0 20px;
+  border-radius: 10px;
+  border: 0;
+  margin-bottom: 30px;
+  box-shadow: 0px 0px 20px -5px rgb(0 0 0 / 20%);
+  transition: all .3s ease-in-out;
+}
+.banner-cards .card:hover {
+  background-image: linear-gradient(180deg,#79ccda,#8a9cd2);
+}
+.banner-cards .title-card {
+  position: relative;
+}
+.banner-cards .title-card h3 {
+  width: 105%;
+  background-color: #A5A5A5;
+  text-align: center;
+  position: relative;
+  transform: translateX(15px);
+  padding: 10px 16px;
+  color: #fff;
+  font-size: 1.4em;
+  line-height: 1.6em;
+  margin: 30px 0 20px;
+  z-index: 10;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.banner-cards .card:hover .title-card h3 {
+  background-color: #FFF;
+  color: var(--main-color)
+}
+.banner-cards .title-card h3:before,
+.banner-cards .title-card h3:after {
+  content: ' ';
+  position: absolute;
+  right: 0;
+  top: -16px;
+  width: 0;
+  border: 8px solid;
+}
+.banner-cards .title-card h3:before {
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+.banner-cards .title-card h3:after {
+  top: 55px;
+  bottom: 0;
+  right: 0px;
+}
+.banner-cards .title-card h3:after {
+  border-top-color: #868080;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: #868080;
+}
+.banner-cards .card:hover .title-card h3:after {
+  border-top-color: #fff;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-left-color: #fff;
+}
+/* End The Main banner Style */
+
+/* _____________________________________________________ */
+/* _____________________________________________________ */
+
+/* Start The Hemma Interviews */
+.free-card {
+  transition: all .2s ease-in-out; 
+  border: 1px solid transparent;
+  border-radius: 100px;
+}
+.free-card:hover {border-color: var(--main-color)}
+.free-interview {
+  transform: translateY(-100px)
+}
+/* End The Hemma Interviews */
+
+/* _____________________________________________________ */
+/* _____________________________________________________ */
+
+/* Start About Me Hemma Style */
+.about-hemma {position: relative; z-index: 10}
+/* End About Me Hemma Style */
+
+/* _____________________________________________________ */
+/* _____________________________________________________ */
+
+/* Start Success Hemma Style */
+.sider-items {
+  border: 4px solid var(--main-color);
+  padding: 10px 30px;
+  border-radius: 20px;
+  position: relative;
+}
+.sider-items .quote-icon {
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  z-index: 10;
+  padding: 0 3px;
+  color: var(--main-color);
+  background: #FFF;
+}
+.glide__bullets {
+  bottom: -1em;
+  display: flex;
+  align-items: center;
+}
+.glide__bullet {background-color: grey;}
+.glide__bullet--active {
+  background-color: transparent;
+  border-color: var(--main-color);
+  transform: scale(1.5)
+}
+.glide__bullet:hover,
+.glide__bullet:focus {
+  border-color: var(--main-color);
+  background-color: rgba(255,255,255,0.5);
+}
+.glide__slide {opacity: .2}
+li.glide__slide.glide__slide--active {
+  opacity: 1;
+}
+/* End Success Hemma Style */
+
+/* _____________________________________________________ */
+/* _____________________________________________________ */
+
+/* Start Media Quary */
+@media (max-width: 320px) {
+  .free-card {flex-direction: column; border-radius: 10px}
+  .free-card .free-icon {
+    margin-left: 0rem!important;
+    margin-bottom: 10px;
+  }
+  .btn-card-outline {
+    width: 150px;
+    margin: auto
+  }
+}
+@media(max-width: 992px) {
+  .free-card {border-radius: 10px}
+  .banner-cards .card-pos {
+    transform: translateY(0);
+  }
+  .banner-cards .card-pos:nth-of-type(2) {transform: translateY(0);}
+  .container-pos {
+    transform: translateY(-190px);
+    position: relative;
+    z-index: 20;
+  }
+  .banner-cards .card {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .banner-text h1 {font-size: 1.7rem}
+  .banner-text h2 {font-size: 1.4rem}
+  .hemma-logo {display: flex !important; justify-content: center;margin-bottom: 15px;}
+  .hemma-links {text-align: center; margin-bottom: 20px}
+  .hemma-socials, .hemma-phone {justify-content: center !important}
+  .hemma-msg {margin-right: 0 !important}
+}
+/* End Media Quary */

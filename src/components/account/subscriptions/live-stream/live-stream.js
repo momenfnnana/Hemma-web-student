@@ -11,7 +11,6 @@ import Modal from "react-modal";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
-import { getChatToken } from "../../../../actions/twilio.actions";
 import firebase from "firebase";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
@@ -80,7 +79,6 @@ export class LiveStreamComponent extends Component {
   async componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
-      this.props.getChatToken().then(() => this.initiateGeneralChat());
     }
 
     let token = localStorage.getItem("token");
@@ -105,11 +103,11 @@ export class LiveStreamComponent extends Component {
     client
       .getChannelBySid(this.props.chatChannelSid)
       .then(channel => {
-        client.on("channelJoined", function(channel) {
+        client.on("channelJoined", function (channel) {
           console.log("Joined channel " + channel.friendlyName);
         });
 
-        channel.join().catch(function(err) {
+        channel.join().catch(function (err) {
           console.error(
             "Couldn't join channel " + channel.friendlyName + " because " + err
           );
@@ -740,7 +738,7 @@ function mapStateToProps(state) {
 
 LiveStreamComponent = connect(
   mapStateToProps,
-  { getUser, getChatToken }
+  { getUser }
 )(LiveStreamComponent);
 
 export const LiveStream = withRouter(LiveStreamComponent);

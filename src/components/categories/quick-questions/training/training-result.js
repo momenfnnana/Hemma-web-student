@@ -11,7 +11,10 @@ import {
   AccordionItemTitle,
 } from "react-accessible-accordion";
 import "../styles.sass";
-import { SolutionModal } from "../exams/solution";
+import Modal from "react-modal";
+import ReactPlayer from "react-player";
+//import { SolutionModal } from "../exams/solution";
+import * as Sentry from "@sentry/react";
 
 class TrainingResultComponent extends Component {
   constructor() {
@@ -30,7 +33,7 @@ class TrainingResultComponent extends Component {
   openSolutionModal = (id) => {
     this.setState({ isSolutionOpen: true, selectedQuestionId: id });
   };
-  closeSolutionModal = () => {
+  closeSolution = () => {
     this.setState({ isSolutionOpen: false });
   };
 
@@ -42,25 +45,30 @@ class TrainingResultComponent extends Component {
   };
 
   componentDidMount = () => {
-    const attemptId = this.props.match.params.id;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    axios
-      .get(
-        `${apiBaseUrl}/CategoryGroupExams/Attempts/${attemptId}/DetailedScorecard`,
-        {
-          headers,
-        }
-      )
-      .then((response) => {
-        this.setState({ questions: response.data.data.questions });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    try {
+      const attemptId = this.props.match.params.id;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(
+          `${apiBaseUrl}/CategoryGroupExams/Attempts/${attemptId}/DetailedScorecard`,
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          this.setState({ questions: response.data.data.questions });
+        })
+        .catch((error) => {
+          console.log(error);
+          Sentry.captureException(error);
+        });
+    } catch (err) {
+      Sentry.captureException(err);
+    }
     this.setState({
       nav1: this.slider1,
       nav2: this.slider2,
@@ -68,6 +76,25 @@ class TrainingResultComponent extends Component {
   };
 
   renderQuestions() {
+ 
+      const customStyles = {
+        content: {
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          marginRight: "-50%",
+          transform: "translate(-50%, -50%)",
+          width: "40%",
+          height: "auto",
+          borderWidth: 0,
+        },
+        overlay: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          zIndex: 2,
+          zIndex: 20,
+        },
+      };
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
     return (
@@ -78,9 +105,8 @@ class TrainingResultComponent extends Component {
               <div className="d-flex justify-content-between align-items-center w-100">
                 <div className="d-flex flex-column">
                   <h6
-                    className={`small mb-1 ${
-                      question.isCorrect == true ? "green-text" : "red-text"
-                    }`}
+                    className={`small mb-1 ${question.isCorrect == true ? "green-text" : "red-text"
+                      }`}
                   >
                     السؤال {question.id}
                   </h6>
@@ -110,10 +136,10 @@ class TrainingResultComponent extends Component {
                       ) : question.correctChoice !== question.selectedChoice ? (
                         <p className="small red-text mb-0">الإجابة خاطئة</p>
                       ) : (
-                        <p className="small red-text mb-0">لم تقم بالإجابة</p>
-                      )}
+                            <p className="small red-text mb-0">لم تقم بالإجابة</p>
+                          )}
                     </div>
-
+                    { question && question.allowSolutionExplanation ?(
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -129,11 +155,11 @@ class TrainingResultComponent extends Component {
                         />
                         طريقة الحل
                       </button>
-                    </div>
+                    </div>):null}
                   </div>
                   <div className="row">
                     <div className="col-md-12">
-                      {Object.keys(question.encodedChoices).map(function(key) {
+                      {Object.keys(question.encodedChoices).map(function (key) {
                         const value = question.encodedChoices[key];
                         return (
                           <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
@@ -144,13 +170,12 @@ class TrainingResultComponent extends Component {
                                 question.selectedChoice === key
                               }
                               disabled
-                              className={`radio-custom ${
-                                question.correctChoice === key
-                                  ? "radio-success"
-                                  : question.selectedChoice === key
+                              className={`radio-custom ${question.correctChoice === key
+                                ? "radio-success"
+                                : question.selectedChoice === key
                                   ? "radio-failure"
                                   : "radio-custom"
-                              }`}
+                                }`}
                             />
                             <label
                               dangerouslySetInnerHTML={{ __html: value }}
@@ -168,14 +193,92 @@ class TrainingResultComponent extends Component {
                   </div>
                 )}
               </div>
+              <Modal
+          style={customStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isSolutionOpen}
+          onRequestClose={this.closeSolution}
+          closeHint={this.closeSolution}
+        >
+          <div className="container pt-4 pb-3">
+            <div className="row">
+              <div className="col-md-12 col-12">
+                <span className="badge red-bg text-white mb-3 hint-badge">
+                  طريقة الحل 
+                </span>
+
+                <div className="box-layout p-3">
+                  {
+                   question.solutionExplanation && question.solutionExplanation.type === "Text" ? (
+                      <div
+                        className="encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                          question.solutionExplanation.value,
+                        }}
+                      ></div>
+                    ) : question.solutionExplanation.type === "Video" ? (
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          question.solutionExplanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
+                      ) : (
+                        <p className="dark-text mb-0 text-center">
+                         {/*  لا يوجد طريقة للحل متوفرة*/}
+                        </p>
+                      )}
+                </div>
+                <div className="d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn light-btn unset-height w-25 mt-4"
+                    onClick={this.closeSolution}
+                  >
+                    العودة للسؤال
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
             </AccordionItemBody>
+            
+          
           </AccordionItem>
+          
         ))}
+       
       </Accordion>
+      
     );
+    
   }
 
   render() {
+   
+      const customStyles = {
+        content: {
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          marginRight: "-50%",
+          transform: "translate(-50%, -50%)",
+          width: "50%",
+          height: "auto",
+          borderWidth: 0,
+        },
+        overlay: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          zIndex: 20,
+        },
+      };
+    const question = this.state.questions[this.state.selectedQuestion-1];
     const attemptId = this.props.match.params.attemptId;
     const courseId = this.props.match.params.id;
     const settings = {
@@ -209,13 +312,8 @@ class TrainingResultComponent extends Component {
             </div>
           </div>
 
-          <SolutionModal
-            isSolutionOpen={this.state.isSolutionOpen}
-            closeSolution={this.closeSolutionModal}
-            id={this.state.selectedQuestionId}
-            attemptId={attemptId}
-          />
         </div>
+       
       </React.Fragment>
     );
   }

@@ -1,8 +1,10 @@
-export const CHANGE_CHANNEL = "changeChannel";
+export const SET_CURRENT_CHANNEL = "setCurrentChannel";
 
-export const changeChannel = (channel, id) => {
+export const setCurrentChannel = channel => {
   return {
-    type: CHANGE_CHANNEL,
-    payload: { channel, id }
+    type: SET_CURRENT_CHANNEL,
+    payload: {
+      currentChannel: channel
+    }
   };
 };

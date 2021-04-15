@@ -6,7 +6,7 @@ import { Instructors } from "../shared/instructors/instructors";
 import { RecordedLectures } from "./lectures/recorded-lectures";
 import { LectureDetails } from "./lectures/recorded-videos";
 import { Booklets } from "./booklets/booklets";
-import { UsersChatComponent } from "../../chat/chat";
+import UsersChatComponent from "../../chat/chat";
 import { SpeedUp } from "./speed-up/speed-up";
 import { Route } from "react-router-dom";
 import { LiveStream } from "./live-stream/live-stream";
@@ -27,9 +27,10 @@ import { AskQuestionsList } from "./ask-questions/ask-questions-list";
 import { AskQuestionDetails } from "./ask-questions/question-details";
 import { TrainingList } from "./training/training-list";
 import { TrainingResult } from "./training/training-result";
-
 import { StartTrainingExam } from "./training/start-training";
 import { TrainingExamDetails } from "./training/training-details";
+
+import firebase from "../../../firebase";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class SubscriptionDetailsComponent extends Component {
       details: [],
       isInstallmentOpen: false,
       isRefundOpen: false,
+      channelsRef: firebase.database().ref("channels"),
     };
   }
 
@@ -57,8 +59,27 @@ class SubscriptionDetailsComponent extends Component {
 
   componentDidMount() {
     const courseId = this.props.match.params.id;
-    this.props.getSubscription(courseId);
+    this.props.getSubscription(courseId).then(() => {
+      this.createChannel();
+    });
   }
+
+  createChannel = () => {
+    const { channelsRef } = this.state;
+    const { chatChannelSid } = this.props.subscription.subscription;
+    const { forceInternalChat } = this.props.subscription.subscription;
+
+    const key = chatChannelSid;
+    const newChannel = {
+      id: key,
+    };
+if(forceInternalChat == true)
+{
+    channelsRef
+      .child(key)
+      .update(newChannel)
+}
+  };
 
   render() {
     const courseId = this.props.match.params.id;
@@ -85,6 +106,7 @@ class SubscriptionDetailsComponent extends Component {
                       }
                       className="mb-4"
                       height="65"
+                      alt="warning"
                     />
                     <p className="dark-silver-text mb-0">
                       يجب عليك سداد القسط المتبقي
@@ -125,179 +147,174 @@ class SubscriptionDetailsComponent extends Component {
             />
           </React.Fragment>
         ) : (
-          <React.Fragment>
-            {this.props.location.pathname.indexOf("live-stream") < 0 && (
-              <div className="container mt-5 pb-5">
-                <div className="row">
-                  <div className="col-md-3 col-12">
-                    {subscription && subscription.chatChannelSid && (
-                      <Sidebar
-                        id={courseId}
-                        chatChannelSid={
-                          subscription && subscription.chatChannelSid
-                        }
-                      />
-                    )}
-                    {ratingStatus == "Skipped" && (
-                      <button
-                        className="btn light-btn w-100 mb-3"
-                        onClick={() =>
-                          this.setState({ forceOpenRatingModal: true })
-                        }
-                      >
-                        قيّم الدورة
-                      </button>
-                    )}
-                    <RatingModal
-                      isRatingModalOpen={
-                        ratingStatus == "Available" ||
-                        this.state.forceOpenRatingModal
-                      }
-                      onClose={() =>
-                        this.setState({ forceOpenRatingModal: false })
-                      }
-                      status={ratingStatus}
-                      courseId={courseId}
-                    />
-                    <Instructors id={courseId} />
-                  </div>
-                  <div className="col-md-9 col-12">
-                    <div className="row no-gutters">
-                      <div className="col-12">
-                        {subscription && subscription.chatChannelSid && (
-                          <Lecture
-                            id={courseId}
-                            chatChannelSid={subscription.chatChannelSid}
-                          />
-                        )}
-                      </div>
-                    </div>
-
-                    <Route
-                      path="/course/content/:id/schedule"
-                      render={(props) => (
-                        <Schedule
-                          courseName={subscription && subscription.nameAr}
-                          {...props}
+            <React.Fragment>
+              {this.props.location.pathname.indexOf("live-stream") < 0 && (
+                <div className="container mt-5 pb-5">
+                  <div className="row">
+                    <div className="col-md-3 col-12">
+                      {subscription && subscription.chatChannelSid && (
+                        <Sidebar
+                          id={courseId}
+                          chatChannelSid={
+                            subscription && subscription.chatChannelSid
+                          }
                         />
                       )}
-                    />
-                    <Route
-                      path="/course/content/:id/recorded-lectures"
-                      component={RecordedLectures}
-                    />
-                    <Route
-                      path="/course/content/:id/lecture/:lectureId"
-                      component={LectureDetails}
-                    />
-                    <Route
-                      path="/course/content/:id/speed-up"
-                      component={SpeedUp}
-                    />
-                    <Route
-                      exact
-                      path="/course/content/:id/booklets"
-                      component={Booklets}
-                    />
-                    <Route
-                      exact
-                      path="/course/content/:id/booklets/:bookletId"
-                      component={BookletDetails}
-                    />
-                    <Route
-                      path="/course/content/:id/discussions"
-                      exact
-                      component={DiscussionsList}
-                    />
-                    {subscription && subscription.chatChannelSid && (
-                      <Route
-                        path="/course/content/:id/discussions/:discussionId"
-                        component={DiscussionDetails}
-                        chatChannelSid={subscription.chatChannelSid}
+                      {ratingStatus === "Skipped" && (
+                        <button
+                          className="btn light-btn w-100 mb-3"
+                          onClick={() =>
+                            this.setState({ forceOpenRatingModal: true })
+                          }
+                        >
+                          قيّم الدورة
+                        </button>
+                      )}
+                      <RatingModal
+                        isRatingModalOpen={
+                          ratingStatus === "Available" ||
+                          this.state.forceOpenRatingModal
+                        }
+                        onClose={() =>
+                          this.setState({ forceOpenRatingModal: false })
+                        }
+                        status={ratingStatus}
+                        courseId={courseId}
                       />
-                    )}
-                    <Route
-                      path="/course/content/:id/exams/list"
-                      component={ExamsList}
-                    />
-                    <Route
-                      path="/course/content/:id/exam/:examId"
-                      component={StartExam}
-                      exact
-                    />
-                    <Route
-                      path="/course/content/:id/exam/:attemptId/details"
-                      component={ExamDetails}
-                      exact
-                    />
-                    <Route
-                      path="/course/content/:id/exam/:attemptId/result"
-                      component={ExamResult}
-                      exact
-                    />
-                    <Route
-                      path="/course/content/:id/training/list"
-                      component={TrainingList}
-                      exact
-                    />
-                    <Route
-                      path="/course/content/:id/exam/training/:examId"
-                      component={StartTrainingExam}
-                      exact
-                    />
-                    <Route
-                      path="/course/content/:id/training/:attemptId/details"
-                      component={TrainingExamDetails}
-                      exact
-                    />
-                    <Route
-                      path="/course/content/:id/training/:attemptId/result"
-                      component={TrainingResult}
-                      exact
-                    />
+                      <Instructors id={courseId} />
+                    </div>
+                    <div className="col-md-9 col-12">
+                      <div className="row no-gutters">
+                        <div className="col-12">
+                          {subscription && subscription.chatChannelSid && (
+                            <Lecture
+                              id={courseId}
+                              chatChannelSid={subscription.chatChannelSid}
+                            />
+                          )}
+                        </div>
+                      </div>
 
-                    <Route
-                      path="/course/content/:id/askQuestions/list"
-                      component={AskQuestionsList}
-                    />
-
-                    <Route
-                      path="/course/content/:courseId/askQuestions/details/:id"
-                      component={AskQuestionDetails}
-                    />
-                    {subscription && (
                       <Route
-                        path="/course/content/:id/chat"
+                        path="/course/content/:id/schedule"
                         render={(props) => (
-                          <UsersChatComponent
-                            chatChannelSid={subscription.chatChannelSid}
-                            forceInternalChat={subscription.forceInternalChat}
-                            internalChannelId={subscription.internalChannelId}
-                            externalChannelUrl={subscription.externalChannelUrl}
-                            chatEnabled={subscription.chatEnabled}
-                            allowSend={true}
+                          <Schedule
+                            courseName={subscription && subscription.nameAr}
                             {...props}
                           />
                         )}
                       />
-                    )}
+                      <Route
+                        path="/course/content/:id/recorded-lectures"
+                        component={RecordedLectures}
+                      />
+                      <Route
+                        path="/course/content/:id/lecture/:lectureId"
+                        component={LectureDetails}
+                      />
+                      <Route
+                        path="/course/content/:id/speed-up"
+                        component={SpeedUp}
+                      />
+                      <Route
+                        exact
+                        path="/course/content/:id/booklets"
+                        component={Booklets}
+                      />
+                      <Route
+                        exact
+                        path="/course/content/:id/booklets/:bookletId"
+                        component={BookletDetails}
+                      />
+                      <Route
+                        path="/course/content/:id/discussions"
+                        exact
+                        component={DiscussionsList}
+                      />
+                      {subscription && subscription.chatChannelSid && (
+                        <Route
+                          path="/course/content/:id/discussions/:discussionId"
+                          component={DiscussionDetails}
+                          chatChannelSid={subscription.chatChannelSid}
+                        />
+                      )}
+                      <Route
+                        path="/course/content/:id/exams/list"
+                        component={ExamsList}
+                      />
+                      <Route
+                        path="/course/content/:id/exam/:examId"
+                        component={StartExam}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/exam/:attemptId/details"
+                        component={ExamDetails}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/exam/:attemptId/result"
+                        component={ExamResult}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/training/list"
+                        component={TrainingList}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/exam/training/:examId"
+                        component={StartTrainingExam}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/training/:attemptId/details"
+                        component={TrainingExamDetails}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/training/:attemptId/result"
+                        component={TrainingResult}
+                        exact
+                      />
+                      <Route
+                        path="/course/content/:id/askQuestions/list"
+                        component={AskQuestionsList}
+                      />
+                      <Route
+                        path="/course/content/:courseId/askQuestions/details/:id"
+                        component={AskQuestionDetails}
+                      />
+                      {subscription?.chatChannelSid && (
+                        <Route
+                          path="/course/content/:id/chat"
+                          render={(props) => (
+                            <UsersChatComponent
+                              chatChannelSid={subscription.chatChannelSid}
+                              forceInternalChat={subscription.forceInternalChat}
+                              externalChannelUrl={subscription.externalChannelUrl}
+                              {...props}
+                            />
+                          )}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
-            {subscription && subscription.chatChannelSid && (
-              <Route
-                path="/course/content/:id/live-stream/:lectureId"
-                render={(props) => (
-                  <LiveStream
-                    chatChannelSid={subscription.chatChannelSid}
-                    {...props}
-                  />
-                )}
-              />
-            )}
-          </React.Fragment>
-        )}
+              )}
+              {subscription && subscription.chatChannelSid && (
+                <Route
+                  path="/course/content/:id/live-stream/:lectureId"
+                  render={(props) => (
+                    <LiveStream
+                      chatChannelSid={subscription.chatChannelSid}
+                      {...props}
+                    />
+                  )}
+                />
+              )}
+            </React.Fragment>
+          )}
       </React.Fragment>
     );
   }

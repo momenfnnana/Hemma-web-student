@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Reply } from "./reply";
 import { apiBaseUrl } from "../../../../../api/helpers";
+import * as Sentry from "@sentry/react";
+
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
@@ -234,6 +236,10 @@ export class Comment extends Component {
     });
   }
 
+  onError = (e) => {
+    Sentry.captureException('An error occured while playing the video ', e);
+  }
+
   render() {
     const comment = this.props.comment;
     let myIdentity = this.props.user && this.props.user.id;
@@ -320,39 +326,40 @@ export class Comment extends Component {
                 </form>
               </div>
             ) : (
-              <React.Fragment>
-                {comment.type == "Text" ? (
-                  <p className="dark-text smaller word-break mb-2">
-                    {comment.value}
-                  </p>
-                ) : comment.type == "Voice" ? (
-                  <audio controls className="w-100">
-                    <source src={comment.value} />
-                  </audio>
-                ) : comment.type == "Image" ? (
-                  <img
-                    src={comment.value}
-                    height="200"
-                    width="400"
-                    className="contain-img"
-                  />
-                ) : (
-                  <video
-                    height="200"
-                    width="400"
-                    className="video-container video-container-overlay"
-                    autoPlay=""
-                    controls
-                  >
-                    <source
-                      type="video/mp4"
-                      data-reactid=".0.1.0.0.0"
+                <React.Fragment>
+                  {comment.type == "Text" ? (
+                    <p className="dark-text smaller word-break mb-2">
+                      {comment.value}
+                    </p>
+                  ) : comment.type == "Voice" ? (
+                    <audio controls className="w-100">
+                      <source src={comment.value} />
+                    </audio>
+                  ) : comment.type == "Image" ? (
+                    <img
                       src={comment.value}
+                      height="200"
+                      width="400"
+                      className="contain-img"
                     />
-                  </video>
-                )}
-              </React.Fragment>
-            )}
+                  ) : (
+                          <video
+                            height="200"
+                            width="400"
+                            className="video-container video-container-overlay"
+                            autoPlay=""
+                            controls
+                            onError={(e) => this.onError(e)}
+                          >
+                            <source
+                              type="video/mp4"
+                              data-reactid=".0.1.0.0.0"
+                              src={comment.value}
+                            />
+                          </video>
+                        )}
+                </React.Fragment>
+              )}
 
             <div className="d-flex justify-content-end align-items-center">
               <h6

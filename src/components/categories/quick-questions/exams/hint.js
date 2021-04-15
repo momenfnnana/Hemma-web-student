@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
+import * as Sentry from "@sentry/react";
+import ReactPlayer from "react-player";
 
 export class HintModal extends Component {
   constructor(props) {
@@ -34,6 +36,12 @@ export class HintModal extends Component {
     }
     return true;
   }
+
+
+  onError = (e) => {
+    Sentry.captureException('An error occured while playing the video ', e, e.target.error);
+  }
+
   render() {
     const customStyles = {
       content: {
@@ -71,35 +79,36 @@ export class HintModal extends Component {
 
                 <div className="box-layout p-3">
                   {this.state.details[0] &&
-                  this.state.details[0].explanation &&
-                  this.state.details[0].explanation.type === "Text" ? (
-                    <div
-                      className="encoded-text"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          this.state.details[0] &&
-                          this.state.details[0].encodedExplanation,
-                      }}
-                    ></div>
-                  ) : this.state.details[0] &&
                     this.state.details[0].explanation &&
-                    this.state.details[0].explanation.type === "Video" ? (
-                    <video
-                      width="100%"
-                      height="240"
-                      src={
-                        this.state.details[0] &&
-                        this.state.details[0].explanation &&
-                        this.state.details[0].explanation.value
-                      }
-                      controls
-                      autoPlay
-                    ></video>
-                  ) : (
-                    <p className="dark-text mb-0 text-center">
-                      لا يوجد مساعدة متوفرة
-                    </p>
-                  )}
+                    this.state.details[0].explanation.type === "Text" ? (
+                      <div
+                        className="encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            this.state.details[0] &&
+                            this.state.details[0].encodedExplanation,
+                        }}
+                      ></div>
+                    ) : this.state.details[0] &&
+                      this.state.details[0].explanation &&
+                      this.state.details[0].explanation.type === "Video" ? (
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          this.state.details[0] &&
+                          this.state.details[0].explanation &&
+                          this.state.details[0].explanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
+                      ) : (
+                        <p className="dark-text mb-0 text-center">
+                          {/*لا يوجد مساعدة متوفرة*/}
+                        </p>
+                      )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
                   <button

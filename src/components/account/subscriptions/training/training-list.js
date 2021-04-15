@@ -5,6 +5,7 @@ import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
+import { ToastDemo } from "../../../categories/quick-questions/toast-notification";
 
 export class TrainingList extends Component {
     state = {
@@ -30,7 +31,11 @@ export class TrainingList extends Component {
             console.log(error);
           });
       };
-
+    createCourseLink(courseId,traId)
+      {
+        let baseUrl = process.env.PUBLIC_URL;
+        return baseUrl+ `/course/content/${courseId}/exam/training/${traId}`
+      }
 
       renderTraining() {
         const training = this.state.training || [];
@@ -55,6 +60,7 @@ export class TrainingList extends Component {
                   >
                     اختبر الآن
                   </Link>
+                 {/* <ToastDemo copyLink={{ btnName:'مشاركة التدريب',link:this.createCourseLink(courseId,tra.id)}} />*/}
                 </td>
               </tr>
             </React.Fragment>

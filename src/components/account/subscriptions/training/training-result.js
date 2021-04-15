@@ -12,6 +12,7 @@ import {
 } from "react-accessible-accordion";
 import "../styles.sass";
 import { SolutionModal } from "../exams/solution";
+import * as Sentry from "@sentry/react";
 
 class TrainingResultComponent extends Component {
   constructor() {
@@ -42,22 +43,26 @@ class TrainingResultComponent extends Component {
   };
 
   componentDidMount = () => {
-    const attemptId = this.props.match.params.attemptId;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/DetailedScorecard`, {
-        headers
-      })
-      .then(response => {
-        this.setState({ questions: response.data.data.questions });
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
+    try {
+      const attemptId = this.props.match.params.attemptId;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      axios
+        .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/DetailedScorecard`, {
+          headers
+        })
+        .then(response => {
+          this.setState({ questions: response.data.data.questions });
+        })
+        .catch(error => {
+          console.log(error);
+          Sentry.captureException(error);
+        });
+    } catch (err) {
+      Sentry.captureException(err);
+    }
     this.setState({
       nav1: this.slider1,
       nav2: this.slider2
@@ -67,17 +72,18 @@ class TrainingResultComponent extends Component {
   renderQuestions() {
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
+   
     return (
       <Accordion className="quiz-accordion">
-        {questions.map(question => (
+        {questions.map(question => ( 
+         
           <AccordionItem>
             <AccordionItemTitle>
               <div className="d-flex justify-content-between align-items-center w-100">
                 <div className="d-flex flex-column">
                   <h6
-                    className={`small mb-1 ${
-                      question.isCorrect == true ? "green-text" : "red-text"
-                    }`}
+                    className={`small mb-1 ${question.isCorrect == true ? "green-text" : "red-text"
+                      }`}
                   >
                     السؤال {question.id}
                   </h6>
@@ -89,12 +95,12 @@ class TrainingResultComponent extends Component {
               <div className="row p-4 pb-2">
                 <div className="col-12">
                   <div className="box-layout box-border shadow-sm p-3">
-                  <h6
-                        className="dark-text mb-0 encoded-text"
-                        dangerouslySetInnerHTML={{
-                          __html: question.encodedStem
-                        }}
-                      ></h6>
+                    <h6
+                      className="dark-text mb-0 encoded-text"
+                      dangerouslySetInnerHTML={{
+                        __html: question.encodedStem
+                      }}
+                    ></h6>
                   </div>
                 </div>
               </div>
@@ -107,10 +113,12 @@ class TrainingResultComponent extends Component {
                       ) : question.correctChoice !== question.selectedChoice ? (
                         <p className="small red-text mb-0">الإجابة خاطئة</p>
                       ) : (
-                        <p className="small red-text mb-0">لم تقم بالإجابة</p>
-                      )}
+                            <p className="small red-text mb-0">لم تقم بالإجابة</p>
+                          )}
                     </div>
-
+                  
+                    { question  && question.allowSolutionExplanation ?(
+                    
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -127,10 +135,11 @@ class TrainingResultComponent extends Component {
                         طريقة الحل
                       </button>
                     </div>
+                      ) : null}
                   </div>
                   <div className="row">
                     <div className="col-md-12">
-                      {Object.keys( question.encodedChoices ).map(function(key) {
+                      {Object.keys(question.encodedChoices).map(function (key) {
                         const value = question.encodedChoices[key]
                         return (
                           <div className="box-layout h-40 d-flex align-items-center pr-2 pl-2 mb-2">
@@ -141,13 +150,12 @@ class TrainingResultComponent extends Component {
                                 question.selectedChoice === key
                               }
                               disabled
-                              className={`radio-custom ${
-                                question.correctChoice === key
-                                  ? "radio-success"
-                                  : question.selectedChoice === key
+                              className={`radio-custom ${question.correctChoice === key
+                                ? "radio-success"
+                                : question.selectedChoice === key
                                   ? "radio-failure"
                                   : "radio-custom"
-                              }`}
+                                }`}
                             />
                             <label
                               dangerouslySetInnerHTML={{ __html: value }}

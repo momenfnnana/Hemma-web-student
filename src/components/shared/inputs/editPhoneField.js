@@ -45,6 +45,7 @@ export class editPhoneField extends Component {
               onPhoneNumberBlur={handleBlur}
               disabled={this.props.disabled}
               defaultValue={this.props.input.value}
+              preferredCountries={['sa','ae','om','kw','qa','bh','iq']}
             />
           )}
           {this.props.meta.touched && this.props.meta.error && (

@@ -11,7 +11,11 @@ import jwtDecode from "jwt-decode";
 export const authReducer = (state = null, action) => {
   if (!state) {
     // check if user is logged in
-    const token = localStorage.getItem("token");
+    let token = localStorage.getItem("token");
+    if (token == undefined || token == 'undefined') {
+      localStorage.removeItem("token");
+      token = null;
+    }
     const state = {
       ...extractTokenInfo(token),
       authenticated: token !== null
@@ -33,14 +37,16 @@ export const authReducer = (state = null, action) => {
       };
     case AUTHENTICATE_USER:
       // store the token
-      localStorage.setItem("token", action.payload.token);
+    
       if (action.error) return state;
+      localStorage.setItem("token", action.payload.value.data.token);
       return {
         ...state,
-        ...extractTokenInfo(action.payload.token),
+        ...extractTokenInfo(action.payload.value.data.token),
         token: action.payload.token,
         authenticated: true
       };
+      
     case UNAUTHENTICATED:
       // remove the token
       localStorage.removeItem("token");

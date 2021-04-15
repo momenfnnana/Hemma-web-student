@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
-import { connect } from "react-redux";
-import { getUser } from "../../../../actions/user.actions";
-import { getChatToken } from "../../../../actions/twilio.actions";
-import { UsersChatComponent } from "../../../chat/chat";
+import UsersChatComponent from "../../../chat/chat";
 import { apiBaseUrl } from "../../../../api/helpers";
-import { reduxForm } from "redux-form";
 import axios from "axios";
 import "./styles.sass";
+
+import firebase from "../../../../firebase";
 
 export class DiscussionDetailsComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       discussionDetails: [],
+      channelsRef: firebase.database().ref("channels"),
     };
   }
 
@@ -26,15 +25,26 @@ export class DiscussionDetailsComponent extends Component {
     axios
       .get(`${apiBaseUrl}/discussions/${discussionId}`, { headers })
       .then((response) => {
-        this.setState({ discussionDetails: response.data.data });
+        this.setState({ discussionDetails: response.data.data }, () => this.createChannel());
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
+  createChannel = () => {
+    const { channelsRef } = this.state;
+    const { chatChannelSid } = this.state.discussionDetails;
+    const key = chatChannelSid;
+    const newChannel = {
+      id: key,
+    };
+    channelsRef
+      .child(key)
+      .update(newChannel)
+  };
+
   render() {
-    const courseId = this.props.match.params.id;
     const startsAt = new Date(
       this.state.discussionDetails && this.state.discussionDetails.startsAt
     );
@@ -73,11 +83,11 @@ export class DiscussionDetailsComponent extends Component {
                   </div>
                   <div className="d-flex flex-column align-items-end justify-content-end">
                     {this.state.discussionDetails &&
-                    this.state.discussionDetails.active == true ? (
-                      <span className="badge light-bg text-white">مفتوح</span>
-                    ) : (
-                      <span className="badge red-bg text-white">مغلق</span>
-                    )}
+                      this.state.discussionDetails.active == true ? (
+                        <span className="badge light-bg text-white">مفتوح</span>
+                      ) : (
+                        <span className="badge red-bg text-white">مغلق</span>
+                      )}
                   </div>
                 </div>
               </div>
@@ -85,38 +95,16 @@ export class DiscussionDetailsComponent extends Component {
           </div>
         </div>
         {this.state.discussionDetails &&
-          this.state.discussionDetails.chatChannelSid && (
+          this.state.discussionDetails.forceInternalChat && (
             <UsersChatComponent
-              title="عنوان المناقشة"
-              internalChannelId={this.state.discussionDetails.chatChannelSid}
-              courseId={courseId}
-              chatEnabled={true}
-              forceInternalChat={true}
-              allowSend={this.state.discussionDetails.active}
+              chatChannelSid={this.state.discussionDetails.chatChannelSid}
+              forceInternalChat={this.state.discussionDetails.forceInternalChat}
+              active={this.state.discussionDetails && this.state.discussionDetails.active}
             />
           )}
       </React.Fragment>
     );
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    formValues:
-      state.form.DiscussionDetails && state.form.DiscussionDetails.values,
-    authenticated: state.auth.authenticated,
-    user: state.user,
-    twilio: state.twilio,
-  };
-}
-
-DiscussionDetailsComponent = reduxForm({
-  form: "DiscussionDetails",
-})(DiscussionDetailsComponent);
-
-DiscussionDetailsComponent = connect(mapStateToProps, {
-  getUser,
-  getChatToken,
-})(DiscussionDetailsComponent);
 
 export const DiscussionDetails = withRouter(DiscussionDetailsComponent);

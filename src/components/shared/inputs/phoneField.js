@@ -42,6 +42,7 @@ export class phoneField extends Component {
             onPhoneNumberChange={handleChange}
             disabled={this.props.disabled}
             defaultValue={this.props.input.value}
+            preferredCountries={['sa','ae','om','kw','qa','bh','iq']}
           />
           {this.props.meta.touched && this.props.meta.error && (
             <small className="w-100 smaller">{this.props.meta.error}</small>

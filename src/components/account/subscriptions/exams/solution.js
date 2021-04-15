@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
-import { inputField } from "../../../shared/inputs/inputField";
-import { Field, reduxForm, Fields } from "redux-form";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
+import * as Sentry from "@sentry/react";
+import ReactPlayer from "react-player";
 
 export class SolutionModal extends Component {
   constructor(props) {
@@ -13,31 +13,40 @@ export class SolutionModal extends Component {
     };
   }
   shouldComponentUpdate(nextProps, nextState) {
-    const attemptId = this.props.attemptId;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
-      axios
-        .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/DetailedScorecard`, {
-          headers
-        })
-        .then(response => {
-          let questions = response.data.data.questions;
-          let questionId = questions.filter(
-            question => question.id == nextProps.id
-          );
-          
-          debugger;
-          this.setState({ details: questionId });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    try {
+      const attemptId = this.props.attemptId;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
+        axios
+          .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/DetailedScorecard`, {
+            headers
+          })
+          .then(response => {
+            let questions = response.data.data.questions;
+            let questionId = questions.filter(
+              question => question.id == nextProps.id
+            );
+            this.setState({ details: questionId });
+          })
+          .catch(error => {
+            console.log(error);
+            Sentry.captureException(error);
+          });
+      }
+    } catch (err) {
+      Sentry.captureException(err);
     }
     return true;
   }
+
+
+  onError = (e) => {
+    Sentry.captureException('An error occured while playing the video ', e, e.target.error);
+  }
+
   render() {
     const customStyles = {
       content: {
@@ -77,36 +86,37 @@ export class SolutionModal extends Component {
 
                 <div className="box-layout p-3 d-flex align-items-center">
                   {this.state.details[0] &&
-                  this.state.details[0].solutionExplanation &&
-                  this.state.details[0].solutionExplanation.type === "Text" ? (
-                    <div
-                      className="encoded-text"
-                      dangerouslySetInnerHTML={{
-                        __html:
-                          this.state.details[0] &&
-                          this.state.details[0].encodedSolutionExplanation
-                      }}
-                    ></div>
-                  ) : this.state.details[0] &&
                     this.state.details[0].solutionExplanation &&
-                    this.state.details[0].solutionExplanation.type ===
+                    this.state.details[0].solutionExplanation.type === "Text" ? (
+                      <div
+                        className="encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                            this.state.details[0] &&
+                            this.state.details[0].encodedSolutionExplanation
+                        }}
+                      ></div>
+                    ) : this.state.details[0] &&
+                      this.state.details[0].solutionExplanation &&
+                      this.state.details[0].solutionExplanation.type ===
                       "Video" ? (
-                    <video
-                      width="100%"
-                      height="240"
-                      src={
-                        this.state.details[0] &&
-                        this.state.details[0].solutionExplanation &&
-                        this.state.details[0].solutionExplanation.value
-                      }
-                      controls
-                      autoPlay
-                    ></video>
-                  ) : (
-                    <p className="dark-text mb-0 text-center">
-                      لا يوجد طريقة حل متوفرة
-                    </p>
-                  )}
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          this.state.details[0] &&
+                          this.state.details[0].solutionExplanation &&
+                          this.state.details[0].solutionExplanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
+                      ) : (
+                        <p className="dark-text mb-0 text-center">
+                         {/* لا يوجد طريقة حل متوفرة*/}
+                        </p>
+                      )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
                   <button

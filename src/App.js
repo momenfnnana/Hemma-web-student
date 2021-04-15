@@ -8,7 +8,6 @@ import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
 import { apiBaseUrl } from "./api/helpers";
 import Intercom from "./Intercom";
-import TwilioComponent from "./Twilio";
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
 import { ToastProvider } from 'react-toast-notifications'
@@ -43,22 +42,21 @@ export default class AppComponent extends Component {
   render() {
     return (
       <ToastProvider>
-    <Provider store={store}>
-        <Intercom />
-        <TwilioComponent />
-        <React.Fragment>
-          <div>
-            <Helmet>
-              <title>
-                منصّة همّة التعليمية | 25 عاماً في خدمة الطلاب والطالبات
+        <Provider store={store}>
+          <Intercom />
+          <React.Fragment>
+            <div>
+              <Helmet>
+                <title>
+                  منصّة همّة التعليمية | 25 عاماً في خدمة الطلاب والطالبات
               </title>
-            </Helmet>
-            <MainRouter />
-          </div>
-        </React.Fragment>
-      </Provider>
+              </Helmet>
+              <MainRouter />
+            </div>
+          </React.Fragment>
+        </Provider>
       </ToastProvider>
-  
+
     );
   }
 }

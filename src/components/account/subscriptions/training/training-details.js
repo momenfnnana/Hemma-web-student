@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { CustomInput } from "reactstrap";
-// import { HintModal } from "./hint";
+import { HintModal } from "../exams/hint";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
 import { connect } from "react-redux";
@@ -269,7 +269,7 @@ class TrainingExamDetailsComponent extends Component {
                         </p>
                       </div>
                       <div className="row d-flex justify-content-between align-items-center mb-3">
-                        {!question.explanation.length == 0 ? (
+                      {question && question.allowHint ?(
                           <div className="col-md-6">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -467,12 +467,12 @@ class TrainingExamDetailsComponent extends Component {
                   </div>
                 </div>
               </div>
-              {/* <HintModal
+              { <HintModal
                 isHintOpen={this.state.isHintOpen}
                 closeHint={this.closeHintModal}
                 id={this.state.selectedQuestionId}
                 attemptId={attemptId}
-              /> */}
+              /> }
             </div>
           </div>
         )}
