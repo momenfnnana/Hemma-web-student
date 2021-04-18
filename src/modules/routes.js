@@ -59,6 +59,9 @@ class AppBackground extends Component {
   componentDidMount()
   {
     debugger;
+    if(document.querySelector('.navbar') != undefined)
+    {
+
      /* Start Main Variables */ 
 // const navabr = document.querySelector('.navbar');
 const bannerText = document.querySelector('.banner-text');
@@ -131,6 +134,7 @@ function loadingProgressbar() {
   progressBarLoading.style.width = scrolled + "%";
 }
   }
+}
   render() {
     const path = this.props.location.pathname;
     let img = null;

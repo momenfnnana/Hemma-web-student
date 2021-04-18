@@ -21,7 +21,8 @@ class BillingListComponent extends Component {
     details: [],
     withdraws: [],
     remainingAmount: null,
-    activeTab: "transactions"
+    activeTab: "transactions",
+    studentGroup : false
   };
 
   toggle(tab) {
@@ -61,9 +62,11 @@ class BillingListComponent extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/transaction_history`, { headers })
       .then(response => {
+        debugger;
         this.setState({
           details: response.data.data.transactions,
-          remainingAmount: response.data.data.remainingAmount
+          remainingAmount: response.data.data.remainingAmount,
+          studentGroup:response.data.data.studentGroup
         });
       })
       .catch(error => {
@@ -202,6 +205,7 @@ class BillingListComponent extends Component {
               </Nav>
             </div>
             <div className="col-md-6 d-flex justify-content-end">
+              {this.state.studentGroup == false ? ( 
               <button
                 className="btn border mid-text smaller"
                 onClick={this.openRefundModal}
@@ -217,7 +221,8 @@ class BillingListComponent extends Component {
                   alt="refund"
                 />
                 استرجاع الرسوم
-              </button>
+              </button>):null}
+             
               <Refund
                 isRefundOpen={this.state.isRefundOpen}
                 closeRefundModal={this.closeRefundModal}
