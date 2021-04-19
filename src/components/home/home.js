@@ -215,7 +215,7 @@ class HomeComponent extends Component {
             return (
         <div className="col-lg-4" key={cat.id}>
               <div className="card">
-              <div class="card-items">
+              <div className="card-items">
                 <div className="title-card font-weight-bold">
 
                   <Link
@@ -234,8 +234,8 @@ class HomeComponent extends Component {
                     {/* <a href="/categories/details/">{cat.nameAr}</a> */}
 
                 </div>
-                <div class="text-card text-center mb-4">
-                    <h5 class="h6 font-weight-bold">
+                <div className="text-card text-center mb-4">
+                    <h5 className="h6 font-weight-bold">
                     <span className="d-block">{cat.descriptionAr}</span>
                       {/* <span class="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span> */}
                     </h5>
@@ -844,7 +844,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -854,7 +854,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -864,7 +864,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -874,7 +874,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -884,7 +884,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -894,7 +894,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -904,7 +904,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -914,7 +914,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -924,7 +924,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -934,7 +934,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>
@@ -944,7 +944,7 @@ if(indxcourse < 3)
                   <h4 className="text-danger">أم لجين</h4>
                   <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
                   <div className="text-muted">
-                    <time datetime="2008-02-14 20:00">7:05 PM</time>
+                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
                   </div>
                 </div>
               </li>

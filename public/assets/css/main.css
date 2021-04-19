@@ -950,3 +950,48 @@ img[alt="Human"] {
   .result-loading {width: 65%; margin: 0 10px}
 }
 /* End Media Quary */
+/* Start Style OF The Multiple Dropdown  */
+.sub-list,
+.sub-sub-list {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  border: 1px solid var(--sub-color);
+  z-index: 1000;
+  transition: all .2s ease-in-out;
+  transform-origin: top;
+  transform: scale(0);
+  min-width: 14rem;
+  background: #FFF;
+  border-radius: 10px;
+}
+.sub-sub-list {
+  top: 0;
+  right: 100%;
+}
+.sub-list li,
+.sub-sub-list li {
+  width: 100%;
+}
+.sub-list li a,
+.sub-sub-list li a {
+  width: 100%;
+  display: block;
+  padding: 8px 10px;
+  color: var(--main-color);
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 1px solid var(--sub-color);
+  transition: all .2s ease-in-out;
+}
+.sub-list li a:hover,
+.sub-sub-list li a:hover {
+  color: var(--sub-color)
+}
+.sub-list li:last-of-type a,
+.sub-sub-list li:last-of-type a {border-bottom: 0px}
+.dropdown-wrapper:hover .sub-list,
+.dropdown-sub-wrapper:hover .sub-sub-list {
+  transform: scale(1)
+}
+/* End Style OF The Multiple Dropdown  */

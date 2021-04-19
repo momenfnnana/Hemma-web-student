@@ -25,6 +25,7 @@ class HeaderComponent extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
+      categories: []
     };
   }
 
@@ -49,9 +50,52 @@ class HeaderComponent extends Component {
       localStorage.clear();
       this.props.history.push("/auth/login");
     }
-   
+    axios
+      .get(`${apiBaseUrl}/categories/CategoryHeader`)
+      .then(response => {
+       console.log("showthis",response);
+        this.setState({ categories: response.data.data });
+        setTimeout(
+          function () {
+            this.setState({loading: false });
+          }.bind(this),
+          800 
+        );
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
+renderSubCategory()
+{
+  const Categories = this.state.categories;
+  debugger;
+  return (
+    <ul className="sub-list list-unstyled m-0 p-0">
+  {Categories.map(cat => (
+    <React.Fragment>
+       {cat.childCatgories.length != 0 ? (
+         <React.Fragment>
+    <li className="dropdown-sub-wrapper position-relative">
+      <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
 
+   <ul className="sub-sub-list list-unstyled m-0 p-0">
+   { cat.childCatgories.map(chiled=>(
+    <li>
+     <a href={"/categories/details/"+chiled.slug}>{chiled.nameAr}</a>
+  </li>
+   ))
+   }
+   </ul>
+   </li>
+   </React.Fragment>
+  ) : (<li >
+ <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
+</li>)}
+    </React.Fragment>
+    
+  ))}</ul>);
+}
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.authenticated && this.props.authenticated) {
       this.props.getUser();
@@ -302,8 +346,13 @@ class HeaderComponent extends Component {
             <li className="nav-item">
               <a href="/home" className="nav-link d-inline-block active">الرئيسيه</a>
             </li>
-            <li className="nav-item">
-              <a href="/categories" className="nav-link d-inline-block">منصات همة</a>
+            <li className="dropdown-wrapper nav-item position-relative">
+              <a href="/categories" className="nav-link d-inline-block">
+                <span>منصات همة </span>
+               <i className="fas fa-caret-down"></i>
+               </a>
+               
+            {this.renderSubCategory()}
             </li>
             <li className="nav-item">
               <a href="/home" className="nav-link d-inline-block">متجر همة للكتب</a>
@@ -373,7 +422,7 @@ class HeaderComponent extends Component {
                             </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/billing" class="nav-link d-inline-block"> الحركات المالية</a>
+                          <a href="/billing" className="nav-link d-inline-block"> الحركات المالية</a>
                             {/* <NavLink
                               className="nav-link mid-text"
                               activeClassName="active"
@@ -383,7 +432,7 @@ class HeaderComponent extends Component {
                             </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/certificates" class="nav-link d-inline-block"> الشهادات</a>
+                          <a href="/certificates" className="nav-link d-inline-block"> الشهادات</a>
                             {/* <NavLink
                               className="nav-link mid-text"
                               activeClassName="active"
@@ -415,8 +464,8 @@ class HeaderComponent extends Component {
         {/* <!-- End The Main Links Of Hemma --> */}
 
       </div>
-      <div class="progressbar-wrapper">
-        <div class="progressbar-line"></div>
+      <div className="progressbar-wrapper">
+        <div className="progressbar-line"></div>
       </div>
     </nav>
     {/* <!-- End The Hemma Navbar </nav>-->*/}
