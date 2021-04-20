@@ -3,11 +3,49 @@ import "./styles.sass";
 import { Link } from "react-router-dom";
 
 import ReactDOM from "react-dom";
+import { Api } from "../../../api";
+import swal from "@sweetalert/with-react";
 
 export class BookletCard extends Component {
 
   showAlert() {
     alert("I'm an alert");
+  }
+  onSubmit(type) {
+    const booklet = this.props.booklet;
+    Api.cart
+      .addBooklet(booklet.id, type)
+      .then((response) => {
+        this.props.history.push("/cart");
+      })
+      .catch((error) => {
+        switch (error.response.data && error.response.data.error) {
+          case "Duplicate":
+            swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+              button: "متابعة",
+            });
+            break;
+          case "BadRequest":
+            swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+              button: "متابعة",
+            });
+            break;
+          case "ItemAlreadyPurchased":
+            swal("عفواً", "هذه الملزمة موجودة ضمن قائمة دوراتك", "error", {
+              button: "متابعة",
+            });
+            break;
+          case "ItemAlreadyAdded":
+            this.props.history.push("/cart");
+            break;
+
+          default:
+            swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
+              button: "متابعة",
+            });
+            break;
+        }
+      });
   }
 
   render() {
@@ -46,7 +84,7 @@ export class BookletCard extends Component {
 
           <div className="row" >
             <label className="z-marg-bottom">
-              <button onClick={this.showAlert} className="add-to-collection">
+              <button className="add-to-collection"  onClick={() => this.onSubmit("Colored")}>
                 اضف ملزمة ملونة لمختاراتي
             </button> <span class="icon" >
                 </span> </label>
@@ -54,7 +92,7 @@ export class BookletCard extends Component {
             
             <div className="row" >
             <label className="z-marg-bottom">
-              <button onClick={this.showAlert} className="add-to-collection">
+              <button  onClick={() => this.onSubmit("BlackAndWhite")} className="add-to-collection">
                 اضف ملزمة أبيض وأسود لمختاراتي
             </button> <span class="icon" >
                 </span> </label>

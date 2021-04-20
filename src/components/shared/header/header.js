@@ -324,7 +324,7 @@ class HeaderComponent extends Component {
               <a href="/categories" className="nav-link d-inline-block">منصات همة</a>
             </li>
             <li className="nav-item">
-              <a href="/home" className="nav-link d-inline-block">متجر همة للكتب</a>
+              <a href="/booklet" className="nav-link d-inline-block">متجر همة للكتب</a>
             </li>
             <li className="nav-item">
               <a href="/home" className="nav-link d-inline-block">المجموعات المجانيه</a>
