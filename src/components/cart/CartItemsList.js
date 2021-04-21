@@ -84,6 +84,17 @@ class CartItemsListComponent extends Component {
                     onRemoveItem={() => this.onRemoveItem(item.id)}
                   />
                 )}
+                
+                {item.type === "BookletForSale" && (
+                  <BookletCartItem
+                    key={item.id}
+                    item={item}
+                    onSetBookletType={(type) =>
+                      this.onSetBookletType(item.id, type)
+                    }
+                    onRemoveItem={() => this.onRemoveItem(item.id)}
+                  />
+                )}
 
                 {item.type === "Installment" && (
                   <CourseInstallmentCartItem

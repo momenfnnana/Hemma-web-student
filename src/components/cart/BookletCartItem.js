@@ -31,6 +31,13 @@ export class BookletCartItem extends Component {
       this.props.onSetBookletType(type);
     }
   };
+  onSetBookletForSaleType = type => {
+    // Determine if this type is already selected
+    const selected = this.props.item.bookletForSaleType === type;
+    if (!selected) {
+      this.props.onSetBookletType(type);
+    }
+  };
 
   render() {
     const item = this.props.item;
@@ -52,7 +59,7 @@ export class BookletCartItem extends Component {
               className="light-silver-bg rounded border d-flex align-items-center justify-content-center mr-3"
               style={{ width: 100, height: 100 }}
             >
-              <img
+              {item.imageUrl == undefined ? (<img
                 src={
                   process.env.PUBLIC_URL + "/assets/images/course-booklet.png"
                 }
@@ -60,7 +67,14 @@ export class BookletCartItem extends Component {
                 width="40"
                 className="contain-img"
                 alt="icon"
-              />
+              />) : (<img
+               src={item.imageUrl}
+                height="40"
+                width="40"
+                className="contain-img"
+                alt="icon"
+              />)}
+              
             </div>
 
             <div className="media-body mt-2">

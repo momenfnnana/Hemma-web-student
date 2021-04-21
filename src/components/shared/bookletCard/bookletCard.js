@@ -6,15 +6,21 @@ import ReactDOM from "react-dom";
 import { Api } from "../../../api";
 import swal from "@sweetalert/with-react";
 
-export class BookletCard extends Component {
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
+export class BookletCardComponent extends Component {
+
+  constructor(props) {
+    super(props);
+  }
   showAlert() {
     alert("I'm an alert");
   }
   onSubmit(type) {
     const booklet = this.props.booklet;
     Api.cart
-      .addBooklet(booklet.id, type)
+      .addBookletForSale(booklet.id, type)
       .then((response) => {
         this.props.history.push("/cart");
       })
@@ -108,3 +114,4 @@ export class BookletCard extends Component {
     }
 
 }
+export const BookletCard = withRouter(BookletCardComponent);
