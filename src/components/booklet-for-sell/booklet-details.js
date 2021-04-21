@@ -89,7 +89,7 @@ export class BookletDetailsComponent extends Component {
 
         return (
             <React.Fragment>
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-md-4 ">
                         <img className="card-img min-top-padd" src={booklet.icon} ></img>
                     </div>
@@ -166,8 +166,65 @@ export class BookletDetailsComponent extends Component {
                         
                     </div>
 
+                </div> */}
+                {/* <div class="container">
+                 <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb bg-transparent pt-5">
+                    <li class="breadcrumb-item"><a href="/home">الرئيسيه</a></li>
+                    <li class="breadcrumb-item"><a href="/booklet">متجر همة للكتب</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{booklet.nameAr}</li>
+                  </ol>
+                 </nav>
+                </div> */}
+                <section id="license-one" class="license-one">
+                <div class="container">
+                <div className="row">
+                    <div className="col-md-3 ">
+                        <img className="card-img min-top-padd" src={booklet.icon} alt="Hemma-Book" ></img>
+                    </div>
+
+                    <div className="col-md-9">
+                      <div class="mb-3">
+                        <div class="d-flex align-items-center flex-column-small">
+                         <h3 class="lic-title h3 main-color font-weight-bold"> {booklet.nameAr}</h3>
+                         <div class="d-flex align-items-center">
+                            <a class="btn-title" href={`/booklet/details/${booklet.id}`}>كتاب ملون</a>
+                            <span class="mx-1"></span>
+                            <a class="btn-title" href={`/booklet/details/${booklet.id}`}>أبيض و أسود</a>
+                         </div>
+                        </div>
+                      </div>
+                      <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                          <div class="main-color mr-4">وزن الملزمة </div>
+                          <div class="sub-color">{booklet.weight} جرام</div>
+                        </div>
+                        <div class="d-flex align-items-center ">
+                          <div class="main-color mr-4">سعر الملزمة ملونة</div>
+                          <div class="sub-color">{booklet.coloredSellPrice} ريال</div>
+                        </div>
+                        <div class="d-flex align-items-center mb-2">
+                         <div class="main-color mr-4">الكمية المتاحة ملونة </div>
+                         <div class="sub-color">{booklet.availableQtyColored}</div>
+                        </div>
+                        <div class="d-flex align-items-center ">
+                          <div class="main-color mr-4">سعر الملزمة أبيض و اسود</div>
+                          <div class="sub-color">{booklet.blackAndWhiteSellPrice} ريال</div>
+                        </div>
+                        <div class="d-flex align-items-center  mb-2">
+                         <div class="main-color mr-4">الكمية المتاحة أبيض و اسود </div>
+                         <div class="sub-color">{booklet.availableQtyBlackAndWhite}</div>
+                        </div>
+                      </div>
+                      <p class="description-card light-gray font-weight-bold mb-3"> {booklet.description}</p>
+
+                     </div> 
+                    </div>
+               
+
                 </div>
-                <div className="row marg-top-5">
+                </section>
+                {/* <div className="row marg-top-5">
                     <div className="col-md-3"></div>
                     <div className="col-md-6">
                         <Slider {...settings}>
@@ -181,7 +238,7 @@ export class BookletDetailsComponent extends Component {
                         </Slider>
                     </div>
                     <div className="col-md-3"></div>
-                </div>
+                </div> */}
             </React.Fragment>
         )
     }

@@ -61,6 +61,10 @@ class AppBackground extends Component {
   componentDidMount()
   {
     debugger;
+    if(document.querySelector('.navbar') == undefined)
+    {
+      return;
+    }
      /* Start Main Variables */ 
 // const navabr = document.querySelector('.navbar');
 const bannerText = document.querySelector('.banner-text');
@@ -145,6 +149,7 @@ function loadingProgressbar() {
       imgPosition = "center top";
     } else if (
       path.startsWith("/categories") ||
+      path.startsWith("/booklet") ||
       path.startsWith("/course") ||
       path.startsWith("/account") ||
       path.startsWith("/cart") ||

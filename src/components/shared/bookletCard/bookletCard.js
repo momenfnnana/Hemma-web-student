@@ -27,7 +27,28 @@ export class BookletCard extends Component {
                 </div>
               </Link> */
     }
-      <div className="row  card-container">
+
+     
+    
+<div className = "col-lg-4" >
+      <div class="d-flex">
+        <div className="mr-4" >
+           <img  src={booklet.icon}  class="width-130" alt="Hemma-Logo"></img> 
+        </div>
+        <div >
+           <h5 > <a  class="h5 main-color" id="link" href={`/booklet/details/${booklet.id}`} > {booklet.nameAr} </a> </h5>
+           <div class="gray-tag">كتاب ملون</div>
+           <div class="price-tag"> {booklet.coloredSellPrice} ريال</div>
+           <div class="gray-tag">أبيض وأسود</div>
+           <div class="price-tag">{booklet.blackAndWhiteSellPrice} ريال</div>
+        </div> 
+      </div>
+    
+  </div>
+
+
+
+      {/* <div className="row  card-container">
         <div className="col-md-6" >
           <div className="row">
             <div className="booklet-description">
@@ -63,7 +84,7 @@ export class BookletCard extends Component {
             </div> <div className="col-md-6" >
                   <img className="card-img" src={booklet.icon} ></img> 
                   </div> 
-                  </div>
+                  </div> */}
 
             </React.Fragment>
         );

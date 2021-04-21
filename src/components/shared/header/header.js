@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import "./styles.sass";
-import { NavLink, Link, withRouter } from "react-router-dom";
+import { NavLink, Link, withRouter  } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -292,7 +292,7 @@ class HeaderComponent extends Component {
         {/* <Link class="navbar-brand">
           <img src="https://hemma.sa/assets/images/logo.png" height="60"/>
         </Link> */}
-        <Link to="/home" className="navbar-brand mr-0">
+        <Link to="/home" className="navbar-brand mr-0" >
                 <img className="logo-img"
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="60"
@@ -318,13 +318,14 @@ class HeaderComponent extends Component {
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a href="/home" className="nav-link d-inline-block active">الرئيسيه</a>
+
+              <a href="/home" className="nav-link d-inline-block" >الرئيسيه</a>
             </li>
             <li className="nav-item">
-              <a href="/categories" className="nav-link d-inline-block">منصات همة</a>
+              <a href="/categories" className="nav-link d-inline-block" >منصات همة</a>
             </li>
             <li className="nav-item">
-              <a href="/home" className="nav-link d-inline-block">متجر همة للكتب</a>
+              <a href="/booklet" className="nav-link d-inline-block">متجر همة للكتب</a>
             </li>
             <li className="nav-item">
               <a href="/home" className="nav-link d-inline-block">المجموعات المجانيه</a>
