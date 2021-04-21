@@ -136,7 +136,7 @@ function loadingProgressbar() {
   var scrolled = (winScroll / height) * 100;
   progressBarLoading.style.width = scrolled + "%";
 }
-  }
+  
 }
   render() {
     const path = this.props.location.pathname;
