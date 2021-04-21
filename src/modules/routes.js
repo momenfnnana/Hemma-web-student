@@ -54,14 +54,17 @@ import { StartTrainingExam } from "../components/categories/quick-questions/trai
 import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
 import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
 import { Healthy } from "../components/shared/healthy";
+import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
+import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
 
 class AppBackground extends Component {
   componentDidMount()
   {
     debugger;
-    if(document.querySelector('.navbar') != undefined)
+    if(document.querySelector('.navbar') == undefined)
     {
-
+      return;
+    }
      /* Start Main Variables */ 
 // const navabr = document.querySelector('.navbar');
 const bannerText = document.querySelector('.banner-text');
@@ -133,7 +136,7 @@ function loadingProgressbar() {
   var scrolled = (winScroll / height) * 100;
   progressBarLoading.style.width = scrolled + "%";
 }
-  }
+  
 }
   render() {
     const path = this.props.location.pathname;
@@ -147,6 +150,7 @@ function loadingProgressbar() {
       imgPosition = "center top";
     } else if (
       path.startsWith("/categories") ||
+      path.startsWith("/booklet") ||
       path.startsWith("/course") ||
       path.startsWith("/account") ||
       path.startsWith("/cart") ||
@@ -221,13 +225,14 @@ class MainRouterComponent extends Component {
               /> }
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
               {/* TODO hide initiative */}
-              { <Route path="/initiative-role" component={InitiativesRole} /> }
-              { <Route path="/initiative-exam" component={InitiativesExam} /> }
-              {!this.props.authenticated ? (
-                <Route path="/auth" component={Auth} />
+              {/* <Route path="/initiative-role" component={InitiativesRole} /> */}
+              {/* <Route path="/initiative-exam" component={InitiativesExam} /> */}
+              { <Route path="/auth" component={Auth} />
+              /* {!this.props.authenticated ? (
+               
               ) : (
                 <Redirect from="/auth" to="/course/content" />
-              )}
+              )} */}
               <Route
                 path="/verify"
                 exact
@@ -238,10 +243,16 @@ class MainRouterComponent extends Component {
               <Route path="/forgot-password" component={forgotPassword} />
               <Route path="/reset-password" component={resetPassword} />
               <Route path="/categories" exact component={Categories} />
+              <Route path="/booklet" exact component={BookletComponent} />
               <Route
                 path="/categories/details/:slug"
                 exact
                 component={CategoryDetails}
+              />
+               <Route
+                path="/booklet/details/:slug"
+                exact
+                component={BookletDetailsComponent}
               />
               <Route
                 path="/categories/:slug/:categoryGroupId/exam/:id"

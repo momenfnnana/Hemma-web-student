@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import "./styles.sass";
-import { NavLink, Link, withRouter } from "react-router-dom";
+import { NavLink, Link, withRouter  } from "react-router-dom";
 import {
   Collapse,
   Navbar,
@@ -203,6 +203,15 @@ renderSubCategory()
                         <NavLink
                           className={"nav-link"}
                           activeClassName="active"
+                          to="/booklet"
+                        >
+                          بيع الملازم
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link"}
+                          activeClassName="active"
                           to="/auth/login"
                         >
                           تسجيل الدخول
@@ -245,6 +254,15 @@ renderSubCategory()
                           to="/categories"
                         >
                           الدورات الحالية
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          className={"nav-link"}
+                          activeClassName="active"
+                          to="/booklet"
+                        >
+                          بيع الملازم
                         </NavLink>
                       </NavItem>
                       <NavItem className="d-none d-sm-block">
@@ -318,7 +336,7 @@ renderSubCategory()
         {/* <Link class="navbar-brand">
           <img src="https://hemma.sa/assets/images/logo.png" height="60"/>
         </Link> */}
-        <Link to="/home" className="navbar-brand mr-0">
+        <Link to="/home" className="navbar-brand mr-0" >
                 <img className="logo-img"
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="60"
@@ -355,7 +373,7 @@ renderSubCategory()
             {this.renderSubCategory()}
             </li>
             <li className="nav-item">
-              <a href="/home" className="nav-link d-inline-block">متجر همة للكتب</a>
+              <a href="/booklet" className="nav-link d-inline-block">متجر همة للكتب</a>
             </li>
             <li className="nav-item">
               <a href="/home" className="nav-link d-inline-block">المجموعات المجانيه</a>

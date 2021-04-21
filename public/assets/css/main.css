@@ -25,7 +25,9 @@ button:focus {outline: none !important;}
 .with-fixed-header {
   padding-top: 70px;
 }
-
+a:hover {
+  text-decoration: none;
+}
 /* End The Main Reset Style */
 
 /* _____________________________________________________ */
@@ -890,7 +892,8 @@ img[alt="Human"] {
   padding: 5px 20px;
   border-radius: 50px;
   text-align: center;
-  cursor: pointer
+  cursor: pointer;
+  margin-bottom: 10px
 }
 /* End Style Of Licences Pages */
 
