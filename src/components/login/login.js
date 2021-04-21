@@ -70,7 +70,7 @@ class LoginComponent extends Component {
     request
       .then(action => {
 
-        GetUserSubscriptions(this.props);
+     //   GetUserSubscriptions(this.props);
         this.setState({ loading: false });
 
         if (!this.props.phoneNumberConfirmed) {
@@ -83,7 +83,8 @@ class LoginComponent extends Component {
               this.props.history.push("/");
             });
         } else {
-          this.props.history.push("/");
+          debugger;
+          this.props.history.goBack();
         }
       })
       .catch(error => {
@@ -201,17 +202,18 @@ debugger;
               });
           } else {
         
-            if(response.data.data.data==undefined||
-              response.data.data.data.length==0)
-              {
-                prop.history.push("/categories");
+            // if(response.data.data.data==undefined||
+            //   response.data.data.data.length==0)
+            //   {
+            //     prop.history.push("/categories");
                 
-              }
-              else
-              {
-                prop.history.push("/course/content");
-              }
-            //this.props.history.push("/");
+            //   }
+            //   else
+            //   {
+            //     prop.history.push("/course/content");
+            //   }
+            debugger;
+            this.props.history.push("/");
           }
 
         
