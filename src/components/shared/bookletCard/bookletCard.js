@@ -82,9 +82,9 @@ export class BookletCardComponent extends Component {
         <div >
            <h5 > <a  class="h5 main-color" id="link" href={`/booklet/details/${booklet.id}`} > {booklet.nameAr} </a> </h5>
            <div class="gray-tag">كتاب ملون</div>
-           <div class="price-tag"> {booklet.coloredSellPrice} ريال</div>
+           <div  onClick={() => this.onSubmit("Colored")} class="price-tag"> {booklet.coloredSellPrice} ريال</div>
            <div class="gray-tag">أبيض وأسود</div>
-           <div class="price-tag">{booklet.blackAndWhiteSellPrice} ريال</div>
+           <div  onClick={() => this.onSubmit("BlackAndWhite")} class="price-tag">{booklet.blackAndWhiteSellPrice} ريال</div>
         </div> 
       </div>
     

@@ -224,14 +224,15 @@ class MainRouterComponent extends Component {
                 component={InitiativesDetails}
               /> }
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
+              <Route path="/auth" component={Auth} />
               {/* TODO hide initiative */}
-              { <Route path="/initiative-role" component={InitiativesRole} />}
+              {/* { <Route path="/initiative-role" component={InitiativesRole} />}
               { <Route path="/initiative-exam" component={InitiativesExam} /> }
                {!this.props.authenticated ? (
-                  <Route path="/auth" component={Auth} />
+                 
                 ) : (
                   <Redirect from="/auth" to="/course/content" />
-               )}
+               )} */}
               <Route
                 path="/verify"
                 exact

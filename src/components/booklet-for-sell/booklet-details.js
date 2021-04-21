@@ -5,6 +5,8 @@ import { apiBaseUrl } from "../../api/helpers";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { Api } from "../../api";
+import swal from "@sweetalert/with-react";
 // import { NULL } from "node-sass";
 
 export class BookletDetailsComponent extends Component {
@@ -49,7 +51,42 @@ export class BookletDetailsComponent extends Component {
         }
       
     }
-
+    onSubmit(type) {
+        const booklet = this.state.booklets;
+        Api.cart
+          .addBookletForSale(booklet.id, type)
+          .then((response) => {
+            this.props.history.push("/cart");
+          })
+          .catch((error) => {
+            switch (error.response.data && error.response.data.error) {
+              case "Duplicate":
+                swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+                  button: "متابعة",
+                });
+                break;
+              case "BadRequest":
+                swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+                  button: "متابعة",
+                });
+                break;
+              case "ItemAlreadyPurchased":
+                swal("عفواً", "هذه الملزمة موجودة ضمن قائمة دوراتك", "error", {
+                  button: "متابعة",
+                });
+                break;
+              case "ItemAlreadyAdded":
+                this.props.history.push("/cart");
+                break;
+    
+              default:
+                swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
+                  button: "متابعة",
+                });
+                break;
+            }
+          });
+      }
     renderBookletDetails() {
         const booklet = this.state.booklets;
 
@@ -188,9 +225,9 @@ export class BookletDetailsComponent extends Component {
                         <div class="d-flex align-items-center flex-column-small">
                          <h3 class="lic-title h3 main-color font-weight-bold"> {booklet.nameAr}</h3>
                          <div class="d-flex align-items-center">
-                            <a class="btn-title" href={`/booklet/details/${booklet.id}`}>كتاب ملون</a>
+                            <a class="btn-title" onClick={() => this.onSubmit("Colored")} >كتاب ملون</a>
                             <span class="mx-1"></span>
-                            <a class="btn-title" href={`/booklet/details/${booklet.id}`}>أبيض و أسود</a>
+                            <a class="btn-title" onClick={() => this.onSubmit("BlackAndWhite")}>أبيض و أسود</a>
                          </div>
                         </div>
                       </div>
