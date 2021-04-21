@@ -137,6 +137,7 @@ function loadingProgressbar() {
   progressBarLoading.style.width = scrolled + "%";
 }
   }
+}
   render() {
     const path = this.props.location.pathname;
     let img = null;
