@@ -149,6 +149,7 @@ function loadingProgressbar() {
       imgPosition = "center top";
     } else if (
       path.startsWith("/categories") ||
+      path.startsWith("/booklet") ||
       path.startsWith("/course") ||
       path.startsWith("/account") ||
       path.startsWith("/booklet") ||

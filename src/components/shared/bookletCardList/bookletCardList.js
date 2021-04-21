@@ -65,12 +65,13 @@ export class BookletCardList extends Component {
             }; 
     
             return this.props.booklets.map(category => ( 
-                <div className = "row pt-4">
-                  
-                <h3 className = "category-title"> { category.nameAr } </h3> 
-                <div className = "col-12" > { 
+               <React.Fragment>
+                <div  className="col-lg-12">
+                <h3  class="h3 sub-color ml-0" className = "category-title ml-0"> { category.nameAr } </h3> 
+                </div>
+             { 
                 <React.Fragment>
-                    <Slider {...settings }> {
+                    {
                         category.bookletsForSell.map(booklet => ( 
                             <React.Fragment key = { booklet.id }> { 
                                 <BookletCard key = { booklet.id }
@@ -80,13 +81,13 @@ export class BookletCardList extends Component {
     
                         ))
     
-                    } </Slider> 
+                    } 
                     </React.Fragment>
     
     
                 } 
-                </div> 
-                </div>
+                
+                </React.Fragment>
             ));
        
 

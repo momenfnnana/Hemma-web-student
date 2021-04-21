@@ -16,7 +16,7 @@ export class BookletComponent extends Component {
            
         }
         this.select = this.select.bind(this);
-        this.loadBooklets = this.loadBooklets(this);
+        //this.loadBooklets = this.loadBooklets(this);
         
     }
 
@@ -79,6 +79,8 @@ export class BookletComponent extends Component {
     componentDidMount() {
       
         this.loadCategories();
+        this.getbooklets("");
+
     }
 
     searchHandler = (event) => {
@@ -118,8 +120,8 @@ export class BookletComponent extends Component {
         if (this.state.categories.length > 0) {
           
             return (
-                <select onChange={this.select} value={this.state.selected_platform} className="platform-list">
-                      <option value="">الكل</option>
+                <select onChange={this.select} value={this.state.selected_platform} className="form-control border-radius-50 placeholder-gray mb-2">
+                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">المنصه</option>
                     {
                         this.state.categories.map(category => (
                             <option key={category.id} value={category.id}>{category.nameAr}</option>
@@ -134,23 +136,40 @@ export class BookletComponent extends Component {
     renderBooklet() {
         return (
             <React.Fragment>
+          {/* <div class="container">
+           <nav aria-label="breadcrumb">
+           <ol class="breadcrumb bg-transparent pt-5">
+            <li class="breadcrumb-item"><a href="/home">الرئيسيه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">متجر همة للكتب</li>
+           </ol>
+           </nav>
+            </div> */}
                 <div className="row">
 
 
-                    <div class="col-md-8">
+                    <div className="col-md-9">
+                    <div class="position-relative">
+                    <input onChange={this.searchHandler}  placeholder="البحث باسم الملزمة" className="form-control border-radius-50 placeholder-gray mb-2"></input>     
+                     <div className="search-btn cursor-pointer" onClick={this.search}>
+                     <i className="fas fa-search"></i>
+                     </div> 
 
-                        <input onChange={this.searchHandler}  placeholder="البحث باسم الملزمة" className="search-input"></input>
-                        <button onClick={this.search} className="search-btn"><i class="fas fa-search"></i></button>
+                        
+                        {/* <input onChange={this.searchHandler}  placeholder="البحث باسم الملزمة" className="search-input"></input>
+                        <button onClick={this.search} className="search-btn"><i className="fas fa-search"></i></button> */}
+
                     </div>
-
-                    <div class="col-md-4">
+                    </div>
+    
+                    <div className="col-md-3">
                         {this.renderCategoryFilter()}
-                    </div>
+                    </div>              
 
 
                 </div>
-
-                <BookletCardList booklets={this.state.booklets}/>
+<div className="row">
+    <BookletCardList booklets={this.state.booklets}/>
+</div>
 
             </React.Fragment>
         )
