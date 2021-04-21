@@ -136,8 +136,7 @@ function loadingProgressbar() {
   var scrolled = (winScroll / height) * 100;
   progressBarLoading.style.width = scrolled + "%";
 }
-  
-}
+  }
   render() {
     const path = this.props.location.pathname;
     let img = null;
@@ -153,6 +152,7 @@ function loadingProgressbar() {
       path.startsWith("/booklet") ||
       path.startsWith("/course") ||
       path.startsWith("/account") ||
+      path.startsWith("/booklet") ||
       path.startsWith("/cart") ||
       path.startsWith("/banks") ||
       path.startsWith("/quick-questions") ||
@@ -224,15 +224,15 @@ class MainRouterComponent extends Component {
                 component={InitiativesDetails}
               /> }
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
+              <Route path="/auth" component={Auth} />
               {/* TODO hide initiative */}
-              {/* <Route path="/initiative-role" component={InitiativesRole} /> */}
-              {/* <Route path="/initiative-exam" component={InitiativesExam} /> */}
-              { <Route path="/auth" component={Auth} />
-              /* {!this.props.authenticated ? (
-               
-              ) : (
-                <Redirect from="/auth" to="/course/content" />
-              )} */}
+              {/* { <Route path="/initiative-role" component={InitiativesRole} />}
+              { <Route path="/initiative-exam" component={InitiativesExam} /> }
+               {!this.props.authenticated ? (
+                 
+                ) : (
+                  <Redirect from="/auth" to="/course/content" />
+               )} */}
               <Route
                 path="/verify"
                 exact

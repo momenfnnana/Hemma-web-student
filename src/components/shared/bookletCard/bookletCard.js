@@ -3,11 +3,55 @@ import "./styles.sass";
 import { Link } from "react-router-dom";
 
 import ReactDOM from "react-dom";
+import { Api } from "../../../api";
+import swal from "@sweetalert/with-react";
 
-export class BookletCard extends Component {
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
+export class BookletCardComponent extends Component {
+
+  constructor(props) {
+    super(props);
+  }
   showAlert() {
     alert("I'm an alert");
+  }
+  onSubmit(type) {
+    const booklet = this.props.booklet;
+    Api.cart
+      .addBookletForSale(booklet.id, type)
+      .then((response) => {
+        this.props.history.push("/cart");
+      })
+      .catch((error) => {
+        switch (error.response.data && error.response.data.error) {
+          case "Duplicate":
+            swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+              button: "متابعة",
+            });
+            break;
+          case "BadRequest":
+            swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+              button: "متابعة",
+            });
+            break;
+          case "ItemAlreadyPurchased":
+            swal("عفواً", "هذه الملزمة موجودة ضمن قائمة دوراتك", "error", {
+              button: "متابعة",
+            });
+            break;
+          case "ItemAlreadyAdded":
+            this.props.history.push("/cart");
+            break;
+
+          default:
+            swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
+              button: "متابعة",
+            });
+            break;
+        }
+      });
   }
 
   render() {
@@ -38,9 +82,9 @@ export class BookletCard extends Component {
         <div >
            <h5 > <a  class="h5 main-color" id="link" href={`/booklet/details/${booklet.id}`} > {booklet.nameAr} </a> </h5>
            <div class="gray-tag">كتاب ملون</div>
-           <div class="price-tag"> {booklet.coloredSellPrice} ريال</div>
+           <div  onClick={() => this.onSubmit("Colored")} class="price-tag"> {booklet.coloredSellPrice} ريال</div>
            <div class="gray-tag">أبيض وأسود</div>
-           <div class="price-tag">{booklet.blackAndWhiteSellPrice} ريال</div>
+           <div  onClick={() => this.onSubmit("BlackAndWhite")} class="price-tag">{booklet.blackAndWhiteSellPrice} ريال</div>
         </div> 
       </div>
     
@@ -67,7 +111,7 @@ export class BookletCard extends Component {
 
           <div className="row" >
             <label className="z-marg-bottom">
-              <button onClick={this.showAlert} className="add-to-collection">
+              <button className="add-to-collection"  onClick={() => this.onSubmit("Colored")}>
                 اضف ملزمة ملونة لمختاراتي
             </button> <span class="icon" >
                 </span> </label>
@@ -75,7 +119,7 @@ export class BookletCard extends Component {
             
             <div className="row" >
             <label className="z-marg-bottom">
-              <button onClick={this.showAlert} className="add-to-collection">
+              <button  onClick={() => this.onSubmit("BlackAndWhite")} className="add-to-collection">
                 اضف ملزمة أبيض وأسود لمختاراتي
             </button> <span class="icon" >
                 </span> </label>
@@ -91,3 +135,4 @@ export class BookletCard extends Component {
     }
 
 }
+export const BookletCard = withRouter(BookletCardComponent);
