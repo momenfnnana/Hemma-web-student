@@ -378,12 +378,12 @@ renderSubCategory()
             <li className="nav-item">
               <a href="/home" className="nav-link d-inline-block">المجموعات المجانيه</a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a href="/banks" className="nav-link d-inline-block">حسابات البنوك</a>
             </li>
             <li className="nav-item">
               <a href="/faq" className="nav-link d-inline-block">  الأسئلة المتكررة</a>
-            </li>
+            </li> */}
             </ul>
             {!this.props.authenticated ? (
               <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
@@ -396,7 +396,7 @@ renderSubCategory()
               </ul>
             ):(
               <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
-            <li className="nav-item">
+            {/* <li className="nav-item">
                <a href="/cart" className="nav-link d-inline-block">
                <img
                             src={"/assets/images/cart.png"}
@@ -406,7 +406,7 @@ renderSubCategory()
              </li>
              <li className="nav-item">
                <a href="/course/content" className="nav-link d-inline-block">دوراتي</a>
-             </li>
+             </li> */}
              {/* <li className="nav-item">
               <a className="nav-link d-inline-block">
                 <i className="far fa-bell"></i>
@@ -440,7 +440,27 @@ renderSubCategory()
                             </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/billing" className="nav-link d-inline-block"> الحركات المالية</a>
+                          <a  href="/cart" className="nav-link d-inline-block">مختاراتي</a>
+                            {/* <NavLink
+                              className="nav-link mid-text"
+                              activeClassName="active"
+                              to="/account/update"
+                            >
+                            
+                            </NavLink> */}
+                          </DropdownItem>
+                          <DropdownItem className="p-0">
+                          <a href="/course/content" className="nav-link d-inline-block"> دوراتي</a>
+                            {/* <NavLink
+                              className="nav-link mid-text"
+                              activeClassName="active"
+                              to="/account/update"
+                            >
+                            
+                            </NavLink> */}
+                          </DropdownItem>
+                          <DropdownItem className="p-0">
+                          <a href="/billing" className="nav-link d-inline-block">مشترياتي</a>
                             {/* <NavLink
                               className="nav-link mid-text"
                               activeClassName="active"
@@ -450,7 +470,7 @@ renderSubCategory()
                             </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/certificates" className="nav-link d-inline-block"> الشهادات</a>
+                          <a href="/certificates" className="nav-link d-inline-block"> شهاداتي</a>
                             {/* <NavLink
                               className="nav-link mid-text"
                               activeClassName="active"

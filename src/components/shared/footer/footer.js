@@ -269,6 +269,7 @@ class FooterComponent extends Component {
             <div className="col-lg-3">
               <ul className="hemma-links list-unstyled">
                 <li><a  href="/categories" className="font-weight-bold main-color cursor-pointer link-hover">منصات همة</a></li>
+                <li><a  href="/banks" className="font-weight-bold main-color cursor-pointer link-hover">حسابات البنوك</a></li>
                 <li><a  href="/faq" className="font-weight-bold main-color cursor-pointer link-hover">ألاسئلة المتكررة</a></li>
                 <li><a className="font-weight-bold main-color cursor-pointer link-hover">بيع الملازم</a></li>
                 <li><a className="font-weight-bold main-color cursor-pointer link-hover">أنضم كمدرب</a></li>
