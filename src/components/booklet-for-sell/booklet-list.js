@@ -149,7 +149,7 @@ export class BookletComponent extends Component {
 
                     <div className="col-md-9">
                     <div class="position-relative">
-                    <input onChange={this.searchHandler}  placeholder="البحث باسم الملزمة" className="form-control border-radius-50 placeholder-gray mb-2"></input>     
+                    <input onChange={this.searchHandler} onBlur={this.search} placeholder="البحث باسم الملزمة" className="form-control border-radius-50 placeholder-gray mb-2"></input>     
                      <div className="search-btn cursor-pointer" onClick={this.search}>
                      <i className="fas fa-search"></i>
                      </div> 
