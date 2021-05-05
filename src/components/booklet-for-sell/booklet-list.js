@@ -26,11 +26,11 @@ export class BookletComponent extends Component {
         this.setState({ loading: true });
 
         axios
-            .get(`${apiBaseUrl}/categories`)
+            .get(`${apiBaseUrl}/bookletforsell/GetBookletsCategories`)
             .then(response => {
               
 
-                this.setState({ categories: response.data.data.data });
+                this.setState({ categories: response.data.data });
                 setTimeout(
                     function () {
                         this.setState({ loading: false });
