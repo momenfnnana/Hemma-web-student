@@ -51,6 +51,26 @@ class CardComponent extends Component {
     return (
       <React.Fragment>
           <div className="card course-card shadow-sm m-2 border-0" dir="rtl" onClick={() => {
+            (course.active==false && course.featuredInMain==true)? 
+            ((course.inactiveCourseMessage)?
+             swal(
+                    "عفواً",
+                    course.inactiveCourseMessage,
+                    "error", 
+                   {
+                     button: "متابعة"
+                   }
+                 ):
+              swal(
+                "عفواً",
+                "سيتاح التسجيل في الدورة لاحقًا ، وسيتم الإعلان عن مواعيد التسجيل عبر منصتي تويتر و الإنستقرام (@hemmaedu)"
+                ,
+                "error", 
+               {
+                 button: "متابعة"
+               }
+                  )
+              ):
                new Date(course.endsAt) > new Date() ?  history.push(`/course/details/${course.slug}`):
                swal(
                    "عفواً",

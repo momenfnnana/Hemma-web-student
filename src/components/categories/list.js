@@ -10,6 +10,7 @@ import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
+import swal from "@sweetalert/with-react";
 
 const MyLoader = props => (
   <div className="container">
@@ -81,6 +82,7 @@ export class CategoriesComponent extends Component {
 
   renderCategories() {
     const cats = this.state.categories;
+    const { match, location, history } = this.props;
     return cats.map(cat => (
       <>
         {this.state.loading ? (
@@ -91,9 +93,28 @@ export class CategoriesComponent extends Component {
                 <div
                   className="col-12 d-inline-flex align-items-center justify-content-between"
                   key={cat.id}
+                  onClick={() => {(cat.active==false && cat.FeaturedInMain==true)? 
+                  (cat.inactiveCategoryMessage)? 
+                  swal(
+                    "عفواً",
+                    cat.inactiveCategoryMessage,
+                    "error", 
+                   {
+                     button: "متابعة"
+                   }
+                   ):
+                   swal(
+                    "عفواً",
+                    "انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا"  ,
+                    "error", 
+                   {
+                     button: "متابعة"
+                   }
+                      )
+                   :history.push(`/categories/details/${cat.slug}`)}}
                 >
-
-                  <Link
+              
+                  {/* <Link
                     to={{
                       pathname: `/categories/details/${cat.slug}`,
                       state: {
@@ -102,7 +123,7 @@ export class CategoriesComponent extends Component {
                     }}
                     key={cat.id}
                     className="d-flex align-items-center"
-                  >
+                  > */}
                     <div className="full-circle-border mr-2">
                       <img
                         key={cat.id}
@@ -116,7 +137,7 @@ export class CategoriesComponent extends Component {
                     <h5 key={cat.id} className="dark-text mb-0">
                       {cat.nameAr}
                     </h5>
-                  </Link>
+                  {/* </Link> */}
                  
                   <Link
                     to={{
