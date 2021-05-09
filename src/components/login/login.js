@@ -8,6 +8,7 @@ import { phoneField } from "../shared/inputs/phoneField";
 import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
 import { apiBaseUrl } from "../../api/helpers";
+import CryptoJS from "react-native-crypto-js";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import {
   loginAction,
@@ -56,13 +57,15 @@ class LoginComponent extends Component {
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
   componentDidMount() {
+    debugger;
     const checked= localStorage.getItem('checkbox');
     if (checked ) {
         this.setState({
             isChecked: true,
         })
-        const stored = JSON.parse(localStorage.getItem('account'));
-        {this.myFormHandler(stored)}
+        let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('account'), 'secret key 123');
+        let decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        {this.myFormHandler(decryptedData)}
        
     }
 }
@@ -96,10 +99,13 @@ class LoginComponent extends Component {
             });
         } else {
             if (this.state.isChecked) {
-                localStorage.setItem('account', JSON.stringify(values));
+                let storedobj=  JSON.stringify(values);
+                let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
+                localStorage.setItem('account',ciphertext);
                 localStorage.setItem('checkbox', this.state.isChecked);
             }
           this.props.history.goBack();
+
         }
       })
       .catch(error => {
