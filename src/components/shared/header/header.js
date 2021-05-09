@@ -37,6 +37,8 @@ class HeaderComponent extends Component {
   }
 
   logout = () => {
+    localStorage.removeItem('account');
+    localStorage.removeItem('checkbox');
     this.props.signOutAction();
     this.props.history.push("/home");
   };

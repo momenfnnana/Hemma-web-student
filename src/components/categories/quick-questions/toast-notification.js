@@ -9,7 +9,6 @@ export const ToastDemo = ({copyLink}) => {
 
     return (
         <CopyToClipboard text={copyLink.link}
-        //text={window.location.href}
         onCopy={() => addToast('تم النسخ', {
             appearance: 'success',
             autoDismiss: true,
@@ -25,7 +24,7 @@ export const ToastDemo = ({copyLink}) => {
                     }
                     className="mr-2 contain-img" />
                     {copyLink.btnName}
-                    {/* مشاركة السؤال*/}
+                    
      
         </button>
         </CopyToClipboard>

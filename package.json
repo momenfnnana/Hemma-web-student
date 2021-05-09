@@ -55,6 +55,7 @@
     "react-mic": "^12.4.1",
     "react-modal": "^3.8.1",
     "react-moment-proptypes": "^1.7.0",
+    "react-native-crypto-js": "^1.0.0",
     "react-pdf": "^4.0.5",
     "react-pdf-js": "^5.0.6",
     "react-pdf-watermark": "^1.0.6",

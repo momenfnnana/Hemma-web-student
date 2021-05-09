@@ -8,6 +8,7 @@ import { phoneField } from "../shared/inputs/phoneField";
 import { withRouter } from "react-router-dom";
 import Loader from "react-loaders";
 import { apiBaseUrl } from "../../api/helpers";
+import CryptoJS from "react-native-crypto-js";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import {
   loginAction,
@@ -48,12 +49,26 @@ class LoginComponent extends Component {
     this.state = {
       hidden: false,
       password: "",
-      loading: false,
+        loading: false,
+        isChecked: false,
       subscriptions: [],
       nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=1&Limit=50&SubscriptionStatus=${this.props.subscriptionStatus}`
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
+  componentDidMount() {
+    debugger;
+    const checked= localStorage.getItem('checkbox');
+    if (checked ) {
+        this.setState({
+            isChecked: true,
+        })
+        let bytes  = CryptoJS.AES.decrypt(localStorage.getItem('account'), 'secret key 123');
+        let decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        {this.myFormHandler(decryptedData)}
+       
+    }
+}
 
   togglePasswordShow() {
     this.setState({ hidden: !this.state.hidden });
@@ -83,8 +98,14 @@ class LoginComponent extends Component {
               this.props.history.push("/");
             });
         } else {
-          debugger;
+            if (this.state.isChecked) {
+                let storedobj=  JSON.stringify(values);
+                let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
+                localStorage.setItem('account',ciphertext);
+                localStorage.setItem('checkbox', this.state.isChecked);
+            }
           this.props.history.goBack();
+
         }
       })
       .catch(error => {
@@ -102,7 +123,11 @@ class LoginComponent extends Component {
         }
       });
   };
-
+  onChangeCheckbox = (e) => {
+    this.setState({
+      isChecked : e.target.checked
+    })
+  }
   render() {
     const { handleSubmit, submitting } = this.props;
     return (
@@ -152,7 +177,10 @@ class LoginComponent extends Component {
               />
             )}
           </div>
-
+          <div>
+          <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
+          <label>تذكرني</label>
+          </div>
           <button
             type="submit"
             className="btn dark-outline-btn w-100 justify-content-center d-flex align-items-center"
