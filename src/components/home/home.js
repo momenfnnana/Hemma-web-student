@@ -186,6 +186,7 @@ class HomeComponent extends Component {
 
   renderCategories() {
     const cats = this.state.categories;
+    const { match, location, history } = this.props;
     return (
       <React.Fragment>
         {/* <div className="row d-flex justify-content-center align-items-center">
@@ -216,9 +217,30 @@ class HomeComponent extends Component {
         <div className="col-lg-4" key={cat.id}>
               <div className="card">
               <div className="card-items">
-                <div className="title-card font-weight-bold">
+                <div className="title-card font-weight-bold" onClick={() => {(cat.active==false && cat.FeaturedInMain==true)? 
+                  (cat.inactiveCategoryMessage)? 
+                  swal(
+                    "عفواً",
+                    cat.inactiveCategoryMessage,
+                    "error", 
+                   {
+                     button: "متابعة"
+                   }
+                   ):
+                   swal(
+                    "عفواً",
+                    "انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا"  ,
+                    "error", 
+                   {
+                     button: "متابعة"
+                   }
+                      )
+                   :history.push(`/categories/details/${cat.slug}`)}}
+                >
+              
 
-                  <Link
+
+                  {/* <Link
                     to={{
                       pathname: `/categories/details/${cat.slug}`,
                       state: {
@@ -227,9 +249,9 @@ class HomeComponent extends Component {
                     }}
                     key={cat.id}
                   //className="btn dark-btn unset-height unset-line-height br-5"
-                  >
+                  > */}
                     <h3> <span>{cat.nameAr}</span>  </h3>
-                   </Link>
+                   {/* </Link> */}
 
                     {/* <a href="/categories/details/">{cat.nameAr}</a> */}
 
@@ -242,12 +264,11 @@ class HomeComponent extends Component {
                   </div>
                    {cat.childCatgories.length > 0 ?
                     ( <div className="buttons-card d-flex-row flex-wrap">
-{cat.childCatgories.map((child,indx)=>{
-if(indx < 3)
-{
-  return(
+                      {cat.childCatgories.map((child,indx)=>{
+                        if(indx < 3)
+                      {return(
 
- <Link
+                   <Link
                     to={{
                       pathname: `/course/details/${child.slug}`,
                       state: {
