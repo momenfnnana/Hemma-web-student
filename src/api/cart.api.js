@@ -25,7 +25,10 @@ export const CartApiEndpoints = {
     getAuthenticatedAxios()
       .post(`cart_v2/items/booklets`, { bookletId, type })
       .then(getDataFromResponse),
-
+ addBookletForSale: (bookletId, type) =>
+      getAuthenticatedAxios()
+        .post(`cart_v2/items/bookletsForSale`, { bookletId, type })
+        .then(getDataFromResponse),
   addInstallment: (subscriptionId, amount = null) =>
     getAuthenticatedAxios()
       .post(`cart_v2/items/installments`, { subscriptionId, amount })
@@ -69,7 +72,10 @@ export const CartApiEndpoints = {
     getAuthenticatedAxios()
       .post(`cart_v2/initiate_card_payment`, data)
       .then(getDataFromResponse),
-
+  getCardType: ()=>
+      getAuthenticatedAxios()
+        .get(`cart_v2/Get_Card_type`)
+        .then(getDataFromResponse),
   checkoutWithBankTransfer: data =>
     getAuthenticatedAxios()
       .post(`cart_v2/checkout_with_bank_transfer`, data)

@@ -11,7 +11,9 @@ import {
   AccordionItemTitle,
 } from "react-accessible-accordion";
 import "../styles.sass";
-import { SolutionModal } from "../exams/solution";
+import Modal from "react-modal";
+import ReactPlayer from "react-player";
+//import { SolutionModal } from "../exams/solution";
 import * as Sentry from "@sentry/react";
 
 class TrainingResultComponent extends Component {
@@ -31,7 +33,7 @@ class TrainingResultComponent extends Component {
   openSolutionModal = (id) => {
     this.setState({ isSolutionOpen: true, selectedQuestionId: id });
   };
-  closeSolutionModal = () => {
+  closeSolution = () => {
     this.setState({ isSolutionOpen: false });
   };
 
@@ -57,6 +59,7 @@ class TrainingResultComponent extends Component {
           }
         )
         .then((response) => {
+          console.log(response);
           this.setState({ questions: response.data.data.questions });
         })
         .catch((error) => {
@@ -73,6 +76,25 @@ class TrainingResultComponent extends Component {
   };
 
   renderQuestions() {
+ 
+      const customStyles = {
+        content: {
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          marginRight: "-50%",
+          transform: "translate(-50%, -50%)",
+          width: "40%",
+          height: "auto",
+          borderWidth: 0,
+        },
+        overlay: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          zIndex: 2,
+          zIndex: 20,
+        },
+      };
     const questions = this.state.questions || [];
     const question = questions[this.state.selectedQuestion];
     return (
@@ -117,7 +139,7 @@ class TrainingResultComponent extends Component {
                             <p className="small red-text mb-0">لم تقم بالإجابة</p>
                           )}
                     </div>
-
+                    { question && question.allowSolutionExplanation ?(
                     <div className="col-md-6">
                       <button
                         className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -133,7 +155,7 @@ class TrainingResultComponent extends Component {
                         />
                         طريقة الحل
                       </button>
-                    </div>
+                    </div>):null}
                   </div>
                   <div className="row">
                     <div className="col-md-12">
@@ -171,14 +193,92 @@ class TrainingResultComponent extends Component {
                   </div>
                 )}
               </div>
+              <Modal
+          style={customStyles}
+          ariaHideApp={false}
+          isOpen={this.state.isSolutionOpen}
+          onRequestClose={this.closeSolution}
+          closeHint={this.closeSolution}
+        >
+          <div className="container pt-4 pb-3">
+            <div className="row">
+              <div className="col-md-12 col-12">
+                <span className="badge red-bg text-white mb-3 hint-badge">
+                  طريقة الحل 
+                </span>
+
+                <div className="box-layout p-3">
+                  {
+                   question.solutionExplanation && question.solutionExplanation.type === "Text" ? (
+                      <div
+                        className="encoded-text"
+                        dangerouslySetInnerHTML={{
+                          __html:
+                          question.solutionExplanation.value,
+                        }}
+                      ></div>
+                    ) : question.solutionExplanation.type === "Video" ? (
+                        <ReactPlayer
+                        width="100%"
+                        height="240"
+                        url={
+                          question.solutionExplanation.value
+                        }
+                        controls="true"
+                        playing="true"
+                        onError={(e) => this.onError(e)}
+                      />
+                      ) : (
+                        <p className="dark-text mb-0 text-center">
+                         {/*  لا يوجد طريقة للحل متوفرة*/}
+                        </p>
+                      )}
+                </div>
+                <div className="d-flex align-items-center justify-content-center">
+                  <button
+                    className="btn light-btn unset-height w-25 mt-4"
+                    onClick={this.closeSolution}
+                  >
+                    العودة للسؤال
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Modal>
             </AccordionItemBody>
+            
+          
           </AccordionItem>
+          
         ))}
+       
       </Accordion>
+      
     );
+    
   }
 
   render() {
+   
+      const customStyles = {
+        content: {
+          top: "50%",
+          left: "50%",
+          right: "auto",
+          bottom: "auto",
+          marginRight: "-50%",
+          transform: "translate(-50%, -50%)",
+          width: "50%",
+          height: "auto",
+          borderWidth: 0,
+        },
+        overlay: {
+          backgroundColor: "rgba(0,0,0,0.8)",
+          zIndex: 20,
+        },
+      };
+    const question = this.state.questions[this.state.selectedQuestion-1];
     const attemptId = this.props.match.params.attemptId;
     const courseId = this.props.match.params.id;
     const settings = {
@@ -212,13 +312,8 @@ class TrainingResultComponent extends Component {
             </div>
           </div>
 
-          <SolutionModal
-            isSolutionOpen={this.state.isSolutionOpen}
-            closeSolution={this.closeSolutionModal}
-            id={this.state.selectedQuestionId}
-            attemptId={attemptId}
-          />
         </div>
+       
       </React.Fragment>
     );
   }

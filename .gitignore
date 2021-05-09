@@ -33,3 +33,5 @@ yarn-error.log*
 yarn.lock
 package-lock.json
 .env
+debug.log
+/.vs/slnx.sqlite

@@ -117,6 +117,7 @@ export class CategoriesComponent extends Component {
                       {cat.nameAr}
                     </h5>
                   </Link>
+                 
                   <Link
                     to={{
                       pathname: `/categories/details/${cat.slug}`,

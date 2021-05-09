@@ -60,7 +60,7 @@ export class TrainingList extends Component {
                   >
                     اختبر الآن
                   </Link>
-                  <ToastDemo copyLink={{ btnName:'مشاركة التدريب',link:this.createCourseLink(courseId,tra.id)}} />
+                 {/* <ToastDemo copyLink={{ btnName:'مشاركة التدريب',link:this.createCourseLink(courseId,tra.id)}} />*/}
                 </td>
               </tr>
             </React.Fragment>

@@ -131,6 +131,7 @@ class CartSummaryComponent extends Component {
     return (
       <div className="pl-4 pr-4 pb-3 pt-2">
         <form>
+     
           <h6 className="dark-text mb-3">لديك كوبون؟</h6>
           <div className="input-group mb-3">
             <input
@@ -161,6 +162,11 @@ class CartSummaryComponent extends Component {
             </div>
           </div>
           {this.renderCouponsList()}
+          
+          {this.props.cart && this.props.cart.coupons.length>0 ? ( <h6 className="dark-silver-text smaller mt-2">
+               ملاحظة: يتم تطبيق كوبون الخصم علي الدورات الأولي فقط طبقا لعدد الاستخدامات المسموحة
+             </h6>):null  
+          }
         </form>
       </div>
     );

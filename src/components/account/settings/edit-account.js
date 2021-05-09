@@ -132,56 +132,56 @@ class EditAccountComponent extends Component {
       });
   };
 
-  verifyEmail = values => {
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    let data = {
-      email: values.email
-    };
-    axios
-      .post(`${apiBaseUrl}/auth/email/send_token`, data, {
-        headers
-      })
-      .then(response => {
-        this.setState({ isEmailTokenOpen: true, emailPopover: false });
-      })
-      .catch(error => {
-        this.setState({
-          isEmailTokenOpen: false,
-          emailPopover: false,
-          isPhoneTokenOpen: false,
-          phonePopover: false
-        });
+  // verifyEmail = values => {
+  //   let token = localStorage.getItem("token");
+  //   let headers = {
+  //     Authorization: `Bearer ${token}`
+  //   };
+  //   let data = {
+  //     email: values.email
+  //   };
+  //   axios
+  //     .post(`${apiBaseUrl}/auth/email/send_token`, data, {
+  //       headers
+  //     })
+  //     .then(response => {
+  //       this.setState({ isEmailTokenOpen: true, emailPopover: false });
+  //     })
+  //     .catch(error => {
+  //       this.setState({
+  //         isEmailTokenOpen: false,
+  //         emailPopover: false,
+  //         isPhoneTokenOpen: false,
+  //         phonePopover: false
+  //       });
 
-        switch (error.response.data && error.response.data.error) {
-          case "ValidationError":
-            swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "AlreadyVerified":
-            swal("عفواً", "تم توثيق الحساب سابقاً", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "InvalidConfirmationToken":
-            swal("عفواً", "الرمز المدخل خاطئ", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "VerificationTokenExpired":
-            swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
-              button: "متابعة"
-            });
-            break;
+  //       switch (error.response.data && error.response.data.error) {
+  //         case "ValidationError":
+  //           swal("عفواً", "يرجى التحقق من البيانات المدخلة", "error", {
+  //             button: "متابعة"
+  //           });
+  //           break;
+  //         case "AlreadyVerified":
+  //           swal("عفواً", "تم توثيق الحساب سابقاً", "error", {
+  //             button: "متابعة"
+  //           });
+  //           break;
+  //         case "InvalidConfirmationToken":
+  //           swal("عفواً", "الرمز المدخل خاطئ", "error", {
+  //             button: "متابعة"
+  //           });
+  //           break;
+  //         case "VerificationTokenExpired":
+  //           swal("عفواً", "انتهت صلاحية الرمز المدخل", "error", {
+  //             button: "متابعة"
+  //           });
+  //           break;
 
-          default:
-            console.log("other error");
-        }
-      });
-  };
+  //         default:
+  //           console.log("other error");
+  //       }
+  //     });
+  // };
 
   verifyPhone = values => {
     let token = localStorage.getItem("token");
@@ -436,7 +436,7 @@ class EditAccountComponent extends Component {
                 <FaRegEnvelope />
               </Field>
 
-              {this.props.initialValues.emailConfirmed == false &&
+              {/* {this.props.initialValues.emailConfirmed == false &&
               this.props.initialValues.email !== undefined ? (
                 <React.Fragment>
                   <img
@@ -467,7 +467,7 @@ class EditAccountComponent extends Component {
                     </PopoverBody>
                   </Popover>
                 </React.Fragment>
-              ) : null}
+              ) : null} */}
             </div>
 
             <Field

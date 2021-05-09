@@ -10,13 +10,15 @@ class UsersChatComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      channelRef: firebase.database().ref(`channels/${props.chatChannelSid}`),
       loading: true,
     };
+    if(this.props.forceInternalChat == true)
+    this.setState('channelRef',firebase.database().ref(`channels/${props.chatChannelSid}`));
   }
 
   componentDidMount() {
-    this.addListeners();
+    if(this.props.forceInternalChat == true)
+        this.addListeners();
   }
 
   componentWillUnmount() {

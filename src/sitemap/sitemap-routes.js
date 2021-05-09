@@ -8,5 +8,6 @@ export default (
     <Route path="/categories" />
     <Route path="/categories/details/:slug" />
     <Route path="/course/details/:slug" />
+     <Route path="/booklet" />
   </Route>
 );
