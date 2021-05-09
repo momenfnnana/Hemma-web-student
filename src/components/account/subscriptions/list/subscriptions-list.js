@@ -127,7 +127,7 @@ class SubscriptionsListComponent extends Component {
                   <p className="dark-silver-text small mb-0">غير مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
                   <p className="dark-silver-text small mb-0">مسدد جزئياً</p>
-                ) : subscription.cumulativePaymentStatus == "FullyPaid" ? (
+                ) : subscription.cumulativePaymentStatus == "FullyPaid" || subscription.cumulativePaymentStatus == "FullyUsedForReplacement" ? (
                   <p className="dark-silver-text small mb-0">مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "Pending" ? (
                   <React.Fragment>
