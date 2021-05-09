@@ -17,6 +17,7 @@ export class BookletsComponent extends Component {
       booklets: [],
       booklet: {},
       isPageLoading: false,
+      showOrderBooklet:true
     };
   }
 
@@ -36,7 +37,7 @@ export class BookletsComponent extends Component {
       this.props.getUser();
     }
     const courseId = this.props.match.params.id;
-
+const bookletId = this.props.m
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
@@ -44,16 +45,29 @@ export class BookletsComponent extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/booklet`, { headers })
       .then((response) => {
+
         this.setState({
           booklets: response.data.data.parts,
           isPageLoading: false,
           booklet: response.data.data,
+        });
+        axios
+        .get(`${apiBaseUrl}/cart_v2/Check_Booklet_Exist/${this.state.booklet.id}`, { headers })
+        .then((response) => {
+          this.setState({
+            showOrderBooklet: !response.data.data,
+          });
+        })
+        .catch((error) => {
+         // this.setState({ isPageLoading: false });
+          console.log(error);
         });
       })
       .catch((error) => {
         this.setState({ isPageLoading: false });
         console.log(error);
       });
+ 
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -172,31 +186,35 @@ export class BookletsComponent extends Component {
                         تتبع
                       </a>
                     ) : null}
-
-                    {this.state.booklet &&
-                    this.state.booklet.canBePurchased &&
-                    this.state.booklet.availableInPrint ? (
-                      <>
-                        {this.state.booklet.availableInColor && (
-                          <button
-                            type="submit"
-                            className="btn blue-border-btn mr-1"
-                            onClick={() => this.onSubmit("Colored")}
-                          >
-                            طلب الملزمة الملونة مطبوعة
-                          </button>
-                        )}
-                        {this.state.booklet.availableInBlackAndWhite && (
-                          <button
-                            type="submit"
-                            className="btn blue-border-btn"
-                            onClick={() => this.onSubmit("BlackAndWhite")}
-                          >
-                            طلب الملزمة الأبيض و الأسود مطبوعة
-                          </button>
-                        )}
-                      </>
-                    ) : null}
+{this.state.showOrderBooklet ?(
+   <React.Fragment>
+     {this.state.booklet &&
+      this.state.booklet.canBePurchased &&
+      this.state.booklet.availableInPrint ? (
+        <>
+          {this.state.booklet.availableInColor && (
+            <button
+              type="submit"
+              className="btn blue-border-btn mr-1"
+              onClick={() => this.onSubmit("Colored")}
+            >
+              طلب الملزمة الملونة مطبوعة
+            </button>
+          )}
+          {this.state.booklet.availableInBlackAndWhite && (
+            <button
+              type="submit"
+              className="btn blue-border-btn"
+              onClick={() => this.onSubmit("BlackAndWhite")}
+            >
+              طلب الملزمة الأبيض و الأسود مطبوعة
+            </button>
+          )}
+        </>
+      ) : null}
+      </React.Fragment>
+): null}
+                  
                   </div>
                 </div>
               </div>

@@ -25,7 +25,8 @@ class HeaderComponent extends Component {
     this.toggle = this.toggle.bind(this);
     this.state = {
       isOpen: false,
-      categories: []
+      categories: [],
+      ClikedTab:""
     };
   }
 
@@ -39,10 +40,22 @@ class HeaderComponent extends Component {
     this.props.signOutAction();
     this.props.history.push("/home");
   };
-
   componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUser();
+    }
+
+    if(window.location.href.includes("/home"))
+    {
+      this.setState({ClikedTab:"Main"});
+    }
+    else if(window.location.href.includes("/categories"))
+    {
+      this.setState({ClikedTab:"Category"});
+    }
+    else if(window.location.href.includes("/booklet"))
+    {
+      this.setState({ClikedTab:"Booklet"});
     }
     let token = localStorage.getItem("token");
     // Check for token expiration and redirect user to login if token is expired.
@@ -65,6 +78,7 @@ class HeaderComponent extends Component {
       .catch(error => {
         console.log(error);
       });
+
   }
 renderSubCategory()
 {
@@ -362,10 +376,10 @@ renderSubCategory()
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a href="/home" className="nav-link d-inline-block active">الرئيسيه</a>
+              <a href="/home"  className={"nav-link d-inline-block "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
             </li>
             <li className="dropdown-wrapper nav-item position-relative">
-              <a href="/categories" className="nav-link d-inline-block">
+              <a href="/categories" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Category"?"active":"")}>
                 <span>منصات همة </span>
                <i className="fas fa-caret-down"></i>
                </a>
@@ -373,10 +387,10 @@ renderSubCategory()
             {this.renderSubCategory()}
             </li>
             <li className="nav-item">
-              <a href="/booklet" className="nav-link d-inline-block">متجر همة للكتب</a>
+              <a href="/booklet" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
             </li>
             <li className="nav-item">
-              <a href="/home" className="nav-link d-inline-block">المجموعات المجانيه</a>
+              <a href="/home" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
             </li>
             {/* <li className="nav-item">
               <a href="/banks" className="nav-link d-inline-block">حسابات البنوك</a>
