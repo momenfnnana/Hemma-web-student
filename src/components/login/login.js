@@ -104,7 +104,7 @@ class LoginComponent extends Component {
                 localStorage.setItem('account',ciphertext);
                 localStorage.setItem('checkbox', this.state.isChecked);
             }
-          this.props.history.goBack();
+            this.props.history.goBack();
 
         }
       })
