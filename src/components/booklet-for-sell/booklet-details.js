@@ -78,7 +78,11 @@ export class BookletDetailsComponent extends Component {
               case "ItemAlreadyAdded":
                 this.props.history.push("/cart");
                 break;
-    
+                case "BookletNotAvailable":
+                    swal("عفواً", "هذة الملزمة غير متاحة", "error", {
+                           button: "متابعة",
+                     });
+                    break;
               default:
                 swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
                   button: "متابعة",
