@@ -232,6 +232,10 @@ export class BookletDetailsComponent extends Component {
                         </div>
                       </div>
                       <div class="mb-3">
+                      <div class="d-flex align-items-center mb-2">
+                          <div class="main-color mr-4">المنصة </div>
+                          <div class="sub-color">{booklet.categoryNameAr}</div>
+                        </div>
                         <div class="d-flex align-items-center mb-2">
                           <div class="main-color mr-4">وزن الملزمة </div>
                           <div class="sub-color">{booklet.weight} جرام</div>
