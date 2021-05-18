@@ -77,6 +77,7 @@ class Accordion extends React.Component {
         }}
         className={this.state.index === index ? this.props.openClassName : ""}
       >
+        
         <div onClick={() => this.toggle(index, true)}>
           {child.props["data-header"]}
         </div>
