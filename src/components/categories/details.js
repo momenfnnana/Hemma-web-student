@@ -265,9 +265,9 @@ export class CategoryDetails extends Component {
   }
   renderPanelSub()
   {
-    return this.state.subcategoriesdetails.map(Category => (
+    return this.state.subcategoriesdetails.map((Category,count) => (
       <React.Fragment>
-<div className="tab-pane fade " id={Category.id} role="tabpanel" aria-labelledby="nav-profile-tab">
+<div className="tab-pane fade " id={"tab-"+count} role="tabpanel">
                 <div className="container">
                   <div className="row">
                   {this.renderCourses(Category.courses)}
@@ -279,9 +279,9 @@ export class CategoryDetails extends Component {
   }
   rendersubCategories()
   {
-    return this.state.subcategoriesdetails.map(Category => (
+    return this.state.subcategoriesdetails.map((Category,count) => (
       <React.Fragment>
-        <a className="tab-items nav-link px-4" data-toggle="tab" href={"#"+Category.id} role="tab" aria-controls="nav-three" aria-selected="false">
+        <a className="tab-items nav-link px-4" data-toggle="tab" href={"#tab-"+count} role="tab" aria-selected="false">
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
                   </div>
