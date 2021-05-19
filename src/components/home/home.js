@@ -10,8 +10,8 @@ import { loginWithTwitter } from "../auth/firebase";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import "./styles.sass";
-import AOS from 'aos';
-import Glide from '@glidejs/glide'
+ import AOS from 'aos';
+ import Glide from '@glidejs/glide'
 // Required Core Stylesheet
 // import "public/assets/css/glide.core.min.css";
 
@@ -217,7 +217,7 @@ class HomeComponent extends Component {
         <div className="col-lg-4" key={cat.id}>
               <div className="card">
               <div className="card-items">
-                <div className="title-card font-weight-bold" onClick={() => {(cat.active==false && cat.FeaturedInMain==true)? 
+                <div className="title-card font-weight-bold" onClick={() => {(cat.active==false && cat.featuredInMain==true)? 
                   (cat.inactiveCategoryMessage)? 
                   swal(
                     "عفواً",
@@ -290,35 +290,62 @@ class HomeComponent extends Component {
 
                   {/* <a className="btn-card mx-2 mb-2">التطوير المهني</a>
                   <a className="btn-card mx-2 mb-2">مجتمع همة التعليمى</a> */}
-                  </div>): (<div className="buttons-card d-flex align-items-center flex-wrap justify-content-center">
-{cat.courses.map((course,indxcourse)=>{
-if(indxcourse < 3)
-{
-  return(
+                  </div>):
+                   (
+                   <div className="buttons-card d-flex align-items-center flex-wrap justify-content-center">
+                   {cat.courses.map((course,indxcourse)=>{
+                     if(indxcourse < 3)
+                       {
+                        return(
 
- <Link
-                    to={{
-                      pathname: `/course/details/${course.slug}`,
-                      state: {
-                        catId: cat.id
-                      }
-                    }}
-                    key={cat.id}
-                  className="btn-card mx-2 mb-2 "
+                   <div className="btn-card mx-2 mb-2 " onClick={() => {(course.active==false && course.featuredInMain==true)? 
+                    (course.inactiveCourseMessage)? 
+                    swal(
+                      "عفواً",
+                      course.inactiveCourseMessage,
+                      "error", 
+                     {
+                       button: "متابعة"
+                     }
+                     ):
+                     swal(
+                      "عفواً",
+                      "سيتاح التسجيل في الدورة لاحقًا ، وسيتم الإعلان عن مواعيد التسجيل عبر منصتي تويتر و الإنستقرام (@hemmaedu) "  ,
+                      "error", 
+                     {
+                       button: "متابعة"
+                     }
+                        )
+                     :history.push(`/course/details/${course.slug}`)}}
                   >
-                     {course.nameAr}
-                   </Link>
+                  
+                  {course.nameAr}
+
+                   </div>
+                  //  <Link
+                  //   to={{
+                  //     pathname: `/course/details/${course.slug}`,
+                  //     state: {
+                  //       catId: cat.id
+                  //     }
+                  //   }}
+                  //   key={cat.id}
+                  // className="btn-card mx-2 mb-2 "
+                  // >
+                  //    {course.nameAr}
+                  //  </Link>
 
 
     // <a href="" className="btn-card mx-2 mb-2">{child.nameAr}</a>
       );
-}
-  return null;
-})}
+                   }
+                   return null;
+                    })}
 
                   {/* <a className="btn-card mx-2 mb-2">التطوير المهني</a>
                   <a className="btn-card mx-2 mb-2">مجتمع همة التعليمى</a> */}
-                  </div>)
+                  </div>
+                   )
                    }
                     </div>
               </div>
