@@ -1002,4 +1002,20 @@ img[alt="Human"] {
 .dropdown-sub-wrapper:hover .sub-sub-list {
   transform: scale(1)
 }
+.dark-btn
+{
+  border-radius: 50px;
+    border: 1px solid #4b3a85 ;
+    color: #FFF ;
+    height: 40px;
+    font-size: 13px;
+    background-color: #4b3a85 ;
+}
+.dark-btn:focus,.dark-btn:hover 
+{
+  background-color: #FFF;
+  border: 1px solid #4b3a85;
+   color: #4b3a85;
+}
+    
 /* End Style OF The Multiple Dropdown  */
