@@ -259,6 +259,11 @@ a:hover {
   border-color: #FFF;
   color: #FFF;
 }
+.btn-card{
+  display: block;
+  width: 200px;
+  text-align: center;
+}
 /* Buttons of Card Outline */
 .btn-card-outline,
 .btn-card-outline-light {
