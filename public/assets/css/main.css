@@ -348,7 +348,7 @@ a:hover {
 .btn-tomato:hover, 
 .btn-green:hover {
   background-color: var(--main-color);
-  color: #FFF !important
+  color: #FFF;
 }
 
 
