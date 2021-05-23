@@ -43,6 +43,9 @@ class HeaderComponent extends Component {
     this.props.history.push("/home");
   };
   componentDidMount() {
+
+    
+
     if (this.props.authenticated) {
       this.props.getUser();
     }
@@ -80,6 +83,75 @@ class HeaderComponent extends Component {
       .catch(error => {
         console.log(error);
       });
+/* Start Collapsing Sub Dropdown Menu By Ckicking */
+  // [1] First Sub Menu Of Dropdown Menu
+  let linkDropdown = document.querySelectorAll('.dropdown-sub-wrapper-one');
+  let subDropdown = document.querySelectorAll('.sub-dropdown');
+  handleActiveEle(linkDropdown, subDropdown);
+
+  /* ______________________________________________________________________ */
+
+  // [2] Second Sub Menu Of Dropdown Menu
+  let linkDropdownTwo = document.querySelectorAll('.dropdown-sub-wrapper-two');
+  let subDropdownTwo = document.querySelectorAll('.sub-dropdown2');
+  handleActiveEle(linkDropdownTwo, subDropdownTwo);
+
+  /* ______________________________________________________________________ */
+
+  // [3] Third Sub Menu Of Dropdown Menu
+  let linkDropdownThree = document.querySelectorAll('.dropdown-sub-wrapper-three');
+  let subDropdownThree = document.querySelectorAll('.sub-dropdown3');
+  handleActiveEle(linkDropdownThree, subDropdownThree);
+
+  function handleActiveEle(element, list) {
+    element.forEach(smEle => {
+      smEle.addEventListener('click', (e) => {
+        e.preventDefault();
+        let dropMenu = document.querySelector('.' + e.currentTarget.dataset.dropmenu);
+        element.forEach(ele => {
+          ele.classList.remove('active');
+        });
+        list.forEach(subDrop => {
+          subDrop.classList.remove('showing');
+        });
+        e.currentTarget.classList.add('active');
+        dropMenu.classList.toggle('showing');
+      })
+    });
+  }
+
+      let mainLinkDropDown = document.querySelector('.dropdown-wrapper');
+  mainLinkDropDown.onmouseover = function(e) {
+    let subListMenu = document.querySelector('.' + e.currentTarget.dataset.hover);
+    if(!subListMenu.classList.contains('show')) {
+      subListMenu.classList.add('show');
+    }
+  }
+   mainLinkDropDown.onmouseout = function(e) {
+    let subListMenu = document.querySelector('.' + e.currentTarget.dataset.hover);
+    if(subListMenu.classList.contains('show')) {
+      subListMenu.classList.remove('show');
+    }
+  }
+  document.addEventListener('mouseover', function(event) {
+    var isClickInside = mainLinkDropDown.contains(event.target);
+    let subListMenu = document.querySelector('.sub-list');
+    if (isClickInside) { return false; } else {
+      subListMenu.classList.remove('show');
+      document.querySelector('.sub-dropdown').classList.remove('showing');
+      document.querySelector('.sub-dropdown2').classList.remove('showing');
+      document.querySelector('.sub-dropdown3').classList.remove('showing');
+      document.querySelectorAll('.dropdown-sub-wrapper-one').forEach(ele => {
+        ele.classList.remove('active');
+      })
+      document.querySelectorAll('.dropdown-sub-wrapper-two').forEach(ele => {
+        ele.classList.remove('active');
+      })
+      document.querySelectorAll('.dropdown-sub-wrapper-three').forEach(ele => {
+        ele.classList.remove('active');
+      })
+    }
+  });
 
   }
 renderSubCategory()
@@ -346,7 +418,7 @@ renderSubCategory()
         </div> */}
         {/* <!-- Start The Hemma Navbar --> */}
     <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-white py-0">
-      <div className="container-fluid">
+      <div className="container">
 
         {/* <!-- Start The Main Hemma Logo --> */}
         {/* <Link class="navbar-brand">
@@ -378,40 +450,156 @@ renderSubCategory()
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a href="/home"  className={"nav-link d-inline-block "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
+              <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
             </li>
-            <li className="dropdown-wrapper nav-item position-relative">
+            <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
+              <a className="nav-link links-hover d-flex align-items-center justify-content-between">
+                <span className="mr-1">منصات همة</span>
+                <i className="fas fa-chevron-down font-size-13"></i>
+              </a>
+              <ul className="sub-list list-unstyled m-0">
+                <div className="sm-scroll drop_one">
+                  <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
+                    <a href="#" className="linked">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+                      <span>منصات الطالب</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
+                    <a href="#" className="linked">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+                      <span>منصة المعلم</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
+                    <a href="#" className="linked">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+                      <span>دورات اجتياز القياس</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-one">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>دورات وتدريبات</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-one">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>دورات وتدريبات</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-one">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>دورات وتدريبات</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-one">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>دورات وتدريبات</span>
+                    </a>
+                  </li>
+                </div>
+
+                <div className="sm-scroll sub-dropdown drop_two">
+                  <li className="dropdown-sub-wrapper-two" data-dropmenu="drop_three_mina">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر 1</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-two" data-dropmenu="drop_three_mina">
+                    <a href="#" className="linked">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر 2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-two" data-dropmenu="drop_three_mina">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر رقم 3</span>
+                    </a>
+                  </li>
+                </div>
+
+
+
+                <div className="sm-scroll sub-dropdown2 drop_three_mina">
+                  <li className="dropdown-sub-wrapper-three" data-dropmenu="drop_four">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر 1.1</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-three" data-dropmenu="drop_four">
+                    <a href="#" className="linked">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر 2.1</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-three" data-dropmenu="drop_four">
+                    <a href="#">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر رقم 3.1</span>
+                    </a>
+                  </li>
+                </div>
+
+
+                <div className="sm-scroll sub-dropdown3 drop_four">
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر 1.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#" className="linked">
+                      <span>عنصر 2.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر رقم 3.2</span>
+                    </a>
+                  </li>
+                </div>
+
+              </ul>
+            </li>
+            {/* <li className="dropdown-wrapper nav-item position-relative">
               <a href="/categories" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Category"?"active":"")}>
                 <span>منصات همة </span>
                <i className="fas fa-caret-down"></i>
                </a>
                
             {this.renderSubCategory()}
+            </li> */}
+            <li className="nav-item">
+              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
             </li>
             <li className="nav-item">
-              <a href="/booklet" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
-            </li>
-            <li className="nav-item">
-              <a href="/home" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
+              <a href="/home" className={"nav-link links-hover " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
             </li>
             {/* <li className="nav-item">
-              <a href="/banks" className="nav-link d-inline-block">حسابات البنوك</a>
+              <a href="/banks" className="nav-link links-hover">حسابات البنوك</a>
             </li>
             <li className="nav-item">
-              <a href="/faq" className="nav-link d-inline-block">  الأسئلة المتكررة</a>
+              <a href="/faq" className="nav-link links-hover">  الأسئلة المتكررة</a>
             </li> */}
             </ul>
             {!this.props.authenticated ? (
-              <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+              <ul className="navbar-nav mb-2 mb-lg-0">
              <li className="nav-item">
-               <a href="/auth/login" className="nav-link d-inline-block"> تسجيل الدخول</a>
+               <a href="/auth/login" className="nav-link links-hover"> تسجيل الدخول</a>
              </li>
               <li className="nav-item">
-              <a href="/auth/register" className="nav-link d-inline-block">  إنشاء حساب </a>
+              <a href="/auth/register" className="nav-link links-hover">  إنشاء حساب </a>
             </li>
               </ul>
             ):(
-              <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+              <ul className="navbar-nav mb-2 mb-lg-0">
             {/* <li className="nav-item">
                <a href="/cart" className="nav-link d-inline-block">
                <img

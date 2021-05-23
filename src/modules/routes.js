@@ -90,7 +90,6 @@ checkIfNavbarFixedAndSetPadding();
 
 window.onscroll = function() {
   // Window Offset OF Y Dimension
-  debugger;
   let currentScrollPosition = window.pageYOffset;
 
   /* Start Navbar Animation While Window Scrolling */
