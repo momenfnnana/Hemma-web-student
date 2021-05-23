@@ -158,31 +158,44 @@ renderSubCategory()
 {
   const Categories = this.state.categories;
   debugger;
-  return (
-    <ul className="sub-list list-unstyled m-0 p-0">
-  {Categories.map(cat => (
-    <React.Fragment>
-       {cat.childCatgories.length != 0 ? (
-         <React.Fragment>
-    <li className="dropdown-sub-wrapper position-relative">
-      <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
+//   return (
+//     <ul className="sub-list list-unstyled m-0 p-0">
+//   {Categories.map(cat => (
+//     <React.Fragment>
+//        {cat.childCatgories.length != 0 ? (
+//          <React.Fragment>
+//     <li className="dropdown-sub-wrapper position-relative">
+//       <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
 
-   <ul className="sub-sub-list list-unstyled m-0 p-0">
-   { cat.childCatgories.map(chiled=>(
-    <li>
-     <a href={"/categories/details/"+chiled.slug}>{chiled.nameAr}</a>
-  </li>
-   ))
-   }
-   </ul>
-   </li>
-   </React.Fragment>
-  ) : (<li >
- <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
-</li>)}
-    </React.Fragment>
+//    <ul className="sub-sub-list list-unstyled m-0 p-0">
+//    { cat.childCatgories.map(chiled=>(
+//     <li>
+//      <a href={"/categories/details/"+chiled.slug}>{chiled.nameAr}</a>
+//   </li>
+//    ))
+//    }
+//    </ul>
+//    </li>
+//    </React.Fragment>
+//   ) : (<li >
+//  <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
+// </li>)}
+//     </React.Fragment>
     
-  ))}</ul>);
+//   ))}</ul>);
+return(
+  <React.Fragment>
+
+  {Categories.map((category,index) => (
+<li className={"dropdown-sub-wrapper-"+category.CategoryParentId} data-dropmenu={"drop_"+index}>
+                    <a href={"/categories/details/"+category.slug} className="linked">
+                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+                      <span>{category.nameAr}</span>
+                    </a>
+                  </li>
+  ))}
+  </React.Fragment>
+)
 }
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.authenticated && this.props.authenticated) {
@@ -458,7 +471,7 @@ renderSubCategory()
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>
               <ul className="sub-list list-unstyled m-0">
-                <div className="sm-scroll drop_one">
+                {/* <div className="sm-scroll drop_one">
                   <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
                     <a href="#" className="linked">
                       <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
@@ -564,8 +577,8 @@ renderSubCategory()
                       <span>عنصر رقم 3.2</span>
                     </a>
                   </li>
-                </div>
-
+                </div> */}
+ {this.renderSubCategory()}
               </ul>
             </li>
             {/* <li className="dropdown-wrapper nav-item position-relative">
