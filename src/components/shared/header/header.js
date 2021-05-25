@@ -26,6 +26,7 @@ class HeaderComponent extends Component {
     this.state = {
       isOpen: false,
       categories: [],
+      categoriesGroups:[],
       ClikedTab:""
     };
   }
@@ -73,6 +74,21 @@ class HeaderComponent extends Component {
       .then(response => {
        console.log("showthis",response);
         this.setState({ categories: response.data.data });
+        setTimeout(
+          function () {
+            this.setState({loading: false });
+          }.bind(this),
+          800 
+        );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      axios
+      .get(`${apiBaseUrl}/categories/CategorygroupsHeader`)
+      .then(response => {
+       console.log("showthis",response);
+        this.setState({ categoriesGroups: response.data.data });
         setTimeout(
           function () {
             this.setState({loading: false });
@@ -138,9 +154,9 @@ class HeaderComponent extends Component {
     let subListMenu = document.querySelector('.sub-list');
     if (isClickInside) { return false; } else {
       subListMenu.classList.remove('show');
-      document.querySelector('.sub-dropdown').classList.remove('showing');
-      document.querySelector('.sub-dropdown2').classList.remove('showing');
-      document.querySelector('.sub-dropdown3').classList.remove('showing');
+    //  document.querySelector('.sub-dropdown').classList.remove('showing');
+    //   document.querySelector('.sub-dropdown2').classList.remove('showing');
+      // document.querySelector('.sub-dropdown3').classList.remove('showing');
       document.querySelectorAll('.dropdown-sub-wrapper-one').forEach(ele => {
         ele.classList.remove('active');
       })
@@ -206,6 +222,22 @@ return(
   verifyUser = () => {
     this.props.history.push("/verify");
   };
+  renderGroupCategory()
+  {
+    const Categories = this.state.categoriesGroups;
+    return(
+      <React.Fragment>
+         {Categories.map((category,index) => (
+<li className="dropdown-sub-wrapper-four">
+                    <a href={"/categories/details/"+category.slug+"#tab-three"} >
+                      <span>{category.nameAr}</span>
+                    </a>
+                  </li>
+  ))}
+      </React.Fragment>
+    )
+
+  }
 
   render() {
     const user = this.props.user;
@@ -465,13 +497,13 @@ return(
             <li className="nav-item">
               <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
             </li>
-            <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
+            {/* <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
               <a className="nav-link links-hover d-flex align-items-center justify-content-between">
                 <span className="mr-1">منصات همة</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>
               <ul className="sub-list list-unstyled m-0">
-                {/* <div className="sm-scroll drop_one">
+                <div className="sm-scroll drop_one">
                   <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
                     <a href="#" className="linked">
                       <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
@@ -578,9 +610,9 @@ return(
                     </a>
                   </li>
                 </div> */}
- {this.renderSubCategory()}
-              </ul>
-            </li>
+ {/* {this.renderSubCategory()} */}
+              {/* </ul>
+            </li> */}
             {/* <li className="dropdown-wrapper nav-item position-relative">
               <a href="/categories" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Category"?"active":"")}>
                 <span>منصات همة </span>
@@ -592,8 +624,44 @@ return(
             <li className="nav-item">
               <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <a href="/home" className={"nav-link links-hover " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
+            </li> */}
+            <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
+              <a className="nav-link links-hover d-flex align-items-center justify-content-between">
+                <span className="mr-1">المجموعات المجانيه</span>
+                <i className="fas fa-chevron-down font-size-13"></i>
+              </a>
+              <ul className="sub-list list-unstyled m-0">
+              <div className="sm-scroll drop_one">
+                { this.renderGroupCategory()}
+              {/* <li className="dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر 1.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#" className="linked">
+                      <span>عنصر 2.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر رقم 3.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#" className="linked">
+                      <span>عنصر 2.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر رقم 3.2</span>
+                    </a>
+                  </li> */}
+                </div>
+                </ul>
             </li>
             {/* <li className="nav-item">
               <a href="/banks" className="nav-link links-hover">حسابات البنوك</a>
