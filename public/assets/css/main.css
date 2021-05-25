@@ -594,7 +594,9 @@ a:hover {text-decoration: none;}
 
 /* Start Style OF The Multiple Dropdown  */
 .sub-list,
-.sub-sub-list {
+.sub-sub-list,
+.category-sub-list,
+.category-sub-sub-list {
   position: absolute;
   top: 100%;
   right: 0;
@@ -637,14 +639,20 @@ a:hover {text-decoration: none;}
 
 .sub-list .sub-dropdown,
 .sub-list .sub-dropdown2,
-.sub-list .sub-dropdown3 { 
+.sub-list .sub-dropdown3,
+.category-sub-list .category-sub-dropdown,
+.category-sub-list .category-sub-dropdown2,
+.category-sub-list .category-sub-dropdown3 { 
   display: none; 
   border-right: 1px solid #ededee; 
   padding-right: 15px;
 }
 .sub-dropdown.showing,
 .sub-dropdown2.showing,
-.sub-dropdown3.showing {display: block;}
+.sub-dropdown3.showing,
+.category-sub-dropdown.showing,
+.category-sub-dropdown2.showing,
+.category-sub-dropdown3.showing {display: block;}
 
 /* width */
 .sm-scroll::-webkit-scrollbar {
@@ -663,11 +671,15 @@ a:hover {text-decoration: none;}
 }
 
 .sub-list li,
-.sub-sub-list li {
+.sub-sub-list li,
+.category-sub-list li,
+.category-sub-sub-list li {
   width: 100%;
 }
 .sub-list li a,
-.sub-sub-list li a {
+.sub-sub-list li a,
+.category-sub-list li a,
+.category-sub-sub-list li a {
   width: 100%;
   padding: 8px 0px;
   color: var(--main-color);
@@ -677,28 +689,36 @@ a:hover {text-decoration: none;}
   transition: all .2s ease-in-out;
 }
 .sub-list li a:hover,
-.sub-sub-list li a:hover {
+.sub-sub-list li a:hover,
+.category-sub-list li a:hover,
+.category-sub-sub-list li a:hover {
   color: var(--sub-color)
 }
-.sub-list li.active a {
+.sub-list li.active a,
+.category-sub-list li.active a {
   color: var(--sub-color)
 }
-.sub-list li.active a svg {
+.sub-list li.active a svg,
+.category-sub-list li.active a svg {
   color: var(--sub-color)
 }
 .sub-list li:last-of-type a,
-.sub-sub-list li:last-of-type a {border-bottom: 0px}
+.sub-sub-list li:last-of-type a,
+.category-sub-list li:last-of-type a,
+.category-sub-sub-list li:last-of-type a {border-bottom: 0px}
 /* .dropdown-wrapper:hover .sub-list {
   transform: scale(1);
   display: flex
 } */
 
-.sub-list.show {
+.sub-list.show,
+.category-sub-list.show {
   transform: scale(1);
   display: flex
 }
 
 /* End Style OF The Multiple Dropdown  */
+
 
 /* Start Modal Style */
 .modal-title {
