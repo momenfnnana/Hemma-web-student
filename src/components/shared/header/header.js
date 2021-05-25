@@ -405,12 +405,10 @@ return(
                </ul>
             </li>
             
-            <li className="nav-item">
-              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
-            </li>
             {/* <li className="nav-item">
-              <a href="/home" className={"nav-link links-hover " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
+              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
             </li> */}
+          
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
               <a className="nav-link links-hover d-flex align-items-center justify-content-between">
                 <span className="mr-1">المجموعات المجانيه</span>
