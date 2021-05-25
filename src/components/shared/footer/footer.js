@@ -136,7 +136,6 @@ class FooterComponent extends Component {
                <ul className="hemma-socials list-unstyled d-flex align-items-center justify-content-center mb-2">
                   <li>
                      <a onClick={() =>
-                      //  window.open("https://twitter.com/HemmaEdu", "_blank")
                       window.open("https://twitter.com/hemmaedu?lang=ar", "_blank") 
                      }  className="socials-links saved-animation cursor-pointer">
                      <i className="fab fa-twitter"></i>

@@ -361,9 +361,7 @@ return(
       <div className="container">
 
         {/* <!-- Start The Main Hemma Logo --> */}
-        {/* <Link class="navbar-brand">
-          <img src="https://hemma.sa/assets/images/logo.png" height="60"/>
-        </Link> */}
+     
         <Link to="/home" className="navbar-brand mr-0" >
                 <img className="logo-img"
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
@@ -373,9 +371,7 @@ return(
         {/* <!-- End The Main Hemma Logo --> */}
 
         {/* <!-- Start The Mobile Button In Small Screen --> */}
-        {/* <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu-mobile-navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button> --> */}
+   
 
         <button className="hamburger hamburger--spring navbar-toggler border p-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu-mobile-navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="d-flex align-items-center justify-content-center">
@@ -405,9 +401,7 @@ return(
                </ul>
             </li>
             
-            {/* <li className="nav-item">
-              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
-            </li> */}
+           
           
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
               <a className="nav-link links-hover d-flex align-items-center justify-content-between">
@@ -421,12 +415,7 @@ return(
                 </div>
                 </ul>
             </li>
-            {/* <li className="nav-item">
-              <a href="/banks" className="nav-link links-hover">حسابات البنوك</a>
-            </li>
-            <li className="nav-item">
-              <a href="/faq" className="nav-link links-hover">  الأسئلة المتكررة</a>
-            </li> */}
+           
             </ul>
             {!this.props.authenticated ? (
               <ul className="navbar-nav mb-2 mb-lg-0">
@@ -439,28 +428,6 @@ return(
               </ul>
             ):(
               <ul className="navbar-nav mb-2 mb-lg-0">
-            {/* <li className="nav-item">
-               <a href="/cart" className="nav-link d-inline-block">
-               <img
-                            src={"/assets/images/cart.png"}
-                            height="18"
-                            className="mr-2"
-                          />سلة التسوق</a>
-             </li>
-             <li className="nav-item">
-               <a href="/course/content" className="nav-link d-inline-block">دوراتي</a>
-             </li> */}
-             {/* <li className="nav-item">
-              <a className="nav-link d-inline-block">
-                <i className="far fa-bell"></i>
-              </a>
-            </li> */}
-            {/* <li className="nav-item">
-              <a className="nav-link d-inline-block">
-                <i className="far fa-user"></i>
-                <span>اسم الطالب</span>
-              </a>
-            </li> */}
             <UncontrolledDropdown nav inNavbar>
                         <DropdownToggle className={"nav-link "} nav>
                           {/* <img
@@ -474,53 +441,18 @@ return(
                         <DropdownMenu>
                           <DropdownItem className="p-0">
                           <a href="/account/update" className="nav-link d-inline-block">  تعديل الملف</a>
-                            {/* <NavLink
-                              className="nav-link mid-text"
-                              activeClassName="active"
-                              to="/account/update"
-                            >
-                            
-                            </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a  href="/cart" className="nav-link d-inline-block">مختاراتي</a>
-                            {/* <NavLink
-                              className="nav-link mid-text"
-                              activeClassName="active"
-                              to="/account/update"
-                            >
-                            
-                            </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a href="/course/content" className="nav-link d-inline-block"> دوراتي</a>
-                            {/* <NavLink
-                              className="nav-link mid-text"
-                              activeClassName="active"
-                              to="/account/update"
-                            >
-                            
-                            </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a href="/billing" className="nav-link d-inline-block">مشترياتي</a>
-                            {/* <NavLink
-                              className="nav-link mid-text"
-                              activeClassName="active"
-                              to="/billing"
-                            >
-                              الحركات المالية
-                            </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a href="/certificates" className="nav-link d-inline-block"> شهاداتي</a>
-                            {/* <NavLink
-                              className="nav-link mid-text"
-                              activeClassName="active"
-                              to="/certificates"
-                            >
-                              الشهادات
-                            </NavLink> */}
                           </DropdownItem>
                           <DropdownItem className="p-0">
                             <a
