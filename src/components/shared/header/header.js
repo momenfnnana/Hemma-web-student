@@ -26,6 +26,12 @@ class HeaderComponent extends Component {
     this.state = {
       isOpen: false,
       categories: [],
+      categorieslvl1: {},
+      categorieslvl2: {},
+      categorieslvl3: {},
+      categorieslvl4: {},
+
+      categoriesGroups:[],
       ClikedTab:""
     };
   }
@@ -72,7 +78,26 @@ class HeaderComponent extends Component {
       .get(`${apiBaseUrl}/categories/CategoryHeader`)
       .then(response => {
        console.log("showthis",response);
-        this.setState({ categories: response.data.data });
+       let categories= response.data.data;
+        this.setState(
+          { 
+            categories: categories,
+            categorieslvl1 : categories.find(c=>c.level==1),
+            categorieslvl2 : categories.find(c=>c.level==2),
+            categorieslvl3 : categories.find(c=>c.level==3),
+            categorieslvl4 : categories.find(c=>c.level==4),
+
+          }
+          );
+          PrepareDropdown('category-');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      axios
+      .get(`${apiBaseUrl}/categories/CategorygroupsHeader`)
+      .then(response => {
+        this.setState({ categoriesGroups: response.data.data });
         setTimeout(
           function () {
             this.setState({loading: false });
@@ -83,120 +108,223 @@ class HeaderComponent extends Component {
       .catch(error => {
         console.log(error);
       });
-/* Start Collapsing Sub Dropdown Menu By Ckicking */
-  // [1] First Sub Menu Of Dropdown Menu
-  let linkDropdown = document.querySelectorAll('.dropdown-sub-wrapper-one');
-  let subDropdown = document.querySelectorAll('.sub-dropdown');
-  handleActiveEle(linkDropdown, subDropdown);
-
-  /* ______________________________________________________________________ */
-
-  // [2] Second Sub Menu Of Dropdown Menu
-  let linkDropdownTwo = document.querySelectorAll('.dropdown-sub-wrapper-two');
-  let subDropdownTwo = document.querySelectorAll('.sub-dropdown2');
-  handleActiveEle(linkDropdownTwo, subDropdownTwo);
-
-  /* ______________________________________________________________________ */
-
-  // [3] Third Sub Menu Of Dropdown Menu
-  let linkDropdownThree = document.querySelectorAll('.dropdown-sub-wrapper-three');
-  let subDropdownThree = document.querySelectorAll('.sub-dropdown3');
-  handleActiveEle(linkDropdownThree, subDropdownThree);
-
-  function handleActiveEle(element, list) {
-    element.forEach(smEle => {
-      smEle.addEventListener('click', (e) => {
-        e.preventDefault();
-        let dropMenu = document.querySelector('.' + e.currentTarget.dataset.dropmenu);
-        element.forEach(ele => {
-          ele.classList.remove('active');
+      PrepareDropdown('');
+   
+      
+      function PrepareDropdown(perfix)
+      {
+        /* Start Collapsing Sub Dropdown Menu By Ckicking */
+        // [1] First Sub Menu Of Dropdown Menu
+        let linkDropdown = document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-one');
+        let subDropdown = document.querySelectorAll('.'+perfix+'sub-dropdown');
+        handleActiveEle(linkDropdown, subDropdown);
+        
+      
+        /* ______________________________________________________________________ */
+      
+        // [2] Second Sub Menu Of Dropdown Menu
+        let linkDropdownTwo = document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-two');
+        let subDropdownTwo = document.querySelectorAll('.'+perfix+'sub-dropdown2');
+        handleActiveEle(linkDropdownTwo, subDropdownTwo);
+      
+        /* ______________________________________________________________________ */
+      
+        // [3] Third Sub Menu Of Dropdown Menu
+        let linkDropdownThree = document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-three');
+        let subDropdownThree = document.querySelectorAll('.'+perfix+'sub-dropdown3');
+        handleActiveEle(linkDropdownThree, subDropdownThree);
+      
+      
+      
+      
+        let mainLinkDropDown = document.querySelector('.'+perfix+'dropdown-wrapper');
+        mainLinkDropDown.onmouseover = function(e) {
+          let subListMenu = document.querySelector('.' + e.currentTarget.dataset.hover);
+          if(!subListMenu.classList.contains('show')) {
+            subListMenu.classList.add('show');
+          }
+        }
+         mainLinkDropDown.onmouseout = function(e) {
+          let subListMenu = document.querySelector('.' + e.currentTarget.dataset.hover);
+          if(subListMenu.classList.contains('show')) {
+            subListMenu.classList.remove('show');
+          }
+        }
+        document.addEventListener('mouseover', function(event) {
+          var isClickInside = mainLinkDropDown.contains(event.target);
+          let subListMenu = document.querySelector('.'+perfix+'sub-list');
+          if (isClickInside) { return false; } else {
+            subListMenu.classList.remove('show');
+            // document.querySelector('.'+perfix+'sub-dropdown').classList.remove('showing');
+            // document.querySelector('.'+perfix+'sub-dropdown2').classList.remove('showing');
+            // document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
+            document.querySelectorAll('.'+perfix+'sub-dropdown').forEach(ele => {
+              ele.classList.remove('showing');
+            })
+      
+            document.querySelectorAll('.'+perfix+'sub-dropdown2').forEach(ele => {
+              ele.classList.remove('showing');
+            })
+      
+            document.querySelectorAll('.'+perfix+'sub-dropdown3').forEach(ele => {
+              ele.classList.remove('showing');
+            })
+      
+            document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-one').forEach(ele => {
+              ele.classList.remove('active');
+            })
+      
+            document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-two').forEach(ele => {
+              ele.classList.remove('active');
+            })
+      
+            document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-three').forEach(ele => {
+              ele.classList.remove('active');
+            })
+          }
         });
-        list.forEach(subDrop => {
-          subDrop.classList.remove('showing');
-        });
-        e.currentTarget.classList.add('active');
-        dropMenu.classList.toggle('showing');
-      })
-    });
-  }
+      }
+      
+      
+        function handleActiveEle(element, list) {
+          debugger;
 
-      let mainLinkDropDown = document.querySelector('.dropdown-wrapper');
-  mainLinkDropDown.onmouseover = function(e) {
-    let subListMenu = document.querySelector('.' + e.currentTarget.dataset.hover);
-    if(!subListMenu.classList.contains('show')) {
-      subListMenu.classList.add('show');
-    }
-  }
-   mainLinkDropDown.onmouseout = function(e) {
-    let subListMenu = document.querySelector('.' + e.currentTarget.dataset.hover);
-    if(subListMenu.classList.contains('show')) {
-      subListMenu.classList.remove('show');
-    }
-  }
-  document.addEventListener('mouseover', function(event) {
-    var isClickInside = mainLinkDropDown.contains(event.target);
-    let subListMenu = document.querySelector('.sub-list');
-    if (isClickInside) { return false; } else {
-      subListMenu.classList.remove('show');
-      document.querySelector('.sub-dropdown').classList.remove('showing');
-      document.querySelector('.sub-dropdown2').classList.remove('showing');
-      document.querySelector('.sub-dropdown3').classList.remove('showing');
-      document.querySelectorAll('.dropdown-sub-wrapper-one').forEach(ele => {
-        ele.classList.remove('active');
-      })
-      document.querySelectorAll('.dropdown-sub-wrapper-two').forEach(ele => {
-        ele.classList.remove('active');
-      })
-      document.querySelectorAll('.dropdown-sub-wrapper-three').forEach(ele => {
-        ele.classList.remove('active');
-      })
-    }
-  });
+          element.forEach(smEle => {
+            smEle.addEventListener('click', (e) => {
+console.log("sameh",e.currentTarget.dataset.haschild)
+if(e.currentTarget.dataset.haschild == "false")
+{
+return;
+}
+
+              e.preventDefault();
+              let dropMenu = document.querySelector('.' + e.currentTarget.dataset.dropmenu);
+              element.forEach(ele => {
+                ele.classList.remove('active');
+              });
+              list.forEach(subDrop => {
+                subDrop.classList.remove('showing');
+              });
+              e.currentTarget.classList.add('active');
+              dropMenu.classList.toggle('showing');
+            })
+          });
+        }
 
   }
+
+
+
+
 renderSubCategory()
 {
-  const Categories = this.state.categories;
-  debugger;
-//   return (
-//     <ul className="sub-list list-unstyled m-0 p-0">
-//   {Categories.map(cat => (
-//     <React.Fragment>
-//        {cat.childCatgories.length != 0 ? (
-//          <React.Fragment>
-//     <li className="dropdown-sub-wrapper position-relative">
-//       <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
-
-//    <ul className="sub-sub-list list-unstyled m-0 p-0">
-//    { cat.childCatgories.map(chiled=>(
-//     <li>
-//      <a href={"/categories/details/"+chiled.slug}>{chiled.nameAr}</a>
-//   </li>
-//    ))
-//    }
-//    </ul>
-//    </li>
-//    </React.Fragment>
-//   ) : (<li >
-//  <a href={"/categories/details/"+cat.slug}>{cat.nameAr}</a>
-// </li>)}
-//     </React.Fragment>
-    
-//   ))}</ul>);
+  const Categories = this.state.categorieslvl1;
+  
 return(
   <React.Fragment>
+ <div className="sm-scroll category-drop_one">
+  {Categories?.categoriesIds?.map((categoryId,index) => (
+    
+      Categories.childCategories[categoryId].map((category,index) => (
+      <li className="category-dropdown-sub-wrapper-one" data-dropmenu={"drop_"+category.id}  data-hasChild={category.hasChild}>
+      <a href={"/categories/details/"+category.slug} className="linked">
+        {
+          category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
+        }
+        
+        <span>{category.nameAr}</span>
+      </a>
+    </li>))
+    
 
-  {Categories.map((category,index) => (
-<li className={"dropdown-sub-wrapper-"+category.CategoryParentId} data-dropmenu={"drop_"+index}>
-                    <a href={"/categories/details/"+category.slug} className="linked">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
-                      <span>{category.nameAr}</span>
-                    </a>
-                  </li>
   ))}
+  </div>
   </React.Fragment>
 )
 }
+
+
+renderSubCategorylvl2()
+{
+  const Categories = this.state.categorieslvl2;
+  
+return(
+  <React.Fragment>
+
+  {Categories?.categoriesIds?.map((categoryId,index) => (
+     <div  className={"sm-scroll category-sub-dropdown drop_"+categoryId}>
+     { Categories.childCategories[categoryId].map((category,index) => (
+      <li className="category-dropdown-sub-wrapper-two" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
+      <a href={"/categories/details/"+category.slug} className="linked" >
+        {
+          category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
+        }
+        
+        <span>{category.nameAr}</span>
+      </a>
+    </li>)) }
+     </div>
+
+  ))}
+ 
+  </React.Fragment>
+)
+}
+
+renderSubCategorylvl3()
+{
+  const Categories = this.state.categorieslvl3;
+  
+return(
+  <React.Fragment>
+
+  {Categories?.categoriesIds?.map((categoryId,index) => (
+     <div  className={"sm-scroll category-sub-dropdown2 drop_"+categoryId}>
+     { Categories.childCategories[categoryId].map((category,index) => (
+      <li className="category-dropdown-sub-wrapper-three" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
+      <a href={"/categories/details/"+category.slug} className="linked">
+        {
+          category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
+        }
+        
+        <span>{category.nameAr}</span>
+      </a>
+    </li>)) }
+     </div>
+
+  ))}
+ 
+  </React.Fragment>
+)
+}
+renderSubCategorylvl4()
+{
+  const Categories = this.state.categorieslvl4;
+  
+return(
+  <React.Fragment>
+
+  {Categories?.categoriesIds?.map((categoryId,index) => (
+     <div  className={"sm-scroll category-sub-dropdown3 drop_"+categoryId}>
+     { Categories.childCategories[categoryId].map((category,index) => (
+      <li className="category-dropdown-sub-wrapper-four" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
+      <a href={"/categories/details/"+category.slug} className="linked" >
+        {
+          category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
+        }
+        
+        <span>{category.nameAr}</span>
+      </a>
+    </li>)) }
+     </div>
+
+  ))}
+ 
+  </React.Fragment>
+)
+}
+
+
   componentDidUpdate(prevProps, prevState) {
     if (!prevProps.authenticated && this.props.authenticated) {
       this.props.getUser();
@@ -206,6 +334,22 @@ return(
   verifyUser = () => {
     this.props.history.push("/verify");
   };
+  renderGroupCategory()
+  {
+    const Categories = this.state.categoriesGroups;
+    return(
+      <React.Fragment>
+         {Categories.map((category,index) => (
+<li className="dropdown-sub-wrapper-four">
+                    <a href={"/categories/details/"+category.slug+"#tab-three"} >
+                      <span>{category.nameAr}</span>
+                    </a>
+                  </li>
+  ))}
+      </React.Fragment>
+    )
+
+  }
 
   render() {
     const user = this.props.user;
@@ -465,73 +609,83 @@ return(
             <li className="nav-item">
               <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
             </li>
-            <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
-              <a className="nav-link links-hover d-flex align-items-center justify-content-between">
+            <li className="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
+            <a className="nav-link links-hover d-flex align-items-center justify-content-between">
                 <span className="mr-1">منصات همة</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>
-              <ul className="sub-list list-unstyled m-0">
-                {/* <div className="sm-scroll drop_one">
-                  <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
-                    <a href="#" className="linked">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+               <ul className="category-sub-list list-unstyled m-0">
+                 {this.renderSubCategory()}
+                 {this.renderSubCategorylvl2()}
+                 {this.renderSubCategorylvl3()}
+                 {this.renderSubCategorylvl4()}
+               </ul>
+            </li>
+             {/* <li class="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
+              <a class="nav-link links-hover d-flex align-items-center justify-content-between">
+                <span>المجموعات المجانيه</span>
+                <i class="fas fa-chevron-down font-size-13"></i>
+              </a>
+              <ul class="category-sub-list list-unstyled m-0">
+                <div class="sm-scroll category-drop_one">
+                  <li class="category-dropdown-sub-wrapper-one" data-dropmenu="category-drop_two">
+                    <a href="#" class="linked">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
                       <span>منصات الطالب</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
-                    <a href="#" className="linked">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+                  <li class="category-dropdown-sub-wrapper-one" data-dropmenu="category-drop_two">
+                    <a href="#" class="linked">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
                       <span>منصة المعلم</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-one" data-dropmenu="drop_two">
-                    <a href="#" className="linked">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
+                  <li class="category-dropdown-sub-wrapper-one" data-dropmenu="category-drop_two">
+                    <a href="#" class="linked">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i>
                       <span>دورات اجتياز القياس</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-one">
+                  <li class="category-dropdown-sub-wrapper-one">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>دورات وتدريبات</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-one">
+                  <li class="category-dropdown-sub-wrapper-one">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>دورات وتدريبات</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-one">
+                  <li class="category-dropdown-sub-wrapper-one">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>دورات وتدريبات</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-one">
+                  <li class="category-dropdown-sub-wrapper-one">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>دورات وتدريبات</span>
                     </a>
                   </li>
                 </div>
 
-                <div className="sm-scroll sub-dropdown drop_two">
-                  <li className="dropdown-sub-wrapper-two" data-dropmenu="drop_three_mina">
+                <div class="sm-scroll category-sub-dropdown category-drop_two">
+                  <li class="category-dropdown-sub-wrapper-two" data-dropmenu="category-drop_three_mina">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>عنصر 1</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-two" data-dropmenu="drop_three_mina">
-                    <a href="#" className="linked">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                  <li class="category-dropdown-sub-wrapper-two" data-dropmenu="category-drop_three_mina1">
+                    <a href="#" class="linked">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>عنصر 2</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-two" data-dropmenu="drop_three_mina">
+                  <li class="category-dropdown-sub-wrapper-two" data-dropmenu="category-drop_three_mina2">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>عنصر رقم 3</span>
                     </a>
                   </li>
@@ -539,30 +693,81 @@ return(
 
 
 
-                <div className="sm-scroll sub-dropdown2 drop_three_mina">
-                  <li className="dropdown-sub-wrapper-three" data-dropmenu="drop_four">
+                <div class="sm-scroll category-sub-dropdown2 category-drop_three_mina">
+                  <li class="category-dropdown-sub-wrapper-three" data-dropmenu="category-drop_four">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>عنصر 1.1</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-three" data-dropmenu="drop_four">
-                    <a href="#" className="linked">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                  <li class="category-dropdown-sub-wrapper-three" data-dropmenu="category-drop_four">
+                    <a href="#" class="linked">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>عنصر 2.1</span>
                     </a>
                   </li>
-                  <li className="dropdown-sub-wrapper-three" data-dropmenu="drop_four">
+                  <li class="category-dropdown-sub-wrapper-three" data-dropmenu="category-drop_four">
                     <a href="#">
-                      <i className="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
                       <span>عنصر رقم 3.1</span>
                     </a>
                   </li>
                 </div>
 
+                <div class="sm-scroll category-sub-dropdown2 category-drop_three_mina1">
+                 
+                  <li class="category-dropdown-sub-wrapper-three" data-dropmenu="category-drop_four">
+                    <a href="#" class="linked">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر 2.1</span>
+                    </a>
+                  </li>
+                 
+                </div>   
+                <div class="sm-scroll category-sub-dropdown2 category-drop_three_mina2">
+               
+                  <li class="category-dropdown-sub-wrapper-three" data-dropmenu="category-drop_four">
+                    <a href="#">
+                      <i class="fas fa-chevron-left font-size-13 lighter-gray"></i>
+                      <span>عنصر رقم 3.1</span>
+                    </a>
+                  </li>
+                </div>
+                <div class="sm-scroll category-sub-dropdown3 category-drop_four">
+                  <li class="category-dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر 1.2</span>
+                    </a>
+                  </li>
+                  <li class="category-dropdown-sub-wrapper-four">
+                    <a href="#" class="linked">
+                      <span>عنصر 2.2</span>
+                    </a>
+                  </li>
+                  <li class="category-dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر رقم 3.2</span>
+                    </a>
+                  </li>
+                </div>
 
-                <div className="sm-scroll sub-dropdown3 drop_four">
-                  <li className="dropdown-sub-wrapper-four">
+              </ul>
+            </li> */}
+            <li className="nav-item">
+              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
+            </li>
+            {/* <li className="nav-item">
+              <a href="/home" className={"nav-link links-hover " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
+            </li> */}
+            <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
+              <a className="nav-link links-hover d-flex align-items-center justify-content-between">
+                <span className="mr-1">المجموعات المجانيه</span>
+                <i className="fas fa-chevron-down font-size-13"></i>
+              </a>
+              <ul className="sub-list list-unstyled m-0">
+              <div className="sm-scroll drop_one">
+                { this.renderGroupCategory()}
+              {/* <li className="dropdown-sub-wrapper-four">
                     <a href="#">
                       <span>عنصر 1.2</span>
                     </a>
@@ -577,23 +782,18 @@ return(
                       <span>عنصر رقم 3.2</span>
                     </a>
                   </li>
-                </div> */}
- {this.renderSubCategory()}
-              </ul>
-            </li>
-            {/* <li className="dropdown-wrapper nav-item position-relative">
-              <a href="/categories" className={"nav-link d-inline-block " + (this.state.ClikedTab=="Category"?"active":"")}>
-                <span>منصات همة </span>
-               <i className="fas fa-caret-down"></i>
-               </a>
-               
-            {this.renderSubCategory()}
-            </li> */}
-            <li className="nav-item">
-              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
-            </li>
-            <li className="nav-item">
-              <a href="/home" className={"nav-link links-hover " + (this.state.ClikedTab=="Groups"?"active":"")}>المجموعات المجانيه</a>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#" className="linked">
+                      <span>عنصر 2.2</span>
+                    </a>
+                  </li>
+                  <li className="dropdown-sub-wrapper-four">
+                    <a href="#">
+                      <span>عنصر رقم 3.2</span>
+                    </a>
+                  </li> */}
+                </div>
+                </ul>
             </li>
             {/* <li className="nav-item">
               <a href="/banks" className="nav-link links-hover">حسابات البنوك</a>

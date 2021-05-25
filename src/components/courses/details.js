@@ -646,7 +646,7 @@ export class CourseDetails extends Component {
                     </div>
                     {this.state.details.schedulePosterUrl && (
                       <div
-                        className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable"
+                        className="light-bg border-0 box-layout mb-4 w-100 p-3 d-inline-flex align-items-center justify-content-center clickable cursor-pointer"
                         onClick={() =>
                           window.open(
                             `${this.state.details.schedulePosterUrl}`,
@@ -663,7 +663,7 @@ export class CourseDetails extends Component {
                           height="25"
                           alt="File"
                         />{" "}
-                        <h6 className="text-white mb-0 mt-0 light-font-text">
+                        <h6 className="text-white mb-0 mt-0 light-font-text ">
                           تنزيل جدول الدورة
                         </h6>
                       </div>
