@@ -42,7 +42,7 @@ export class MiniCartItem extends Component {
 
             <div className="mt-0 d-inline-flex flex-row justify-content-between align-items-center position-relative w-100">
               <span
-                className="badge red-bg text-white smaller light-font-text clickable close-btn"
+                className="badge red-bg text-white smaller light-font-text clickable close-btn cursor-pointer"
                 onClick={this.onRemoveItem}
               >
                 إزالة
