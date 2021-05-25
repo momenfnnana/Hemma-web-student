@@ -124,7 +124,8 @@ export class CategoriesComponent extends Component {
                     key={cat.id}
                     className="d-flex align-items-center"
                   > */}
-                    <div className="full-circle-border mr-2">
+                  <div className="d-flex align-items-center">
+                  <div className="full-circle-border mr-2">
                       <img
                         key={cat.id}
                         src={cat.icon}
@@ -137,6 +138,8 @@ export class CategoriesComponent extends Component {
                     <h5 key={cat.id} className="dark-text mb-0">
                       {cat.nameAr}
                     </h5>
+                  </div>
+                   
                   {/* </Link> */}
                  
                   <Link

@@ -184,7 +184,7 @@ class CartSummaryComponent extends Component {
         key={coupon.key}
       >
         <label
-          className="red-text smaller mb-0 clickable"
+          className="red-text smaller mb-0 clickable cursor-pointer"
           onClick={() => this.onRemoveCoupon(coupon.id)}
         >
           إزالة الكوبون{" "}
