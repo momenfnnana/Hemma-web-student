@@ -1057,6 +1057,23 @@ export class CategoryDetails extends Component {
                 <div className="container">
                   <div className="row">
                   {this.renderCards()}
+                  {!this.state.hideBtn && (
+                <div className="row col-md-12">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.loadMore}
+                      disabled={this.state.disabled}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
                     {/* <div className="col-lg-4">
                       <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
                         <div className="card-img">
