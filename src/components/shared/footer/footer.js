@@ -122,7 +122,7 @@ class FooterComponent extends Component {
                <ul className="hemma-links list-unstyled m-0 p-0">
                   <li><a href="/categories" className="cursor-pointer links-hover mb-1">منصات همة</a></li>
                   <li><a href="/faq" className="cursor-pointer links-hover mb-1">الاسئلة المتكررة</a></li>
-                  <li><a className="cursor-pointer links-hover mb-1">متجر همة للكتب</a></li>
+                  {/* <li><a className="cursor-pointer links-hover mb-1">متجر همة للكتب</a></li> */}
                   <li><a href="/banks" className="cursor-pointer links-hover mb-1">الحسابات البنكية</a></li>
                </ul>
             </div>
@@ -136,7 +136,8 @@ class FooterComponent extends Component {
                <ul className="hemma-socials list-unstyled d-flex align-items-center justify-content-center mb-2">
                   <li>
                      <a onClick={() =>
-                       window.open("https://twitter.com/HemmaEdu", "_blank")
+                      //  window.open("https://twitter.com/HemmaEdu", "_blank")
+                      window.open("https://twitter.com/hemmaedu?lang=ar", "_blank") 
                      }  className="socials-links saved-animation cursor-pointer">
                      <i className="fab fa-twitter"></i>
                      </a>
@@ -151,12 +152,13 @@ class FooterComponent extends Component {
                <ul className="hemma-socials list-unstyled d-flex align-items-center justify-content-center mb-2">
                   <li>
                      <a onClick={() =>
-                      window.open("https://www.snapchat.com/add/HemmaEdu","_blank")} className="socials-links saved-animation cursor-pointer">
+                      window.open("https://www.snapchat.com/add/hemmaedu","_blank")} className="socials-links saved-animation cursor-pointer">
                      <i className="fab fa-snapchat-ghost"></i>
                      </a>
                   </li>
                   <li>
-                     <a className="socials-links saved-animation cursor-pointer">
+                     <a onClick={() =>
+                      window.open("https://www.youtube.com/channel/UCYS78ualcgv0oIy4txFC2eA","_blank")} className="socials-links saved-animation cursor-pointer">
                      <i className="fab fa-youtube"></i>
                      </a>
                   </li>
