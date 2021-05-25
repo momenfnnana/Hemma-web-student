@@ -35,10 +35,33 @@ class HomeComponent extends Component {
   }
 
   componentDidMount() {
+    const myOptions = {
+      type: 'carousel',
+      startAt: 1,
+      perView: 3,
+      focusAt: 'center',
+      gap: 20,
+      autoplay: 4000,
+      // animationTimingFunc: 'ease-in-out',
+      animationDuration: 800,
+      // peek: {
+      //   before: 100,
+      //   after: 100
+      // },
+      hoverpause: false,
+      keyboard: true,
+      direction: 'rtl',
+      breakpoints: {
+
+        1024: {perView: 2},
+        600: {perView: 1}
+      }
+    }
     axios
       .get(`${apiBaseUrl}/categories/Main_Category`)
       .then((response) => {
         this.setState({ categories: response.data.data });
+        new Glide('.glide_features',myOptions).mount()
       })
       .catch((error) => {
         console.log(error);
@@ -96,32 +119,28 @@ class HomeComponent extends Component {
       //   perView: 3,
       //   type: "carousel"
       // }).mount();
-      const myOptions = {
-        type: 'carousel',
-        startAt: 1,
-        perView: 3,
-        focusAt: 'center',
-        gap: 20,
-        autoplay: 4000,
-        // animationTimingFunc: 'ease-in-out',
-        animationDuration: 800,
-        // peek: {
-        //   before: 100,
-        //   after: 100
-        // },
-        hoverpause: false,
-        keyboard: true,
-        direction: 'rtl',
-        breakpoints: {
-
-          1024: {perView: 2},
-          600: {perView: 1}
-        }
-      }
-      new Glide('.glide',myOptions).mount()
-
+    
+    //  new Glide('.glide',myOptions).mount()
+     
+      // let collapsingBtn = document.querySelector('.collapsing-btn');
+      // collapsingBtn.onclick = function (e) {
+      //   let eleClickedTarget = e.currentTarget.dataset.collapser;
+      //   let eleCollapser = document.querySelector('.' + eleClickedTarget);
+      //   if (eleCollapser.classList.contains('collapse-box')) {
+      //     eleCollapser.classList.remove('collapse-box');
+      //     e.currentTarget.children[0].textContent = 'أغلق';
+      //     e.currentTarget.children[1].classList.remove('fa-chevron-down');
+      //     e.currentTarget.children[1].classList.add('fa-chevron-up');
+      //     console.log('Yes')
+      //   } else {
+      //     eleCollapser.classList.add('collapse-box');
+      //     e.currentTarget.children[0].textContent = 'المزيد';
+      //     e.currentTarget.children[1].classList.add('fa-chevron-down');
+      //     e.currentTarget.children[1].classList.remove('fa-chevron-up');
+      //     console.log('No')
+      //   }
+      // }
   }
-
   renderCourses() {
     return this.state.courses.map((course) => (
       <Card key={course.id} course={course} />
@@ -183,41 +202,38 @@ class HomeComponent extends Component {
         this.props.history.push("/auth/register");
       });
   };
+renderBulit()
+{
+  const cats = this.state.categories;
+ 
+  return(
+    <React.Fragment>
+    {cats.map((cat,indexcat) => {
+      return(<button className="glide__bullet" data-glide-dir={"="+indexcat}></button>)
+   
+})}
+</React.Fragment>
+  );
 
+
+}
   renderCategories() {
     const cats = this.state.categories;
     const { match, location, history } = this.props;
     return (
       <React.Fragment>
-        {/* <div className="row d-flex justify-content-center align-items-center">
-          {cats.map((cat) => {
-            return (
-              <div className="col-lg-3 col-6" key={cat.id}>
-                <Link to={{
-                  pathname: `/categories/details/${cat.slug}`,
-                  state: {
-                    catId: cat.id,
-                  },
-                }}>
-                  <div className="categories-box d-flex flex-column align-items-center justify-content-center clickable shadow-sm">
-                    <img src={cat.icon} alt={cat.nameAr} />
-                    <h6 className="dark-text text-center word-break mb-0">{cat.nameAr}</h6>
-                  </div>
-                </Link>
-              </div>
-            );
-          })}
-        </div> */}
+  
 
          {cats.map((cat,indexcat) => {
-           if(indexcat < 3){
+          //  if(indexcat < 3){
+
 
           console.log(cat);
             return (
-        <div className="col-lg-4" key={cat.id}>
-              <div className="card">
-              <div className="card-items">
-                <div className="title-card font-weight-bold" onClick={() => {(cat.active==false && cat.featuredInMain==true)? 
+              <li className="glide__slide">
+                    <div className="card">
+                      <div className="card-items">
+                      <div className="title-card font-weight-bold" onClick={() => {(cat.active==false && cat.featuredInMain==true)? 
                   (cat.inactiveCategoryMessage)? 
                   swal(
                     "عفواً",
@@ -237,40 +253,27 @@ class HomeComponent extends Component {
                       )
                    :history.push(`/categories/details/${cat.slug}`)}}
                 >
-              
+                        
+                        <h3> <span>{cat.nameAr}</span>  </h3>
+                        </div>
 
+                        <div className="text-card text-center mb-4">
+                          <h5 className="h6 font-weight-bold">
+                         
+                            <span className="d-block mb-2">{cat.descriptionAr}</span>
+                          </h5>
+                        </div>
+                        {cat.childCatgories.length > 0 ?
+                    ( <div className={"collapse-box  buttons-card d-flex-row flex-wrap "+"collapser_"+indexcat}>
 
-                  {/* <Link
-                    to={{
-                      pathname: `/categories/details/${cat.slug}`,
-                      state: {
-                        catId: cat.id
-                      }
-                    }}
-                    key={cat.id}
-                  //className="btn dark-btn unset-height unset-line-height br-5"
-                  > */}
-                    <h3> <span>{cat.nameAr}</span>  </h3>
-                   {/* </Link> */}
-
-                    {/* <a href="/categories/details/">{cat.nameAr}</a> */}
-
-                </div>
-                <div className="text-card text-center mb-4">
-                    <h5 className="h6 font-weight-bold">
-                    <span className="d-block">{cat.descriptionAr}</span>
-                      {/* <span class="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span> */}
-                    </h5>
-                  </div>
-                   {cat.childCatgories.length > 0 ?
-                    ( <div className="buttons-card d-flex-row flex-wrap">
                       {cat.childCatgories.map((child,indx)=>{
-                        if(indx < 3)
-                      {return(
+                      //   if(indx < 3)
+                      // {
+                        return(
 
                    <Link
                     to={{
-                      pathname: `/course/details/${child.slug}`,
+                      pathname: `categories/details/${child.slug}`,
                       state: {
                         catId: cat.id
                       }
@@ -283,23 +286,21 @@ class HomeComponent extends Component {
                    </Link>
 
 
-    // <a href="" className="btn-card mx-2 mb-2">{child.nameAr}</a>
+
       );
-}
-  return null;
+//}
+  //return null;
 })}
 
-                  {/* <a className="btn-card mx-2 mb-2">التطوير المهني</a>
-                  <a className="btn-card mx-2 mb-2">مجتمع همة التعليمى</a> */}
                   </div>):
                    (
-                   <div className="buttons-card d-flex align-items-center flex-wrap justify-content-center">
+                   <div className={"collapse-box  buttons-card d-flex-row flex-wrap "+"collapser_"+indexcat}>
                    {cat.courses.map((course,indxcourse)=>{
-                     if(indxcourse < 3)
-                       {
+                    //  if(indxcourse < 3)
+                    //    {
                         return(
 
-                   <div className="btn-card mx-2 mb-2 " onClick={() => {(course.active==false && course.featuredInMain==true)? 
+                   <div className="btn-card mx-2 mb-2 headShake " onClick={() => {(course.active==false && course.featuredInMain==true)? 
                     (course.inactiveCourseMessage)? 
                     swal(
                       "عفواً",
@@ -323,37 +324,26 @@ class HomeComponent extends Component {
                   {course.nameAr}
 
                    </div>
-                  //  <Link
-                  //   to={{
-                  //     pathname: `/course/details/${course.slug}`,
-                  //     state: {
-                  //       catId: cat.id
-                  //     }
-                  //   }}
-                  //   key={cat.id}
-                  // className="btn-card mx-2 mb-2 "
-                  // >
-                  //    {course.nameAr}
-                  //  </Link>
-
-
-    // <a href="" className="btn-card mx-2 mb-2">{child.nameAr}</a>
       );
-                   }
-                   return null;
+                  //  }
+               //    return null;
                     })}
 
-                  {/* <a className="btn-card mx-2 mb-2">التطوير المهني</a>
-                  <a className="btn-card mx-2 mb-2">مجتمع همة التعليمى</a> */}
                   </div>
                    )
                    }
+                        {/* <div className="collapsing-btn" data-collapser={"collapser_"+indexcat}>
+                          <span>المزيد</span>
+                          <i className="fas fa-chevron-down"></i>
+                        </div> */}
+                      </div>
                     </div>
-              </div>
-            </div>
+                  </li>
+
               );
-  }})}
+   })}
       </React.Fragment>
+       
     );
   }
 
@@ -555,10 +545,10 @@ class HomeComponent extends Component {
           </div>
         </div>
       </div>
-      <div className="banner-cards">
+      {/* <div className="banner-cards">
         <div className="container">
           <div className="row">
-            {this.renderCategories()}
+            {this.renderCategories()} */}
             {/* <div className="col-lg-4">
               <div className="card">
                 <div className="card-items">
@@ -630,6 +620,140 @@ class HomeComponent extends Component {
                 </div>
               </div>
             </div> */}
+          {/* </div>
+        </div>
+      </div> */}
+        <div className="banner-cards">
+        <div className="container">
+          <div className="slider">
+            <div className="glide_features">
+              <div className="glide__track" data-glide-el="track">
+                <ul className="glide__slides py-2">
+                  {/* <li className="glide__slide">
+                    <div className="card">
+                      <div className="card-items">
+                        <div className="title-card font-weight-bold">
+                          <h3>
+                            <span>همة للمعلمين</span>
+                          </h3>
+                        </div>
+
+                        <div className="text-card text-center mb-4">
+                          <h5 className="h6 font-weight-bold">
+                            <span className="d-block mb-2">دورات ولقاءات لتطوير صناع المستقبل</span>
+                            <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
+                          </h5>
+                        </div>
+
+                        <div className="collapse-box collapser_one buttons-card d-flex-row flex-wrap">
+                          <a className="btn-card mx-2 mb-2 headShake">الرخصه المهنية</a>
+                          <a className="btn-card mx-2 mb-2 headShake">التطوير المهني</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                        </div>
+                        <div className="collapsing-btn" data-collapser="collapser_one">
+                          <span>المزيد</span>
+                          <i className="fas fa-chevron-down"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </li> */}
+                  {/* <li className="glide__slide">
+                    <div className="card">
+                      <div className="card-items">
+                        <div className="title-card font-weight-bold">
+                          <h3>
+                            <span>همة للمعلمين</span>
+                          </h3>
+                        </div>
+
+                        <div className="text-card text-center mb-4">
+                          <h5 className="h6 font-weight-bold">
+                            <span className="d-block mb-2">دورات ولقاءات لتطوير صناع المستقبل</span>
+                            <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
+                          </h5>
+                        </div>
+
+                        <div className="buttons-card d-flex-row flex-wrap">
+                          <a className="btn-card mx-2 mb-2 headShake">الرخصه المهنية</a>
+                          <a className="btn-card mx-2 mb-2 headShake">التطوير المهني</a>
+                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="glide__slide">
+                    <div className="card">
+                      <div className="card-items">
+                        <div className="title-card font-weight-bold">
+                          <h3>
+                            <span>همة للطلاب</span>
+                          </h3>
+                        </div>
+
+                        <div className="text-card text-center mb-4">
+                          <h5 className="h6 font-weight-bold">
+                            <span className="d-block mb-2">همة معك بهمه نحو طموحك لاجتياز اختبارات</span>
+                            <span className="d-block">القدرات والتحصيلى</span>
+                          </h5>
+                        </div>
+
+                        <div className="buttons-card d-flex-row flex-wrap">
+                          <a className="btn-card mx-2 mb-2 headShake">القدرات</a>
+                          <a className="btn-card mx-2 mb-2 headShake">التحصيلى</a>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  <li className="glide__slide">
+                    <div className="card">
+                      <div className="card-items">
+                        <div className="title-card font-weight-bold">
+                          <h3>
+                            <span>دورات اجتياز اختبارات قياس</span>
+                          </h3>
+                        </div>
+
+                        <div className="text-card text-center mb-4">
+                          <h5 className="h6 font-weight-bold">
+                            <span className="d-block mb-2">همة تمنحك تدريب مكثف يأهلك لاجتياز</span>
+                            <span className="d-block">الاختبار بأعلى الدرجات</span>
+                          </h5>
+                        </div>
+
+                        <div className="buttons-card d-flex-row flex-wrap">
+                          <a className="btn-card mx-2 mb-2 headShake">القدرة المعرفيه</a>
+                          <a className="btn-card mx-2 mb-2 headShake">قدرات الجامعيين</a>
+                          <a className="btn-card mx-2 mb-2 headShake text-uppercase">Step</a>
+                        </div>
+                      </div>
+                    </div>
+                  </li> */}
+{this.renderCategories()}
+                </ul>
+              </div>
+              <div className="glide__arrows" data-glide-el="controls">
+                <button className="glide__arrow glide__arrow--left" data-glide-dir="<"><i
+                    className="fas fa-chevron-left"></i></button>
+                <button className="glide__arrow glide__arrow--right" data-glide-dir=">"><i
+                    className="fas fa-chevron-right"></i></button>
+              </div>
+              <div className="glide__bullets" data-glide-el="controls[nav]">
+              {this.renderBulit()}
+                {/* <button className="glide__bullet" data-glide-dir="=0"></button>
+                <button className="glide__bullet" data-glide-dir="=1"></button>
+                <button className="glide__bullet" data-glide-dir="=2"></button>
+                <button className="glide__bullet" data-glide-dir="=3"></button>
+                <button className="glide__bullet" data-glide-dir="=4"></button> */}
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -640,7 +764,7 @@ class HomeComponent extends Component {
     <!-- ################################################################ -->
 
     <!-- Start The Free Interviews  --> */}
-    <section id="free-interview" className="free-interview ">
+    {/* <section id="free-interview" className="free-interview ">
       <div className="container">
         <header className="mb-5 text-center">
           <h2 className="h2 text-center main-color font-weight-bold aos-init aos-animate line-yellow"
@@ -751,7 +875,7 @@ class HomeComponent extends Component {
           </div>
         </div>
       </div>
-    </section>
+    </section> */}
     {/* <!-- End The Free Interviews  -->
 
     <!-- ################################################################ -->
@@ -879,7 +1003,7 @@ class HomeComponent extends Component {
     <!-- ################################################################ -->
 
     <!-- Start The Main Success OF Hemma  --> */}
-    <section id="success-wrapper" className="success-wrapper">
+    {/* <section id="success-wrapper" className="success-wrapper">
       <div className="container py-5">
         <header className="mb-5 text-center">
           <h3 className="h3 text-center font-weight-bold main-color mb-2 line-yellow">نجاحات مع همة</h3>
@@ -1017,7 +1141,7 @@ class HomeComponent extends Component {
           <a className="btn-yellow headShake">المزيد من النجاحات</a>
         </div>
       </div>
-    </section>
+    </section> */}
       </React.Fragment>
     );
   }

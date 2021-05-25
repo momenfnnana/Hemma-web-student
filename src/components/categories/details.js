@@ -42,6 +42,8 @@ export class CategoryDetails extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
+      active:"",
+      defultActive:"show active",
       coursesShimmerLoader: true,
       lecturesShimmerLoader: true,
       categoryGroupsShimmerLoader: true,
@@ -157,6 +159,11 @@ export class CategoryDetails extends Component {
       });
 
     await this.loadMore();
+    if(this.props.history.location.hash == "#tab-three")
+    {
+      this.setState({active:"show active",defultActive:""})
+    }
+    console.log();
   }
 
   categoryGroupRedirection(CategoryGroup) {
@@ -884,7 +891,7 @@ export class CategoryDetails extends Component {
                   <div className="main-color font-weight-bold">الرخصة المهنية</div>
                 </a> */}
                  <React.Fragment>
-                   {this.state.courses.length > 0 ?  (<a className="tab-items nav-link px-4 active" data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
+                   {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
                   </div>
@@ -894,7 +901,7 @@ export class CategoryDetails extends Component {
                    </React.Fragment>
             
                 {this.rendersubCategories()}
-                <a className="tab-items nav-link px-4" data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
+                <a className={"tab-items nav-link px-4 "+this.state.active} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
                   </div>
@@ -1046,7 +1053,7 @@ export class CategoryDetails extends Component {
                   </div>
                 </div> */}
               {this.renderPanelSub()}
-              <div className="tab-pane fade show active" id="tab-two" role="tabpanel" aria-labelledby="nav-profile-tab">
+              <div className={"tab-pane fade "+this.state.defultActive} id="tab-two" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div className="container">
                   <div className="row">
                   {this.renderCards()}
@@ -1203,7 +1210,7 @@ export class CategoryDetails extends Component {
                 </div>
               </div>
 
-              <div className="tab-pane fade" id="tab-three" role="tabpanel" aria-labelledby="nav-contact-tab">
+              <div className={"tab-pane fade "+this.state.active} id="tab-three" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <div className="container">
                   <div className="row">
                   {this.renderCategoryGroups()}

@@ -90,7 +90,6 @@ checkIfNavbarFixedAndSetPadding();
 
 window.onscroll = function() {
   // Window Offset OF Y Dimension
-  debugger;
   let currentScrollPosition = window.pageYOffset;
 
   /* Start Navbar Animation While Window Scrolling */
@@ -162,7 +161,10 @@ function loadingProgressbar() {
       path.startsWith("/initiative/details") ||
       path.startsWith("/enter-To-Lecture") ||
       path.startsWith("/initiative-role") ||
-      path.startsWith("/initiative-exam")
+      path.startsWith("/initiative-exam")||
+      path.startsWith("/billing")||
+      path.startsWith("/certificate")
+      
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
