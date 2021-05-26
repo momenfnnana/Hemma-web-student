@@ -833,7 +833,7 @@ li.glide__slide.glide__slide--active .sider-items .quote-icon {color: var(--main
 }
 .card-ele:hover .main-color {color: #FFF !important}
 .card-ele:hover .sub-color {color: #FFF !important}
-.card-img {position: relative; top: -80px;}
+.card-img {position: relative; }
 img[alt="Human"] {
   max-height: 200px;
 }

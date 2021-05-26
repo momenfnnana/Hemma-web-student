@@ -901,12 +901,17 @@ export class CategoryDetails extends Component {
                    </React.Fragment>
             
                 {this.rendersubCategories()}
-                <a className={"tab-items nav-link px-4 "+this.state.active} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
-                  <div className="tab-img">
-                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
-                  </div>
-                  <div className="main-color font-weight-bold">المجموعات المجانيه</div>
-                </a>
+                <React.Fragment>
+                  {this.state.categoryGroups.length > 0 ?(
+                    <a className={"tab-items nav-link px-4 "+this.state.active} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
+                    <div className="tab-img">
+                      <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
+                    </div>
+                    <div className="main-color font-weight-bold">المجموعات المجانيه</div>
+                  </a>
+                  ):null}
+                
+                </React.Fragment>
               </div>
             <div className="tab-content" id="nav-tabContent">
               {/* <div className="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="nav-home-tab">

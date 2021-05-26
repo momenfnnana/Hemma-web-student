@@ -76,6 +76,7 @@ export class CardsList extends Component {
       slidesToShow: 3,
       slidesToScroll: 1,
       autoplay: true,
+      arrows:true,
       autoplaySpeed: 2000,
       responsive: [
         {
