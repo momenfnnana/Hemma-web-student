@@ -50,7 +50,7 @@ class CardComponent extends Component {
     ));
     return (
       <React.Fragment>
-          <div className="card course-card shadow-sm m-2 border-0" dir="rtl" onClick={() => {
+          <div  dir="rtl" onClick={() => {
             (course.active==false && course.featuredInMain==true)? 
             ((course.inactiveCourseMessage)?
              swal(
@@ -80,14 +80,12 @@ class CardComponent extends Component {
                     button: "متابعة"
                   }
                   ) }} >
-         
-                      <div className="card p-3 border-dashed card-ele max-height-380 min-height-380 position-relative mb-6">
+                      <div className="card  border-dashed card-ele max-height-380 min-height-380 position-relative mb-6 overflow-hidden">
                         <div className="card-img">
-                          <img   height="200"
-                    width="300"  key={course.id} src={course.bannerUrl} alt={course.nameAr}/>
+                          <img key={course.id} src={course.bannerUrl} alt={course.nameAr}/>
                           <div className="img-tag"> {course.price && parseFloat(course.price.toFixed(2))} <span className="ar-text mr-1">ريال</span></div>
                         </div>
-                        <div className="mt--50">
+                        <div className="mt-5 p-3">
                           <h5 className="h5 main-color mb-3 font-weight-bold text-center">{course.nameAr}</h5>
                           <div>
                             <h6 className="h6 sub-color">تفاصيل الدورة :</h6>

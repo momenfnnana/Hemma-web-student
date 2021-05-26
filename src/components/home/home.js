@@ -259,8 +259,10 @@ renderBulit()
 
                         <div className="text-card text-center mb-4">
                           <h5 className="h6 font-weight-bold">
-                         
-                            <span className="d-block mb-2">{cat.descriptionAr}</span>
+                            <span className="d-block mb-2">{cat.descriptionAr.substring(0, 150)}
+                            {cat.descriptionAr.length > 150 ?(<span>...</span>):null }
+
+                            </span>
                           </h5>
                         </div>
                         {cat.childCatgories.length > 0 ?
@@ -960,7 +962,7 @@ renderBulit()
                       <img src={process.env.PUBLIC_URL + "/assets/images/more-about1.svg"} alt="More-About-Hemma"/>
                     </h2>
                   </div>
-                  <p className="font-weight-bold m-0 font-size-20">بدأت خدمتنا للطلاب والمعلمين فى (1415 ه) ووصلنا لكل بيت بكتب التبسيط . </p>
+                  <p className="font-weight-bold m-0 font-size-20">بدأت خدمتنا للطلاب والمعلمين فى (1415 هـ) ووصلنا لكل بيت بكتب التبسيط  </p>
                 </div>
               </div>
               <div className="col-lg-3" data-aos="flip-down" data-aos-delay="200" data-aos-duration="1500">
@@ -990,7 +992,7 @@ renderBulit()
                       <img src={process.env.PUBLIC_URL + "/assets/images/more-about4.svg"}alt="More-About-Hemma"/>
                     </h2>
                   </div>
-                  <p className="font-weight-bold m-0 font-size-20">أكثر من 200.200 ألف مشترك فى الموقع</p>
+                  <p className="font-weight-bold m-0 font-size-20">أكثر من 200 ألف مشترك فى الموقع</p>
                 </div>
               </div>
             </div>

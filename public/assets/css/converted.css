@@ -62,9 +62,9 @@ a:hover, a:focus, a:active {
 	box-shadow: none;
 }
 
-p {
+/* p {
 	word-break: break-all;
-}
+} */
 
 .br-5 {
 	border-radius: 5px !important;
