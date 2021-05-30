@@ -135,7 +135,13 @@ class HeaderComponent extends Component {
         let linkDropdownTwo = document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-two');
         let subDropdownTwo = document.querySelectorAll('.'+perfix+'sub-dropdown2');
         handleActiveEle(linkDropdownTwo, subDropdownTwo);
-      
+        linkDropdownTwo.forEach(linkBtn => {
+          linkBtn.onclick = function() {
+            if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing')) {
+              document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
+            }
+          }
+        })
         /* ______________________________________________________________________ */
       
         // [3] Third Sub Menu Of Dropdown Menu
