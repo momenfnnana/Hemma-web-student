@@ -118,7 +118,16 @@ class HeaderComponent extends Component {
         let linkDropdown = document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-one');
         let subDropdown = document.querySelectorAll('.'+perfix+'sub-dropdown');
         handleActiveEle(linkDropdown, subDropdown);
-        
+        linkDropdown.forEach(linkBtn => {
+          linkBtn.onclick = function() {
+            if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing') || document.querySelector('.'+perfix+'sub-dropdown3').classList.contains('showing')) {
+              document.querySelector('.'+perfix+'sub-dropdown2').classList.remove('showing');
+              document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
+            } else {
+              
+            }
+          }
+        })
       
         /* ______________________________________________________________________ */
       
@@ -191,7 +200,6 @@ class HeaderComponent extends Component {
 
           element.forEach(smEle => {
             smEle.addEventListener('click', (e) => {
-console.log("sameh",e.currentTarget.dataset.haschild)
 if(e.currentTarget.dataset.haschild == "false")
 {
 return;
