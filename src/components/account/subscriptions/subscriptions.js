@@ -51,9 +51,9 @@ export class SubscriptionsComponent extends Component {
   render() {
     let avatarImg;
     if (this.props.initialValues.gender == "Male") {
-      avatarImg = process.env.PUBLIC_URL + "/assets/images/male-avatar.png";
+      avatarImg = process.env.PUBLIC_URL + "/assets/images/man.png";
     } else if (this.props.initialValues.gender == "Female") {
-      avatarImg = process.env.PUBLIC_URL + "/assets/images/female-avatar.png";
+      avatarImg = process.env.PUBLIC_URL + "/assets/images/women.png";
     }
 
     return (
@@ -61,8 +61,19 @@ export class SubscriptionsComponent extends Component {
       <React.Fragment>
         <section className="pt-5 pb-5">
           <div className="container">
+          <header className="mb-5">
+          <div className="d-flex flex-column align-items-center">
+            <div className="card-container">
+              <div className="img-wrapper card-hover mb-2">
+                <img src="/assets/images/icon-header.png" className="height-70" alt="Human Photo"/>
+              </div>
+            </div>
+            <h1 className="main-color h1 mb-4 font-weight-bold">دوراتي</h1>
+          </div>
+          {/* <hr style="background:#cecccc"/> */}
+        </header>
             <div className="row">
-              <div className="col-md-4">
+              {/* <div className="col-md-4">
                 <div className="white-bg box-layout w-100 p-4 d-flex align-items-center justify-content-center flex-column mb-4">
                   <img src={avatarImg} height="110" className="mb-3" />
                   <h6 className="dark-text mb-1">
@@ -82,9 +93,31 @@ export class SubscriptionsComponent extends Component {
                     تعديل الملف الشخصي
                   </Link>
                 </div>
+              </div> */}
+              <div className="col-lg-3 card-container m-0">
+            <div className="card-hover mb-4 px-3 py-4 bg-transparent border-radius-40">
+              <img src={avatarImg} className="human-img" alt="Man Icons"/>
+              <h5 className="h5 main-color font-weight-bold title-shadow-purple text-center mb-2">{this.props.initialValues && this.props.initialValues.name}</h5>
+              <h6 className="h6 text-muted font-weight-bold text-center">{this.props.initialValues && this.props.initialValues.email}</h6>
+              <h6 className="h6 text-muted font-weight-bold text-center mb-4">{this.props.initialValues &&
+                      this.props.initialValues.phoneNumber}</h6>
+                       <Link
+                    to="/account/update"
+                    className="btn-green mx-auto headShake"
+                  >
+                    تعديل الملف 
+                  </Link>
+              {/* <a className="">تعديل الملف الشخصى</a> */}
+            </div>
+            {/* <img src="./images/women.png" className="human-img" alt="Women Icon"/> */}
+          </div>
+          <div className="col-lg-9">
+            <header className="d-flex align-items-center mb-3">
+              <div className="section-title-img">
+                <img src="/assets/images/icon-title-section.png" alt="ImageOfSection"/>
               </div>
-              <div className="col-md-8">
-                <h5 className="dark-text mb-3">قائمة دوراتي</h5>
+              <h3 className="main-color h3 font-weight-bold">قائمة الدورات</h3>
+            </header>
                 <>
                   {this.state.isPageLoading ? (
                     <div
@@ -114,7 +147,19 @@ export class SubscriptionsComponent extends Component {
                             </React.Fragment>
                           ) : (
                             <React.Fragment>
-                              <Nav tabs className="account-tabs mx-auto">
+                               <div class="card tab-card">
+                              <ul class="card-header nav d-flex justify-content-between" id="myTab" role="tablist">
+                <li class="card-items-tab nav-item font-weight-bold"  role="presentation">
+                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#Active" type="button" role="tab" aria-controls="Active" aria-selected="true">سارية</a>
+                </li>
+                <li class="card-items-tab nav-item font-weight-bold"  role="presentation">
+                  <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#Expired" type="button" role="tab" aria-controls="Expired" aria-selected="false">منتهية</a>
+                </li>
+                <li class="card-items-tab nav-item font-weight-bold"  role="presentation">
+                  <a class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#Withdrawn" type="button" role="tab" aria-controls="Withdrawn" aria-selected="false">منسحب</a>
+                </li>
+              </ul>
+                              {/* <Nav tabs className="account-tabs mx-auto">
                                 <NavItem>
                                   <NavLink
                                     className={classnames({
@@ -145,8 +190,8 @@ export class SubscriptionsComponent extends Component {
                                     منسحب
                         </NavLink>
                                 </NavItem>
-                              </Nav>
-                              <TabContent activeTab={this.state.activeTab}>
+                              </Nav> */}
+                              {/* <TabContent activeTab={this.state.activeTab}>
                                 <TabPane tabId="Active">
                                   <SubscriptionsList subscriptionStatus="Active" />
                                 </TabPane>
@@ -156,7 +201,21 @@ export class SubscriptionsComponent extends Component {
                                 <TabPane tabId="Withdrawn">
                                   <SubscriptionsList subscriptionStatus="Withdrawn" />
                                 </TabPane>
-                              </TabContent>
+                              </TabContent> */}
+                              <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="Active" role="tabpanel" aria-labelledby="home-tab">
+                  <SubscriptionsList subscriptionStatus="Active" />
+                  </div>
+                  <div class="tab-pane fade " id="Expired" role="tabpanel" aria-labelledby="home-tab">
+                  <SubscriptionsList subscriptionStatus="Expired" />
+                  </div>
+                  <div class="tab-pane fade " id="Withdrawn" role="tabpanel" aria-labelledby="home-tab">
+                  <SubscriptionsList subscriptionStatus="Withdrawn" />
+                  </div>
+                  </div>
+                  </div>
+                  </div>
                             </React.Fragment>
                           )}
                       </>
