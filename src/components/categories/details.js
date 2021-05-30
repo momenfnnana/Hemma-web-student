@@ -192,7 +192,7 @@ export class CategoryDetails extends Component {
     return this.state.categoryGroups.map(group => (
       <React.Fragment>
         <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150 max-height-150"    key={group.id}
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150"    key={group.id}
             onClick={() => this.categoryGroupRedirection(group.id)}>
                         <div className="d-flex align-items-center">
                           <div className="mr-4">
@@ -292,7 +292,7 @@ export class CategoryDetails extends Component {
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
                   </div>
-                  <div className="main-color font-weight-bold">{Category.nameAr}</div>
+                  <div className="main-color font-weight-bold text-center">{Category.nameAr}</div>
                 </a>
       </React.Fragment>
     ));

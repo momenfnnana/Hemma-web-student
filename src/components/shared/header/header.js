@@ -228,11 +228,12 @@ return(
       Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-one" data-dropmenu={"drop_"+category.id}  data-hasChild={category.hasChild}>
       <a href={"/categories/details/"+category.slug} className="linked">
+      <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
         }
         
-        <span>{category.nameAr}</span>
+       
       </a>
     </li>))
     
@@ -256,11 +257,12 @@ return(
      { Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-two" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
       <a href={"/categories/details/"+category.slug} className="linked" >
+      <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
         }
         
-        <span>{category.nameAr}</span>
+        
       </a>
     </li>)) }
      </div>
@@ -283,11 +285,12 @@ return(
      { Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-three" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
       <a href={"/categories/details/"+category.slug} className="linked">
+      <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
         }
         
-        <span>{category.nameAr}</span>
+        
       </a>
     </li>)) }
      </div>
@@ -309,11 +312,12 @@ return(
      { Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-four" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
       <a href={"/categories/details/"+category.slug} className="linked" >
+      <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
         }
         
-        <span>{category.nameAr}</span>
+       
       </a>
     </li>)) }
      </div>
@@ -389,7 +393,7 @@ return(
               <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
             </li>
             <li className="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
-            <a className="nav-link links-hover d-flex align-items-center justify-content-between">
+            <a href="/categories" className={"nav-link links-hover d-flex align-items-center justify-content-between "+(this.state.ClikedTab=="Category"?"active":"")}>
                 <span className="mr-1">منصات همة</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>

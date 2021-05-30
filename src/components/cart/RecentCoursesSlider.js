@@ -8,39 +8,71 @@ export class RecentCoursesSlider extends Component {
         courses: []
     };
 
-    sliderSettings = {
+    // sliderSettings = {
+    //     infinite: false,
+    //     slidesToShow: 3,
+    //     slidesToScroll: 3,
+    //     autoplay: true,
+    //     autoplaySpeed: 2000,
+    //     responsive: [
+    //         {
+    //             breakpoint: 1024,
+    //             settings: {
+    //                 slidesToShow: 3,
+    //                 slidesToScroll: 3,
+    //                 infinite: false
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 600,
+    //             settings: {
+    //                 slidesToShow: 2,
+    //                 slidesToScroll: 2,
+    //                 initialSlide: 2
+    //             }
+    //         },
+    //         {
+    //             breakpoint: 480,
+    //             settings: {
+    //                 slidesToShow: 1,
+    //                 slidesToScroll: 1
+    //             }
+    //         }
+    //     ]
+    // };
+     sliderSettings = {
         infinite: false,
         slidesToShow: 3,
-        slidesToScroll: 3,
+        slidesToScroll: 1,
         autoplay: true,
+        arrows:true,
         autoplaySpeed: 2000,
         responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3,
-                    infinite: false
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: false
             }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              initialSlide: 2
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
         ]
-    };
-
+      }
     constructor(props) {
         super(props);
     }
@@ -57,7 +89,8 @@ export class RecentCoursesSlider extends Component {
 
         return <Slider {...this.sliderSettings}>
             {courses.map(course =>
-                <Card key={course.id} course={course} />
+            <div className="px-3"><Card key={course.id} course={course} /></div>
+                
             )}
         </Slider>
     }

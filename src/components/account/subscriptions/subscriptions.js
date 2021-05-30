@@ -147,16 +147,16 @@ export class SubscriptionsComponent extends Component {
                             </React.Fragment>
                           ) : (
                             <React.Fragment>
-                               <div class="card tab-card">
-                              <ul class="card-header nav d-flex justify-content-between" id="myTab" role="tablist">
-                <li class="card-items-tab nav-item font-weight-bold"  role="presentation">
-                  <a class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#Active" type="button" role="tab" aria-controls="Active" aria-selected="true">سارية</a>
+                               <div className="card tab-card">
+                              <ul className="card-header nav d-flex justify-content-between" id="myTab" role="tablist">
+                <li className="card-items-tab nav-item font-weight-bold"  role="presentation">
+                  <a className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#Active" type="button" role="tab" aria-controls="Active" aria-selected="true">سارية</a>
                 </li>
-                <li class="card-items-tab nav-item font-weight-bold"  role="presentation">
-                  <a class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#Expired" type="button" role="tab" aria-controls="Expired" aria-selected="false">منتهية</a>
+                <li className="card-items-tab nav-item font-weight-bold"  role="presentation">
+                  <a className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#Expired" type="button" role="tab" aria-controls="Expired" aria-selected="false">منتهية</a>
                 </li>
-                <li class="card-items-tab nav-item font-weight-bold"  role="presentation">
-                  <a class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#Withdrawn" type="button" role="tab" aria-controls="Withdrawn" aria-selected="false">منسحب</a>
+                <li className="card-items-tab nav-item font-weight-bold"  role="presentation">
+                  <a className="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#Withdrawn" type="button" role="tab" aria-controls="Withdrawn" aria-selected="false">منسحب</a>
                 </li>
               </ul>
                               {/* <Nav tabs className="account-tabs mx-auto">
@@ -202,15 +202,15 @@ export class SubscriptionsComponent extends Component {
                                   <SubscriptionsList subscriptionStatus="Withdrawn" />
                                 </TabPane>
                               </TabContent> */}
-                              <div class="card-body">
-                <div class="tab-content" id="myTabContent">
-                  <div class="tab-pane fade show active" id="Active" role="tabpanel" aria-labelledby="home-tab">
+                              <div className="card-body">
+                <div className="tab-content" id="myTabContent">
+                  <div className="tab-pane fade show active" id="Active" role="tabpanel" aria-labelledby="home-tab">
                   <SubscriptionsList subscriptionStatus="Active" />
                   </div>
-                  <div class="tab-pane fade " id="Expired" role="tabpanel" aria-labelledby="home-tab">
+                  <div className="tab-pane fade " id="Expired" role="tabpanel" aria-labelledby="home-tab">
                   <SubscriptionsList subscriptionStatus="Expired" />
                   </div>
-                  <div class="tab-pane fade " id="Withdrawn" role="tabpanel" aria-labelledby="home-tab">
+                  <div className="tab-pane fade " id="Withdrawn" role="tabpanel" aria-labelledby="home-tab">
                   <SubscriptionsList subscriptionStatus="Withdrawn" />
                   </div>
                   </div>

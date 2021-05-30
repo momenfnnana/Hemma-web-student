@@ -1,13 +1,15 @@
-@font-face {
+/* @font-face {
   font-family: 'TheSans';
   src: url('../webfonts/TheSans-Bold.otf');
-}
+} */
+@import url('https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap');
 /* Start The Main Reset Style */
 body, html {
   direction: rtl;
   width: 100%;
   height: 100%;
-  font-family: 'TheSans';
+  /* font-family: 'TheSans'; */
+  font-family: 'Almarai', sans-serif;
   scroll-behavior: smooth;
 }
 :root {
@@ -97,9 +99,11 @@ a:hover {text-decoration: none;}
 .height-200 {height: 200px;}
 .min-height-360 {min-height: 360px;}
 .min-height-300 {min-height: 300px;}
+.min-height-490{min-height: 490px;} 
 .max-height-100 {max-height: 100px;}
 .max-height-80 {max-height: 80px;}
 .max-height-50 {max-height: 50px;}
+.min-height-150{min-height: 150px;}
 .height-card {height: calc(100% - 80px);}
 
 .min-width-150 {min-width: 150px}
@@ -215,17 +219,23 @@ a:hover {text-decoration: none;}
   transform-style: preserve-3d;
 }
 
-.overlay-bg {position: relative}
-.overlay-bg:after {
+.overlay-bg,
+.overlay-bg-dark {position: relative}
+.overlay-bg:after , .overlay-bg-dark:after {
   content: '';
   width: 100%;
   height: 100%;
-  background-color: var(--main-color-rgba);
+  background-color: #4a3985;
+  opacity: 0.5;
   position: absolute;
   top: 0; left: 0;
   z-index: 1
 }
-
+.overlay-bg-dark:after
+{
+  background-color: rgba(75,58,133, .8);
+    opacity: unset;
+}
 .img-with-bg {
   display: flex;
   align-items: center;
@@ -634,6 +644,7 @@ a:hover {text-decoration: none;}
   display: flex;
   justify-content: space-between;
   align-items: center;
+  direction: rtl;
 }
 .sm-scroll:last-of-type a {display: block}
 
@@ -806,7 +817,7 @@ a:hover {text-decoration: none;}
 }
 .banner-image {
   height: 500px;
-  background-image: url(https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=753&q=80);
+  background-image: url('../images/BGMain.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -1488,7 +1499,7 @@ img[alt="Human"] {
     margin-left: auto;
 }
 
-  
+
 .result-loading {width: 65%; margin: 0 10px}
 
 .width-100-per-mob {width: 100%}

@@ -80,8 +80,9 @@ class CardComponent extends Component {
                     button: "متابعة"
                   }
                   ) }} >
-                      <div className="card  border-dashed card-ele max-height-380 min-height-380 position-relative mb-6 overflow-hidden">
+                      <div className="card  border-dashed card-ele min-height-490 position-relative mb-6 overflow-hidden">
                         <div className="card-img">
+                          
                           <img key={course.id} src={course.bannerUrl} alt={course.nameAr}/>
                           <div className="img-tag"> {course.price && parseFloat(course.price.toFixed(2))} <span className="ar-text mr-1">ريال</span></div>
                         </div>
