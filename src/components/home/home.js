@@ -943,7 +943,7 @@ renderBulit()
 
     <!-- Start How Hemma Faciliate Its Mission --> */}
     <section id="more-about" className="more-about">
-      <div className="about-wrapper about-wrapper-image fixed-image-bg overlay-bg d-flex-column flex-column">
+      <div className="about-wrapper about-wrapper-image fixed-image-bg overlay-bg overlay-bg-dark d-flex-column flex-column">
         <div className="container">
           <div className="about-hemma">
             <header className="mb-5"

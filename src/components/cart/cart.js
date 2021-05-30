@@ -158,13 +158,14 @@ class CartComponent extends Component {
               onClose={this.closeModal}
             />
           </div>
+          
         </section>
 
         <section className="courses-section section-padder">
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h4 className="dark-text pb-3">اشترك بدورات أخرى؟</h4>
+                <h4 className="dark-text py-4 m-0">اشترك بدورات أخرى؟</h4>
               </div>
             </div>
             <div className="row">
