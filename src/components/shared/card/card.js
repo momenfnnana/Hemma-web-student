@@ -82,7 +82,7 @@ class CardComponent extends Component {
                     button: "متابعة"
                   }
                   ) }} >
-                      <div className="card  border-dashed card-ele min-height-490 position-relative mb-6 overflow-hidden">
+                      <div className="card  border-dashed card-ele min-height-410 position-relative mb-6 overflow-hidden">
                         <div className="card-img">
 
                           <img key={course.id} src={course.bannerUrl} alt={course.nameAr} className="img-rounding img-dropshadow"/>
@@ -93,9 +93,9 @@ class CardComponent extends Component {
                           <div>
                           <ul className="list-unstyled">
                            
-                              <li> <h6 className="h6 sub-color">تفاصيل الدورة :</h6> {course.descriptionAr.substring(0, 150)}
+                              {/* <li> <h6 className="h6 sub-color">تفاصيل الدورة :</h6> {course.descriptionAr.substring(0, 150)}
                              {course.descriptionAr.length > 150 ?(<span>...</span>):null }
-                              </li>
+                              </li> */}
                               
                               {course.instructors.length > 0 ?(<li className="sub-color my-2"> <span className="mr-2">
                                 <i class="far fa-user"></i>
