@@ -44,6 +44,12 @@ a:hover {text-decoration: none;}
   padding-right: 20px;
   width: 100%;
 }
+.img-rounding {
+  border-radius: 0 0 32px 32px;
+}
+.img-dropshadow {
+  filter: drop-shadow(0 0 4px rgba(0,0,0, .3))
+}
 @media (min-width: 768px) {
   .col-lg-5-grid {
     width: 50%
@@ -620,7 +626,7 @@ a:hover {text-decoration: none;}
   background: #FFF;
   border-radius: 10px;
   padding: 10px;
-  display: none;
+  display: flex
 }
 .sub-sub-list  {
   position: absolute;
@@ -634,10 +640,10 @@ a:hover {text-decoration: none;}
   display: none;
 }
 .sm-scroll {
-  height: 113px;
+  height: 170px;
   overflow: auto;
   padding: 0 10px;
-  min-width: 12rem;
+  min-width: 14rem;
   direction: ltr;
 }
 .sm-scroll a {
@@ -725,7 +731,7 @@ a:hover {text-decoration: none;}
 .sub-list.show,
 .category-sub-list.show {
   transform: scale(1);
-  display: flex
+  
 }
 
 /* End Style OF The Multiple Dropdown  */
