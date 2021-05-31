@@ -123,12 +123,23 @@ class HeaderComponent extends Component {
             if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing') || document.querySelector('.'+perfix+'sub-dropdown3').classList.contains('showing')) {
               document.querySelector('.'+perfix+'sub-dropdown2').classList.remove('showing');
               document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
+
+              document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-three').forEach(ele => {
+                ele.classList.remove('active');
+              })
+              document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-four').forEach(ele => {
+                ele.classList.remove('active');
+              })
+              document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-two').forEach(ele => {
+                ele.classList.remove('active');
+              })
             } else {
               
             }
           }
         })
-      
+       
+
         /* ______________________________________________________________________ */
       
         // [2] Second Sub Menu Of Dropdown Menu
@@ -139,6 +150,13 @@ class HeaderComponent extends Component {
           linkBtn.onclick = function() {
             if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing')) {
               document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
+              document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-four').forEach(ele => {
+                ele.classList.remove('active');
+              })
+              document.querySelectorAll('.'+perfix+'dropdown-sub-wrapper-three').forEach(ele => {
+                ele.classList.remove('active');
+              })
+      
             }
           }
         })
