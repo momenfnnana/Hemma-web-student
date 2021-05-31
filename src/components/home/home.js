@@ -53,8 +53,10 @@ class HomeComponent extends Component {
       direction: 'rtl',
       breakpoints: {
 
-        1024: {perView: 2},
-        600: {perView: 1}
+        1200: { perView: 2 },
+        992: { perView: 2 },
+        768: { perView: 1 }
+
       }
     }
     axios
