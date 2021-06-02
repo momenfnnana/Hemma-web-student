@@ -1,8 +1,10 @@
+$main-color: #4b3a85 
+$sub-color : #2bc3cc
 .competition-box-empty
     background: #fff
     width: 100%
     border-radius: 8px
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     height: 100px
     padding: 10px 15px 10px 15px
 .competition-box
@@ -10,7 +12,7 @@
     background: #fff
     width: 100%
     border-radius: 8px
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     height: 100px
     padding: 10px 15px 10px 15px
     background-image: url('/assets/images/pages-bg.png')
@@ -24,7 +26,7 @@
         width: 70px
         height: 70px
         border-radius: 4px
-        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
         display: flex
         align-items: center
         justify-content: center
@@ -81,7 +83,7 @@
     border: 1px solid #ffffff
     width: 35px
     height: 35px
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 50px
     display: flex
     align-items: center
@@ -90,7 +92,7 @@
     background-color: #fff
     width: 40px
     height: 40px
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 50px
     display: inline-flex
     align-items: center
@@ -102,7 +104,7 @@
     background-color: #fff
     width: 56px
     height: 56px
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 50px
     display: inline-flex
     align-items: center
@@ -117,7 +119,7 @@
     background-color: #4a3985
     width: 40px
     height: 40px
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16)
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
     border-radius: 50px
     display: inline-flex
     align-items: center
@@ -242,3 +244,142 @@
         background-color: #2bc3cc
     &.failure
         background-color: #f66271
+.max-height-80
+    max-height: 80px
+.mb-6 
+    margin-bottom: 6rem
+.tab-img 
+  border: 1px solid $main-color
+  border-radius: 25px
+  width: 80px
+  height: 80px
+  line-height: 80px
+  text-align: center
+  margin: auto
+.hemma-logo 
+    display: flex !important
+    margin-bottom: 15px
+.btn-title  
+  display: block 
+  min-width: 130px 
+  text-align: center 
+  background-color: $sub-color 
+  color:  $main-color !important 
+  border-radius: 50px 
+  border: 1px solid transparent 
+  padding-left: 15px 
+  padding-right: 15px 
+  font-size: .8rem 
+  height: 30px 
+  line-height: 30px 
+  font-weight: bold 
+  -webkit-transition: all 0.3s ease-in-out 
+  -moz-transition: all 0.3s ease-in-out 
+  -ms-transition: all 0.3s ease-in-out 
+  -o-transition: all 0.3s ease-in-out 
+  transition: all 0.3s ease-in-out 
+  cursor: pointer 
+ 
+.btn-title{&:hover  
+  background-color:  $main-color 
+  color: $sub-color !important }
+ 
+
+.lic-title  
+  margin-left: 30px 
+ 
+
+.tab-img  
+  border: 1px solid  $main-color 
+  border-radius: 25px 
+  width: 80px 
+  height: 80px 
+  line-height: 80px 
+  text-align: center 
+  margin: auto 
+ 
+
+.tab-items.active .tab-img  
+  background-color:  $main-color
+ 
+.card-ele  
+  border-radius: 32px 
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 0, 0.1 )
+  margin: 0px 0 30px 
+  transition: all .2s ease-in-out
+ 
+.card-ele{&:hover  
+  background:  $main-color 
+  color: #FFF }
+ 
+.card-ele:hover .main-color
+  color: #FFF !important
+.card-ele:hover .sub-color
+  color: #FFF !important
+.card-img
+  position: relative
+img[alt="Human"]  
+  max-height: 200px 
+ 
+.img-tag  
+  position: absolute 
+  bottom: -15px 
+  left: 50% 
+  transform: translateX(-50% )
+  background: $sub-color 
+  color: #FFF 
+  padding: 5px 20px 
+  border-radius: 50px 
+ 
+.input-area  
+  position: relative 
+ 
+.input-area input[type="text"]::placeholder
+  color: #c6c8ca
+.input-area .input-close
+  position: absolute
+  top: 50%
+  left: 10px
+  transform: translateY(-50%)
+  color: #c6c8ca
+ 
+.btn-card-area  
+  position: absolute 
+  bottom: 20px 
+  left: 50% 
+  transform: translateX(-50%)
+ 
+.card-gradient  
+  background-image: linear-gradient(to bottom, #79ccda, #8a9cd2)
+  border: 0
+ 
+.search-btn.cursor-pointer  
+  position: absolute 
+  top: 50% 
+  left: 20px 
+  transform: translateY(-50%) 
+  color: #c6c8ca 
+ 
+.gray-tag  
+  background: #f6f6f6 
+  border-radius: 50px 
+  color: #d4d4d4 
+  font-weight: bold 
+  text-align: center 
+  max-width: 155px 
+  margin-bottom: 10px 
+  padding: 5px 20px 
+  cursor: pointer
+ 
+.price-tag 
+  max-width: 155px 
+  background: $sub-color 
+  color: #FFF 
+  padding: 5px 20px 
+  border-radius: 50px 
+  text-align: center 
+  cursor: pointer
+  margin-bottom: 10px
+
+
+

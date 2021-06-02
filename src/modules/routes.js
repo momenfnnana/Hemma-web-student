@@ -54,8 +54,88 @@ import { StartTrainingExam } from "../components/categories/quick-questions/trai
 import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
 import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
 import { Healthy } from "../components/shared/healthy";
+import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
+import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
 
 class AppBackground extends Component {
+  componentDidMount()
+  {
+    debugger;
+    if(document.querySelector('.navbar') == undefined)
+    {
+      return;
+    }
+     /* Start Main Variables */ 
+// const navabr = document.querySelector('.navbar');
+const bannerText = document.querySelector('.banner-text');
+const progressBarLoading = document.querySelector('.progressbar-wrapper .progressbar-line');
+const translatedCard = document.querySelector('.translated-card');
+const cardTranslated = document.querySelector('.card-translated');
+const withFixedNav = document.querySelector('.with-fixed-header');
+let previousScrollPosition = window.pageYOffset;
+/* End Main Variables */
+
+/* Start Making Padding Top For The Reset Of Elements Of Dom If The Navbar Fixed */
+let plusPadding = 30;
+function checkIfNavbarFixedAndSetPadding() {
+  debugger;
+  if (document.querySelector('.navbar').classList.contains('fixed-top')) {
+      withFixedNav.style.paddingTop = document.querySelector('.navbar').clientHeight + 'px';
+  } else {
+    withFixedNav.style.paddingTop = '0';
+  }
+}
+checkIfNavbarFixedAndSetPadding();
+/* End Making Padding Top For The Reset Of Elements Of Dom If The Navbar Fixed */
+
+window.onscroll = function() {
+  // Window Offset OF Y Dimension
+  let currentScrollPosition = window.pageYOffset;
+
+  /* Start Navbar Animation While Window Scrolling */
+  if (previousScrollPosition > currentScrollPosition) {
+    document.querySelector('.navbar').style.top = '0';
+  } else {
+    document.querySelector('.navbar').style.top = '-70px';
+  }
+  previousScrollPosition = currentScrollPosition;
+  /* End Navbar Animation While Window Scrolling */
+
+  /**************************** LINE SEPERATE ****************************/
+
+  /* Start Toggle For Image Side While Scrolling */
+  if (currentScrollPosition > '10') {
+    document.querySelector('.logo-img').style.height = '40px';
+    document.querySelector('.navbar').style.boxShadow = '0 3px 20px -5px rgb(0 0 0 / 10%)';
+  } else {
+    document.querySelector('.logo-img').style.height = '60px';
+    document.querySelector('.navbar').style.boxShadow = 'none';
+  }
+  /* End Toggle For Image Side While Scrolling */
+
+  /**************************** LINE SEPERATE ****************************/
+
+  /* Start Progress Bar Loading While Scrolling */
+  loadingProgressbar();
+  /* End Progress Bar Loading While Scrolling */
+
+  /**************************** LINE SEPERATE ****************************/
+
+  /* Start Banner Text Animation While Window Scrolling */
+  if (bannerText) {
+    bannerText.style.top = currentScrollPosition * 1 + 'px';
+  }
+  /* End Banner Text Animation While Window Scrolling */
+}
+
+/* Start Function OF Loadingbar Progress Animation */
+function loadingProgressbar() {
+  var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var scrolled = (winScroll / height) * 100;
+  progressBarLoading.style.width = scrolled + "%";
+}
+  }
   render() {
     const path = this.props.location.pathname;
     let img = null;
@@ -68,8 +148,10 @@ class AppBackground extends Component {
       imgPosition = "center top";
     } else if (
       path.startsWith("/categories") ||
+      path.startsWith("/booklet") ||
       path.startsWith("/course") ||
       path.startsWith("/account") ||
+      path.startsWith("/booklet") ||
       path.startsWith("/cart") ||
       path.startsWith("/banks") ||
       path.startsWith("/quick-questions") ||
@@ -79,7 +161,10 @@ class AppBackground extends Component {
       path.startsWith("/initiative/details") ||
       path.startsWith("/enter-To-Lecture") ||
       path.startsWith("/initiative-role") ||
-      path.startsWith("/initiative-exam")
+      path.startsWith("/initiative-exam")||
+      path.startsWith("/billing")||
+      path.startsWith("/certificate")
+      
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
@@ -100,7 +185,7 @@ class AppBackground extends Component {
     return (
 
       <div
-        className="wrapper-bg"
+        className="wrapper-bg with-fixed-header"
         style={{
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
@@ -141,14 +226,15 @@ class MainRouterComponent extends Component {
                 component={InitiativesDetails}
               /> }
               <Route path="/enter-To-Lecture" component={EnterToLecture} />
+              <Route path="/auth" component={Auth} />
               {/* TODO hide initiative */}
-              { <Route path="/initiative-role" component={InitiativesRole} /> }
+              {/* { <Route path="/initiative-role" component={InitiativesRole} />}
               { <Route path="/initiative-exam" component={InitiativesExam} /> }
-              {!this.props.authenticated ? (
-                <Route path="/auth" component={Auth} />
-              ) : (
-                <Redirect from="/auth" to="/course/content" />
-              )}
+               {!this.props.authenticated ? (
+                 
+                ) : (
+                  <Redirect from="/auth" to="/course/content" />
+               )} */}
               <Route
                 path="/verify"
                 exact
@@ -159,10 +245,16 @@ class MainRouterComponent extends Component {
               <Route path="/forgot-password" component={forgotPassword} />
               <Route path="/reset-password" component={resetPassword} />
               <Route path="/categories" exact component={Categories} />
+              <Route path="/booklet" exact component={BookletComponent} />
               <Route
                 path="/categories/details/:slug"
                 exact
                 component={CategoryDetails}
+              />
+               <Route
+                path="/booklet/details/:slug"
+                exact
+                component={BookletDetailsComponent}
               />
               <Route
                 path="/categories/:slug/:categoryGroupId/exam/:id"

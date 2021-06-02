@@ -16,6 +16,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
 import { PageLoader } from "../courses/page-loader";
 import ContentLoader from "react-content-loader";
+import { Category } from "emoji-mart";
 
 
 var moment = require("moment-hijri");
@@ -29,6 +30,7 @@ export class CategoryDetails extends Component {
     super(props);
     this.state = {
       details: [],
+      subcategoriesdetails:[],
       lectures: [],
       content: [],
       publications: [],
@@ -40,6 +42,8 @@ export class CategoryDetails extends Component {
       hideBtn: false,
       loading: false,
       disabled: false,
+      active:"",
+      defultActive:"show active",
       coursesShimmerLoader: true,
       lecturesShimmerLoader: true,
       categoryGroupsShimmerLoader: true,
@@ -104,7 +108,14 @@ export class CategoryDetails extends Component {
       .catch(error => {
         console.log(error);
       });
-
+      axios
+      .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
+      .then(response => {
+        this.setState({ subcategoriesdetails: response.data.data.childCatgories});
+      })
+      .catch(error => {
+        console.log(error);
+      });
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then(response => {
@@ -148,6 +159,11 @@ export class CategoryDetails extends Component {
       });
 
     await this.loadMore();
+    if(this.props.history.location.hash == "#tab-three")
+    {
+      this.setState({active:"show active",defultActive:""})
+    }
+    console.log();
   }
 
   categoryGroupRedirection(CategoryGroup) {
@@ -172,9 +188,31 @@ export class CategoryDetails extends Component {
   }
 
   renderCategoryGroups() {
+    console.log(this.state.categoryGroups);
     return this.state.categoryGroups.map(group => (
       <React.Fragment>
-        <div className="col-md-2">
+        <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150"    key={group.id}
+            onClick={() => this.categoryGroupRedirection(group.id)}>
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">{group.name}</h4>
+                            <div className="font-size-18 mb-2">{group.description}</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+        {/* <div className="col-md-2">
           <div
             className="shadow-box d-flex flex-column align-items-center justify-content-center clickable"
             key={group.id}
@@ -185,7 +223,7 @@ export class CategoryDetails extends Component {
               {group.description}
             </p>
           </div>
-        </div>
+        </div> */}
       </React.Fragment>
     ));
   }
@@ -217,13 +255,48 @@ export class CategoryDetails extends Component {
   renderCards() {
     return this.state.courses.map(course => (
       <React.Fragment>
-        <div className="col-md-4" key={course.id}>
+       <div className="col-lg-4">
           <Card key={course.id} course={course} />
         </div>
       </React.Fragment>
     ));
   }
-
+  renderCourses(courses) {
+    return courses.map(course => (
+      <React.Fragment>
+       <div className="col-lg-4">
+          <Card key={course.id} course={course} />
+        </div>
+      </React.Fragment>
+    ));
+  }
+  renderPanelSub()
+  {
+    return this.state.subcategoriesdetails.map((Category,count) => (
+      <React.Fragment>
+<div className="tab-pane fade " id={"tab-"+count} role="tabpanel">
+                <div className="container">
+                  <div className="row">
+                  {this.renderCourses(Category.courses)}
+                  </div>
+              </div>
+          </div>
+          </React.Fragment>
+          ));
+  }
+  rendersubCategories()
+  {
+    return this.state.subcategoriesdetails.map((Category,count) => (
+      <React.Fragment>
+        <a className="tab-items nav-link px-4" data-toggle="tab" href={"#tab-"+count} role="tab" aria-selected="false">
+                  <div className="tab-img">
+                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
+                  </div>
+                  <div className="main-color font-weight-bold text-center">{Category.nameAr}</div>
+                </a>
+      </React.Fragment>
+    ));
+  }
   openFreeLecture(lecture) {
     let token = localStorage.getItem("token");
     if (token) {
@@ -438,7 +511,7 @@ export class CategoryDetails extends Component {
           <title>{`${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
           <meta name="description" content={this.state.details.descriptionAr} />
         </Helmet>
-        <section className="pt-5 pb-5">
+        {/* <section className="pt-5 pb-5">
           <div className="container">
             <div className="row">
               <div className="col-md-12 text-center">
@@ -787,10 +860,7 @@ export class CategoryDetails extends Component {
 
                   <div className="col-md-3">
                     <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/competitions.png"
-                      }
+                      src={process.env.PUBLIC_URL +"/assets/images/competitions.png"}
                       width="100%"
                       className="contain-img"
                     />
@@ -799,7 +869,484 @@ export class CategoryDetails extends Component {
             )}
             
           </div>
-        </section>
+        </section> */}
+   <section id="license-two" className="license-two">
+      <div className="container">
+        <header className="mb-4">
+          <div className="text-center mb-2">
+            <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="max-height-80" alt="Hemma-Logo"/>
+          </div>
+          <h3 className="h3 main-color mb-3 font-weight-bold text-center">{this.state.details.nameAr}</h3>
+          <p className="description-card main-color font-weight-bold mb-0 text-center">
+          {this.state.details.descriptionAr}
+          </p>
+        </header>
+        <div className="lic-tabs">
+          <nav>
+              <div className="nav d-flex align-items-center justify-content-center mb-6" id="nav-tab" role="tablist">
+               {/* <a className="tab-items nav-link px-4 active" data-toggle="tab" href="#tab-one" role="tab" aria-controls="nav-one" aria-selected="true">
+                  <div className="tab-img">
+                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
+                  </div>
+                  <div className="main-color font-weight-bold">الرخصة المهنية</div>
+                </a> */}
+                 <React.Fragment>
+                   {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
+                  <div className="tab-img">
+                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
+                  </div>
+                  <div className="main-color font-weight-bold">دورات المنصة</div>
+                </a>): null}
+                
+                   </React.Fragment>
+            
+                {this.rendersubCategories()}
+                <React.Fragment>
+                  {this.state.categoryGroups.length > 0 ?(
+                    <a className={"tab-items nav-link px-4 "+this.state.active} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
+                    <div className="tab-img">
+                      <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
+                    </div>
+                    <div className="main-color font-weight-bold">المجموعات المجانيه</div>
+                  </a>
+                  ):null}
+                
+                </React.Fragment>
+              </div>
+            <div className="tab-content" id="nav-tabContent">
+              {/* <div className="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div className="container">
+                  <div className="row">
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-630 position-relative mb-6">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div className="d-flex align-items-center justify-content-between mb-3">
+                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
+                              <option selected>اختر التخصص</option>
+                              <option value="1">التخصص 1</option>
+                              <option value="2">التخصص 2</option>
+                              <option value="3">التخصص 3</option>
+                            </select>
+                            <span className="mx-1"></span>
+                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
+                              <option selected>اختر مستوي الدورة</option>
+                              <option value="1">الدورة 1</option>
+                              <option value="2">الدورة 2</option>
+                              <option value="3">الدورة 3</option>
+                            </select>
+                          </div>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h6 className="h6 sub-color">مميزات الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h6 className="h6 sub-color">مجموعات المتدربين:</h6>
+                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
+                              <option selected>1 مجموعة</option>
+                              <option value="1">مجموعة 1</option>
+                              <option value="2">مجموعة 2</option>
+                              <option value="3">مجموعة 3</option>
+                            </select>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-630 position-relative mb-5">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"} alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للعام</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h6 className="h6 sub-color">مميزات الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div>
+                            <h6 className="h6 sub-color">مجموعات المتدربين:</h6>
+                            <select className="custom-select font-size-14 border-radius-50 border-sub-color mb-2">
+                              <option selected>1 مجموعة</option>
+                              <option value="1">مجموعة 1</option>
+                              <option value="2">مجموعة 2</option>
+                              <option value="3">مجموعة 3</option>
+                            </select>
+                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
+                              <option selected>1 مجموعة</option>
+                              <option value="1">مجموعة 1</option>
+                              <option value="2">مجموعة 2</option>
+                              <option value="3">مجموعة 3</option>
+                            </select>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-630 position-relative ">
+                          <h4 className="card-title h4 main-color mb-4 font-weight-bold text-center">هل ترغب في الاشتراك في الدورة المحددة؟</h4>
+                          <div className="input-area mb-3">
+                            <input type="text" className="form-control border-radius-50" placeholder="اسم دورة للرخصة المهنية للتخصصات"/>
+                            <span className="input-close cursor-pointer">
+                              <i className="fas fa-times"></i>
+                            </span>
+                          </div>
+                          <div className="input-area mb-3">
+                            <input type="text" className="form-control border-radius-50" placeholder="اسم دورة للرخصة المهنية للعام"/>
+                            <span className="input-close cursor-pointer">
+                              <i className="fas fa-times"></i>
+                            </span>
+                          </div>
+                          <p className="description-card font-weight-bold mb-4 text-center">
+                            يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام
+                          </p>
+                          <div className="d-flex align-items-center mb-2 font-weight-bold">
+                            <div className="main-color mr-4 min-width-200 width-small">إجمالي القيمة الأساسية</div>
+                            <div className="sub-color">4000 ريال</div>
+                          </div>
+                          <div className="d-flex align-items-center mb-2 font-weight-bold">
+                            <div className="main-color mr-4 min-width-200 width-small">نسبة الخصم %10</div>
+                            <div className="sub-color">400 ريال</div>
+                          </div>
+                        <hr></hr>
+                          <div className="d-flex align-items-center mb-2 font-weight-bold">
+                            <div className="main-color mr-4 min-width-200 width-small">اجمالى قيمه الاشتراك</div>
+                            <div className="sub-color">3600 ريال</div>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">الاشتراك</a>
+                            <span className="mx-2"></span>
+                            <a className="btn-title d-inline-block">الغاء الاختيار</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> */}
+              {this.renderPanelSub()}
+              <div className={"tab-pane fade "+this.state.defultActive} id="tab-two" role="tabpanel" aria-labelledby="nav-profile-tab">
+                <div className="container">
+                  <div className="row">
+                  {this.renderCards()}
+                  {!this.state.hideBtn && (
+                <div className="row col-md-12">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.loadMore}
+                      disabled={this.state.disabled}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
+                    {/* <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
+                        <div className="card-img">
+                          <img  src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4"> */}
+                      {/* <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
+                        <div className="card-img">
+                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
+                          <div className="img-tag">2000 ريال</div>
+                        </div>
+                        <div className="mt--50">
+                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
+                          <div>
+                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
+                            <ul className="list-unstyled">
+                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
+                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
+                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
+                            </ul>
+                          </div>
+                          <div className="btn-card-area d-flex justify-content-center mt-3">
+                            <a className="btn-title d-inline-block">انضم للدورة</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div> */}
+                  </div>
+                </div>
+              </div>
+
+              <div className={"tab-pane fade "+this.state.active} id="tab-three" role="tabpanel" aria-labelledby="nav-contact-tab">
+                <div className="container">
+                  <div className="row">
+                  {this.renderCategoryGroups()}
+                    {/* <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">مجموعة الرياضيات</h4>
+                            <div className="font-size-18 mb-2">وصف المجموعه</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">مجموعة الرياضيات</h4>
+                            <div className="font-size-18 mb-2">وصف المجموعه</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">مجموعة الرياضيات</h4>
+                            <div className="font-size-18 mb-2">وصف المجموعه</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">مجموعة الرياضيات</h4>
+                            <div className="font-size-18 mb-2">وصف المجموعه</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">مجموعة الرياضيات</h4>
+                            <div className="font-size-18 mb-2">وصف المجموعه</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
+                        <div className="d-flex align-items-center">
+                          <div className="mr-4">
+                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
+                          </div>
+                          <div className="text-white">
+                            <h4 className="h4">مجموعة الرياضيات</h4>
+                            <div className="font-size-18 mb-2">وصف المجموعه</div>
+                            <div className="font-size-14 d-flex align-items-center">
+                              <div className="mr-2">
+                                <i className="far fa-user-circle"></i>
+                              </div>
+                              <div className="mr-2">طالب</div>
+                              <div>680</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div> */}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </section>
       </React.Fragment>
     );
   }

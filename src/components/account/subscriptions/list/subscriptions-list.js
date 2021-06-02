@@ -67,7 +67,7 @@ class SubscriptionsListComponent extends Component {
     const subscriptions = this.state.subscriptions || [];
     return subscriptions.map(subscription => (
       <React.Fragment>
-        <div className="col-md-4 col-12">
+        <div className="col-lg-4 card-container m-0">
           <div
             key={subscription.id}
             onClick={() => {
@@ -100,6 +100,15 @@ class SubscriptionsListComponent extends Component {
                       button: "متابعة"
                     }
                   )
+                  : subscription.groupCouponPrivent  == true
+                ?  swal(
+                    "عفواً",
+                    "تفاصيل الدورة غير متاحة بسبب عدم أكتمال عدد الكوبون",
+                    "error",
+                    {
+                      button: "متابعة"
+                    }
+                  )
                 : this.props.history.push(
                     `/course/content/${subscription.course.id}`
                   );
@@ -110,16 +119,16 @@ class SubscriptionsListComponent extends Component {
                 <img src={subscription.course.bannerUrl} alt="Course image" />
               </header>
               <div className="card-body d-flex flex-column justify-content-center">
-                <h6 className="card-title small mb-0 p-0 dark-text">
+                <h6 className="h6 font-weight-bold main-color">
                   {subscription.course.nameAr}
                 </h6>
 
                 {subscription.cumulativePaymentStatus == "Unpaid" ? (
-                  <p className="dark-silver-text small mb-0">غير مسدد</p>
+                  <p className="font-weight-bold text-muted">غير مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
-                  <p className="dark-silver-text small mb-0">مسدد جزئياً</p>
-                ) : subscription.cumulativePaymentStatus == "FullyPaid" ? (
-                  <p className="dark-silver-text small mb-0">مسدد</p>
+                  <p className="font-weight-bold text-muted">مسدد جزئياً</p>
+                ) : subscription.cumulativePaymentStatus == "FullyPaid" || subscription.cumulativePaymentStatus == "FullyUsedForReplacement" ? (
+                  <p className="font-weight-bold text-muted">مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "Pending" ? (
                   <React.Fragment>
                     <p
@@ -164,7 +173,7 @@ class SubscriptionsListComponent extends Component {
             <Loader type="ball-spin-fade-loader" className="dark-loader" />
           </div>
         ) : (
-          <div className="silver-bg box-layout w-100 pb-0 p-3 mt-4">
+          <div className="row">
             {this.state.subscriptions == undefined ||
             this.state.subscriptions.length == 0 ? (
               <React.Fragment>

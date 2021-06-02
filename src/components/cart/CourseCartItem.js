@@ -144,7 +144,7 @@ export class CourseCartItem extends Component {
       <Fragment>
         <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item position-relative">
           <span
-            className="badge red-bg text-white smaller light-font-text clickable close-btn"
+            className="badge red-bg text-white smaller light-font-text clickable close-btn cursor-pointer"
             onClick={this.onRemoveItem}
           >
             إزالة
@@ -197,7 +197,7 @@ export class CourseCartItem extends Component {
 
               {item.canBePaidInInstallments ? (
                 <span
-                  className="badge blue-status light-font-text clickable"
+                  className="badge blue-status light-font-text clickable cursor-pointer"
                   onClick={this.onToggleEditInstallment}
                   disabled={!item.canBePaidInInstallments}
                 >
@@ -210,7 +210,7 @@ export class CourseCartItem extends Component {
               ) : null}
               {item.installment && (
                 <span
-                  className="badge blue-status light-font-text clickable ml-1"
+                  className="badge blue-status light-font-text clickable ml-1 cursor-pointer"
                   onClick={this.onPayFullAmount}
                 >
                   تسديد بالكامل

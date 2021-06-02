@@ -62,8 +62,10 @@ export class CardsList extends Component {
   renderCards() {
     return this.state.courses.map(course => (
       <React.Fragment key={course.id}>
-        
-          <Card key={course.id} course={course} />
+        <div className="px-3">
+        <Card key={course.id} course={course} />
+        </div>
+         
       </React.Fragment>
     ));
   }
@@ -74,6 +76,7 @@ export class CardsList extends Component {
       slidesToShow: 3,
       slidesToScroll: 1,
       autoplay: true,
+      arrows:true,
       autoplaySpeed: 2000,
       responsive: [
         {
