@@ -100,6 +100,9 @@ class SubscriptionsListComponent extends Component {
                       button: "متابعة"
                     }
                   )
+                  : subscription.subscriptionStatus == "Replaced"
+                  ? this.props.history.push(
+                    `/course/details/${subscription.course.id}`)
                   : subscription.groupCouponPrivent  == true
                 ?  swal(
                     "عفواً",
@@ -123,7 +126,9 @@ class SubscriptionsListComponent extends Component {
                   {subscription.course.nameAr}
                 </h6>
 
-                {subscription.cumulativePaymentStatus == "Unpaid" ? (
+                {subscription.subscriptionStatus == "Replaced" ?(
+                  <p className="font-weight-bold text-muted">مستبدله</p>
+                ):subscription.cumulativePaymentStatus == "Unpaid" ? (
                   <p className="font-weight-bold text-muted">غير مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
                   <p className="font-weight-bold text-muted">مسدد جزئياً</p>
