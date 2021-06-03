@@ -92,14 +92,8 @@ class SubscriptionsListComponent extends Component {
                     }
                   )
                 : subscription.subscriptionStatus == "Withdrawn"
-                ? swal(
-                    "عفواً",
-                    "تفاصيل الدورة غير متاحة بسبب انسحابك من الدورة",
-                    "error",
-                    {
-                      button: "متابعة"
-                    }
-                  )
+                ? this.props.history.push(
+                  `/course/details/${subscription.course.id}`)
                   : subscription.subscriptionStatus == "Replaced"
                   ? this.props.history.push(
                     `/course/details/${subscription.course.id}`)
