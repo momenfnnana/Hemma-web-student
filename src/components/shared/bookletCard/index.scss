@@ -1,0 +1,43 @@
+.booklet-tag{
+    width: 100px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 25px;
+    font-size: 0.8rem;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+    background-color: var(--light-sub-color);
+    color: var(--main-color) !important;
+    border-radius: 50px;
+    text-align: center;
+    &:hover{
+        background-color: var(--main-color);
+        color: var(--light-sub-color) !important;
+        animation: shake 0.7s ;
+        transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+}
+.font-bold{
+font-weight: bold !important;
+}
+
+@keyframes shake {
+    10%, 90% {
+      transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+      transform: translate3d(2px, 0, 0);
+    }
+  
+    30%, 50%, 70% {
+      transform: translate3d(-3px, 0, 0);
+    }
+  
+    40%, 60% {
+      transform: translate3d(3px, 0, 0);
+    }
+  }
