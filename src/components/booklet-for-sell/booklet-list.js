@@ -124,7 +124,7 @@ export class BookletComponent extends Component {
                       <option className="form-control border-radius-50 placeholder-gray mb-2" value="">المنصه</option>
                     {
                         this.state.categories.map(category => (
-                            <option key={category.id} value={category.id}>{category.nameAr}</option>
+                            <option key={category.id} value={category.id}>{category.name}</option>
                         ))
                     }
 
