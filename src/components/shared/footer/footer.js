@@ -114,7 +114,7 @@ class FooterComponent extends Component {
 
     return (
 
-<section id="footer" className="footer pt-5 footer-layout">
+<section id="footer" className="footer pt-5 mt-auto">
    <div className="hemma-footer">
       <div className="container">
          <div className="row">

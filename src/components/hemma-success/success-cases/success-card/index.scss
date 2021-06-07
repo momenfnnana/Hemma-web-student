@@ -1,0 +1,16 @@
+.status-card {
+    width: 100%;
+    border: 3px solid var(--main-color-light);
+    position: relative;
+    padding: 10px 20px;
+    border-radius: 10px;    
+    margin-bottom: 25px;
+
+    & .quote-icon{
+       color: var(--main-color-light) !important;
+    }
+}
+
+.main-color-light {
+    color: var(--main-color-light);
+}
