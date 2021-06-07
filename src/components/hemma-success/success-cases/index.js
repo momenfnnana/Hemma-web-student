@@ -31,6 +31,13 @@ export default function SuccessCases() {
   const handleCaseRequestSuccess = (response)=>{
     debugger
     const cases = response?.data?.data
+    if(response.data.itemCount > (response.data.limit*response.data.page))
+    {
+      setNoMore(true);
+    }
+    else{
+      setNoMore(false);
+    }
     setCases([...allCases,...cases])
   }
   console.log({allCases});
@@ -55,7 +62,7 @@ export default function SuccessCases() {
         ))}
       </div>
       <div className="d-flex justify-content-center mt-5">
-      {!noMore &&<button className="btn dark-btn unset-height unset-line-height br-5 w-20 m-auto" onClick={getNaxtPage}>
+      {noMore &&<button className="btn dark-btn unset-height unset-line-height br-5 w-20 m-auto" onClick={getNaxtPage}>
           عرض المزيد
       </button>}
       </div>

@@ -4,6 +4,7 @@ import SuccessCard from "./success-card";
 import "./index.scss"
 import { NavLink } from "react-router-dom";
 import Glide from '@glidejs/glide'
+import { successUrl } from "../../../api/urls";
 
 const Bullets = ()=> (
   <>
@@ -17,7 +18,10 @@ const Bullets = ()=> (
 
 export default function HemmaSuccess() {
 
-
+successUrl()
+{
+  return
+}
   useEffect(()=>{
     const myOptions = {
       type: 'carousel',

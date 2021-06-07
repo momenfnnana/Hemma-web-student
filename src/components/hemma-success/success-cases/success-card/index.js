@@ -19,8 +19,8 @@ const Rating = ({ successCase }) => {
 const contentReducer = (successCase) => {
   switch (successCase?.source) {
     case "Media":
-      return <a target={successCase?.url}>
-        <img src={successCase?.img} className="w-100 h-auto" style={{height:'170px !important'}} />
+      return <a href={successCase?.url}>
+        <img src={successCase?.img} className="w-100 height-70" style={{height:'170px !important'}} />
       </a>;
     case "Rating":
       return <Rating successCase={successCase} />;
@@ -32,12 +32,12 @@ const contentReducer = (successCase) => {
 export const SuccessCard = ({ successCase }) => {
   return (
     <div class="col-lg-4">
-      <div class="status-card sider-items">
+      <div class="status-card sider-items min-height-150">
         <div class="quote-icon">
           <i class="fas fa-quote-left"></i>
         </div>
         <h6 class="h6 main-color-light text-center mb-3">
-          {successCase?.categoryName}
+          {successCase?.courseName}
         </h6>
         <div class="card">
           {contentReducer(successCase)}

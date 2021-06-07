@@ -32,6 +32,7 @@ class HomeComponent extends Component {
       testimonials: [],
       initiatives: [],
       categoryGroups: [],
+      success : []
     };
   }
 
@@ -69,7 +70,16 @@ class HomeComponent extends Component {
       .catch((error) => {
         console.log(error);
       });
-
+      axios
+      .get(`${apiBaseUrl}/Success?showinMain=true`)
+      .then(response => {
+        console.log(response);
+        this.setState({ success: response.data.data.data});
+      new Glide('.glide',myOptions).mount();
+      })
+      .catch(error => {
+        console.log(error);
+      });
     axios
       .get(`${apiBaseUrl}/courses/recent`)
       .then((response) => {
@@ -123,7 +133,7 @@ class HomeComponent extends Component {
       //   type: "carousel"
       // }).mount();
     
-    //  new Glide('.glide',myOptions).mount()
+     
      
       // let collapsingBtn = document.querySelector('.collapsing-btn');
       // collapsingBtn.onclick = function (e) {
@@ -463,7 +473,42 @@ renderBulit()
       );
     });
   }
+renderSucces()
+{
+  return this.state.success.map((suc, index) => (
+    <React.Fragment>
+<li className="glide__slide">
+                <div className="sider-items  min-height-150">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">{suc.courseName}</h4>
+                  {suc.source == "Media" ? (
+                    <React.Fragment>
+<a href={suc?.url}>
+        <img src={suc?.img} className="w-100 height-70" style={{height:'170px !important'}} />
+      </a>
+                    </React.Fragment>
+                   
+                  ):(
+                    <React.Fragment>
+                   <div className="card-body px-2 py-2">
+    <p className="d-flex align-items-center light-gray mb-1 font-size-13">
+      <span className="d-block main-color-light mr-2">اسم الطالب : </span>
+      {suc?.rating?.studentName}
+    </p>
+    <p className="light-gray font-size-13 m-0">
+      <span className="main-color-light">التقييم : </span>
+      {suc?.rating?.feedBack}
+    </p>
+  </div>
+                    </React.Fragment>
+                  )}
+                  
+                </div>
+              </li>
 
+              </React.Fragment>
+  ));
+}
   render() {
     return (
 
@@ -635,7 +680,35 @@ renderBulit()
         </div>
       </div>
     </section>
-    <HemmaSuccess />
+    <section id="success-wrapper" class="success-wrapper">
+      <div class="container py-5">
+        <header class="mb-5">
+          <h3 class="h3 text-center font-weight-bold main-color mb-2">نجاحات مع همة</h3>
+        </header>
+        <div class="glide">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides py-2">
+       {this.renderSucces()}
+       </ul>
+          </div>
+          {/* <!-- <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+          </div> --> */}
+          <div class="glide__bullets" data-glide-el="controls[nav]">
+            <button class="glide__bullet" data-glide-dir="=0"></button>
+            <button class="glide__bullet" data-glide-dir="=1"></button>
+            <button class="glide__bullet" data-glide-dir="=2"></button>
+            <button class="glide__bullet" data-glide-dir="=3"></button>
+            <button class="glide__bullet" data-glide-dir="=4"></button>
+            <button class="glide__bullet" data-glide-dir="=5"></button>
+          </div>
+        </div>
+        <div class="d-flex align-items-center justify-content-center mt-5">
+        <Link to="/home/hemma-succes" className="btn-yellow headShake">المزيد من النجاحات</Link>
+        </div>
+      </div>
+    </section>
     {/* <!-- End How Hemma Faciliate Its Mission -->
 
     <!-- ################################################################ -->
