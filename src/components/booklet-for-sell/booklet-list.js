@@ -121,7 +121,7 @@ export class BookletComponent extends Component {
           
             return (
                 <select onChange={this.select} value={this.state.selected_platform} className="form-control border-radius-50 placeholder-gray mb-2">
-                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">المنصه</option>
+                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">التصنيف</option>
                     {
                         this.state.categories.map(category => (
                             <option key={category.id} value={category.id}>{category.name}</option>
