@@ -262,7 +262,44 @@ export class BookletDetailsComponent extends Component {
                           <TraingleIcon style={{alignSelf:'baseline'}} />
                           <p class="description-card light-gray font-weight-bold m-0 p-0"> {booklet.description}</p>
                       </div>
+                      <div  class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div  class="main-color mr-5">
+                                سعر الملزمة ملونة
+                            </div>
+                            <div  class="text-muted" >
+                                ريال {booklet.coloredSellPrice}
+                            </div>
+                      </div>
 
+                      <div  class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div class="main-color mr-5" >
+                                سعر الملزمة أبيض واسود
+                            </div>
+                            <div  class="text-muted" >
+                                ريال {booklet.blackAndWhiteSellPrice}
+                            </div>
+                       </div>
+                       <div class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div class="main-color mr-5" >
+                                الكمية المتاحة ملونة
+                            </div>
+                            <div class="text-muted">
+                                {booklet.availableQtyColored}
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div class="main-color mr-5">
+                                الكمية المتاحة أبيض واسود
+                            </div>
+                            <div class="text-muted">
+                                {booklet.availableQtyBlackAndWhite}
+                            </div>
+                        </div>
                      </div> 
                     </div>
                
