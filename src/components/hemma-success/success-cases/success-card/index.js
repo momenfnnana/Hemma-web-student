@@ -20,7 +20,7 @@ const contentReducer = (successCase) => {
   switch (successCase?.source) {
     case "Media":
       return <a target={successCase?.url}>
-        {/* <img src={successCase?.img} className="w-100 h-auto" /> */}
+        <img src={successCase?.img} className="w-100 h-auto" style={{height:'170px !important'}} />
       </a>;
     case "Rating":
       return <Rating successCase={successCase} />;

@@ -24,8 +24,8 @@ export default function SuccessCases() {
   const [page,setPage] = useState(1)
   const [getCasesTest,casesResponse] = useFetch(successUrl(),{method:'GET'})
   const [allCases,setCases] = useState([])
-
-
+  const [noMore,setNoMore] = useState(false)
+  const [maxCount ,setMaxCount] = useState()
   const getNaxtPage = ()=> setPage(page+1)
 
   const handleCaseRequestSuccess = (response)=>{
@@ -38,6 +38,10 @@ export default function SuccessCases() {
     if(page<= 1)return
     getCasesTest({url:successUrl(9,page)},handleCaseRequestSuccess)
   },[page])
+
+  useEffect(()=>{
+
+  },[allCases])
   useEffect(()=>{
     //init request
     getCasesTest({url:successUrl(9,page)},handleCaseRequestSuccess)
@@ -51,9 +55,9 @@ export default function SuccessCases() {
         ))}
       </div>
       <div className="d-flex justify-content-center mt-5">
-      <button className="btn dark-btn unset-height unset-line-height br-5 w-20 m-auto" onClick={getNaxtPage}>
+      {!noMore &&<button className="btn dark-btn unset-height unset-line-height br-5 w-20 m-auto" onClick={getNaxtPage}>
           عرض المزيد
-      </button>
+      </button>}
       </div>
     </div>
   );
