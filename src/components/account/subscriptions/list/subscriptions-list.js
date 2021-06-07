@@ -122,6 +122,8 @@ class SubscriptionsListComponent extends Component {
 
                 {subscription.subscriptionStatus == "Replaced" ?(
                   <p className="font-weight-bold text-muted">مستبدله</p>
+                ):subscription.cumulativePaymentStatus == "Withdrawn" ? (
+                  <p className="font-weight-bold text-muted">منسحب</p>
                 ):subscription.cumulativePaymentStatus == "Unpaid" ? (
                   <p className="font-weight-bold text-muted">غير مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
