@@ -22,7 +22,6 @@ class CardComponent extends Component {
              
   render() {
     const course = this.props.course;
-    console.log("course",course);
     var date = new Date(course.startsAt);
     var day = date.getDate();
     var month = date.getMonth() + 1;
@@ -73,7 +72,7 @@ class CardComponent extends Component {
                }
                   )
               ):
-               new Date(course.endsAt) > new Date() ?  history.push(`/course/details/${course.slug}`):
+              course.endsAt == undefined ||  new Date(course.endsAt) > new Date() ?  history.push(`/course/details/${course.slug}`):
                swal(
                    "عفواً",
                    "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",

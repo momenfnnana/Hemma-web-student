@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { BookletCard } from "../bookletCard/bookletCard";
 import { apiBaseUrl } from "../../../api/helpers";
-
+import "./index.scss"
 export class BookletCardList extends Component {
     constructor(props) {
         super(props);
@@ -66,11 +66,9 @@ export class BookletCardList extends Component {
     
             return this.props.booklets.map(category => ( 
                <React.Fragment>
-                <div  className="col-lg-12">
-                <h3  class="h3 sub-color ml-0" className = "category-title ml-0"> { category.nameAr } </h3> 
-                </div>
+                <h3  class="h3 sub-color ml-0 mb-3 font-w-500" > { category.nameAr } </h3> 
              { 
-                <React.Fragment>
+                <div className="list-container mb-4">
                     {
                         category.bookletsForSell.map(booklet => ( 
                             <React.Fragment key = { booklet.id }> { 
@@ -82,7 +80,7 @@ export class BookletCardList extends Component {
                         ))
     
                     } 
-                    </React.Fragment>
+                    </div>
     
     
                 } 

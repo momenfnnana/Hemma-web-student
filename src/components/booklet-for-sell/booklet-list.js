@@ -3,7 +3,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { BookletCardList } from "../shared/bookletCardList/bookletCardList";
 import { apiBaseUrl } from "../../api/helpers";
-
+import "./index.scss"
 export class BookletComponent extends Component {
    
     constructor(props) {
@@ -121,10 +121,10 @@ export class BookletComponent extends Component {
           
             return (
                 <select onChange={this.select} value={this.state.selected_platform} className="form-control border-radius-50 placeholder-gray mb-2">
-                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">المنصه</option>
+                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">التصنيف</option>
                     {
                         this.state.categories.map(category => (
-                            <option key={category.id} value={category.id}>{category.nameAr}</option>
+                            <option key={category.id} value={category.id}>{category.name}</option>
                         ))
                     }
 
@@ -136,9 +136,9 @@ export class BookletComponent extends Component {
     renderBooklet() {
         return (
             <React.Fragment>
-          {/* <div class="container">
+          {/* <div class="container-fluid p-0">
            <nav aria-label="breadcrumb">
-           <ol class="breadcrumb bg-transparent pt-5">
+           <ol class="breadcrumb bg-transparent pt-4 px-0">
             <li class="breadcrumb-item"><a href="/home">الرئيسيه</a></li>
             <li class="breadcrumb-item active" aria-current="page">متجر همة للكتب</li>
            </ol>
@@ -147,7 +147,7 @@ export class BookletComponent extends Component {
                 <div className="row">
 
 
-                    <div className="col-md-9">
+                    <div className="col-md-9 mb-4">
                     <div class="position-relative">
                     <input onChange={this.searchHandler} onBlur={this.search} placeholder="البحث باسم الملزمة" className="form-control border-radius-50 placeholder-gray mb-2"></input>     
                      <div className="search-btn cursor-pointer" onClick={this.search}>
@@ -167,7 +167,7 @@ export class BookletComponent extends Component {
 
 
                 </div>
-<div className="row">
+<div className="">
     <BookletCardList booklets={this.state.booklets}/>
 </div>
 

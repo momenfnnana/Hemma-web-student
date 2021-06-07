@@ -436,7 +436,9 @@ return(
                  {this.renderSubCategorylvl4()}
                </ul>
             </li>
-            
+            <li className="nav-item">
+              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
+            </li>
            
           
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
