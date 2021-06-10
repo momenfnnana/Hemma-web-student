@@ -1,0 +1,7 @@
+.search-input{
+    padding: 0 2rem;
+    &::placeholder{
+        padding: 0 !important;
+        font-size: 15px;
+    }
+}

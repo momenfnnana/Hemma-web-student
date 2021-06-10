@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./styles.sass";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import ReactDOM from "react-dom";
 import { Api } from "../../../api";
@@ -86,7 +86,7 @@ export class BookletCardComponent extends Component {
            <img  src={booklet.icon}  class="width-130" alt="Hemma-Logo"></img> 
         </div>
         <div >
-           <h5 > <a  class="h5 main-color" id="link" href={`/booklet/details/${booklet.id}`} > {booklet.nameAr} </a> </h5>
+           <h5 > <NavLink to={`/booklet/details/${booklet.id}`}  class="h5 main-color" id="link" > {booklet.nameAr} </NavLink> </h5>
            <div class="gray-tag">كتاب ملون</div>
            <div  onClick={() => this.onSubmit("Colored")} class="price-tag"> {booklet.coloredSellPrice} ريال</div>
            <div class="gray-tag">أبيض وأسود</div>
