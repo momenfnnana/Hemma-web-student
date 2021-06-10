@@ -8,6 +8,7 @@ import { apiBaseUrl } from "../../../api/helpers";
 import EmptyCountWrapper from "../../../HOC/EmptyCountWrapper";
 import EmptyData from "../../../shared/EmptyData";
 
+import "./index.scss"
 export class BookletCardList extends Component {
   constructor(props) {
     super(props);
