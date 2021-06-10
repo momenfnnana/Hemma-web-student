@@ -69,7 +69,7 @@ export class BookletCardComponent extends Component {
                     <img key="" src="https://hemma.ams3.cdn.digitaloceanspaces.com/img/course_banners/b359ee89-c5c9-4172-99d5-a73cb8d5df1f.jpeg" alt="" />
                   </header>
                   <div className="card-body">
-
+ 
                     <p>{booklet.nameAr}</p>
                     <p>{booklet.sellPrice}</p>
                   </div>
