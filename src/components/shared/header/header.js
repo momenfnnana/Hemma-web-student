@@ -485,7 +485,7 @@ return(
                           <a href="/course/content" className="nav-link d-inline-block"> دوراتي</a>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/billing" className="nav-link d-inline-block">مشترياتي</a>
+                          <a href="/billing" className="nav-link d-inline-block">الحركات المالية</a>
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a href="/certificates" className="nav-link d-inline-block"> شهاداتي</a>
