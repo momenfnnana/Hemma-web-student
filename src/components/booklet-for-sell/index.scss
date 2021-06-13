@@ -1,3 +1,10 @@
+.search-input{
+    padding: 0 2rem;
+    &::placeholder{
+        padding: 0 !important;
+        font-size: 15px;
+    }
+}
 .list-container{
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(180px,1fr));

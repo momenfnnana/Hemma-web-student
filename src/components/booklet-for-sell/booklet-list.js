@@ -3,6 +3,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { BookletCardList } from "../shared/bookletCardList/bookletCardList";
 import { apiBaseUrl } from "../../api/helpers";
+import "./styles.sass"
 import "./index.scss"
 export class BookletComponent extends Component {
    
@@ -12,8 +13,8 @@ export class BookletComponent extends Component {
             categories: [],
             selected_platform: "",
             booklets:[],
-            search:""
-           
+            search:"",
+            loading:true
         }
         this.select = this.select.bind(this);
         //this.loadBooklets = this.loadBooklets(this);
@@ -49,7 +50,7 @@ export class BookletComponent extends Component {
         .get(`${apiBaseUrl}/bookletforsell/bookletforsell?platform=`+platform+"&search="+this.state.search)
         .then(response => {
             
-             this.setState({ booklets: response.data.data,selected_platform:platform });
+             this.setState({ booklets: response.data.data,selected_platform:platform,loading:false });
              console.log(this.state);
             
             setTimeout(
@@ -84,7 +85,7 @@ export class BookletComponent extends Component {
     }
 
     searchHandler = (event) => {
-        this.setState({search: event.target.value});
+        this.setState({search: event.target.value,loading:true});
       }
 
     select = (e) => {
@@ -149,10 +150,12 @@ export class BookletComponent extends Component {
 
                     <div className="col-md-9 mb-4">
                     <div class="position-relative">
-                    <input onChange={this.searchHandler} onBlur={this.search} placeholder="البحث باسم الملزمة" className="form-control border-radius-50 placeholder-gray mb-2"></input>     
-                     <div className="search-btn cursor-pointer" onClick={this.search}>
+                     <i className="fas fa-search input-search-icon"></i>
+
+                    <input onChange={this.searchHandler} onBlur={this.search} placeholder="البحث باسم الملزمة" className="search-input form-control border-radius-50 placeholder-gray mb-2 "></input>     
+                     {/* <div className="search-btn cursor-pointer" onClick={this.search}>
                      <i className="fas fa-search"></i>
-                     </div> 
+                     </div>  */}
 
                         
                         {/* <input onChange={this.searchHandler}  placeholder="البحث باسم الملزمة" className="search-input"></input>
@@ -167,8 +170,8 @@ export class BookletComponent extends Component {
 
 
                 </div>
-<div className="">
-    <BookletCardList booklets={this.state.booklets}/>
+<div className="row">
+    <BookletCardList booklets={this.state.booklets}  loading={this.props.loading} />
 </div>
 
             </React.Fragment>
@@ -185,7 +188,7 @@ export class BookletComponent extends Component {
                         content="تعرّف على أحدث الدورات المتاحة حالياً وقم باختيار الدورة المناسبة الآن!"
                     />
                 </Helmet>
-                <section className="pt-3 pb-5">
+                <section className="pt-3 pb-5  booklet-wrapper">
                     <div className="container">{this.renderBooklet()}</div>
                 </section>
             </React.Fragment>
