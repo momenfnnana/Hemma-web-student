@@ -75,7 +75,11 @@ class HomeComponent extends Component {
       .then(response => {
         console.log(response);
         this.setState({ success: response.data.data.data});
-      new Glide('.glide',myOptions).mount();
+        if(this.state.success.length>0)
+        {
+          new Glide('.glide',myOptions).mount();
+        }
+
       })
       .catch(error => {
         console.log(error);
@@ -680,7 +684,8 @@ renderSucces()
         </div>
       </div>
     </section>
-    <section id="success-wrapper" class="success-wrapper">
+    {this.state.success.length>0 ? (
+      <section id="success-wrapper" class="success-wrapper">
       <div class="container py-5">
         <header class="mb-5">
           <h3 class="h3 text-center font-weight-bold main-color mb-2">نجاحات مع همة</h3>
@@ -709,6 +714,8 @@ renderSucces()
         </div>
       </div>
     </section>
+    ) : null}
+    
     {/* <!-- End How Hemma Faciliate Its Mission -->
 
     <!-- ################################################################ -->

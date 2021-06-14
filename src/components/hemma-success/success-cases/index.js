@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { successUrl } from "../../../api/urls";
 import { useFetch } from "../../../hooks/useFetch";
 import { SuccessCard } from "./success-card";
-
+import './index.scss'
 const CardReducer = (card)=>{
   switch (card.source) {
     case "Media":
@@ -56,7 +56,7 @@ export default function SuccessCases() {
   console.log({casesTest: casesResponse});
   return (
     <div className="container py-5">
-      <div className="row">
+      <div className="success-wrapper">
         {allCases?.map((_case) => (
           <SuccessCard successCase={_case}  />
         ))}
