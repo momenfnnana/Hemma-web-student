@@ -120,7 +120,8 @@ class HeaderComponent extends Component {
         handleActiveEle(linkDropdown, subDropdown);
         linkDropdown.forEach(linkBtn => {
           linkBtn.onclick = function() {
-            if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing') || document.querySelector('.'+perfix+'sub-dropdown3').classList.contains('showing')) {
+            if (document.querySelector('.'+perfix+'sub-dropdown2')?.classList.contains('showing') || 
+            document.querySelector('.'+perfix+'sub-dropdown3')?.classList.contains('showing')) {
               document.querySelector('.'+perfix+'sub-dropdown2').classList.remove('showing');
               document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
 

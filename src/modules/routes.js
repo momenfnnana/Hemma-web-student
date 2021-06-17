@@ -93,11 +93,16 @@ window.onscroll = function() {
   let currentScrollPosition = window.pageYOffset;
 
   /* Start Navbar Animation While Window Scrolling */
-  if (previousScrollPosition > currentScrollPosition) {
-    document.querySelector('.navbar').style.top = '0';
-  } else {
-    document.querySelector('.navbar').style.top = '-70px';
+  try {
+    if (previousScrollPosition > currentScrollPosition) {
+      document.querySelector('.navbar').style.top = '0';
+    } else {
+      document.querySelector('.navbar').style.top = '-70px';
+    }
+  } catch (error) {
+    
   }
+  
   previousScrollPosition = currentScrollPosition;
   /* End Navbar Animation While Window Scrolling */
 

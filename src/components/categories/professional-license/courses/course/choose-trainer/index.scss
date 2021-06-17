@@ -1,0 +1,98 @@
+.trainer-chooice-list {
+  position: relative;
+  top: -12px;
+  right: 0;
+  width: 100%;
+  transition: all 0.2s ease-in-out;
+  opacity: 0;
+  height: auto;
+  max-height: 0;
+  overflow: auto;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-top: 0;
+  font-size: 14px;
+  padding: 15px 10px 5px;
+  border-radius: 0 0 5px 5px;
+  // box-shadow: 0px 20px 5px -10px rgb(0 0 0 / 20%);
+  z-index: 1;
+  display: none;
+}
+
+.input-area {
+  position: relative;
+}
+
+.input-area {
+  &.show {
+    z-index: 5;
+
+    .trainer-chooice-list{
+        opacity: 1;
+        display: block;
+        max-height: 100px;
+    }
+
+   
+  }
+}
+
+
+.trainer-list-item {
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.trainer-chooice-btn {
+    position: relative;
+    z-index: 3;
+    border-color: var(--sub-color);
+}
+
+.bullets-before-input {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    border: 1px solid #ced4da;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.input-with-bullets {
+    padding-right: 30px;
+    font-size: 14px;
+}
+.bullets-before-input {
+    &::before{
+        background-color: red;
+    }
+    &.active{
+        border-color: var(--sub-color);
+
+       
+    }
+    
+}
+
+
+.bullets-before-input.active::before {
+    background-color: var(--sub-color);
+}
+
+.bullets-before-input::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    background-color: #ced4da;
+    border-radius: 50%;
+}
+
+.rotate-180{
+    transform: rotateX(180deg);
+}
