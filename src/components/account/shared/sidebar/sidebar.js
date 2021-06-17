@@ -207,7 +207,7 @@ export class SidebarComponent extends Component {
                     className="mr-2 contain-img"
                     alt="exams"
                   />
-                  الاختبارات الإلكترونية
+                  الاختبارات الإلكترونية 
                 </NavLink>
               </li>
               <li>

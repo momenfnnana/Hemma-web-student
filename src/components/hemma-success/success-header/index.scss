@@ -1,0 +1,21 @@
+.success-banner-image {
+    height: 350px;
+    background-image:  url("/assets/images/succ-banner.png"); /* fallback */
+    background-image: url("/assets/images/succ-banner.png"), linear-gradient(#000) !important; /* W3C */
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    background-position: 0px;
+}
+
+.main-color-shadow{
+    background-color: var(--main-color-rgba); 
+    opacity: 1;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

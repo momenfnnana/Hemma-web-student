@@ -56,6 +56,7 @@ import { TrainingResult } from "../components/categories/quick-questions/trainin
 import { Healthy } from "../components/shared/healthy";
 import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
 import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
+import HemmaSuccessDetails from "../components/hemma-success";
 
 class AppBackground extends Component {
   componentDidMount()
@@ -168,7 +169,8 @@ function loadingProgressbar() {
       path.startsWith("/initiative-role") ||
       path.startsWith("/initiative-exam")||
       path.startsWith("/billing")||
-      path.startsWith("/certificate")
+      path.startsWith("/certificate")||
+      path.startsWith("/home/hemma-succes")
       
     ) {
       img = "pages-bg.png";
@@ -190,12 +192,13 @@ function loadingProgressbar() {
     return (
 
       <div
-        className="wrapper-bg with-fixed-header"
+        className="wrapper-bg with-fixed-header d-flex flex-column"
         style={{
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: imgSize,
           backgroundPosition: imgPosition,
+          minHeight:'100vh'
         }}
       >
         {path !== '/cart/anonymouscheckout' && <Header/>}
@@ -221,7 +224,7 @@ class MainRouterComponent extends Component {
               </Route>
               <Route exact path="/ready" component={Healthy} />
               {/* End Healty check from FE/BE side  */}
-              
+              <Route path="/home/hemma-succes" exact component={HemmaSuccessDetails} />
               <Route path="/home" component={Home} />
               <Route path="/privacypolicy" component={PrivacyPolicy} />
 
