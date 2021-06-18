@@ -214,13 +214,16 @@ export default withRouter(function ProfessionalCourses({
   }, [categoryData]);
 
   const hasPackageCase = async (ids = [], pkg, onEnd) => {
-    debugger;
     const pkgID = pkg.id;
     const body = {
       packageId: pkgID,
       firstCourseId: ids?.[0],
       secoundCourseId: ids?.[1],
     };
+    if (!token) {
+      localStorage.setItem("PostCardAction",JSON.stringify([{"url":packageSubscribtionUrl,"body":body}]));
+      return;
+    }
     try {
       //authValidator();
       const {
@@ -244,7 +247,19 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCase = async (ids = [], onEnd) => {
+    debugger;
+
+    if (!token) {
+      let postCardActions = [];
+      ids.map(async (id, index) => {
+        postCardActions.push({"url":noPackageSubscribtionUrl,"body":{courseId: id}});
+      });
+
+      localStorage.setItem("PostCardAction",JSON.stringify(postCardActions));
+      return;
+    }
     const promises = ids.map((id, index) => hasNoPackageCaseSingleReq(id));
+
     promises.map(async (promise, index) => {
       try {
         const res = await promise;
@@ -254,13 +269,10 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const handleSubscribtion = () => {
-    if (!token) {
-      authErrorMsg(); 
-      return;
-    }
+   
       
       
-    const ids = [mergedData.general.id, mergedData.spec.id].map((id) => id);
+    const ids = [mergedData.general?.id, mergedData.spec?.id].map((id) => id);
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
       case true:
@@ -273,6 +285,11 @@ export default withRouter(function ProfessionalCourses({
 
       default:
         break;
+    }
+
+    if (!token) {
+      authErrorMsg(); 
+      return;
     }
   };
 
