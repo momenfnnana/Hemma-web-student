@@ -45,6 +45,7 @@ export class CategoryDetails extends Component {
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
+      showgroupedPackagesBtn: true,
       hideBtnSuccess: false,
       loading: false,
       disabled: false,
@@ -135,6 +136,8 @@ moreSucces = async () =>
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
         this.setState({ details: response.data.data});
+        this.setState({ showgroupedPackagesBtn: response.data.data.groupedPackages});
+
       })
       .catch(error => {
         console.log(error);
@@ -616,7 +619,6 @@ console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.
                   </div>
                   <div className="main-color font-weight-bold">الرخصة المهنية</div>
                 </a> */}
-                <NavTab name="الرخصة المهنية" onClick={()=>this.changeTab("الرخصة المهنية")} />
                 {/* <React.Fragment>
                    {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
                   <div className="tab-img">
@@ -635,6 +637,10 @@ console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.
                 </a>): null}
                 
                    </React.Fragment>
+                   {
+                     this.state.showgroupedPackagesBtn ? <NavTab name="الرخصة المهنية" onClick={()=>this.changeTab("الرخصة المهنية")} /> : null
+                   }
+                   
             
                 {this.rendersubCategories()}
                 <React.Fragment>

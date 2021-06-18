@@ -54,7 +54,9 @@ export default withRouter(function ProfessionalCourses({
   const authErrorMsg = () => {
     swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
       button: "متابعة",
-    });
+    }).then((response) => {
+        window.location = "/auth/login";
+});
   };
 
   const { push } = history;
@@ -82,7 +84,7 @@ export default withRouter(function ProfessionalCourses({
   const getTotalData = async () => {
     setTotalInfo({ ...totalInfo, error: "" });
     try {
-      authValidator();
+      //authValidator();
       const { data } = await Axios.get(getTotalsUrl, {
         headers,
         params: {
@@ -179,7 +181,7 @@ export default withRouter(function ProfessionalCourses({
       const headers = {
         Authorization: `Bearer ${token}`,
       };
-      authValidator();
+      //authValidator();
       const { data } = await Axios.get(getSpecUrl(categoryData?.id), {
         headers,
       });
@@ -193,8 +195,8 @@ export default withRouter(function ProfessionalCourses({
     };
 
     setMeregedData({ ...mergedData, ...data });
-    specAlert();
     generalAlert();
+    specAlert();
   };
 
   const onGeneralCourseSelect = (course = null) => {
@@ -220,7 +222,7 @@ export default withRouter(function ProfessionalCourses({
       secoundCourseId: ids?.[1],
     };
     try {
-      authValidator();
+      //authValidator();
       const {
         data: { status },
       } = await Axios.post(packageSubscribtionUrl, body, {
@@ -252,6 +254,12 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const handleSubscribtion = () => {
+    if (!token) {
+      authErrorMsg(); 
+      return;
+    }
+      
+      
     const ids = [mergedData.general.id, mergedData.spec.id].map((id) => id);
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
@@ -274,7 +282,7 @@ export default withRouter(function ProfessionalCourses({
 
   const getTrainerInfo = async (id) => {
     try {
-      authValidator();
+      //authValidator();
       const { data } = await Axios.get(getTrinerInfoUrl(id), {
         headers,
       });
