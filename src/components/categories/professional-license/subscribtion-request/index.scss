@@ -1,0 +1,56 @@
+
+.white-bg{
+    background-color: #fff !important;
+}
+
+.flex-root{
+    flex: 1 !important;
+}
+.subscription-wrapper{
+
+    h4{
+        color: #fff !important;
+    }
+    
+
+    .card-ele:hover{
+        color: inherit !important;
+    }
+  
+
+   & input{
+
+    &::placeholder{
+        font-size: 15px;
+        padding: 0 !important;
+    }
+
+    }
+
+   & .card-ele{
+        &.with-bg-img {
+            background-size: cover !important;
+        }
+        border-radius: 32px !important;
+    }
+    
+}
+
+
+
+.card-ele{
+    &:hover{
+    }
+}
+
+.text-white{
+    color: #fff !important;
+
+    & *{
+        color: #fff;
+    }
+
+    & .main-color{
+        color: #fff;
+    }
+}

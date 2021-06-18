@@ -120,7 +120,8 @@ class HeaderComponent extends Component {
         handleActiveEle(linkDropdown, subDropdown);
         linkDropdown.forEach(linkBtn => {
           linkBtn.onclick = function() {
-            if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing') || document.querySelector('.'+perfix+'sub-dropdown3').classList.contains('showing')) {
+            if (document.querySelector('.'+perfix+'sub-dropdown2')?.classList.contains('showing') || 
+            document.querySelector('.'+perfix+'sub-dropdown3')?.classList.contains('showing')) {
               document.querySelector('.'+perfix+'sub-dropdown2').classList.remove('showing');
               document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
 
@@ -487,7 +488,7 @@ return(
                           <a href="/course/content" className="nav-link d-inline-block"> دوراتي</a>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/billing" className="nav-link d-inline-block">مشترياتي</a>
+                          <a href="/billing" className="nav-link d-inline-block">الحركات المالية</a>
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a href="/certificates" className="nav-link d-inline-block"> شهاداتي</a>

@@ -8,13 +8,14 @@ body, html {
 :root {
   /* #4A3985 */
   --main-color: #4b3a85;
+  --main-color-ligh: #816cc8;
   --sub-color: #2bc3cc;
   --main-color-rgba: rgba(75,58,133, .8);
   --card-color: #A8EBEF;
   --color-yellow: #FCE77D;
   --color-tomato: #ff6575;
   --color-green: #6bd17f;
-  --border-light: #a8ebef
+  --border-light: #a8ebef;
 }
 * {box-sizing: border-box;}
 ::selection {

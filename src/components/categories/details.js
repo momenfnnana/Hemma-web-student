@@ -17,6 +17,8 @@ import "./styles.sass";
 import { PageLoader } from "../courses/page-loader";
 import ContentLoader from "react-content-loader";
 import { Category } from "emoji-mart";
+import NavTab from "./tab-link";
+import ProfessionalLicense, { ProfessionalLicenseText } from "./professional-license";
 
 
 var moment = require("moment-hijri");
@@ -43,6 +45,7 @@ export class CategoryDetails extends Component {
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
+      showgroupedPackagesBtn: true,
       hideBtnSuccess: false,
       loading: false,
       disabled: false,
@@ -57,6 +60,7 @@ export class CategoryDetails extends Component {
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.changeTab = this.changeTab.bind(this)
   }
 
   openModal(id) {
@@ -132,6 +136,8 @@ moreSucces = async () =>
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
         this.setState({ details: response.data.data});
+        this.setState({ showgroupedPackagesBtn: response.data.data.groupedPackages});
+
       })
       .catch(error => {
         console.log(error);
@@ -432,6 +438,10 @@ moreSucces = async () =>
       });
   }
 
+  changeTab(tab){
+    this.setState({...this.state,currentTab : tab})
+  }
+
   renderCompetitions() {
     const {
       match: { params }
@@ -581,13 +591,14 @@ renderSuccess()
         }
       ]
     };
-
+console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.state.currentTab});
     return (
       <React.Fragment>
         <Helmet>
           <title>{`${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
           <meta name="description" content={this.state.details.descriptionAr} />
         </Helmet>
+       
    <section id="license-two" className="license-two">
       <div className="container">
         <header className="mb-4">
@@ -602,8 +613,23 @@ renderSuccess()
         <div className="lic-tabs">
           <nav>
               <div className="nav d-flex align-items-center justify-content-center mb-6" id="nav-tab" role="tablist">
-                 <React.Fragment>
+               {/* <a className="tab-items nav-link px-4 active" data-toggle="tab" href="#tab-one" role="tab" aria-controls="nav-one" aria-selected="true">
+                  <div className="tab-img">
+                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
+                  </div>
+                  <div className="main-color font-weight-bold">الرخصة المهنية</div>
+                </a> */}
+                {/* <React.Fragment>
                    {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
+                  <div className="tab-img">
+                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
+                  </div>
+                  <div className="main-color font-weight-bold">الرخصة المهنية</div>
+                </a>): null}
+                
+                   </React.Fragment> */}
+                 <React.Fragment>
+                   {this.state.courses.length > 0 ?  (<a  onClick={()=>this.changeTab("دورات المنصة")}  className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
                   </div>
@@ -611,6 +637,10 @@ renderSuccess()
                 </a>): null}
                 
                    </React.Fragment>
+                   {
+                     this.state.showgroupedPackagesBtn ? <NavTab name="الرخصة المهنية" onClick={()=>this.changeTab("الرخصة المهنية")} /> : null
+                   }
+                   
             
                 {this.rendersubCategories()}
                 <React.Fragment>
@@ -634,6 +664,8 @@ renderSuccess()
               </div>
             <div className="tab-content" id="nav-tabContent">
               {this.renderPanelSub()}
+
+           { this.state.currentTab !== ProfessionalLicenseText ?   <>
               <div className={"tab-pane fade "+this.state.defultActive} id="tab-two" role="tabpanel" aria-labelledby="nav-profile-tab">
                 <div className="container">
                   <div className="row">
@@ -658,6 +690,11 @@ renderSuccess()
                   </div>
                 </div>
               </div>
+              </>
+            :
+            <ProfessionalLicense categoryData={this.state.details} />  
+            
+            }
 
               <div className={"tab-pane fade "+this.state.active} id="tab-three" role="tabpanel" aria-labelledby="nav-contact-tab">
                 <div className="container">
