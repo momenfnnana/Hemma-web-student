@@ -6,6 +6,7 @@ import { useState } from "react";
 import swal from "@sweetalert/with-react";
 import { useHistory, withRouter } from "react-router-dom";
 import KnowMore from "./course/video-content";
+import { useFetch } from "../../../../hooks/useFetch";
 
 const token = localStorage.getItem("token");
 let headers = {
@@ -38,6 +39,9 @@ export default withRouter(function ProfessionalCourses({
   categoryData,
   history,
 }) {
+  const [_getSpecialties, _specialites, _specLoading] = useFetch("", {
+    isAuthed: true,
+  });
   const [selectedGeneralCourse, setSelectedGeneralCourse] = useState();
   const [selecteSpecCourse, setSelectedSpecCourse] = useState();
   const [specialities, setSpecialities] = useState([]);
@@ -67,6 +71,8 @@ export default withRouter(function ProfessionalCourses({
   const authValidator = () => {
     if (!token) throw new Error("requires sign-in");
   };
+
+  const getOnlyActive = (array = []) => array?.filter((elem) => elem.active);
 
   const [mergedData, setMeregedData] = useState({
     general: selectedGeneralCourse,
@@ -174,18 +180,27 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const getSpecialities = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      authValidator();
-      const { data } = await Axios.get(getSpecUrl(categoryData?.id), {
-        headers,
-      });
-      if (data?.data) setSpecialities(data.data);
-    } catch (error) {}
+    // url : getSpecUrl(categoryData?.id),
+
+    _getSpecialties({
+      url: getSpecUrl(categoryData?.id),
+    });
+    // try {
+    //   const token = localStorage.getItem("token");
+    //   const headers = {
+    //     Authorization: `Bearer ${token}`,
+    //   };
+    //   authValidator();
+    //   const { data } = await Axios.get(getSpecUrl(categoryData?.id), {
+    //     headers,
+    //   });
+    //   debugger
+    //   const activeSpecialties = data?.data?.filter(spec => spec.active) || []
+    //   if (data?.data) setSpecialities(activeSpecialties);
+    // } catch (error) {}
   };
+
+  console.log({ _specialites });
 
   const handleJoin = (key, value) => {
     const data = {
@@ -207,7 +222,6 @@ export default withRouter(function ProfessionalCourses({
 
   useEffect(() => {
     if (!categoryData?.id) return;
-
     getSpecialities();
   }, [categoryData]);
 
@@ -228,6 +242,13 @@ export default withRouter(function ProfessionalCourses({
       });
       onEnd();
     } catch (error) {
+      const {
+        response: { data },
+      } = error;
+      const errorMsg = data?.message || data?.error;
+      swal("عفواً", errorMsg, "error", {
+        button: "متابعة",
+      });
     }
   };
 
@@ -247,7 +268,15 @@ export default withRouter(function ProfessionalCourses({
       try {
         const res = await promise;
         if (index === ids.length - 1) onEnd();
-      } catch (error) {}
+      } catch (error) {
+        const {
+          response: { data },
+        } = error;
+        const errorMsg = data?.error;
+        swal("عفواً", errorMsg, "error", {
+          button: "متابعة",
+        });
+      }
     });
   };
 
@@ -293,6 +322,11 @@ export default withRouter(function ProfessionalCourses({
   );
   const totalPrice = toPriceArray.reduce((prev, current) => (prev += current));
 
+  const specialitiesState = {
+    specialities: getOnlyActive(_specialites?.data) || [],
+    loading: _specLoading,
+  };
+
   return (
     <div className="row mt-6">
       {show?.["spec"] && (
@@ -301,7 +335,7 @@ export default withRouter(function ProfessionalCourses({
           title={selecteSpecCourse?.nameAr || "رخصة مهنية"}
           hasPickTrainer={false}
           categoryData={categoryData}
-          specialities={specialities}
+          specialitiesState={specialitiesState}
           triggerkeysCount={3}
           onCourseSelect={onSpecSelected}
           onResponse={onSpecSelected}
