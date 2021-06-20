@@ -11,7 +11,7 @@ export default function SubCourseItem({ topTitle, subTitle, points = [] }) {
               {topTitle}
             </span>
           </div>
-          <div class="card-licences-video-link">
+          {/* <div class="card-licences-video-link">
             <span>فيديو توضيحى</span>
             <span class="vid-play">
               <svg
@@ -31,7 +31,7 @@ export default function SubCourseItem({ topTitle, subTitle, points = [] }) {
                 ></path>
               </svg>
             </span>
-          </div>
+          </div> */}
         </div>
         <p class="font-size-15 font-weight-bold">
           {subTitle}

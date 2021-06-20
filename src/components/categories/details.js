@@ -28,9 +28,12 @@ export class CategoryDetails extends Component {
   page = 1;
   limit = 6;
   endOfResults = false;
+  SuccesesLimt = 12;
+  Succesespage = 1;
   constructor(props) {
     super(props);
     this.state = {
+      successes : [],
       details: [],
       subcategoriesdetails:[],
       lectures: [],
@@ -42,6 +45,8 @@ export class CategoryDetails extends Component {
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
+      showgroupedPackagesBtn: true,
+      hideBtnSuccess: false,
       loading: false,
       disabled: false,
       active:"",
@@ -98,7 +103,31 @@ export class CategoryDetails extends Component {
         });
     }
   };
-
+moreSucces = async () =>
+{
+  const {
+    match: { params }
+  } = this.props;
+  this.setState({loading: true});
+  this.Succesespage++;
+  axios
+  .get(`${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`)
+  .then(response => {
+    const newSuccess = [
+      ...this.state.successes,
+      ...response.data.data.data
+    ];
+    var more = false
+   if(response.data.itemCount > (response.data.limit*response.data.page)) 
+   {
+        more=true;
+   }
+    this.setState({ successes: newSuccess,hideBtnSuccess:more});
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}
   async componentDidMount() {
     const {
       match: { params }
@@ -107,6 +136,23 @@ export class CategoryDetails extends Component {
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then(response => {
         this.setState({ details: response.data.data});
+        this.setState({ showgroupedPackagesBtn: response.data.data.groupedPackages});
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+      axios
+      .get(`${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`)
+      .then(response => {
+        console.log("successes",response);
+        debugger;
+        var more = false
+       if(response.data.data.itemCount > (response.data.data.limit*response.data.data.page)) 
+       {
+            more=true;
+       }
+        this.setState({ successes: response.data.data.data,hideBtnSuccess:more});
       })
       .catch(error => {
         console.log(error);
@@ -439,7 +485,41 @@ export class CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
+ Rating = ({ successCase }) => {
+    console.log({});
+    return(
+    <div class="card-body px-2 py-2">
+      <p class="d-flex align-items-center light-gray mb-1 font-size-13">
+        <span class="d-block main-color-light mr-2">اسم الطالب : </span>
+        {successCase?.rating?.studentName}
+      </p>
+      <p class="light-gray font-size-13 m-0">
+        <span class="main-color-light">التقييم : </span>
+        {successCase?.rating?.feedBack}
+      </p>
+    </div>
+  );}
 
+renderSuccess()
+{
+  return this.state.successes.map(successCase => (
+    <React.Fragment>
+ <div class="col-lg-4">
+      <div class="status-card sider-items min-height-150">
+        <div class="quote-icon">
+          <i class="fas fa-quote-left"></i>
+        </div>
+        <h6 class="h6 main-color-light text-center mb-3">
+          {successCase?.courseName}
+        </h6>
+        <div class="card">
+        {contentReducer(successCase)}
+      </div>
+      </div>
+    </div>
+    </React.Fragment>
+  ));
+}
   render() {
     let token = localStorage.getItem("token");
     const {
@@ -539,7 +619,6 @@ console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.
                   </div>
                   <div className="main-color font-weight-bold">الرخصة المهنية</div>
                 </a> */}
-                <NavTab name="الرخصة المهنية" onClick={()=>this.changeTab("الرخصة المهنية")} />
                 {/* <React.Fragment>
                    {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
                   <div className="tab-img">
@@ -558,18 +637,29 @@ console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.
                 </a>): null}
                 
                    </React.Fragment>
+                   {
+                     this.state.showgroupedPackagesBtn ? <NavTab name="الرخصة المهنية" onClick={()=>this.changeTab("الرخصة المهنية")} /> : null
+                   }
+                   
             
                 {this.rendersubCategories()}
                 <React.Fragment>
                   {this.state.categoryGroups.length > 0 ?(
-                    <a className={"tab-items nav-link px-4 "+this.state.active} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
+                    <a className={"tab-items nav-link px-4"} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
                     <div className="tab-img">
                       <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
                     </div>
                     <div className="main-color font-weight-bold">المجموعات المجانيه</div>
                   </a>
                   ):null}
-                
+                 {this.state.successes.length > 0 ?(
+                    <a className="tab-items nav-link px-4 " data-toggle="tab" href="#tab-four" role="tab" aria-controls="nav-four" aria-selected="false">
+                    <div className="tab-img">
+                      <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
+                    </div>
+                    <div className="main-color font-weight-bold">نجاحات همة</div>
+                  </a>
+                  ):null}
                 </React.Fragment>
               </div>
             <div className="tab-content" id="nav-tabContent">
@@ -610,126 +700,29 @@ console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.
                 <div className="container">
                   <div className="row">
                   {this.renderCategoryGroups()}
-                    {/* <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
+                  </div>
+                </div>
+              </div>
+              <div className="tab-pane fade " id="tab-four" role="tabpanel" aria-labelledby="nav-Success-tab">
+                <div className="container">
+                  <div className="row">
+                  {this.renderSuccess()}
+                  {this.state.hideBtnSuccess && (
+                <div className="row col-md-12">
+                  <div className="col-md-12 d-flex align-items-center justify-content-center">
+                    <button
+                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                      onClick={this.moreSucces}
+                    >
+                      {this.state.loading == true ? (
+                        <Loader type="ball-clip-rotate" />
+                      ) : (
+                        "عرض المزيد"
+                      )}
+                    </button>
+                  </div>
+                </div>
+              )}
                   </div>
                 </div>
               </div>
@@ -742,3 +735,30 @@ console.log({test : this.state.currentTab,aa : ProfessionalLicenseText === this.
     );
   }
 }
+const   Rating = ({ successCase }) => {
+  console.log("successCase",successCase);
+  return(
+  <div class="card-body px-2 py-2">
+    <p class="d-flex align-items-center light-gray mb-1 font-size-13">
+      <span class="d-block main-color-light mr-2">اسم الطالب : </span>
+      {successCase?.rating?.studentName}
+    </p>
+    <p class="light-gray font-size-13 m-0">
+      <span class="main-color-light">التقييم : </span>
+      {successCase?.rating?.feedBack}
+    </p>
+  </div>
+);}
+
+const  contentReducer = (successCase) => {
+  switch (successCase?.source) {
+    case "Media":
+      return <a href={successCase?.url}>
+        <img src={successCase?.img} className="w-100 height-70" style={{height:'170px !important'}} />
+      </a>;
+    case "Rating":
+      return <Rating successCase={successCase} />;
+    default:
+      break;
+  }
+};

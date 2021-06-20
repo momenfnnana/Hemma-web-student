@@ -9,6 +9,7 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import { apiBaseUrl } from "../../../api/helpers";
+import "./index.scss"
 
 const validate = values => {
   const errors = {};
@@ -113,7 +114,7 @@ class FooterComponent extends Component {
 
     return (
 
-<section id="footer" className="footer pt-5">
+<section id="footer" className="footer pt-5 mt-auto">
    <div className="hemma-footer">
       <div className="container">
          <div className="row">
@@ -128,7 +129,7 @@ class FooterComponent extends Component {
             </div>
             <div className="col-lg-5">
                <a className="hemma-logo d-block cursor-pointer my-4">
-               <img src={process.env.PUBLIC_URL + "/assets/images/logo-light.png"} alt="Hemma Logo" height="120" />
+               <img src={process.env.PUBLIC_URL + "/assets/images/logo-light.png"} alt="Hemma Logo" height="120"  />
                </a>
             </div>
             <div className="col-lg-2">

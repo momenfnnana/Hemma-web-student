@@ -18,17 +18,18 @@ const authedInstance = Axios.create({
 
 const baseInstance = Axios.create();
 
-export const useFetch = (url = "", { isAuthed } = { isAuthed: false }) => {
+export const useFetch = (url = "", mainConfig = {}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const {isAuthed} = mainConfig
 
   const fetchData = async (
     reqConf = initConfig,
     onSuccess = () => {},
     onError = () => {}
   ) => {
-    const reqConfig = { ...reqConf };
+    const reqConfig = { ...mainConfig, ...reqConf };
     const AxiosInstance = isAuthed ? authedInstance : baseInstance;
     try {
       debugger;

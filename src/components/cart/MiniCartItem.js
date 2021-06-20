@@ -15,7 +15,6 @@ export class MiniCartItem extends Component {
   }
   render() {
     const item = this.props.item;
-
     if (!item) return null;
 
     return (
@@ -41,12 +40,13 @@ export class MiniCartItem extends Component {
             ) : null}
 
             <div className="mt-0 d-inline-flex flex-row justify-content-between align-items-center position-relative w-100">
-              <span
+              {item.removable?( <span
                 className="badge red-bg text-white smaller light-font-text clickable close-btn cursor-pointer"
                 onClick={this.onRemoveItem}
               >
                 إزالة
-              </span>
+              </span>):null}
+             
               <div className="d-inline-flex flex-row justify-content-between align-items-center">
                 <p className="dark-text smaller mr-2 mb-0">قيمة الدفع</p>
                 <p className="light-text mb-0">

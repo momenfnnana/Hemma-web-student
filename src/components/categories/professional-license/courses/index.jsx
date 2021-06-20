@@ -58,7 +58,9 @@ export default withRouter(function ProfessionalCourses({
   const authErrorMsg = () => {
     swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
       button: "متابعة",
-    });
+    }).then((response) => {
+        window.location = "/auth/login";
+});
   };
 
   const { push } = history;
@@ -88,7 +90,7 @@ export default withRouter(function ProfessionalCourses({
   const getTotalData = async () => {
     setTotalInfo({ ...totalInfo, error: "" });
     try {
-      authValidator();
+      //authValidator();
       const { data } = await Axios.get(getTotalsUrl, {
         headers,
         params: {
@@ -208,8 +210,8 @@ export default withRouter(function ProfessionalCourses({
     };
 
     setMeregedData({ ...mergedData, ...data });
-    specAlert();
     generalAlert();
+    specAlert();
   };
 
   const onGeneralCourseSelect = (course = null) => {
@@ -226,15 +228,18 @@ export default withRouter(function ProfessionalCourses({
   }, [categoryData]);
 
   const hasPackageCase = async (ids = [], pkg, onEnd) => {
-    debugger;
     const pkgID = pkg.id;
     const body = {
       packageId: pkgID,
       firstCourseId: ids?.[0],
       secoundCourseId: ids?.[1],
     };
+    if (!token) {
+      localStorage.setItem("PostCardAction",JSON.stringify([{"url":packageSubscribtionUrl,"body":body}]));
+      return;
+    }
     try {
-      authValidator();
+      //authValidator();
       const {
         data: { status },
       } = await Axios.post(packageSubscribtionUrl, body, {
@@ -263,7 +268,19 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCase = async (ids = [], onEnd) => {
+    debugger;
+
+    if (!token) {
+      let postCardActions = [];
+      ids.map(async (id, index) => {
+        postCardActions.push({"url":noPackageSubscribtionUrl,"body":{courseId: id}});
+      });
+
+      localStorage.setItem("PostCardAction",JSON.stringify(postCardActions));
+      return;
+    }
     const promises = ids.map((id, index) => hasNoPackageCaseSingleReq(id));
+
     promises.map(async (promise, index) => {
       try {
         const res = await promise;
@@ -281,7 +298,10 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const handleSubscribtion = () => {
-    const ids = [mergedData.general.id, mergedData.spec.id].map((id) => id);
+   
+      
+      
+    const ids = [mergedData.general?.id, mergedData.spec?.id].map((id) => id);
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
       case true:
@@ -295,6 +315,11 @@ export default withRouter(function ProfessionalCourses({
       default:
         break;
     }
+
+    if (!token) {
+      authErrorMsg(); 
+      return;
+    }
   };
 
   const onTrainerSelected = (_trianer) => {
@@ -303,7 +328,7 @@ export default withRouter(function ProfessionalCourses({
 
   const getTrainerInfo = async (id) => {
     try {
-      authValidator();
+      //authValidator();
       const { data } = await Axios.get(getTrinerInfoUrl(id), {
         headers,
       });
