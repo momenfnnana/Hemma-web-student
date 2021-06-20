@@ -59,8 +59,8 @@ export default withRouter(function ProfessionalCourses({
     swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
       button: "متابعة",
     }).then((response) => {
-        window.location = "/auth/login";
-});
+      window.location = "/auth/login";
+    });
   };
 
   const { push } = history;
@@ -182,8 +182,6 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const getSpecialities = async () => {
-    // url : getSpecUrl(categoryData?.id),
-
     _getSpecialties({
       url: getSpecUrl(categoryData?.id),
     });
@@ -201,8 +199,6 @@ export default withRouter(function ProfessionalCourses({
     //   if (data?.data) setSpecialities(activeSpecialties);
     // } catch (error) {}
   };
-
-  console.log({ _specialites });
 
   const handleJoin = (key, value) => {
     const data = {
@@ -235,7 +231,10 @@ export default withRouter(function ProfessionalCourses({
       secoundCourseId: ids?.[1],
     };
     if (!token) {
-      localStorage.setItem("PostCardAction",JSON.stringify([{"url":packageSubscribtionUrl,"body":body}]));
+      localStorage.setItem(
+        "PostCardAction",
+        JSON.stringify([{ url: packageSubscribtionUrl, body: body }])
+      );
       return;
     }
     try {
@@ -273,10 +272,13 @@ export default withRouter(function ProfessionalCourses({
     if (!token) {
       let postCardActions = [];
       ids.map(async (id, index) => {
-        postCardActions.push({"url":noPackageSubscribtionUrl,"body":{courseId: id}});
+        postCardActions.push({
+          url: noPackageSubscribtionUrl,
+          body: { courseId: id },
+        });
       });
 
-      localStorage.setItem("PostCardAction",JSON.stringify(postCardActions));
+      localStorage.setItem("PostCardAction", JSON.stringify(postCardActions));
       return;
     }
     const promises = ids.map((id, index) => hasNoPackageCaseSingleReq(id));
@@ -298,9 +300,6 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const handleSubscribtion = () => {
-   
-      
-      
     const ids = [mergedData.general?.id, mergedData.spec?.id].map((id) => id);
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
@@ -317,13 +316,13 @@ export default withRouter(function ProfessionalCourses({
     }
 
     if (!token) {
-      authErrorMsg(); 
+      authErrorMsg();
       return;
     }
   };
 
   const onTrainerSelected = (_trianer) => {
-    setTrainer({ id: _trianer?.id, info: {} });
+    setTrainer({ ...trainer, id: _trianer?.id });
   };
 
   const getTrainerInfo = async (id) => {
@@ -341,6 +340,7 @@ export default withRouter(function ProfessionalCourses({
     if (!trainer) return;
     getTrainerInfo(trainer?.id);
   }, [trainer.id]);
+  console.log({ trainer });
 
   const toPriceArray = [mergedData.general, mergedData.spec].map(
     (course) => course?.price || 0
