@@ -4,6 +4,8 @@ import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import * as Sentry from "@sentry/react";
 import ReactPlayer from "react-player";
+import "./index.scss"
+
 
 export class HintModal extends Component {
   constructor(props) {
@@ -69,7 +71,7 @@ export class HintModal extends Component {
           onRequestClose={closeHint}
           closeHint={closeHint}
         >
-          <div className="container pt-4 pb-3">
+          <div className="container pt-4 pb-3 training-help">
             <div className="row">
               <div className="col-md-12 col-12">
                 <span className="badge red-bg text-white mb-3 hint-badge">
