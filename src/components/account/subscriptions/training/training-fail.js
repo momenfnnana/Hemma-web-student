@@ -33,10 +33,10 @@ export class TrainingExamFail extends Component {
             <p className="dark-text w-50 mx-auto text-center">
               لقد حصلت على نتيجة{" "}
               <span className="en-text">{scoreDetails.correctAnswers}</span> في
-              الامتحان
+              التدريب
             </p>
             <p className="dark-silver-text small mb-1">
-              الوقت المستغرق في حل الامتحان
+              الوقت المستغرق في حل التدريب
             </p>
             <p className="dark-silver-text small en-text">{time}</p>
             <Link

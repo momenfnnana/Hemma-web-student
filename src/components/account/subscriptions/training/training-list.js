@@ -115,7 +115,7 @@ export class TrainingList extends Component {
                   <thead className="silver-bg">
                     <tr>
                       <th className="w-10 dark-silver-text small border-0">
-                        الامتحان
+                        التدريب
                       </th>
                       <th className="w-15 dark-silver-text small border-0 text-center">
                         عدد الأسئلة
