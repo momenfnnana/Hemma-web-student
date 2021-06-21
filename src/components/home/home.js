@@ -685,7 +685,7 @@ renderSucces()
       </div>
     </section>
     {this.state.success.length>0 ? (
-      <section id="success-wrapper" class="success-wrapper">
+      <section id="success-wrapper">
       <div class="container py-5">
         <header class="mb-5">
           <h3 class="h3 text-center font-weight-bold main-color mb-2">نجاحات مع همة</h3>
