@@ -1,37 +1,60 @@
 import Axios from "axios";
 import { useState } from "react";
+import swal from "@sweetalert/with-react";
+const SUCCESS_STATUS = 200;
+const token = localStorage.getItem("token");
 
-export const useFetch = (url = "",  config = null,defaultData = [],initInstance = null ) => {
-    const [data, setData] = useState(defaultData);
-  
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-    // const notify = useMessage()
-  
-  
-    const fetchData = async (dynamicConfig = null,onSuccess = ()=>{}) => {
-  
-      try {
-        setLoading(true);
-        setError('')
-        const { data: response } = await Axios({
-          url,
-          ...config,
-          ...dynamicConfig
-        });
-        setData(response);
-        onSuccess(response)
-        //you could return an promise including response data here to replace callback with normal await
-      } catch (e) {
-        const status = e?.response?.status
-        const errorMsg =  e?.response?.data?.error
-        setError(errorMsg);
-        setLoading(false);
-      }
+const headers = {
+  Authorization: `Bearer ${token}`,
+};
+
+const initConfig = {
+  method: "GET",
+};
+
+const authedInstance = Axios.create({
+  headers,
+});
+
+const baseInstance = Axios.create();
+
+export const useFetch = (url = "", mainConfig = {}) => {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const {isAuthed} = mainConfig
+
+  const fetchData = async (
+    reqConf = initConfig,
+    onSuccess = () => {},
+    onError = () => {}
+  ) => {
+    const reqConfig = { ...mainConfig, ...reqConf };
+    const AxiosInstance = isAuthed ? authedInstance : baseInstance;
+    try {
+      debugger;
+      setLoading(true);
+      setError("");
+      const { data: response } = await AxiosInstance({
+        url,
+        ...initConfig,
+        ...reqConfig,
+      });
+      setData(response);
+      if (response?.status === SUCCESS_STATUS) onSuccess(response);
+    } catch (e) {
+      const errorMsg = "";
+      setError(errorMsg);
       setLoading(false);
-     
-    };
-  
-    return [fetchData, data, loading, error];
+      onError(e);
+
+      if (errorMsg)
+        swal("عفواً", errorMsg, "error", {
+          button: "متابعة",
+        });
+    }
+    setLoading(false);
   };
-  
+
+  return [fetchData, data, loading, error, setData];
+};

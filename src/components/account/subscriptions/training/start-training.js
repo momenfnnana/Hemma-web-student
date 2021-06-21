@@ -71,7 +71,7 @@ export class StartTrainingExam extends Component {
                 أسئلة
               </h6>
               <p className="dark-text w-50 mx-auto text-center text-break">
-                هذا الامتحان وضع لمساعدتك في اختبار قدراتك، احرص على عدم الغش أو
+                هذا التدريب وضع لمساعدتك في اختبار قدراتك، احرص على عدم الغش أو
                 الاستعانة بأي مصادر خارجية
               </p>
               <button

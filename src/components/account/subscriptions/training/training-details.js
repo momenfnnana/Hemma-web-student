@@ -387,7 +387,7 @@ class TrainingExamDetailsComponent extends Component {
                 <div className="row p-4">
                   <div className="col-12 d-flex align-items-center justify-content-between">
                     <div>
-                      <h6 className="mid-text mb-0">أسئلة الامتحان</h6>
+                      <h6 className="mid-text mb-0">أسئلة التدريب</h6>
                     </div>
                   </div>
                 </div>
@@ -423,14 +423,14 @@ class TrainingExamDetailsComponent extends Component {
                         className="btn light-outline-btn w-25"
                         onClick={this.submitAnswers}
                       >
-                        إنهاء الامتحان
+                        إنهاء التدريب
                       </button>
                     ) : (
                       <button
                         className="btn light-outline-btn w-25"
                         onClick={this.openConfirmExamModal}
                       >
-                        إنهاء الامتحان
+                        إنهاء التدريب
                       </button>
                     )}
 

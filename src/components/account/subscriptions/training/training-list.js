@@ -111,19 +111,19 @@ export class TrainingList extends Component {
               </React.Fragment>
             ) : (
               <div className="box-layout shadow-sm">
-                <Table className="mb-0">
+                <Table className="mb-0 table-responsive">
                   <thead className="silver-bg">
                     <tr>
-                      <th className="w-10 dark-silver-text small border-0">
-                        الامتحان
+                      <th className="w-10 dark-silver-text small border-0 ">
+                        التدريب
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center ">
                         عدد الأسئلة
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center ">
                         عدد المحاولات
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center ">
                         تحكم
                       </th>
                     </tr>

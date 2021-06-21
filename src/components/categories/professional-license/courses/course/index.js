@@ -17,7 +17,7 @@ export default function ProfessionalCourse({
   hasPickTrainer = true,
   hasChooseOptions = true,
   categoryData,
-  specialities,
+  specialitiesState,
   url,
   triggerkeysCount = 4,
   onCourseSelect = () => {},
@@ -95,7 +95,7 @@ export default function ProfessionalCourse({
           {hasChooseOptions && (
             <ChooseOptions
               onChange={handleChange}
-              specialities={specialities}
+              specialitiesState={specialitiesState}
             />
           )}
           <div className="d-flex align-items-center justify-content-between mb-3">

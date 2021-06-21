@@ -6,6 +6,7 @@ import { useState } from "react";
 import swal from "@sweetalert/with-react";
 import { useHistory, withRouter } from "react-router-dom";
 import KnowMore from "./course/video-content";
+import { useFetch } from "../../../../hooks/useFetch";
 
 const token = localStorage.getItem("token");
 let headers = {
@@ -38,6 +39,9 @@ export default withRouter(function ProfessionalCourses({
   categoryData,
   history,
 }) {
+  const [_getSpecialties, _specialites, _specLoading] = useFetch("", {
+    isAuthed: true,
+  });
   const [selectedGeneralCourse, setSelectedGeneralCourse] = useState();
   const [selecteSpecCourse, setSelectedSpecCourse] = useState();
   const [specialities, setSpecialities] = useState([]);
@@ -55,8 +59,8 @@ export default withRouter(function ProfessionalCourses({
     swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
       button: "متابعة",
     }).then((response) => {
-        window.location = "/auth/login";
-});
+      window.location = "/auth/login";
+    });
   };
 
   const { push } = history;
@@ -69,6 +73,8 @@ export default withRouter(function ProfessionalCourses({
   const authValidator = () => {
     if (!token) throw new Error("requires sign-in");
   };
+
+  const getOnlyActive = (array = []) => array?.filter((elem) => elem.active);
 
   const [mergedData, setMeregedData] = useState({
     general: selectedGeneralCourse,
@@ -176,17 +182,22 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const getSpecialities = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      //authValidator();
-      const { data } = await Axios.get(getSpecUrl(categoryData?.id), {
-        headers,
-      });
-      if (data?.data) setSpecialities(data.data);
-    } catch (error) {}
+    _getSpecialties({
+      url: getSpecUrl(categoryData?.id),
+    });
+    // try {
+    //   const token = localStorage.getItem("token");
+    //   const headers = {
+    //     Authorization: `Bearer ${token}`,
+    //   };
+    //   authValidator();
+    //   const { data } = await Axios.get(getSpecUrl(categoryData?.id), {
+    //     headers,
+    //   });
+    //   debugger
+    //   const activeSpecialties = data?.data?.filter(spec => spec.active) || []
+    //   if (data?.data) setSpecialities(activeSpecialties);
+    // } catch (error) {}
   };
 
   const handleJoin = (key, value) => {
@@ -209,7 +220,6 @@ export default withRouter(function ProfessionalCourses({
 
   useEffect(() => {
     if (!categoryData?.id) return;
-
     getSpecialities();
   }, [categoryData]);
 
@@ -221,7 +231,10 @@ export default withRouter(function ProfessionalCourses({
       secoundCourseId: ids?.[1],
     };
     if (!token) {
-      localStorage.setItem("PostCardAction",JSON.stringify([{"url":packageSubscribtionUrl,"body":body}]));
+      localStorage.setItem(
+        "PostCardAction",
+        JSON.stringify([{ url: packageSubscribtionUrl, body: body }])
+      );
       return;
     }
     try {
@@ -233,6 +246,13 @@ export default withRouter(function ProfessionalCourses({
       });
       onEnd();
     } catch (error) {
+      const {
+        response: { data },
+      } = error;
+      const errorMsg = data?.message || data?.error;
+      swal("عفواً", errorMsg, "error", {
+        button: "متابعة",
+      });
     }
   };
 
@@ -252,10 +272,13 @@ export default withRouter(function ProfessionalCourses({
     if (!token) {
       let postCardActions = [];
       ids.map(async (id, index) => {
-        postCardActions.push({"url":noPackageSubscribtionUrl,"body":{courseId: id}});
+        postCardActions.push({
+          url: noPackageSubscribtionUrl,
+          body: { courseId: id },
+        });
       });
 
-      localStorage.setItem("PostCardAction",JSON.stringify(postCardActions));
+      localStorage.setItem("PostCardAction", JSON.stringify(postCardActions));
       return;
     }
     const promises = ids.map((id, index) => hasNoPackageCaseSingleReq(id));
@@ -264,14 +287,19 @@ export default withRouter(function ProfessionalCourses({
       try {
         const res = await promise;
         if (index === ids.length - 1) onEnd();
-      } catch (error) {}
+      } catch (error) {
+        const {
+          response: { data },
+        } = error;
+        const errorMsg = data?.error;
+        swal("عفواً", errorMsg, "error", {
+          button: "متابعة",
+        });
+      }
     });
   };
 
   const handleSubscribtion = () => {
-   
-      
-      
     const ids = [mergedData.general?.id, mergedData.spec?.id].map((id) => id);
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
@@ -288,13 +316,13 @@ export default withRouter(function ProfessionalCourses({
     }
 
     if (!token) {
-      authErrorMsg(); 
+      authErrorMsg();
       return;
     }
   };
 
   const onTrainerSelected = (_trianer) => {
-    setTrainer({ id: _trianer?.id, info: {} });
+    setTrainer({ ...trainer, id: _trianer?.id });
   };
 
   const getTrainerInfo = async (id) => {
@@ -312,11 +340,17 @@ export default withRouter(function ProfessionalCourses({
     if (!trainer) return;
     getTrainerInfo(trainer?.id);
   }, [trainer.id]);
+  console.log({ trainer });
 
   const toPriceArray = [mergedData.general, mergedData.spec].map(
     (course) => course?.price || 0
   );
   const totalPrice = toPriceArray.reduce((prev, current) => (prev += current));
+
+  const specialitiesState = {
+    specialities: getOnlyActive(_specialites?.data) || [],
+    loading: _specLoading,
+  };
 
   return (
     <div className="row mt-6">
@@ -326,7 +360,7 @@ export default withRouter(function ProfessionalCourses({
           title={selecteSpecCourse?.nameAr || "رخصة مهنية"}
           hasPickTrainer={false}
           categoryData={categoryData}
-          specialities={specialities}
+          specialitiesState={specialitiesState}
           triggerkeysCount={3}
           onCourseSelect={onSpecSelected}
           onResponse={onSpecSelected}
