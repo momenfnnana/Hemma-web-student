@@ -7,6 +7,7 @@ import swal from "@sweetalert/with-react";
 import { useHistory, withRouter } from "react-router-dom";
 import KnowMore from "./course/video-content";
 import { useFetch } from "../../../../hooks/useFetch";
+import { useLoaded } from "../../../../hooks/useLoaded";
 
 const token = localStorage.getItem("token");
 let headers = {
@@ -17,19 +18,8 @@ const specUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/SpecialCourse`;
 const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse`;
 const getTrinerInfoUrl = (id) =>
   `${process.env.REACT_APP_API_ENDPOINT}/Users/instructor/${id}`;
-//GET
 const getTotalsUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages`;
-//POST
-// {
-// "courseId": "string"
-// }
 const noPackageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/items/courses`;
-// {
-// "packageId": 0,
-// "firstCourseId": "string",
-// "secoundCourseId": "string"
-// }
-//POST
 const packageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/packages`;
 
 const getSpecUrl = (CategoryId) =>
@@ -114,7 +104,9 @@ export default withRouter(function ProfessionalCourses({
     }
   };
 
-  const validMergedData = Object.values(mergedData).every((value) => value);
+  const validMergedData = Object.values(mergedData).every((value) => !!value);
+  const noSelectedCourses = Object.values(mergedData).every((value) => !value);
+
 
   const specAlert = () => {
     if (!mergedData?.general)
@@ -204,11 +196,14 @@ export default withRouter(function ProfessionalCourses({
     const data = {
       [key]: value,
     };
-
     setMeregedData({ ...mergedData, ...data });
+  };
+
+  useEffect(()=>{
+    if(noSelectedCourses) return
     generalAlert();
     specAlert();
-  };
+  },[mergedData.general,mergedData.spec])
 
   const onGeneralCourseSelect = (course = null) => {
     setSelectedGeneralCourse(course);
@@ -267,8 +262,6 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCase = async (ids = [], onEnd) => {
-    debugger;
-
     if (!token) {
       let postCardActions = [];
       ids.map(async (id, index) => {
@@ -282,25 +275,32 @@ export default withRouter(function ProfessionalCourses({
       return;
     }
     const promises = ids.map((id, index) => hasNoPackageCaseSingleReq(id));
+    let success = false;
+    let msgError = "";
 
     promises.map(async (promise, index) => {
       try {
-        const res = await promise;
-        if (index === ids.length - 1) onEnd();
+        //one success is enough for calling the onEnd
+        await promise;
+        success = true;
+        if (index === ids.length - 1 && success) onEnd();
       } catch (error) {
         const {
           response: { data },
         } = error;
-        const errorMsg = data?.error;
-        swal("عفواً", errorMsg, "error", {
+        msgError = data?.error;
+      }
+      if (index === ids.length - 1 && !success)
+        swal("عفواً", msgError, "error", {
           button: "متابعة",
         });
-      }
     });
   };
 
   const handleSubscribtion = () => {
-    const ids = [mergedData.general?.id, mergedData.spec?.id].map((id) => id);
+    const ids = [mergedData.general?.id, mergedData.spec?.id].filter(
+      (id) => id
+    );
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
       case true:
@@ -340,7 +340,6 @@ export default withRouter(function ProfessionalCourses({
     if (!trainer) return;
     getTrainerInfo(trainer?.id);
   }, [trainer.id]);
-  console.log({ trainer });
 
   const toPriceArray = [mergedData.general, mergedData.spec].map(
     (course) => course?.price || 0
@@ -357,7 +356,7 @@ export default withRouter(function ProfessionalCourses({
       {show?.["spec"] && (
         <ProfessionalCourse
           url={specUrl}
-          title={selecteSpecCourse?.nameAr || "رخصة مهنية"}
+          title={selecteSpecCourse?.nameAr || "دورات الرخصة المهنية للتخصصات"}
           hasPickTrainer={false}
           categoryData={categoryData}
           specialitiesState={specialitiesState}
@@ -379,7 +378,7 @@ export default withRouter(function ProfessionalCourses({
           onCourseSelect={onGeneralCourseSelect}
           triggerkeysCount={1}
           url={generalUrl}
-          title={selectedGeneralCourse?.nameAr || "العام"}
+          title={selectedGeneralCourse?.nameAr || "دورات الرخصة المهنية للعام"}
           hasChooseOptions={false}
           categoryData={categoryData}
           specialities={specialities}
