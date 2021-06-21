@@ -77,7 +77,7 @@ export class BookletCardComponent extends Component {
 
                 </div>
               </Link> */}
-        <div class="">
+        <div class="col-lg-4 col-md-6 mb-4">
           <NavLink
             className="main-color"
             id="link"
@@ -86,7 +86,7 @@ export class BookletCardComponent extends Component {
             <div className="">
               <img
                 src={booklet.icon}
-                class="w-100 h-auto"
+                class="w-100 h-250"
                 alt="Hemma-Logo"
               ></img>
             </div>
