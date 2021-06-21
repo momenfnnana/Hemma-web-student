@@ -214,9 +214,9 @@ class TrainingExamDetailsComponent extends Component {
                 </div>
               </div>
             </div>
-            <div className="row pl-4 pr-4 ">
-              <div className="col-7">
-                <div className="row d-flex justify-content-between align-items-center mb-3">
+            <div className="row pl-4 pr-4 flex-column flex-lg-row">
+              <div className="col-12 col-lg-7 order-2  order-lg-1">
+                <div className="row d-flex justify-content-between align-items-center mb-3ss">
                   {answer ? (
                     <div className="col-md-12">
                       {correctAnswer.correctChoice == answer.selectedChoice ? (
@@ -263,14 +263,14 @@ class TrainingExamDetailsComponent extends Component {
                     </div>
                   ) : (
                     <div className="col-md-12">
-                      <div className="col-md-6">
-                        <p className="small dark-silver-text mb-0">
+                      <div className="col-md-6 px-0">
+                        <p className="small dark-silver-text mt-4">
                           اختر الإجابة الصحيحة
                         </p>
                       </div>
                       <div className="row d-flex justify-content-between align-items-center mb-3">
                       {question && question.allowHint ?(
-                          <div className="col-md-6">
+                          <div className="col-md-6 d-flex">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
                               onClick={() => this.openHintModal(question.id)}
@@ -316,7 +316,7 @@ class TrainingExamDetailsComponent extends Component {
                 </div>
               </div>
               {question.imageUrl && (
-                <div className="col-5 d-flex align-items-center">
+                <div className="col-lg-5 col-12 d-flex align-items-center order-1  order-lg-2">
                   <img src={question.imageUrl} width="100%" />
                 </div>
               )}
