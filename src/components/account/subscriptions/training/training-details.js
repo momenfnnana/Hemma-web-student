@@ -219,14 +219,17 @@ class TrainingExamDetailsComponent extends Component {
                 <div className="row d-flex justify-content-between align-items-center mb-3ss">
                   {answer ? (
                     <div className="col-md-12">
-                      {correctAnswer.correctChoice == answer.selectedChoice ? (
-                        <p className="small green-text mb-0">الإجابة صحيحة</p>
-                      ) : correctAnswer.correctChoice !==
+                      <div className="my-5">
+                        {correctAnswer.correctChoice ==
                         answer.selectedChoice ? (
-                        <p className="small red-text mb-0">الإجابة خاطئة</p>
-                      ) : (
-                        <p className="small red-text mb-0">لم تقم بالإجابة</p>
-                      )}
+                          <p className="small green-text mb-0">الإجابة صحيحة</p>
+                        ) : correctAnswer.correctChoice !==
+                          answer.selectedChoice ? (
+                          <p className="small red-text mb-0">الإجابة خاطئة</p>
+                        ) : (
+                          <p className="small red-text mb-0">لم تقم بالإجابة</p>
+                        )}
+                      </div>
                       <div className="row">
                         <div className="col-md-12">
                           {Object.keys(question.encodedChoices).map(function(
@@ -252,7 +255,7 @@ class TrainingExamDetailsComponent extends Component {
                                 />
                                 <label
                                   dangerouslySetInnerHTML={{ __html: value }}
-                                  className="mb-0 dark-text small ml-2 encoded-text"
+                                  className="flex-1 mb-0 dark-text small ml-2 encoded-text"
                                 ></label>
                               </div>
                             );
@@ -269,7 +272,7 @@ class TrainingExamDetailsComponent extends Component {
                         </p>
                       </div>
                       <div className="row d-flex justify-content-between align-items-center mb-3">
-                      {question && question.allowHint ?(
+                        {question && question.allowHint ? (
                           <div className="col-md-6 d-flex">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
@@ -305,7 +308,7 @@ class TrainingExamDetailsComponent extends Component {
                               checked={selected}
                             />
                             <label
-                              className="mb-0 dark-text small ml-2 encoded-text"
+                              className="flex-1 mb-0 dark-text small ml-2 encoded-text"
                               dangerouslySetInnerHTML={{ __html: value }}
                             ></label>
                           </div>
@@ -467,12 +470,14 @@ class TrainingExamDetailsComponent extends Component {
                   </div>
                 </div>
               </div>
-              { <HintModal
-                isHintOpen={this.state.isHintOpen}
-                closeHint={this.closeHintModal}
-                id={this.state.selectedQuestionId}
-                attemptId={attemptId}
-              /> }
+              {
+                <HintModal
+                  isHintOpen={this.state.isHintOpen}
+                  closeHint={this.closeHintModal}
+                  id={this.state.selectedQuestionId}
+                  attemptId={attemptId}
+                />
+              }
             </div>
           </div>
         )}
