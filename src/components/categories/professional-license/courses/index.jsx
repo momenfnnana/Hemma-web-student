@@ -75,7 +75,7 @@ export default withRouter(function ProfessionalCourses({
     push("/cart");
   };
 
-  const showThirdCard = !!mergedData.general | !!mergedData.spec;
+  const [showThirdCard, setShowThirdCard] = useState(false);
 
   const getTotalData = async () => {
     setTotalInfo({ ...totalInfo, error: "" });
@@ -106,7 +106,6 @@ export default withRouter(function ProfessionalCourses({
 
   const validMergedData = Object.values(mergedData).every((value) => !!value);
   const noSelectedCourses = Object.values(mergedData).every((value) => !value);
-
 
   const specAlert = () => {
     if (!mergedData?.general)
@@ -177,19 +176,6 @@ export default withRouter(function ProfessionalCourses({
     _getSpecialties({
       url: getSpecUrl(categoryData?.id),
     });
-    // try {
-    //   const token = localStorage.getItem("token");
-    //   const headers = {
-    //     Authorization: `Bearer ${token}`,
-    //   };
-    //   authValidator();
-    //   const { data } = await Axios.get(getSpecUrl(categoryData?.id), {
-    //     headers,
-    //   });
-    //   debugger
-    //   const activeSpecialties = data?.data?.filter(spec => spec.active) || []
-    //   if (data?.data) setSpecialities(activeSpecialties);
-    // } catch (error) {}
   };
 
   const handleJoin = (key, value) => {
@@ -199,11 +185,29 @@ export default withRouter(function ProfessionalCourses({
     setMeregedData({ ...mergedData, ...data });
   };
 
-  useEffect(()=>{
-    if(noSelectedCourses) return
+  const delayedAction = (onTimeout = () => {}) => {
+    setTimeout(() => {
+      onTimeout();
+    }, 200);
+  };
+
+  const handleShowThirdCard = () => {
+    if (!!mergedData.general | !!mergedData.spec)
+      delayedAction(() => {
+        setShowThirdCard(true);
+      });
+    else
+      delayedAction(() => {
+        setShowThirdCard(false);
+      });
+  };
+
+  useEffect(() => {
+    handleShowThirdCard();
+    if (noSelectedCourses || showThirdCard) return;
     generalAlert();
     specAlert();
-  },[mergedData.general,mergedData.spec])
+  }, [mergedData.general, mergedData.spec]);
 
   const onGeneralCourseSelect = (course = null) => {
     setSelectedGeneralCourse(course);
@@ -261,6 +265,20 @@ export default withRouter(function ProfessionalCourses({
     });
   };
 
+  const handleBothRequestError = (foundError) => {
+    if (!foundError) return;
+    const {
+      reason: {
+        response: {
+          data: { error },
+        },
+      },
+    } = foundError;
+    swal("عفواً", error, "error", {
+      button: "متابعة",
+    });
+  };
+
   const hasNoPackageCase = async (ids = [], onEnd) => {
     if (!token) {
       let postCardActions = [];
@@ -275,26 +293,18 @@ export default withRouter(function ProfessionalCourses({
       return;
     }
     const promises = ids.map((id, index) => hasNoPackageCaseSingleReq(id));
-    let success = false;
-    let msgError = "";
+    try {
+      const promisesResult = await Promise.allSettled(promises);
+      const foundError = promisesResult.find(
+        ({ status }) => status === "rejected"
+      );
 
-    promises.map(async (promise, index) => {
-      try {
-        //one success is enough for calling the onEnd
-        await promise;
-        success = true;
-        if (index === ids.length - 1 && success) onEnd();
-      } catch (error) {
-        const {
-          response: { data },
-        } = error;
-        msgError = data?.error;
-      }
-      if (index === ids.length - 1 && !success)
-        swal("عفواً", msgError, "error", {
-          button: "متابعة",
-        });
-    });
+      if (!promisesResult.find(({ status }) => status === "fulfilled"))
+        handleBothRequestError(foundError);
+      else onEnd();
+    } catch (error) {
+      console.error({ error });
+    }
   };
 
   const handleSubscribtion = () => {
