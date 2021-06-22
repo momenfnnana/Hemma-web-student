@@ -4,35 +4,39 @@ import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import * as Sentry from "@sentry/react";
 import ReactPlayer from "react-player";
-import "./index.scss"
-
+import "./index.scss";
 
 export class HintModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      details: []
+      details: [],
     };
   }
   shouldComponentUpdate(nextProps, nextState) {
     const attemptId = this.props.attemptId;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
+
+    if (this.props.id !== nextProps.id && !nextProps.id) {
+      this.setState({ details: [] });
+      return;
+    }
     if (nextProps && this.props.id !== nextProps.id && nextProps.id !== null) {
       axios
         .get(`${apiBaseUrl}/Exams/Attempts/${attemptId}/Sheet`, {
-          headers
+          headers,
         })
-        .then(response => {
+        .then((response) => {
           let questions = response.data.data.questions;
           let questionId = questions.filter(
-            question => question.id === nextProps.id
+            (question) => question.id === nextProps.id
           );
           this.setState({ details: questionId });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     }
@@ -40,8 +44,12 @@ export class HintModal extends Component {
   }
 
   onError = (e) => {
-    Sentry.captureException('An error occured while playing the video ', e, e.target.error);
-  }
+    Sentry.captureException(
+      "An error occured while playing the video ",
+      e,
+      e.target.error
+    );
+  };
 
   render() {
     const customStyles = {
@@ -54,12 +62,12 @@ export class HintModal extends Component {
         transform: "translate(-50%, -50%)",
         width: "40%",
         height: "auto",
-        borderWidth: 0
+        borderWidth: 0,
       },
       overlay: {
         backgroundColor: "rgba(0,0,0,0.8)",
-        zIndex: 20
-      }
+        zIndex: 20,
+      },
     };
     const { isHintOpen, closeHint } = this.props;
     return (
@@ -80,36 +88,36 @@ export class HintModal extends Component {
 
                 <div className="box-layout p-3">
                   {this.state.details[0] &&
-                    this.state.details[0].explanation &&
-                    this.state.details[0].explanation.type === "Text" ? (
-                      <div
-                        className="encoded-text"
-                        dangerouslySetInnerHTML={{
-                          __html:
-                            this.state.details[0] &&
-                            this.state.details[0].encodedExplanation
-                        }}
-                      ></div>
-                    ) : this.state.details[0] &&
-                      this.state.details[0].explanation &&
-                      this.state.details[0].explanation.type === "Video" ? (
-                        <ReactPlayer
-                        width="100%"
-                        height="240"
-                        url={
+                  this.state.details[0].explanation &&
+                  this.state.details[0].explanation.type === "Text" ? (
+                    <div
+                      className="encoded-text"
+                      dangerouslySetInnerHTML={{
+                        __html:
                           this.state.details[0] &&
-                          this.state.details[0].explanation &&
-                          this.state.details[0].explanation.value
-                        }
-                        controls="true"
-                        playing="true"
-                        onError={(e) => this.onError(e)}
-                      />
-                      ) : (
-                        <p className="dark-text mb-0 text-center">
-                          {/* لا يوجد مساعدة متوفرة */}
-                        </p>
-                      )}
+                          this.state.details[0].encodedExplanation,
+                      }}
+                    ></div>
+                  ) : this.state.details[0] &&
+                    this.state.details[0].explanation &&
+                    this.state.details[0].explanation.type === "Video" ? (
+                    <ReactPlayer
+                      width="100%"
+                      height="240"
+                      url={
+                        this.state.details[0] &&
+                        this.state.details[0].explanation &&
+                        this.state.details[0].explanation.value
+                      }
+                      controls="true"
+                      playing="true"
+                      onError={(e) => this.onError(e)}
+                    />
+                  ) : (
+                    <p className="dark-text mb-0 text-center">
+                      {/* لا يوجد مساعدة متوفرة */}
+                    </p>
+                  )}
                 </div>
                 <div className="d-flex align-items-center justify-content-center">
                   <button

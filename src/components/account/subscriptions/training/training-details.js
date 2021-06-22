@@ -95,7 +95,7 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({ isHintOpen: true, selectedQuestionId: id });
   };
   closeHintModal = () => {
-    this.setState({ isHintOpen: false });
+    this.setState({ isHintOpen: false,selectedQuestionId: null });
   };
 
   componentDidMount = () => {
@@ -470,14 +470,13 @@ class TrainingExamDetailsComponent extends Component {
                   </div>
                 </div>
               </div>
-              {
                 <HintModal
                   isHintOpen={this.state.isHintOpen}
                   closeHint={this.closeHintModal}
                   id={this.state.selectedQuestionId}
                   attemptId={attemptId}
                 />
-              }
+              
             </div>
           </div>
         )}
