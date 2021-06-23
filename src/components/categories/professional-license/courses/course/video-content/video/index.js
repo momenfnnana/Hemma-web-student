@@ -5,7 +5,6 @@ export default function TrainerVideo({
   removeTimes
 }) {
   const videoRef = useRef();
-
   const [isPlaying, setIsPlaying] = useState();
   const togglePlay = () => setIsPlaying(!isPlaying);
   const [videoHasLoaded, setVideoHasLoaded] = useState(false);

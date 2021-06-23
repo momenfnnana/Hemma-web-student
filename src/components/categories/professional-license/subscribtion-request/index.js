@@ -55,7 +55,7 @@ export default function SubscribtionRequest({
               {data?.description || "يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام"}
             </p>
             {error && !data && (
-              <div className="w-100 text-center bg-danger btn-card-normal big-height m-0">
+              <div className="w-100 text-center bg-danger btn-card-normal big-height mb-4">
                 <span className="text-white">{error}</span>
               </div>
             )}

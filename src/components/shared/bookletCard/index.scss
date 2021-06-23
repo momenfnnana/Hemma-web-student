@@ -20,7 +20,9 @@
         transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 }
-
+.flex-1{
+  flex: 1;
+}
 .white-space-pre{
   white-space: pre;
 }

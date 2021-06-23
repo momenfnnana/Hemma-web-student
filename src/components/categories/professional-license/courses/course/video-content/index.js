@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { AttachmentRenderer, attachmentsForammter } from "./attachments-reducer";
 import NoTrianerVideo from "./no-video";
 import TrainerVideo from "./video";
 
 export default function KnowMore({
-  trainer: { name, description, videoUrl, attachments },
+  trainer: { name, description, videoUrl, attachments,id },
 }) {
   const [removeTimes, setRemoveTimes] = useState(0);
   const handleClose = () => setRemoveTimes((c) => c + 1);
-
   return (
     <div
       class="modal fade pl-0 show"
@@ -34,11 +34,13 @@ export default function KnowMore({
             </div>
           )}
           <div class="modal-body">
-            {videoUrl ? (
+          <AttachmentRenderer attachments={attachments}removeTimes={removeTimes} />
+            
+            {/* {videoUrl ? (
               <TrainerVideo removeTimes={removeTimes} />
             ) : (
               <NoTrianerVideo />
-            )}
+            )} */}
 
             {description && (
               <div class="card-container mb-3">
