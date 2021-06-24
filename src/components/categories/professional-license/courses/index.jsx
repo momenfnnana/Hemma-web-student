@@ -8,6 +8,7 @@ import { useHistory, withRouter } from "react-router-dom";
 import KnowMore from "./course/video-content";
 import { useFetch } from "../../../../hooks/useFetch";
 import { useLoaded } from "../../../../hooks/useLoaded";
+import { getErrorMsg } from "../../../../utils/error-handling";
 
 const token = localStorage.getItem("token");
 let headers = {
@@ -249,7 +250,7 @@ export default withRouter(function ProfessionalCourses({
         response: { data },
       } = error;
       const errorMsg = data?.message || data?.error;
-      swal("عفواً", errorMsg, "error", {
+      swal("عفواً",  getErrorMsg(errorMsg), "error", {
         button: "متابعة",
       });
     }
@@ -274,7 +275,7 @@ export default withRouter(function ProfessionalCourses({
         },
       },
     } = foundError;
-    swal("عفواً", error, "error", {
+    swal("عفواً", getErrorMsg(error), "error", {
       button: "متابعة",
     });
   };
