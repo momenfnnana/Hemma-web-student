@@ -12,9 +12,9 @@ const TrainerOption = ({
       class="lighter-gray text-underline font-size-14 link-hover cursor-pointer"
       data-bs-toggle="modal"
       data-bs-target="#coach-modal"
-      onClick={() => onTrainerSelected({id})}
+      onClick={() => onTrainerSelected({ id })}
     >
-      {name}
+      اعرف المزيد عن مدربك
     </a>
   </div>
 );
@@ -61,9 +61,9 @@ const SignleTrainer = ({
           </div>
         </div>
       </div>
-      {!!subTrainers?.length > 1 && (
+      {subTrainers?.length > 1 && (
         <div class="trainer-chooice-list smoth-scroll trainer-list-1">
-          {subTrainers?.slice(1, subTrainers?.length - 1)?.map((subTrainer) => (
+          {subTrainers?.slice(1,subTrainers.length)?.map((subTrainer) => (
             <TrainerOption
               key={subTrainer?.id}
               {...subTrainer}
