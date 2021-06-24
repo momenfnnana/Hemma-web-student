@@ -46,13 +46,20 @@ const AttachedFile = ({ url, name }) => {
   );
 };
 
+const AttachmentImg = ({ url, name, rest }) => (
+  <div className="w-100">
+    <span>{name}</span>
+    <img className="w-100 h-auto" src={url} alt={name} {...rest} />
+  </div>
+);
+
 export const AttachmentsReducer = ({ attachment = {}, ...rest }) => {
   const { fileType, url, name } = attachment;
   switch (fileType) {
     case VIDEO_TYPE:
-      return <TrainerVideo videoUrl={url} {...rest} />;
+      return <TrainerVideo name={name} videoUrl={url} {...rest} />;
     case IMG_TYPE:
-      return <img className="w-100 h-auto" src={url} alt={name} {...rest} />;
+      return <AttachmentImg url={url} name={name} {...rest} />
     case OTHER_FILE_TYPE:
       return <AttachedFile url={url} name={name} />;
     default:
