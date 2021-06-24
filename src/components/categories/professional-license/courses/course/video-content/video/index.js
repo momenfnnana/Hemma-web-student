@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 export default function TrainerVideo({
   videoUrl,
-  removeTimes
+  removeTimes,
+  name
 }) {
   const videoRef = useRef();
   const [isPlaying, setIsPlaying] = useState();
@@ -27,7 +28,7 @@ export default function TrainerVideo({
   return (
     <div class="video-course-wrapper rounded overflow-hidden mb-3">
       <div id="video-title" class="video-title">
-        <div class="font-weight-bold">فيديو تعريفى</div>
+        <div class="font-weight-bold">{name}</div>
       </div>
       <video
         id="custom-video-play"

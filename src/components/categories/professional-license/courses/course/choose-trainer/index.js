@@ -12,9 +12,9 @@ const TrainerOption = ({
       class="lighter-gray text-underline font-size-14 link-hover cursor-pointer"
       data-bs-toggle="modal"
       data-bs-target="#coach-modal"
-      onClick={() => onTrainerSelected({id})}
+      onClick={() => onTrainerSelected({ id })}
     >
-      {name}
+      اعرف المزيد عن مدربك
     </a>
   </div>
 );
@@ -28,10 +28,16 @@ const SignleTrainer = ({
   subTrainers = [],
   onTrainerSelected = () => {},
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const isCurrentSelected = selctedTrainer === id;
   const checkboxClass = isCurrentSelected ? trainerCheckedClass : "";
-  const arrowClass = isCurrentSelected ? "rotate-180" : "";
+  const arrowClass = isExpanded ? "rotate-180" : "";
   const firstTrainer = subTrainers?.[0];
+
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+  
   return (
     <div
       class={`input-area input_list_three mb-2 ${checkboxClass}`}
@@ -56,14 +62,14 @@ const SignleTrainer = ({
           >
             اعرف عن مدربك
           </a>
-          <div className={arrowClass}>
+          <div className={arrowClass} onClick={handleToggle}>
             <i class={`fas fa-angle-down lighter-gray ml-2 trainer-arrow`}></i>
           </div>
         </div>
       </div>
-      {!!subTrainers?.length > 1 && (
+      {isExpanded && subTrainers?.length > 1 && (
         <div class="trainer-chooice-list smoth-scroll trainer-list-1">
-          {subTrainers?.slice(1, subTrainers?.length - 1)?.map((subTrainer) => (
+          {subTrainers?.slice(1, subTrainers.length)?.map((subTrainer) => (
             <TrainerOption
               key={subTrainer?.id}
               {...subTrainer}

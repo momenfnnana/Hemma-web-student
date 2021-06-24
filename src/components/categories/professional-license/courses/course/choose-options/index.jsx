@@ -33,8 +33,7 @@ export default function ChooseOptions({
         className="custom-select font-size-14 border-radius-50 border-sub-color"
         onChange={(e) => handleChange(e, "level")}
       >
-        <option selected={firstOption.id}>{firstOption.title}</option>
-        {otherOptions.map((option) => (
+        {options.map((option) => (
           <option value={option.id}>{option.title}</option>
         ))}
       </select>
