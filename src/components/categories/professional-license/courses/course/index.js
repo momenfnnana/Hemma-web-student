@@ -7,6 +7,7 @@ import PickTrainerList from "./pick-trainer-list";
 import CourseTabPicker from "./course-picker";
 import { courseTabs } from "./course-tabs";
 import Axios from "axios";
+import { EMPTY_ID } from "./choose-options/data/options";
 
 const moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -25,8 +26,9 @@ export default function ProfessionalCourse({
   descriptionData,
   setSelectedGeneralCourse = () => {},
   onResponse = () => {},
-  onJoin = ()=>{},
-  onTrainerSelected = ()=>{}
+  onJoin = () => {},
+  onTrainerSelected = () => {},
+  onClear = () => {},
 }) {
   const [optionsData, setOptionsData] = useState({});
   const [courseData, setCourseData] = useState(null);
@@ -68,9 +70,18 @@ export default function ProfessionalCourse({
     }
   };
 
+  const clearCourseData = () => setSelectedGeneralCourse(null);
+
   useEffect(() => {
-    setSelectedGeneralCourse(null);
-    if (Object.keys(optionsData)?.length < triggerkeysCount) return;
+    clearCourseData();
+    const validKeys = Object.values(optionsData).filter(
+      (value) => value !== EMPTY_ID
+    );
+    if (validKeys?.length < triggerkeysCount) {
+      setCourseData(null);
+      onClear();
+      return;
+    }
     if (!optionsData?.CourseType) return;
     getCourseData();
   }, [optionsData]);
@@ -156,7 +167,10 @@ export default function ProfessionalCourse({
                           </div>
                         </p>
                         {courseData?.instructors?.map((instructor) => (
-                          <div className="d-flex justify-content-between" onClick={()=>onTrainerSelected(instructor)}>
+                          <div
+                            className="d-flex justify-content-between"
+                            onClick={() => onTrainerSelected(instructor)}
+                          >
                             <div className="d-flex align-items-center sub-color mb-2">
                               <i className="far fa-user"></i>
                               <span className="ml-2">{instructor?.name}</span>
@@ -170,7 +184,10 @@ export default function ProfessionalCourse({
                             </a>
                           </div>
                         ))}
-                        <a className="btn-card-normal w-auto headShake big-height linear-bg mt-4" onClick={onJoin}>
+                        <a
+                          className="btn-card-normal w-auto headShake big-height linear-bg mt-4"
+                          onClick={onJoin}
+                        >
                           انضم للدورة
                         </a>
                       </div>

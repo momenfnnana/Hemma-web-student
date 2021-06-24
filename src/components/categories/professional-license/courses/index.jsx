@@ -361,6 +361,10 @@ export default withRouter(function ProfessionalCourses({
     loading: _specLoading,
   };
 
+  const clearSelectedSpec =()=>{
+    setSelectedSpecCourse(null)
+  }
+
   return (
     <div className="row mt-6">
       {show?.["spec"] && (
@@ -378,6 +382,7 @@ export default withRouter(function ProfessionalCourses({
           setDefaultCourse={setDefaultCourse}
           onJoin={() => handleJoin("spec", selecteSpecCourse)}
           onTrainerSelected={onTrainerSelected}
+          onClear={clearSelectedSpec}
         />
       )}
       {show?.["general"] && (
