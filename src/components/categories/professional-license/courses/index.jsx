@@ -23,6 +23,11 @@ const getTotalsUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages`;
 const noPackageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/items/courses`;
 const packageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/packages`;
 
+const trainerInitState = {
+  id: null,
+  info: {},
+}
+
 const getSpecUrl = (CategoryId) =>
   `${process.env.REACT_APP_API_ENDPOINT}/Specialities/${CategoryId}/Specialities`;
 
@@ -37,10 +42,7 @@ export default withRouter(function ProfessionalCourses({
   const [selecteSpecCourse, setSelectedSpecCourse] = useState();
   const [specialities, setSpecialities] = useState([]);
   const [defaultCourse, setDefaultCourse] = useState();
-  const [trainer, setTrainer] = useState({
-    id: null,
-    info: {},
-  });
+  const [trainer, setTrainer] = useState(trainerInitState);
   const [totalInfo, setTotalInfo] = useState({
     data: null,
     error: "",
@@ -348,6 +350,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   useEffect(() => {
+    setTrainer({...trainer,info:{}})
     if (!trainer) return;
     getTrainerInfo(trainer?.id);
   }, [trainer.id]);
