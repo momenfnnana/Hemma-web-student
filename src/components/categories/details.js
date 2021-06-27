@@ -237,7 +237,6 @@ moreSucces = async () =>
   }
 
   renderCategoryGroups() {
-    console.log(this.state.categoryGroups);
     return this.state.categoryGroups.map(group => (
       <React.Fragment>
         <div className="col-lg-4">
