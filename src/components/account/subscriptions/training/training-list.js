@@ -58,7 +58,7 @@ export class TrainingList extends Component {
                     to={`/course/content/${courseId}/exam/training/${tra.id}`}
                     className="badge dark-bg text-white w-100"
                   >
-                    اختبر الآن
+                    تدرب الآن
                   </Link>
                  {/* <ToastDemo copyLink={{ btnName:'مشاركة التدريب',link:this.createCourseLink(courseId,tra.id)}} />*/}
                 </td>
