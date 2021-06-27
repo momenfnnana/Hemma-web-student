@@ -254,7 +254,7 @@ moreSucces = async () =>
                                 <i className="far fa-user-circle"></i>
                               </div>
                               <div className="mr-2">طالب</div>
-                              <div>680</div>
+                              <div>{group.numberOfMembers}</div>
                             </div>
                           </div>
                         </div>
