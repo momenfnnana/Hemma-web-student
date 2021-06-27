@@ -9,11 +9,7 @@ import KnowMore from "./course/video-content";
 import { useFetch } from "../../../../hooks/useFetch";
 import { useLoaded } from "../../../../hooks/useLoaded";
 import { getErrorMsg } from "../../../../utils/error-handling";
-
-const token = localStorage.getItem("token");
-let headers = {
-  Authorization: `Bearer ${token}`,
-};
+import { getAuthHeader, getToken } from "../../../../utils/auth";
 
 const specUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/SpecialCourse`;
 const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse`;
@@ -26,7 +22,7 @@ const packageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/pa
 const trainerInitState = {
   id: null,
   info: {},
-}
+};
 
 const getSpecUrl = (CategoryId) =>
   `${process.env.REACT_APP_API_ENDPOINT}/Specialities/${CategoryId}/Specialities`;
@@ -64,6 +60,7 @@ export default withRouter(function ProfessionalCourses({
   });
 
   const authValidator = () => {
+    const token = getToken();
     if (!token) throw new Error("requires sign-in");
   };
 
@@ -85,7 +82,7 @@ export default withRouter(function ProfessionalCourses({
     try {
       //authValidator();
       const { data } = await Axios.get(getTotalsUrl, {
-        headers,
+        headers: getAuthHeader(),
         params: {
           CourseId: mergedData?.general?.id,
           CourseId2: mergedData?.spec?.id,
@@ -227,6 +224,7 @@ export default withRouter(function ProfessionalCourses({
 
   const hasPackageCase = async (ids = [], pkg, onEnd) => {
     const pkgID = pkg.id;
+    const token = getToken();
     const body = {
       packageId: pkgID,
       firstCourseId: ids?.[0],
@@ -244,7 +242,7 @@ export default withRouter(function ProfessionalCourses({
       const {
         data: { status },
       } = await Axios.post(packageSubscribtionUrl, body, {
-        headers,
+        headers: getAuthHeader(),
       });
       onEnd();
     } catch (error) {
@@ -252,7 +250,7 @@ export default withRouter(function ProfessionalCourses({
         response: { data },
       } = error;
       const errorMsg = data?.message || data?.error;
-      swal("عفواً",  getErrorMsg(errorMsg), "error", {
+      swal("عفواً", getErrorMsg(errorMsg), "error", {
         button: "متابعة",
       });
     }
@@ -264,7 +262,7 @@ export default withRouter(function ProfessionalCourses({
     };
     authValidator();
     return Axios.post(noPackageSubscribtionUrl, body, {
-      headers,
+      headers: getAuthHeader(),
     });
   };
 
@@ -283,6 +281,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCase = async (ids = [], onEnd) => {
+    const token = getToken();
     if (!token) {
       let postCardActions = [];
       ids.map(async (id, index) => {
@@ -314,6 +313,13 @@ export default withRouter(function ProfessionalCourses({
     const ids = [mergedData.general?.id, mergedData.spec?.id].filter(
       (id) => id
     );
+
+    const token = getToken();
+
+    if (!token) {
+      authErrorMsg();
+      return;
+    }
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
       case true:
@@ -327,11 +333,6 @@ export default withRouter(function ProfessionalCourses({
       default:
         break;
     }
-
-    if (!token) {
-      authErrorMsg();
-      return;
-    }
   };
 
   const onTrainerSelected = (_trianer) => {
@@ -342,7 +343,7 @@ export default withRouter(function ProfessionalCourses({
     try {
       //authValidator();
       const { data } = await Axios.get(getTrinerInfoUrl(id), {
-        headers,
+        headers: getAuthHeader(),
       });
       const { data: trainerData } = data;
       setTrainer({ ...trainer, info: trainerData });
@@ -350,7 +351,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   useEffect(() => {
-    setTrainer({...trainer,info:{}})
+    setTrainer({ ...trainer, info: {} });
     if (!trainer) return;
     getTrainerInfo(trainer?.id);
   }, [trainer.id]);
@@ -365,9 +366,9 @@ export default withRouter(function ProfessionalCourses({
     loading: _specLoading,
   };
 
-  const clearSelectedSpec =()=>{
-    setSelectedSpecCourse(null)
-  }
+  const clearSelectedSpec = () => {
+    setSelectedSpecCourse(null);
+  };
 
   return (
     <div className="row mt-6">
