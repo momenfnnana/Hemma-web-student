@@ -352,7 +352,7 @@ export default withRouter(function ProfessionalCourses({
 
   useEffect(() => {
     setTrainer({ ...trainer, info: {} });
-    if (!trainer) return;
+    if (!trainer.id) return;
     getTrainerInfo(trainer?.id);
   }, [trainer.id]);
 
