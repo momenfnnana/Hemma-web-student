@@ -107,6 +107,7 @@ export default function ProfessionalCourse({
             <ChooseOptions
               onChange={handleChange}
               specialitiesState={specialitiesState}
+              optionsData={optionsData}
             />
           )}
           <div className="d-flex align-items-center justify-content-between mb-3">
