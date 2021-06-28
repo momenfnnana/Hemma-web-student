@@ -1,6 +1,7 @@
 import React from "react";
 import { subCoursesData } from "./data/courses";
 import SubCourseItem from "./sub-course-item";
+import CoursePreviewModal from './modal'
 
 export default function SubCourseWrapper() {
   return (
@@ -8,6 +9,7 @@ export default function SubCourseWrapper() {
       {subCoursesData.map((course) => (
         <SubCourseItem {...course} />
       ))}
+      <CoursePreviewModal title="فيديو توضيحي"  />
     </div>
   );
 }
