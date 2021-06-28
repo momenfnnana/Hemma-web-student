@@ -42,17 +42,9 @@ export default function KnowMore({
             </div>
           )}
           <div class="modal-body">
-            {description && (
-              <TrainerDescribtion name={name} description={description} />
-            )}
-            {renderAttachments ? (
-              <AttachmentRenderer
-                attachments={attachments}
-                removeTimes={removeTimes}
-              />
-            ) : (
-              <NoTrianerVideo />
-            )}
+              {videoUrl && (<TrainerVideo autoPlay videoUrl={videoUrl} removeTimes={removeTimes} />)}
+              {description && (<TrainerDescribtion name={name} description={description} />)}
+              {renderAttachments ? (<AttachmentRenderer attachments={attachments} removeTimes={removeTimes}/> ) : ( <NoTrianerVideo />)}
           </div>
         </div>
       </div>

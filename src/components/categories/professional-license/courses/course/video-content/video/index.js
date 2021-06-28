@@ -3,7 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 export default function TrainerVideo({
   videoUrl,
   removeTimes,
-  name
+  name,
+  autoPlay
 }) {
   const videoRef = useRef();
   const [isPlaying, setIsPlaying] = useState();
@@ -15,6 +16,11 @@ export default function TrainerVideo({
     if (isPlaying) videoRef.current.play();
     else videoRef.current.pause();
   }, [isPlaying]);
+
+  useEffect(()=>{
+    if(isPlaying && videoRef.current)
+    videoRef.current.play();
+  },[isPlaying,videoRef.current])
 
   useEffect(() => {
       if(!removeTimes) return
@@ -28,7 +34,7 @@ export default function TrainerVideo({
   return (
     <div class="video-course-wrapper rounded overflow-hidden mb-3">
       <div id="video-title" class="video-title">
-        <div class="font-weight-bold">{name}</div>
+      {name &&  <div class="font-weight-bold">{name}</div>}
       </div>
       <video
         id="custom-video-play"
