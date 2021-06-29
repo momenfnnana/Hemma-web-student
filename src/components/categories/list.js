@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-beat.scss";
 import swal from "@sweetalert/with-react";
+import ShowAt from "../../HOC/show-at";
 
 const MyLoader = props => (
   <div className="container">
@@ -163,7 +164,9 @@ export class CategoriesComponent extends Component {
               </div>
               <div className="row pt-4">
                 <div className="col-12">
+                  <ShowAt at={!cat.professionalLicense}>
                   <CardsList catId={cat.id} />
+                  </ShowAt>
                 </div>
               </div>
             </React.Fragment>
