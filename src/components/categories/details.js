@@ -39,6 +39,7 @@ export class _CategoryDetails extends Component {
       details: [],
       subcategoriesdetails: [],
       lectures: [],
+      hiddenTabs : [],
       content: [],
       publications: [],
       courses: [],
@@ -133,6 +134,18 @@ export class _CategoryDetails extends Component {
         console.log(error);
       });
   };
+
+  handleHasProfessionalLicense() {
+    //hide tab-two which is دورات المنصة and make defaulted to show الرخصة المهنية
+    this.setState({ ...this.state, currentTab: ProfessionalLicenseText,hiddenTabs : [...this.state.hiddenTabs,'tab-two'] });
+  }
+
+  hasProfessionalLicense(details) {
+    if (!details?.professionalLicense) return;
+    const { professionalLicense } = details;
+    if (professionalLicense) this.handleHasProfessionalLicense();
+  }
+
   async componentDidMount() {
     const {
       match: { params },
@@ -140,7 +153,9 @@ export class _CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
-        this.setState({ details: response.data.data });
+        this.setState({ details: response.data.data }, () => {
+          this.hasProfessionalLicense(response.data.data);
+        });
         this.setState({
           showgroupedPackagesBtn: response.data.data.groupedPackages,
         });
@@ -641,8 +656,7 @@ export class _CategoryDetails extends Component {
       ],
     };
     console.log({
-      test: this.state.currentTab,
-      aa: ProfessionalLicenseText === this.state.currentTab,
+      test: this.state.hiddenTabs ,
     });
     return (
       <React.Fragment>
@@ -695,35 +709,40 @@ export class _CategoryDetails extends Component {
                    </React.Fragment> */}
                   <React.Fragment>
                     {this.state.courses.length > 0 ? (
-                      <a
-                        onClick={() => this.changeTab("tab-two")}
-                        className={
-                          "tab-items nav-link px-4 " + this.state.defultActive
-                        }
-                        data-toggle="tab"
-                        href="#tab-two"
-                        role="tab"
-                        aria-controls="nav-two"
-                        aria-selected="false"
-                      >
-                        <div className="tab-img">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/hemma-logo-light.svg"
-                            }
-                            className="width-50"
-                            alt="Hemma-logo"
-                          />
-                        </div>
-                        <div className="main-color font-weight-bold">
-                          دورات المنصة
-                        </div>
-                      </a>
+                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
+                        <a
+                          onClick={() => this.changeTab("tab-two")}
+                          className={
+                            "tab-items nav-link px-4 " + this.state.defultActive
+                          }
+                          data-toggle="tab"
+                          href="#tab-two"
+                          role="tab"
+                          aria-controls="nav-two"
+                          aria-selected="false"
+                        >
+                          <div className="tab-img">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/hemma-logo-light.svg"
+                              }
+                              className="width-50"
+                              alt="Hemma-logo"
+                            />
+                          </div>
+                          <div className="main-color font-weight-bold">
+                            دورات المنصة
+                          </div>
+                        </a>
+                      </ShowAt>
                     ) : null}
                   </React.Fragment>
                   {this.state.showgroupedPackagesBtn ? (
                     <NavTab
+                      isActive={
+                        this.state.currentTab === ProfessionalLicenseText
+                      }
                       name="الرخصة المهنية"
                       onClick={() => this.changeTab("الرخصة المهنية")}
                     />
