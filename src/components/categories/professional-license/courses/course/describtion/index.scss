@@ -1,0 +1,12 @@
+.course-describtion-wrapper{
+    grid-template-columns: 1fr 1fr;
+
+    & > div{
+        display: flex;
+        flex-direction: column;
+    }
+
+    & .describtion-point{
+        margin: 0.5rem 0;
+    }
+}

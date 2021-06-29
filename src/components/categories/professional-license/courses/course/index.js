@@ -8,6 +8,7 @@ import CourseTabPicker from "./course-picker";
 import { courseTabs } from "./course-tabs";
 import Axios from "axios";
 import { EMPTY_ID } from "./choose-options/data/options";
+import { CourseDescribtion } from "./describtion";
 
 const moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -139,34 +140,8 @@ export default function ProfessionalCourse({
                 {descriptionData && (
                   <div className="d-flex flex-column justify-content-between">
                     <div>
+                    <CourseDescribtion  descriptionData={descriptionData} />
                       <div>
-                        <h6 className="h6 sub-color font-weight-bold">
-                          مميزات الدورة :
-                        </h6>
-                        <p className="font-size-14">
-                          {descriptionData?.descriptionAr}
-                        </p>
-                      </div>
-                      <div>
-                        <h6 className="h6 sub-color font-weight-bold">
-                          تتضمن :
-                        </h6>
-                        <p className="font-size-14">
-                          <div className="d-flex justify-content-between">
-                            <div>
-                              <span>تاريخ البدء :</span>
-                              <span>
-                                هـجري{getHijriDate(descriptionData?.startsAt)}
-                              </span>
-                            </div>
-                            <div>
-                              <span>عدد الساعات : </span>
-                              <span className="mx-1">
-                                {parseInt(descriptionData.durationInHours)}
-                              </span>
-                            </div>
-                          </div>
-                        </p>
                         {courseData?.instructors?.map((instructor) => (
                           <div
                             className="d-flex justify-content-between"
