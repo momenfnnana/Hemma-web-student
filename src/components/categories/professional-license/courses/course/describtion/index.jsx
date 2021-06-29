@@ -27,7 +27,7 @@ export const CourseDescribtion = ({ descriptionData }) => {
         <h6 className="h6 sub-color font-weight-bold">تتضمن :</h6>
         <div className="font-size-14">
           <div className="d-grid course-describtion-wrapper">
-              <DescriptionPoint name="تاريخ البدء :" value={`هـجري${getHijriDate(descriptionData?.startsAt)}`} />
+              <DescriptionPoint name="تاريخ البدء :" value={`هـجري ${getHijriDate(descriptionData?.startsAt)}`} />
               <DescriptionPoint name="عدد الساعات : " value={`${parseInt(descriptionData.durationInHours)}`} valueClass="mx-1"  />
               <DescriptionPoint name="وصف وقت المحاضرات :" value={descriptionData?.durationTextAr}   />
               <DescriptionPoint name=" وصف الصلاحية :" value={descriptionData?.validityTextAr }   />
