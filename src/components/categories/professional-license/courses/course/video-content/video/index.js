@@ -17,10 +17,10 @@ export default function TrainerVideo({
     else videoRef.current.pause();
   }, [isPlaying]);
 
-  useEffect(()=>{
-    if(isPlaying && videoRef.current)
-    videoRef.current.play();
-  },[isPlaying,videoRef.current])
+  // useEffect(()=>{
+  //   if(autoPlay && videoRef.current)
+  //   videoRef.current.play();
+  // },[autoPlay,videoRef.current])
 
   useEffect(() => {
       if(!removeTimes) return

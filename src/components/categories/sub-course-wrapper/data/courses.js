@@ -20,3 +20,5 @@ export const subCoursesData = [
     ],
   },
 ];
+
+export const staticVideoUrl = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
