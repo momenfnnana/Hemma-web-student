@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useEffect } from "react";
-import { emptyOption, lvls, mappedStringsToLvls } from "./data/options";
+import ShowAt from "../../../../../../HOC/show-at";
+import { emptyOption, hiddenLvlsIds, lvls, mappedStringsToLvls } from "./data/options";
 
 export const specKey = "SpecialityId";
 export const lvlKey = "level";
@@ -29,6 +30,13 @@ export default function ChooseOptions({
     else onChange(lvlKey, null);
   }, [selectedSpec?.id]);
 
+  const isShown = useMemo(()=>{
+    if(!lvlsToRender.length) return false
+    if(hiddenLvlsIds.includes(lvlsToRender[0].id)) return false
+    return true
+  },[lvlsToRender.length])
+
+
   return (
     <div className="d-flex align-items-center justify-content-between mb-3">
       <select
@@ -45,7 +53,7 @@ export default function ChooseOptions({
         ))}
       </select>
       <span className="mx-1"></span>
-      {!!lvlsToRender?.length && (
+      <ShowAt at={isShown}>
         <select
           className="custom-select font-size-14 border-radius-50 border-sub-color"
           onChange={(e) => handleChange(e, lvlKey)}
@@ -58,7 +66,8 @@ export default function ChooseOptions({
             <option value={option.id}>{option.title}</option>
           ))}
         </select>
-      )}
+
+      </ShowAt>
     </div>
   );
 }
