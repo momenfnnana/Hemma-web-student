@@ -29,7 +29,7 @@ export default function SuccessCases() {
   const getNaxtPage = ()=> setPage(page+1)
 
   const handleCaseRequestSuccess = (response)=>{
-    debugger
+    
     const cases = response?.data?.data
     if(response.data.itemCount > (response.data.limit*response.data.page))
     {

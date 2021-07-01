@@ -19,7 +19,7 @@ class MiniCartItemsListComponent extends Component {
   }
   render() {
     const items = this.props.cart && this.props.cart.items;
-debugger;
+
     if (!items) return null;
     if(items.length == 0) {
       this.props.history.push("/cart");

@@ -60,7 +60,6 @@ export default withRouter(function ProfessionalCourses({
   });
 
   const authValidator = () => {
-    const token = getToken();
     if (!token) throw new Error("requires sign-in");
   };
 

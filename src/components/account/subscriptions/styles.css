@@ -1,0 +1,17 @@
+/* Error: Expected newline.
+ *     ,
+ * 229 |   background-color: #4b3a85 !important
+ *     |                             ^
+ *     '
+ *   styles.sass 229:29  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Expected newline.\a     \2577 \a 229 \2502    background-color: #4b3a85 !important\d\a     \2502                              ^\a     \2575 \a   styles.sass 229:29  root stylesheet";
+}

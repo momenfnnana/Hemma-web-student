@@ -148,7 +148,7 @@ export class _CategoryDetails extends Component {
 
   async componentDidMount() {
     const {
-      match: { params },
+      match: { params }
     } = this.props;
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
@@ -168,7 +168,6 @@ export class _CategoryDetails extends Component {
         `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
       )
       .then((response) => {
-        debugger;
         var more = false;
         if (
           response.data.data.itemCount >

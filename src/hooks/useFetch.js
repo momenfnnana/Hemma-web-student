@@ -32,7 +32,7 @@ export const useFetch = (url = "", mainConfig = {}) => {
     const reqConfig = { ...mainConfig, ...reqConf };
     const AxiosInstance = isAuthed ? authedInstance : baseInstance;
     try {
-      debugger;
+
       setLoading(true);
       setError("");
       const { data: response } = await AxiosInstance({
