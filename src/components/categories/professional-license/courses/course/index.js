@@ -87,6 +87,16 @@ export default function ProfessionalCourse({
     getCourseData();
   }, [optionsData]);
 
+  console.log({ aa: courseData?.length });
+
+  useEffect(() => {
+    //if one course was retrieved it's dropdown should be hidden and the only value should be selected
+    if (courseData?.length === 1)
+    onCourseSelect(courseData[0])
+    else
+    onCourseSelect(null)
+  }, [courseData?.length]);
+
   return (
     <div className="col-lg-4">
       <div className="card p-4 border-dashed  card-ele position-relative mb-6">
@@ -130,7 +140,7 @@ export default function ProfessionalCourse({
                 id="full-licences-course-one"
                 className="instructor-courses-one show"
               >
-                {!!courseData?.length && (
+                {!!(courseData?.length - 1) && (
                   <PickTrainer
                     onSelect={onCourseSelect}
                     trainers={courseData}
@@ -140,7 +150,7 @@ export default function ProfessionalCourse({
                 {descriptionData && (
                   <div className="d-flex flex-column justify-content-between">
                     <div>
-                    <CourseDescribtion  descriptionData={descriptionData} />
+                      <CourseDescribtion descriptionData={descriptionData} />
                       <div>
                         {courseData?.instructors?.map((instructor) => (
                           <div
