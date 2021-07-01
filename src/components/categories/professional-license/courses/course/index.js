@@ -87,8 +87,6 @@ export default function ProfessionalCourse({
     getCourseData();
   }, [optionsData]);
 
-  console.log({ aa: courseData?.length });
-
   useEffect(() => {
     //if one course was retrieved it's dropdown should be hidden and the only value should be selected
     if (courseData?.length === 1)
@@ -140,7 +138,7 @@ export default function ProfessionalCourse({
                 id="full-licences-course-one"
                 className="instructor-courses-one show"
               >
-                {!!(courseData?.length - 1) && (
+                {!!(courseData?.length) && (
                   <PickTrainer
                     onSelect={onCourseSelect}
                     trainers={courseData}
