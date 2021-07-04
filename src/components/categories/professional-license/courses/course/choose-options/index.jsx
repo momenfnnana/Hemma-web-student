@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useEffect } from "react";
 import ShowAt from "../../../../../../HOC/show-at";
 import { emptyOption, hiddenLvlsIds, lvls, mappedStringsToLvls } from "./data/options";
@@ -11,8 +11,7 @@ export default function ChooseOptions({
   onChange,
   optionsData,
 }) {
-  const [firstOption] = lvls;
-  const otherOptions = lvls.filter((option, index) => index);
+  const [changeCounter,setChangeCounter] = useState(0)
   // const { specialities, loading } = specialitiesState;
   const selectedSpec = specialities?.find(
     (spec) => spec.id == optionsData?.[specKey]
@@ -23,6 +22,7 @@ export default function ChooseOptions({
   const handleChange = ({ target }, key) => {
     const { value } = target;
     onChange(key, value);
+    setChangeCounter(c => c +1)
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function ChooseOptions({
     if(!lvlsToRender.length) return false
     if(hiddenLvlsIds.includes(lvlsToRender[0].id)) return false
     return true
-  },[lvlsToRender.length])
+  },[changeCounter,lvlsToRender.length])
 
 
   return (
