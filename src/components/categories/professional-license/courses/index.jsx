@@ -51,12 +51,15 @@ export default withRouter(function ProfessionalCourses({
     error: "",
   });
 
+  const redirectToLogin = () => {
+    const loginPath = `/auth/login`;
+    window.location = loginPath;
+  };
+
   const authErrorMsg = () => {
     swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
       button: "متابعة",
-    }).then((response) => {
-      window.location = "/auth/login";
-    });
+    }).then(redirectToLogin);
   };
 
   const { push } = history;
@@ -266,6 +269,7 @@ export default withRouter(function ProfessionalCourses({
       firstCourseId: ids?.[0],
       secoundCourseId: ids?.[1],
     };
+
     if (!token) {
       localStorage.setItem(
         "PostCardAction",
@@ -354,7 +358,6 @@ export default withRouter(function ProfessionalCourses({
 
     if (!token) {
       authErrorMsg();
-      return;
     }
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {
