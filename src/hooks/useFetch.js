@@ -32,7 +32,6 @@ export const useFetch = (url = "", mainConfig = {}) => {
     const reqConfig = { ...mainConfig, ...reqConf };
     const AxiosInstance = isAuthed ? authedInstance : baseInstance;
     try {
-      debugger;
       setLoading(true);
       setError("");
       const { data: response } = await AxiosInstance({
@@ -42,11 +41,11 @@ export const useFetch = (url = "", mainConfig = {}) => {
       });
       setData(response);
       if (response?.status === SUCCESS_STATUS) onSuccess(response);
-    } catch (e) {
+    } catch ({response : {data}}) {
       const errorMsg = "";
       setError(errorMsg);
       setLoading(false);
-      onError(e);
+      onError(data);
 
       if (errorMsg)
         swal("عفواً", errorMsg, "error", {
@@ -58,3 +57,7 @@ export const useFetch = (url = "", mainConfig = {}) => {
 
   return [fetchData, data, loading, error, setData];
 };
+
+export const hasLogin = ()=>{
+  return localStorage.getItem('token')
+}

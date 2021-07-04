@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.scss";
 
 const TrainerOption = ({
@@ -37,7 +37,7 @@ const SignleTrainer = ({
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
-  
+
   return (
     <div
       class={`input-area input_list_three mb-2 ${checkboxClass}`}
@@ -95,6 +95,11 @@ export default function PickTrainer({
     setSelectedId(course?.id);
     onSelect(course);
   };
+
+  useEffect(() => {
+    if (trainers.length === 1) setSelectedId(trainers[0].id);
+    else setSelectedId(null);
+  }, [trainers.length]);
 
   return (
     <div class="mb-3">

@@ -6,10 +6,11 @@ import { useState } from "react";
 import swal from "@sweetalert/with-react";
 import { useHistory, withRouter } from "react-router-dom";
 import KnowMore from "./course/video-content";
-import { useFetch } from "../../../../hooks/useFetch";
+import { hasLogin, useFetch } from "../../../../hooks/useFetch";
 import { useLoaded } from "../../../../hooks/useLoaded";
 import { getErrorMsg } from "../../../../utils/error-handling";
 import { getAuthHeader, getToken } from "../../../../utils/auth";
+import { checkCoursesUrl } from "../../../../urls/professional-license";
 
 const specUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/SpecialCourse`;
 const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse`;
@@ -18,6 +19,7 @@ const getTrinerInfoUrl = (id) =>
 const getTotalsUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages`;
 const noPackageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/items/courses`;
 const packageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/packages`;
+export const ITEAM_CAN_BE_ADDED = "ItemCanAdded";
 
 const trainerInitState = {
   id: null,
@@ -34,6 +36,11 @@ export default withRouter(function ProfessionalCourses({
   const [_getSpecialties, _specialites, _specLoading] = useFetch("", {
     isAuthed: true,
   });
+  const [checkCourse] = useFetch(checkCoursesUrl, {
+    method: "POST",
+    isAuthed: true,
+  });
+
   const [selectedGeneralCourse, setSelectedGeneralCourse] = useState();
   const [selecteSpecCourse, setSelectedSpecCourse] = useState();
   const [specialities, setSpecialities] = useState([]);
@@ -44,12 +51,15 @@ export default withRouter(function ProfessionalCourses({
     error: "",
   });
 
+  const redirectToLogin = () => {
+    const loginPath = `/auth/login`;
+    window.location = loginPath;
+  };
+
   const authErrorMsg = () => {
     swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
       button: "متابعة",
-    }).then((response) => {
-      window.location = "/auth/login";
-    });
+    }).then(redirectToLogin);
   };
 
   const { push } = history;
@@ -178,11 +188,40 @@ export default withRouter(function ProfessionalCourses({
     });
   };
 
+  const notifyError = (msg) => {
+    swal("عفواً", getErrorMsg(msg), "error", {
+      button: "متابعة",
+    });
+  };
+
+  const handleAddError = (response) => {
+    const { error } = response;
+    notifyError(error);
+  };
+
+  const checkAlreadyJoined = (id, cb) => {
+    if (hasLogin()) {
+      checkCourse(
+        {
+          data: {
+            courseId: id,
+          },
+        },
+        cb,
+        handleAddError
+      );
+    } else {
+      cb();
+    }
+  };
+
   const handleJoin = (key, value) => {
+    if (!value.id) return;
     const data = {
       [key]: value,
     };
-    setMeregedData({ ...mergedData, ...data });
+    const { id } = value;
+    checkAlreadyJoined(id, () => setMeregedData({ ...mergedData, ...data }));
   };
 
   const delayedAction = (onTimeout = () => {}) => {
@@ -230,6 +269,7 @@ export default withRouter(function ProfessionalCourses({
       firstCourseId: ids?.[0],
       secoundCourseId: ids?.[1],
     };
+
     if (!token) {
       localStorage.setItem(
         "PostCardAction",
@@ -318,7 +358,6 @@ export default withRouter(function ProfessionalCourses({
 
     if (!token) {
       authErrorMsg();
-      return;
     }
     //in case of totalInfo.data so there is a pkg
     switch (!!totalInfo.data) {

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { useEffect } from "react";
-import { emptyOption, lvls, mappedStringsToLvls } from "./data/options";
+import ShowAt from "../../../../../../HOC/show-at";
+import { emptyOption, hiddenLvlsIds, lvls, mappedStringsToLvls } from "./data/options";
 
 export const specKey = "SpecialityId";
 export const lvlKey = "level";
@@ -10,8 +11,7 @@ export default function ChooseOptions({
   onChange,
   optionsData,
 }) {
-  const [firstOption] = lvls;
-  const otherOptions = lvls.filter((option, index) => index);
+  const [changeCounter,setChangeCounter] = useState(0)
   // const { specialities, loading } = specialitiesState;
   const selectedSpec = specialities?.find(
     (spec) => spec.id == optionsData?.[specKey]
@@ -22,12 +22,20 @@ export default function ChooseOptions({
   const handleChange = ({ target }, key) => {
     const { value } = target;
     onChange(key, value);
+    setChangeCounter(c => c +1)
   };
 
   useEffect(() => {
     if (specLvlsInStrings?.length === 1) onChange(lvlKey, specLvlsInStrings[0]);
     else onChange(lvlKey, null);
   }, [selectedSpec?.id]);
+
+  const isShown = useMemo(()=>{
+    if(!lvlsToRender.length) return false
+    if(hiddenLvlsIds.includes(lvlsToRender[0].id)) return false
+    return true
+  },[changeCounter,lvlsToRender.length])
+
 
   return (
     <div className="d-flex align-items-center justify-content-between mb-3">
@@ -45,7 +53,7 @@ export default function ChooseOptions({
         ))}
       </select>
       <span className="mx-1"></span>
-      {!!lvlsToRender?.length && (
+      <ShowAt at={isShown}>
         <select
           className="custom-select font-size-14 border-radius-50 border-sub-color"
           onChange={(e) => handleChange(e, lvlKey)}
@@ -58,7 +66,8 @@ export default function ChooseOptions({
             <option value={option.id}>{option.title}</option>
           ))}
         </select>
-      )}
+
+      </ShowAt>
     </div>
   );
 }

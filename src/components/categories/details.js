@@ -655,9 +655,6 @@ export class _CategoryDetails extends Component {
         },
       ],
     };
-    console.log({
-      test: this.state.hiddenTabs ,
-    });
     return (
       <React.Fragment>
         <Helmet>
@@ -806,7 +803,7 @@ export class _CategoryDetails extends Component {
                   {this.renderPanelSub()}
 
                   {this.state.currentTab !== ProfessionalLicenseText ? (
-                    <>
+                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
                       <div
                         className={"tab-pane fade " + this.state.defultActive}
                         id="tab-two"
@@ -836,7 +833,7 @@ export class _CategoryDetails extends Component {
                           </div>
                         </div>
                       </div>
-                    </>
+                    </ShowAt>
                   ) : (
                     <>
                       {this.state.currentTab === ProfessionalLicenseText && (
