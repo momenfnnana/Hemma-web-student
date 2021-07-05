@@ -86,7 +86,6 @@ export class BookletCardList extends Component {
             }
           </React.Fragment>
         ))}
-        s
         </>
       </EmptyCountWrapper>
     );

@@ -51,7 +51,6 @@ export class BookletComponent extends Component {
         .then(response => {
             
              this.setState({ booklets: response.data.data,selected_platform:platform,loading:false });
-             console.log(this.state);
             
             setTimeout(
                 function() {
@@ -171,14 +170,13 @@ export class BookletComponent extends Component {
 
                 </div>
 <div className="row">
-    <BookletCardList booklets={this.state.booklets}  loading={this.props.loading} />
+    <BookletCardList booklets={this.state.booklets}  loading={this.state.loading} />
 </div>
 
             </React.Fragment>
         )
     }
     render() {
-       
         return (
             <React.Fragment>
                 <Helmet>

@@ -44,6 +44,7 @@ export default withRouter(function ProfessionalCourses({
   const [selectedGeneralCourse, setSelectedGeneralCourse] = useState();
   const [selecteSpecCourse, setSelectedSpecCourse] = useState();
   const [specialities, setSpecialities] = useState([]);
+  const [resetTrigger, setResetTrigger] = useState(0);
   const [defaultCourse, setDefaultCourse] = useState();
   const [trainer, setTrainer] = useState(trainerInitState);
   const [totalInfo, setTotalInfo] = useState({
@@ -149,6 +150,13 @@ export default withRouter(function ProfessionalCourses({
         data: null,
       });
   }, [mergedData]);
+
+  const triggerReset = () => setResetTrigger((c) => c + 1);
+
+  useEffect(() => {
+    if (!resetTrigger) return;
+    setSelectedSpecCourse(null)
+  }, [resetTrigger]);
 
   const toggleShow = (key) => {
     setShow({
@@ -427,6 +435,7 @@ export default withRouter(function ProfessionalCourses({
           onJoin={() => handleJoin("spec", selecteSpecCourse)}
           onTrainerSelected={onTrainerSelected}
           onClear={clearSelectedSpec}
+          triggerReset={triggerReset}
         />
       )}
       {show?.["general"] && (
