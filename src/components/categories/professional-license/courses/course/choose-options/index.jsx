@@ -5,6 +5,7 @@ import { emptyOption, hiddenLvlsIds, lvls, mappedStringsToLvls } from "./data/op
 
 export const specKey = "SpecialityId";
 export const lvlKey = "level";
+export const courseTypeKey = "CourseType";
 
 export default function ChooseOptions({
   specialitiesState: { specialities = [], loading = false },
