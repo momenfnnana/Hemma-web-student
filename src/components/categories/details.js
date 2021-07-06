@@ -375,11 +375,10 @@ export class _CategoryDetails extends Component {
   }
   rendersubCategories() {
     const getUrl = (Category = {}, count) => {
-      const { childCatgories = [] } = Category;
-      if (!childCatgories.length) return `${"#tab-" + count}`;
-      const [firstChildCateg] = childCatgories;
-      const { slug } = firstChildCateg;
-      return `./${slug}`;
+      const { childCatgories = [], slug : categSlug } = Category;
+      // const [firstChildCateg] = childCatgories || [];
+      // const { slug } = firstChildCateg || {};
+      return `./${categSlug}`;
     };
 
     const handleClick = (url) => {
