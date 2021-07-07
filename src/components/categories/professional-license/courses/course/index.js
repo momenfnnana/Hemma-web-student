@@ -40,6 +40,9 @@ export default function ProfessionalCourse({
   const completedOptionsLength = Object.values(optionsData || {}).filter(elem => !!elem)?.length
   //Start index here is 1 cuz we don't want to reset level cuz it's already dependent on specType => could lead to inifite loop
   const RESET_STATE_START_INDEX = 1
+  const validKeys = Object.values(optionsData).filter(
+    (value) => value !== EMPTY_ID && !!value
+  );
 
 
   useEffect(()=>{
@@ -80,7 +83,7 @@ export default function ProfessionalCourse({
     return hijriDate;
   };
 
-  const getCourseData = async () => {
+  const getCourseData = async (cb = ()=>{},parmas) => {
     setCourseData(null);
     const token = localStorage.getItem("token");
     let headers = {
@@ -93,10 +96,10 @@ export default function ProfessionalCourse({
         params: {
           ...optionsData,
           CategoryId: categoryData.id,
+          ...parmas
         },
       });
-      setCourseData(data.data);
-      onResponse(data.data);
+      cb(data)
     } catch (error) {
       console.log({ error });
     }
@@ -104,18 +107,20 @@ export default function ProfessionalCourse({
 
   const clearCourseData = () => setSelectedGeneralCourse(null);
 
+  const updateCourseData = (data) =>{
+      setCourseData(data.data);
+      onResponse(data.data);
+  }
+
   useEffect(() => {
     clearCourseData();
-    const validKeys = Object.values(optionsData).filter(
-      (value) => value !== EMPTY_ID
-    );
     if (validKeys?.length < triggerkeysCount) {
       setCourseData(null);
       onClear();
       return;
     }
     if (!optionsData?.CourseType) return;
-    getCourseData();
+    getCourseData(updateCourseData);
   }, [optionsData]);
 
   useEffect(() => {
@@ -158,6 +163,10 @@ export default function ProfessionalCourse({
                   selectedId={optionsData?.CourseType}
                   onClick={handleCourseTabClick}
                   title={courseTab.title}
+                  checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
+                  optionsData={optionsData}
+                  getCourseData={getCourseData}
+                  completedOptionsLength={completedOptionsLength}
                 />
                 {index !== courseTabs?.length && <span className="mx-1"></span>}
               </>
