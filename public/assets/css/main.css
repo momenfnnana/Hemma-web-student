@@ -194,6 +194,7 @@ a:hover {text-decoration: none;}
 .border-radius-100 { border-radius: 100px; }
 .bordered {border: 1px solid var(--main-color)}
 
+.font-size-12 {font-size: 12px;}
 .font-size-13 {font-size: 13px;}
 .font-size-14 {font-size: 14px;}
 .font-size-18 {font-size: 18px;}

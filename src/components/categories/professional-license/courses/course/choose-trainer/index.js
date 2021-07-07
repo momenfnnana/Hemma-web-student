@@ -9,7 +9,7 @@ const TrainerOption = ({
   <div class="trainer-list-item d-flex align-items-center justify-content-between">
     <div class="trainer-name lighter-gray font-weight-bold">{name}</div>
     <a
-      class="lighter-gray text-underline font-size-14 link-hover cursor-pointer"
+      class="lighter-gray text-underline font-size-12 link-hover cursor-pointer"
       data-bs-toggle="modal"
       data-bs-target="#coach-modal"
       onClick={() => onTrainerSelected({ id })}
@@ -47,7 +47,7 @@ const SignleTrainer = ({
         <div class="d-flex align-items-center">
           <span class={`bullets-before-input  ${checkboxClass}`}></span>
           <span
-            class="lighter-gray font-weight-bold cursor-pointer choose-trainer-btn"
+            class="lighter-gray font-weight-bold cursor-pointer choose-trainer-btn font-size-12"
             data-trainer="input_list_three"
           >
             {firstTrainer?.name}
@@ -55,7 +55,7 @@ const SignleTrainer = ({
         </div>
         <div class="d-flex align-items-center">
           <a
-            class="lighter-gray text-underline font-size-14 link-hover cursor-pointer"
+            class="lighter-gray text-underline font-size-12 link-hover cursor-pointer"
             data-bs-toggle="modal"
             data-bs-target="#coach-modal"
             onClick={() => onTrainerSelected({ id: firstTrainer?.id })}
