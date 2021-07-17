@@ -273,6 +273,17 @@ export class _CategoryDetails extends Component {
     }
   }
 
+  warningAlert(msg){
+    swal(
+      "عفواً",
+      msg,
+      "error",
+      {
+        button: "متابعة",
+      }
+    );
+  }
+
   renderCategoryGroups() {
     return this.state.categoryGroups.map((group) => (
       <React.Fragment>
@@ -386,18 +397,42 @@ export class _CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
+
+  hasSubcategoriesReq(slug){
+    return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
+  }
+
+  async validateHasSubCategories(slug){
+    try {
+      const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
+      return new Promise((res,rej)=>res(childCatgories))
+    } catch (error) {
+      
+    }
+  }
+
+  handleNoChildCategories(){
+    throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+  }
+
   rendersubCategories() {
-    const getUrl = (Category = {}, count) => {
-      const { childCatgories = [], slug : categSlug } = Category;
-      // const [firstChildCateg] = childCatgories || [];
-      // const { slug } = firstChildCateg || {};
-      return `./${categSlug}`;
+    const getSlug = (Category = {}) => {
+      const { slug : categSlug } = Category;
+      return categSlug;
     };
 
-    const handleClick = (url) => {
-      const { history } = this.props;
-      this.changeTab(url);
-      history.push(url);
+    const handleClick = async(Category) => {
+      try {
+        const { slug : categSlug } = Category;
+        const childCateg  = await this.validateHasSubCategories(categSlug)
+        if(!childCateg.length) this.handleNoChildCategories()
+        const url = `./${categSlug}`
+        const { history } = this.props;
+        this.changeTab(url);
+        history.push(url);
+      } catch (error) {
+        this.warningAlert(error?.message)
+      }
     };
 
     return this.state.subcategoriesdetails.map((Category, count) => (
@@ -405,10 +440,10 @@ export class _CategoryDetails extends Component {
         <NavLink
           className="tab-items nav-link px-4"
           data-toggle="tab"
-          to={getUrl(Category, count)}
+          to={`./${getSlug(Category, count)}`}
           role="tab"
           aria-selected="false"
-          onClick={() => handleClick(getUrl(Category, count))}
+          onClick={() => handleClick(Category)}
         >
           <div className="tab-img">
             <img
