@@ -3,9 +3,7 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { courseTypeKey } from "../choose-options";
 
 const disabeledTooltip = (props) => (
-  <Tooltip  {...props}>
-    لا توجد دورات متاحة حاليًا
-  </Tooltip>
+  <Tooltip {...props}>لا توجد دورات متاحة حاليًا</Tooltip>
 );
 
 export default function CourseTabPicker({
@@ -21,6 +19,7 @@ export default function CourseTabPicker({
   const baseClassName = "label-course-btn flex-root";
   const selectedClassName = (id === selectedId && "with-bg") || "";
   const [disabled, setDisabled] = useState(false);
+  const [changeCounter, setChangeCounter] = useState(0);
 
   const disableClass = (disabled && "disabled-label") || "";
   const tabClass = [baseClassName, selectedClassName, disableClass].join(" ");
@@ -33,13 +32,22 @@ export default function CourseTabPicker({
   const checkIfDisabled = () => {
     const courseTypeParams = { [courseTypeKey]: id };
     getCourseData((res) => {
+      setChangeCounter((c) => c + 1);
       setDisabled(!res?.data);
     }, courseTypeParams);
   };
 
+
   useEffect(() => {
-    if (checkCourseCondition) checkIfDisabled();
+    checkIfDisabled();
   }, [checkCourseCondition, optionsData]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(!disabled)
+      handleClick()
+    }, 400);
+  },[disabled])
 
   return (
     <OverlayTrigger
