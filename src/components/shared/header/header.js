@@ -378,7 +378,7 @@ return(
       <React.Fragment>
          {Categories.map((category,index) => (
 <li className="dropdown-sub-wrapper-four">
-                    <a href={"/categories/details/"+category.slug+"#tab-three"} >
+                    <a href={"/categories/details/"+category.slug+"?free=true"} >
                       <span>{category.nameAr}</span>
                     </a>
                   </li>
