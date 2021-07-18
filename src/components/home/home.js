@@ -319,7 +319,7 @@ async onClick(Category){
 
     const childCateg  = await this.validateHasSubCategories(categSlug)
     
-    if(!childCateg.length) this.handleNoChildCategories()
+    //if(!childCateg.length) this.handleNoChildCategories()
 
     const url = `/categories/details/${categSlug}`
 
