@@ -272,6 +272,67 @@ renderBulit()
 
 
 }
+
+
+hasSubcategoriesReq(slug){
+  return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
+}
+
+
+async validateHasSubCategories(slug){
+  try {
+    const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
+    
+    return new Promise((res,rej)=>res(childCatgories))
+  } catch (error) {
+  }
+
+}
+
+handleNoChildCategories(){
+  throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+}
+
+warningAlert(msg){
+
+  swal(
+
+    "عفواً",
+
+    msg,
+
+    "error",
+
+    {
+
+      button: "متابعة",
+
+    }
+
+  );
+
+}
+
+async onClick(Category){
+  try {
+    const { slug : categSlug } = Category;
+
+    const childCateg  = await this.validateHasSubCategories(categSlug)
+    
+    if(!childCateg.length) this.handleNoChildCategories()
+
+    const url = `/categories/details/${categSlug}`
+
+    const { history } = this.props;
+
+    history.push(url);
+
+  } catch (error) {
+
+    this.warningAlert(error?.message)
+
+  }
+}
   renderCategories() {
     const cats = this.state.categories;
     const { match, location, history } = this.props;
@@ -283,7 +344,6 @@ renderBulit()
           //  if(indexcat < 3){
 
 
-          console.log(cat);
             return (
               <li className="glide__slide">
                     <div className="card">
@@ -328,7 +388,7 @@ renderBulit()
                       // {
                         return(
 
-                   <Link
+                   <div
                     to={{
                       pathname: `categories/details/${child.slug}`,
                       state: {
@@ -337,10 +397,11 @@ renderBulit()
                     }}
                     key={cat.id}
                   className="btn-card mx-2 mb-2 headShake"
+                  onClick={()=> this.onClick(child)}
                   >
                     
                      {child.nameAr}
-                   </Link>
+                   </div>
 
 
 
