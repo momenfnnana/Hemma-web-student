@@ -22,6 +22,7 @@ import ProfessionalLicense, {
 } from "./professional-license";
 import { NavLink, Link, withRouter } from "react-router-dom";
 import ShowAt from "../../HOC/show-at";
+import { getQuery } from "../../utils/query-params";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -146,10 +147,21 @@ export class _CategoryDetails extends Component {
     if (professionalLicense) this.handleHasProfessionalLicense();
   }
 
+
+  handleNavFromFree(){
+    const hasFreeFlag = getQuery('free')
+    if(hasFreeFlag === 'true')
+    setTimeout(() => {
+      this.simulateClick('tab-three-nav')
+    }, 1500);
+  }
+
   async componentDidMount() {
     const {
       match: { params },
     } = this.props;
+
+    this.handleNavFromFree()
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
@@ -556,6 +568,14 @@ export class _CategoryDetails extends Component {
     this.setState({ ...this.state, currentTab: tab });
   }
 
+  simulateClick(divId,event = 'click'){
+    const element = document.getElementById(divId);
+    debugger
+    const evObj = document.createEvent('Events');
+    evObj.initEvent('click', true, false);
+    element.dispatchEvent(evObj)
+  }
+
   renderCompetitions() {
     const {
       match: { params },
@@ -633,6 +653,8 @@ export class _CategoryDetails extends Component {
   }
   render() {
     let token = localStorage.getItem("token");
+
+    console.log({show : this.state.currentTab === "tab-three"});
     const {
       match: { params },
     } = this.props;
@@ -800,6 +822,7 @@ export class _CategoryDetails extends Component {
                         data-toggle="tab"
                         href="#tab-three"
                         role="tab"
+                        id="tab-three-nav"
                         aria-controls="nav-three"
                         aria-selected="false"
                         onClick={() => this.changeTab("tab-three")}
@@ -890,17 +913,18 @@ export class _CategoryDetails extends Component {
                       )}
                     </>
                   )}
-
-                  <div
-                    className={"tab-pane fade " + this.state.active}
-                    id="tab-three"
-                    role="tabpanel"
-                    aria-labelledby="nav-contact-tab"
-                  >
-                    <div className="container">
-                      <div className="row">{this.renderCategoryGroups()}</div>
+                    <div
+                      className={"tab-pane fade " + this.state.active}
+                      id="tab-three"
+                      role="tabpanel"
+                      aria-labelledby="nav-contact-tab"
+                    >
+                  <ShowAt at={this.state.currentTab === "tab-three"}>
+                      <div className="container">
+                        <div className="row">{this.renderCategoryGroups()}</div>
+                      </div>
+                  </ShowAt>
                     </div>
-                  </div>
                   <div
                     className="tab-pane fade "
                     id="tab-four"
