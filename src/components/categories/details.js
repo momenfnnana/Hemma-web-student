@@ -22,6 +22,7 @@ import ProfessionalLicense, {
 } from "./professional-license";
 import { NavLink, Link, withRouter } from "react-router-dom";
 import ShowAt from "../../HOC/show-at";
+import { getQuery } from "../../utils/query-params";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -146,10 +147,21 @@ export class _CategoryDetails extends Component {
     if (professionalLicense) this.handleHasProfessionalLicense();
   }
 
+  handleNavFromFree(){
+    const hasFreeFlag = getQuery('free')
+    if(hasFreeFlag === 'true')
+    setTimeout(() => {
+      this.simulateClick('tab-three-nav')
+    }, 1500);
+  }
+
   async componentDidMount() {
     const {
       match: { params },
     } = this.props;
+
+    this.handleNavFromFree()
+
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
@@ -250,6 +262,26 @@ export class _CategoryDetails extends Component {
     if (this.props.history.location.hash == "#tab-three") {
       this.setState({ active: "show active", defultActive: "" });
     }
+  }
+
+  warningAlert(msg){
+
+    swal(
+
+      "عفواً",
+
+      msg,
+
+      "error",
+
+      {
+
+        button: "متابعة",
+
+      }
+
+    );
+
   }
 
   categoryGroupRedirection(CategoryGroup) {
@@ -373,18 +405,50 @@ export class _CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
-  rendersubCategories() {
-    const getUrl = (Category = {}, count) => {
-      const { childCatgories = [], slug : categSlug } = Category;
-      // const [firstChildCateg] = childCatgories || [];
-      // const { slug } = firstChildCateg || {};
-      return `./${categSlug}`;
-    };
 
-    const handleClick = (url) => {
-      const { history } = this.props;
-      this.changeTab(url);
-      history.push(url);
+  hasSubcategoriesReq(slug){
+    return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
+  }
+
+
+  async validateHasSubCategories(slug){
+    try {
+      const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
+      return new Promise((res,rej)=>res(childCatgories))
+    } catch (error) {
+    }
+
+  }
+
+  handleNoChildCategories(){
+    throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+  }
+  rendersubCategories() {
+   
+    const handleClick = async(Category) => {
+
+      try {
+
+        const { slug : categSlug } = Category;
+
+        const childCateg  = await this.validateHasSubCategories(categSlug)
+
+        if(!childCateg.length) this.handleNoChildCategories()
+
+        const url = `./${categSlug}`
+
+        const { history } = this.props;
+
+        this.changeTab(url);
+
+        history.push(url);
+
+      } catch (error) {
+
+        this.warningAlert(error?.message)
+
+      }
+
     };
 
     return this.state.subcategoriesdetails.map((Category, count) => (
@@ -392,10 +456,10 @@ export class _CategoryDetails extends Component {
         <NavLink
           className="tab-items nav-link px-4"
           data-toggle="tab"
-          to={getUrl(Category, count)}
           role="tab"
+          to={'/test'}
           aria-selected="false"
-          onClick={() => handleClick(getUrl(Category, count))}
+          onClick={() => handleClick(Category)}
         >
           <div className="tab-img">
             <img
@@ -427,6 +491,13 @@ export class _CategoryDetails extends Component {
         }
       );
     }
+  }
+
+  simulateClick(divId,event = 'click'){
+    const element = document.getElementById(divId);
+    const evObj = document.createEvent('Events');
+    evObj.initEvent('click', true, false);
+    element.dispatchEvent(evObj)
   }
 
   renderLectures() {
@@ -752,6 +823,7 @@ export class _CategoryDetails extends Component {
                         data-toggle="tab"
                         href="#tab-three"
                         role="tab"
+                        id="tab-three-nav"
                         aria-controls="nav-three"
                         aria-selected="false"
                         onClick={() => this.changeTab("tab-three")}
@@ -849,9 +921,11 @@ export class _CategoryDetails extends Component {
                     role="tabpanel"
                     aria-labelledby="nav-contact-tab"
                   >
-                    <div className="container">
-                      <div className="row">{this.renderCategoryGroups()}</div>
-                    </div>
+                    <ShowAt at={this.state.currentTab === "tab-three"}>
+                      <div className="container">
+                        <div className="row">{this.renderCategoryGroups()}</div>
+                      </div>
+                    </ShowAt>
                   </div>
                   <div
                     className="tab-pane fade "
