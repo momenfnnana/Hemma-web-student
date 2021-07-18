@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { courseTypeKey } from "../choose-options";
-
-const disabeledTooltip = (props) => (
-  <Tooltip {...props}>لا توجد دورات متاحة حاليًا</Tooltip>
-);
-
+import './style.sass';
 export default function CourseTabPicker({
   id,
   selectedId,
   onClick,
-  title = "دورة الرخصة الشاملة",
+  title = "دورة الرخصة المهنية",
+  points =[
+    "محاضرات مباشرة وتبقى مسجلة في الموقع" ,
+    'عدد كبير من التدريبات والتجميعات',
+    'ملزمة شاملة لكل المعايير' ,
+    "إجابة لجميع الاستفسارات"
+  ],
   checkCourseCondition,
   optionsData,
   getCourseData = () => {},
@@ -28,6 +30,15 @@ export default function CourseTabPicker({
     if (disabled) return;
     onClick(id);
   };
+  const disabeledTooltip = (props) => (
+      <Tooltip {...props}  className="in" id="tooltip-top">
+        <ul className="card-licences-list-info" type="none">
+          {points.map((point) => (
+              <li>{point}</li>
+          ))}
+        </ul>
+      </Tooltip>
+  );
 
   const checkIfDisabled = () => {
     const courseTypeParams = { [courseTypeKey]: id };
@@ -51,8 +62,9 @@ export default function CourseTabPicker({
 
   return (
     <OverlayTrigger
-      placement="bottom"
-      overlay={disabled ? disabeledTooltip : () => <Tooltip></Tooltip>}
+      placement="right"
+      delay={{ show: 250, hide: 400 }}
+      overlay={disabeledTooltip}
     >
       <a
         className={tabClass}
