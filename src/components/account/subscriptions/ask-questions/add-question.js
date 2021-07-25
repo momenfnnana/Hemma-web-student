@@ -11,7 +11,8 @@ class AddQuestion extends Component {
 			questions: [],
 			file: "",
 			questionType: "",
-			section: "",
+			sections: [],
+			sectionId:'',
 			disableAdd: false,
 		};
 
@@ -22,8 +23,33 @@ class AddQuestion extends Component {
 		this.setState({question: value});
 	};
 
-	handleChangeSection = (e) => {
-		this.setState({section: e.target.value});
+	handleChangeSection = e => {
+		const value = e.target.value;
+		this.setState({sectionId: value});
+	};
+
+	componentDidMount(){
+		this.getSections();
+	}
+
+	getSections = ()=>{
+		const courseId = this.props.match.params.id;
+
+		let token = localStorage.getItem("token");
+		let headers = {
+			Authorization: `Bearer ${token}`
+		};
+		axios
+			.get(`${apiBaseUrl}/Content/${courseId}/Sections`, { headers })
+			.then(response => {
+				this.setState({ sections: response.data.data });
+				if(response.data.data && response.data.data.length==1){
+					this.setState({sectionId:response.data.data[0].id})
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 
 	handleToggleAdd = () => {
@@ -77,6 +103,7 @@ class AddQuestion extends Component {
 		event.preventDefault();
 		this.handleToggleAdd();
 		const courseId = this.props.match.params.id;
+		const sectionId = this.state.sectionId;
 		let token = localStorage.getItem("token");
 		let headers = {
 			Authorization: `Bearer ${token}`
@@ -84,10 +111,9 @@ class AddQuestion extends Component {
 		let data = {
 			type: "Text",
 			content: this.state.question,
-			section:this.state.section
 		};
 		axios
-			.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
+			.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
 				headers
 			})
 			.then(response => {
@@ -118,12 +144,17 @@ class AddQuestion extends Component {
 						<ModalBody>
 							<label className="dark-text small mb-0 mt-0">الجزء</label>
 
-							<select value={this.state.section} onChange={this.handleChangeSection}
+							<select value={this.state.sectionId}
 							        className="form-select w-100 p-2 small dark-text border border-light-2"
-							        aria-label="Default select example">
-								<option selected value={""}>حدد الجزء</option>
-								<option value="verbal">لفظي</option>
-								<option value="quantitative">كمي</option>
+							        aria-label="Default select example"
+							        onChange={this.handleChangeSection}
+							        name='sectionId'
+							>
+								{
+									this.state.sections && this.state.sections.map( (row) =>
+										<option value={row.id}>{row.nameAr}</option>
+									)
+								}
 							</select>
 
 							<label className="dark-text small mb-0 mt-0">السؤال</label>
@@ -137,7 +168,7 @@ class AddQuestion extends Component {
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={!this.state.section}
+	                disabled={!this.state.sections}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
@@ -146,7 +177,7 @@ class AddQuestion extends Component {
 											id="uploadImage"
 											type="file"
 											onChange={this.handleFileChange}
-											disabled={!this.state.section}
+											disabled={!this.state.sections}
 										/>
 										<img
 											src={
