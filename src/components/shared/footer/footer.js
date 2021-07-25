@@ -165,7 +165,7 @@ class FooterComponent extends Component {
                </ul>
                <h5 className="hemma-phone d-flex-items-center justify-content-end">
                   <span className="font-weight-bold">هاتف :</span>
-                  <span className="font-weight-bold ml-1">920033076</span>
+                  <a href="tel:920033076" className="font-weight-bold ml-1 disabled-anchor">920033076</a>
                </h5>
             </div>
          </div>
