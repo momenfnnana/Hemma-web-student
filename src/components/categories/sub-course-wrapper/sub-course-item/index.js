@@ -10,7 +10,7 @@ export default function SubCourseItem({ topTitle, subTitle, points = [] }) {
             <span class="ml-2 font-weight-bold">{topTitle}</span>
           </div>
           <a data-bs-toggle="modal" data-bs-target="#course-preview">
-            <div class="card-licences-video-link">
+            {/* <div class="card-licences-video-link">
               <span>فيديو توضيحى</span>
               <span class="vid-play">
                 <svg
@@ -30,7 +30,7 @@ export default function SubCourseItem({ topTitle, subTitle, points = [] }) {
                   ></path>
                 </svg>
               </span>
-            </div>
+            </div> */}
           </a>
         </div>
         <p class="font-size-15 font-weight-bold">{subTitle}</p>
