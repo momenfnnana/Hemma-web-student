@@ -61,7 +61,6 @@ import HemmaSuccessDetails from "../components/hemma-success";
 class AppBackground extends Component {
   componentDidMount()
   {
-    debugger;
     if(document.querySelector('.navbar') == undefined)
     {
       return;
@@ -79,7 +78,6 @@ let previousScrollPosition = window.pageYOffset;
 /* Start Making Padding Top For The Reset Of Elements Of Dom If The Navbar Fixed */
 let plusPadding = 30;
 function checkIfNavbarFixedAndSetPadding() {
-  debugger;
   if (document.querySelector('.navbar').classList.contains('fixed-top')) {
       withFixedNav.style.paddingTop = document.querySelector('.navbar').clientHeight + 'px';
   } else {

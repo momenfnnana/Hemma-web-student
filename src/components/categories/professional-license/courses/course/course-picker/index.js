@@ -31,6 +31,9 @@ export default function CourseTabPicker({
     onClick(id);
   };
 
+  const checkIfValidArray = (array) => Array.isArray(array) && array.length > 0
+  const checkIfValidObject = (obj) => Object.keys(obj || {}).length > 0
+
   const checkIfDisabled = () => {
     const courseTypeParams = { [courseTypeKey]: id };
     getCourseData((res) => {
