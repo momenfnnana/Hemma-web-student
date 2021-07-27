@@ -29,9 +29,9 @@ export const CourseDescribtion = ({ descriptionData }) => {
           <div className="d-grid course-describtion-wrapper">
               <DescriptionPoint name="تاريخ البدء :" value={`هـجري ${getHijriDate(descriptionData?.startsAt)}`} />
               <DescriptionPoint name="عدد الساعات : " value={`${parseInt(descriptionData.durationInHours)}`} valueClass="mx-1"  />
-              <DescriptionPoint name="وصف وقت المحاضرات :" value={descriptionData?.durationTextAr}   />
-              <DescriptionPoint name=" وصف الصلاحية :" value={descriptionData?.validityTextAr }   />
-              <DescriptionPoint name="وصف الجدول الاسبوعي :" value={descriptionData?.scheduleTextAr }   />
+              <DescriptionPoint name=" وقت المحاضرات :" value={descriptionData?.durationTextAr}   />
+              <DescriptionPoint name=" مدة الصلاحية :" value={descriptionData?.validityTextAr }   />
+              <DescriptionPoint name=" الجدول الاسبوعي :" value={descriptionData?.scheduleTextAr }   />
           </div>
         </div>
       </div>
