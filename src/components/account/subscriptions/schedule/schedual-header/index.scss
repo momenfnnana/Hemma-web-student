@@ -1,0 +1,52 @@
+.main-bgcolor {
+    background-color: var(--card-color);
+}
+
+.border-radius-5 {
+    border-radius: 5px;
+}
+.section-title-img {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.btn-card-normal-outline {
+    display: block;
+    width: 150px;
+    text-align: center;
+    background-color: transparent;
+    border: 1px solid var(--main-color);
+    color: var(--main-color) !important;
+    border-radius: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+    margin: auto;
+    font-size: .8rem;
+    height: 30px;
+    line-height: 30px;
+    font-weight: bold;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.hover-btn-yellow:hover {
+    background-color: var(--color-yellow);
+    border-color: var(--color-yellow) !important;
+    color: var(--main-color) !important;
+}
+.headShake:hover {
+    animation-duration: .5s;
+    animation-timing-function: cubic-bezier(0,.23,1,.71);
+    animation-name: headShake;
+    transform-origin: center bottom;
+}

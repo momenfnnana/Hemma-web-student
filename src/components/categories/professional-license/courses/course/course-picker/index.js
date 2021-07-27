@@ -21,6 +21,7 @@ export default function CourseTabPicker({
   const baseClassName = "label-course-btn flex-root";
   const selectedClassName = (id === selectedId && "with-bg") || "";
   const [disabled, setDisabled] = useState(false);
+  const [changeCounter,setChangeCounter] = useState(0)
 
   const disableClass = (disabled && "disabled-label") || "";
   const tabClass = [baseClassName, selectedClassName, disableClass].join(" ");
@@ -36,11 +37,16 @@ export default function CourseTabPicker({
   const checkIfDisabled = () => {
     const courseTypeParams = { [courseTypeKey]: id };
     getCourseData((res) => {
-      const resData = res?.data;
-      const validResponse = checkIfValidArray(resData) || checkIfValidObject(resData)
-      setDisabled(!validResponse);
+      setDisabled(!res?.data);
+      setChangeCounter(c => c+1)
+      if(res.data)
+      handleClick();
     }, courseTypeParams);
   };
+  useEffect(() => {
+    if(!changeCounter)return
+    if(!disabled) handleClick();
+  },[changeCounter])
 
   useEffect(() => {
     if (checkCourseCondition) checkIfDisabled();
