@@ -29,7 +29,6 @@ class TrainingExamDetailsComponent extends Component {
       nav1: null,
       nav2: null,
       answers: [],
-
       status: "",
       scoreDetails: [],
       selectedQuestionId: null,
