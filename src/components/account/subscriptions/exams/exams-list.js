@@ -129,22 +129,22 @@ createCourseLink(courseId,examid)
               </React.Fragment>
             ) : (
               <div className="box-layout shadow-sm">
-                <Table className="mb-0">
+                <Table className="mb-0 table-responsive">
                   <thead className="silver-bg">
                     <tr>
-                      <th className="w-40 dark-silver-text small border-0">
+                      <th className="w-40 dark-silver-text small border-0  white-space-pre">
                         الامتحان
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
                         مدة الامتحان
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
                         عدد الأسئلة
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
                         عدد المحاولات
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center">
+                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
                         تحكم
                       </th>
                     </tr>

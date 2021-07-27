@@ -233,7 +233,7 @@ class ExamDetailsComponent extends Component {
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
                   <h6
-                    className="dark-text mb-0 encoded-text"
+                    className="dark-text mb-0 encoded-text break-word"
                     dangerouslySetInnerHTML={{
                       __html: question.encodedStem,
                     }}
@@ -288,7 +288,7 @@ class ExamDetailsComponent extends Component {
                           />
                           <label
                             dangerouslySetInnerHTML={{ __html: value }}
-                            className="mb-0 dark-text small ml-2 encoded-text"
+                            className="mb-0 dark-text small ml-2 encoded-text mw-100 break-word"
                           ></label>
                         </div>
                       );

@@ -221,8 +221,6 @@ class HeaderComponent extends Component {
       
       
         function handleActiveEle(element, list) {
-          debugger;
-
           element.forEach(smEle => {
             smEle.addEventListener('click', (e) => {
 if(e.currentTarget.dataset.haschild == "false")
@@ -378,7 +376,7 @@ return(
       <React.Fragment>
          {Categories.map((category,index) => (
 <li className="dropdown-sub-wrapper-four">
-                    <a href={"/categories/details/"+category.slug+"#tab-three"} >
+                    <a href={"/categories/details/"+category.slug+"?free=true"} >
                       <span>{category.nameAr}</span>
                     </a>
                   </li>

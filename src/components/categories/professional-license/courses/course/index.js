@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ChooseOptions from "./choose-options";
+import ChooseOptions, { courseTypeKey, lvlKey, specKey } from "./choose-options";
 import PickTrainer from "./choose-trainer";
 import KnowMore from "./video-content/index";
 import "./index.scss";
@@ -30,26 +30,60 @@ export default function ProfessionalCourse({
   onJoin = () => {},
   onTrainerSelected = () => {},
   onClear = () => {},
+  triggerReset = ()=>{}
 }) {
   const [optionsData, setOptionsData] = useState({});
   const [courseData, setCourseData] = useState(null);
   const showCourseWrapperClass = courseData ? "" : "d-none";
+  const statePriority = [lvlKey,courseTypeKey]
+  const completeOptionsKeyLength = 3
+  const completedOptionsLength = Object.values(optionsData || {}).filter(elem => !!elem)?.length
+  //Start index here is 1 cuz we don't want to reset level cuz it's already dependent on specType => could lead to inifite loop
+  const RESET_STATE_START_INDEX = 1
+  const validKeys = Object.values(optionsData).filter(
+    (value) => value !== EMPTY_ID && !!value
+  );
+
+
+  useEffect(()=>{
+    if(completedOptionsLength === completeOptionsKeyLength) return
+    triggerReset()
+  },[completedOptionsLength])
+
+  const handleChangePriority = (key)=>{
+    const priority = statePriority.findIndex(stateProp => stateProp === key)
+    let newStateProps = {}
+    if(priority < RESET_STATE_START_INDEX){
+      statePriority.forEach((prop,index) =>{
+        if(index >= RESET_STATE_START_INDEX){
+          newStateProps = {
+            ...newStateProps,
+            [prop] : null
+          }
+        }
+      })
+    }
+    return newStateProps
+  }
 
   const handleChange = (key, value) => {
+
+    const priotiryStateModified = handleChangePriority(key)
     const newValeus = {
       ...optionsData,
       [key]: value,
+      ...priotiryStateModified
     };
     setOptionsData(newValeus);
   };
-  const handleCourseTabClick = (id) => handleChange("CourseType", id);
+  const handleCourseTabClick = (id) => handleChange(courseTypeKey, id);
 
   const getHijriDate = (date) => {
     var hijriDate = moment(date, "YYYY-MM-DD").format("iYYYY/iM/iD");
     return hijriDate;
   };
 
-  const getCourseData = async () => {
+  const getCourseData = async (cb = ()=>{},parmas) => {
     setCourseData(null);
     const token = localStorage.getItem("token");
     let headers = {
@@ -62,10 +96,10 @@ export default function ProfessionalCourse({
         params: {
           ...optionsData,
           CategoryId: categoryData.id,
+          ...parmas
         },
       });
-      setCourseData(data.data);
-      onResponse(data.data);
+      cb(data)
     } catch (error) {
       console.log({ error });
     }
@@ -73,19 +107,29 @@ export default function ProfessionalCourse({
 
   const clearCourseData = () => setSelectedGeneralCourse(null);
 
+  const updateCourseData = (data) =>{
+      setCourseData(data.data);
+      onResponse(data.data);
+  }
+
   useEffect(() => {
     clearCourseData();
-    const validKeys = Object.values(optionsData).filter(
-      (value) => value !== EMPTY_ID
-    );
     if (validKeys?.length < triggerkeysCount) {
       setCourseData(null);
       onClear();
       return;
     }
     if (!optionsData?.CourseType) return;
-    getCourseData();
+    getCourseData(updateCourseData);
   }, [optionsData]);
+
+  useEffect(() => {
+    //if one course was retrieved it's dropdown should be hidden and the only value should be selected
+    if (courseData?.length === 1)
+    onCourseSelect(courseData[0])
+    else
+    onCourseSelect(null)
+  }, [courseData?.length]);
 
   return (
     <div className="col-lg-4">
@@ -119,6 +163,10 @@ export default function ProfessionalCourse({
                   selectedId={optionsData?.CourseType}
                   onClick={handleCourseTabClick}
                   title={courseTab.title}
+                  checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
+                  optionsData={optionsData}
+                  getCourseData={getCourseData}
+                  completedOptionsLength={completedOptionsLength}
                 />
                 {index !== courseTabs?.length && <span className="mx-1"></span>}
               </>
@@ -130,7 +178,7 @@ export default function ProfessionalCourse({
                 id="full-licences-course-one"
                 className="instructor-courses-one show"
               >
-                {!!courseData?.length && (
+                {!!(courseData?.length) && (
                   <PickTrainer
                     onSelect={onCourseSelect}
                     trainers={courseData}
@@ -140,7 +188,7 @@ export default function ProfessionalCourse({
                 {descriptionData && (
                   <div className="d-flex flex-column justify-content-between">
                     <div>
-                    <CourseDescribtion  descriptionData={descriptionData} />
+                      <CourseDescribtion descriptionData={descriptionData} />
                       <div>
                         {courseData?.instructors?.map((instructor) => (
                           <div

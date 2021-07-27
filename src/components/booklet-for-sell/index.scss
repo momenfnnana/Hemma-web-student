@@ -11,6 +11,10 @@
     grid-gap: 1rem;
 }
 
+.flex-root{
+    flex: 1 !important;
+}
+
 .booklet-details{
     & .booklet-tag{
         width: 130px;

@@ -1,6 +1,6 @@
 export const lvls = [
   { id: '-', title: "اختر المستوى" },
-  { id: "NoLevel", title: "بلا مستويات" },
+  { id: "NoLevel", title: "بلا مستويات",hiddenIfSingle : true },
   { id: "FirstLevel", title: "المستوى الأول" },
   { id: "SecondLevel", title: "المستوى الثاني" },
 ];
@@ -17,5 +17,6 @@ export const mappedStringsToLvls = (strings = [])=>{
   }))
 } 
 export const emptyOption = lvls[0]
+export const hiddenLvlsIds = ['NoLevel']
 
 export const EMPTY_ID = '-'

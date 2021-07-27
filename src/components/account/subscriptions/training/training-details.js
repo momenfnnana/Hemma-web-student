@@ -15,6 +15,7 @@ import { TrainingExamFail } from "./training-fail";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {SolutionModal} from "../exams/solution";
+import "../index.scss";
 // import MathType from '@wiris/mathtype-ckeditor5';
 
 class TrainingExamDetailsComponent extends Component {

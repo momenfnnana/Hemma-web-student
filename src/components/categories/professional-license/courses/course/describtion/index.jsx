@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.scss";
 
-const DescriptionPoint = ({ name, value,valueClass,nameClass }) => (
+const DescriptionPoint = ({ name, value,valueClass,nameClass="sub-color" }) => (
   <>
   { !!value && <div className="describtion-point">
       <span className={nameClass}>{name}</span>
