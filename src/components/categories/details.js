@@ -158,7 +158,7 @@ export class _CategoryDetails extends Component {
 
   async componentDidMount() {
     const {
-      match: { params },
+      match: { params }
     } = this.props;
 
     this.handleNavFromFree()
@@ -180,7 +180,6 @@ export class _CategoryDetails extends Component {
         `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
       )
       .then((response) => {
-        debugger;
         var more = false;
         if (
           response.data.data.itemCount >

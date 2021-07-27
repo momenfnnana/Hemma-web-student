@@ -57,7 +57,7 @@ class LoginComponent extends Component {
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
   }
   componentDidMount() {
-    debugger;
+
     const checked= localStorage.getItem('checkbox');
     if (checked ) {
         this.setState({
@@ -98,7 +98,7 @@ class LoginComponent extends Component {
               this.props.history.push("/");
             });
         } else {
-          debugger;
+          ;
             if (this.state.isChecked) {
                 let storedobj=  JSON.stringify(values);
                 let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
@@ -237,7 +237,7 @@ function GetUserSubscriptions(prop)
       axios 
         .get(`${apiBaseUrl}/courses/purchased?Page=1&Limit=50&SubscriptionStatus=Active`, { headers })
         .then(response => {
-debugger;
+;
           if (!prop.phoneNumberConfirmed) {
             prop
               .sendToken() 
@@ -262,7 +262,7 @@ debugger;
             //   {
             //     prop.history.push("/course/content");
             //   }
-            debugger;
+            ;
             this.props.history.push("/");
           }
 

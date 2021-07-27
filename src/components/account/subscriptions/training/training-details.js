@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { CustomInput } from "reactstrap";
+import Pagination from "react-js-pagination";
 import { HintModal } from "../exams/hint";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { reduxForm } from "redux-form";
@@ -8,7 +9,6 @@ import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
-import Slider from "react-slick";
 import { ExamFail } from "../exams/exam-fail";
 import { TrainingPass } from "./training-pass";
 import { TrainingExamFail } from "./training-fail";
@@ -168,33 +168,9 @@ class TrainingExamDetailsComponent extends Component {
         console.log(error);
       });
   };
-
-  renderQuestionsTitle() {
-    const questions = this.state.questions || [];
-    return questions.map((question, index) => (
-      <div
-        className={
-          "box-layout d-flex text-center justify-content-center flex-column p-1 br-0 clickable" +
-          (this.state.selectedQuestion === index ? " light-bg" : "")
-        }
-        onClick={() => {
-          this.goTo(question.id);
-        }}
-      >
-        <h3
-          className="dark-text small mb-0"
-          className={
-            "small mb-0" +
-            (this.state.selectedQuestion === index
-              ? " text-white"
-              : " dark-text")
-          }
-        >
-          {" "}
-          {question.id}
-        </h3>
-      </div>
-    ));
+  handlePageChange = (index)=> {
+    this.setState({selectedQuestion: index-1});
+    this.goTo(this.state.questions[index-1].id);
   }
 
   renderQuestions() {
@@ -383,14 +359,7 @@ class TrainingExamDetailsComponent extends Component {
     const dueDate =
       this.state && this.state.examDetails && this.state.examDetails.dueAt;
     if (!dueDate) return null;
-    const settings = {
-      className: "center",
-      centerMode: true,
-      infinite: false,
-      slidesToShow: questionsLength,
-      speed: 500,
-      rtl: true,
-    };
+
     return (
       <React.Fragment>
         {this.state.status == "Pass" ? (
@@ -434,7 +403,7 @@ class TrainingExamDetailsComponent extends Component {
                     {this.state.selectedQuestion == 0 ? (
                       <div />
                     ) : (
-                      <div>
+                      <div className='col-4'>
                         <button
                           className="btn light-btn"
                           onClick={this.goToPrevious}
@@ -463,7 +432,7 @@ class TrainingExamDetailsComponent extends Component {
                     this.state.questions.length ? (
                       <div />
                     ) : (
-                      <div>
+                      <div className='col-4'>
                         <button
                           className="btn light-btn"
                           onClick={this.goToNext}
@@ -474,20 +443,19 @@ class TrainingExamDetailsComponent extends Component {
                     )}
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-12">
-                    <div className="question-item">
-                      <Slider
-                        asNavFor={this.state.nav1}
-                        ref={(slider) => (this.slider2 = slider)}
-                        slidesToShow={3.5}
-                        swipeToSlide={true}
-                        focusOnSelect={true}
-                        {...settings}
-                        className="mb-3"
-                      >
-                        {this.renderQuestionsTitle()}
-                      </Slider>
+                <div className="row align-items-center ">
+                  <div className="col-12 ">
+                    <div className="wrapper-pagination">
+                       <Pagination
+                          activePage={this.state.selectedQuestion+1}
+                          itemsCountPerPage={1}
+                          totalItemsCount={this.state.questions.length}
+                          itemClass="page-item"
+                          linkClass="page-link"
+                          pageRangeDisplayed={5}
+                          onChange={this.handlePageChange}
+                          activeLinkClass={"light-bg"}
+                      />
                     </div>
                   </div>
                 </div>
