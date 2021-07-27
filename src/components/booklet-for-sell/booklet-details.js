@@ -9,6 +9,10 @@ import { Api } from "../../api";
 import swal from "@sweetalert/with-react";
 // import { NULL } from "node-sass";
 
+const TraingleIcon = ({style={}})=>(
+    <svg style={{...style}} className="svg-inline--fa fa-caret-left fa-w-6 light-sub-color mr-2 font-size-25" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="caret-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 512" data-fa-i2svg=""><path fill="currentColor" d="M192 127.338v257.324c0 17.818-21.543 26.741-34.142 14.142L29.196 270.142c-7.81-7.81-7.81-20.474 0-28.284l128.662-128.662c12.599-12.6 34.142-3.676 34.142 14.142z"></path></svg>
+)
+
 export class BookletDetailsComponent extends Component {
     constructor(props) {
         super(props);
@@ -130,6 +134,7 @@ export class BookletDetailsComponent extends Component {
 
         return (
             <React.Fragment>
+                
                 {/* <div className="row">
                     <div className="col-md-4 ">
                         <img className="card-img min-top-padd" src={booklet.icon} ></img>
@@ -217,52 +222,84 @@ export class BookletDetailsComponent extends Component {
                   </ol>
                  </nav>
                 </div> */}
-                <section id="license-one" class="license-one">
+                {/* <div class="container-fluid p-0">
+           <nav aria-label="breadcrumb">
+           <ol class="breadcrumb bg-transparent pt-4 px-0">
+            <li class="breadcrumb-item"><a href="/home">الرئيسيه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">متجر همة للكتب</li>
+           </ol>
+           </nav>
+            </div> */}
+
+
+                <section id="license-one" class="license-one booklet-details">
                 <div class="container">
                 <div className="row">
-                    <div className="col-md-3 ">
-                        <img className="card-img min-top-padd" src={booklet.icon} alt="Hemma-Book" ></img>
+                    <div className="col-md-3 col-12">
+                        <img className="w-100 h-auto" src={booklet.icon} alt="Hemma-Book" ></img>
                     </div>
 
                     <div className="col-md-9">
                       <div class="mb-3">
-                        <div class="d-flex align-items-center flex-column-small">
+                        <div class="d-flex  flex-column">
                          <h3 class="lic-title h3 main-color font-weight-bold"> {booklet.nameAr}</h3>
                          <div class="d-flex align-items-center">
-                            <a class="btn-title" onClick={() => this.onSubmit("Colored")} >كتاب ملون</a>
+                            <a class="booklet-tag font-bold p-2 " onClick={() => this.onSubmit("Colored")} >كتاب ملون</a>
                             <span class="mx-1"></span>
-                            <a class="btn-title" onClick={() => this.onSubmit("BlackAndWhite")}>أبيض و أسود</a>
+                            <a class="booklet-tag font-bold p-2 " onClick={() => this.onSubmit("BlackAndWhite")}>أبيض و أسود</a>
                          </div>
                         </div>
                       </div>
                       <div class="mb-3">
                       <div class="d-flex align-items-center mb-2">
-                          <div class="main-color mr-4">المنصة </div>
-                          <div class="sub-color">{booklet.categoryNameAr}</div>
+                          <TraingleIcon />
+                          <div class="main-color mr-5">اسم التصنيف </div>
+                          <div class="text-muted">{booklet.categoryNameAr}</div>
                         </div>
-                        <div class="d-flex align-items-center mb-2">
-                          <div class="main-color mr-4">وزن الملزمة </div>
-                          <div class="sub-color">{booklet.weight} جرام</div>
-                        </div>
-                        <div class="d-flex align-items-center ">
-                          <div class="main-color mr-4">سعر الملزمة ملونة</div>
-                          <div class="sub-color">{booklet.coloredSellPrice} ريال</div>
-                        </div>
-                        <div class="d-flex align-items-center mb-2">
-                         <div class="main-color mr-4">الكمية المتاحة ملونة </div>
-                         <div class="sub-color">{booklet.availableQtyColored}</div>
-                        </div>
-                        <div class="d-flex align-items-center ">
-                          <div class="main-color mr-4">سعر الملزمة أبيض و اسود</div>
-                          <div class="sub-color">{booklet.blackAndWhiteSellPrice} ريال</div>
-                        </div>
-                        <div class="d-flex align-items-center  mb-2">
-                         <div class="main-color mr-4">الكمية المتاحة أبيض و اسود </div>
-                         <div class="sub-color">{booklet.availableQtyBlackAndWhite}</div>
-                        </div>
+                       
                       </div>
-                      <p class="description-card light-gray font-weight-bold mb-3"> {booklet.description}</p>
+                      <div class="d-flex align-items-center mb-2">
+                          <TraingleIcon style={{alignSelf:'baseline'}} />
+                          <p class="description-card light-gray font-weight-bold m-0 p-0"> {booklet.description}</p>
+                      </div>
+                      <div  class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div  class="main-color mr-5">
+                                سعر الملزمة ملونة
+                            </div>
+                            <div  class="text-muted" >
+                                ريال {booklet.coloredSellPrice}
+                            </div>
+                      </div>
 
+                      <div  class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div class="main-color mr-5" >
+                                سعر الملزمة أبيض واسود
+                            </div>
+                            <div  class="text-muted" >
+                                ريال {booklet.blackAndWhiteSellPrice}
+                            </div>
+                       </div>
+                       <div class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div class="main-color mr-5" >
+                                الكمية المتاحة ملونة
+                            </div>
+                            <div class="text-muted">
+                                {booklet.availableQtyColored}
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center mb-2">
+                            <TraingleIcon />
+                            <div class="main-color mr-5">
+                                الكمية المتاحة أبيض واسود
+                            </div>
+                            <div class="text-muted">
+                                {booklet.availableQtyBlackAndWhite}
+                            </div>
+                        </div>
                      </div> 
                     </div>
                

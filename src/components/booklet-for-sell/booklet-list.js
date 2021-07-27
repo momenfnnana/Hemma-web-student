@@ -3,7 +3,8 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 import { BookletCardList } from "../shared/bookletCardList/bookletCardList";
 import { apiBaseUrl } from "../../api/helpers";
-
+import "./styles.sass"
+import "./index.scss"
 export class BookletComponent extends Component {
    
     constructor(props) {
@@ -12,8 +13,8 @@ export class BookletComponent extends Component {
             categories: [],
             selected_platform: "",
             booklets:[],
-            search:""
-           
+            search:"",
+            loading:true
         }
         this.select = this.select.bind(this);
         //this.loadBooklets = this.loadBooklets(this);
@@ -49,8 +50,7 @@ export class BookletComponent extends Component {
         .get(`${apiBaseUrl}/bookletforsell/bookletforsell?platform=`+platform+"&search="+this.state.search)
         .then(response => {
             
-             this.setState({ booklets: response.data.data,selected_platform:platform });
-             console.log(this.state);
+             this.setState({ booklets: response.data.data,selected_platform:platform,loading:false });
             
             setTimeout(
                 function() {
@@ -84,7 +84,7 @@ export class BookletComponent extends Component {
     }
 
     searchHandler = (event) => {
-        this.setState({search: event.target.value});
+        this.setState({search: event.target.value,loading:true});
       }
 
     select = (e) => {
@@ -121,10 +121,10 @@ export class BookletComponent extends Component {
           
             return (
                 <select onChange={this.select} value={this.state.selected_platform} className="form-control border-radius-50 placeholder-gray mb-2">
-                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">المنصه</option>
+                      <option className="form-control border-radius-50 placeholder-gray mb-2" value="">التصنيف</option>
                     {
                         this.state.categories.map(category => (
-                            <option key={category.id} value={category.id}>{category.nameAr}</option>
+                            <option key={category.id} value={category.id}>{category.name}</option>
                         ))
                     }
 
@@ -136,9 +136,9 @@ export class BookletComponent extends Component {
     renderBooklet() {
         return (
             <React.Fragment>
-          {/* <div class="container">
+          {/* <div class="container-fluid p-0">
            <nav aria-label="breadcrumb">
-           <ol class="breadcrumb bg-transparent pt-5">
+           <ol class="breadcrumb bg-transparent pt-4 px-0">
             <li class="breadcrumb-item"><a href="/home">الرئيسيه</a></li>
             <li class="breadcrumb-item active" aria-current="page">متجر همة للكتب</li>
            </ol>
@@ -147,12 +147,14 @@ export class BookletComponent extends Component {
                 <div className="row">
 
 
-                    <div className="col-md-9">
+                    <div className="col-md-9 mb-4">
                     <div class="position-relative">
-                    <input onChange={this.searchHandler} onBlur={this.search} placeholder="البحث باسم الملزمة" className="form-control border-radius-50 placeholder-gray mb-2"></input>     
-                     <div className="search-btn cursor-pointer" onClick={this.search}>
+                     <i className="fas fa-search input-search-icon"></i>
+
+                    <input onChange={this.searchHandler} onBlur={this.search} placeholder="البحث باسم الملزمة" className="search-input form-control border-radius-50 placeholder-gray mb-2 "></input>     
+                     {/* <div className="search-btn cursor-pointer" onClick={this.search}>
                      <i className="fas fa-search"></i>
-                     </div> 
+                     </div>  */}
 
                         
                         {/* <input onChange={this.searchHandler}  placeholder="البحث باسم الملزمة" className="search-input"></input>
@@ -168,14 +170,13 @@ export class BookletComponent extends Component {
 
                 </div>
 <div className="row">
-    <BookletCardList booklets={this.state.booklets}/>
+    <BookletCardList booklets={this.state.booklets}  loading={this.state.loading} />
 </div>
 
             </React.Fragment>
         )
     }
     render() {
-       
         return (
             <React.Fragment>
                 <Helmet>
@@ -185,7 +186,7 @@ export class BookletComponent extends Component {
                         content="تعرّف على أحدث الدورات المتاحة حالياً وقم باختيار الدورة المناسبة الآن!"
                     />
                 </Helmet>
-                <section className="pt-3 pb-5">
+                <section className="pt-3 pb-5  booklet-wrapper">
                     <div className="container">{this.renderBooklet()}</div>
                 </section>
             </React.Fragment>

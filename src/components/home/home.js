@@ -12,6 +12,7 @@ import "slick-carousel/slick/slick-theme.css";
 // import "./styles.sass";
  import AOS from 'aos';
  import Glide from '@glidejs/glide'
+import HemmaSuccess from "./hemma-success";
 // Required Core Stylesheet
 // import "public/assets/css/glide.core.min.css";
 
@@ -21,6 +22,38 @@ import "slick-carousel/slick/slick-theme.css";
 
 var moment = require("moment");
 moment().format();
+const MIN_ELEM_COUNT = 3
+
+
+const disabledCarsoulOptions = {
+  type : '',
+  autoplay: false,
+}
+
+const enabledCarsoulOptions = {
+  type: 'carousel',
+  startAt: 1,
+  perView: 3,
+  focusAt: 'center',
+  gap: 20,
+  autoplay: 4000,
+  // animationTimingFunc: 'ease-in-out',
+  animationDuration: 800,
+  // peek: {
+  //   before: 100,
+  //   after: 100
+  // },
+  hoverpause: false,
+  keyboard: true,
+  direction: 'rtl',
+  breakpoints: {
+
+    1200: { perView: 2 },
+    992: { perView: 2 },
+    768: { perView: 1 }
+
+  }
+}
 
 class HomeComponent extends Component {
   constructor(props) {
@@ -31,7 +64,16 @@ class HomeComponent extends Component {
       testimonials: [],
       initiatives: [],
       categoryGroups: [],
+      success : []
     };
+  }
+
+  activateGlide(glideWrapper,count) {
+    //IF DATA LENGTH IS LESS THAN MIN SO IT SHOULD BE STATIC VIEW "NOT A CARSOUL"
+    if(count <= MIN_ELEM_COUNT)
+    new Glide(glideWrapper,{...enabledCarsoulOptions,...disabledCarsoulOptions}).mount()
+    else 
+    new Glide(glideWrapper,{...enabledCarsoulOptions}).mount()
   }
 
   componentDidMount() {
@@ -63,12 +105,23 @@ class HomeComponent extends Component {
       .get(`${apiBaseUrl}/categories/Main_Category`)
       .then((response) => {
         this.setState({ categories: response.data.data });
-        new Glide('.glide_features',myOptions).mount()
+        this.activateGlide('.glide_features',response.data.data?.length)
+        // new Glide('.glide_features',myOptions).mount()
       })
       .catch((error) => {
         console.log(error);
       });
+      axios
+      .get(`${apiBaseUrl}/Success?showinMain=true`)
+      .then(response => {
+        this.setState({ success: response.data.data.data});
+        // new Glide('.glide',myOptions).mount();
+        this.activateGlide('.glide',response.data.data.data.length)
 
+      })
+      .catch(error => {
+        console.log(error);
+      });
     axios
       .get(`${apiBaseUrl}/courses/recent`)
       .then((response) => {
@@ -122,7 +175,7 @@ class HomeComponent extends Component {
       //   type: "carousel"
       // }).mount();
     
-    //  new Glide('.glide',myOptions).mount()
+     
      
       // let collapsingBtn = document.querySelector('.collapsing-btn');
       // collapsingBtn.onclick = function (e) {
@@ -219,6 +272,67 @@ renderBulit()
 
 
 }
+
+
+hasSubcategoriesReq(slug){
+  return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
+}
+
+
+async validateHasSubCategories(slug){
+  try {
+    const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
+    
+    return new Promise((res,rej)=>res(childCatgories))
+  } catch (error) {
+  }
+
+}
+
+handleNoChildCategories(){
+  throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+}
+
+warningAlert(msg){
+
+  swal(
+
+    "عفواً",
+
+    msg,
+
+    "error",
+
+    {
+
+      button: "متابعة",
+
+    }
+
+  );
+
+}
+
+async onClick(Category){
+  try {
+    const { slug : categSlug } = Category;
+
+    const childCateg  = await this.validateHasSubCategories(categSlug)
+    
+    //if(!childCateg.length) this.handleNoChildCategories()
+
+    const url = `/categories/details/${categSlug}`
+
+    const { history } = this.props;
+
+    history.push(url);
+
+  } catch (error) {
+
+    this.warningAlert(error?.message)
+
+  }
+}
   renderCategories() {
     const cats = this.state.categories;
     const { match, location, history } = this.props;
@@ -230,7 +344,6 @@ renderBulit()
           //  if(indexcat < 3){
 
 
-          console.log(cat);
             return (
               <li className="glide__slide">
                     <div className="card">
@@ -275,7 +388,7 @@ renderBulit()
                       // {
                         return(
 
-                   <Link
+                   <div
                     to={{
                       pathname: `categories/details/${child.slug}`,
                       state: {
@@ -284,10 +397,11 @@ renderBulit()
                     }}
                     key={cat.id}
                   className="btn-card mx-2 mb-2 headShake"
+                  onClick={()=> this.onClick(child)}
                   >
                     
                      {child.nameAr}
-                   </Link>
+                   </div>
 
 
 
@@ -462,74 +576,43 @@ renderBulit()
       );
     });
   }
+renderSucces()
+{
+  return this.state.success.map((suc, index) => (
+    <React.Fragment>
+<li className="glide__slide">
+                <div className="sider-items  min-height-150">
+                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
+                  <h4 className="text-danger">{suc.courseName}</h4>
+                  {suc.source == "Media" ? (
+                    <React.Fragment>
+<a href={suc?.url}>
+        <img src={suc?.img} className="w-100 height-70" style={{height:'170px !important'}} />
+      </a>
+                    </React.Fragment>
+                   
+                  ):(
+                    <React.Fragment>
+                   <div className="card-body px-2 py-2">
+    <p className="d-flex align-items-center light-gray mb-1 font-size-13">
+      <span className="d-block main-color-light mr-2">اسم الطالب : </span>
+      {suc?.rating?.studentName}
+    </p>
+    <p className="light-gray font-size-13 m-0">
+      <span className="main-color-light">التقييم : </span>
+      {suc?.rating?.feedBack}
+    </p>
+  </div>
+                    </React.Fragment>
+                  )}
+                  
+                </div>
+              </li>
 
+              </React.Fragment>
+  ));
+}
   render() {
-    // const settings = {
-    //   infinite: false,
-    //   slidesToShow: 1,
-    //   slidesToScroll: 1,
-    //   autoplay: true,
-    //   autoplaySpeed: 2000,
-    //   responsive: [
-    //     {
-    //       breakpoint: 1024,
-    //       settings: {
-    //         slidesToShow: 3,
-    //         slidesToScroll: 3,
-    //         infinite: false,
-    //       },
-    //     },
-    //     {
-    //       breakpoint: 600,
-    //       settings: {
-    //         slidesToShow: 2,
-    //         slidesToScroll: 2,
-    //         initialSlide: 2,
-    //       },
-    //     },
-    //     {
-    //       breakpoint: 480,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1,
-    //       },
-    //     },
-    //   ],
-    // };
-    // const testimonialsSettings = {
-    //   infinite: true,
-    //   slidesToShow: 1,
-    //   slidesToScroll: 1,
-    //   fade: true,
-    //   dots: true,
-    //   arrows: false,
-    //   responsive: [
-    //     {
-    //       breakpoint: 1024,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1,
-    //         infinite: false,
-    //       },
-    //     },
-    //     {
-    //       breakpoint: 600,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1,
-    //         initialSlide: 1,
-    //       },
-    //     },
-    //     {
-    //       breakpoint: 480,
-    //       settings: {
-    //         slidesToShow: 1,
-    //         slidesToScroll: 1,
-    //       },
-    //     },
-    //   ],
-    // };
-
     return (
 
       <React.Fragment>
@@ -549,199 +632,17 @@ renderBulit()
           </div>
         </div>
       </div>
-      {/* <div className="banner-cards">
-        <div className="container">
-          <div className="row">
-            {this.renderCategories()} */}
-            {/* <div className="col-lg-4">
-              <div className="card">
-                <div className="card-items">
-                  <div className="title-card font-weight-bold">
-                    <h3>
-                      <span>همة للمعلمين</span>
-                    </h3>
-                  </div>
-
-                  <div className="text-card text-center mb-4">
-                    <h5 className="h6 font-weight-bold">
-                      <span className="d-block mb-2">دورات ولقاءات لتطوير صناع المستقبل</span>
-                      <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
-                    </h5>
-                  </div>
-
-                  <div className="buttons-card d-flex-row flex-wrap">
-                    <a className="btn-card mx-2 mb-2 headShake">الرخصه المهنية</a>
-                    <a className="btn-card mx-2 mb-2 headShake">التطوير المهني</a>
-                    <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="card">
-                <div className="card-items">
-                  <div className="title-card font-weight-bold">
-                    <h3>
-                      <span>همة للطلاب</span>
-                    </h3>
-                  </div>
-
-                  <div className="text-card text-center mb-4">
-                    <h5 className="h6 font-weight-bold">
-                      <span className="d-block mb-2">همة معك بهمه نحو طموحك لاجتياز اختبارات</span>
-                      <span className="d-block">القدرات والتحصيلى</span>
-                    </h5>
-                  </div>
-
-                  <div className="buttons-card d-flex-row flex-wrap">
-                    <a className="btn-card mx-2 mb-2 headShake">القدرات</a>
-                    <a className="btn-card mx-2 mb-2 headShake">التحصيلى</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="card">
-                <div className="card-items">
-                  <div className="title-card font-weight-bold">
-                    <h3>
-                      <span>دورات اجتياز اختبارات قياس</span>
-                    </h3>
-                  </div>
-
-                  <div className="text-card text-center mb-4">
-                    <h5 className="h6 font-weight-bold">
-                      <span className="d-block mb-2">همة تمنحك تدريب مكثف يأهلك لاجتياز</span>
-                      <span className="d-block">الاختبار بأعلى الدرجات</span>
-                    </h5>
-                  </div>
-
-                  <div className="buttons-card d-flex-row flex-wrap">
-                    <a className="btn-card mx-2 mb-2 headShake">القدرة المعرفيه</a>
-                    <a className="btn-card mx-2 mb-2 headShake">قدرات الجامعيين</a>
-                    <a className="btn-card mx-2 mb-2 headShake text-uppercase">Step</a>
-                  </div>
-                </div>
-              </div>
-            </div> */}
-          {/* </div>
-        </div>
-      </div> */}
         <div className="banner-cards">
         <div className="container">
           <div className="slider">
             <div className="glide_features">
               <div className="glide__track" data-glide-el="track">
                 <ul className="glide__slides py-2">
-                  {/* <li className="glide__slide">
-                    <div className="card">
-                      <div className="card-items">
-                        <div className="title-card font-weight-bold">
-                          <h3>
-                            <span>همة للمعلمين</span>
-                          </h3>
-                        </div>
-
-                        <div className="text-card text-center mb-4">
-                          <h5 className="h6 font-weight-bold">
-                            <span className="d-block mb-2">دورات ولقاءات لتطوير صناع المستقبل</span>
-                            <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
-                          </h5>
-                        </div>
-
-                        <div className="collapse-box collapser_one buttons-card d-flex-row flex-wrap">
-                          <a className="btn-card mx-2 mb-2 headShake">الرخصه المهنية</a>
-                          <a className="btn-card mx-2 mb-2 headShake">التطوير المهني</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                        </div>
-                        <div className="collapsing-btn" data-collapser="collapser_one">
-                          <span>المزيد</span>
-                          <i className="fas fa-chevron-down"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </li> */}
-                  {/* <li className="glide__slide">
-                    <div className="card">
-                      <div className="card-items">
-                        <div className="title-card font-weight-bold">
-                          <h3>
-                            <span>همة للمعلمين</span>
-                          </h3>
-                        </div>
-
-                        <div className="text-card text-center mb-4">
-                          <h5 className="h6 font-weight-bold">
-                            <span className="d-block mb-2">دورات ولقاءات لتطوير صناع المستقبل</span>
-                            <span className="d-block">ومساعدتهم على اجتياز اختبار الرخصه المهنيه </span>
-                          </h5>
-                        </div>
-
-                        <div className="buttons-card d-flex-row flex-wrap">
-                          <a className="btn-card mx-2 mb-2 headShake">الرخصه المهنية</a>
-                          <a className="btn-card mx-2 mb-2 headShake">التطوير المهني</a>
-                          <a className="btn-card mx-2 mb-2 headShake">مجتمع همة التعليمى</a>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="glide__slide">
-                    <div className="card">
-                      <div className="card-items">
-                        <div className="title-card font-weight-bold">
-                          <h3>
-                            <span>همة للطلاب</span>
-                          </h3>
-                        </div>
-
-                        <div className="text-card text-center mb-4">
-                          <h5 className="h6 font-weight-bold">
-                            <span className="d-block mb-2">همة معك بهمه نحو طموحك لاجتياز اختبارات</span>
-                            <span className="d-block">القدرات والتحصيلى</span>
-                          </h5>
-                        </div>
-
-                        <div className="buttons-card d-flex-row flex-wrap">
-                          <a className="btn-card mx-2 mb-2 headShake">القدرات</a>
-                          <a className="btn-card mx-2 mb-2 headShake">التحصيلى</a>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                  <li className="glide__slide">
-                    <div className="card">
-                      <div className="card-items">
-                        <div className="title-card font-weight-bold">
-                          <h3>
-                            <span>دورات اجتياز اختبارات قياس</span>
-                          </h3>
-                        </div>
-
-                        <div className="text-card text-center mb-4">
-                          <h5 className="h6 font-weight-bold">
-                            <span className="d-block mb-2">همة تمنحك تدريب مكثف يأهلك لاجتياز</span>
-                            <span className="d-block">الاختبار بأعلى الدرجات</span>
-                          </h5>
-                        </div>
-
-                        <div className="buttons-card d-flex-row flex-wrap">
-                          <a className="btn-card mx-2 mb-2 headShake">القدرة المعرفيه</a>
-                          <a className="btn-card mx-2 mb-2 headShake">قدرات الجامعيين</a>
-                          <a className="btn-card mx-2 mb-2 headShake text-uppercase">Step</a>
-                        </div>
-                      </div>
-                    </div>
-                  </li> */}
+                 
 {this.renderCategories()}
                 </ul>
               </div>
+              {this.state.categories?.length> MIN_ELEM_COUNT && <>
               <div className="glide__arrows" data-glide-el="controls">
                 <button className="glide__arrow glide__arrow--left" data-glide-dir="<"><i
                     className="fas fa-chevron-left"></i></button>
@@ -750,13 +651,10 @@ renderBulit()
               </div>
               <div className="glide__bullets" data-glide-el="controls[nav]">
               {this.renderBulit()}
-                {/* <button className="glide__bullet" data-glide-dir="=0"></button>
-                <button className="glide__bullet" data-glide-dir="=1"></button>
-                <button className="glide__bullet" data-glide-dir="=2"></button>
-                <button className="glide__bullet" data-glide-dir="=3"></button>
-                <button className="glide__bullet" data-glide-dir="=4"></button> */}
+               
 
               </div>
+              </>}
             </div>
           </div>
         </div>
@@ -766,121 +664,6 @@ renderBulit()
     {/* <!-- End The Main Banner -->
 
     <!-- ################################################################ -->
-
-    <!-- Start The Free Interviews  --> */}
-    {/* <section id="free-interview" className="free-interview ">
-      <div className="container">
-        <header className="mb-5 text-center">
-          <h2 className="h2 text-center main-color font-weight-bold aos-init aos-animate line-yellow"
-          data-aos="zoom-in"
-          data-aos-duration="1500"
-          data-aos-easing="ease-in-sine">لقاءات مجانيه</h2>
-        </header>
-        <div className="row py-3 overflow-hidden">
-          <div className="col-lg-6 card-container"
-          data-aos="zoom-in-up"
-          data-aos-anchor-placement="top-bottom"
-          data-aos-delay="200"
-          data-aos-duration="1500">
-            <div className="free-card card-hover py-3 main-bgcolor d-flex-row">
-              <div className="free-icon mr-4">
-                <img src={process.env.PUBLIC_URL + "/assets/images/free-interview.svg"} alt="interview-img" width="50"/>
-              </div>
-              <div>
-                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
-                <div className="d-flex-items-center mb-3">
-                  <div className="d-flex-items-center mr-3">
-                    <i className="far fa-calendar-alt main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
-                  </div>
-                  <div className="d-flex-items-center">
-                    <i className="far fa-clock main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
-                  </div>
-                </div>
-                <a className="btn-card-outline headShake">أنضم</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6 card-container"
-          data-aos="zoom-in-up"
-          data-aos-anchor-placement="center-bottom"
-          data-aos-delay="200"
-          data-aos-duration="1500">
-            <div className="free-card card-hover py-3 main-bgcolor d-flex-row">
-              <div className="free-icon mr-4">
-                <img src={process.env.PUBLIC_URL + "/assets/images/free-interview.svg"} alt="interview-img" width="50"/>
-              </div>
-              <div>
-                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
-                <div className="d-flex-items-center mb-3">
-                  <div className="d-flex-items-center mr-3">
-                    <i className="far fa-calendar-alt main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
-                  </div>
-                  <div className="d-flex-items-center">
-                    <i className="far fa-clock main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
-                  </div>
-                </div>
-                <a className="btn-card-outline headShake">أنضم</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6 card-container"
-          data-aos="zoom-in-up"
-          data-aos-anchor-placement="top-bottom"
-          data-aos-delay="200"
-          data-aos-duration="1500">
-            <div className="free-card card-hover py-3 main-bgcolor d-flex-row">
-              <div className="free-icon mr-4">
-                <img src={process.env.PUBLIC_URL + "/assets/images/free-interview.svg"} alt="interview-img" width="50"/>
-              </div>
-              <div>
-                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
-                <div className="d-flex-items-center mb-3">
-                  <div className="d-flex-items-center mr-3">
-                    <i className="far fa-calendar-alt main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
-                  </div>
-                  <div className="d-flex-items-center">
-                    <i className="far fa-clock main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
-                  </div>
-                </div>
-                <a className="btn-card-outline headShake">أنضم</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-6 card-container"
-          data-aos="zoom-in-up"
-          data-aos-anchor-placement="center-bottom"
-          data-aos-delay="200"
-          data-aos-duration="1500">
-            <div className="free-card card-hover py-3 main-bgcolor d-flex-row">
-              <div className="free-icon mr-4">
-                <img src={process.env.PUBLIC_URL + "/assets/images/free-interview.svg"} alt="interview-img" width="50"/>
-              </div>
-              <div>
-                <h5 className="h5 main-color font-weight-bold title-shadow-purple">القدرات التأسيسية (طالبات)</h5>
-                <div className="d-flex-items-center mb-3">
-                  <div className="d-flex-items-center mr-3">
-                    <i className="far fa-calendar-alt main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">18/12/1440</span>
-                  </div>
-                  <div className="d-flex-items-center">
-                    <i className="far fa-clock main-color"></i>
-                    <span className="ml-2 font-weight-bold font-size-14">20:30 PM</span>
-                  </div>
-                </div>
-                <a className="btn-card-outline headShake">أنضم</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section> */}
-    {/* <!-- End The Free Interviews  -->
 
     <!-- ################################################################ -->
 
@@ -1002,150 +785,41 @@ renderBulit()
         </div>
       </div>
     </section>
+    {this.state.success.length>0 ? (
+      <section id="success-wrapper">
+      <div class="container py-5">
+        <header class="mb-5">
+          <h3 class="h3 text-center font-weight-bold main-color mb-2">نجاحات مع همة</h3>
+        </header>
+        <div class="glide">
+          <div class="glide__track" data-glide-el="track">
+            <ul class="glide__slides py-2">
+       {this.renderSucces()}
+       </ul>
+          </div>
+          {/* <!-- <div class="glide__arrows" data-glide-el="controls">
+            <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+            <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+          </div> --> */}
+         {this.state.success.length > MIN_ELEM_COUNT && <div class="glide__bullets" data-glide-el="controls[nav]">
+           {this.state.success.map((elem,index) =>(
+            <button class="glide__bullet" data-glide-dir={`=${index}`}></button>
+           ))}
+          </div>}
+        </div>
+        <div class="d-flex align-items-center justify-content-center mt-5">
+        <Link to="/home/hemma-succes" className="btn-yellow headShake">المزيد من النجاحات</Link>
+        </div>
+      </div>
+    </section>
+    ) : null}
+    
     {/* <!-- End How Hemma Faciliate Its Mission -->
 
     <!-- ################################################################ -->
 
     <!-- Start The Main Success OF Hemma  --> */}
-    {/* <section id="success-wrapper" className="success-wrapper">
-      <div className="container py-5">
-        <header className="mb-5 text-center">
-          <h3 className="h3 text-center font-weight-bold main-color mb-2 line-yellow">نجاحات مع همة</h3>
-        </header>
-        <div className="glide">
-          <div className="glide__track" data-glide-el="track">
-            <ul className="glide__slides py-2">
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-              <li className="glide__slide">
-                <div className="sider-items">
-                  <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">أم لجين</h4>
-                  <p>دورة مثاليه ولا اروع.. جهد متفانى ومدرب مبدع يبذل كل مابوسعه من أجل ايصال المعلومة للمتدربين ويراعى الفروق الفردية بشكل واضح من خلال أعادته وتلخيصة حتى للنقاط البسيطة الشكر لله أولا ثم للاستاذ ولجميع القائمين عالمنصة</p>
-                  <div className="text-muted">
-                    <time dateTime="2008-02-14 20:00">7:05 PM</time>
-                  </div>
-                </div>
-              </li>
-            </ul>
-          </div>
-          <div className="glide__bullets" data-glide-el="controls[nav]">
-            <button className="glide__bullet" data-glide-dir="=0"></button>
-            <button className="glide__bullet" data-glide-dir="=1"></button>
-            <button className="glide__bullet" data-glide-dir="=2"></button>
-            <button className="glide__bullet" data-glide-dir="=3"></button>
-            <button className="glide__bullet" data-glide-dir="=4"></button>
-            <button className="glide__bullet" data-glide-dir="=5"></button>
-            <button className="glide__bullet" data-glide-dir="=6"></button>
-            <button className="glide__bullet" data-glide-dir="=7"></button>
-            <button className="glide__bullet" data-glide-dir="=8"></button>
-            <button className="glide__bullet" data-glide-dir="=9"></button>
-            <button className="glide__bullet" data-glide-dir="=10"></button>
-          </div>
-        </div>
-        <div className="d-flex-row mt-5">
-          <a className="btn-yellow headShake">المزيد من النجاحات</a>
-        </div>
-      </div>
-    </section> */}
+    
       </React.Fragment>
     );
   }

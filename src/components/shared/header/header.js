@@ -120,7 +120,8 @@ class HeaderComponent extends Component {
         handleActiveEle(linkDropdown, subDropdown);
         linkDropdown.forEach(linkBtn => {
           linkBtn.onclick = function() {
-            if (document.querySelector('.'+perfix+'sub-dropdown2').classList.contains('showing') || document.querySelector('.'+perfix+'sub-dropdown3').classList.contains('showing')) {
+            if (document.querySelector('.'+perfix+'sub-dropdown2')?.classList.contains('showing') || 
+            document.querySelector('.'+perfix+'sub-dropdown3')?.classList.contains('showing')) {
               document.querySelector('.'+perfix+'sub-dropdown2').classList.remove('showing');
               document.querySelector('.'+perfix+'sub-dropdown3').classList.remove('showing');
 
@@ -377,7 +378,7 @@ return(
       <React.Fragment>
          {Categories.map((category,index) => (
 <li className="dropdown-sub-wrapper-four">
-                    <a href={"/categories/details/"+category.slug+"#tab-three"} >
+                    <a href={"/categories/details/"+category.slug+"?free=true"} >
                       <span>{category.nameAr}</span>
                     </a>
                   </li>
@@ -436,7 +437,9 @@ return(
                  {this.renderSubCategorylvl4()}
                </ul>
             </li>
-            
+            {/* <li className="nav-item">
+              <a href="/booklet" className={"nav-link links-hover " + (this.state.ClikedTab=="Booklet"?"active":"")}>متجر همة للكتب</a>
+            </li> */}
            
           
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
@@ -485,7 +488,7 @@ return(
                           <a href="/course/content" className="nav-link d-inline-block"> دوراتي</a>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/billing" className="nav-link d-inline-block">مشترياتي</a>
+                          <a href="/billing" className="nav-link d-inline-block">الحركات المالية</a>
                           </DropdownItem>
                           <DropdownItem className="p-0">
                           <a href="/certificates" className="nav-link d-inline-block"> شهاداتي</a>

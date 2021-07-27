@@ -98,13 +98,35 @@ class LoginComponent extends Component {
               this.props.history.push("/");
             });
         } else {
+          debugger;
             if (this.state.isChecked) {
                 let storedobj=  JSON.stringify(values);
                 let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
                 localStorage.setItem('account',ciphertext);
                 localStorage.setItem('checkbox', this.state.isChecked);
             }
-            this.props.history.goBack();
+            let postCardActionstr = localStorage.getItem("PostCardAction");
+            if(postCardActionstr != null)
+            {
+              let postCardActions = JSON.parse(postCardActionstr);
+              let token = localStorage.getItem("token");
+              let headers = {
+                Authorization: `Bearer ${token}`
+              };
+              const promises = postCardActions.map((postCardAction, index) =>{  
+                return axios.post(postCardAction.url, postCardAction.body, {headers})} );
+
+                promises.map(async (promise, index) => {
+                  try {
+                    const res = await promise;
+                    if (index === postCardActions.length - 1) {this.props.history.push("/cart");};
+                  } catch (error) {this.props.history.push("/cart");}
+                });
+            }
+            else{
+              this.props.history.goBack();
+            }
+
 
         }
       })

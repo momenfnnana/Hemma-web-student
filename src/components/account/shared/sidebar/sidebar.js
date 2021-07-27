@@ -52,7 +52,7 @@ export class SidebarComponent extends Component {
       <React.Fragment>
         <div className="sidebar mb-3">
           <div className="header">
-            <div className="d-inline-flex align-items-center">
+            <div className="d-inline-flex align-items-center flex-wrap justify-content-center">
               {this.props.user && this.props.user.gender === "Male" ? (
                 <img
                   src={
@@ -74,7 +74,7 @@ export class SidebarComponent extends Component {
               )}
 
               <div className="d-flex flex-column align-items-center">
-                <h6 className="dark-text mb-0"> {user && user.name}</h6>
+                <h6 className="dark-text mb-0 mt-2"> {user && user.name}</h6>
               </div>
             </div>
           </div>
@@ -207,7 +207,7 @@ export class SidebarComponent extends Component {
                     className="mr-2 contain-img"
                     alt="exams"
                   />
-                  الاختبارات الإلكترونية
+                  الاختبارات الإلكترونية 
                 </NavLink>
               </li>
               <li>

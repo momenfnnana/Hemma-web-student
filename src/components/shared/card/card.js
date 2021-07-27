@@ -22,7 +22,6 @@ class CardComponent extends Component {
              
   render() {
     const course = this.props.course;
-    console.log("course",course);
     var date = new Date(course.startsAt);
     var day = date.getDate();
     var month = date.getMonth() + 1;

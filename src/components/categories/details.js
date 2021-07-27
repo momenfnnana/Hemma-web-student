@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { FaGraduationCap } from "react-icons/fa";
 import Slider from "react-slick";
 import { Card } from "../shared/card/card";
@@ -9,7 +9,6 @@ import swal from "@sweetalert/with-react";
 import Loader from "react-loaders";
 import { Api } from "../../api";
 import axios from "axios";
-import { Link } from "react-router-dom";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -17,21 +16,31 @@ import "./styles.sass";
 import { PageLoader } from "../courses/page-loader";
 import ContentLoader from "react-content-loader";
 import { Category } from "emoji-mart";
-
+import NavTab from "./tab-link";
+import ProfessionalLicense, {
+  ProfessionalLicenseText,
+} from "./professional-license";
+import { NavLink, Link, withRouter } from "react-router-dom";
+import ShowAt from "../../HOC/show-at";
+import { getQuery } from "../../utils/query-params";
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class CategoryDetails extends Component {
+export class _CategoryDetails extends Component {
   page = 1;
   limit = 6;
   endOfResults = false;
+  SuccesesLimt = 12;
+  Succesespage = 1;
   constructor(props) {
     super(props);
     this.state = {
+      successes: [],
       details: [],
-      subcategoriesdetails:[],
+      subcategoriesdetails: [],
       lectures: [],
+      hiddenTabs : [],
       content: [],
       publications: [],
       courses: [],
@@ -40,19 +49,22 @@ export class CategoryDetails extends Component {
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
+      showgroupedPackagesBtn: true,
+      hideBtnSuccess: false,
       loading: false,
       disabled: false,
-      active:"",
-      defultActive:"show active",
+      active: "",
+      defultActive: "show active",
       coursesShimmerLoader: true,
       lecturesShimmerLoader: true,
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
-      nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`
+      nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.changeTab = this.changeTab.bind(this);
   }
 
   openModal(id) {
@@ -65,17 +77,17 @@ export class CategoryDetails extends Component {
   loadMore = async () => {
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     this.setState({ loading: true, disabled: true });
     if (!this.endOfResults) {
       axios
         .get(this.state.nextPageUrl, { headers })
-        .then(response => {
+        .then((response) => {
           this.setState({ loading: false, disabled: false });
           const newCourses = [
             ...this.state.courses,
-            ...response.data.data.data
+            ...response.data.data.data,
           ];
           this.endOfResults = response.data.data.itemCount < this.limit;
           this.page++;
@@ -83,92 +95,198 @@ export class CategoryDetails extends Component {
           this.setState({
             courses: newCourses,
             nextPageUrl: nextUrl,
-            coursesShimmerLoader: false
+            coursesShimmerLoader: false,
           });
           if (newCourses.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.setState({ loading: false, disabled: false });
         });
     }
   };
+  moreSucces = async () => {
+    const {
+      match: { params },
+    } = this.props;
+    this.setState({ loading: true });
+    this.Succesespage++;
+    axios
+      .get(
+        `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+      )
+      .then((response) => {
+        const newSuccess = [
+          ...this.state.successes,
+          ...response.data.data.data,
+        ];
+        var more = false;
+        if (
+          response.data.itemCount >
+          response.data.limit * response.data.page
+        ) {
+          more = true;
+        }
+        this.setState({ successes: newSuccess, hideBtnSuccess: more });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  handleHasProfessionalLicense() {
+    //hide tab-two which is دورات المنصة and make defaulted to show الرخصة المهنية
+    this.setState({ ...this.state, currentTab: ProfessionalLicenseText,hiddenTabs : [...this.state.hiddenTabs,'tab-two'] });
+  }
+
+  hasProfessionalLicense(details) {
+    if (!details?.professionalLicense) return;
+    const { professionalLicense } = details;
+    if (professionalLicense) this.handleHasProfessionalLicense();
+  }
+
+  handleNavFromFree(){
+    const hasFreeFlag = getQuery('free')
+    if(hasFreeFlag === 'true')
+    setTimeout(() => {
+      this.simulateClick('tab-three-nav')
+    }, 1500);
+  }
 
   async componentDidMount() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
+
+    this.handleNavFromFree()
+
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
-      .then(response => {
-        this.setState({ details: response.data.data});
+      .then((response) => {
+        this.setState({ details: response.data.data }, () => {
+          this.hasProfessionalLicense(response.data.data);
+        });
+        this.setState({
+          showgroupedPackagesBtn: response.data.data.groupedPackages,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
-      axios
-      .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
-      .then(response => {
-        this.setState({ subcategoriesdetails: response.data.data.childCatgories});
+    axios
+      .get(
+        `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+      )
+      .then((response) => {
+        debugger;
+        var more = false;
+        if (
+          response.data.data.itemCount >
+          response.data.data.limit * response.data.data.page
+        ) {
+          more = true;
+        }
+        this.setState({
+          successes: response.data.data.data,
+          hideBtnSuccess: more,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
+        console.log(error);
+      });
+    axios
+      .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
+      .then((response) => {
+        this.setState({
+          subcategoriesdetails: response.data.data.childCatgories,
+        });
+      })
+      .catch((error) => {
         console.log(error);
       });
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
-      .then(response => {
-        this.setState({ lectures: response.data.data, lecturesShimmerLoader: false });
+      .then((response) => {
+        this.setState({
+          lectures: response.data.data,
+          lecturesShimmerLoader: false,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        this.setState({lecturesShimmerLoader: false})
+        this.setState({ lecturesShimmerLoader: false });
       });
 
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}/publications`)
-      .then(response => {
-        this.setState({ publications: response.data.data.data, publicationsShimmerLoader: false });
+      .then((response) => {
+        this.setState({
+          publications: response.data.data.data,
+          publicationsShimmerLoader: false,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        this.setState({publicationsShimmerLoader: false})
+        this.setState({ publicationsShimmerLoader: false });
       });
 
     Api.categories
       .getCompetitions(params.slug)
-      .then(response => {
-        this.setState({ competitions: response, competitionsShimmerLoader: false });
+      .then((response) => {
+        this.setState({
+          competitions: response,
+          competitionsShimmerLoader: false,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        this.setState({competitionsShimmerLoader: false})
+        this.setState({ competitionsShimmerLoader: false });
       });
 
     axios
-      .get(
-        `${apiBaseUrl}/CategoryGroups?category=${params.slug}`
-      )
-      .then(response => {
-        this.setState({ categoryGroups: response.data.data, categoryGroupsShimmerLoader: false });
+      .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
+      .then((response) => {
+        this.setState({
+          categoryGroups: response.data.data,
+          categoryGroupsShimmerLoader: false,
+        });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-        this.setState({categoryGroupsShimmerLoader: false})
+        this.setState({ categoryGroupsShimmerLoader: false });
       });
 
     await this.loadMore();
-    if(this.props.history.location.hash == "#tab-three")
-    {
-      this.setState({active:"show active",defultActive:""})
+    if (this.props.history.location.hash == "#tab-three") {
+      this.setState({ active: "show active", defultActive: "" });
     }
-    console.log();
+  }
+
+  warningAlert(msg){
+
+    swal(
+
+      "عفواً",
+
+      msg,
+
+      "error",
+
+      {
+
+        button: "متابعة",
+
+      }
+
+    );
+
   }
 
   categoryGroupRedirection(CategoryGroup) {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
     if (token) {
@@ -181,37 +299,43 @@ export class CategoryDetails extends Component {
         "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
         "error",
         {
-          button: "متابعة"
+          button: "متابعة",
         }
       );
     }
   }
 
   renderCategoryGroups() {
-    console.log(this.state.categoryGroups);
-    return this.state.categoryGroups.map(group => (
+    return this.state.categoryGroups.map((group) => (
       <React.Fragment>
         <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150"    key={group.id}
-            onClick={() => this.categoryGroupRedirection(group.id)}>
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">{group.name}</h4>
-                            <div className="font-size-18 mb-2">{group.description}</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+          <div
+            className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150"
+            key={group.id}
+            onClick={() => this.categoryGroupRedirection(group.id)}
+          >
+            <div className="d-flex align-items-center">
+              <div className="mr-4">
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/icon.svg"}
+                  className="width-80"
+                  alt="ICON"
+                />
+              </div>
+              <div className="text-white">
+                <h4 className="h4">{group.name}</h4>
+                <div className="font-size-18 mb-2">{group.description}</div>
+                <div className="font-size-14 d-flex align-items-center">
+                  <div className="mr-2">
+                    <i className="far fa-user-circle"></i>
+                  </div>
+                  <div className="mr-2">طالب</div>
+                  <div>{group.numberOfMembers}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         {/* <div className="col-md-2">
           <div
             className="shadow-box d-flex flex-column align-items-center justify-content-center clickable"
@@ -229,7 +353,7 @@ export class CategoryDetails extends Component {
   }
 
   renderPublications() {
-    return this.state.publications.map(publication => (
+    return this.state.publications.map((publication) => (
       <React.Fragment>
         <div
           className="publication-img"
@@ -253,47 +377,103 @@ export class CategoryDetails extends Component {
   }
 
   renderCards() {
-    return this.state.courses.map(course => (
+    return this.state.courses.map((course) => (
       <React.Fragment>
-       <div className="col-lg-4">
+        <div className="col-lg-4">
           <Card key={course.id} course={course} />
         </div>
       </React.Fragment>
     ));
   }
   renderCourses(courses) {
-    return courses.map(course => (
+    return courses.map((course) => (
       <React.Fragment>
-       <div className="col-lg-4">
+        <div className="col-lg-4">
           <Card key={course.id} course={course} />
         </div>
       </React.Fragment>
     ));
   }
-  renderPanelSub()
-  {
-    return this.state.subcategoriesdetails.map((Category,count) => (
+  renderPanelSub() {
+    return this.state.subcategoriesdetails.map((Category, count) => (
       <React.Fragment>
-<div className="tab-pane fade " id={"tab-"+count} role="tabpanel">
-                <div className="container">
-                  <div className="row">
-                  {this.renderCourses(Category.courses)}
-                  </div>
-              </div>
+        <div className="tab-pane fade " id={"tab-" + count} role="tabpanel">
+          <div className="container">
+            <div className="row">{this.renderCourses(Category.courses)}</div>
           </div>
-          </React.Fragment>
-          ));
+        </div>
+      </React.Fragment>
+    ));
   }
-  rendersubCategories()
-  {
-    return this.state.subcategoriesdetails.map((Category,count) => (
+
+  hasSubcategoriesReq(slug){
+    return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
+  }
+
+
+  async validateHasSubCategories(slug){
+    try {
+      const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
+      return new Promise((res,rej)=>res(childCatgories))
+    } catch (error) {
+    }
+
+  }
+
+  handleNoChildCategories(){
+    throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+  }
+  rendersubCategories() {
+   
+    const handleClick = async(Category) => {
+
+      try {
+
+        const { slug : categSlug } = Category;
+
+        const childCateg  = await this.validateHasSubCategories(categSlug)
+
+        if(!childCateg.length) this.handleNoChildCategories()
+
+        const url = `./${categSlug}`
+
+        const { history } = this.props;
+
+        this.changeTab(url);
+
+        history.push(url);
+
+      } catch (error) {
+
+        this.warningAlert(error?.message)
+
+      }
+
+    };
+
+    return this.state.subcategoriesdetails.map((Category, count) => (
       <React.Fragment>
-        <a className="tab-items nav-link px-4" data-toggle="tab" href={"#tab-"+count} role="tab" aria-selected="false">
-                  <div className="tab-img">
-                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
-                  </div>
-                  <div className="main-color font-weight-bold text-center">{Category.nameAr}</div>
-                </a>
+        <NavLink
+          className="tab-items nav-link px-4"
+          data-toggle="tab"
+          role="tab"
+          to={'/test'}
+          aria-selected="false"
+          onClick={() => handleClick(Category)}
+        >
+          <div className="tab-img">
+            <img
+              src={
+                process.env.PUBLIC_URL + "/assets/images/hemma-logo-light.svg"
+              }
+              className="width-50"
+              alt="Hemma-logo"
+            />
+          </div>
+          <div className="main-color font-weight-bold text-center">
+            {Category.nameAr}
+          </div>
+        </NavLink>
       </React.Fragment>
     ));
   }
@@ -307,93 +487,103 @@ export class CategoryDetails extends Component {
         "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
         "error",
         {
-          button: "متابعة"
+          button: "متابعة",
         }
       );
     }
   }
 
+  simulateClick(divId,event = 'click'){
+    const element = document.getElementById(divId);
+    const evObj = document.createEvent('Events');
+    evObj.initEvent('click', true, false);
+    element.dispatchEvent(evObj)
+  }
+
   renderLectures() {
-    
-      const sortedLectures = this.state.lectures.sort(
-        (b, a) => a.scheduledAt - b.scheduledAt
-      );
-  
-      return sortedLectures.map(lecture => {
-        const scheduledAt = new Date(lecture.scheduledAt);
-        //Date
-        var day = scheduledAt.getDate();
-        var month = scheduledAt.getMonth() + 1;
-        var year = scheduledAt.getFullYear();
-        var scheduledDate = year + "-" + month + "-" + day;
-        var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
-        //Time
-        var lectureTime = scheduledAt.getTime();
-        const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
-        const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
-        const time = `${hours}:${minutes}`;
-        var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
-  
-        return (
-          <li
-            key={lecture.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
-            dir="rtl"
-          >
-            <div className="media d-flex align-items-center">
-              <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
-                <FaGraduationCap className="text-white" size="34" />
-              </div>
-              <div className="media-body">
-                <h6 className="dark-text">{lecture.nameAr}</h6>
-                <div className="d-flex align-items-center">
-                  <h5 className="mid-text small en-text d-flex align-items-center">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
-                      height="12"
-                      width="12"
-                      className="mr-1"
-                    />
-                    {hijriDate}
-                  </h5>
-  
-                  <h5 className="mid-text small en-text d-flex align-items-center">
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
-                      className="mr-1 ml-3"
-                      height="15"
-                      alt="Time"
-                    />
-                    <span dir="ltr">
-                      {time} {ampm}
-                    </span>
-                  </h5>
-                </div>
-                {lecture.instructor && (
-                  <p className="light-text small mb-0">
-                    {lecture.instructor && lecture.instructor.name}
-                  </p>
-                )}
-              </div>
+    const sortedLectures = this.state.lectures.sort(
+      (b, a) => a.scheduledAt - b.scheduledAt
+    );
+
+    return sortedLectures.map((lecture) => {
+      const scheduledAt = new Date(lecture.scheduledAt);
+      //Date
+      var day = scheduledAt.getDate();
+      var month = scheduledAt.getMonth() + 1;
+      var year = scheduledAt.getFullYear();
+      var scheduledDate = year + "-" + month + "-" + day;
+      var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
+      //Time
+      var lectureTime = scheduledAt.getTime();
+      const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
+      const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
+      const time = `${hours}:${minutes}`;
+      var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
+
+      return (
+        <li
+          key={lecture.id}
+          className="list-group-item d-flex justify-content-between align-items-center"
+          dir="rtl"
+        >
+          <div className="media d-flex align-items-center">
+            <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
+              <FaGraduationCap className="text-white" size="34" />
             </div>
-            {lecture.broadcastUrl && (
-              <button
-                className="btn light-outline-btn unset-height"
-                onClick={() => this.openFreeLecture(lecture)}
-              >
-                انضم
-              </button>
-            )}
-          </li>
-        );
-      });
+            <div className="media-body">
+              <h6 className="dark-text">{lecture.nameAr}</h6>
+              <div className="d-flex align-items-center">
+                <h5 className="mid-text small en-text d-flex align-items-center">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/calendar.png"}
+                    height="12"
+                    width="12"
+                    className="mr-1"
+                  />
+                  {hijriDate}
+                </h5>
+
+                <h5 className="mid-text small en-text d-flex align-items-center">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/clock.png"}
+                    className="mr-1 ml-3"
+                    height="15"
+                    alt="Time"
+                  />
+                  <span dir="ltr">
+                    {time} {ampm}
+                  </span>
+                </h5>
+              </div>
+              {lecture.instructor && (
+                <p className="light-text small mb-0">
+                  {lecture.instructor && lecture.instructor.name}
+                </p>
+              )}
+            </div>
+          </div>
+          {lecture.broadcastUrl && (
+            <button
+              className="btn light-outline-btn unset-height"
+              onClick={() => this.openFreeLecture(lecture)}
+            >
+              انضم
+            </button>
+          )}
+        </li>
+      );
+    });
+  }
+
+  changeTab(tab) {
+    this.setState({ ...this.state, currentTab: tab });
   }
 
   renderCompetitions() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
-    return this.state.competitions.map(competition => (
+    return this.state.competitions.map((competition) => (
       <React.Fragment>
         <div
           className="competition-box d-flex flex-column justify-content-center clickable"
@@ -432,11 +622,42 @@ export class CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
+  Rating = ({ successCase }) => {
+    return (
+      <div class="card-body px-2 py-2">
+        <p class="d-flex align-items-center light-gray mb-1 font-size-13">
+          <span class="d-block main-color-light mr-2">اسم الطالب : </span>
+          {successCase?.rating?.studentName}
+        </p>
+        <p class="light-gray font-size-13 m-0">
+          <span class="main-color-light">التقييم : </span>
+          {successCase?.rating?.feedBack}
+        </p>
+      </div>
+    );
+  };
 
+  renderSuccess() {
+    return this.state.successes.map((successCase) => (
+      <React.Fragment>
+        <div class="col-lg-4">
+          <div class="status-card sider-items min-height-150">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <h6 class="h6 main-color-light text-center mb-3">
+              {successCase?.courseName}
+            </h6>
+            <div class="card">{contentReducer(successCase)}</div>
+          </div>
+        </div>
+      </React.Fragment>
+    ));
+  }
   render() {
     let token = localStorage.getItem("token");
     const {
-      match: { params }
+      match: { params },
     } = this.props;
     var settings = {
       dots: true,
@@ -449,24 +670,24 @@ export class CategoryDetails extends Component {
           settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
-            infinite: false
-          }
+            infinite: false,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
-            slidesToScroll: 1
-          }
+            slidesToScroll: 1,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 2,
-            slidesToScroll: 1
-          }
-        }
-      ]
+            slidesToScroll: 1,
+          },
+        },
+      ],
     };
 
     var verticalCarousel = {
@@ -483,871 +704,317 @@ export class CategoryDetails extends Component {
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            infinite: false
-          }
+            infinite: false,
+          },
         },
         {
           breakpoint: 600,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            initialSlide: 1
-          }
+            initialSlide: 1,
+          },
         },
         {
           breakpoint: 480,
           settings: {
             slidesToShow: 2,
             slidesToScroll: 1,
-            dots: true
-          }
-        }
-      ]
+            dots: true,
+          },
+        },
+      ],
     };
-
     return (
       <React.Fragment>
         <Helmet>
           <title>{`${this.state.details.nameAr} | منصّة همّة التعليمية`}</title>
           <meta name="description" content={this.state.details.descriptionAr} />
         </Helmet>
-        {/* <section className="pt-5 pb-5">
+
+        <section id="license-two" className="license-two">
           <div className="container">
-            <div className="row">
-              <div className="col-md-12 text-center">
-                <div className="half-circle-border mx-auto">
-                  {this.state.details.icon
-                  ?(
-                    <img
-                    src={this.state.details.icon}
-                    height="50"
-                    width="50"
-                    className="mt-3 contain-img"
-                    alt={this.state.details.nameAr}
-                  />
-                  )
-                  :(
-                    <ContentLoader
-                    viewBox="-55 -20 200 200"
-                    >
-                      <circle  cx="44" cy="42" r="38" />
-                    </ContentLoader>
-                  )}
-                  
-                </div>
-                <h5 className="dark-text mt-3">
-                  {this.state.details.nameAr
-                  ?this.state.details.nameAr
-                  :( 
-                    <ContentLoader height="40" className="w-20 mx-auto">
-                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="40" />
-                    </ContentLoader>
-                  )}
-                  </h5>
-                <p className="dark-text mt-2 small w-40 mx-auto">
-                  {this.state.details.descriptionAr
-                  ?this.state.details.descriptionAr
-                  :(
-                    <ContentLoader height="10" className="">
-                      <rect x="0" y="0" rx="5" ry="5" width="400" height="10" />
-                    </ContentLoader>
-                  )}
-                </p>
+            <header className="mb-4">
+              <div className="text-center mb-2">
+                <img
+                  src={
+                    process.env.PUBLIC_URL +
+                    "/assets/images/hemma-logo-light.svg"
+                  }
+                  className="max-height-80"
+                  alt="Hemma-Logo"
+                />
               </div>
-            </div>
-            {this.state.lecturesShimmerLoader && (
-              <div className="row pt-5 pb-4">
-              <div className="col-md-4">
-                <h4 className="dark-text mt-3">
-                  لأننا حابين نفيدكم قدمنا لكم
-                </h4>
-                <h4 className="light-text">محاضرات مجانية</h4>
-                <p className="dark-silver-text small text-break">
-                  نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
-                  المزيد
-                </p>
-              </div>
-              <div className="col-md-8">
-                <ContentLoader height="106" className="mb-4">
-                  <rect x="0" y="0" rx="5" ry="5" width="100%" height="106" />
-                </ContentLoader>
-              </div>
-            </div>
-            )}
-            {this.state.lectures && this.state.lectures.length > 0 ? (
-              <div className="row pt-5 pb-4">
-                <div className="col-md-4">
-                  <h4 className="dark-text mt-3">
-                    لأننا حابين نفيدكم قدمنا لكم
-                  </h4>
-                  <h4 className="light-text">محاضرات مجانية</h4>
-                  <p className="dark-silver-text small text-break">
-                    نقدم مجموعة من المحاضرات المجانية كل أسبوعتابعونا لتعرفوا
-                    المزيد
-                  </p>
-                </div>
-                <div className="col-md-8">
-                  <Slider {...verticalCarousel}>{this.renderLectures()}</Slider>
-                </div>
-              </div>
-            ) : null}
-            
-            {this.state.coursesShimmerLoader === true && (<>
-              <div className="row">
-                <div className="col-12 pt-4">
-                  <h5 className="dark-text">الدورات المتاحة</h5>
-                </div>
-              </div>
-              
-              <div className="row pt-2 pb-3">
-                {this.renderCards()}
-                </div>
-              <div className="row pt-2 pb-3">
-                <div className="col-md-4">
-                    <ContentLoader height="300">
-                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-4">
-                    <ContentLoader height="300">
-                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-4">
-                    <ContentLoader height="300">
-                      <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                    </ContentLoader>
-                  </div>
-                </div>
-              
-              {!this.state.hideBtn && (
-                <div className="row">
-                  <div className="col-md-12 d-flex align-items-center justify-content-center">
-                    <button
-                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                      onClick={this.loadMore}
-                      disabled={this.state.disabled}
-                    >
-                      {this.state.loading == true ? (
-                        <Loader type="ball-clip-rotate" />
-                      ) : (
-                        "عرض المزيد"
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>)}
-            {this.state.courses.length > 0 && (<>
-              <div className="row">
-                <div className="col-12 pt-4">
-                  <h5 className="dark-text">الدورات المتاحة</h5>
-                </div>
-              </div>
-              
-              <div className="row pt-2 pb-3">
-                {this.renderCards()}
-                </div>
-                {this.state.coursesShimmerLoader && (
-                <div className="row pt-2 pb-3">
-                  <div className="col-md-4">
-                      <ContentLoader height="300">
-                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                      </ContentLoader>
-                    </div>
-                    <div className="col-md-4">
-                      <ContentLoader height="300">
-                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                      </ContentLoader>
-                    </div>
-                    <div className="col-md-4">
-                      <ContentLoader height="300">
-                        <rect x="0" y="0" rx="5" ry="5" width="100%" height="300" />
-                      </ContentLoader>
-                    </div>
-                  </div>
-                  )}
-              {!this.state.hideBtn && (
-                <div className="row">
-                  <div className="col-md-12 d-flex align-items-center justify-content-center">
-                    <button
-                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                      onClick={this.loadMore}
-                      disabled={this.state.disabled}
-                    >
-                      {this.state.loading == true ? (
-                        <Loader type="ball-clip-rotate" />
-                      ) : (
-                        "عرض المزيد"
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
-            </>)}
-            
-            {this.state.publicationsShimmerLoader && (
-              <div className="row pt-5">
-                <div className="col-12 text-center">
-                  <h3 className="dark-text">إصداراتنا</h3>
-                  <p className="dark-silver-text">
-                    احصل على آخر إصداراتنا في القدرات والتحصيلي
-                  </p>
-                </div>
-
-                <div className="col-12">
-                  <Slider {...settings}>
-                    <ContentLoader height="200">
-                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
-                    </ContentLoader>
-                    <ContentLoader height="200">
-                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
-                    </ContentLoader>
-                    <ContentLoader height="200">
-                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
-                    </ContentLoader>
-                    <ContentLoader height="200">
-                      <rect x="0" y="0" rx="5" ry="5" width="80%" height="200" />
-                    </ContentLoader>
-                  </Slider>
-                  
-                </div>
-              </div>
-            )}
-            {this.state.publications.length > 0 && (
-              <div className="row pt-5">
-                <div className="col-12 text-center">
-                  <h3 className="dark-text">إصداراتنا</h3>
-                  <p className="dark-silver-text">
-                    احصل على آخر إصداراتنا في القدرات والتحصيلي
-                  </p>
-                </div>
-
-                <div className="col-12">
-                  <Slider {...settings}>{this.renderPublications()}</Slider>
-                  <PublicationDetails
-                    id={this.state.selectedPublicationId}
-                    modalIsOpen={this.state.modalIsOpen}
-                    onClose={this.closeModal}
-                  />
-                </div>
-              </div>
-            )}
-            {this.state.categoryGroupsShimmerLoader && (
-              <React.Fragment>
-                <div className="row pt-5">
-                  <div className="col-12 text-center">
-                    <h3 className="dark-text">المجموعات</h3>
-                    <p className="dark-silver-text">
-                      بنقدملكم مجموعة من الأسئلة السريعة
-                    </p>
-                  </div>
-                </div>
-                <div className="row pt-3">
-                  <div className="col-md-2">
-                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-2">
-                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-2">
-                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-2">
-                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-2">
-                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-2">
-                    <ContentLoader width="150px" height="100" style={{width: "150px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="150px" height="100" />
-                    </ContentLoader>
-                  </div>
-                </div>
-              </React.Fragment>
-            )}
-            {this.state.categoryGroups.length > 0 && (
-              <React.Fragment>
-                <div className="row pt-5">
-                  <div className="col-12 text-center">
-                    <h3 className="dark-text">المجموعات</h3>
-                    <p className="dark-silver-text">
-                      بنقدملكم مجموعة من الأسئلة السريعة
-                    </p>
-                  </div>
-                </div>
-                <div className="row pt-3">{this.renderCategoryGroups()}</div>
-              </React.Fragment>
-            )}
-            
-            {this.state.competitionsShimmerLoader && (
-                <div className="row pt-5 pb-4 d-flex align-items-center">
-                  <div className="col-md-5">
-                    <h4 className="dark-text">
-                      مع همة تقدرون تتحدون أنفسكم مع{" "}
-                      <span className="light-text">المسابقات</span>
-                    </h4>
-                    <p className="dark-silver-text text-break mb-0">
-                      نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
-                      اقوى المنافسين
-                    </p>
-                  </div>
-                  <div className="col-md-4">
-                    <ContentLoader width="350px" height="100" style={{width: "350px", height: "100px"}}>
-                      <rect x="0" y="0" rx="5" ry="5" width="350px" height="100" />
-                    </ContentLoader>
-                  </div>
-                  <div className="col-md-3">
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/competitions.png"
-                      }
-                      width="100%"
-                      className="contain-img"
-                    />
-                  </div>
-                </div>
-            )}
-            {this.state.competitions.length > 0 && (
-                <div className="row pt-5 pb-4 d-flex align-items-center">
-                  <div className="col-md-5">
-                    <h4 className="dark-text">
-                      مع همة تقدرون تتحدون أنفسكم مع{" "}
-                      <span className="light-text">المسابقات</span>
-                    </h4>
-                    <p className="dark-silver-text text-break mb-0">
-                      نقدم مجموعة من المسابقات التي تقدرون من خلالها تتنافسوا مع
-                      اقوى المنافسين
-                    </p>
-                  </div>
-
-                  {(!this.state.competitions == undefined ||
-                    !this.state.competitions.length == 0) &&
-                  !token ? (
-                    <div className="col-md-4">
-                      <div className="competition-box-empty d-flex flex-column justify-content-around align-items-center">
-                        <img
-                          src={
-                            process.env.PUBLIC_URL +
-                            "/assets/images/warning.png"
-                          }
-                          height="30"
-                        />
-                        <h6 className="dark-text small mb-0 text-center w-75">
-                          يجب عليك{" "}
-                          <Link to="/auth/login" className="light-text">
-                            تسجيل الدخول
-                          </Link>{" "}
-                          حتى تتمكن من الاشتراك بالمسابقات
-                        </h6>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="col-md-4">{this.renderCompetitions()}</div>
-                  )}
-
-                  <div className="col-md-3">
-                    <img
-                      src={process.env.PUBLIC_URL +"/assets/images/competitions.png"}
-                      width="100%"
-                      className="contain-img"
-                    />
-                  </div>
-                </div>
-            )}
-            
-          </div>
-        </section> */}
-   <section id="license-two" className="license-two">
-      <div className="container">
-        <header className="mb-4">
-          <div className="text-center mb-2">
-            <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="max-height-80" alt="Hemma-Logo"/>
-          </div>
-          <h3 className="h3 main-color mb-3 font-weight-bold text-center">{this.state.details.nameAr}</h3>
-          <p className="description-card main-color font-weight-bold mb-0 text-center">
-          {this.state.details.descriptionAr}
-          </p>
-        </header>
-        <div className="lic-tabs">
-          <nav>
-              <div className="nav d-flex align-items-center justify-content-center mb-6" id="nav-tab" role="tablist">
-               {/* <a className="tab-items nav-link px-4 active" data-toggle="tab" href="#tab-one" role="tab" aria-controls="nav-one" aria-selected="true">
+              <h3 className="h3 main-color mb-3 font-weight-bold text-center">
+                {this.state.details.nameAr}
+              </h3>
+              <p className="description-card main-color font-weight-bold mb-0 text-center">
+                {this.state.details.descriptionAr}
+              </p>
+            </header>
+            <div className="lic-tabs">
+              <nav>
+                <div
+                  className="nav d-flex align-items-center justify-content-center mb-6"
+                  id="nav-tab"
+                  role="tablist"
+                >
+                  {/* <a className="tab-items nav-link px-4 active" data-toggle="tab" href="#tab-one" role="tab" aria-controls="nav-one" aria-selected="true">
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
                   </div>
                   <div className="main-color font-weight-bold">الرخصة المهنية</div>
                 </a> */}
-                 <React.Fragment>
+                  {/* <React.Fragment>
                    {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
                   <div className="tab-img">
                     <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
                   </div>
-                  <div className="main-color font-weight-bold">دورات المنصة</div>
+                  <div className="main-color font-weight-bold">الرخصة المهنية</div>
                 </a>): null}
                 
-                   </React.Fragment>
-            
-                {this.rendersubCategories()}
-                <React.Fragment>
-                  {this.state.categoryGroups.length > 0 ?(
-                    <a className={"tab-items nav-link px-4 "+this.state.active} data-toggle="tab" href="#tab-three" role="tab" aria-controls="nav-three" aria-selected="false">
-                    <div className="tab-img">
-                      <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"} className="width-50" alt="Hemma-logo"/>
-                    </div>
-                    <div className="main-color font-weight-bold">المجموعات المجانيه</div>
-                  </a>
-                  ):null}
-                
-                </React.Fragment>
-              </div>
-            <div className="tab-content" id="nav-tabContent">
-              {/* <div className="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="nav-home-tab">
-                <div className="container">
-                  <div className="row">
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-630 position-relative mb-6">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div className="d-flex align-items-center justify-content-between mb-3">
-                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
-                              <option selected>اختر التخصص</option>
-                              <option value="1">التخصص 1</option>
-                              <option value="2">التخصص 2</option>
-                              <option value="3">التخصص 3</option>
-                            </select>
-                            <span className="mx-1"></span>
-                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
-                              <option selected>اختر مستوي الدورة</option>
-                              <option value="1">الدورة 1</option>
-                              <option value="2">الدورة 2</option>
-                              <option value="3">الدورة 3</option>
-                            </select>
+                   </React.Fragment> */}
+                  <React.Fragment>
+                    {this.state.courses.length > 0 ? (
+                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
+                        <a
+                          onClick={() => this.changeTab("tab-two")}
+                          className={
+                            "tab-items nav-link px-4 " + this.state.defultActive
+                          }
+                          data-toggle="tab"
+                          href="#tab-two"
+                          role="tab"
+                          aria-controls="nav-two"
+                          aria-selected="false"
+                        >
+                          <div className="tab-img">
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                "/assets/images/hemma-logo-light.svg"
+                              }
+                              className="width-50"
+                              alt="Hemma-logo"
+                            />
                           </div>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
+                          <div className="main-color font-weight-bold">
+                            دورات المنصة
                           </div>
-                          <div>
-                            <h6 className="h6 sub-color">مميزات الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h6 className="h6 sub-color">مجموعات المتدربين:</h6>
-                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
-                              <option selected>1 مجموعة</option>
-                              <option value="1">مجموعة 1</option>
-                              <option value="2">مجموعة 2</option>
-                              <option value="3">مجموعة 3</option>
-                            </select>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-630 position-relative mb-5">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"} alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للعام</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h6 className="h6 sub-color">مميزات الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div>
-                            <h6 className="h6 sub-color">مجموعات المتدربين:</h6>
-                            <select className="custom-select font-size-14 border-radius-50 border-sub-color mb-2">
-                              <option selected>1 مجموعة</option>
-                              <option value="1">مجموعة 1</option>
-                              <option value="2">مجموعة 2</option>
-                              <option value="3">مجموعة 3</option>
-                            </select>
-                            <select className="custom-select font-size-14 border-radius-50 border-sub-color">
-                              <option selected>1 مجموعة</option>
-                              <option value="1">مجموعة 1</option>
-                              <option value="2">مجموعة 2</option>
-                              <option value="3">مجموعة 3</option>
-                            </select>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-630 position-relative ">
-                          <h4 className="card-title h4 main-color mb-4 font-weight-bold text-center">هل ترغب في الاشتراك في الدورة المحددة؟</h4>
-                          <div className="input-area mb-3">
-                            <input type="text" className="form-control border-radius-50" placeholder="اسم دورة للرخصة المهنية للتخصصات"/>
-                            <span className="input-close cursor-pointer">
-                              <i className="fas fa-times"></i>
-                            </span>
-                          </div>
-                          <div className="input-area mb-3">
-                            <input type="text" className="form-control border-radius-50" placeholder="اسم دورة للرخصة المهنية للعام"/>
-                            <span className="input-close cursor-pointer">
-                              <i className="fas fa-times"></i>
-                            </span>
-                          </div>
-                          <p className="description-card font-weight-bold mb-4 text-center">
-                            يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام
-                          </p>
-                          <div className="d-flex align-items-center mb-2 font-weight-bold">
-                            <div className="main-color mr-4 min-width-200 width-small">إجمالي القيمة الأساسية</div>
-                            <div className="sub-color">4000 ريال</div>
-                          </div>
-                          <div className="d-flex align-items-center mb-2 font-weight-bold">
-                            <div className="main-color mr-4 min-width-200 width-small">نسبة الخصم %10</div>
-                            <div className="sub-color">400 ريال</div>
-                          </div>
-                        <hr></hr>
-                          <div className="d-flex align-items-center mb-2 font-weight-bold">
-                            <div className="main-color mr-4 min-width-200 width-small">اجمالى قيمه الاشتراك</div>
-                            <div className="sub-color">3600 ريال</div>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">الاشتراك</a>
-                            <span className="mx-2"></span>
-                            <a className="btn-title d-inline-block">الغاء الاختيار</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-              {this.renderPanelSub()}
-              <div className={"tab-pane fade "+this.state.defultActive} id="tab-two" role="tabpanel" aria-labelledby="nav-profile-tab">
-                <div className="container">
-                  <div className="row">
-                  {this.renderCards()}
-                  {!this.state.hideBtn && (
-                <div className="row col-md-12">
-                  <div className="col-md-12 d-flex align-items-center justify-content-center">
-                    <button
-                      className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                      onClick={this.loadMore}
-                      disabled={this.state.disabled}
-                    >
-                      {this.state.loading == true ? (
-                        <Loader type="ball-clip-rotate" />
-                      ) : (
-                        "عرض المزيد"
-                      )}
-                    </button>
-                  </div>
-                </div>
-              )}
-                    {/* <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
-                        <div className="card-img">
-                          <img  src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4"> */}
-                      {/* <div className="card p-3 border-dashed card-ele min-height-380 position-relative mb-6">
-                        <div className="card-img">
-                          <img src={process.env.PUBLIC_URL +"/assets/images/human.svg"}  alt="Human"/>
-                          <div className="img-tag">2000 ريال</div>
-                        </div>
-                        <div className="mt--50">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">دورات الرخصة المهنية للتخصصات</h5>
-                          <div>
-                            <h6 className="h6 sub-color">تفاصيل الدورة :</h6>
-                            <ul className="list-unstyled">
-                              <li>. البث المباشر: من 10:00م إلى 12:00 ص</li>
-                              <li>مدة صلاحية الدورة: (4 أشهر) من تاريخ البداية</li>
-                              <li>تاريخ البداية الفعلية: 12/3/1441هـ.</li>
-                            </ul>
-                          </div>
-                          <div className="btn-card-area d-flex justify-content-center mt-3">
-                            <a className="btn-title d-inline-block">انضم للدورة</a>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
-                  </div>
-                </div>
-              </div>
+                        </a>
+                      </ShowAt>
+                    ) : null}
+                  </React.Fragment>
+                  {this.state.showgroupedPackagesBtn ? (
+                    <NavTab
+                      isActive={
+                        this.state.currentTab === ProfessionalLicenseText
+                      }
+                      name="الرخصة المهنية"
+                      onClick={() => this.changeTab("الرخصة المهنية")}
+                    />
+                  ) : null}
 
-              <div className={"tab-pane fade "+this.state.active} id="tab-three" role="tabpanel" aria-labelledby="nav-contact-tab">
-                <div className="container">
-                  <div className="row">
-                  {this.renderCategoryGroups()}
-                    {/* <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
+                  {this.rendersubCategories()}
+                  <React.Fragment>
+                    {this.state.categoryGroups.length > 0 ? (
+                      <a
+                        className={"tab-items nav-link px-4"}
+                        data-toggle="tab"
+                        href="#tab-three"
+                        role="tab"
+                        id="tab-three-nav"
+                        aria-controls="nav-three"
+                        aria-selected="false"
+                        onClick={() => this.changeTab("tab-three")}
+                      >
+                        <div className="tab-img">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/hemma-logo-light.svg"
+                            }
+                            className="width-50"
+                            alt="Hemma-logo"
+                          />
+                        </div>
+                        <div className="main-color font-weight-bold">
+                          المجموعات المجانيه
+                        </div>
+                      </a>
+                    ) : null}
+                    {this.state.successes.length > 0 ? (
+                      <a
+                        className="tab-items nav-link px-4 "
+                        data-toggle="tab"
+                        href="#tab-four"
+                        role="tab"
+                        aria-controls="nav-four"
+                        aria-selected="false"
+                        onClick={() => this.changeTab("tab-four")}
+                      >
+                        <div className="tab-img">
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/hemma-logo-light.svg"
+                            }
+                            className="width-50"
+                            alt="Hemma-logo"
+                          />
+                        </div>
+                        <div className="main-color font-weight-bold">
+                          نجاحات همة
+                        </div>
+                      </a>
+                    ) : null}
+                  </React.Fragment>
+                </div>
+                <div className="tab-content" id="nav-tabContent">
+                  {this.renderPanelSub()}
+
+                  {this.state.currentTab !== ProfessionalLicenseText ? (
+                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
+                      <div
+                        className={"tab-pane fade " + this.state.defultActive}
+                        id="tab-two"
+                        role="tabpanel"
+                        aria-labelledby="nav-profile-tab"
+                      >
+                        <div className="container">
+                          <div className="row">
+                            {this.renderCards()}
+                            {!this.state.hideBtn && (
+                              <div className="row col-md-12">
+                                <div className="col-md-12 d-flex align-items-center justify-content-center">
+                                  <button
+                                    className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                                    onClick={this.loadMore}
+                                    disabled={this.state.disabled}
+                                  >
+                                    {this.state.loading == true ? (
+                                      <Loader type="ball-clip-rotate" />
+                                    ) : (
+                                      "عرض المزيد"
+                                    )}
+                                  </button>
+                                </div>
                               </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
+                            )}
                           </div>
                         </div>
                       </div>
+                    </ShowAt>
+                  ) : (
+                    <>
+                      {this.state.currentTab === ProfessionalLicenseText && (
+                        <ProfessionalLicense
+                          categoryData={this.state.details}
+                        />
+                      )}
+                    </>
+                  )}
+
+                  <div
+                    className={"tab-pane fade " + this.state.active}
+                    id="tab-three"
+                    role="tabpanel"
+                    aria-labelledby="nav-contact-tab"
+                  >
+                    <ShowAt at={this.state.currentTab === "tab-three"}>
+                      <div className="container">
+                        <div className="row">{this.renderCategoryGroups()}</div>
+                      </div>
+                    </ShowAt>
+                  </div>
+                  <div
+                    className="tab-pane fade "
+                    id="tab-four"
+                    role="tabpanel"
+                    aria-labelledby="nav-Success-tab"
+                  >
+                    <div className="container">
+                      <ShowAt at={this.state.currentTab === "tab-four"}>
+                        <div className="row">
+                          {this.renderSuccess()}
+                          {this.state.hideBtnSuccess && (
+                            <div className="row col-md-12">
+                              <div className="col-md-12 d-flex align-items-center justify-content-center">
+                                <button
+                                  className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                                  onClick={this.moreSucces}
+                                >
+                                  {this.state.loading == true ? (
+                                    <Loader type="ball-clip-rotate" />
+                                  ) : (
+                                    "عرض المزيد"
+                                  )}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </ShowAt>
                     </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative">
-                        <div className="d-flex align-items-center">
-                          <div className="mr-4">
-                            <img src={process.env.PUBLIC_URL +"/assets/images/icon.svg"}  className="width-80" alt="ICON"/>
-                          </div>
-                          <div className="text-white">
-                            <h4 className="h4">مجموعة الرياضيات</h4>
-                            <div className="font-size-18 mb-2">وصف المجموعه</div>
-                            <div className="font-size-14 d-flex align-items-center">
-                              <div className="mr-2">
-                                <i className="far fa-user-circle"></i>
-                              </div>
-                              <div className="mr-2">طالب</div>
-                              <div>680</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                 </div>
-              </div>
+              </nav>
             </div>
-          </nav>
-        </div>
-      </div>
-    </section>
+          </div>
+        </section>
       </React.Fragment>
     );
   }
 }
+const Rating = ({ successCase }) => {
+  return (
+    <div class="card-body px-2 py-2">
+      <p class="d-flex align-items-center light-gray mb-1 font-size-13">
+        <span class="d-block main-color-light mr-2">اسم الطالب : </span>
+        {successCase?.rating?.studentName}
+      </p>
+      <p class="light-gray font-size-13 m-0">
+        <span class="main-color-light">التقييم : </span>
+        {successCase?.rating?.feedBack}
+      </p>
+    </div>
+  );
+};
+
+const contentReducer = (successCase) => {
+  switch (successCase?.source) {
+    case "Media":
+      return (
+        <a href={successCase?.url}>
+          <img
+            src={successCase?.img}
+            className="w-100 height-70"
+            style={{ height: "170px !important" }}
+          />
+        </a>
+      );
+    case "Rating":
+      return <Rating successCase={successCase} />;
+    default:
+      break;
+  }
+};
+
+export const CategoryDetails = withRouter((props) => {
+  const [show, setShow] = useState(true);
+  const {
+    location: { pathname },
+  } = props;
+  const toggleShow = () => {
+    setShow(false);
+    setTimeout(() => {
+      setShow(true);
+    }, 50);
+  };
+
+  useEffect(() => {
+    toggleShow();
+  }, [pathname]);
+
+  return <>{show && <_CategoryDetails {...props} />}</>;
+});

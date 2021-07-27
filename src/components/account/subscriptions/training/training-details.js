@@ -14,6 +14,7 @@ import { TrainingPass } from "./training-pass";
 import { TrainingExamFail } from "./training-fail";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "../index.scss";
 // import MathType from '@wiris/mathtype-ckeditor5';
 
 class TrainingExamDetailsComponent extends Component {
@@ -95,7 +96,7 @@ class TrainingExamDetailsComponent extends Component {
     this.setState({ isHintOpen: true, selectedQuestionId: id });
   };
   closeHintModal = () => {
-    this.setState({ isHintOpen: false });
+    this.setState({ isHintOpen: false,selectedQuestionId: null });
   };
 
   componentDidMount = () => {
@@ -214,19 +215,22 @@ class TrainingExamDetailsComponent extends Component {
                 </div>
               </div>
             </div>
-            <div className="row pl-4 pr-4 ">
-              <div className="col-7">
-                <div className="row d-flex justify-content-between align-items-center mb-3">
+            <div className="row pl-4 pr-4 flex-column flex-lg-row">
+              <div className="col-12 col-lg-7 order-2  order-lg-1">
+                <div className="row d-flex justify-content-between align-items-center mb-3ss">
                   {answer ? (
                     <div className="col-md-12">
-                      {correctAnswer.correctChoice == answer.selectedChoice ? (
-                        <p className="small green-text mb-0">الإجابة صحيحة</p>
-                      ) : correctAnswer.correctChoice !==
+                      <div className="my-5">
+                        {correctAnswer.correctChoice ==
                         answer.selectedChoice ? (
-                        <p className="small red-text mb-0">الإجابة خاطئة</p>
-                      ) : (
-                        <p className="small red-text mb-0">لم تقم بالإجابة</p>
-                      )}
+                          <p className="small green-text mb-0">الإجابة صحيحة</p>
+                        ) : correctAnswer.correctChoice !==
+                          answer.selectedChoice ? (
+                          <p className="small red-text mb-0">الإجابة خاطئة</p>
+                        ) : (
+                          <p className="small red-text mb-0">لم تقم بالإجابة</p>
+                        )}
+                      </div>
                       <div className="row">
                         <div className="col-md-12">
                           {Object.keys(question.encodedChoices).map(function(
@@ -252,7 +256,7 @@ class TrainingExamDetailsComponent extends Component {
                                 />
                                 <label
                                   dangerouslySetInnerHTML={{ __html: value }}
-                                  className="mb-0 dark-text small ml-2 encoded-text"
+                                  className="flex-1 mb-0 dark-text small ml-2 encoded-text"
                                 ></label>
                               </div>
                             );
@@ -263,14 +267,14 @@ class TrainingExamDetailsComponent extends Component {
                     </div>
                   ) : (
                     <div className="col-md-12">
-                      <div className="col-md-6">
-                        <p className="small dark-silver-text mb-0">
+                      <div className="col-md-6 px-0">
+                        <p className="small dark-silver-text mt-4">
                           اختر الإجابة الصحيحة
                         </p>
                       </div>
                       <div className="row d-flex justify-content-between align-items-center mb-3">
-                      {question && question.allowHint ?(
-                          <div className="col-md-6">
+                        {question && question.allowHint ? (
+                          <div className="col-md-6 d-flex">
                             <button
                               className="btn red-outline-btn btn-sm small float-right d-flex"
                               onClick={() => this.openHintModal(question.id)}
@@ -305,7 +309,7 @@ class TrainingExamDetailsComponent extends Component {
                               checked={selected}
                             />
                             <label
-                              className="mb-0 dark-text small ml-2 encoded-text"
+                              className="flex-1 mb-0 dark-text small ml-2 encoded-text"
                               dangerouslySetInnerHTML={{ __html: value }}
                             ></label>
                           </div>
@@ -316,7 +320,7 @@ class TrainingExamDetailsComponent extends Component {
                 </div>
               </div>
               {question.imageUrl && (
-                <div className="col-5 d-flex align-items-center">
+                <div className="col-lg-5 col-12 d-flex align-items-center order-1  order-lg-2">
                   <img src={question.imageUrl} width="100%" />
                 </div>
               )}
@@ -387,7 +391,7 @@ class TrainingExamDetailsComponent extends Component {
                 <div className="row p-4">
                   <div className="col-12 d-flex align-items-center justify-content-between">
                     <div>
-                      <h6 className="mid-text mb-0">أسئلة الامتحان</h6>
+                      <h6 className="mid-text mb-0">أسئلة التدريب</h6>
                     </div>
                   </div>
                 </div>
@@ -423,14 +427,14 @@ class TrainingExamDetailsComponent extends Component {
                         className="btn light-outline-btn w-25"
                         onClick={this.submitAnswers}
                       >
-                        إنهاء الامتحان
+                        إنهاء التدريب
                       </button>
                     ) : (
                       <button
                         className="btn light-outline-btn w-25"
                         onClick={this.openConfirmExamModal}
                       >
-                        إنهاء الامتحان
+                        إنهاء التدريب
                       </button>
                     )}
 
@@ -467,12 +471,13 @@ class TrainingExamDetailsComponent extends Component {
                   </div>
                 </div>
               </div>
-              { <HintModal
-                isHintOpen={this.state.isHintOpen}
-                closeHint={this.closeHintModal}
-                id={this.state.selectedQuestionId}
-                attemptId={attemptId}
-              /> }
+                <HintModal
+                  isHintOpen={this.state.isHintOpen}
+                  closeHint={this.closeHintModal}
+                  id={this.state.selectedQuestionId}
+                  attemptId={attemptId}
+                />
+              
             </div>
           </div>
         )}

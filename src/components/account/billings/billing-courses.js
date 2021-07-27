@@ -15,7 +15,7 @@ export class BillingCoursesComponent extends Component {
           <div className="container">
             <div className="row">
               <div className="col-md-12">
-                <h5 className="dark-text mb-3">قائمة مشترياتي</h5>
+                <h5 className="dark-text mb-3">الحركات المالية</h5>
                 <ActiveCourses subscriptionStatus="Active" />
               </div>
             </div>
