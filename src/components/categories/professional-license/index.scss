@@ -42,7 +42,13 @@
         color: #6c69b0;
     }
 
-   &  .labels_tags:hover, .card-ele .label-course-btn:hover {
+    & .disabled-label{
+        border-color: gray;
+        color: gray;
+        cursor: default;
+    }
+
+   &  .labels_tags:hover, .card-ele .label-course-btn:hover:not(.disabled-label) {
         background-color: #6c69b0;
         color: #FFF;
     }

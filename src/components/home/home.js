@@ -22,6 +22,38 @@ import HemmaSuccess from "./hemma-success";
 
 var moment = require("moment");
 moment().format();
+const MIN_ELEM_COUNT = 3
+
+
+const disabledCarsoulOptions = {
+  type : '',
+  autoplay: false,
+}
+
+const enabledCarsoulOptions = {
+  type: 'carousel',
+  startAt: 1,
+  perView: 3,
+  focusAt: 'center',
+  gap: 20,
+  autoplay: 4000,
+  // animationTimingFunc: 'ease-in-out',
+  animationDuration: 800,
+  // peek: {
+  //   before: 100,
+  //   after: 100
+  // },
+  hoverpause: false,
+  keyboard: true,
+  direction: 'rtl',
+  breakpoints: {
+
+    1200: { perView: 2 },
+    992: { perView: 2 },
+    768: { perView: 1 }
+
+  }
+}
 
 class HomeComponent extends Component {
   constructor(props) {
@@ -34,6 +66,14 @@ class HomeComponent extends Component {
       categoryGroups: [],
       success : []
     };
+  }
+
+  activateGlide(glideWrapper,count) {
+    //IF DATA LENGTH IS LESS THAN MIN SO IT SHOULD BE STATIC VIEW "NOT A CARSOUL"
+    if(count <= MIN_ELEM_COUNT)
+    new Glide(glideWrapper,{...enabledCarsoulOptions,...disabledCarsoulOptions}).mount()
+    else 
+    new Glide(glideWrapper,{...enabledCarsoulOptions}).mount()
   }
 
   componentDidMount() {
@@ -65,7 +105,8 @@ class HomeComponent extends Component {
       .get(`${apiBaseUrl}/categories/Main_Category`)
       .then((response) => {
         this.setState({ categories: response.data.data });
-        new Glide('.glide_features',myOptions).mount()
+        this.activateGlide('.glide_features',response.data.data?.length)
+        // new Glide('.glide_features',myOptions).mount()
       })
       .catch((error) => {
         console.log(error);
@@ -73,12 +114,9 @@ class HomeComponent extends Component {
       axios
       .get(`${apiBaseUrl}/Success?showinMain=true`)
       .then(response => {
-        console.log(response);
         this.setState({ success: response.data.data.data});
-        if(this.state.success.length>0)
-        {
-          new Glide('.glide',myOptions).mount();
-        }
+        // new Glide('.glide',myOptions).mount();
+        this.activateGlide('.glide',response.data.data.data.length)
 
       })
       .catch(error => {
@@ -543,6 +581,7 @@ renderSucces()
 {this.renderCategories()}
                 </ul>
               </div>
+              {this.state.categories?.length> MIN_ELEM_COUNT && <>
               <div className="glide__arrows" data-glide-el="controls">
                 <button className="glide__arrow glide__arrow--left" data-glide-dir="<"><i
                     className="fas fa-chevron-left"></i></button>
@@ -554,6 +593,7 @@ renderSucces()
                
 
               </div>
+              </>}
             </div>
           </div>
         </div>
@@ -700,14 +740,11 @@ renderSucces()
             <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
             <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
           </div> --> */}
-          <div class="glide__bullets" data-glide-el="controls[nav]">
-            <button class="glide__bullet" data-glide-dir="=0"></button>
-            <button class="glide__bullet" data-glide-dir="=1"></button>
-            <button class="glide__bullet" data-glide-dir="=2"></button>
-            <button class="glide__bullet" data-glide-dir="=3"></button>
-            <button class="glide__bullet" data-glide-dir="=4"></button>
-            <button class="glide__bullet" data-glide-dir="=5"></button>
-          </div>
+         {this.state.success.length > MIN_ELEM_COUNT && <div class="glide__bullets" data-glide-el="controls[nav]">
+           {this.state.success.map((elem,index) =>(
+            <button class="glide__bullet" data-glide-dir={`=${index}`}></button>
+           ))}
+          </div>}
         </div>
         <div class="d-flex align-items-center justify-content-center mt-5">
         <Link to="/home/hemma-succes" className="btn-yellow headShake">المزيد من النجاحات</Link>

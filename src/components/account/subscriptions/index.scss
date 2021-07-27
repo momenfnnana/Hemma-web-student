@@ -1,0 +1,12 @@
+.box-layout{
+    & video{
+        max-height: 50vh !important;
+    }
+}
+
+.encoded-text{
+    & p{
+        max-width: 100% !important;
+        word-wrap: break-word !important;
+    }
+}
