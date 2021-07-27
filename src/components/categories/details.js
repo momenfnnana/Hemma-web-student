@@ -573,7 +573,12 @@ export class _CategoryDetails extends Component {
     debugger
     const evObj = document.createEvent('Events');
     evObj.initEvent('click', true, false);
-    element.dispatchEvent(evObj)
+    try {
+      element.dispatchEvent(evObj)
+      
+    } catch (error) {
+    }
+      
   }
 
   renderCompetitions() {
