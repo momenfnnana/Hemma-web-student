@@ -69,6 +69,7 @@ export default withRouter(function ProfessionalCourses({
     spec: true,
     general: true,
   });
+  const token = getToken();
 
   const authValidator = () => {
     if (!token) throw new Error("requires sign-in");
@@ -361,7 +362,6 @@ export default withRouter(function ProfessionalCourses({
       (id) => id
     );
 
-    const token = getToken();
 
     if (!token) {
       authErrorMsg();
