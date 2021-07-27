@@ -74,6 +74,7 @@ class AddQuestion extends Component {
 				this.setState({file: response.data.data.url, questionType: "Image"});
 				if (this.state.file) {
 					const courseId = this.props.match.params.id;
+					const sectionId = this.state.sectionId;
 					let token = localStorage.getItem("token");
 					let headers = {
 						Authorization: `Bearer ${token}`
@@ -83,7 +84,7 @@ class AddQuestion extends Component {
 						content: this.state.file
 					};
 					axios
-						.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}`, data, {
+						.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
 							headers
 						})
 						.then(response => {
