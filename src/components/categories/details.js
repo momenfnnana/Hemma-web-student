@@ -157,11 +157,10 @@ export class _CategoryDetails extends Component {
 
   async componentDidMount() {
     const {
-      match: { params },
+      match: { params }
     } = this.props;
 
     this.handleNavFromFree()
-
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
@@ -180,7 +179,6 @@ export class _CategoryDetails extends Component {
         `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
       )
       .then((response) => {
-        debugger;
         var more = false;
         if (
           response.data.data.itemCount >
@@ -305,6 +303,17 @@ export class _CategoryDetails extends Component {
     }
   }
 
+  warningAlert(msg){
+    swal(
+      "عفواً",
+      msg,
+      "error",
+      {
+        button: "متابعة",
+      }
+    );
+  }
+
   renderCategoryGroups() {
     return this.state.categoryGroups.map((group) => (
       <React.Fragment>
@@ -376,7 +385,20 @@ export class _CategoryDetails extends Component {
     ));
   }
 
+  renderEmptyText() {
+    if(this.state.loading || this.state?.subcategoriesdetails?.length)
+    return null
+    
+    return(
+      <p className="col-12 text-center">
+        انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا
+      </p>
+    )
+  }
+
   renderCards() {
+    if(this.state.courses.length === 0)
+    return this.renderEmptyText()
     return this.state.courses.map((course) => (
       <React.Fragment>
         <div className="col-lg-4">
@@ -410,14 +432,13 @@ export class _CategoryDetails extends Component {
     return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
   }
 
-
   async validateHasSubCategories(slug){
     try {
       const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
       return new Promise((res,rej)=>res(childCatgories))
     } catch (error) {
+      
     }
-
   }
 
   handleNoChildCategories(){
@@ -457,7 +478,7 @@ export class _CategoryDetails extends Component {
           className="tab-items nav-link px-4"
           data-toggle="tab"
           role="tab"
-          to={'/test'}
+          to={'/'}
           aria-selected="false"
           onClick={() => handleClick(Category)}
         >
@@ -579,6 +600,19 @@ export class _CategoryDetails extends Component {
     this.setState({ ...this.state, currentTab: tab });
   }
 
+  simulateClick(divId,event = 'click'){
+    const element = document.getElementById(divId);
+    debugger
+    const evObj = document.createEvent('Events');
+    evObj.initEvent('click', true, false);
+    try {
+      element.dispatchEvent(evObj)
+      
+    } catch (error) {
+    }
+      
+  }
+
   renderCompetitions() {
     const {
       match: { params },
@@ -656,6 +690,8 @@ export class _CategoryDetails extends Component {
   }
   render() {
     let token = localStorage.getItem("token");
+
+    console.log({show : this.state.currentTab === "tab-three"});
     const {
       match: { params },
     } = this.props;
@@ -914,19 +950,18 @@ export class _CategoryDetails extends Component {
                       )}
                     </>
                   )}
-
-                  <div
-                    className={"tab-pane fade " + this.state.active}
-                    id="tab-three"
-                    role="tabpanel"
-                    aria-labelledby="nav-contact-tab"
-                  >
-                    <ShowAt at={this.state.currentTab === "tab-three"}>
+                    <div
+                      className={"tab-pane fade " + this.state.active}
+                      id="tab-three"
+                      role="tabpanel"
+                      aria-labelledby="nav-contact-tab"
+                    >
+                  <ShowAt at={this.state.currentTab === "tab-three"}>
                       <div className="container">
                         <div className="row">{this.renderCategoryGroups()}</div>
                       </div>
-                    </ShowAt>
-                  </div>
+                  </ShowAt>
+                    </div>
                   <div
                     className="tab-pane fade "
                     id="tab-four"

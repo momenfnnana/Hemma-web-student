@@ -30,7 +30,7 @@ export class SolutionModal extends Component {
             }
           )
           .then((response) => {
-            debugger;
+
             let questions = response.data.data.questions;
             let questionId = questions.filter(
               (question) => question.id === nextProps.id
