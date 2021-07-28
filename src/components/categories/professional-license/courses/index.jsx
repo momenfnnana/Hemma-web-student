@@ -421,7 +421,8 @@ export default withRouter(function ProfessionalCourses({
       {show?.["spec"] && (
         <ProfessionalCourse
           url={specUrl}
-          title={selecteSpecCourse?.nameAr || "دورات الرخصة المهنية للتخصصات"}
+          title={ "دورات الرخصة المهنية"}
+          general={'دورات الرخصة المهنية'}
           hasPickTrainer={false}
           categoryData={categoryData}
           specialitiesState={specialitiesState}
@@ -445,7 +446,9 @@ export default withRouter(function ProfessionalCourses({
           onCourseSelect={onGeneralCourseSelect}
           triggerkeysCount={1}
           url={generalUrl}
-          title={selectedGeneralCourse?.nameAr || "دورات الرخصة المهنية للعام"}
+          title={"دورات الرخصة المهنية "}
+          subTitle={'للعام'}
+          general={'دورات الرخصة المهنية - عام'}
           hasChooseOptions={false}
           categoryData={categoryData}
           specialities={specialities}

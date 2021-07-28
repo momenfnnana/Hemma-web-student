@@ -1,6 +1,6 @@
 export const courseTabs = [
   {
-    title: "دورة الرخصة الشاملة",
+    title: "دورة الرخصة المهنية ",
     id: "Original",
   },
   // {
