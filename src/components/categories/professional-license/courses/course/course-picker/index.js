@@ -38,14 +38,14 @@ export default function CourseTabPicker({
       setChangeCounter((c) => c + 1);
       setDisabled(!res?.data);
       setChangeCounter(c => c+1)
-      if(res.data)
-      handleClick();
+      // if(res.data)
+      // handleClick();
     }, courseTypeParams);
   };
-  useEffect(() => {
-    if(!changeCounter)return
-    if(!disabled) handleClick();
-  },[changeCounter])
+  // useEffect(() => {
+  //   if(!changeCounter)return
+  //   if(!disabled) handleClick();
+  // },[changeCounter])
 
 
   useEffect(() => {
