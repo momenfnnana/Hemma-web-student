@@ -1,0 +1,12 @@
+#tooltip-top > .tooltip-inner {
+  background-color: #fff;
+  color: #243a56;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 0 20px -5px rgba(170, 170, 170, 0.9);
+  font-size: 12px !important;
+  padding: 5px 25px 5px 7px !important;
+  text-align: right !important;
+}
+
+/*# sourceMappingURL=style.css.map */

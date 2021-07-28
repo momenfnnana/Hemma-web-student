@@ -147,7 +147,6 @@ export class _CategoryDetails extends Component {
     if (professionalLicense) this.handleHasProfessionalLicense();
   }
 
-
   handleNavFromFree(){
     const hasFreeFlag = getQuery('free')
     if(hasFreeFlag === 'true')
@@ -261,6 +260,26 @@ export class _CategoryDetails extends Component {
     if (this.props.history.location.hash == "#tab-three") {
       this.setState({ active: "show active", defultActive: "" });
     }
+  }
+
+  warningAlert(msg){
+
+    swal(
+
+      "عفواً",
+
+      msg,
+
+      "error",
+
+      {
+
+        button: "متابعة",
+
+      }
+
+    );
+
   }
 
   categoryGroupRedirection(CategoryGroup) {
@@ -425,25 +444,32 @@ export class _CategoryDetails extends Component {
   handleNoChildCategories(){
     throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
   }
-
   rendersubCategories() {
-    const getSlug = (Category = {}) => {
-      const { slug : categSlug } = Category;
-      return categSlug;
-    };
-
+   
     const handleClick = async(Category) => {
+
       try {
+
         const { slug : categSlug } = Category;
+
         const childCateg  = await this.validateHasSubCategories(categSlug)
+
         if(!childCateg.length) this.handleNoChildCategories()
+
         const url = `./${categSlug}`
+
         const { history } = this.props;
+
         this.changeTab(url);
+
         history.push(url);
+
       } catch (error) {
+
         this.warningAlert(error?.message)
+
       }
+
     };
 
     return this.state.subcategoriesdetails.map((Category, count) => (
@@ -451,8 +477,8 @@ export class _CategoryDetails extends Component {
         <NavLink
           className="tab-items nav-link px-4"
           data-toggle="tab"
-          to={`./${getSlug(Category, count)}`}
           role="tab"
+          to={'/'}
           aria-selected="false"
           onClick={() => handleClick(Category)}
         >
@@ -486,6 +512,13 @@ export class _CategoryDetails extends Component {
         }
       );
     }
+  }
+
+  simulateClick(divId,event = 'click'){
+    const element = document.getElementById(divId);
+    const evObj = document.createEvent('Events');
+    evObj.initEvent('click', true, false);
+    element.dispatchEvent(evObj)
   }
 
   renderLectures() {
