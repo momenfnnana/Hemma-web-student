@@ -4,14 +4,15 @@
   }
 }
 
+.encoded-text{
+    & p{
+        max-width: 100% !important;
+        word-break: break-word !important;
+        white-space: normal;
+    }
+}
 .break-word {
   word-break: break-word !important;
-}
-
-.encoded-text {
-  & p {
-    max-width: 100% !important;
-
-    word-wrap: break-word !important;
-  }
+  max-width: 100% !important;
+  white-space: normal;
 }

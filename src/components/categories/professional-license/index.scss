@@ -1,114 +1,118 @@
 .card-licences {
-  padding: 15px !important; 
+  padding: 15px !important;
   border-radius: 20px;
 }
 
 .border-light-bold {
-    border: 3px solid #816cc8 !important;
+  border: 3px solid #816cc8 !important;
 }
 
-
-.professional-license-wrapper{
-    & .card-ele:hover {
-
-        & .main-color,.sub-color{
-            color: var(--main-color) !important;
-        }
-        & .sub-color{
-            color: var(--sub-color) !important;
-
-        }
+.professional-license-wrapper {
+  & .card-ele:hover {
+    & .main-color,
+    .sub-color {
+      color: var(--main-color) !important;
     }
-
-    .card-ele:hover{
-        background-color: inherit !important;
-        color: inherit !important;
+    & .sub-color {
+      color: var(--sub-color) !important;
     }
+  }
 
+  .card-ele:hover {
+    background-color: inherit !important;
+    color: inherit !important;
+  }
 
-    .card-img {
-        position: relative;
-        top: -80px;
+  .card-img {
+    position: relative;
+    top: -80px;
+    & img {
+      max-width: 230px !important;
+      object-fit: fill;
+      border-radius: 12%;
     }
+  }
 
-   & .labels_tags, .label-course-btn {
-        border: 1px solid #6c69b0;
-        padding: 10px;
-        text-align: center;
-        border-radius: 20px;
-        font-weight: bold;
-        transition: all .2s ease-in-out;
-        cursor: pointer;
-        color: #6c69b0;
-    }
+  & .labels_tags,
+  .label-course-btn {
+    border: 1px solid #6c69b0;
+    padding: 10px;
+    text-align: center;
+    border-radius: 20px;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    color: #6c69b0;
+  }
 
-    & .disabled-label{
-        border-color: gray;
-        color: gray;
-        cursor: default;
-    }
+  & .disabled-label {
+    border-color: gray;
+    color: gray;
+    cursor: default;
+  }
 
-   &  .labels_tags:hover, .card-ele .label-course-btn:hover:not(.disabled-label) {
-        background-color: #6c69b0;
-        color: #FFF;
-    }
+  & .labels_tags:hover,
+  .card-ele .label-course-btn:hover:not(.disabled-label) {
+    background-color: #6c69b0;
+    color: #fff;
+  }
 }
 
-.d-grid{
-    display: grid;
+.d-grid {
+  display: grid;
 }
 
 .card-licences-list-info li {
-    position: relative;
-    font-size: 14px;
-    font-weight: bold;
-    color: #838985;
+  position: relative;
+  font-size: 14px;
+  font-weight: bold;
+  color: #838985;
 }
 
 .card-licences-list-info li::before {
-    content: '';
-    position: absolute;
-    top: 5px;
-    right: -25px;
-    width: 10px;
-    height: 10px;
-    background-color: var( --light-sub-color);
-    border-radius: 50%;
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: -25px;
+  width: 10px;
+  height: 10px;
+  background-color: var(--light-sub-color);
+  border-radius: 50%;
 }
 
-.mt-6{
-    margin-top: 6rem;
+.mt-6 {
+  margin-top: 6rem;
 }
 
 .card-licences-video-link {
-    background-color: #d7f7f7;
-    font-size: 12px;
-    font-weight: bold;
-    min-width: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 10px;
-    border-radius: 20px;
-    color: #dc3545;
-    transition: all .2s ease-in-out;
-    cursor: pointer;
+  background-color: #d7f7f7;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: #dc3545;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 .vid-play {
-    background-color: #dc3545;
-    color: #FFF;
-    min-width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 3px;
+  background-color: #dc3545;
+  color: #fff;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 3px;
 }
 
 .card-licences-video-link:hover {
-    background-color: var(--sub-color);
-    color: #FFF;
+  background-color: var(--sub-color);
+  color: #fff;
 }

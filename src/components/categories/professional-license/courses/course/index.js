@@ -140,7 +140,7 @@ export default function ProfessionalCourse({
           <img
             src={
               descriptionData?.bannerUrl ||
-              process.env.PUBLIC_URL + "/assets/images/human.svg"
+              process.env.PUBLIC_URL + "/assets/images/course-placholder.png"
             }
             alt="Human"
           />

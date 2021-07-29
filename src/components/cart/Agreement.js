@@ -6,6 +6,7 @@ import { Field, reduxForm } from "redux-form";
 import { Link, withRouter } from "react-router-dom";
 import swal from "@sweetalert/with-react";
 import { apiBaseUrl } from "../../api/helpers";
+import "./index.scss"
 
 class AgreementFormComponent extends Component {
   constructor(props) {
@@ -103,41 +104,40 @@ class AgreementFormComponent extends Component {
           <div className="container pt-3 pb-3">
             <div className="row">
               <div className="col-12">
-                <h6 className="light-text">الشروط والأحكام</h6>
+                <h6 className="light-text font-size-20">الشروط والأحكام</h6>
               </div>
             </div>
             <div className="row">
               <div className="col-12">
-                <div className="silver-bg p-3 rounded mt-3">
-                  <h6 className="dark-text small">شروط الاشتراك في الدورة</h6>
-                  <p className="light-font-text dark-text smaller text-break">
-                    ١- الدورة لشخص واحد فقط لانسمح بنظام (القطه) او الاشتراك
-                    بحساب واحد
+                <div className="py-3 rounded rules-wrapper">
+                  <h6 className="dark-text mb-4 font-weight-bold">عزيزي المتدرب/ة ، يشرفنا اختيارك لمنصتنا، و للضروة يُرجى قراءة الشروط التالية بعناية قبل الضغط على متابعة:</h6>
+                  <p className="light-font-text dark-text  text-break">
+                    ١- الاشتراك في الدورة فردي وخاص بمشترك واحد فقط (وفي حال تم استخدام الحساب من أكثر من شخص فسيتم إيقاف الحساب تلقائيًا
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
-                    ٢- يمنع دخول أكثر من شخص أو أكثر من مستفيد إلى الحساب
+                  <p className="light-font-text dark-text  text-break">
+                  ٢-( لا نحلل ) نشر محتويات الدورة ومرفقاتها أو الاستفادة منها من قبل إي شخص آخر (و لا نسمح بنظام القطة) في حساب واحد
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
-                    ٣- الدورة online تتطلب وجود اتصال ممتاز ، ولانتحمل مسوؤلية
-                    غير ذلك
+                  <p className="light-font-text dark-text  text-break">
+                    ٣- تسجيل المحاضرات وحفظها (غير مسموح)
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
-                    ٤-لانسمح بتسجيل المحاضرات او حفظها .
+                  <p className="light-font-text dark-text  text-break">
+                    4- لكل دورة مدة اشتراك موضحة في معلومات الدورة، (وتحذف تلقائيًا بعد انتهاء المدة)
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
-                    ٥-الدورة بنظام الاشتراك وتبقى لفترة محددة.
+                  <p className="light-font-text dark-text  text-break">
+                    ٥-لا يمكن الانسحاب من الدورة او استرجاع رسومها بعد بداية الدورة او بعد إتاحة الملازم
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
-                    ٦-لايمكن استرجاع الرسوم بعد بداية الدورة ، وفي حال تم طلب
-                    الملزمة قبل بداية الدورة لايمكن استرجاع رسوم الدورة والملزمة
-                    .
+                  <p className="light-font-text dark-text  text-break">
+                    ٦- لا يمكن إلغاء طلب الملزمة المطبوعة أو استرجاع رسومها.
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
+                  <p className="light-font-text dark-text  text-break">
                     ٧- الملزمة مخصصة للمشترك في الدورة فقط ولايسمح بنشرها او
                     بيعها او الاستفادة منها مادياً
                   </p>
-                  <p className="light-font-text dark-text smaller text-break">
+                  <p className="light-font-text dark-text  text-break">
                     ٨- طلب الدورة والاشتراك بها تعني موافقتك على الشروط.
+                  </p>
+                  <p className="light-font-text dark-text  text-break">
+                  الدورة تتطلب وجود اتصال (نت قوي).
                   </p>
                 </div>
               </div>
@@ -151,7 +151,7 @@ class AgreementFormComponent extends Component {
                     onChange={event => this.handleChange(event)}
                     checked={this.state.checked}
                   />
-                  <label className="form-check-label smaller dark-text">
+                  <label className="form-check-label  dark-text">
                     أوافق على الشروط والأحكام{" "}
                   </label>
                 </div>
