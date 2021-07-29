@@ -15,7 +15,9 @@ moment().format("iYYYY/iM/iD");
 
 export default function ProfessionalCourse({
   price = "2000 ريال",
-  title = "دورات الرخصة المهنية للتخصصات",
+  title = "دورات الرخصة المهنية",
+  subTitle = 'للتخصصات',
+  general= '',
   hasPickTrainer = true,
   hasChooseOptions = true,
   categoryData,
@@ -146,7 +148,7 @@ export default function ProfessionalCourse({
         </div>
         <div className="mt--50">
           <h5 className="h5 main-color mb-3 font-weight-bold text-center">
-            {title}
+            {title} <span style={{color: "red"}}>{subTitle}</span>
           </h5>
           {hasChooseOptions && (
             <ChooseOptions
@@ -162,7 +164,8 @@ export default function ProfessionalCourse({
                   id={courseTab.id}
                   selectedId={optionsData?.CourseType}
                   onClick={handleCourseTabClick}
-                  title={courseTab.title}
+                  title={general}
+                  points={courseTab.points}
                   checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
                   optionsData={optionsData}
                   getCourseData={getCourseData}

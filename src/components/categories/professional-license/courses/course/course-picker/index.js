@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { courseTypeKey } from "../choose-options";
-
-const disabeledTooltip = (props) => (
-  <Tooltip  {...props}>
-    لا توجد دورات متاحة حاليًا
-  </Tooltip>
-);
-
+import './style.sass';
 export default function CourseTabPicker({
   id,
   selectedId,
   onClick,
-  title = "دورة الرخصة الشاملة",
+  title = "دورة الرخصة المهنية",
+  points =[
+    "محاضرات مباشرة وتبقى مسجلة في الموقع" ,
+    'عدد كبير من التدريبات والتجميعات',
+    'ملزمة شاملة لكل المعايير' ,
+    "إجابة لجميع الاستفسارات"
+  ],
   checkCourseCondition,
   optionsData,
   getCourseData = () => {},
@@ -30,6 +30,15 @@ export default function CourseTabPicker({
     if (disabled) return;
     onClick(id);
   };
+  const disabeledTooltip = (props) => (
+      <Tooltip {...props}  className="in" id="tooltip-top">
+        <ul className="card-licences-list-info" type="none">
+          {points.map((point) => (
+              <li>{point}</li>
+          ))}
+        </ul>
+      </Tooltip>
+  );
 
   const checkIfValidArray = (array) => Array.isArray(array) && array.length > 0
   const checkIfValidObject = (obj) => Object.keys(obj || {}).length > 0
@@ -37,25 +46,35 @@ export default function CourseTabPicker({
   const checkIfDisabled = () => {
     const courseTypeParams = { [courseTypeKey]: id };
     getCourseData((res) => {
+      setChangeCounter((c) => c + 1);
       setDisabled(!res?.data);
       setChangeCounter(c => c+1)
-      if(res.data)
-      handleClick();
+      // if(res.data)
+      // handleClick();
     }, courseTypeParams);
   };
-  useEffect(() => {
-    if(!changeCounter)return
-    if(!disabled) handleClick();
-  },[changeCounter])
+  // useEffect(() => {
+  //   if(!changeCounter)return
+  //   if(!disabled) handleClick();
+  // },[changeCounter])
+
 
   useEffect(() => {
-    if (checkCourseCondition) checkIfDisabled();
+    checkIfDisabled();
   }, [checkCourseCondition, optionsData]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if(!disabled)
+      handleClick()
+    }, 400);
+  },[disabled])
 
   return (
     <OverlayTrigger
-      placement="bottom"
-      overlay={disabled ? disabeledTooltip : () => <Tooltip></Tooltip>}
+      placement="right"
+      delay={{ show: 250, hide: 400 }}
+      overlay={disabeledTooltip}
     >
       <a
         className={tabClass}

@@ -9,7 +9,10 @@ export const eventFire =(id, etype) =>{
   } else {
     var evObj = document.createEvent('Events');
     evObj.initEvent(etype, true, false);
+    try {
     el.dispatchEvent(evObj);
+  } catch (error) {
+  }
   }
 }
 

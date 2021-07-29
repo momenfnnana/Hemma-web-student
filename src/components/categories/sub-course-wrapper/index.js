@@ -9,7 +9,6 @@ export default function SubCourseWrapper() {
       {subCoursesData.map((course) => (
         <SubCourseItem {...course} />
       ))}
-      <CoursePreviewModal title="فيديو توضيحي"  />
     </div>
   );
 }

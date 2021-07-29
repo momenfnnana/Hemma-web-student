@@ -1,7 +1,7 @@
-.box-layout{
-    & video{
-        max-height: 50vh !important;
-    }
+.box-layout {
+  & video {
+    max-height: 50vh !important;
+  }
 }
 
 .encoded-text{
@@ -10,4 +10,9 @@
         word-break: break-word !important;
         white-space: normal;
     }
+}
+.break-word {
+  word-break: break-word !important;
+  max-width: 100% !important;
+  white-space: normal;
 }
