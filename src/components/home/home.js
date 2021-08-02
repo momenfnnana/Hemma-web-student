@@ -85,7 +85,7 @@ class HomeComponent extends Component {
   activateGlide(glideWrapper,count) {
     //IF DATA LENGTH IS LESS THAN MIN SO IT SHOULD BE STATIC VIEW "NOT A CARSOUL"
     const lessThanThreeElemesOptions = count <= MIN_ELEM_COUNT ? disabledCarsoulOptions : null
-    const isMobileOptions = isMobile && lessThanThreeElemesOptions ? mobileCarsoulOptions : null
+    const isMobileOptions = isMobile ? mobileCarsoulOptions : null
     const mergedOptions = {...lessThanThreeElemesOptions,...isMobileOptions}
     new Glide(glideWrapper,{...enabledCarsoulOptions,...mergedOptions}).mount()
   }
