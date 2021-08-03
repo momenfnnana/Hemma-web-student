@@ -10,6 +10,11 @@
         word-break: break-word !important;
         white-space: normal;
     }
+
+    & img{
+      width: 100% !important;
+      height: auto !important;
+    }
 }
 .break-word {
   word-break: break-word !important;
