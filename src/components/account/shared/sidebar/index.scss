@@ -41,4 +41,11 @@ card-header {
 
 .courses-features li a.active {
   color: var(--sub-color);
+  & svg{
+    stroke: var(--sub-color);
+  }
+}
+
+.sidebar .sidebar-list ul > li > a.active {
+border-right: none !important; 
 }

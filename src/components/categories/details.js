@@ -478,7 +478,7 @@ export class _CategoryDetails extends Component {
           className="tab-items nav-link px-4"
           data-toggle="tab"
           role="tab"
-          to={'/'}
+          to={`/${null}`}
           aria-selected="false"
           onClick={() => handleClick(Category)}
         >
@@ -908,7 +908,6 @@ export class _CategoryDetails extends Component {
                 </div>
                 <div className="tab-content" id="nav-tabContent">
                   {this.renderPanelSub()}
-
                   {this.state.currentTab !== ProfessionalLicenseText ? (
                       <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
                       <div

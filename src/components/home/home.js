@@ -13,9 +13,10 @@ import "slick-carousel/slick/slick-theme.css";
  import AOS from 'aos';
  import Glide from '@glidejs/glide'
 import HemmaSuccess from "./hemma-success";
+import "./index.scss"
 // Required Core Stylesheet
 // import "public/assets/css/glide.core.min.css";
-
+import WrapperText from './../../shared-components/WrappedText/inedx';
 // // Optional Theme Stylesheet
 // import "public/assets/css/glide.theme.min.css";
 
@@ -23,11 +24,23 @@ import HemmaSuccess from "./hemma-success";
 var moment = require("moment");
 moment().format();
 const MIN_ELEM_COUNT = 3
+const MOBILE_SCREEN_WIDTH = 800
+const {innerWidth} = window
+
+const isMobile = innerWidth <= MOBILE_SCREEN_WIDTH
 
 
 const disabledCarsoulOptions = {
   type : '',
   autoplay: false,
+}
+
+const mobileCarsoulOptions = {
+  type : '',
+  autoplay: false,
+  perView: 1,
+  startAt: 0,
+  swipeThreshold:5000
 }
 
 const enabledCarsoulOptions = {
@@ -64,16 +77,17 @@ class HomeComponent extends Component {
       testimonials: [],
       initiatives: [],
       categoryGroups: [],
-      success : []
+      success : [],
+      maxSuccessHeight : 'fit-content'
     };
   }
 
   activateGlide(glideWrapper,count) {
     //IF DATA LENGTH IS LESS THAN MIN SO IT SHOULD BE STATIC VIEW "NOT A CARSOUL"
-    if(count <= MIN_ELEM_COUNT)
-    new Glide(glideWrapper,{...enabledCarsoulOptions,...disabledCarsoulOptions}).mount()
-    else 
-    new Glide(glideWrapper,{...enabledCarsoulOptions}).mount()
+    const lessThanThreeElemesOptions = count <= MIN_ELEM_COUNT ? disabledCarsoulOptions : null
+    const isMobileOptions = isMobile ? mobileCarsoulOptions : null
+    const mergedOptions = {...lessThanThreeElemesOptions,...isMobileOptions}
+    new Glide(glideWrapper,{...enabledCarsoulOptions,...mergedOptions}).mount()
   }
 
   componentDidMount() {
@@ -315,11 +329,10 @@ warningAlert(msg){
 
 async onClick(Category){
   try {
-    const { slug : categSlug } = Category;
-
+    const { slug : categSlug ,professionalLicense} = Category;
+    debugger
     const childCateg  = await this.validateHasSubCategories(categSlug)
-    
-    //if(!childCateg.length) this.handleNoChildCategories()
+    if(!childCateg.length && !professionalLicense) this.handleNoChildCategories()
 
     const url = `/categories/details/${categSlug}`
 
@@ -348,25 +361,7 @@ async onClick(Category){
               <li className="glide__slide">
                     <div className="card">
                       <div className="card-items">
-                      <div className="title-card font-weight-bold" onClick={() => {(cat.active==false && cat.featuredInMain==true)? 
-                  (cat.inactiveCategoryMessage)? 
-                  swal(
-                    "عفواً",
-                    cat.inactiveCategoryMessage,
-                    "error", 
-                   {
-                     button: "متابعة"
-                   }
-                   ):
-                   swal(
-                    "عفواً",
-                    "انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا"  ,
-                    "error", 
-                   {
-                     button: "متابعة"
-                   }
-                      )
-                   :history.push(`/categories/details/${cat.slug}`)}}
+                      <div className="title-card font-weight-bold" onClick={() => this.onClick(cat)}
                 >
                         
                         <h3> <span>{cat.nameAr}</span>  </h3>
@@ -482,6 +477,46 @@ async onClick(Category){
       );
     }
   }
+
+  async validateHasSubCategories(slug){
+    try {
+      const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
+      return new Promise((res,rej)=>res(childCatgories))
+    } catch (error) {
+      
+    }
+  }
+
+  async handleClick (Category){
+
+    try {
+
+      debugger
+      const { slug : categSlug,professionalLicense } = Category;
+      const childCateg  = await this.validateHasSubCategories(categSlug)
+
+      if(childCateg.length &&  !Category?.professionalLicense) this.handleNoChildCategories()
+
+      const url = `./${categSlug}`
+
+      const { history } = this.props;
+
+      this.changeTab(url);
+
+      history.push(url);
+
+    } catch (error) {
+
+      this.warningAlert(error?.message)
+
+    }
+
+  };
+
+  
+  handleNoChildCategories(){
+    throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+  }
   renderCategoriesGroup() {
     const categoryGroups = this.state.categoryGroups;
     return (
@@ -576,19 +611,40 @@ async onClick(Category){
       );
     });
   }
+
+
+  findSuccessElemsHeight(){
+    let maxHeight = 10
+    this.state.success.forEach((elem,index) =>{
+      const elemNode = document.getElementById(`success-item ${index}`)
+      if(elemNode?.offsetHeight > maxHeight)
+      maxHeight = elemNode?.offsetHeight 
+    })
+    this.setState({...this.state,maxSuccessHeight : maxHeight})
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    console.log({prevState:prevState.success,s : this.state.success});
+    if(prevState.success?.length !== this.state.success?.length)
+    setTimeout(() => {
+      this.findSuccessElemsHeight()
+    },1000)
+  }
+
 renderSucces()
 {
   return this.state.success.map((suc, index) => (
     <React.Fragment>
-<li className="glide__slide">
-                <div className="sider-items  min-height-150">
+<li className="glide__slide d-flex flex-column" id={`success-item ${index}`} style={{minHeight:+this.state.maxSuccessHeight ? `${this.state.maxSuccessHeight}px` :  'fit-content'}}>
+                <div className="sider-items  min-height-150 flex-1">
                   <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  <h4 className="text-danger">{suc.courseName}</h4>
+                  <h4 className="color-danger wrapped-text">{suc.courseName}</h4>
                   {suc.source == "Media" ? (
                     <React.Fragment>
 <a href={suc?.url}>
-        <img src={suc?.img} className="w-100 height-70" style={{height:'170px !important'}} />
+        <img src={suc?.img} className="w-100 h-auto" />
       </a>
+
                     </React.Fragment>
                    
                   ):(
