@@ -25,7 +25,7 @@ export class CommentsListComponent extends Component {
       commentType: "",
       disabled: false,
       hideBtn: false,
-      nextPageUrl: `${apiBaseUrl}/AskQuestionComments?askQuestionId=${this.props.match.params.id}&page=${this.page}&limit=${this.limit}`,
+      nextPageUrl: `${apiBaseUrl}/AskQuestionComments?askQuestionId=${this.props.id}&page=${this.page}&limit=${this.limit}`,
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -87,7 +87,7 @@ export class CommentsListComponent extends Component {
   };
 
   loadMore = async () => {
-    const askQuestionId = this.props.match.params.id;
+    const askQuestionId = this.props.id;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
@@ -167,7 +167,7 @@ export class CommentsListComponent extends Component {
   handleSubmit(event) {
     event.preventDefault();
     if (this.commentInput.value !== "") {
-      const askQuestionId = this.props.match.params.id;
+      const askQuestionId = this.props.id;
       let token = localStorage.getItem("token");
       let headers = {
         Authorization: `Bearer ${token}`,

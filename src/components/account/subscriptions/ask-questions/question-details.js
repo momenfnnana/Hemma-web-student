@@ -185,7 +185,7 @@ class AskQuestionDetailsComponent extends Component {
               </div>
             </div>
             <div className="row">
-              <CommentsList userId={this.state.details.studentId} />
+              <CommentsList userId={this.state.details.studentId}  id={this.props.id}/>
             </div>
           </div>
         </section>
