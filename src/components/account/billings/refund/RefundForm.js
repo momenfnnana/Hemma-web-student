@@ -150,6 +150,14 @@ class RefundComponent extends Component {
                     validate={required}
                   />
                   <Field
+                    name="ibanNumber"
+                    type="text"
+                    component={inputField}
+                    className="form-control border-left-0 pl-0"
+                    placeholder="رقم الايبان"
+                    validate={required}
+                  />
+                  <Field
                     name="accountOwnerName"
                     type="text"
                     component={inputField}
