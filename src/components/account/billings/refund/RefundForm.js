@@ -33,7 +33,8 @@ class RefundComponent extends Component {
       bankName: values.bankName,
       accountNumber: values.accountNumber,
       accountOwnerName: values.accountOwnerName,
-      leavingReason: values.leavingReason
+      leavingReason: values.leavingReason,
+      IBAN : values.ibanNumber
     };
     this.setState({ loading: true, disabled: true });
     axios
