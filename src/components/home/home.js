@@ -624,7 +624,6 @@ async onClick(Category){
   }
 
   componentDidUpdate(prevProps, prevState){
-    console.log({prevState:prevState.success,s : this.state.success});
     if(prevState.success?.length !== this.state.success?.length)
     setTimeout(() => {
       this.findSuccessElemsHeight()
