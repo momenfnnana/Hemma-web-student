@@ -178,7 +178,7 @@ class RefundComponent extends Component {
                     استرجاع الرسوم
                   </button>
                 </form>
-              </div>
+              </div> 
               <div className="col-md-6 col-12 text-center d-flex align-items-center justify-content-center flex-column">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/refund-art.png"}
