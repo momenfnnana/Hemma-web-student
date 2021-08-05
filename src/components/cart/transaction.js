@@ -145,7 +145,7 @@ export class Transaction extends Component {
                         className="btn light-btn mt-2 pl-4 pr-4 unset-height unset-line-height"
                         to="/cart"
                       >
-                        الرجوع إلى سلة التسوق
+                        الرجوع إلى مختاراتي
                       </Link>
                     </React.Fragment>
                   )}
