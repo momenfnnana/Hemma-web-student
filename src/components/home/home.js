@@ -281,9 +281,9 @@ hasSubcategoriesReq(slug){
 
 async validateHasSubCategories(slug){
   try {
-    const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
-    
-    return new Promise((res,rej)=>res(childCatgories))
+    const {data : {data : {childCatgories = [],courses}}} = await this.hasSubcategoriesReq(slug)
+    const navigationType = childCatgories?.length ? '_blank' : courses?.length ? 'direct' : null
+    return new Promise((res,rej)=>res({childCatgories,navigationType,courses}))
   } catch (error) {
   }
 
@@ -317,15 +317,17 @@ async onClick(Category){
   try {
     const { slug : categSlug } = Category;
 
-    const childCateg  = await this.validateHasSubCategories(categSlug)
+    const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
     
     //if(!childCateg.length) this.handleNoChildCategories()
 
     const url = `/categories/details/${categSlug}`
-
-    const { history } = this.props;
-
-    history.push(url);
+    if(!navigationType) this.handleNoChildCategories()
+    if(navigationType === '_blank') window.open(url)
+    else {
+      const { history } = this.props;
+      history.push(url);
+    }
 
   } catch (error) {
 
