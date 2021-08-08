@@ -65,6 +65,7 @@ export class _CategoryDetails extends Component {
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.changeTab = this.changeTab.bind(this);
+    this.intiReq = this.intiReq.bind(this)
   }
 
   openModal(id) {
@@ -72,6 +73,21 @@ export class _CategoryDetails extends Component {
   }
   closeModal() {
     this.setState({ modalIsOpen: false });
+  }
+
+  intiReq(){
+    const url = `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${1}&Limit=${this.limit}&featuredOnly=true`;
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    axios
+    .get(url, { headers })
+    .then((response) => {
+      this.setState({ loading: false, disabled: false });
+      const courses = response.data.data.data
+      this.setState({...this.state,courses})
+    })
   }
 
   loadMore = async () => {
@@ -303,15 +319,14 @@ export class _CategoryDetails extends Component {
     }
   }
 
-  warningAlert(msg){
-    swal(
-      "عفواً",
-      msg,
-      "error",
-      {
-        button: "متابعة",
+  componentDidUpdate(prevProps, prevState){
+    const {currentTab : prevTab} = prevState
+    const {currentTab} = this.state
+    if(prevTab !== currentTab){
+      if(currentTab === 'tab-two'){
+            this.intiReq()
       }
-    );
+    }
   }
 
   renderCategoryGroups() {
@@ -434,8 +449,9 @@ export class _CategoryDetails extends Component {
 
   async validateHasSubCategories(slug){
     try {
-      const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
-      return new Promise((res,rej)=>res(childCatgories))
+      const {data : {data : {childCatgories = [],courses}}} = await this.hasSubcategoriesReq(slug)
+      const navigationType = childCatgories?.length ? '_blank' : courses?.length ? 'direct' : null
+      return new Promise((res,rej)=>res({childCatgories,navigationType,courses}))
     } catch (error) {
       
     }
@@ -450,19 +466,19 @@ export class _CategoryDetails extends Component {
 
       try {
 
+        const { history } = this.props;
         const { slug : categSlug } = Category;
 
-        const childCateg  = await this.validateHasSubCategories(categSlug)
-
-        if(!childCateg.length) this.handleNoChildCategories()
-
+        const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
         const url = `./${categSlug}`
 
-        const { history } = this.props;
-
-        this.changeTab(url);
-
-        history.push(url);
+        if(!navigationType) this.handleNoChildCategories()
+        if(navigationType === '_blank') window.open(url)
+        else{
+          this.changeTab(url);
+          this.setState({...this.state,courses})
+          // history.push(url);
+        }
 
       } catch (error) {
 
@@ -471,6 +487,7 @@ export class _CategoryDetails extends Component {
       }
 
     };
+
 
     return this.state.subcategoriesdetails.map((Category, count) => (
       <React.Fragment>
@@ -761,6 +778,7 @@ export class _CategoryDetails extends Component {
         },
       ],
     };
+
     return (
       <React.Fragment>
         <Helmet>
