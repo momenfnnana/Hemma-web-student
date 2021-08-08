@@ -22,6 +22,8 @@ export default function CourseTabPicker({
   const selectedClassName = (id === selectedId && "with-bg") || "";
   const [disabled, setDisabled] = useState(false);
   const [changeCounter,setChangeCounter] = useState(0)
+  const isMobile = window.innerWidth < 768
+  const overlayPlacement = isMobile ? 'top' : 'left'
 
   const disableClass = (disabled && "disabled-label") || "";
   const tabClass = [baseClassName, selectedClassName, disableClass].join(" ");
@@ -72,7 +74,7 @@ export default function CourseTabPicker({
 
   return (
     <OverlayTrigger
-      placement="right"
+      placement={overlayPlacement}
       delay={{ show: 250, hide: 400 }}
       overlay={disabeledTooltip}
     >
