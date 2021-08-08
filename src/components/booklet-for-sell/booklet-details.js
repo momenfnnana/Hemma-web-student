@@ -62,12 +62,12 @@ export class BookletDetailsComponent extends Component {
           .catch((error) => {
             switch (error.response.data && error.response.data.error) {
               case "Duplicate":
-                swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+                swal("عفواً", "هذه الملزمة مضافة سابقاً إلى مختاراتي", "error", {
                   button: "متابعة",
                 });
                 break;
               case "BadRequest":
-                swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+                swal("عفواً", "هذه الملزمة مضافة سابقًا إلى مختاراتي", "error", {
                   button: "متابعة",
                 });
                 break;

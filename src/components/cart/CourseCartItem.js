@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import { MdClose } from "react-icons/md";
 import { formatPrice } from "./helpers";
 import { Api } from "../../api";
+const pricesKeys = ['blackAndWhiteBookletPrice','coloredBookletPrice']
+const colorKeys = ['BlackAndWhite','Colored']
 
 export class CourseCartItem extends Component {
   state = {
@@ -22,6 +24,9 @@ export class CourseCartItem extends Component {
     this.onUpdateInstallmentInput = this.onUpdateInstallmentInput.bind(this);
     this.getInstallmentInputValue = this.getInstallmentInputValue.bind(this);
     this.onPayFullAmount = this.onPayFullAmount.bind(this);
+    this.handleTwoZeroPriceCase = this.handleTwoZeroPriceCase.bind(this)
+    this.validateClick = this.validateClick.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -113,6 +118,32 @@ export class CourseCartItem extends Component {
     this.onSetInstallment(null);
   }
 
+  componentDidUpdate(){
+  }
+
+  handleTwoZeroPriceCase(){
+    setTimeout(() => {
+      this.onSetBookletColor(colorKeys[0])
+    }, 500);
+  }
+
+  componentDidMount(){
+    const {item : currentItem} = this.props
+    
+    let hasTwoZeroPrice = []
+    pricesKeys.forEach(key =>{
+      if (Number.isInteger(currentItem?.[key]) && currentItem?.[key] === 0) {
+        hasTwoZeroPrice.push(key);
+      }
+    })
+    if(pricesKeys.length === hasTwoZeroPrice.length){
+      this.setState({ ...this.state, hasTwoZeroPrice: true, inputsType : 'radio'});
+      if(currentItem.bookletType)
+      return
+      this.handleTwoZeroPriceCase()
+    }
+  }
+
   /**
    * Handle remove the current item from the cart
    */
@@ -133,6 +164,18 @@ export class CourseCartItem extends Component {
 
     // use the actual price
     return formatPrice(this.props.item.subtotal);
+  }
+
+  validateClick(color){
+    //prevent toggle in case of two zeros
+    if(this.state.hasTwoZeroPrice && this.props.item.bookletType === color)return false
+    return true
+  }
+
+  handleClick({target:{value}}){
+    const canToggle = this.validateClick(value)
+    if(!canToggle) return
+    this.onSetBookletColor(value)
   }
 
   render() {
@@ -166,13 +209,15 @@ export class CourseCartItem extends Component {
                       <input
                         name="packageOption"
                         className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        onClick={() => this.onSetBookletColor("BlackAndWhite")}
+                        type={this.state.inputsType || 'checkbox'}
+                        value="BlackAndWhite"
+                        onClick={this.handleClick}
                         checked={item.bookletType === "BlackAndWhite"}
                       />
                       <label className="form-check-label smaller dark-silver-text">
-                        أرغب في الحصول على ملزمة أبيض و أسود مطبوعة
+                        أرغب في الحصول على ملزمة أبيض و أسود مطبوعة <span className="light-text mx-2">
+                          {item?.blackAndWhiteBookletPrice && `${item?.blackAndWhiteBookletPrice} +`}
+                        </span>
                       </label>
                     </div>
                   )}
@@ -182,13 +227,16 @@ export class CourseCartItem extends Component {
                       <input
                         name="packageOption"
                         className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        onClick={() => this.onSetBookletColor("Colored")}
+                        type={this.state.inputsType || 'checkbox'}
+                        value="Colored"
+                        onClick={this.handleClick}
                         checked={item.bookletType === "Colored"}
                       />
                       <label className="form-check-label smaller dark-silver-text">
                         أرغب في الحصول على ملزمة ملونة مطبوعة
+                        <span className="light-text mx-2">
+                          {item?.coloredBookletPrice && `${item?.coloredBookletPrice} +`}
+                        </span>
                       </label>
                     </div>
                   )}
