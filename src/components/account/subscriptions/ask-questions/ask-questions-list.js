@@ -6,6 +6,8 @@ import AddQuestion from "./add-question";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
+import {AskQuestionDetails} from "./question-details";
+import {connect} from "react-redux";
 
 class AskQuestionsListComponent extends Component {
   page = 1;
@@ -15,6 +17,7 @@ class AskQuestionsListComponent extends Component {
   endOfResults = false;
   endOfAllQuestionsResults = false;
   state = {
+    showTable:true,
     isAddQuestionOpen: false,
     allQuestions: [],
     myQuestions: [],
@@ -30,10 +33,19 @@ class AskQuestionsListComponent extends Component {
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab });
     }
-  }
+  };
+
+  hideTable = (id) =>{
+    this.setState({showTable : false,qstId:id})
+  };
+
+  showTable = ()=>{
+    this.setState({showTable : true})
+  };
 
   toggleModal = () => {
     this.setState({ isAddQuestionOpen: !this.state.isAddQuestionOpen });
+    this.showTable()
   };
 
   componentDidMount() {
@@ -137,12 +149,13 @@ class AskQuestionsListComponent extends Component {
                 </span>
               </td>
               <td>
-                <Link
-                  className="btn light-btn unset-height unset-line-height w-50"
-                  to={`/course/content/${this.props.match.params.id}/askQuestions/details/${myQuestion.id}`}
+                <button
+                    className="btn light-btn unset-height unset-line-height w-50"
+                    onClick={()=>this.hideTable(myQuestion.id)}
                 >
-                  تفاصيل
-                </Link>
+                  التفاصيل
+                </button>
+
               </td>
             </tr>
           </>
@@ -195,7 +208,8 @@ class AskQuestionsListComponent extends Component {
   };
 
   render() {
-    return (
+    const hasAskQuestion = this.props.subscription && this.props.subscription.subscription.hasAskQuestion;
+	  return (
       <React.Fragment>
         <div className="container pb-5">
           <div className="row">
@@ -207,6 +221,7 @@ class AskQuestionsListComponent extends Component {
                       active: this.state.activeTab === "userQuestions"
                     })} ${"clickable"}`}
                     onClick={() => {
+                      this.showTable();
                       this.toggle("userQuestions");
                     }}
                   >
@@ -219,6 +234,7 @@ class AskQuestionsListComponent extends Component {
                       active: this.state.activeTab === "allQuestions"
                     })} ${"clickable"}`}
                     onClick={() => {
+                      this.showTable();
                       this.toggle("allQuestions");
                     }}
                   >
@@ -227,6 +243,7 @@ class AskQuestionsListComponent extends Component {
                 </NavItem>
               </Nav>
             </div>
+            {hasAskQuestion?
             <div className="col-md-6 d-flex justify-content-end">
               <button
                 className="btn border mid-text smaller"
@@ -249,9 +266,12 @@ class AskQuestionsListComponent extends Component {
                 updateQuestions={this.updateQuestionsList}
               />
             </div>
+                :
+                <></>}
           </div>
-          <TabContent className="pt-3" activeTab={this.state.activeTab}>
+            <TabContent className="pt-3" activeTab={this.state.activeTab}>
             <TabPane tabId="userQuestions">
+              {this.state.showTable ?
               <div className="row no-gutters">
                 {this.state.myQuestions && this.state.myQuestions.length > 0 ? (
                   <div className="col-12">
@@ -314,6 +334,8 @@ class AskQuestionsListComponent extends Component {
                   </React.Fragment>
                 )}
               </div>
+                  : ( <AskQuestionDetails id ={this.state.qstId} />)
+              }
             </TabPane>
             <TabPane tabId="allQuestions">
               <div className="row no-gutters">
@@ -386,4 +408,17 @@ class AskQuestionsListComponent extends Component {
     );
   }
 }
+
+
+function mapStateToProps(state) {
+  return {
+    subscription: state.subscription
+  };
+}
+
+AskQuestionsListComponent = connect(
+    mapStateToProps,
+    {  }
+)(AskQuestionsListComponent);
+
 export const AskQuestionsList = withRouter(AskQuestionsListComponent);
