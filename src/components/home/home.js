@@ -330,7 +330,6 @@ warningAlert(msg){
 async onClick(Category){
   try {
     const { slug : categSlug ,professionalLicense} = Category;
-    debugger
     const childCateg  = await this.validateHasSubCategories(categSlug)
     if(!childCateg.length && !professionalLicense) this.handleNoChildCategories()
 
@@ -349,6 +348,10 @@ async onClick(Category){
   renderCategories() {
     const cats = this.state.categories;
     const { match, location, history } = this.props;
+
+    const slideElementBaseClassName = 'glide__slide m-0'
+    const fullWidthClass = window.innerWidth < MOBILE_SCREEN_WIDTH ?  'w-100' : ''
+    const elementClass = [slideElementBaseClassName,fullWidthClass].join(' ')
     return (
       <React.Fragment>
   
@@ -358,7 +361,7 @@ async onClick(Category){
 
 
             return (
-              <li className="glide__slide">
+              <li className={elementClass}>
                     <div className="card">
                       <div className="card-items">
                       <div className="title-card font-weight-bold" onClick={() => this.onClick(cat)}
@@ -490,8 +493,6 @@ async onClick(Category){
   async handleClick (Category){
 
     try {
-
-      debugger
       const { slug : categSlug,professionalLicense } = Category;
       const childCateg  = await this.validateHasSubCategories(categSlug)
 
@@ -624,7 +625,6 @@ async onClick(Category){
   }
 
   componentDidUpdate(prevProps, prevState){
-    console.log({prevState:prevState.success,s : this.state.success});
     if(prevState.success?.length !== this.state.success?.length)
     setTimeout(() => {
       this.findSuccessElemsHeight()
@@ -693,7 +693,7 @@ renderSucces()
           <div className="slider">
             <div className="glide_features">
               <div className="glide__track" data-glide-el="track">
-                <ul className="glide__slides py-2">
+                <ul className="glide__slides py-2 w-100 px-2">
                  
 {this.renderCategories()}
                 </ul>
