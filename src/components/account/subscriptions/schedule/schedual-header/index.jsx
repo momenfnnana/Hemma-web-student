@@ -13,7 +13,7 @@ export default function ScheduleHeader({
   links = [],
 }) {
   const direction = !show ? "down" : "up";
-
+  // class-img.png
   const urlTempalte = (path, sectionType,docType) => {
     return `/course/content/${courseId}/schedule/${docType}/${path}/${sectionType}`;
   };
@@ -27,8 +27,7 @@ export default function ScheduleHeader({
       <div className="card-options-head d-flex align-items-center">
         <div className="section-title-img">
           <img
-            src="https://hemmma.netlify.app/images/class-img.png"
-            alt="ImageOfSection"
+            src="/assets/images/class-img.png"
           />
         </div>
         <h4 className="main-color h4 font-weight-bold m-0">{name}</h4>
@@ -49,15 +48,14 @@ export default function ScheduleHeader({
         <a onClick={()=>{onClick(chapterSections.TRAININGS)}} className="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn">
           تدريبات
         </a> */}
-        {showToggle && (
           <a
             className="collapse-anchor d-block main-color ml-2 width-20 text-center cursor-pointer"
             data-opening="lectures-lists-one"
             onClick={onToggle}
+            style={{visibility:showToggle ? 'visible' : 'hidden'}}
           >
             <i className={`fas fa-chevron-${direction}`}></i>
           </a>
-        )}
       </div>
     </div>
   );
