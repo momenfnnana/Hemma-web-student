@@ -321,15 +321,27 @@ export class _CategoryDetails extends Component {
       );
     }
   }
+  handleSubCategoriesChange(prevSubcategoriesdetails = [],subcategoriesdetails = []){
+    if(prevSubcategoriesdetails.length !== subcategoriesdetails?.length){
+      const [firstSubCategory] = subcategoriesdetails
+      const {slug} = firstSubCategory
+      if(!slug) return
+      setTimeout(() => {
+        this.simulateClick(slug)
+      }, 200);
+    }
+  }
+
 
   componentDidUpdate(prevProps, prevState){
-    const {currentTab : prevTab} = prevState
-    const {currentTab} = this.state
+    const {currentTab : prevTab,subcategoriesdetails : prevSubcategoriesdetails} = prevState
+    const {currentTab,subcategoriesdetails} = this.state
     if(prevTab !== currentTab){
       if(currentTab === 'tab-two'){
             this.intiReq()
       }
     }
+    this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
   }
 
   renderCategoryGroups() {
@@ -497,6 +509,7 @@ export class _CategoryDetails extends Component {
           data-toggle="tab"
           role="tab"
           to={`/${Category?.slug}`}
+          id={Category?.slug}
           aria-selected="false"
           onClick={() => handleClick(Category)}
         >
