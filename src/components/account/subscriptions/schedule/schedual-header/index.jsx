@@ -48,15 +48,14 @@ export default function ScheduleHeader({
         <a onClick={()=>{onClick(chapterSections.TRAININGS)}} className="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn">
           تدريبات
         </a> */}
-        {showToggle && (
           <a
             className="collapse-anchor d-block main-color ml-2 width-20 text-center cursor-pointer"
             data-opening="lectures-lists-one"
             onClick={onToggle}
+            style={{visibility:showToggle ? 'visible' : 'hidden'}}
           >
             <i className={`fas fa-chevron-${direction}`}></i>
           </a>
-        )}
       </div>
     </div>
   );
