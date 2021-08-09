@@ -6,11 +6,11 @@ import ExamsList from './../chapterExams/Exams/index';
 const url = `${apiBaseUrl}/Exams/Getchapterexams`;
 
 export default function SectionTrainings() {
-  const [getTrainings, trainings] = useFetch(url);
+  const [getTrainings, trainings,loading] = useFetch(url);
   const { nestedId } = useContext(ScheduleContext);
 
   useEffect(() => {
     getTrainings({ params: { courseId: nestedId,type :'Training' } });
   }, []);
-  return <div><ExamsList courseId={nestedId} tableHeaderText="التدريب" rowBtnText="تدرب" exams={trainings?.data} /></div>;
+  return <div><ExamsList loading={loading} courseId={nestedId} tableHeaderText="التدريب" rowBtnText="تدرب" exams={trainings?.data} /></div>;
 }
