@@ -13,7 +13,7 @@ export default function ScheduleHeader({
   links = [],
 }) {
   const direction = !show ? "down" : "up";
-
+  // class-img.png
   const urlTempalte = (path, sectionType,docType) => {
     return `/course/content/${courseId}/schedule/${docType}/${path}/${sectionType}`;
   };
@@ -27,8 +27,7 @@ export default function ScheduleHeader({
       <div className="card-options-head d-flex align-items-center">
         <div className="section-title-img">
           <img
-            src="https://hemmma.netlify.app/images/class-img.png"
-            alt="ImageOfSection"
+            src="/assets/images/class-img.png"
           />
         </div>
         <h4 className="main-color h4 font-weight-bold m-0">{name}</h4>
