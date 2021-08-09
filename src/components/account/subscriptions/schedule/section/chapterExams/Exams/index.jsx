@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Table } from 'reactstrap';
+import { Table } from "reactstrap";
 import "./index.scss";
 
-const Exam = ({ exam, courseId,rowBtnText }) => {
+const Exam = ({ exam, courseId, rowBtnText }) => {
   const examTime = exam.totalTime;
   const totalTime = Number(examTime);
 
@@ -39,7 +39,14 @@ const Exam = ({ exam, courseId,rowBtnText }) => {
   );
 };
 
-export default function ExamsList({ exams = [],emptyDataText="لا يوجد بيانات حالية",tableHeaderText="الامتحان",rowBtnText="اختبر", ...rest }) {
+export default function ExamsList({
+  loading,
+  exams = [],
+  emptyDataText = "لا يوجد بيانات حالية",
+  tableHeaderText = "الامتحان",
+  rowBtnText = "اختبر",
+  ...rest
+}) {
   return (
     <>
       <Table className="mb-0 table-responsive d-table position-relative">
@@ -67,8 +74,16 @@ export default function ExamsList({ exams = [],emptyDataText="لا يوجد بي
             <Exam rowBtnText={rowBtnText} exam={exam} {...rest} />
           ))}
         </tbody>
-      {!exams.length && <p className="text-center my-3 position-absolute absolute-center">{emptyDataText}</p>}
-
+        {!loading && !exams.length && (
+          <p className="text-center my-3 position-absolute absolute-center">
+            {emptyDataText}
+          </p>
+        )}
+        {loading && (
+          <p className="text-center my-3 position-absolute absolute-center">
+            loading...
+          </p>
+        )}
       </Table>
     </>
   );

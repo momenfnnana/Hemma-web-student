@@ -6,7 +6,7 @@ import ExamsList from './../chapterExams/Exams/index';
 const url = `${apiBaseUrl}/Exams/Getchapterexams`;
 
 export default function SectionExams() {
-    const [getExams, exams] = useFetch(url);
+    const [getExams, exams,loading] = useFetch(url);
     const { nestedId } = useContext(ScheduleContext);
   
     useEffect(() => {
@@ -14,7 +14,7 @@ export default function SectionExams() {
     }, []);
     return (
         <div>
-            <ExamsList exams={exams?.data} />
+            <ExamsList loading={loading} exams={exams?.data} />
         </div>
     )
 }
