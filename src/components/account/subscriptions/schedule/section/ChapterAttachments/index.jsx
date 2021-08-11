@@ -4,10 +4,11 @@ import { apiBaseUrl } from "./../../../../../../api/helpers";
 import { useFetch } from "./../../../../../../hooks/useFetch";
 import { ScheduleContext } from "./../../../scheduleDetails/context";
 import LectureTemplate from "./../../../../../../shared-components/lectureTemplate/index";
+import { NoDataText } from "./../noDataText/index";
 const url = `${apiBaseUrl}/Content/GetchapterAttachments`;
 
 export default function ChapterAttachments() {
-  const [getAttachments, attachments] = useFetch(url);
+  const [getAttachments, attachments, loading] = useFetch(url);
   const { nestedId } = useContext(ScheduleContext);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export default function ChapterAttachments() {
   }, []);
   return (
     <div>
+      <NoDataText data={attachments?.data} loading={loading} />
       {attachments?.data?.map((attachment) => (
         <LectureTemplate
           Wrapper={({ children }) => (
