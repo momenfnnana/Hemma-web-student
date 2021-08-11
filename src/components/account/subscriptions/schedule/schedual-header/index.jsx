@@ -11,8 +11,10 @@ export default function ScheduleHeader({
   push = () => {},
   courseId,
   links = [],
+  navToHome
 }) {
   const direction = !show ? "down" : "up";
+  console.log({navToHome});
   // class-img.png
   const urlTempalte = (path, sectionType,docType) => {
     return `/course/content/${courseId}/schedule/${docType}/${path}/${sectionType}`;
@@ -42,12 +44,6 @@ export default function ScheduleHeader({
             {link?.title}
           </NavLink>
         ))}
-        {/* <a onClick={()=>{onClick(chapterSections.EXAMS)}} className="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn">
-          الاختبارات الالكترونية
-        </a>
-        <a onClick={()=>{onClick(chapterSections.TRAININGS)}} className="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn">
-          تدريبات
-        </a> */}
           <a
             className="collapse-anchor d-block main-color ml-2 width-20 text-center cursor-pointer"
             data-opening="lectures-lists-one"
@@ -56,6 +52,14 @@ export default function ScheduleHeader({
           >
             <i className={`fas fa-chevron-${direction}`}></i>
           </a>
+         {navToHome && <NavLink
+            className="collapse-anchor d-block main-color ml-2 width-20 text-center cursor-pointer"
+            data-opening="lectures-lists-one"
+            onClick={onToggle}
+            to={`/course/content/${courseId}/schedule`}
+          >
+            <i className={`fas fa-chevron-up`}></i>
+          </NavLink>}
       </div>
     </div>
   );
