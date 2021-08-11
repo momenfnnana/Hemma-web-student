@@ -112,6 +112,7 @@ export class _CategoryDetails extends Component {
             courses: newCourses,
             nextPageUrl: nextUrl,
             coursesShimmerLoader: false,
+            hasNocourses: !!!newCourses?.length
           });
           if (newCourses.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
@@ -180,10 +181,11 @@ export class _CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
-        this.setState({ details: response.data.data }, () => {
+        this.setState({ details: response.data.data}, () => {
           this.hasProfessionalLicense(response.data.data);
         });
         this.setState({
+          ...this.state,
           showgroupedPackagesBtn: response.data.data.groupedPackages,
         });
       })
@@ -318,15 +320,27 @@ export class _CategoryDetails extends Component {
       );
     }
   }
+  handleSubCategoriesChange(prevSubcategoriesdetails = [],subcategoriesdetails = []){
+    if(prevSubcategoriesdetails.length !== subcategoriesdetails?.length){
+      const [firstSubCategory] = subcategoriesdetails
+      const {slug} = firstSubCategory
+      if(!slug) return
+      setTimeout(() => {
+        this.simulateClick(slug)
+      }, 200);
+    }
+  }
+
 
   componentDidUpdate(prevProps, prevState){
-    const {currentTab : prevTab} = prevState
-    const {currentTab} = this.state
+    const {currentTab : prevTab,subcategoriesdetails : prevSubcategoriesdetails} = prevState
+    const {currentTab,subcategoriesdetails} = this.state
     if(prevTab !== currentTab){
       if(currentTab === 'tab-two'){
             this.intiReq()
       }
     }
+    this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
   }
 
   renderCategoryGroups() {
@@ -460,6 +474,14 @@ export class _CategoryDetails extends Component {
   handleNoChildCategories(){
     throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
   }
+
+  handleProfessionalCase({professionalLicense,groupedPackages,rest}){
+    const isProLicencse = professionalLicense && groupedPackages
+    if(!(professionalLicense && groupedPackages)) return
+    this.changeTab("الرخصة المهنية")
+    this.setState({...this.state,details : {...rest}})
+    return isProLicencse
+  }
   rendersubCategories() {
    
     const handleClick = async(Category) => {
@@ -467,10 +489,11 @@ export class _CategoryDetails extends Component {
       try {
 
         const { history } = this.props;
-        const { slug : categSlug } = Category;
+        const { slug : categSlug ,professionalLicense,groupedPackages,...rest} = Category;
 
         const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
         const url = `./${categSlug}`
+        if(this.handleProfessionalCase({professionalLicense,groupedPackages,rest})) return
 
         if(!navigationType) this.handleNoChildCategories()
         if(navigationType === '_blank') window.open(url)
@@ -489,13 +512,15 @@ export class _CategoryDetails extends Component {
     };
 
 
+
     return this.state.subcategoriesdetails.map((Category, count) => (
       <React.Fragment>
         <NavLink
           className="tab-items nav-link px-4"
           data-toggle="tab"
           role="tab"
-          to={`/${null}`}
+          to={`/${Category?.slug}`}
+          id={Category?.slug}
           aria-selected="false"
           onClick={() => handleClick(Category)}
         >
@@ -829,7 +854,7 @@ export class _CategoryDetails extends Component {
                    </React.Fragment> */}
                   <React.Fragment>
                     {this.state.courses.length > 0 ? (
-                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
+                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two') && !this.state.hasNocourses} >
                         <a
                           onClick={() => this.changeTab("tab-two")}
                           className={
