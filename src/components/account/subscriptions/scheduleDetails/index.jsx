@@ -70,6 +70,7 @@ export default function ScheduleDetails(props) {
           links={links}
           courseId={courseId}
           push={push}
+          navToHome
           {...props}
         />
         <DetailsContent isChapter={isChapter} contentType={contentType} />

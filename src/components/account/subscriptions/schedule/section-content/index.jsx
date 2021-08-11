@@ -8,6 +8,27 @@ export const chapterSections = {
   ATTACHMENTS: "ATTACHMENTS",
 };
 
+const sectionHeaderBtns = [
+  {
+    link: chapterSections.LECTURES,
+    title: "محاضرات",
+  },
+  {
+    link: chapterSections.EXAMS,
+    title: "اختبارات",
+  },
+  {
+    link: chapterSections.TRAININGS,
+    title: "تدريبات",
+  },
+  {
+    link: chapterSections.ATTACHMENTS,
+    title: "مرفقات اضافية",
+  },
+];
+
+
+
 export default function SectionContent({
   nameAr,
   lectures,
@@ -42,38 +63,16 @@ export default function SectionContent({
             <div class="main-color font-weight-bold font-size-20">{nameAr}</div>
           </div>
           <div class="card-options-btns d-flex align-items-center flex-wrap">
-            <a
-              onClick={() => {
-                onClick(chapterSections.LECTURES);
-              }}
-              class="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn"
-            >
-              محاضرات
-            </a>
-            <a
-              onClick={() => {
-                onClick(chapterSections.EXAMS);
-              }}
-              class="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn"
-            >
-              اختبارات
-            </a>
-            <a
-              onClick={() => {
-                onClick(chapterSections.TRAININGS);
-              }}
-              class="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn"
-            >
-              تدريبات
-            </a>
-            <a
-              onClick={() => {
-                onClick(chapterSections.ATTACHMENTS);
-              }}
-              class="btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn"
-            >
-              مرفقات اضافية
-            </a>
+            {sectionHeaderBtns.map((btn) => (
+              <a
+                onClick={() => {
+                  onClick(btn.link);
+                }}
+                class="my-1 btn-card-normal-outline hover-btn-yellow mr-1 w-auto headShake m-0 small-btn"
+              >
+                {btn.title}
+              </a>
+            ))}
           </div>
         </div>
       </div>
