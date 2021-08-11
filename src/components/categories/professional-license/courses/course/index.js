@@ -165,6 +165,7 @@ export default function ProfessionalCourse({
                   selectedId={optionsData?.CourseType}
                   onClick={handleCourseTabClick}
                   title={descriptionData?.nameAr}
+                  descriptionData={descriptionData}
                   points={courseTab.points}
                   checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
                   optionsData={optionsData}
