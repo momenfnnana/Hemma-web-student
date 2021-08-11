@@ -8,11 +8,11 @@ import ExamsList from "./Exams";
 const url = `${apiBaseUrl}/Exams/Getchapterexams`;
 
 export default function ChapterExams() {
-  const [getExams, exams,loading] = useFetch(url);
+  const [getExams, exams, loading] = useFetch(url);
   const { nestedId } = useContext(ScheduleContext);
 
   useEffect(() => {
-    getExams({ params: { chapterId: nestedId } });
+    getExams({ params: { chapterId: nestedId, type: "Exam" } });
   }, []);
 
   return (
