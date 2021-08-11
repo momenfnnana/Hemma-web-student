@@ -221,7 +221,7 @@ class HeaderComponent extends Component {
       
       
         function handleActiveEle(element, list) {
-          debugger;
+
 
           element.forEach(smEle => {
             smEle.addEventListener('click', (e) => {

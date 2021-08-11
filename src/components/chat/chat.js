@@ -84,7 +84,7 @@ class UsersChatComponent extends Component {
               window.open(this.props.externalChannelUrl, "_blank")
             }
           >
-            <h6 className="media chat-item mb-0 d-flex align-items-center light-text small">
+            <h6 className="media chat-item mb-0 d-flex align-items-center light-text small cursor-poiner">
               رابط مجموعة التيليجرام
             </h6>
           </div>

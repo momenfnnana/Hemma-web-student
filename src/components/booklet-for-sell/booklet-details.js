@@ -30,7 +30,6 @@ export class BookletDetailsComponent extends Component {
         axios
             .get(`${apiBaseUrl}/bookletforsell/bookletforselldetails?idOrSlug=${params.slug}`)
             .then(response => {
-                debugger;
                 this.setState({ booklets: response.data.data });
                 setTimeout(
                     function () {
@@ -45,8 +44,6 @@ export class BookletDetailsComponent extends Component {
     }
 
     renderAttachments(booklet) {
-
-        debugger;
         if(booklet.attachments)
         {
             return (booklet.attachments.map(att => (
@@ -65,12 +62,12 @@ export class BookletDetailsComponent extends Component {
           .catch((error) => {
             switch (error.response.data && error.response.data.error) {
               case "Duplicate":
-                swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+                swal("عفواً", "هذه الملزمة مضافة سابقاً إلى مختاراتي", "error", {
                   button: "متابعة",
                 });
                 break;
               case "BadRequest":
-                swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+                swal("عفواً", "هذه الملزمة مضافة سابقًا إلى مختاراتي", "error", {
                   button: "متابعة",
                 });
                 break;
