@@ -619,7 +619,6 @@ export class _CategoryDetails extends Component {
 
   simulateClick(divId,event = 'click'){
     const element = document.getElementById(divId);
-    debugger
     const evObj = document.createEvent('Events');
     evObj.initEvent('click', true, false);
     try {
