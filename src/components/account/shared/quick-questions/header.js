@@ -15,11 +15,11 @@ export class HeaderComponent extends Component {
                 src={process.env.PUBLIC_URL + "/assets/images/questionMark.png"}
               />
             </div>
-            <div className={"ar-text title-groups mb-0 ml-0" + " light-bg"}>
+            <div className={"ar-text title-groups text-center text-md-left mb-0 ml-0 fill-at-mobile w-md-auto" + " light-bg"}>
               <h5 className=" mb-0 pl-5">الأسئلة السريعة</h5>
             </div>
           </div>
-          <div className="col-md-6 d-flex align-items-center justify-content-end">
+          <div className="col-md-6 d-flex align-items-center justify-content-md-end justify-content-between my-md-0 mb-2 mt-3">
             <ToastDemo copyLink={{ btnName:'مشاركة السؤال',link:window.location.href}}/>
             {/* TODO */}
             {/* <Link
