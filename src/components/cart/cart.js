@@ -112,7 +112,7 @@ class CartComponent extends Component {
           <div className="container">
             <div className="row pt-5">
               <div className="col-12">
-                <h3 className="dark-text">سلة الشراء</h3>
+                <h3 className="dark-text">مختاراتي</h3>
               </div>
             </div>
 

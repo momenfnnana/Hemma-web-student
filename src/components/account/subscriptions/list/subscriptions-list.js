@@ -194,7 +194,7 @@ class SubscriptionsListComponent extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className="row">{this.renderCourses()}</div>
+               {this.renderCourses()}
               </React.Fragment>
             )}
           </div>

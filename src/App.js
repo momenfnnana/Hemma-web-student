@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.sass";
+import "./custom-bootstrap.scss";
 import axios from "axios";
 import { MainRouter } from "./modules/routes";
 import { createStore, applyMiddleware } from "redux";

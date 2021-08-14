@@ -128,7 +128,7 @@ export class CourseDetails extends Component {
             break;
           // "BadRequest" is no longer a valid error code, however, the error that was being shown should be for "ItemAlreadyAdded"
           // case "BadRequest":
-          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى مختاراتي", "error", {
           //     button: "متابعة"
           //   });
           //   break;

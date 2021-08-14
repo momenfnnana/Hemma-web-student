@@ -644,7 +644,6 @@ export class _CategoryDetails extends Component {
 
   simulateClick(divId,event = 'click'){
     const element = document.getElementById(divId);
-    debugger
     const evObj = document.createEvent('Events');
     evObj.initEvent('click', true, false);
     try {
@@ -733,7 +732,6 @@ export class _CategoryDetails extends Component {
   render() {
     let token = localStorage.getItem("token");
 
-    console.log({show : this.state.currentTab === "tab-three"});
     const {
       match: { params },
     } = this.props;
