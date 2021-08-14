@@ -22,7 +22,8 @@ class BillingListComponent extends Component {
     withdraws: [],
     remainingAmount: null,
     activeTab: "transactions",
-    studentGroup : false
+    studentGroup : false,
+    subscription : {}
   };
 
   toggle(tab) {
@@ -54,7 +55,19 @@ class BillingListComponent extends Component {
 
   componentDidMount() {
     const courseId = this.props.match.params.id;
-    this.props.getSubscription(courseId);
+    this.props.getSubscription(courseId).then(() => {
+     // this.createChannel();
+    });
+    // this.props.getSubscription(courseId).payload.then(response => {
+    //   debugger;
+    //   this.setState({ subscription: response.data });
+   
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // });
+   
+    
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`
@@ -166,7 +179,10 @@ class BillingListComponent extends Component {
 
   render() {
     const courseId = this.props.match.params.id;
-
+    const subscription =
+    this.props &&
+    this.props.subscription &&
+    this.props.subscription.subscription;
     return (
       <React.Fragment>
         <div className="container pb-5 pt-4">
@@ -248,6 +264,7 @@ class BillingListComponent extends Component {
                 isInstallmentOpen={this.state.isInstallmentOpen}
                 closeInstallmentModal={this.closeInstallmentModal}
                 courseId={courseId}
+                subscription={subscription}
               />
             </div>
           </div>
