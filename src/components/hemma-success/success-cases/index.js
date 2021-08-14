@@ -29,7 +29,7 @@ export default function SuccessCases() {
   const getNaxtPage = ()=> setPage(page+1)
 
   const handleCaseRequestSuccess = (response)=>{
-    debugger
+    
     const cases = response?.data?.data
     if(response.data.itemCount > (response.data.limit*response.data.page))
     {
@@ -40,7 +40,6 @@ export default function SuccessCases() {
     }
     setCases([...allCases,...cases])
   }
-  console.log({allCases});
   useEffect(()=>{
     if(page<= 1)return
     getCasesTest({url:successUrl(9,page)},handleCaseRequestSuccess)
@@ -53,7 +52,7 @@ export default function SuccessCases() {
     //init request
     getCasesTest({url:successUrl(9,page)},handleCaseRequestSuccess)
   },[])
-  console.log({casesTest: casesResponse});
+
   return (
     <div className="container py-5">
       <div className="success-wrapper">

@@ -18,22 +18,22 @@ export class BookletCardComponent extends Component {
   }
   onSubmit(type) {
     const booklet = this.props.booklet;
-    debugger;
+
     Api.cart
       .addBookletForSale(booklet.id, type)
       .then((response) => {
         this.props.history.push("/cart");
       })
       .catch((error) => {
-        debugger;
+
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
-            swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+            swal("عفواً", "هذه الملزمة مضافة سابقاً إلى مختاراتي", "error", {
               button: "متابعة",
             });
             break;
           case "BadRequest":
-            swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+            swal("عفواً", "هذه الملزمة مضافة سابقًا إلى مختاراتي", "error", {
               button: "متابعة",
             });
             break;

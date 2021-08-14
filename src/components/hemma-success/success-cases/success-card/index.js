@@ -3,7 +3,6 @@ import TrimmedText from "../../../../shared-components/trimmed-text";
 import "./index.scss";
 
 const Rating = ({ successCase }) => {
-  console.log({});
   return (
     <div class="card-body px-2 py-2">
       <p class="d-flex align-items-center light-gray mb-1 font-size-13">

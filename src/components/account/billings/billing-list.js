@@ -75,7 +75,6 @@ class BillingListComponent extends Component {
     axios
       .get(`${apiBaseUrl}/content/${courseId}/transaction_history`, { headers })
       .then(response => {
-        debugger;
         this.setState({
           details: response.data.data.transactions,
           remainingAmount: response.data.data.remainingAmount,

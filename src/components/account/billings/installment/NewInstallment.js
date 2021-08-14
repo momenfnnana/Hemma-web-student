@@ -50,18 +50,18 @@ export class NewInstallmentComponent extends Component {
         });
       })
       .catch(error => {
-        debugger;
+
         this.props.closeInstallmentModal();
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
-            swal("عفواً", "القسط مضاف سابقًا إلى سلة التسوق", "error", {
+            swal("عفواً", "القسط مضاف سابقًا إلى مختاراتي", "error", {
               button: "متابعة"
             });
             this.props.history.push("/cart")
            
             break;
           case "BadRequest":
-            swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+            swal("عفواً", "هذه الدورة مضافة سابقًا إلى مختاراتي", "error", {
               button: "متابعة"
             });
             break;
@@ -71,7 +71,7 @@ export class NewInstallmentComponent extends Component {
             });
             break;
             case "ItemAlreadyAdded":
-              swal("عفواً", "القسط مضاف سابقًا إلى سلة التسوق", "error", {
+              swal("عفواً", "القسط مضاف سابقًا إلى مختاراتي", "error", {
                 button: "متابعة"
               });
               break;

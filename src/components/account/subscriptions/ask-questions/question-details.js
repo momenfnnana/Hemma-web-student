@@ -19,12 +19,12 @@ class AskQuestionDetailsComponent extends Component {
   componentDidMount() {
     this.props.getUser();
     let token = localStorage.getItem("token");
-    const quesionId = this.props.match.params.id;
+    const questionId = this.props.id;
     let headers = {
       Authorization: `Bearer ${token}`,
     };
     axios
-      .get(`${apiBaseUrl}/AskQuestions/${this.props.match.params.id}`, {
+      .get(`${apiBaseUrl}/AskQuestions/${questionId}`, {
         headers,
       })
       .then((response) => {
@@ -185,7 +185,7 @@ class AskQuestionDetailsComponent extends Component {
               </div>
             </div>
             <div className="row">
-              <CommentsList userId={this.state.details.studentId} />
+              <CommentsList userId={this.state.details.studentId}  id={this.props.id}/>
             </div>
           </div>
         </section>

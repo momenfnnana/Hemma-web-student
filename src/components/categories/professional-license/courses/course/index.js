@@ -140,7 +140,7 @@ export default function ProfessionalCourse({
           <img
             src={
               descriptionData?.bannerUrl ||
-              process.env.PUBLIC_URL + "/assets/images/human.svg"
+              process.env.PUBLIC_URL + "/assets/images/course-placholder.png"
             }
             alt="Human"
           />
@@ -148,7 +148,7 @@ export default function ProfessionalCourse({
         </div>
         <div className="mt--50">
           <h5 className="h5 main-color mb-3 font-weight-bold text-center">
-            {title} <span style={{color: "red"}}>{subTitle}</span>
+            {title} <span style={{color: "red"}}>{ descriptionData?.nameAr || subTitle}</span>
           </h5>
           {hasChooseOptions && (
             <ChooseOptions
@@ -164,7 +164,7 @@ export default function ProfessionalCourse({
                   id={courseTab.id}
                   selectedId={optionsData?.CourseType}
                   onClick={handleCourseTabClick}
-                  title={general}
+                  title={descriptionData?.nameAr}
                   points={courseTab.points}
                   checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
                   optionsData={optionsData}

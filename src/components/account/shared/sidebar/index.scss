@@ -1,0 +1,51 @@
+.courses-features li a {
+  color: #565656;
+  font-weight: bold;
+  margin-bottom: 5px;
+  transition: all 0.2s ease-in-out;
+}
+
+.courses_calenders_icons {
+  width: 28px;
+  height: 28px;
+  margin-left: 20px;
+}
+card-header {
+  &:first-child {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+  }
+}
+
+.main-color-bg {
+  background-color: var(--main-color) !important;
+}
+
+.border-radius-30 {
+  border-radius: 30px !important;
+}
+
+.card-container .card-hover {
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #addfe6;
+  margin-bottom: 1.5rem;
+}
+
+ .card-hover {
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 3px 15px -5px  rgba(0,0,0, .2);
+    transform: scale(1.01);
+  }
+}
+
+.courses-features li a.active {
+  color: var(--sub-color);
+  & svg{
+    stroke: var(--sub-color);
+  }
+}
+
+.sidebar .sidebar-list ul > li > a.active {
+border-right: none !important; 
+}
