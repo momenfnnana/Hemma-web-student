@@ -9,7 +9,7 @@ export default function CourseOverview({ mergedData, onDelete, valueKey }) {
         <div class="input-area mb-3">
           <div class="form-control border-radius-50 font-size-14 h-fit">
             <div className="" style={{wordBreak:"break-word"}}>
-            {courseDetails?.nameAr + " - " + findTitle(courseDetails?.level)}
+            {courseDetails?.nameAr}
             </div>
           </div>
           <span class="input-close cursor-pointer" onClick={onDelete}>
