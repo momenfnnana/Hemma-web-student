@@ -205,11 +205,11 @@ export class CourseCartItem extends Component {
               {item.bookletAvailable && (
                 <>
                   {item.bookletAvailableInBlackAndWhite && (
-                    <div className="form-check mb-1">
+                    <div className="form-check mb-1 d-flex align-items-center">
                       <input
                         name="packageOption"
-                        className="form-check-input"
-                        type={this.state.inputsType || 'checkbox'}
+                        className="form-check-input my-0"
+                        type={'radio'}
                         value="BlackAndWhite"
                         onClick={this.handleClick}
                         checked={item.bookletType === "BlackAndWhite"}
@@ -223,11 +223,11 @@ export class CourseCartItem extends Component {
                   )}
 
                   {item.bookletAvailableInColor && (
-                    <div className="form-check mb-1">
+                    <div className="form-check mb-1 d-flex align-items-center">
                       <input
                         name="packageOption"
-                        className="form-check-input"
-                        type={this.state.inputsType || 'checkbox'}
+                        className="form-check-input my-0"
+                        type={'radio'}
                         value="Colored"
                         onClick={this.handleClick}
                         checked={item.bookletType === "Colored"}
