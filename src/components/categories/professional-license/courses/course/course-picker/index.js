@@ -78,9 +78,9 @@ export default function CourseTabPicker({
         data-courses="full-licences-course-one"
         onClick={handleClick}
       >
-        <span>{descriptionData?.nameAr || title}</span>
+        <span>{title}</span>
         <br />
-        <span>{findTitle(descriptionData?.level)}</span>
+        {/* <span>{findTitle(descriptionData?.level)}</span> */}
       </a>
     </OverlayTrigger>
   );

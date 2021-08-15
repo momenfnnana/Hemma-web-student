@@ -148,7 +148,7 @@ export default function ProfessionalCourse({
         </div>
         <div className="mt--50">
           <h5 className="h5 main-color mb-3 font-weight-bold text-center">
-            {title} <span style={{color: "red"}}>{ descriptionData?.nameAr || subTitle}</span>
+            {!descriptionData?.nameAr ?  title :  <span style={{color: "red"}}>{ descriptionData?.nameAr || subTitle}</span>}
           </h5>
           {hasChooseOptions && (
             <ChooseOptions
@@ -164,7 +164,7 @@ export default function ProfessionalCourse({
                   id={courseTab.id}
                   selectedId={optionsData?.CourseType}
                   onClick={handleCourseTabClick}
-                  title={descriptionData?.nameAr}
+                  title={courseTab?.title}
                   descriptionData={descriptionData}
                   points={courseTab.points}
                   checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
