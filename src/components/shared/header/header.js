@@ -423,7 +423,7 @@ return(
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسيه</a>
+              <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسية</a>
             </li>
             <li className="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
             <a href="/categories" className={"nav-link links-hover d-flex align-items-center justify-content-between "+(this.state.ClikedTab=="Category"?"active":"")}>
@@ -444,7 +444,7 @@ return(
           
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
               <a className="nav-link links-hover d-flex align-items-center justify-content-between">
-                <span className="mr-1">المجموعات المجانيه</span>
+                <span className="mr-1">المجموعات المجانية</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>
               <ul className="sub-list list-unstyled m-0">
