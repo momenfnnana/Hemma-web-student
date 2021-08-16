@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 
-class PrivacyPolicyComponent extends Component {
+export default class PrivacyPolicyComponent extends Component {
     
   render() {
  
@@ -566,5 +566,3 @@ class PrivacyPolicyComponent extends Component {
   }
 
 }
-
-export const PrivacyPolicy = PrivacyPolicyComponent;

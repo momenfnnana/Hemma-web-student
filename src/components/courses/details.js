@@ -20,7 +20,7 @@ import { getAuthenticatedAxios, getDataFromResponse } from "../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class CourseDetails extends Component {
+export default class CourseDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {

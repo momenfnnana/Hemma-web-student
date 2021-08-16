@@ -343,4 +343,4 @@ SubscriptionDetailsComponent = connect(mapStateToProps, { getSubscription })(
   SubscriptionDetailsComponent
 );
 
-export const SubscriptionDetails = withRouter(SubscriptionDetailsComponent);
+export default withRouter(SubscriptionDetailsComponent);

@@ -4,7 +4,7 @@ import { apiBaseUrl } from "../../api/helpers";
 import "@lottiefiles/lottie-player";
 import { Link } from "react-router-dom";
 
-export class Transaction extends Component {
+export default class Transaction extends Component {
   state = {
     paymentDetails: []
   };

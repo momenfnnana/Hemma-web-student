@@ -26,4 +26,4 @@ export class BillingCoursesComponent extends Component {
   }
 }
 
-export const BillingCourses = withRouter(BillingCoursesComponent);
+export default withRouter(BillingCoursesComponent);

@@ -204,4 +204,4 @@ CategoriesComponent = reduxForm({
 
 CategoriesComponent = connect(mapStateToProps)(CategoriesComponent);
 
-export const Categories = withRouter(CategoriesComponent);
+export default withRouter(CategoriesComponent);

@@ -883,6 +883,4 @@ function mapStateToProps(state) {
   };
 }
 
-HomeComponent = connect(mapStateToProps)(HomeComponent);
-
-export const Home = HomeComponent;
+export default connect(mapStateToProps)(HomeComponent);
