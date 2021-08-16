@@ -1,0 +1,38 @@
+@charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Almarai&display=swap");
+.banner-program {
+  background-color: #D7F7F7;
+}
+
+.program-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: "Almarai", sans-serif;
+  padding-bottom: 8px !important;
+}
+.program-container .join-now {
+  border-radius: 2em;
+  background: #FFE452;
+  border-color: #FFE452;
+  width: 6.5rem;
+  height: 3rem;
+}
+.program-container .program-name {
+  color: #493986;
+  font-weight: Bold;
+  z-index: 2;
+  position: relative;
+}
+.program-container .program-name::before {
+  z-index: -1;
+  content: " معلم كفؤ ";
+  color: #FFE452;
+  position: absolute;
+  top: 18%;
+  left: 9px;
+  font-weight: 100;
+}
+
+/*# sourceMappingURL=main.css.map */

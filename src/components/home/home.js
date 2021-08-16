@@ -10,6 +10,7 @@ import { loginWithTwitter } from "../auth/firebase";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import "./styles.sass";
+import "./main.sass";
  import AOS from 'aos';
  import Glide from '@glidejs/glide'
 import HemmaSuccess from "./hemma-success";
@@ -677,7 +678,19 @@ renderSucces()
 
       <React.Fragment>
        <section id="hemma-banner" className="main-banner ">
-
+         <div className='banner banner-program'>
+           <div className="container program-container py-4 ">
+             <div>
+               <h2>  برنامج
+                        <span className='program-name'> معلم كفؤ </span>             الإثرائي والمجاني
+               </h2>
+               <p> صمم هذا البرنامج بعناية مع نخبة من الخبراء ليحقق احتياج المعلمين في تطوير مهاراتهم التدريسية </p>
+             </div>
+             <Link to='/course/details/معلم_كفؤ42327'>
+               <button type="button" className="btn btn-warning join-now">انضم الان</button>
+             </Link>
+           </div>
+         </div>
       {/* <!-- Start The Main Banner Text --> */}
       <div className="banner-image fixed-image-bg overlay-bg">
         <div className="banner-info d-flex-column overflow-hidden">
