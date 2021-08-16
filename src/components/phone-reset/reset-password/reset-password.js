@@ -215,4 +215,4 @@ resetPasswordComponent = connect(
   { loginAction, sendToken, loginFailed }
 )(resetPasswordComponent);
 
-export const resetPassword = withRouter(resetPasswordComponent);
+export default withRouter(resetPasswordComponent);

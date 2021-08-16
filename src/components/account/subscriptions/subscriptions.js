@@ -320,4 +320,4 @@ SubscriptionsComponent = connect(mapStateToProps, { getProfile })(
   SubscriptionsComponent
 );
 
-export const Subscriptions = withRouter(SubscriptionsComponent);
+export default withRouter(SubscriptionsComponent);

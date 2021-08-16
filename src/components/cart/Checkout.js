@@ -182,7 +182,7 @@ const actionCreators = {
   getCart
 };
 
-export const Checkout = connect(
+export default connect(
   mapStateToProps,
   actionCreators
 )(CheckoutComponent);

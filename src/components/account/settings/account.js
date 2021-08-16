@@ -8,7 +8,7 @@ import { UpdatePassword } from "./reset-password";
 import { UpdatePhone } from "./reset/phone/ResetPhone";
 import { UpdateEmail } from "./reset/email/ResetEmail";
 
-export class Account extends Component {
+export default class Account extends Component {
   render() {
     return (
       <React.Fragment>

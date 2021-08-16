@@ -10,7 +10,7 @@ import swal from "@sweetalert/with-react";
 import { loginWithTwitter } from "./firebase";
 import { apiBaseUrl } from "../../api/helpers";
 
-export class Auth extends Component {
+export default class Auth extends Component {
   responseGoogle = response => {
     let deviceId = localStorage.getItem("deviceId");
     let data = {
