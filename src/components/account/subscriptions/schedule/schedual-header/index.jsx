@@ -14,7 +14,6 @@ export default function ScheduleHeader({
   navToHome
 }) {
   const direction = !show ? "down" : "up";
-  console.log({navToHome});
   // class-img.png
   const urlTempalte = (path, sectionType,docType) => {
     return `/course/content/${courseId}/schedule/${docType}/${path}/${sectionType}`;
