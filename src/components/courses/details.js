@@ -181,7 +181,7 @@ export class CourseDetails extends Component {
             className="col-md-6 col-12 align-items-center pb-2"
             key={feature.id}
           >
-            <p className="small dark-text mb-0 w-75  d-flex align-items-center">
+            <p className="dark-text mb-0 w-75  d-flex align-items-center">
               <i className={`mr-2 font-16 fas fa-${feature.icon}`} />
               {feature.descriptionAr}
             </p>
@@ -706,7 +706,7 @@ export class CourseDetails extends Component {
                             this.state.details.category &&
                             this.state.details.category.nameAr}
                         </Link>
-                        <p className="small dark-text light-font-text w-75 mt-3 text-break">
+                        <p className="dark-text light-font-text w-75 mt-3 text-break">
                           {this.state.details.descriptionAr}
                         </p>
                       </div>
@@ -741,14 +741,14 @@ export class CourseDetails extends Component {
                       <div className="row mt-5">
                         <div className="col-12">
                           <h4 className="mid-text mb-2">الشروط والأحكام</h4>
-                          <p className="light-font-text dark-text small mb-1">
+                          <p className="light-font-text dark-text mb-1">
                             1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب
                             المشترك في{" "}
                             <Link to="/" className="light-text">
                               منصّة همّة
                             </Link>
                           </p>
-                          <p className="light-font-text dark-text small mb-1">
+                          <p className="light-font-text dark-text mb-1">
                             2- لا تتحمل{" "}
                             <Link to="/" className="light-text">
                               منصّة همّة
@@ -756,7 +756,7 @@ export class CourseDetails extends Component {
                             أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة
                             ومشاهدته لتسجيل المحاضرات{" "}
                           </p>
-                          <p className="light-font-text dark-text small mb-1">
+                          <p className="light-font-text dark-text mb-1">
                             3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ
                             انتهاء الاشتراك
                           </p>
