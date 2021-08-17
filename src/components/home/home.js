@@ -486,14 +486,6 @@ async onClick(Category){
     }
   }
 
-  async validateHasSubCategories(slug){
-    try {
-      const {data : {data : {childCatgories = []}}} = await this.hasSubcategoriesReq(slug)
-      return new Promise((res,rej)=>res(childCatgories))
-    } catch (error) {
-      
-    }
-  }
 
   async handleClick (Category){
 
