@@ -30,7 +30,6 @@ export class BookletDetailsComponent extends Component {
         axios
             .get(`${apiBaseUrl}/bookletforsell/bookletforselldetails?idOrSlug=${params.slug}`)
             .then(response => {
-                debugger;
                 this.setState({ booklets: response.data.data });
                 setTimeout(
                     function () {
@@ -45,8 +44,6 @@ export class BookletDetailsComponent extends Component {
     }
 
     renderAttachments(booklet) {
-
-        debugger;
         if(booklet.attachments)
         {
             return (booklet.attachments.map(att => (

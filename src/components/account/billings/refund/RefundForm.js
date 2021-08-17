@@ -33,7 +33,8 @@ class RefundComponent extends Component {
       bankName: values.bankName,
       accountNumber: values.accountNumber,
       accountOwnerName: values.accountOwnerName,
-      leavingReason: values.leavingReason
+      leavingReason: values.leavingReason,
+      IBAN : values.ibanNumber
     };
     this.setState({ loading: true, disabled: true });
     axios
@@ -150,6 +151,14 @@ class RefundComponent extends Component {
                     validate={required}
                   />
                   <Field
+                    name="ibanNumber"
+                    type="text"
+                    component={inputField}
+                    className="form-control border-left-0 pl-0"
+                    placeholder="رقم الايبان"
+                    validate={required}
+                  />
+                  <Field
                     name="accountOwnerName"
                     type="text"
                     component={inputField}
@@ -170,7 +179,7 @@ class RefundComponent extends Component {
                     استرجاع الرسوم
                   </button>
                 </form>
-              </div>
+              </div> 
               <div className="col-md-6 col-12 text-center d-flex align-items-center justify-content-center flex-column">
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/refund-art.png"}

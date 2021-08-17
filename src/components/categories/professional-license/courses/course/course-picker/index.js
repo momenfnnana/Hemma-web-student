@@ -21,7 +21,9 @@ export default function CourseTabPicker({
   const baseClassName = "label-course-btn flex-root";
   const selectedClassName = (id === selectedId && "with-bg") || "";
   const [disabled, setDisabled] = useState(false);
-  const [changeCounter, setChangeCounter] = useState(0);
+  const [changeCounter,setChangeCounter] = useState(0)
+  const isMobile = window.innerWidth < 768
+  const overlayPlacement = isMobile ? 'top' : 'left'
 
   const disableClass = (disabled && "disabled-label") || "";
   const tabClass = [baseClassName, selectedClassName, disableClass].join(" ");
@@ -40,13 +42,23 @@ export default function CourseTabPicker({
       </Tooltip>
   );
 
+  const checkIfValidArray = (array) => Array.isArray(array) && array.length > 0
+  const checkIfValidObject = (obj) => Object.keys(obj || {}).length > 0
+
   const checkIfDisabled = () => {
     const courseTypeParams = { [courseTypeKey]: id };
     getCourseData((res) => {
       setChangeCounter((c) => c + 1);
       setDisabled(!res?.data);
+      setChangeCounter(c => c+1)
+      // if(res.data)
+      // handleClick();
     }, courseTypeParams);
   };
+  // useEffect(() => {
+  //   if(!changeCounter)return
+  //   if(!disabled) handleClick();
+  // },[changeCounter])
 
 
   useEffect(() => {
@@ -62,7 +74,7 @@ export default function CourseTabPicker({
 
   return (
     <OverlayTrigger
-      placement="right"
+      placement={overlayPlacement}
       delay={{ show: 250, hide: 400 }}
       overlay={disabeledTooltip}
     >

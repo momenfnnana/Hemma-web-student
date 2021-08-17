@@ -50,7 +50,7 @@ export class NewInstallmentComponent extends Component {
         });
       })
       .catch(error => {
-        debugger;
+
         this.props.closeInstallmentModal();
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
