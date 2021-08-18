@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ChooseOptions, { courseTypeKey, lvlKey, specKey } from "./choose-options";
+import ChooseOptions, {
+  courseTypeKey,
+  lvlKey,
+  specKey,
+} from "./choose-options";
 import PickTrainer from "./choose-trainer";
 import KnowMore from "./video-content/index";
 import "./index.scss";
@@ -9,6 +13,7 @@ import { courseTabs } from "./course-tabs";
 import Axios from "axios";
 import { EMPTY_ID } from "./choose-options/data/options";
 import { CourseDescribtion } from "./describtion";
+import NavButton from "./navButton/index";
 
 const moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -16,8 +21,8 @@ moment().format("iYYYY/iM/iD");
 export default function ProfessionalCourse({
   price = "2000 ريال",
   title = "دورات الرخصة المهنية",
-  subTitle = 'للتخصصات',
-  general= '',
+  subTitle = "للتخصصات",
+  general = "",
   hasPickTrainer = true,
   hasChooseOptions = true,
   categoryData,
@@ -32,49 +37,52 @@ export default function ProfessionalCourse({
   onJoin = () => {},
   onTrainerSelected = () => {},
   onClear = () => {},
-  triggerReset = ()=>{}
+  triggerReset = () => {},
+  nextHref,
+  elemId,
+  refMethods,
 }) {
   const [optionsData, setOptionsData] = useState({});
   const [courseData, setCourseData] = useState(null);
   const showCourseWrapperClass = courseData ? "" : "d-none";
-  const statePriority = [lvlKey,courseTypeKey]
-  const completeOptionsKeyLength = 3
-  const completedOptionsLength = Object.values(optionsData || {}).filter(elem => !!elem)?.length
+  const statePriority = [lvlKey, courseTypeKey];
+  const completeOptionsKeyLength = 3;
+  const completedOptionsLength = Object.values(optionsData || {}).filter(
+    (elem) => !!elem
+  )?.length;
   //Start index here is 1 cuz we don't want to reset level cuz it's already dependent on specType => could lead to inifite loop
-  const RESET_STATE_START_INDEX = 1
+  const RESET_STATE_START_INDEX = 1;
   const validKeys = Object.values(optionsData).filter(
     (value) => value !== EMPTY_ID && !!value
   );
 
+  useEffect(() => {
+    if (completedOptionsLength === completeOptionsKeyLength) return;
+    triggerReset();
+  }, [completedOptionsLength]);
 
-  useEffect(()=>{
-    if(completedOptionsLength === completeOptionsKeyLength) return
-    triggerReset()
-  },[completedOptionsLength])
-
-  const handleChangePriority = (key)=>{
-    const priority = statePriority.findIndex(stateProp => stateProp === key)
-    let newStateProps = {}
-    if(priority < RESET_STATE_START_INDEX){
-      statePriority.forEach((prop,index) =>{
-        if(index >= RESET_STATE_START_INDEX){
+  const handleChangePriority = (key) => {
+    const priority = statePriority.findIndex((stateProp) => stateProp === key);
+    let newStateProps = {};
+    if (priority < RESET_STATE_START_INDEX) {
+      statePriority.forEach((prop, index) => {
+        if (index >= RESET_STATE_START_INDEX) {
           newStateProps = {
             ...newStateProps,
-            [prop] : null
-          }
+            [prop]: null,
+          };
         }
-      })
+      });
     }
-    return newStateProps
-  }
+    return newStateProps;
+  };
 
   const handleChange = (key, value) => {
-
-    const priotiryStateModified = handleChangePriority(key)
+    const priotiryStateModified = handleChangePriority(key);
     const newValeus = {
       ...optionsData,
       [key]: value,
-      ...priotiryStateModified
+      ...priotiryStateModified,
     };
     setOptionsData(newValeus);
   };
@@ -85,7 +93,7 @@ export default function ProfessionalCourse({
     return hijriDate;
   };
 
-  const getCourseData = async (cb = ()=>{},parmas) => {
+  const getCourseData = async (cb = () => {}, parmas) => {
     setCourseData(null);
     const token = localStorage.getItem("token");
     let headers = {
@@ -98,10 +106,10 @@ export default function ProfessionalCourse({
         params: {
           ...optionsData,
           CategoryId: categoryData.id,
-          ...parmas
+          ...parmas,
         },
       });
-      cb(data)
+      cb(data);
     } catch (error) {
       console.log({ error });
     }
@@ -109,10 +117,10 @@ export default function ProfessionalCourse({
 
   const clearCourseData = () => setSelectedGeneralCourse(null);
 
-  const updateCourseData = (data) =>{
-      setCourseData(data.data);
-      onResponse(data.data);
-  }
+  const updateCourseData = (data) => {
+    setCourseData(data.data);
+    onResponse(data.data);
+  };
 
   useEffect(() => {
     clearCourseData();
@@ -127,14 +135,12 @@ export default function ProfessionalCourse({
 
   useEffect(() => {
     //if one course was retrieved it's dropdown should be hidden and the only value should be selected
-    if (courseData?.length === 1)
-    onCourseSelect(courseData[0])
-    else
-    onCourseSelect(null)
+    if (courseData?.length === 1) onCourseSelect(courseData[0]);
+    else onCourseSelect(null);
   }, [courseData?.length]);
 
   return (
-    <div className="col-lg-4">
+    <div className="col-lg-4" id={elemId}>
       <div className="card p-4 border-dashed  card-ele position-relative mb-6">
         <div className="card-img">
           <img
@@ -148,7 +154,13 @@ export default function ProfessionalCourse({
         </div>
         <div className="mt--50">
           <h5 className="h5 main-color mb-3 font-weight-bold text-center">
-            {!descriptionData?.nameAr ?  title :  <span style={{color: "red"}}>{ descriptionData?.nameAr || subTitle}</span>}
+            {!descriptionData?.nameAr ? (
+              title
+            ) : (
+              <span style={{ color: "red" }}>
+                {descriptionData?.nameAr || subTitle}
+              </span>
+            )}
           </h5>
           {hasChooseOptions && (
             <ChooseOptions
@@ -167,7 +179,9 @@ export default function ProfessionalCourse({
                   title={courseTab?.title}
                   descriptionData={descriptionData}
                   points={courseTab.points}
-                  checkCourseCondition={completedOptionsLength === triggerkeysCount - 1}
+                  checkCourseCondition={
+                    completedOptionsLength === triggerkeysCount - 1
+                  }
                   optionsData={optionsData}
                   getCourseData={getCourseData}
                   completedOptionsLength={completedOptionsLength}
@@ -182,7 +196,7 @@ export default function ProfessionalCourse({
                 id="full-licences-course-one"
                 className="instructor-courses-one show"
               >
-                {!!(courseData?.length) && (
+                {!!courseData?.length && (
                   <PickTrainer
                     onSelect={onCourseSelect}
                     trainers={courseData}
@@ -193,7 +207,7 @@ export default function ProfessionalCourse({
                   <div className="d-flex flex-column justify-content-between">
                     <div>
                       <CourseDescribtion descriptionData={descriptionData} />
-                      <div>
+                      <div className="d-flex align-items-center">
                         {courseData?.instructors?.map((instructor) => (
                           <div
                             className="d-flex justify-content-between"
@@ -212,12 +226,23 @@ export default function ProfessionalCourse({
                             </a>
                           </div>
                         ))}
+                      </div>
+                      <div className="d-flex align-items-center">
+                        <NavButton
+                          title="رجوع"
+                          refId={refMethods.getPrevRef(elemId)}
+                        />
                         <a
-                          className="btn-card-normal w-auto headShake big-height linear-bg mt-4"
+                          className="btn-card-normal pro-license-btn w-lg-auto headShake big-height linear-bg mx-auto"
                           onClick={onJoin}
                         >
                           انضم للدورة
                         </a>
+
+                        <NavButton
+                          title="التالي"
+                          refId={refMethods.getNextRef(elemId)}
+                        />
                       </div>
                     </div>
                   </div>
