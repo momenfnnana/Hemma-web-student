@@ -57,6 +57,7 @@ import { Healthy } from "../components/shared/healthy";
 import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
 import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
 import HemmaSuccessDetails from "../components/hemma-success";
+import LandingPage from "../components/landing-page";
 
 class AppBackground extends Component {
   componentDidMount()
@@ -227,6 +228,7 @@ class MainRouterComponent extends Component {
               <Route path="/home/hemma-succes" exact component={HemmaSuccessDetails} />
               <Route path="/home" component={Home} />
               <Route path="/privacypolicy" component={PrivacyPolicy} />
+              <Route path="/market" component={LandingPage} />
 
               {/* TODO hide initiative */}
               { <Route
