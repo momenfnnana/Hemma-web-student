@@ -15,14 +15,15 @@ export class OnlinePaymentComponent extends Component {
     super(props, context);
 
     this.state = {
-      CardNumberType : "",
+      CardNumberType: "",
       creditCardType: "",
       creditCardRawValue: "",
       dateRawValue: "",
       cardHolderName: "",
       cvv: "",
       loading: false,
-      BankAccount : []
+      BankAccount: [],
+      errors : {}
     };
 
     this.onCreditCardChange = this.onCreditCardChange.bind(this);
@@ -34,25 +35,33 @@ export class OnlinePaymentComponent extends Component {
   }
 
   onCreditCardChange(event) {
-    if(event.target.rawValue.length == 6)
-    {
+    if (event.target.rawValue.length == 6) {
       console.log(this.state.BankAccount);
-      var check = this.state.BankAccount.filter(c=>c.bin ==event.target.rawValue ) 
+      var check = this.state.BankAccount.filter(
+        (c) => c.bin == event.target.rawValue
+      );
       console.log(check);
-      if(check.length>0)
-      {
-        this.setState({ CardNumberType:"mada" });
+      if (check.length > 0) {
+        this.setState({ CardNumberType: "mada" });
+      } else {
+        this.setState({ CardNumberType: "" });
       }
-      else
-      {
-        this.setState({ CardNumberType:"" });
+    } else if (event.target.rawValue.length < 6) {
+      this.setState({ CardNumberType: "" });
+    }
+    this.setState({ creditCardRawValue: event.target.rawValue });
+    const hasError =  this.validateByLength(event.target.rawValue,12,'credit')
+    this.setError('credit',hasError)
+  }
+
+  setError(name,hasError){
+    this.setState({
+      ...this.state,
+      errors : {
+        ...this.state.errors,
+        [name]:hasError
       }
-    }
-    else if(event.target.rawValue.length < 6)
-    {
-      this.setState({ CardNumberType:"" });
-    }
-      this.setState({ creditCardRawValue: event.target.rawValue });
+    })
   }
 
   onCreditCardTypeChanged(type) {
@@ -71,34 +80,49 @@ export class OnlinePaymentComponent extends Component {
   }
 
   isSubmitButtonDisabled = () => {
+    const errorsLength = Object.values(this.state?.errors|| {})?.filter(error => error)?.length
     return (
       this.state.creditCardRawValue == "" ||
       this.state.dateRawValue == "" ||
       this.state.cardHolderName == "" ||
-      this.state.cvv == ""
+      this.state.cvv == "" ||
+      errorsLength
     );
   };
 
-  myFormHandler = values => {
+  getValidatedClassName(name,baseClass){
+    const errorClass = "border-danger";
+    const resultClassName = this.state.errors?.[name]
+    ? [baseClass, errorClass].join(" ")
+    : baseClass;
+    return resultClassName
+  }
+
+  validateByLength(value, minLength) {
+    const hasError = value?.length < minLength && value?.length;
+    return !!hasError
+  }
+
+  myFormHandler = (values) => {
     const cart = this.props.cart;
     const itemsThatRequireShippingAddress = cart.items.filter(
-      i => i.requiresShippingAddress
+      (i) => i.requiresShippingAddress
     );
-    const itemDetails = itemsThatRequireShippingAddress.map(obj => ({
+    const itemDetails = itemsThatRequireShippingAddress.map((obj) => ({
       id: obj.id,
       shippingRecipient: values.shippingRecipient,
       shippingCityId: values.shippingCityId,
       shippingAddress: values.shippingAddress,
-      shippingPhone: values.shippingPhone
+      shippingPhone: values.shippingPhone,
     }));
     const data = {
       callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
-      checkoutItemDetails: itemDetails
+      checkoutItemDetails: itemDetails,
     };
     this.setState({ loading: true });
     Api.cart
       .initiateOnlineCheckout(data)
-      .then(result => {
+      .then((result) => {
         this.setState({ loading: false });
 
         // Create and submit the form
@@ -152,7 +176,7 @@ export class OnlinePaymentComponent extends Component {
         document.querySelector("body").innerHTML += html;
         document.getElementById("purchase").submit();
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ loading: false });
 
         switch (error.response.data && error.response.data.error) {
@@ -162,36 +186,33 @@ export class OnlinePaymentComponent extends Component {
               "يرجى الانتظار حتى تتمكن من القيام بحركة أخرى",
               "error",
               {
-                button: "متابعة"
+                button: "متابعة",
               }
             );
             break;
           case "Duplicate":
             swal("عفواً", "تم شراء هذه الدورة سابقاً", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
           case "ServerError":
             swal("عفواً", "حدث خطأ ما", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
 
           default:
             swal("عفواً", "حدث خطأ ما", "error", {
-              button: "متابعة"
+              button: "متابعة",
             });
             break;
         }
       });
   };
-  componentDidMount()
-  {
-    Api.cart
-    .getCardType()
-    .then(result => {
-      console.log(result)
-this.setState({BankAccount : result});
+  componentDidMount() {
+    Api.cart.getCardType().then((result) => {
+      console.log(result);
+      this.setState({ BankAccount: result });
     });
   }
   render() {
@@ -199,25 +220,25 @@ this.setState({BankAccount : result});
 
     return (
       <div className="row mt-5">
-        <div className="col-12 mada-img" >
-        <img className="padding-img" src={
-                        process.env.PUBLIC_URL + "/assets/images/mada.png"
-                      }
-                width="100"
-                height="100"
-                      />
-          <img className="padding-img" src={
-                        process.env.PUBLIC_URL + "/assets/images/mastercard.png"
-                      }
-                width="80"
-                height="80"
-                      />
-            <img className="padding-img" src={
-                        process.env.PUBLIC_URL + "/assets/images/visa.png"
-                      }
-                width="80"
-                height="80"
-                      />
+        <div className="col-12 mada-img">
+          <img
+            className="padding-img"
+            src={process.env.PUBLIC_URL + "/assets/images/mada.png"}
+            width="100"
+            height="100"
+          />
+          <img
+            className="padding-img"
+            src={process.env.PUBLIC_URL + "/assets/images/mastercard.png"}
+            width="80"
+            height="80"
+          />
+          <img
+            className="padding-img"
+            src={process.env.PUBLIC_URL + "/assets/images/visa.png"}
+            width="80"
+            height="80"
+          />
         </div>
         <div className="col-12 d-flex justify-content-center">
           <form className="w-60" onSubmit={handleSubmit(this.myFormHandler)}>
@@ -228,20 +249,21 @@ this.setState({BankAccount : result});
                     placeholder="رقم البطاقة"
                     options={{
                       creditCard: true,
-                      onCreditCardTypeChanged: this.onCreditCardTypeChanged
+                      onCreditCardTypeChanged: this.onCreditCardTypeChanged,
                     }}
                     onChange={this.onCreditCardChange}
-                    className="form-control ltr-input position-relative"
-                  /> {this.state.CardNumberType == "mada" ? (
+                    className={this.getValidatedClassName('credit',
+                      "form-control ltr-input position-relative",
+                    )}
+                  />
+                  {this.state.CardNumberType == "mada" ? (
                     <img
-                      src={
-                        process.env.PUBLIC_URL + "/assets/images/mada.png"
-                      }
+                      src={process.env.PUBLIC_URL + "/assets/images/mada.png"}
                       width="30"
                       width="30"
                       className="payment-img"
                     />
-                  ):this.state.creditCardType == "mastercard" ? (
+                  ) : this.state.creditCardType == "mastercard" ? (
                     <img
                       src={
                         process.env.PUBLIC_URL + "/assets/images/mastercard.png"
@@ -332,13 +354,13 @@ function mapStateToProps(state) {
   return {
     cart: state.cart,
     formValues: state.form.onlinePayment && state.form.onlinePayment.values,
-    cartValues: state.form.cart && state.form.cart.values
+    cartValues: state.form.cart && state.form.cart.values,
   };
 }
 
 export const OnlinePayment = connect(mapStateToProps)(
   reduxForm({
     form: "onlinePayment",
-    destroyOnUnmount: false
+    destroyOnUnmount: false,
   })(withRouter(OnlinePaymentComponent))
 );
