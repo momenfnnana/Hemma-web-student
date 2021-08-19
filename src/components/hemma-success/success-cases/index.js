@@ -91,7 +91,6 @@ export default function SuccessCases() {
 
   const handleCaseRequestSuccess = (response) => {
     const cases = response?.data?.data;
-    debugger
     if (response.data.itemCount >= allCases.length) {
       setNoMore(true);
     } else {
