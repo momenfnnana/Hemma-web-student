@@ -119,11 +119,10 @@ export class BookletCartItem extends Component {
             <div className="d-flex flex-row justify-content-between align-items-center">
               <label className="dark-text smaller mb-0">سعر الملزمة</label>
               <div className="d-flex flex-column mx-auto">
-
-                {item.subtotal!==0? <h6 className="light-text text-center mb-0">
+                <h6 className="light-text text-center mb-0">
                   <span className="en-text">{formatPrice(item.subtotal)}</span>{" "}
                   ريال
-                </h6>: <h6>مجاني</h6>}
+                </h6>
                 {item.subtotalBeforeDiscount && (
                   <h6 className="mb-0 dark-silver-text line-through-text align-items-center d-flex">
                     <span className="en-text">
