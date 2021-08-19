@@ -200,7 +200,7 @@ export class CourseDetails extends Component {
           <div className="col-12">
             <div className="card section-card" key={section.id}>
               <div className="card-header border-bottom-0">
-                <h6 className="text-white small mb-0 ">{section.nameAr}</h6>
+                <h6 className="text-white  mb-0 section-name">{section.nameAr}</h6>
               </div>
               {this.renderChapters(section.chapters)}
             </div>
@@ -524,11 +524,11 @@ export class CourseDetails extends Component {
                       }
                        
 
-                        <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
+                        <h6 className="dark-text mr-3 mb-3 list-title">تتضمن:</h6>
                         <ul className="list-unstyled">
                           {this.state.details &&
                           this.state.details.durationTextAr ? (
-                            <li className="small dark-text mb-2">
+                            <li className=" dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -693,11 +693,11 @@ export class CourseDetails extends Component {
                   <div className="col-md-8">
                     <div className="row">
                       <div className="col-12">
-                        <h3 className="mid-text">
+                        <h3 className="mid-text details-title">
                           {this.state.details.nameAr}
                         </h3>
                         <Link
-                          className="dark-text"
+                          className="dark-text details-link"
                           to={`/categories/details/${this.state.details &&
                             this.state.details.category &&
                             this.state.details.category.slug}`}
@@ -706,7 +706,7 @@ export class CourseDetails extends Component {
                             this.state.details.category &&
                             this.state.details.category.nameAr}
                         </Link>
-                        <p className="dark-text light-font-text w-75 mt-3 text-break">
+                        <p className="text-muted light-font-text w-75 mt-3 text-break details-para">
                           {this.state.details.descriptionAr}
                         </p>
                       </div>

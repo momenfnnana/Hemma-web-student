@@ -267,9 +267,9 @@ p {
   background-color: #fefefe;
 }
 
-.light-font-text {
-  font-family: GessLight;
-}
+/*.light-font-text {*/
+/*  font-family: GessLight;*/
+/*}*/
 
 .cover-img {
   object-fit: cover;
