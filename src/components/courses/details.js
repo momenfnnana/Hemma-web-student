@@ -449,6 +449,13 @@ export class CourseDetails extends Component {
 
                       <div className="container">
                         <div className="d-inline-flex align-items-center">
+
+                          {this.state.details.price == 0 ? 
+                          <h4 className="mid-text">
+                          دورة مجانية
+                        </h4>
+                          :
+                          <>
                           <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
                           {this.state.details.originalPrice ? (
                             <h5 className="mid-text">
@@ -477,7 +484,7 @@ export class CourseDetails extends Component {
                               </span>{" "}
                               ريال
                             </h4>
-                          )} 
+                          )} </> }
                              
                         </div>
                         {this.state.discountprecentage>0 && (
