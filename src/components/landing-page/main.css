@@ -1,7 +1,6 @@
 .fragment {
-  font-family: "Bahij TheSansArabic", serif;
   overflow-x: hidden;
-  padding: 30px !important;
+  padding: 25px !important;
 }
 
 .logo {
@@ -48,8 +47,7 @@
 }
 
 .font-md {
-  font-size: 18px !important;
-  font-family: "Bahij TheSansArabic", serif;
+  font-size: 1.2rem;
   font-weight: 500;
   color: #745DA4;
 }
@@ -115,10 +113,10 @@
 
 .dark-font {
   color: #323232;
-  text-align: right;
-  font-family: "Bahij TheSansArabic", serif;
-  font-size: 27px !important;
-  font-weight: 500;
+}
+
+.mid-content {
+  margin-top: 3rem;
 }
 
 .line-heigh-lg h5, h6 {
@@ -147,8 +145,11 @@
 
 .main-color {
   color: #745DA4;
-  font-family: "Bahij TheSansArabic";
-  font-size: 40px !important;
+}
+
+.bottom-summary p {
+  line-height: 1.8;
+  font-size: 1.4rem;
 }
 
 input {
@@ -168,28 +169,33 @@ textarea::placeholder {
   transform: translate(-50%, -50%);
 }
 
-.img-wrapper img {
-  height: auto !important;
-  width: 100%;
-}
+@media (max-width: 991px) {
+  .img-wrapper img {
+    height: auto !important;
+    width: 100%;
+  }
 
-.img-wrapper video {
-  height: auto !important;
-  width: 100%;
-}
+  .img-wrapper video {
+    height: auto !important;
+    width: 100%;
+  }
 
-.img-wrapper {
-  position: relative;
-}
+  .img-wrapper {
+    position: relative !important;
+  }
 
-.font-lg {
-  font-size: 1.4rem;
-}
+  #hemma-img .pink-shadow {
+    max-width: 100% !important;
+  }
 
-.custom-btn {
-  width: 15%;
-}
+  .font-lg {
+    font-size: 1.4rem;
+  }
 
+  .custom-btn {
+    width: 15%;
+  }
+}
 .play-icon {
   max-width: 10%;
   height: auto;

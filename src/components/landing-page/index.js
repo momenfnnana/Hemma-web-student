@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import axios from "axios";
+
 import './main.css'
 
 export default class LandingPage  extends Component {
@@ -9,10 +11,19 @@ export default class LandingPage  extends Component {
 			pinkBg:true ,
 			playIcon:true ,
 			hemmaImg:true ,
-			hemmaVideo:false
+			hemmaVideo:false,
+			from:'',
+			to:''
 		};
 	}
 
+	onFromChange = (event) => {
+		this.setState({from: event.target.value})
+	}
+
+	onToChange = (event) =>{
+		this.setState({to: event.target.value})
+	}
 	onPause = () => {
 		this.setState({isPlaying:false ,pinkBg:true , playIcon:true , hemmaImg:true ,hemmaVideo:false })
 		this.refs.vidRef.pause();
@@ -28,22 +39,59 @@ export default class LandingPage  extends Component {
 		}
 
 	};
+	handleSubmit = (e) => {
+		e.preventDefault();
+		let headers = {
+			'Content-Type': 'application/json'
+		}
+		// let data = {
+		// 	from:this.state.from,
+		// 	to: this.state.to,
+		// };
+		const from = this.state.from;
+		const to = this.state.to;
+
+		axios
+			.post
+		(`https://www.gheeed.com/hemaa?from=${from}&to=${to}`,
+			{},{
+			headers,
+		}
+		).then((response) => {
+			if (response.data.status) {
+				alert(response.data.message || "Message Sent.");
+				this.resetForm()
+			} else {
+				alert(response.data.message ||  "Message failed to send.")
+			}
+		})
+			.catch((error) => {
+				this.setState({ disabled: false });
+				console.log(error);
+			});
+	};
+	resetForm =() =>{
+		this.setState({from:'',to:''})
+	}
+
+
 
 	render(){
 		return (
 			<div className='fragment'>
 				<div className="w-100" dir="ltr">
-					<div className="d-flex justify-content-end">
+					<div className="d-flex mt-4 justify-content-between align-items-center">
+						<div className="main-color-dark w-100 text-center ">
+							<h2 className="font-lg">مع همة الرخصة المهنية ما هي هم</h2>
+							<h4 className="mt-4 dark-font font-weight-600">همة، المنصة الأولى في تمكين المُقبلين على اختبار الرخصة المهنية</h4>
+						</div>
 						<img className="h-auto logo" src='/assets/images/Hemma-logo.png' alt="Logo" />
 					</div>
-					<div className="main-color-dark w-100 text-center mb-lg-5 mb-0 mt-4">
-						<h2 className="font-lg">مع همة الرخصة المهنية ما هي هم</h2>
-						<h4>همة، المنصة الأولى في تمكين المُقبلين على اختبار الرخصة المهنية</h4>
-					</div>
+
 					<div className="hidden">a</div>
-					<div className="row justify-content-between mt-3">
-						<div className="col-lg-6">
-							<div className="left-img-wrapper h-40 position-relative">
+					<div className="row justify-content-between mid-content mt-4">
+						<div className="col-lg-5">
+							<div className="left-img-wrapper h-100 position-relative">
 								<div className="img-wrapper stretched-absolute">
 									<img
 										src="/assets/images/video-thumb.png"
@@ -74,50 +122,61 @@ export default class LandingPage  extends Component {
 								</div>
 							</div>
 						</div>
-						<div className="col-lg-6 text-right text-spaced top-content line-heigh-lg">
+						<div className="col-lg-7 text-right text-spaced top-content line-heigh-lg">
 							<div className="d-flex rtl">
 								<h5 className="main-color font-weight-bold text-right  ml-auto mt-5 mt-lg-0">
 									اعتمادًا على خبرتنا الطويلة في تمكين أكثر من ۱۰۰ ألف في اختبار
 									الرخصة المهنية.
 								</h5>
 							</div>
-							<p className="mt-2 dark-font">
+							<h6 className="mt-3 dark-font font-weight-500">
 								نُطلق هذه الحملة لنختصر طريق طويل وشاق على الخريجين، والخريجات المُقبلين على اختبار الرخصة المهنية ليكونوا في مكانهم الصحيح كمعلمين، ومعلمات بالإضافة للمعلمين على رأس العمل
-							</p>
-							<p className="mt-2 dark-font">
-								أرسل الرسالة أدناه لخريج، أو معلم على رأس العمل، ومُقبل على اختبار الرخصة المهنية للانضمام لهِمّة من خلال ٣٠ مقعد مجاني، وبذلك تكون دخلت أنت أيضًا تلقائيًا على السحب (مبلغ نقدي ٥٠٠ ريال)
-							</p>
+							</h6>
+							<h6 className="mt-3 dark-font font-weight-500">
+								أرسل الرسالة أدناه لخريج، أو معلم على رأس العمل، ومُقبل على اختبار الرخصة المهنية للانضمام لهِمّة من خلال ٣٠ مقعد مجاني، وبذلك تكون دخلت أنت أيضًا تلقائيًا على السحب
+							</h6>
+							<h6 className='dark-font font-weight-500'>
+								(مبلغ نقدي ٥٠٠ ريال)
+							</h6>
 						</div>
 					</div>
+					<form id="contact-form" action="/" onSubmit={this.handleSubmit} >
 					<div className="bottom-section mt-5 p-5">
-						<div className="row text-right justify-content-between">
-							<div className="col-lg-4 mr-1 mt-0 order-lg-0 order-1">
+						<div className="row text-right">
+							<div className="col-lg-4 mt-lg-0 mt-3 order-lg-0 order-1">
 								<div className="rtl">
-									<div className="field">
-										<label className="field-title  font-md">
+									<div className="field form-group">
+										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل
-										</label>
-										<input
+										</h5>
+										<textarea
+											cols="40" rows="2"
 											placeholder="أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
 											className="field-input"
-											// defaultValue={"                        "}
+											value={this.state.from}
+											onChange={this.onFromChange}
 										/>
 									</div>
-									<div className="field mt-3">
-										<label className="field-title font-md">
+									<div className="field mt-3 form-group">
+										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل إليه
-										</label>
-										<input
+										</h5>
+										<textarea
+											cols="40" rows="3"
 											placeholder="أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
 											className="field-input"
-											// defaultValue={"                                "}
+											value={this.state.to}
+											onChange={this.onToChange}
 										/>
+									</div>
+									<div className="d-flex w-100 justify-content-lg-start">
+										<button className="custom-btn mt-3 w-100" type="submit">أرسل</button>
 									</div>
 								</div>
 							</div>
-							<div className="col-lg-7  order-lg-1">
-								<div className="bottom-summary pl-3">
-									<p className="font-md  rtl">
+							<div className="col-lg-8  order-lg-1">
+								<div className="bottom-summary pl-3 h-100">
+									<p className="main-color  rtl">
 										مُقبل على الرخصة المهنية، كيف ما تعرف هِمّة ؟
 										<br />
 										مكنّا ما يزيد عن ١٠٠ ألف في اختبار الرخصة المهنية، وبدرجات عالية.
@@ -134,10 +193,8 @@ export default class LandingPage  extends Component {
 								</div>
 							</div>
 						</div>
-						<div className="d-flex w-100 justify-content-lg-start">
-							<button className="custom-btn mt-3">أرسل</button>
-						</div>
 					</div>
+					</form>
 				</div>
 			</div>
 	)

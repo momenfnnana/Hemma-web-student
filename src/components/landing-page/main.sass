@@ -1,9 +1,9 @@
 $bottom-img: url("/assets/images/bottom-image.png")
 
 .fragment
-  font-family: 'Bahij TheSansArabic', serif
   overflow-x: hidden
-  padding: 30px !important
+  padding: 25px !important
+
 
 .logo
   max-width: 85px
@@ -46,8 +46,7 @@ $bottom-img: url("/assets/images/bottom-image.png")
 
 
 .font-md
-  font-size: 18px !important
-  font-family: "Bahij TheSansArabic", serif
+  font-size:  1.2rem
   font-weight: 500
   color: #745DA4
 
@@ -110,10 +109,9 @@ $bottom-img: url("/assets/images/bottom-image.png")
 
 .dark-font
   color: #323232
-  text-align: right
-  font-family: 'Bahij TheSansArabic', serif
-  font-size: 27px !important
-  font-weight: 500
+
+.mid-content
+  margin-top: 3rem
 
 .line-heigh-lg h5,h6
   line-height: 1.2 !important
@@ -140,8 +138,11 @@ $bottom-img: url("/assets/images/bottom-image.png")
 
 .main-color
   color: #745DA4
-  font-family: 'Bahij TheSansArabic'
-  font-size: 40px !important
+
+.bottom-summary
+  p
+    line-height: 1.8
+    font-size: 1.4rem
 
 input
   min-height: 4rem
@@ -159,26 +160,30 @@ textarea
   transform: translate(-50%,-50%)
 
 
-@media (max-width 991px)
-.img-wrapper
-  img
-    height: auto !important
-    width: 100%
+@media (max-width : 991px)
+  .img-wrapper
+    img
+      height: auto !important
+      width: 100%
 
-.img-wrapper
-  video
-    height: auto !important
-    width: 100%
+  .img-wrapper
+    video
+      height: auto !important
+      width: 100%
 
-.img-wrapper
-  position: relative
+  .img-wrapper
+    position: relative !important
 
-.font-lg
-  font-size: 1.4rem
+  #hemma-img
+    .pink-shadow
+      max-width: 100% !important
+
+  .font-lg
+    font-size: 1.4rem
 
 
-.custom-btn
-  width: 15%
+  .custom-btn
+    width: 15%
 
 
 .play-icon
