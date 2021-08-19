@@ -116,7 +116,7 @@ export default class LandingPage  extends Component {
 									       style={{ display: this.state.hemmaVideo?'block': "none" }}
 									       ref="vidRef"
 									>
-										<source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
+										<source src="https://hemma.ams3.cdn.digitaloceanspaces.com/videos/videos/V1-Boy.mp4" />
 										<div className="pink-shadow stretched-absolute" />
 									</video>
 								</div>
