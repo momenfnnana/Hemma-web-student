@@ -18,6 +18,7 @@ import "./index.scss"
 // Required Core Stylesheet
 // import "public/assets/css/glide.core.min.css";
 import WrapperText from './../../shared-components/WrappedText/inedx';
+import PopupHemma from "./popupHemma";
 // // Optional Theme Stylesheet
 // import "public/assets/css/glide.theme.min.css";
 
@@ -669,6 +670,7 @@ renderSucces()
     return (
 
       <React.Fragment>
+       <PopupHemma/>
        <section id="hemma-banner" className="main-banner ">
          <div className='banner banner-program'>
            <div className="container program-container py-4 ">
