@@ -52,9 +52,8 @@ export default class LandingPage  extends Component {
 		const to = this.state.to;
 
 		axios
-			.post
-		(`https://www.gheeed.com/hemaa?from=${from}&to=${to}`,
-			{},{
+			.get
+		(`https://www.gheeed.com/hemaa?from=${from}&to=${to}`,{
 			headers,
 		}
 		).then((response) => {
@@ -74,7 +73,12 @@ export default class LandingPage  extends Component {
 		this.setState({from:'',to:''})
 	}
 
-
+	componentDidMount() {
+		setTimeout(
+			() => this.onclick(), 
+			1000
+		  );
+	}
 
 	render(){
 		return (

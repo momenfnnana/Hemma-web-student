@@ -152,9 +152,9 @@
   font-size: 1.4rem;
 }
 
-input {
+/* input {
   min-height: 4rem;
-}
+} */
 input::placeholder {
   font-size: 14px;
 }
