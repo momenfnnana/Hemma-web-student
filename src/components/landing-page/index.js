@@ -159,7 +159,7 @@ export default class LandingPage  extends Component {
 											className="field-input"
 											value={this.state.from}
 											onChange={this.onFromChange}
-										/>
+										></textarea>
 									</div>
 									<div className="field mt-3 form-group">
 										<h5 className="field-title main-color font-md">
@@ -171,7 +171,7 @@ export default class LandingPage  extends Component {
 											className="field-input"
 											value={this.state.to}
 											onChange={this.onToChange}
-										/>
+										></textarea>
 									</div>
 									<div className="d-flex w-100 justify-content-lg-start">
 										<button className="custom-btn mt-3 w-100" type="submit">أرسل</button>
