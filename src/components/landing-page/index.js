@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import axios from "axios";
 
 import './main.css'
+import TextArea from './text-area/index';
 
 export default class LandingPage  extends Component {
 	constructor(props) {
@@ -91,12 +92,12 @@ export default class LandingPage  extends Component {
 		return (
 			<div className='fragment'>
 				<div className="w-100" dir="ltr">
-					<div className="d-flex mt-4 justify-content-between align-items-center">
-						<div className="main-color-dark w-100 text-center ">
+					<div className="d-flex mt-4 flex-column flex-md-row justify-content-between align-items-center">
+						<div className="order-1 main-color-dark w-100 text-center ">
 							<h2 className="font-lg">مع همة الرخصة المهنية ما هي هم</h2>
 							<h4 className="mt-4 dark-font font-weight-600">همة، المنصة الأولى في تمكين المُقبلين على اختبار الرخصة المهنية</h4>
 						</div>
-						<img className="h-auto logo" src='/assets/images/Hemma-logo.png' alt="Logo" />
+						<img className="h-auto logo order-md-1 order-0" src='/assets/images/Hemma-logo.png' alt="Logo" />
 					</div>
 
 					<div className="hidden">a</div>
@@ -160,28 +161,28 @@ export default class LandingPage  extends Component {
 										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل
 										</h5>
-										<textarea
-											cols="40" rows={!this.state.from.length ?  3  : 1}
-											placeholder={this.fromPlcholder}
-											// placeholder="أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
-											className={"field-input pb-0"}
-											value={this.state.from}
-											onChange={this.onFromChange}
-										></textarea>
+										<TextArea 
+										cols="40" rows={!this.state.from.length ?  3  : 1}
+										className={"field-input pb-0 position-relative"}
+										value={this.state.from}
+										onChange={this.onFromChange}
+										placholderText={this.fromPlcholder}
+										show={!this.state.from.length}
+										/>
 										{!(this.state.from.length === 12 && this.state.from.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="field mt-3 form-group">
 										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل إليه
 										</h5>
-										<textarea
-											cols="40" rows={!this.state.to.length ?  3  : 1}
-											placeholder={this.toPlacholder}
-											// placeholder="أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
-											className={"field-input pb-0"}
-											value={this.state.to}
-											onChange={this.onToChange}
-										></textarea>
+										<TextArea 
+										cols="40" rows={!this.state.to.length ?  3  : 1}
+										className={"field-input pb-0"}
+										value={this.state.to}
+										onChange={this.onToChange}
+										placholderText={this.toPlacholder}
+										show={!this.state.to.length}
+										/>
 										{!(this.state.to.length === 12 && this.state.to.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="d-flex w-100 justify-content-lg-start">
