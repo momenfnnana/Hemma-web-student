@@ -6,6 +6,7 @@ import './main.css'
 export default class LandingPage  extends Component {
 	constructor(props) {
 		super(props);
+		this.errorClass = "border border-danger"
 		this.state = {
 			isPlaying:false,
 			pinkBg:true ,
@@ -50,13 +51,15 @@ export default class LandingPage  extends Component {
 		// };
 		const from = this.state.from;
 		const to = this.state.to;
-
+		this.setState({...this.state,loading:true})
 		axios
 			.get
-		(`https://www.gheeed.com/hemaa?from=${from}&to=${to}`,{
+		(`https://www.gheeed.com/hemaa/index.php?from=${from}&to=${to}`,{
 			headers,
 		}
 		).then((response) => {
+			this.setState({...this.state,loading:false})
+
 			if (response.data.status) {
 				alert(response.data.message || "Message Sent.");
 				this.resetForm()
@@ -65,7 +68,7 @@ export default class LandingPage  extends Component {
 			}
 		})
 			.catch((error) => {
-				this.setState({ disabled: false });
+				this.setState({...this.state,loading:false,disabled: false})
 				console.log(error);
 			});
 	};
@@ -79,6 +82,8 @@ export default class LandingPage  extends Component {
 			1000
 		  );
 	}
+
+	
 
 	render(){
 		return (
@@ -138,9 +143,9 @@ export default class LandingPage  extends Component {
 							</h6>
 							<h6 className="mt-3 dark-font font-weight-500 rtl">
 								أرسل الرسالة أدناه لخريج، أو معلم على رأس العمل، ومُقبل على اختبار الرخصة المهنية للانضمام لهِمّة من خلال ٣٠ مقعد مجاني، وبذلك تكون دخلت أنت أيضًا تلقائيًا على السحب
+								مبلغ نقدي ٥٠٠ ريال.
 							</h6>
 							<h6 className='dark-font font-weight-500 rtl'>
-								(مبلغ نقدي ٥٠٠ ريال).
 							</h6>
 						</div>
 					</div>
@@ -155,8 +160,9 @@ export default class LandingPage  extends Component {
 										</h5>
 										<textarea
 											cols="40" rows="2"
-											placeholder="أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
-											className="field-input"
+											placeholder="966xxxxxxxxx"
+											// placeholder="أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
+											className={["field-input",this.state.from.length === 12 && this.state.from.length ? '' :  this.errorClass].join(' ')}
 											value={this.state.from}
 											onChange={this.onFromChange}
 										></textarea>
@@ -167,14 +173,15 @@ export default class LandingPage  extends Component {
 										</h5>
 										<textarea
 											cols="40" rows="3"
-											placeholder="أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
-											className="field-input"
+											placeholder="966xxxxxxxxx"
+											// placeholder="أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
+											className={["field-input",this.state.to.length === 12 && this.state.to.length ? '' :  this.errorClass].join(' ')}
 											value={this.state.to}
 											onChange={this.onToChange}
 										></textarea>
 									</div>
 									<div className="d-flex w-100 justify-content-lg-start">
-										<button className="custom-btn mt-3 w-100" type="submit">أرسل</button>
+										<button disabled={this.state.loading} className="custom-btn mt-3 w-100" type="submit">{this.state.loading ? 'يتم الارسال' : 'أرسل'}</button>
 									</div>
 								</div>
 							</div>
