@@ -42,6 +42,8 @@
   width: 100%;
 }
 
+
+
 .rtl {
   direction: rtl;
 }
@@ -160,7 +162,7 @@ input::placeholder {
 }
 
 textarea::placeholder {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .absolute-center {

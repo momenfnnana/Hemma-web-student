@@ -7,6 +7,8 @@ export default class LandingPage  extends Component {
 	constructor(props) {
 		super(props);
 		this.errorClass = "border border-danger"
+		this.toPlacholder = "966xxxxxxxxx \n أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
+		this.fromPlcholder = "966xxxxxxxxx \n أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
 		this.state = {
 			isPlaying:false,
 			pinkBg:true ,
@@ -102,17 +104,17 @@ export default class LandingPage  extends Component {
 						<div className="col-lg-5">
 							<div className="left-img-wrapper h-100 position-relative">
 								<div className="img-wrapper stretched-absolute">
-									<img
+									{/* <img
 										src="/assets/images/video-thumb.png"
 										id="hemma-img"
 										className="position-relative"
 										alt=''
 										style={{ display: this.state.hemmaImg?'block': "none" }}
 
-									/>
-									<div id="pick-bg"
+									/> */}
+									{/* <div id="pick-bg"
 									     style={{ display: this.state.pinkBg?'block': "none" }}
-									     className="pink-shadow stretched-absolute"/>
+									     className="pink-shadow stretched-absolute"/> */}
 									<img
 										src="/assets/images/video-play-icon.png"
 										className="position-absolute play-icon absolute-center"
@@ -122,7 +124,7 @@ export default class LandingPage  extends Component {
 										style={{ display: this.state.playIcon?'block': "none" }}
 									/>
 									<video id="hemma-video" onPause={this.onPause} controls
-									       style={{ display: this.state.hemmaVideo?'block': "none" }}
+									       style={{ display: 'block' }}
 									       ref="vidRef"
 									>
 										<source src="https://hemma.ams3.cdn.digitaloceanspaces.com/videos/videos/V1-Boy.mp4" />
@@ -159,26 +161,28 @@ export default class LandingPage  extends Component {
 											رقم جوال المرسل
 										</h5>
 										<textarea
-											cols="40" rows="2"
-											placeholder="966xxxxxxxxx"
+											cols="40" rows={!this.state.from.length ?  3  : 1}
+											placeholder={this.fromPlcholder}
 											// placeholder="أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
-											className={["field-input",this.state.from.length === 12 && this.state.from.length ? '' :  this.errorClass].join(' ')}
+											className={"field-input pb-0"}
 											value={this.state.from}
 											onChange={this.onFromChange}
 										></textarea>
+										{!(this.state.from.length === 12 && this.state.from.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="field mt-3 form-group">
 										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل إليه
 										</h5>
 										<textarea
-											cols="40" rows="3"
-											placeholder="966xxxxxxxxx"
+											cols="40" rows={!this.state.to.length ?  3  : 1}
+											placeholder={this.toPlacholder}
 											// placeholder="أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
-											className={["field-input",this.state.to.length === 12 && this.state.to.length ? '' :  this.errorClass].join(' ')}
+											className={"field-input pb-0"}
 											value={this.state.to}
 											onChange={this.onToChange}
 										></textarea>
+										{!(this.state.to.length === 12 && this.state.to.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="d-flex w-100 justify-content-lg-start">
 										<button disabled={this.state.loading} className="custom-btn mt-3 w-100" type="submit">{this.state.loading ? 'يتم الارسال' : 'أرسل'}</button>
