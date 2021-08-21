@@ -8,8 +8,8 @@ export default class LandingPage  extends Component {
 	constructor(props) {
 		super(props);
 		this.errorClass = "border border-danger"
-		this.toPlacholder = "966xxxxxxxxx \n أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
-		this.fromPlcholder = "966xxxxxxxxx \n أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
+		this.toPlacholder = ["966xxxxxxxxx"," أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني"]
+		this.fromPlcholder = ["966xxxxxxxxx "," أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"]
 		this.state = {
 			isPlaying:false,
 			pinkBg:true ,
@@ -169,7 +169,7 @@ export default class LandingPage  extends Component {
 										placholderText={this.fromPlcholder}
 										show={!this.state.from.length}
 										/>
-										{!(this.state.from.length === 12 && this.state.from.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
+										{!!(this.state.from.length !== 12 && this.state.from.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="field mt-3 form-group">
 										<h5 className="field-title main-color font-md">
@@ -183,7 +183,7 @@ export default class LandingPage  extends Component {
 										placholderText={this.toPlacholder}
 										show={!this.state.to.length}
 										/>
-										{!(this.state.to.length === 12 && this.state.to.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
+										{!!(this.state.to.length !== 12 && this.state.to.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="d-flex w-100 justify-content-lg-start">
 										<button disabled={this.state.loading} className="custom-btn mt-3 w-100" type="submit">{this.state.loading ? 'يتم الارسال' : 'أرسل'}</button>
