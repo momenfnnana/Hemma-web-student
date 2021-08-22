@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Slider from "react-slick";
 import { Api } from '../../api';
 import { Card } from "../shared/card/card";
+import { Carousel } from './../../shared-components/carsoul/index';
 
 export class RecentCoursesSlider extends Component {
     state = {
@@ -87,11 +88,8 @@ export class RecentCoursesSlider extends Component {
 
         if (!courses) return null;
 
-        return <Slider {...this.sliderSettings}>
-            {courses.map(course =>
-            <div className="px-3"><Card key={course.id} course={course} /></div>
-                
-            )}
-        </Slider>
+        return (
+          <Carousel elems={courses} SliderComponent={({data : course})=><Card key={course.id} course={course} />} />
+        )
     }
 }

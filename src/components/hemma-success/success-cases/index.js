@@ -91,7 +91,7 @@ export default function SuccessCases() {
 
   const handleCaseRequestSuccess = (response) => {
     const cases = response?.data?.data;
-    debugger
+    debugger;
     if (response.data.itemCount >= allCases.length) {
       setNoMore(true);
     } else {
@@ -131,14 +131,14 @@ export default function SuccessCases() {
   });
 
   useEffect(() => {
-    let glide = new Glide(".glide",enabledCarsoulOptions)
+    let glide = new Glide(".glide", enabledCarsoulOptions);
     if (!allCases.length) return;
-     setPage((c) => c + 1);
+    setPage((c) => c + 1);
     if (!allCases.length || activeted) return;
     setActiveted(true);
-    glide.destroy()
+    glide.destroy();
     setTimeout(() => {
-      glide.mount()
+      glide.mount();
     }, 500);
   }, [allCases?.length]);
 
@@ -148,35 +148,15 @@ export default function SuccessCases() {
         <div class="glide">
           <div class="glide__track" data-glide-el="track">
             <ul class="glide__slides">
-              {/* test */}
-              {/* {[1,2,3]?.map(_case => <SuccessElem suc={_case} />)} */}
               {allCases.map((_case) => (
-                <li
-                  className="glide__slide"
-
-                  // style={{minHeight:`${maxHeight}px !important`}}
-                >
-                  <SuccessElem
-                    suc={_case}
-                    id={_case?.id}
-                    // style={{minHeight:`${maxHeight}px`}}
-                  />
+                <li className="glide__slide">
+                  <SuccessElem suc={_case} id={_case?.id} />
                 </li>
               ))}
             </ul>
           </div>
         </div>
       </div>
-      {/* <div className="d-flex justify-content-center mt-5">
-        {noMore && (
-          <button
-            className="btn dark-btn unset-height unset-line-height br-5 w-20 m-auto"
-            onClick={getNaxtPage}
-          >
-            عرض المزيد
-          </button>
-        )}
-      </div> */}
     </div>
   );
 }
