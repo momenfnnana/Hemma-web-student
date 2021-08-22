@@ -11,7 +11,7 @@ import PickTrainerList from "./pick-trainer-list";
 import CourseTabPicker from "./course-picker";
 import { courseTabs } from "./course-tabs";
 import Axios from "axios";
-import { EMPTY_ID } from "./choose-options/data/options";
+import { EMPTY_ID, findTitle } from "./choose-options/data/options";
 import { CourseDescribtion } from "./describtion";
 import NavButton from "./navButton/index";
 
@@ -139,6 +139,7 @@ export default function ProfessionalCourse({
     else onCourseSelect(null);
   }, [courseData?.length]);
 
+
   return (
     <div className="col-lg-4" id={elemId}>
       <div className="card p-4 border-dashed  card-ele position-relative mb-6">
@@ -158,7 +159,7 @@ export default function ProfessionalCourse({
               title
             ) : (
               <span style={{ color: "red" }}>
-                {descriptionData?.nameAr || subTitle}
+                {[descriptionData?.nameAr,findTitle(descriptionData?.level)]?.join(!findTitle(descriptionData?.level) ? '' : ' - ') || subTitle}
               </span>
             )}
           </h5>
@@ -229,7 +230,7 @@ export default function ProfessionalCourse({
                       </div>
                       <div className="d-flex align-items-center">
                         <NavButton
-                          title="رجوع"
+                          title="السابق"
                           refId={refMethods.getPrevRef(elemId)}
                         />
                         <a

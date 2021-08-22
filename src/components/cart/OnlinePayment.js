@@ -32,36 +32,47 @@ export class OnlinePaymentComponent extends Component {
     this.onNameChange = this.onNameChange.bind(this);
     this.onCodeChange = this.onCodeChange.bind(this);
     this.myFormHandler = this.myFormHandler.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.specifyCardType = this.specifyCardType.bind(this);
   }
 
-  onCreditCardChange(event) {
-    if (event.target.rawValue.length == 6) {
-      console.log(this.state.BankAccount);
+  onCreditCardChange({target:{value}}) {
+    this.setState({creditValue : value})
+    if (value.length == 6) {
       var check = this.state.BankAccount.filter(
-        (c) => c.bin == event.target.rawValue
+        (c) => c.bin == value
       );
-      console.log(check);
       if (check.length > 0) {
         this.setState({ CardNumberType: "mada" });
       } else {
         this.setState({ CardNumberType: "" });
       }
-    } else if (event.target.rawValue.length < 6) {
+    } else if (value.length < 6) {
       this.setState({ CardNumberType: "" });
     }
-    this.setState({ creditCardRawValue: event.target.rawValue });
-    const hasError =  this.validateByLength(event.target.rawValue,12,'credit')
+    this.setState({ creditCardRawValue: value });
+    const hasError =  this.validateByLength(value,12,'credit')
     this.setError('credit',hasError)
   }
 
   setError(name,hasError){
     this.setState({
-      ...this.state,
       errors : {
         ...this.state.errors,
         [name]:hasError
       }
     })
+  }
+
+  specifyCardType(value){
+    const check = this.state.BankAccount.filter(
+      (c) => c.bin == value
+    );
+    if (check.length > 0) {
+      this.setState({ CardNumberType: "mada" });
+    } else {
+      this.setState({ CardNumberType: "" });
+    }
   }
 
   onCreditCardTypeChanged(type) {
@@ -81,13 +92,14 @@ export class OnlinePaymentComponent extends Component {
 
   isSubmitButtonDisabled = () => {
     const errorsLength = Object.values(this.state?.errors|| {})?.filter(error => error)?.length
-    return (
+    const disabled =  
       this.state.creditCardRawValue == "" ||
       this.state.dateRawValue == "" ||
       this.state.cardHolderName == "" ||
       this.state.cvv == "" ||
-      errorsLength
-    );
+      !!errorsLength
+      
+      return disabled
   };
 
   getValidatedClassName(name,baseClass){
@@ -96,6 +108,13 @@ export class OnlinePaymentComponent extends Component {
     ? [baseClass, errorClass].join(" ")
     : baseClass;
     return resultClassName
+  }
+
+  handleChange({target:{value}}){
+    this.setState({creditCardRawValue : value})
+    this.specifyCardType(value)
+    const hasError =  this.validateByLength(value,12,'credit')
+    this.setError('credit',hasError)
   }
 
   validateByLength(value, minLength) {
@@ -211,7 +230,6 @@ export class OnlinePaymentComponent extends Component {
   };
   componentDidMount() {
     Api.cart.getCardType().then((result) => {
-      console.log(result);
       this.setState({ BankAccount: result });
     });
   }
@@ -251,7 +269,7 @@ export class OnlinePaymentComponent extends Component {
                       creditCard: true,
                       onCreditCardTypeChanged: this.onCreditCardTypeChanged,
                     }}
-                    onChange={this.onCreditCardChange}
+                    onChange={this.handleChange}
                     className={this.getValidatedClassName('credit',
                       "form-control ltr-input position-relative",
                     )}

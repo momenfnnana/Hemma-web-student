@@ -14,7 +14,7 @@ export default function SubscribtionRequest({
   const { data, error } = info;
   const validPackageData = !error && data;
   return (
-    <div class="col-lg-4 subscription-wrapper">
+    <div class="col-lg-4 subscription-wrapper" id="subscription-wrapper">
       <div
         class="card white-bg p-4 card-ele position-relative with-bg-img"
         style={{
