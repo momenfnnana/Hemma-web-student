@@ -122,14 +122,14 @@ export default withRouter(function ProfessionalCourses({
     return swal(msg, " ", "", {
       buttons: {
         prevButton: { text: "متابعة", value: "next" },
-        nextButton: { text: "رجوع", value: "prev" },
-        ok: { text: "تم", value: "Ok" },
+        nextButton: { text: "السابق", value: "prev" },
+        ok: { text: "تخطي", value: "subscription-wrapper" },
         ...config
       },
     });
   };
 
-  const elemsIds = ["spec-section", "general-section"];
+  const elemsIds = ["spec-section", "general-section","subscription-wrapper"];
 
   const getPrevRef = (ref) => {
     const _index = elemsIds.findIndex((elem) => elem === ref);
@@ -156,8 +156,7 @@ export default withRouter(function ProfessionalCourses({
   const handleModalNav = (navType,ref)=>{
     const validRef = ref.filter(_ref => _ref?.value)?.[0]
     const value = validRef?.value
-    if(value === "Ok" || !value) return
-    window.location.href =  removeId(window.location.href) + `#${value}`
+    window.location.href =  removeId(window.location.href) + `#${navType}`
   }
 
   const getBtnsConfig = (ref)=>{
@@ -165,7 +164,7 @@ export default withRouter(function ProfessionalCourses({
     const nextButton = getNextRef(ref)
     //hide all btns in descktop case
     if(window.innerWidth > 800) return {nextButton : undefined , prevButton : undefined}
-    const config =  {nextButton : nextButton ? {text:'التالي',value:nextButton} : undefined,prevButton : prevButton ? {text:'رجوع',value:prevButton} : undefined}
+    const config =  {nextButton : nextButton ? {text:'متابعة',value:nextButton} : undefined,prevButton : prevButton ? {text:'السابق',value:prevButton} : undefined}
     return config
 
   }
@@ -173,9 +172,10 @@ export default withRouter(function ProfessionalCourses({
   const specAlert = () => {
     const ref = 'spec-section'
     const config = getBtnsConfig(ref)
+    const nameAr = mergedData?.spec?.nameAr
     if (!mergedData?.general)
       sweetAlert(
-        "تم اختيار دورة تخصص … يمكنك اختيار دورة عام للحصول علي خصم مميز",config
+        ` اختيار دورة تخصص ${nameAr} يمكنك اختيار دورة عام للحصول علي خصم مميز`,config
       ).then((navType) => {
         handleModalNav(navType,[config?.nextButton,config?.prevButton])
       });
@@ -184,9 +184,10 @@ export default withRouter(function ProfessionalCourses({
   const generalAlert = () => {
     const ref = 'general-section'
     const config = getBtnsConfig(ref)
+    const nameAr = mergedData?.general?.nameAr
     if (!mergedData?.spec)
       sweetAlert(
-        "تم اختيار دورة عام … يمكنك اختيار دورة تخصص للحصول علي خصم مميز",config
+        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : undefined}
       ).then((navType) => {
         handleModalNav(navType,[config?.nextButton,config?.prevButton])
       });
@@ -221,6 +222,10 @@ export default withRouter(function ProfessionalCourses({
     }, 100);
   };
 
+  const scrollToTop = ()=>{
+    window.scrollTo(0,0);
+  }
+
   const handleGeneralDelete = () => {
     setMeregedData({ ...mergedData, general: null });
     setSelectedGeneralCourse(null);
@@ -237,6 +242,7 @@ export default withRouter(function ProfessionalCourses({
     setTimeout(() => {
       handleGeneralDelete();
       setMeregedData({ general: null, spec: null });
+      scrollToTop()
     }, 100);
   };
 
