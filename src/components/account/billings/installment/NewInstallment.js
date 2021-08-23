@@ -61,7 +61,7 @@ export class NewInstallmentComponent extends Component {
            
             break;
           case "BadRequest":
-            swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+            swal("عفواً", "هذه الدورة مضافة سابقًا إلى مختاراتي", "error", {
               button: "متابعة"
             });
             break;
