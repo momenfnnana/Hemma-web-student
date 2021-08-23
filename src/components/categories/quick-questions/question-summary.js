@@ -44,7 +44,7 @@ export default class QuestionSummary extends Component {
     } = this.props;
     return (
       <React.Fragment>
-        <section className="pt-5 pb-5">
+        <section className="py-3">
           <div className="container">
           <HeaderComponent/>
             {question && rateChoices && (
@@ -56,7 +56,7 @@ export default class QuestionSummary extends Component {
                     </p>
                   </div>
                 </div>
-                <div className="row pb-4 pl-4">
+                <div className="row pb-4">
                   <div className="col-12">
                     <div className="box-layout box-border shadow-sm p-3">
                     <h6
@@ -69,7 +69,7 @@ export default class QuestionSummary extends Component {
                   </div>
                 </div>
                 <div className="row pl-4">
-                  <div className="col-7">
+                  <div className="col-md-7 col-12">
                     <div className="row d-flex justify-content-between align-items-center mb-3">
                       <div className="col-md-12">
                         <p className="small dark-silver-text mb-0">
@@ -126,7 +126,7 @@ export default class QuestionSummary extends Component {
                               />
                             </div>
                             {this.state.details.selectedChoice == item && (
-                              <p className="ar-text mb-0 text-break small dark-text ml-1">
+                              <p className="ar-text mb-0 white-space-pre small dark-text ml-1">
                                 إجابتك
                               </p>
                             )}
@@ -136,7 +136,7 @@ export default class QuestionSummary extends Component {
                     </div>
                   </div>
                   <div className="col-1" />
-                  <div className="col-4 d-flex align-items-center">
+                  <div className="col-md-4 col-12  d-flex align-items-center">
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/graph.png"}
                       className="contain-img w-100"

@@ -21,3 +21,9 @@
   max-width: 100% !important;
   white-space: normal;
 }
+
+@media (max-width: 767px) {
+  & .fill-at-mobile {
+    width: 100% !important;
+  }
+}

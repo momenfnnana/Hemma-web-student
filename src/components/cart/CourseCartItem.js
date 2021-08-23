@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { MdClose } from "react-icons/md";
 import { formatPrice } from "./helpers";
 import { Api } from "../../api";
+import swal from "@sweetalert/with-react";
 const pricesKeys = ['blackAndWhiteBookletPrice','coloredBookletPrice']
 const colorKeys = ['BlackAndWhite','Colored']
 
@@ -14,6 +15,7 @@ export class CourseCartItem extends Component {
     tooltipOpen: false,
     installmentValdation: false,
     priceValdation: false,
+    checked:false,
   };
 
   constructor(props) {
@@ -51,11 +53,29 @@ export class CourseCartItem extends Component {
   onSetInstallment(installment) {
     this.props.onSetInstallment(installment);
   }
+  confirmationPopup() {
+    swal(
+        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
+        {
+          buttons: {
+            ok: "موافق",
+          },
+        }
+    )
+  }
+  handleCheckClick = () => {
+    this.setState({ checked: !this.state.checked });
+    if(!this.state.checked){
+    this.confirmationPopup();
+    }
+  };
+
+
+
 
   onSetBookletColor = (color) => {
     // Determine if a color is already selected
     const selected = this.props.item.bookletType;
-
     if (selected === undefined) {
       // No booklet was selected before, we should turn on the package option
       this.props.onSetPackageOption(true, color);
@@ -213,6 +233,7 @@ export class CourseCartItem extends Component {
                         value="BlackAndWhite"
                         onClick={this.handleClick}
                         checked={item.bookletType === "BlackAndWhite"}
+                        onChange={this.handleCheckClick}
                       />
                       <label className="form-check-label smaller dark-silver-text">
                         أرغب في الحصول على ملزمة أبيض و أسود مطبوعة <span className="light-text mx-2">
@@ -231,6 +252,7 @@ export class CourseCartItem extends Component {
                         value="Colored"
                         onClick={this.handleClick}
                         checked={item.bookletType === "Colored"}
+                        onChange={this.handleCheckClick}
                       />
                       <label className="form-check-label smaller dark-silver-text">
                         أرغب في الحصول على ملزمة ملونة مطبوعة

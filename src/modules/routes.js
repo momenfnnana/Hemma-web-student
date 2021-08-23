@@ -62,6 +62,7 @@ import {
 } from "./lazy-loaded-routes";
 import { Suspense } from "react";
 import LoadingScreen from './../shared-components/loading-screen/index';
+import LandingPage from './../components/landing-page/index';
 
 class AppBackground extends Component {
   componentDidMount()
@@ -233,6 +234,7 @@ class MainRouterComponent extends Component {
               <Route path="/home/hemma-succes" exact component={HemmaSuccessDetails} />
               <Route path="/home" component={Home} />
               <Route path="/privacypolicy" component={PrivacyPolicy} />
+              <Route path="/market" component={LandingPage} />
 
               {/* TODO hide initiative */}
               { <Route

@@ -111,6 +111,26 @@ const bookletId = this.props.m
         }
       });
   }
+  confirmationPopup(type) {
+    swal(
+        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
+        {
+          buttons: {
+            ok: "موافق",
+          },
+        }
+    ).then((value) => {
+      switch (value) {
+        case "ok":
+          this.onSubmit(type)
+        default:
+          break;
+      }
+    });
+  }
+
+
+
 
   renderBooklets() {
     const booklets = this.state.booklets;
@@ -196,7 +216,7 @@ const bookletId = this.props.m
             <button
               type="submit"
               className="btn blue-border-btn mr-1"
-              onClick={() => this.onSubmit("Colored")}
+              onClick={() => this.confirmationPopup('Colored')}
             >
               طلب الملزمة الملونة مطبوعة
             </button>
@@ -205,7 +225,7 @@ const bookletId = this.props.m
             <button
               type="submit"
               className="btn blue-border-btn"
-              onClick={() => this.onSubmit("BlackAndWhite")}
+              onClick={() => this.confirmationPopup('BlackAndWhite')}
             >
               طلب الملزمة الأبيض و الأسود مطبوعة
             </button>

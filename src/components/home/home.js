@@ -10,6 +10,7 @@ import { loginWithTwitter } from "../auth/firebase";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import "./styles.sass";
+import "./main.sass";
  import AOS from 'aos';
  import Glide from '@glidejs/glide'
 import HemmaSuccess from "./hemma-success";
@@ -17,6 +18,7 @@ import "./index.scss"
 // Required Core Stylesheet
 // import "public/assets/css/glide.core.min.css";
 import WrapperText from './../../shared-components/WrappedText/inedx';
+import PopupHemma from "./popupHemma";
 // // Optional Theme Stylesheet
 // import "public/assets/css/glide.theme.min.css";
 
@@ -667,8 +669,21 @@ renderSucces()
     return (
 
       <React.Fragment>
+       <PopupHemma/>
        <section id="hemma-banner" className="main-banner ">
-
+         <div className='banner banner-program'>
+           <div className="container program-container py-4 ">
+             <div>
+               <h2>  برنامج
+                        <span className='program-name'> معلم كفؤ </span>             الإثرائي والمجاني
+               </h2>
+               <p> صمم هذا البرنامج بعناية مع نخبة من الخبراء ليحقق احتياج المعلمين في تطوير مهاراتهم التدريسية </p>
+             </div>
+             <Link to='/course/details/معلم_كفؤ42327'>
+               <button type="button" className="btn btn-warning join-now">انضم الان</button>
+             </Link>
+           </div>
+         </div>
       {/* <!-- Start The Main Banner Text --> */}
       <div className="banner-image fixed-image-bg overlay-bg">
         <div className="banner-info d-flex-column overflow-hidden">
@@ -726,7 +741,7 @@ renderSucces()
           data-aos="fade-right"
           data-aos-offset="150"
           data-aos-duration="1500"
-          data-aos-easing="ease-in-sine">اجعل رحلتك التعليميه عميقة ومكثفة من خلال محتوى همة الاحترافى</h3>
+          data-aos-easing="ease-in-sine">اجعل رحلتك التعليمية عميقة ومكثفة من خلال محتوى همة الاحترافي</h3>
           <h3 className="h3 text-center font-weight-bold"
           data-aos="fade-left"
           data-aos-offset="150"
@@ -748,7 +763,7 @@ renderSucces()
               <div className="details-icon mb-3">
                 <img src={process.env.PUBLIC_URL + "/assets/images/more-details2.svg"} alt="More-Details"/>
               </div>
-              <h5 className="main-color font-weight-bold">محتوى معد باحترافيه</h5>
+              <h5 className="main-color font-weight-bold">محتوى معد باحترافية</h5>
               <p className="description-card m-0 font-weight-bold">دورات مصممة بواسطة خبراء محترفين ومتخصصين</p>
             </div>
           </div>
@@ -787,8 +802,8 @@ renderSucces()
             data-aos-offset="100"
             data-aos-duration="1500"
             data-aos-anchor-placement="bottom-bottom">
-              <h3 className="h3 text-center font-weight-bold mb-2">كيف سهلت همة الاختبارات على الالاف خلال 25 عام؟</h3>
-              <h3 className="h3 text-center font-weight-bold">هنا نستعرض بعض الارقام والتى نعدها مصدر اعتزاز !</h3>
+              <h3 className="h3 text-center font-weight-bold mb-2">كيف سهلت همة الاختبارات على الآلاف خلال 25 عام؟</h3>
+              <h3 className="h3 text-center font-weight-bold">هنا نستعرض بعض الأرقام والتى نعدها مصدر اعتزاز !</h3>
             </header>
             <div className="row overflow-hidden">
               <div className="col-lg-3" data-aos="flip-right" data-aos-delay="50" data-aos-duration="1500">
@@ -808,7 +823,7 @@ renderSucces()
                       <img src={process.env.PUBLIC_URL + "/assets/images/more-about2.svg"} alt="More-About-Hemma"/>
                     </h2>
                   </div>
-                  <p className="font-weight-bold m-0 font-size-20">مجموع المستفيدين من خدامتنا تجاوز 3 مليون مستفيد </p>
+                  <p className="font-weight-bold m-0 font-size-20">مجموع المستفيدين من خدماتنا تجاوز 3 مليون مستفيد </p>
                 </div>
               </div>
               <div className="col-lg-3" data-aos="flip-up" data-aos-delay="200" data-aos-duration="1500">
@@ -818,7 +833,7 @@ renderSucces()
                       <img src={process.env.PUBLIC_URL + "/assets/images/more-about3.svg"} className="height-img" alt="More-About-Hemma"/>
                     </h2>
                   </div>
-                  <p className="font-weight-bold m-0 font-size-20">من مشتركينا حققوا 95% مايطمحوا له من درجات</p>
+                  <p className="font-weight-bold m-0 font-size-20">95% من مشتركينا حققوا مايطمحون له من درجات</p>
                 </div>
               </div>
               <div className="col-lg-3" data-aos="flip-left" data-aos-delay="200" data-aos-duration="1500">

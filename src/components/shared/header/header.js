@@ -444,7 +444,7 @@ return(
           
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
               <a className="nav-link links-hover d-flex align-items-center justify-content-between">
-                <span className="mr-1">المجموعات المجانيه</span>
+                <span className="mr-1">المجموعات المجانية</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>
               <ul className="sub-list list-unstyled m-0">

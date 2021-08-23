@@ -181,7 +181,7 @@ export default class CourseDetails extends Component {
             className="col-md-6 col-12 align-items-center pb-2"
             key={feature.id}
           >
-            <p className="small dark-text mb-0 w-75  d-flex align-items-center">
+            <p className="dark-text mb-0 w-75  d-flex align-items-center">
               <i className={`mr-2 font-16 fas fa-${feature.icon}`} />
               {feature.descriptionAr}
             </p>
@@ -200,7 +200,7 @@ export default class CourseDetails extends Component {
           <div className="col-12">
             <div className="card section-card" key={section.id}>
               <div className="card-header border-bottom-0">
-                <h6 className="text-white small mb-0 ">{section.nameAr}</h6>
+                <h6 className="text-white  mb-0 section-name">{section.nameAr}</h6>
               </div>
               {this.renderChapters(section.chapters)}
             </div>
@@ -449,6 +449,13 @@ export default class CourseDetails extends Component {
 
                       <div className="container">
                         <div className="d-inline-flex align-items-center">
+
+                          {this.state.details.price == 0 ? 
+                          <h4 className="mid-text">
+                          دورة مجانية
+                        </h4>
+                          :
+                          <>
                           <h6 className="dark-text small mr-3">سعر الاشتراك</h6>
                           {this.state.details.originalPrice ? (
                             <h5 className="mid-text">
@@ -477,7 +484,7 @@ export default class CourseDetails extends Component {
                               </span>{" "}
                               ريال
                             </h4>
-                          )} 
+                          )} </> }
                              
                         </div>
                         {this.state.discountprecentage>0 && (
@@ -524,11 +531,11 @@ export default class CourseDetails extends Component {
                       }
                        
 
-                        <h6 className="dark-text mr-3 mb-3">تتضمن:</h6>
+                        <h6 className="dark-text mr-3 mb-3 list-title">تتضمن:</h6>
                         <ul className="list-unstyled">
                           {this.state.details &&
                           this.state.details.durationTextAr ? (
-                            <li className="small dark-text mb-2">
+                            <li className=" dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -693,11 +700,11 @@ export default class CourseDetails extends Component {
                   <div className="col-md-8">
                     <div className="row">
                       <div className="col-12">
-                        <h3 className="mid-text">
+                        <h3 className="mid-text details-title">
                           {this.state.details.nameAr}
                         </h3>
                         <Link
-                          className="dark-text"
+                          className="dark-text details-link"
                           to={`/categories/details/${this.state.details &&
                             this.state.details.category &&
                             this.state.details.category.slug}`}
@@ -706,7 +713,7 @@ export default class CourseDetails extends Component {
                             this.state.details.category &&
                             this.state.details.category.nameAr}
                         </Link>
-                        <p className="small dark-text light-font-text w-75 mt-3 text-break">
+                        <p className="text-muted light-font-text w-75 mt-3 text-break details-para">
                           {this.state.details.descriptionAr}
                         </p>
                       </div>
@@ -741,14 +748,14 @@ export default class CourseDetails extends Component {
                       <div className="row mt-5">
                         <div className="col-12">
                           <h4 className="mid-text mb-2">الشروط والأحكام</h4>
-                          <p className="light-font-text dark-text small mb-1">
+                          <p className="light-font-text dark-text mb-1">
                             1- لا يمكن استرجاع رسوم الدورة بعد تفعيل حساب
                             المشترك في{" "}
                             <Link to="/" className="light-text">
                               منصّة همّة
                             </Link>
                           </p>
-                          <p className="light-font-text dark-text small mb-1">
+                          <p className="light-font-text dark-text mb-1">
                             2- لا تتحمل{" "}
                             <Link to="/" className="light-text">
                               منصّة همّة
@@ -756,7 +763,7 @@ export default class CourseDetails extends Component {
                             أي مشاكل تقنية تحصل للمتدرب أثناء حضوره الدورة
                             ومشاهدته لتسجيل المحاضرات{" "}
                           </p>
-                          <p className="light-font-text dark-text small mb-1">
+                          <p className="light-font-text dark-text mb-1">
                             3- تسجيل دروس الدورة سيبقى مفعل لكل مشترك حتى تاريخ
                             انتهاء الاشتراك
                           </p>
