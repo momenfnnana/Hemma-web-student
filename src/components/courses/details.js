@@ -20,7 +20,7 @@ import { getAuthenticatedAxios, getDataFromResponse } from "../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class CourseDetails extends Component {
+export default class CourseDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -128,7 +128,7 @@ export class CourseDetails extends Component {
             break;
           // "BadRequest" is no longer a valid error code, however, the error that was being shown should be for "ItemAlreadyAdded"
           // case "BadRequest":
-          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى مختاراتي", "error", {
           //     button: "متابعة"
           //   });
           //   break;

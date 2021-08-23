@@ -13,7 +13,7 @@ export class EmptyCartPrompt extends Component {
                     className="contain-img"
                     height="150"
                 />
-                <p className="dark-silver-text mt-3">سلة التسوق فارغة</p>
+                <p className="dark-silver-text mt-3">مختاراتي فارغة</p>
                 <Link
                     to="/categories"
                     className="btn dark-outline-btn circle w-25 float-right pl-4 pr-4"

@@ -636,4 +636,4 @@ TrainingExamDetailsComponent = connect(mapStateToProps)(
   TrainingExamDetailsComponent
 );
 
-export const TrainingExamDetails = withRouter(TrainingExamDetailsComponent);
+export default withRouter(TrainingExamDetailsComponent);

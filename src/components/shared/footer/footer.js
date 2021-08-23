@@ -4,7 +4,7 @@ import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import { FaAngleRight } from "react-icons/fa";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
@@ -121,10 +121,10 @@ class FooterComponent extends Component {
             <div className="col-lg-5">
                <h5 className="hemma-msg font-weight-bold mb-4">همة</h5>
                <ul className="hemma-links list-unstyled m-0 p-0">
-                  <li><a href="/categories" className="cursor-pointer links-hover mb-1">منصات همة</a></li>
-                  <li><a href="/faq" className="cursor-pointer links-hover mb-1">الاسئلة المتكررة</a></li>
+                  <li><NavLink to="/categories" className="cursor-pointer links-hover mb-1">منصات همة</NavLink></li>
+                  <li><NavLink to="/faq" className="cursor-pointer links-hover mb-1">الاسئلة المتكررة</NavLink></li>
                   {/* <li><a className="cursor-pointer links-hover mb-1">متجر همة للكتب</a></li> */}
-                  <li><a href="/banks" className="cursor-pointer links-hover mb-1">الحسابات البنكية</a></li>
+                  <li><NavLink to="/banks" className="cursor-pointer links-hover mb-1">الحسابات البنكية</NavLink></li>
                </ul>
             </div>
             <div className="col-lg-5">

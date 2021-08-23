@@ -244,4 +244,4 @@ VerifyIdComponent = reduxForm({
 
 VerifyIdComponent = connect(mapStateToProps)(VerifyIdComponent);
 
-export const VerifyId = VerifyIdComponent;
+export default VerifyIdComponent;
