@@ -53,22 +53,22 @@ export class CourseCartItem extends Component {
   onSetInstallment(installment) {
     this.props.onSetInstallment(installment);
   }
-  confirmationPopup() {
-    swal(
-        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
-        {
-          buttons: {
-            ok: "موافق",
-          },
-        }
-    )
-  }
-  handleCheckClick = () => {
-    this.setState({ checked: !this.state.checked });
-    if(!this.state.checked){
-    this.confirmationPopup();
-    }
-  };
+  // confirmationPopup() {
+  //   swal(
+  //       `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
+  //       {
+  //         buttons: {
+  //           ok: "موافق",
+  //         },
+  //       }
+  //   )
+  // }
+  // handleCheckClick = () => {
+  //   this.setState({ checked: true });
+  //   if(this.state.checked){
+  //   this.confirmationPopup();
+  //   }
+  // };
 
 
 
@@ -233,7 +233,6 @@ export class CourseCartItem extends Component {
                         value="BlackAndWhite"
                         onClick={this.handleClick}
                         checked={item.bookletType === "BlackAndWhite"}
-                        onChange={this.handleCheckClick}
                       />
                       <label className="form-check-label smaller dark-silver-text">
                         أرغب في الحصول على ملزمة أبيض و أسود مطبوعة <span className="light-text mx-2">
@@ -252,7 +251,6 @@ export class CourseCartItem extends Component {
                         value="Colored"
                         onClick={this.handleClick}
                         checked={item.bookletType === "Colored"}
-                        onChange={this.handleCheckClick}
                       />
                       <label className="form-check-label smaller dark-silver-text">
                         أرغب في الحصول على ملزمة ملونة مطبوعة
