@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ScheduleHeader from "./../schedual-header/index";
 import SectionContent, { chapterSections } from "./../section-content/index";
 import "./index.scss";
@@ -11,12 +11,14 @@ export  const sectionLinks = (section)=> [
     path: section?.id,
     nestedPath: chapterSections.EXAMS,
     docType :"section",
+    displayKey : 'isContainExam'
   },
   {
     title: "تدريبات",
     path: section?.id,
     nestedPath: chapterSections.TRAININGS,
     docType :"section",
+    displayKey : 'isContainTraining'
   },
 ];
 
@@ -26,24 +28,28 @@ export  const chapterLinks = (chapter)=> [
     path: chapter?.id,
     nestedPath: chapterSections.LECTURES,
     docType :"chapter",
+    displayKey : 'isContainLectures'
   },
   {
     title: "اختبارات",
     path: chapter?.id,
     nestedPath: chapterSections.EXAMS,
     docType :"chapter",
+    displayKey : 'isContainExam'
   },
   {
     title: "تدريبات",
     path: chapter?.id,
     nestedPath: chapterSections.TRAININGS,
     docType :"chapter",
+    displayKey : 'isContainTraining'
   },
   {
     title: "مرفقات اضافية",
     path: chapter?.id,
     nestedPath: chapterSections.ATTACHMENTS,
     docType :"chapter",
+    displayKey : 'isContainAttachments'
   },
 ];
 
@@ -56,12 +62,27 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
 
+  const {isContainTraining,isContainExam} = section
+
   const {
     match: {
       params: { id: courseId },
     },
     history: { push },
   } = props;
+
+  // const displayKeysObjects = {
+  //   isContainTraining,
+  //   isContainExam,
+  // }
+
+  // const sectionLinksfiltedByDisplayKey = useMemo(
+  //   () =>
+  //   sectionLinks(section)?.filter(
+  //       (_headerBtn) => !!displayKeysObjects?.[_headerBtn?.displayKey]
+  //     ),
+  //   [displayKeysObjects]
+  // );
 
   const links = sectionLinks(section)
 
@@ -82,7 +103,7 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
           {show && (
             <div className="row">
               {section?.chapters?.map((chapter) => (
-                <SectionContent {...chapter} {...props} />
+                <SectionContent isContainLectures={chapter?.lectures?.length} {...chapter} {...props} />
               ))}
             </div>
           )}

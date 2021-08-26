@@ -1,5 +1,7 @@
 import React from "react";
+import { useMemo } from "react";
 import { NavLink } from "react-router-dom";
+import { filterHeaderTitles } from './../../scheduleDetails/index';
 
 export const chapterSections = {
   LECTURES: "LECTURES",
@@ -12,18 +14,22 @@ const sectionHeaderBtns = [
   {
     link: chapterSections.LECTURES,
     title: "محاضرات",
+    displayKey : 'isContainLectures'
   },
   {
     link: chapterSections.EXAMS,
     title: "اختبارات",
+    displayKey : 'isContainExam'
   },
   {
     link: chapterSections.TRAININGS,
     title: "تدريبات",
+    displayKey : 'isContainTraining'
   },
   {
     link: chapterSections.ATTACHMENTS,
     title: "مرفقات اضافية",
+    displayKey : 'isContainAttachments'
   },
 ];
 
@@ -32,6 +38,10 @@ const sectionHeaderBtns = [
 export default function SectionContent({
   nameAr,
   lectures,
+  isContainExam,
+  isContainTraining,
+  isContainAttachments,
+  isContainLectures,
   id: chapterId,
   ...props
 }) {
@@ -42,6 +52,13 @@ export default function SectionContent({
     history: { push },
   } = props;
 
+  const displayKeysObjects = {
+    isContainExam,
+    isContainAttachments,
+    isContainTraining,
+    isContainLectures
+  }
+
   const urlTempalte = (sectionType) => {
     return `/course/content/${courseId}/schedule/chapter/${chapterId}/${sectionType}`;
   };
@@ -50,6 +67,9 @@ export default function SectionContent({
     const url = urlTempalte(sectionType);
     push(url);
   };
+
+  const filtedByDisplayKey = useMemo(()=>  filterHeaderTitles(sectionHeaderBtns,displayKeysObjects),[displayKeysObjects])
+  
   return (
     <div class="row col-md-6 col-12" id="lectures-lists-one">
       <div class=" card-container col-12">
@@ -63,7 +83,7 @@ export default function SectionContent({
             <div class="main-color font-weight-bold font-size-20">{nameAr}</div>
           </div>
           <div class="card-options-btns d-flex align-items-center flex-wrap">
-            {sectionHeaderBtns.map((btn) => (
+            {filtedByDisplayKey.map((btn) => (
               <a
                 onClick={() => {
                   onClick(btn.link);
