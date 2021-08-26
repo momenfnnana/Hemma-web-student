@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ScheduleHeader from "./../schedule/schedual-header/index";
 import axios from "axios";
 import { apiBaseUrl } from "./../../../../api/helpers";
@@ -7,6 +7,11 @@ import { useEffect } from "react";
 import { sectionLinks, chapterLinks } from "../schedule/section";
 import DetailsContent from "./content/index";
 import { ScheduleContext } from "./context";
+
+
+export const filterHeaderTitles = (links,displayKeysObjects)=> {
+  return links?.filter(_headerBtn => !!displayKeysObjects?.[_headerBtn?.displayKey])
+}
 
 export default function ScheduleDetails(props) {
   const [details, setDetails] = useState({});
@@ -47,9 +52,22 @@ export default function ScheduleDetails(props) {
     details?.sections?.map((section) => section?.chapters).flat() || [];
   const chapterFound = chapters?.find((chapter) => chapter.id === nestedId);
 
+  const isContainLectures = chapterFound?.lectures?.length
+  const {isContainExam,isContainAttachments,isContainTraining} = chapterFound ? chapterFound : {}  
+
+  const displayKeysObjects = {
+    isContainExam,
+    isContainAttachments,
+    isContainTraining,
+    isContainLectures
+  }
+
+  const chapterLinksfiltedByDisplayKey = useMemo(()=>  filterHeaderTitles(chapterLinks(chapterFound),displayKeysObjects),[displayKeysObjects])
+
+
   const links = sectionFound
     ? sectionLinks(sectionFound)
-    : chapterLinks(chapterFound);
+    : chapterLinksfiltedByDisplayKey;
 
   const name = sectionFound ? sectionFound?.nameAr : chapterFound?.nameAr;
 
