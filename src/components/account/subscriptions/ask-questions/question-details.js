@@ -9,17 +9,27 @@ import { getUser } from "../../../../actions/user.actions";
 import { reduxForm } from "redux-form";
 
 class AskQuestionDetailsComponent extends Component {
-  state = {
-    details: [],
-    showEditQuestionForm: false,
-    questionValue: "",
-    questionType: "",
-  };
+
+
+   constructor(props) {
+    super(props)
+    const questionId = this.props.match.params.id;
+    this.state = {
+      details: [],
+      showEditQuestionForm: false,
+      questionValue: "",
+      questionType: "",
+      questionId
+    };
+   }
+
+  
 
   componentDidMount() {
     this.props.getUser();
     let token = localStorage.getItem("token");
-    const questionId = this.props.id;
+    const {questionId} = this.state
+
     let headers = {
       Authorization: `Bearer ${token}`,
     };
@@ -185,7 +195,7 @@ class AskQuestionDetailsComponent extends Component {
               </div>
             </div>
             <div className="row">
-              <CommentsList userId={this.state.details.studentId}  id={this.props.id}/>
+              <CommentsList userId={this.state.details.studentId}  id={this.state.questionId}/>
             </div>
           </div>
         </section>
