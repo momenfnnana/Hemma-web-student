@@ -27,6 +27,8 @@ import { getQuery } from "../../utils/query-params";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
+const staticTabs = ['tab-three',ProfessionalLicenseText]
+
 export class _CategoryDetails extends Component {
   page = 1;
   limit = 6;
@@ -177,7 +179,6 @@ export class _CategoryDetails extends Component {
       match: { params }
     } = this.props;
 
-    this.handleNavFromFree()
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
@@ -212,16 +213,19 @@ export class _CategoryDetails extends Component {
       .catch((error) => {
         console.log(error);
       });
+
+    this.handleNavFromFree()
+
     axios
-      .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
-      .then((response) => {
-        this.setState({
-          subcategoriesdetails: response.data.data.childCatgories,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
+    .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
+    .then((response) => {
+      this.setState({
+        subcategoriesdetails: response.data.data.childCatgories,
       });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then((response) => {
@@ -261,6 +265,7 @@ export class _CategoryDetails extends Component {
         this.setState({ competitionsShimmerLoader: false });
       });
 
+      //free groups
     axios
       .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
       .then((response) => {
@@ -325,9 +330,9 @@ export class _CategoryDetails extends Component {
       const [firstSubCategory] = subcategoriesdetails
       const {slug} = firstSubCategory
       if(!slug) return
-      setTimeout(() => {
-        this.simulateClick(slug)
-      }, 200);
+        setTimeout(() => {
+          this.simulateClick(slug)
+        }, 200);
     }
   }
 
@@ -335,15 +340,19 @@ export class _CategoryDetails extends Component {
   componentDidUpdate(prevProps, prevState){
     const {currentTab : prevTab,subcategoriesdetails : prevSubcategoriesdetails} = prevState
     const {currentTab,subcategoriesdetails} = this.state
+    if(staticTabs.includes(currentTab) && currentTab !== prevTab) {
+      this.setState({courses:[]})
+    }
     if(prevTab !== currentTab){
       if(currentTab === 'tab-two'){
             this.intiReq()
       }
     }
-    this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
+    // this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
   }
 
   renderCategoryGroups() {
+    //free groups
     return this.state.categoryGroups.map((group) => (
       <React.Fragment>
         <div className="col-lg-4">
@@ -438,11 +447,9 @@ export class _CategoryDetails extends Component {
   }
   renderCourses(courses) {
     return courses.map((course) => (
-      <React.Fragment>
-        <div className="col-lg-4">
+      <div className="col-lg-4">
           <Card key={course.id} course={course} />
         </div>
-      </React.Fragment>
     ));
   }
   renderPanelSub() {
@@ -494,7 +501,6 @@ export class _CategoryDetails extends Component {
         const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
         const url = `./${categSlug}`
         if(this.handleProfessionalCase({professionalLicense,groupedPackages,rest})) return
-
         if(!navigationType) this.handleNoChildCategories()
         if(navigationType === '_blank') window.open(url)
         else{
@@ -644,7 +650,6 @@ export class _CategoryDetails extends Component {
 
   simulateClick(divId,event = 'click'){
     const element = document.getElementById(divId);
-    debugger
     const evObj = document.createEvent('Events');
     evObj.initEvent('click', true, false);
     try {
@@ -950,7 +955,11 @@ export class _CategoryDetails extends Component {
                   </React.Fragment>
                 </div>
                 <div className="tab-content" id="nav-tabContent">
-                  {this.renderPanelSub()}
+                <div className="container">
+      <div className="row">
+                  {this.renderCourses(this.state.courses)}
+                  </div>
+                  </div>
                   {this.state.currentTab !== ProfessionalLicenseText ? (
                       <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
                       <div
@@ -961,7 +970,6 @@ export class _CategoryDetails extends Component {
                       >
                         <div className="container">
                           <div className="row">
-                            {this.renderCards()}
                             {!this.state.hideBtn && (
                               <div className="row col-md-12">
                                 <div className="col-md-12 d-flex align-items-center justify-content-center">
