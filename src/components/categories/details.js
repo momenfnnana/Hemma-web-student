@@ -423,20 +423,7 @@ export class _CategoryDetails extends Component {
     ));
   }
 
-  renderEmptyText() {
-    if(this.state.loading || this.state?.subcategoriesdetails?.length)
-    return null
-    
-    return(
-      <p className="col-12 text-center">
-        انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا
-      </p>
-    )
-  }
-
   renderCards() {
-    if(this.state.courses.length === 0)
-    return this.renderEmptyText()
     return this.state.courses.map((course) => (
       <React.Fragment>
         <div className="col-lg-4">
@@ -738,7 +725,6 @@ export class _CategoryDetails extends Component {
   render() {
     let token = localStorage.getItem("token");
 
-    console.log({show : this.state.currentTab === "tab-three"});
     const {
       match: { params },
     } = this.props;
@@ -1085,7 +1071,7 @@ const contentReducer = (successCase) => {
   }
 };
 
-export const CategoryDetails = withRouter((props) => {
+const CategoryDetails = withRouter((props) => {
   const [show, setShow] = useState(true);
   const {
     location: { pathname },
@@ -1103,3 +1089,5 @@ export const CategoryDetails = withRouter((props) => {
 
   return <>{show && <_CategoryDetails {...props} />}</>;
 });
+
+export default CategoryDetails;

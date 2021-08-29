@@ -129,7 +129,7 @@ createCourseLink(courseId,examid)
               </React.Fragment>
             ) : (
               <div className="box-layout shadow-sm">
-                <Table className="mb-0 table-responsive">
+                <Table className="mb-0 table-responsive d-table">
                   <thead className="silver-bg">
                     <tr>
                       <th className="w-40 dark-silver-text small border-0  white-space-pre">

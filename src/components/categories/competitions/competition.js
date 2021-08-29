@@ -438,7 +438,7 @@ const actionCreators = {
   getCompetitionDetails,
 };
 
-export const Competition = connect(
+export default connect(
   mapStateToProps,
   actionCreators
 )(CompetitionComponent);

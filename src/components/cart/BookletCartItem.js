@@ -1,17 +1,49 @@
 import React, { Component, Fragment } from "react";
 import { MdClose } from "react-icons/md";
 import { formatPrice } from "./helpers";
+import swal from "@sweetalert/with-react";
 
 export class BookletCartItem extends Component {
   state = {
     tooltipOpen: false,
-    priceValdation: false
+    priceValdation: false,
+    checked:false,
+
   };
 
   constructor(props) {
     super(props);
     this.onRemoveItem = this.onRemoveItem.bind(this);
   }
+
+  // confirmationPopup =()=> {
+  //   swal(
+  //       `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
+  //       {
+  //         buttons: {
+  //           ok: "تأكيد",
+  //           cancel:'إلغاء'
+  //         },
+  //       }
+  //   ).then((value) => {
+  //     switch (value) {
+  //       case "ok":
+  //
+  //
+  //       case "cancel":
+  //
+  //       default:
+  //         break;
+  //     }
+  //   });
+  // }
+  // handleCheckClick = () => {
+  //   this.setState({ checked: true });
+  //   if(this.state.checked){
+  //     this.confirmationPopup();
+  //   }
+  // };
+
 
   /**
    * Handle remove the current item from the cart

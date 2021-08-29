@@ -16,7 +16,8 @@ import { OnlinePayment } from "./OnlinePayment";
 class CheckoutComponent extends Component {
   state = {
     busy: true,
-    activeTab: "bank"
+    activeTab: "bank",
+    isShippingAddressFilled:false
   };
 
   constructor(props) {
@@ -62,7 +63,9 @@ class CheckoutComponent extends Component {
         });
       });
   }
-
+  onFillShippingAddress =()=>{
+    this.setState({isShippingAddressFilled:true})
+  };
   render() {
     const cart = this.props.cart;
     const path = this.props.location.pathname;
@@ -85,13 +88,13 @@ class CheckoutComponent extends Component {
                   {this.state.activeTab == "bank" ? (
                     <React.Fragment>
                       {cart && cart.requireShippingAddress && (
-                        <ShippingAddressForm />
+                        <ShippingAddressForm onFillShippingAddress={this.onFillShippingAddress} />
                       )}
                     </React.Fragment>
                   ) : (
                     <React.Fragment>
                       {cart && cart.requireShippingAddress && (
-                        <OnlineShippingAddressForm />
+                        <OnlineShippingAddressForm onFillShippingAddress={this.onFillShippingAddress} />
                       )}
                     </React.Fragment>
                   )}
@@ -140,10 +143,10 @@ class CheckoutComponent extends Component {
 
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="bank">
-                        <BankPayment />
+                        <BankPayment  isShippingAddressFilled={this.state.isShippingAddressFilled}/>
                       </TabPane>
                       <TabPane tabId="online">
-                        <OnlinePayment />
+                        <OnlinePayment isShippingAddressFilled={this.state.isShippingAddressFilled} />
                       </TabPane>
                     </TabContent>
                   </div>
@@ -182,7 +185,7 @@ const actionCreators = {
   getCart
 };
 
-export const Checkout = connect(
+export default connect(
   mapStateToProps,
   actionCreators
 )(CheckoutComponent);
