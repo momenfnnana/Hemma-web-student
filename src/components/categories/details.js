@@ -27,7 +27,12 @@ import { getQuery } from "../../utils/query-params";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-const staticTabs = ['tab-three',ProfessionalLicenseText]
+/**
+ * tab-three => free groups
+ * tab-four => hemma successes
+ */
+
+const staticTabs = ['tab-three',ProfessionalLicenseText,'tab-four']
 
 export class _CategoryDetails extends Component {
   page = 1;
@@ -157,7 +162,7 @@ export class _CategoryDetails extends Component {
 
   handleHasProfessionalLicense() {
     //hide tab-two which is دورات المنصة and make defaulted to show الرخصة المهنية
-    this.setState({ ...this.state, currentTab: ProfessionalLicenseText,hiddenTabs : [...this.state.hiddenTabs,'tab-two'] });
+    this.setState({ ...this.state, currentTab: ProfessionalLicenseText,hiddenTabs : [...this.state.hiddenTabs,'tab-two'],courses:[] });
   }
 
   hasProfessionalLicense(details) {
@@ -340,9 +345,6 @@ export class _CategoryDetails extends Component {
   componentDidUpdate(prevProps, prevState){
     const {currentTab : prevTab,subcategoriesdetails : prevSubcategoriesdetails} = prevState
     const {currentTab,subcategoriesdetails} = this.state
-    if(staticTabs.includes(currentTab) && currentTab !== prevTab) {
-      this.setState({courses:[]})
-    }
     if(prevTab !== currentTab){
       if(currentTab === 'tab-two'){
             this.intiReq()
@@ -737,8 +739,6 @@ export class _CategoryDetails extends Component {
   }
   render() {
     let token = localStorage.getItem("token");
-
-    console.log({show : this.state.currentTab === "tab-three"});
     const {
       match: { params },
     } = this.props;
@@ -957,7 +957,9 @@ export class _CategoryDetails extends Component {
                 <div className="tab-content" id="nav-tabContent">
                 <div className="container">
       <div className="row">
+        <ShowAt at={!staticTabs.includes(this.state.currentTab)}>
                   {this.renderCourses(this.state.courses)}
+        </ShowAt>
                   </div>
                   </div>
                   {this.state.currentTab !== ProfessionalLicenseText ? (
