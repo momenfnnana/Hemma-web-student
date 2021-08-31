@@ -536,8 +536,10 @@ export class _CategoryDetails extends Component {
 
   validateProLicenseNav(Category){
 	const {professionalLicense} = Category
-	if(professionalLicense) 
+	if(professionalLicense){
 		this.changeTab(ProfessionalLicenseText)
+		this.setState({proLicenseDetails:Category}) 
+	}
 	else return true
   }
 	async handleClick(Category){
@@ -868,7 +870,7 @@ export class _CategoryDetails extends Component {
 									<>
 											{this.state.currentTab === ProfessionalLicenseText && (
 												<ProfessionalLicense
-													categoryData={this.state.details}
+													categoryData={this.state.proLicenseDetails || this.state.details}
 												/>
 											)}
 										</>
@@ -946,8 +948,7 @@ const contentReducer = (successCase) => {
 						src={successCase?.img}
 						className="w-100 height-70"
 						style={{height: "170px !important"}}
-					/>import SubCategories from './subCategories/index';
-
+					/>
 				</a>
 			);
 		case "Rating":
