@@ -741,8 +741,6 @@ export class _CategoryDetails extends Component {
 		const {
 			match: {params},
 		} = this.props;
-
-		console.log({currentSlug : this.state.currentSlug,page:this.state.page});
 		return (
 			<React.Fragment>
 				<Helmet>
