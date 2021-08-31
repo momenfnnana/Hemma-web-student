@@ -24,6 +24,7 @@ import { NavLink, Link, withRouter } from "react-router-dom";
 import ShowAt from "../../HOC/show-at";
 import { getQuery } from "../../utils/query-params";
 import {SubCategories} from './subCategories/index'
+const hasFreeFlag = getQuery('free')
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
@@ -43,7 +44,7 @@ export class _CategoryDetails extends Component {
 	endOfResults = false;
 	SuccesesLimt = 12;
 	Succesespage = 1;
-
+  
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -58,7 +59,7 @@ export class _CategoryDetails extends Component {
 			courses: [],
 			competitions: [],
 			categoryGroups: [],
-			hasProfessionalLicense :true,
+			hasProfessionalLicense :false,
 			selectedPublicationId: null,
 			modalIsOpen: false,
 			hideBtn: false,
@@ -66,6 +67,7 @@ export class _CategoryDetails extends Component {
 			hideBtnSuccess: false,
 			loading: false,
 			disabled: false,
+      hasNoPlatformCourses:false,
 			active: "",
 			defultActive: "show active",
 			coursesShimmerLoader: true,
@@ -73,7 +75,7 @@ export class _CategoryDetails extends Component {
 			categoryGroupsShimmerLoader: true,
 			competitionsShimmerLoader: true,
 			publicationsShimmerLoader: true,
-			currentTab: 'tab-two',
+    currentTab: null,
 			nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
 		};
 		this.openModal = this.openModal.bind(this);
@@ -99,12 +101,15 @@ export class _CategoryDetails extends Component {
 		let headers = {
 			Authorization: `Bearer ${token}`,
 		};
+    const {subcategoriesdetails} = this.state
 		axios
 			.get(url, {headers})
 			.then((response) => {
 				this.setState({loading: false, disabled: false});
 				const courses = response.data.data.data
-				this.setState({...this.state, courses})
+				this.setState({courses,hasNoPlatformCourses : !courses?.length });
+        if(!hasFreeFlag && !this.state.hasProfessionalLicense && !hasFreeFlag && !subcategoriesdetails.length)
+				this.setState({currentTab :'tab-two'});
 			})
 	}
 
@@ -187,14 +192,13 @@ export class _CategoryDetails extends Component {
 	}
 
 	handleNavFromFree() {
-		const hasFreeFlag = getQuery('free')
-		if (hasFreeFlag === 'true')
-			setTimeout(() => {
-				this.simulateClick('tab-three')
-			}, 1500);
+		if (hasFreeFlag === 'true'){
+      this.changeTab('tab-three')
+
+    }
 	}
 	handleNavForProLicense() {
-				this.simulateClick(ProfessionalLicenseText)
+				// this.simulateClick(ProfessionalLicenseText)
 	}
 
 	async componentDidMount() {
@@ -207,8 +211,19 @@ export class _CategoryDetails extends Component {
 			.then((response) => {
         const hasProLicense =  this.hasProfessionalLicense(response.data.data);
         if(hasProLicense)this.handleNavForProLicense()
-				this.setState({details: response.data.data}, () => {
+				this.setState({details: response.data.data,hasProfessionalLicense :hasProLicense}, () => {
 					this.handleHasProfessionalLicense(hasProLicense)
+          axios
+          .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
+          .then((response) => {
+            this.setState({
+              subcategoriesdetails: response.data.data.childCatgories,
+            });
+          this.intiReq()
+          })
+          .catch((error) => {
+            console.log(error);
+          });
 				});
 				this.setState({
 					...this.state,
@@ -242,16 +257,7 @@ export class _CategoryDetails extends Component {
 
 		this.handleNavFromFree()
 
-		axios
-			.get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
-			.then((response) => {
-				this.setState({
-					subcategoriesdetails: response.data.data.childCatgories,
-				});
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+	
 		axios
 			.get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
 			.then((response) => {
@@ -305,25 +311,18 @@ export class _CategoryDetails extends Component {
 				this.setState({categoryGroupsShimmerLoader: false});
 			});
 
-		await this.loadMore();
 		if (this.props.history.location.hash == "#tab-three") {
 			this.setState({active: "show active", defultActive: ""});
 		}
 	}
 
 	warningAlert(msg) {
-
 		swal(
 			"عفواً",
-
 			msg,
-
 			"error",
-
 			{
-
 				button: "متابعة",
-
 			}
 		);
 
@@ -351,12 +350,16 @@ export class _CategoryDetails extends Component {
 	}
 
 	handleSubCategoriesChange(prevSubcategoriesdetails = [], subcategoriesdetails = []) {
+    if(hasFreeFlag || this.state.hasProfessionalLicense) {
+      return 
+    }
+
 		if (prevSubcategoriesdetails.length !== subcategoriesdetails?.length) {
 			const [firstSubCategory] = subcategoriesdetails
 			const {slug} = firstSubCategory
 			if (!slug) return
 			setTimeout(() => {
-				this.simulateClick(slug)
+				// this.changeTab(slug)
 			}, 200);
 		}
 	}
@@ -367,17 +370,23 @@ export class _CategoryDetails extends Component {
 
 
 	componentDidUpdate(prevProps, prevState) {
-		const {currentTab: prevTab, subcategoriesdetails: prevSubcategoriesdetails,hasProfessionalLicense : prevHasProfessionalLicense} = prevState
-		const {currentTab, subcategoriesdetails,hasProfessionalLicense} = this.state
+		const {currentTab: prevTab, subcategoriesdetails: prevSubcategoriesdetails,hasProfessionalLicense : prevHasProfessionalLicense ,currentSlug : prevSlug} = prevState
+		const {currentTab, subcategoriesdetails,hasProfessionalLicense,currentSlug,hasNoPlatformCourses} = this.state
 		if (prevTab !== currentTab) {
 			if (currentTab === 'tab-two') {
 				this.intiReq()
 				this.resetToInintPageState()
 			}
 		}
-		if(hasProfessionalLicense && prevHasProfessionalLicense !== hasProfessionalLicense){
+		if(currentSlug !== prevSlug){
+      this.handleCategChange(currentSlug)
 			// this.simulateClick(ProfessionalLicenseText)
 		}
+    if((subcategoriesdetails.length !== prevSubcategoriesdetails.length) && !hasProfessionalLicense && !hasFreeFlag){
+      const [firstSubCateg] = subcategoriesdetails
+      const {slug} = firstSubCateg
+      this.changeTab(slug)
+    }
 		// this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
 	}
 
@@ -500,34 +509,31 @@ export class _CategoryDetails extends Component {
 		throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
 	}
 
-	handleProfessionalCase({professionalLicense, groupedPackages, rest}) {
-		const isProLicencse = professionalLicense && groupedPackages
-		if (!(professionalLicense && groupedPackages)) return
-		return isProLicencse
-	}
+	// handleProfessionalCase({professionalLicense, groupedPackages, rest}) {
+	// 	const isProLicencse = professionalLicense && groupedPackages
+	// 	if (!(professionalLicense && groupedPackages)) return
+	// 	return isProLicencse
+	// }
 
-	async handleClick(Category){
-		try {
-
-			const {history} = this.props;
-			const {slug: categSlug, professionalLicense,nameAr, groupedPackages, ...rest} = Category;
-			// this.changeTab(freeMeetingsText)
-			const {navigationType, courses} = await this.validateHasSubCategories(categSlug)
-			const url = `./${categSlug}`
-			if (this.handleProfessionalCase({professionalLicense, groupedPackages, rest})) return
+	async handleCategChange(categSlug){
+    try {
+      // const {slug: categSlug, professionalLicense,nameAr, groupedPackages, ...rest} = Category;
+      const {navigationType, courses} = await this.validateHasSubCategories(categSlug)
+      const url = `./${categSlug}`
+			// if (this.handleProfessionalCase({professionalLicense, groupedPackages, rest})) return
 			if (!navigationType) this.handleNoChildCategories()
 			if (navigationType === '_blank') window.open(url)
 			else {
-				this.setState({...this.state, courses,currentSlug : categSlug})
-
-				this.changeTab(nameAr)
-				// history.push(url);
+        this.setState({...this.state, courses,currentSlug : categSlug})
 			}
-		} catch (error) {
+    } catch (error) {
+      
+    }
+   
 
-			this.warningAlert(error?.message)
-
-		}
+  }
+	async handleClick(Category){
+    this.changeTab(Category?.slug)
 	}
 
 	rendersubCategories() {
@@ -641,7 +647,7 @@ export class _CategoryDetails extends Component {
 	}
 
 	changeTab(tab) {
-		this.setState({...this.state, currentTab: tab});
+		this.setState({...this.state, currentTab: tab,currentSlug:tab});
 	}
 
 	simulateClick(divId, event = 'click') {
@@ -735,8 +741,6 @@ export class _CategoryDetails extends Component {
 
 	render() {
 		let token = localStorage.getItem("token");
-		const {state : {currentTab}} = this
-
 		const {
 			match: {params},
 		} = this.props;
@@ -776,7 +780,7 @@ export class _CategoryDetails extends Component {
 								>
 									{/* {this.rendersubCategories()} */}
 									<SubCategories handleClick={(category) => this.handleClick(category)} subCategories={this.state.subcategoriesdetails} currentTab={this.state.currentTab}  />
-												<ShowAt at={!this.state.hasProfessionalLicense && !!this.state.courses?.length}>
+												<ShowAt at={!this.state.hasNoPlatformCourses}>
                         <NavTab
 													currentTab={this.state.currentTab}
 													id="tab-two"

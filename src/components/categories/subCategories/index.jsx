@@ -11,7 +11,7 @@ export const  SubCategories = ({subCategories,currentTab,handleClick})=> {
         <NavTab
             key={Category.id}
             currentTab={currentTab}
-            id={Category?.nameAr}
+            id={Category?.slug}
             name={Category.nameAr}
             onClick={() => onClick(Category)}
         />
