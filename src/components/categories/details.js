@@ -58,7 +58,7 @@ export class _CategoryDetails extends Component {
 			courses: [],
 			competitions: [],
 			categoryGroups: [],
-			hasProfessionalLicense :false,
+			hasProfessionalLicense :true,
 			selectedPublicationId: null,
 			modalIsOpen: false,
 			hideBtn: false,
@@ -177,7 +177,6 @@ export class _CategoryDetails extends Component {
 	};
 
   handleHasProfessionalLicense(hasProLicense) {
-	this.handleNavForProLicense()
     this.setState({hasProfessionalLicense:hasProLicense });
   }
 
@@ -206,13 +205,15 @@ export class _CategoryDetails extends Component {
 		axios
 			.get(`${apiBaseUrl}/categories/${params.slug}`)
 			.then((response) => {
+        const hasProLicense =  this.hasProfessionalLicense(response.data.data);
+        if(hasProLicense)this.handleNavForProLicense()
 				this.setState({details: response.data.data}, () => {
-					const hasProLicense =  this.hasProfessionalLicense(response.data.data);
 					this.handleHasProfessionalLicense(hasProLicense)
 				});
 				this.setState({
 					...this.state,
 					showgroupedPackagesBtn: response.data.data.groupedPackages,
+          currentTab : hasProLicense ?   ProfessionalLicenseText : this.state.currentTab 
 				});
 			})
 			.catch((error) => {
@@ -517,7 +518,9 @@ export class _CategoryDetails extends Component {
 			if (!navigationType) this.handleNoChildCategories()
 			if (navigationType === '_blank') window.open(url)
 			else {
+        alert('lckns')
 				this.setState({...this.state, courses,currentSlug : categSlug})
+
 				this.changeTab(nameAr)
 				// history.push(url);
 			}
@@ -776,12 +779,14 @@ export class _CategoryDetails extends Component {
 								>
 									{/* {this.rendersubCategories()} */}
 									<SubCategories handleClick={(category) => this.handleClick(category)} subCategories={this.state.subcategoriesdetails} currentTab={this.state.currentTab}  />
-												<NavTab
+												<ShowAt at={!this.state.hasProfessionalLicense && !!this.state.courses?.length}>
+                        <NavTab
 													currentTab={this.state.currentTab}
 													id="tab-two"
 													name={'دورات المنصة'}
 													onClick={() => this.changeTab('tab-two')}
-												/>
+                          />
+                          </ShowAt>
 												{!!this.state.lectures?.length && (
 													<NavTab
 														id={freeMeetingsText}
