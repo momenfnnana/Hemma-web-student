@@ -16,12 +16,12 @@ export const eventFire =(id, etype) =>{
   }
 }
 
-export default function NavTab({name = "",onClick = ()=>{},id,currentTab}) {
+export default function NavTab({name = "",onClick = ()=>{},id,currentTab,forceActive}) {
 
   const isActive = currentTab === id
 
   const baseClass = "tab-items nav-link px-4"
-  const acticeClass = isActive ?  'active show' : ''
+  const acticeClass = isActive || forceActive ?  'active show' : ''
   const className = [baseClass,acticeClass].join(' ')
 
 

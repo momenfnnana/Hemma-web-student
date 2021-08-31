@@ -385,6 +385,7 @@ export class _CategoryDetails extends Component {
     if((subcategoriesdetails.length !== prevSubcategoriesdetails.length) && !hasProfessionalLicense && !hasFreeFlag){
       const [firstSubCateg] = subcategoriesdetails
       const {slug} = firstSubCateg
+	  if(this.validateProLicenseNav(firstSubCateg)) return
       this.changeTab(slug)
     }
 		// this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
@@ -532,8 +533,16 @@ export class _CategoryDetails extends Component {
    
 
   }
+
+  validateProLicenseNav(Category){
+	const {professionalLicense} = Category
+	if(professionalLicense) 
+		this.changeTab(ProfessionalLicenseText)
+	else return true
+  }
 	async handleClick(Category){
-    this.changeTab(Category?.slug)
+		if(!this.validateProLicenseNav(Category)) return
+    	this.changeTab(Category?.slug)
 	}
 
 	rendersubCategories() {
@@ -779,8 +788,8 @@ export class _CategoryDetails extends Component {
 									role="tablist"
 								>
 									{/* {this.rendersubCategories()} */}
-									<SubCategories handleClick={(category) => this.handleClick(category)} subCategories={this.state.subcategoriesdetails} currentTab={this.state.currentTab}  />
-												<ShowAt at={!this.state.hasNoPlatformCourses}>
+									<SubCategories hasProfessionalLicense={this.state.hasProfessionalLicense} handleClick={(category) => this.handleClick(category)} subCategories={this.state.subcategoriesdetails} currentTab={this.state.currentTab}  />
+												<ShowAt at={!this.state.hasProfessionalLicense}>
                         <NavTab
 													currentTab={this.state.currentTab}
 													id="tab-two"
