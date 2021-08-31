@@ -538,7 +538,7 @@ export class _CategoryDetails extends Component {
 	const {professionalLicense} = Category
 	if(professionalLicense){
 		this.changeTab(ProfessionalLicenseText)
-		this.setState({proLicenseDetails:Category}) 
+		this.setState({proLicenseDetails:Category,hasProfessionalLicense:true}) 
 	}
 	else return true
   }
