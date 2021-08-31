@@ -538,7 +538,7 @@ export class _CategoryDetails extends Component {
 	const {professionalLicense} = Category
 	if(professionalLicense){
 		this.changeTab(ProfessionalLicenseText)
-		this.setState({proLicenseDetails:Category,hasProfessionalLicense:true}) 
+		this.setState({proLicenseDetails:Category,hasNoPlatformCourses:true}) 
 	}
 	else return true
   }
@@ -791,7 +791,7 @@ export class _CategoryDetails extends Component {
 								>
 									{/* {this.rendersubCategories()} */}
 									<SubCategories hasProfessionalLicense={this.state.hasProfessionalLicense} handleClick={(category) => this.handleClick(category)} subCategories={this.state.subcategoriesdetails} currentTab={this.state.currentTab}  />
-												<ShowAt at={!this.state.hasProfessionalLicense}>
+												<ShowAt at={!this.state.hasProfessionalLicense && !this.state.hasNoPlatformCourses}>
                         <NavTab
 													currentTab={this.state.currentTab}
 													id="tab-two"
