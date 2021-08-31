@@ -518,7 +518,6 @@ export class _CategoryDetails extends Component {
 			if (!navigationType) this.handleNoChildCategories()
 			if (navigationType === '_blank') window.open(url)
 			else {
-        alert('lckns')
 				this.setState({...this.state, courses,currentSlug : categSlug})
 
 				this.changeTab(nameAr)
