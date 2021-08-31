@@ -16,24 +16,26 @@ export const eventFire =(id, etype) =>{
   }
 }
 
-export default function NavTab({name = "",onClick = ()=>{},isActive}) {
+export default function NavTab({name = "",onClick = ()=>{},id,currentTab}) {
+
+  const isActive = currentTab === id
+
+  const baseClass = "tab-items nav-link px-4"
+  const acticeClass = isActive ?  'active show' : ''
+  const className = [baseClass,acticeClass].join(' ')
+
 
   useEffect(()=>{
     if(!isActive) return
     setTimeout(()=>{
-      eventFire(ProfessionalLicenseText,'click')
+      eventFire(id,'click')
     },300)
   },[isActive])
   return (
     <>
         <a
-          className='tab-items nav-link px-4 '
-          data-toggle="tab"
-          href="#tab-two"
-          id={ProfessionalLicenseText}
-          role="tab"
-          aria-controls="nav-two"
-          aria-selected="false"
+          className={className}
+          id={id}
           onClick={onClick}
         >
           <div className="tab-img">
