@@ -64,7 +64,6 @@ class CheckoutComponent extends Component {
       });
   }
   onFillShippingAddress =()=>{
-    alert('done')
     this.setState({isShippingAddressFilled:true})
   };
   render() {
