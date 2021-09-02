@@ -20,7 +20,7 @@ export default function CampaignVideo({showThumb,toggleShow,videoRef}) {
               className="w-100 h-100 z-2 position-absolute absolute-centered rounded"
               src="https://wallpaperaccess.com/full/3458146.jpg"
               loading
-              style={{ filter: "blur(10px)" }}
+              style={{ filter: "blur(5px)" }}
             />
           </>
         )}

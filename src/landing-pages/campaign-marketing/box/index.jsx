@@ -11,7 +11,7 @@ export default function FixedBox({
   return (
     <div
       className={boxClass}
-      style={{zIndex:10, ...position, width: `${width}px`, height: `${height || width}px` }}
+      style={{zIndex:0, ...position, width: `${width}px`, height: `${height || width}px` }}
     ></div>
   );
 }
