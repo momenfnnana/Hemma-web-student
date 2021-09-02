@@ -7,6 +7,10 @@ import { Api } from "../../api";
 import { withRouter } from "react-router-dom";
 import { selectField } from "../../components/shared/inputs/selectField";
 import swal from "@sweetalert/with-react";
+import * as Yup from 'yup'
+
+const mobileError = "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ ب05"
+const requiredError = "هذا الحقل مطلوب"
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 
@@ -27,6 +31,13 @@ class ShippingAddressFormComponent extends Component {
     shippingAddress:null,
     isDisabled:true,
   };
+
+  schema = Yup.object().shape({
+    shippingPhone : Yup.string().min(10,mobileError).matches(/^05\d{8}$/).required(requiredError),
+    shippingAddress : Yup.string().required(requiredError),
+    shippingCityId : Yup.string().required(requiredError),
+    shippingRecipient : Yup.string().required(requiredError),
+  })
   componentDidMount() {
     Api.cart
       .getCities()
@@ -38,6 +49,24 @@ class ShippingAddressFormComponent extends Component {
     this.setState({[key] :value });
     this.isSubmitButtonDisabled();
   };
+
+  paymentAllowPopup(){
+    swal(
+      "بامكانك ادخال بيانات الدفع لتأكيد الاشتراك بشكل كامل",
+      {
+        buttons: {
+          ok: "تأكيد",
+        },
+      }
+  ).then((value) => {
+    switch (value) {
+      case "ok":
+        this.props.onFillShippingAddress()
+      default:
+        break;
+    }
+  });
+  }
 
   isSubmitButtonDisabled = () => {
     if(this.state.shippingRecipient &&
@@ -65,7 +94,7 @@ class ShippingAddressFormComponent extends Component {
     ).then((value) => {
       switch (value) {
         case "ok":
-          this.props.onFillShippingAddress()
+        setTimeout(()=>this.paymentAllowPopup(),700)
         default:
           break;
       }
