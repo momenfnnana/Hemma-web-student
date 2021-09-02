@@ -336,7 +336,6 @@ async onClick(Category){
     const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
     
     //if(!childCateg.length) this.handleNoChildCategories()
-
     const url = `/categories/details/${categSlug}`
     if(!navigationType) this.handleNoChildCategories()
     if(navigationType === '_blank') window.open(url)
@@ -897,6 +896,4 @@ function mapStateToProps(state) {
   };
 }
 
-HomeComponent = connect(mapStateToProps)(HomeComponent);
-
-export const Home = HomeComponent;
+export default connect(mapStateToProps)(HomeComponent);

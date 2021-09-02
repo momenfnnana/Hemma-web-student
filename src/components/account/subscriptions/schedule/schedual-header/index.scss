@@ -16,6 +16,12 @@
     margin-left: 10px;
 }
 
+.btn-yellow {
+    background-color: var(--color-yellow) !important;
+    border-color: var(--color-yellow) !important;
+    color: var(--main-color) !important;
+}
+
 .btn-card-normal-outline {
     display: block;
     width: 150px;

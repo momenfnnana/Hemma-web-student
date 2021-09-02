@@ -385,4 +385,4 @@ BillingListComponent = connect(
   { getSubscription }
 )(BillingListComponent);
 
-export const BillingList = withRouter(BillingListComponent);
+export default withRouter(BillingListComponent);
