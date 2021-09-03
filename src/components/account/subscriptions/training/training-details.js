@@ -14,6 +14,7 @@ import { TrainingPass } from "./training-pass";
 import { TrainingExamFail } from "./training-fail";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import {SolutionModal} from "../exams/solution"
 import "../index.scss";
 // import MathType from '@wiris/mathtype-ckeditor5';
 
@@ -23,6 +24,7 @@ class TrainingExamDetailsComponent extends Component {
     this.state = {
       isConfirmExamOpen: false,
       isHintOpen: false,
+      isSolutionExplanationOpen:false,
       examDetails: [],
       questions: [],
       nav1: null,
@@ -98,7 +100,12 @@ class TrainingExamDetailsComponent extends Component {
   closeHintModal = () => {
     this.setState({ isHintOpen: false,selectedQuestionId: null });
   };
-
+  openSolutionExplanationModal = (id) => {
+       this.setState({ isSolutionExplanationOpen: true, selectedQuestionId: id });
+     };
+  closeSolutionExplanationModal = () => {
+       this.setState({ isSolutionExplanationOpen: false,selectedQuestionId: null });
+     };
   componentDidMount = () => {
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
@@ -230,6 +237,20 @@ class TrainingExamDetailsComponent extends Component {
                         ) : (
                           <p className="small red-text mb-0">لم تقم بالإجابة</p>
                         )}
+                        <br/>
+                        <div className="row d-flex justify-content-between align-items-center mb-3">
+                            {question && question.allowSolutionExplanation ? (
+                                <div className="col-md-6 d-flex">
+                                        <button
+                                            disabled={!answer && !answer.selectedChoice}
+                                            className="btn red-outline-btn btn-sm small float-right d-flex"
+                                            onClick={() => this.openSolutionExplanationModal(question.id)}
+                                        >
+                                            طريقة الحل
+                                        </button>
+                                </div>
+                            ) : null}
+                        </div>
                       </div>
                       <div className="row">
                         <div className="col-md-12">
@@ -477,7 +498,12 @@ class TrainingExamDetailsComponent extends Component {
                   id={this.state.selectedQuestionId}
                   attemptId={attemptId}
                 />
-              
+              <SolutionModal
+                  isSolutionOpen={this.state.isSolutionExplanationOpen}
+                  closeSolution={this.closeSolutionExplanationModal}
+                  id={this.state.selectedQuestionId}
+                  attemptId={attemptId}
+              />
             </div>
           </div>
         )}
