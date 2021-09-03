@@ -63,6 +63,7 @@ import {
 import { Suspense } from "react";
 import LoadingScreen from './../shared-components/loading-screen/index';
 import LandingPage from './../components/landing-page/index';
+import CampaignMarketing from './../landing-pages/campaign-marketing/index';
 
 class AppBackground extends Component {
   componentDidMount()
@@ -235,6 +236,7 @@ class MainRouterComponent extends Component {
               <Route path="/home" component={Home} />
               <Route path="/privacypolicy" component={PrivacyPolicy} />
               <Route path="/market" component={LandingPage} />
+              <Route path="/campaign-marketing" component={CampaignMarketing} />
 
               {/* TODO hide initiative */}
               { <Route
