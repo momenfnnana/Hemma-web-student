@@ -372,7 +372,7 @@ a:hover {text-decoration: none;}
   border-radius: 50px;
   padding-left: 15px;
   padding-right: 15px;
-  margin: auto;
+  /* margin: auto; */
   font-size: .8rem;
   height: 30px;
   line-height: 30px;
