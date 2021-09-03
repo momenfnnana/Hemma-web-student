@@ -14,8 +14,9 @@ export default function SuccessHeader() {
                 <span class="d-block">نجاحات مع همة</span>
               </h2>
               <h6 class="font-size-13 m-0 lighter-text animated bounceInDown">
-                <span class="d-block mb-2">هو ببساطه نص شكلى (بمعنى ان الغايه هى الشكل وليس المحتوى)</span>
-                <span class="d-block mb-2">وبيستخدم فى صناعات المطابع ودور النشر. كان لوريم ابيسوم ولايزال</span>
+                {/*<span class="d-block mb-2">هو ببساطه نص شكلى (بمعنى ان الغايه هى الشكل وليس المحتوى)</span>*/}
+                {/*<span class="d-block mb-2">وبيستخدم فى صناعات المطابع ودور النشر. كان لوريم ابيسوم ولايزال</span>*/}
+                <span className="font-size-14 d-block mb-2">الناجح يشارك الآخرين نجاحة و يلهمهم ، قد تكون أنت مُلهمنا القادم.</span>
               </h6>
             </div>
           </div>
