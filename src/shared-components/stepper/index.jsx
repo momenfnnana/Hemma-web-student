@@ -1,18 +1,27 @@
-import React from 'react'
-import "./index.scss"
+import React, { useCallback, useMemo } from "react";
+import "./index.scss";
 
+export default function Stepper({ currentStepIndex = 0, children, ...rest }) {
+  const passPropsToChildren = useMemo(() => {
+    let _index = 0;
+    const childrenWithProps = React.Children.map(children, (child, index) => {
+      if (!child) return;
+      if (React.isValidElement(child)) {
+        _index = _index + 1;
+        return React.cloneElement(child, {
+          order: _index - 1,
+          currentStepIndex,
+        });
+      }
+      return child;
+    });
+    return childrenWithProps;
+  }, [children]);
 
-export default function Stepper({steps = [{active: true,name :'first'},{active: false,name :'second'}]}) {
-    return (
-        <div className="stepper">
-            <div className="stepper-back-line"></div>
-            {
-                steps.map(step =>(
-                    <div className="stepper-ball">
-                        
-                    </div>
-                ))
-            }
-        </div>
-    )
+  return <div className="stepper">{passPropsToChildren}</div>;
 }
+
+Stepper.Step = ({ children, currentStepIndex, order }) => {
+  const show = currentStepIndex === order;
+  return <div>{show && children}</div>;
+};
