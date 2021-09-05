@@ -24,8 +24,9 @@ const contentReducer = (successCase) => {
         <a href={successCase?.url}>
           <img
             src={successCase?.img}
-            className="w-100 height-auto w-100"
-            style={{ height: "170px !important" }}
+            className="w-100"
+            // style={{ height: "170px !important" }}
+              style={{maxWidth: '100%' , maxHeight:'100%' , height:'200px' }}
           />
         </a>
       );
