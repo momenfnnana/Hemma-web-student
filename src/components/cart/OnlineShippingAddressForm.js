@@ -152,7 +152,7 @@ class OnlineShippingAddressFormComponent extends Component {
               />
             </div>
             <button
-                className="btn light-outline-btn w-50 ml-1"
+                className="btn light-outline-btn w-100 ml-1"
                 disabled={this.state.isDisabled}
                 onClick={this.confirmationPopup}
             >
