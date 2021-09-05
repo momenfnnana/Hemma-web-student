@@ -51,9 +51,9 @@ export default function CampaignForm() {
     getAllowedFields({ method: "GET" }, (response) => {
       if (!response?.data) return;
       const {
-        data: { minAcceptInvention },
+        data: { minAcceptInvention,numberPerInvention },
       } = response;
-      setMinInvitation(minAcceptInvention)
+      setMinInvitation(numberPerInvention)
     });
   }, []);
 
@@ -73,7 +73,7 @@ export default function CampaignForm() {
   return (
     <div className="mt-4">
       <span className="h3 gheed-black-color font-weight-600">
-        يمكنك دعوة خمسة من أصدقائك للاشتراك بدورات منصة
+        يمكنك دعوة أصدقائك للاشتراك بدورات منصة
       </span>
       <CampaignField
         label="رقم جوال المرسل"
@@ -90,7 +90,7 @@ export default function CampaignForm() {
             classkey={index}
           />
         ))}
-        <button onClick={submitInvitation} disabled={submitDisabled || !loading || values.sent} className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-4">
+        <button onClick={submitInvitation} disabled={submitDisabled || !loading || values.sent} className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
           {
               !loading ? "يتم الارسال" : values?.sent ? "تم الارسال" :"أرسل الدعوة"
           }
