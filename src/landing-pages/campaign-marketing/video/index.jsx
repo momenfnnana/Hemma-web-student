@@ -33,7 +33,7 @@ export default function CampaignVideo({showThumb,toggleShow,videoRef}) {
           style={{ display: "block" }}
           onPause={toggleShow}
         >
-          <source src="https://hemma.ams3.cdn.digitaloceanspaces.com/videos/videos/V1-Boy.mp4" />
+          <source src="https://hemma.ams3.cdn.digitaloceanspaces.com/videos/videos/Hemma_Instagram_01%20.mp4" />
           <div className="pink-shadow stretched-absolute" />
         </video>
       </div>

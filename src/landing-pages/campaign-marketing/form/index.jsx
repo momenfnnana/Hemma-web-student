@@ -11,6 +11,8 @@ const url = (CategoryId) =>
 const fixedToken = "ec054203e5aaefed0a9390a9d6099703a8137f8a";
 const category = "3ccb028d-bb70-450c-b4cd-d21bc23f3102";
 
+const senderCanNotBeReceiverError = 'لا يمكن أن يتطابق رقم المرسل و المستقبل'
+
 const numbersStringEnum = {
   0: "الاول",
   1: "الثاني",
@@ -20,23 +22,35 @@ const numbersStringEnum = {
 };
 
 const recieversLength = 5;
-
+const defaultValus = {sender:'',receivers:{}}
 export default function CampaignForm() {
   const [getAllowedFields,loading] = useFetch(url(category));
   const [minInvention,setMinInvitation]=useState(0)
-  const [values, setValues] = useState({sender:''});
+  const [errors,setErrors] = useState({})
+  const [values, setValues] = useState(defaultValus);
+  const [matchCondition,setMatchCondition]= useState(false)
+  const [showForm,setShowForm] = useState(true)
+  const [receiversMatchErrors,setReceiversMatchErrors]= useState(false)
+  
 
-  const submitInvitation = ()=>{
+  const togggleShow = ()=>{
+    setShowForm(false)
+    setTimeout(() => {
+      setShowForm(true)
+    },100)
+  }
+
+  const submitInvitation = (e)=>{
+      e.preventDefault();
       const {sender} = values
-      let recieversNumbers = values
-      delete  recieversNumbers.sender
-      recieversNumbers =Object.values(recieversNumbers)
+      const recieversNumbers =Object.values(values.receivers)
       getAllowedFields({method:"POST",url : url(),data:{
         categoryId: category,
         senderPhoneNumber: sender,
         "recipientPhoneNumber": recieversNumbers
       }},()=>{
-          setValues({...values,sent:true})
+          setValues({...defaultValus,sent:true})
+          togggleShow()
           swal("تم ارسال الدعوة بنجاح", "", {
             button: "متابعة"
           });
@@ -57,6 +71,20 @@ export default function CampaignForm() {
     });
   }, []);
 
+  const handleReceverChange = (key,value)=>{
+    const dataObj = {
+      [key]: value,
+    };
+    const newData = {
+      ...values,
+      receivers : {
+        ...values?.receivers,
+        ...dataObj,
+      }
+    };
+    setValues(newData);
+  }
+
 
   const handleChange = (key, value) => {
     const dataObj = {
@@ -64,14 +92,31 @@ export default function CampaignForm() {
     };
     const newData = {
       ...values,
-      ...dataObj,
+        ...dataObj,
     };
     setValues(newData);
   };
 
-  const submitDisabled = Object.values(values).filter(value => !!value).length < 2
+  const resetInputs = ()=>{
+    setValues(defaultValus)
+  }
+
+  useEffect(()=>{
+    const unrepeatedValues = [...new Set(Object.values(values?.receivers))]
+    const originalValues = Object.values(values.receivers)
+    const hasUniqueValues = !!(originalValues.length - unrepeatedValues.length)
+    const condition = Object.values(values?.receivers).includes(values?.sender)  
+    setMatchCondition(condition && senderCanNotBeReceiverError)
+    setReceiversMatchErrors(hasUniqueValues && 'لا يمكن تكرار اسماء المرسل اليهم')
+  },[values])
+
+  const hasNoReceiver = Object.values(values.receivers).length === 0
+  const hasNoSender = !values.sender
+  const hasErros = Object.values(errors).filter(elem=>elem).length
+  const submitDisabled = hasNoReceiver || hasNoSender || hasErros  || matchCondition || receiversMatchErrors
+
   return (
-    <div className="mt-4">
+    <form className="mt-4" onSubmit={submitInvitation}>
       <span className="h3 gheed-black-color font-weight-600">
         يمكنك دعوة أصدقائك للاشتراك بدورات منصة
       </span>
@@ -79,23 +124,32 @@ export default function CampaignForm() {
         label="رقم جوال المرسل"
         name="sender"
         onChange={handleChange}
+        errors={errors}
+        defaultError={matchCondition}
+        setErrors={setErrors}
+        required
+        values={values}
       />
 
       <div className="mt-4 w-100 row m-0">
-        {recievers.map((rec, index) => (
+        {showForm && recievers.map((rec, index) => (
           <CampaignField
+            values={values?.receivers}
+            defaultError={receiversMatchErrors}
+            setErrors={setErrors}
+            errors={errors}
             label={`رقم جوال المرسل ${rec.title}`}
-            name={index}
-            onChange={handleChange}
+            name={index+''}
+            onChange={handleReceverChange}
             classkey={index}
           />
         ))}
-        <button onClick={submitInvitation} disabled={submitDisabled || !loading || values.sent} className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
+        <button type="submit"  disabled={submitDisabled || !loading} className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
           {
               !loading ? "يتم الارسال" : values?.sent ? "تم الارسال" :"أرسل الدعوة"
           }
         </button>
       </div>
-    </div>
+    </form>
   );
 }
