@@ -6,6 +6,7 @@ import { textareaField } from "../shared/inputs/textareaField";
 import { Api } from "../../api";
 import { withRouter } from "react-router-dom";
 import { selectField } from "../../components/shared/inputs/selectField";
+import swal from "@sweetalert/with-react";
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 
@@ -19,15 +20,57 @@ const phoneValue = value => {
 
 class ShippingAddressFormComponent extends Component {
   state = {
-    shippingCities: []
+    shippingCities: [],
+    shippingRecipient:null,
+    shippingPhone:null,
+    shippingCityId:null,
+    shippingAddress:null,
+    isDisabled:true,
   };
-
   componentDidMount() {
     Api.cart
       .getCities()
       .then(cities => this.setState({ shippingCities: cities }));
   }
 
+  onChangeVal =(key,e)=>{
+    const value = e.target.value;
+    this.setState({[key] :value });
+    this.isSubmitButtonDisabled();
+  };
+
+  isSubmitButtonDisabled = () => {
+    if(this.state.shippingRecipient &&
+        this.state.shippingPhone &&
+        this.state.shippingCityId &&
+        this.state.shippingAddress)
+    {
+          this.setState({isDisabled :!this.state.isDisabled})
+    }
+    };
+
+
+  confirmationPopup =(e) => {
+    e.preventDefault();
+    swal(
+        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة
+        
+        هل أنت متأكد من هذا الرقم  (${this.state.shippingPhone})؟`,
+        {
+          buttons: {
+            ok: "تأكيد",
+            cancel: "الغاء",
+          },
+        }
+    ).then((value) => {
+      switch (value) {
+        case "ok":
+          this.props.onFillShippingAddress()
+        default:
+          break;
+      }
+    });
+  }
   /**
    * Helper to render the cities list
    */
@@ -68,6 +111,8 @@ class ShippingAddressFormComponent extends Component {
                   className="form-control border-left-0 pl-0"
                   placeholder="اسم المستلم"
                   validate={required}
+                  onChange={(e)=>this.onChangeVal('shippingRecipient',e)}
+                  value={this.state.shippingRecipient}
                 />
               </div>
               <div className="form-group">
@@ -79,6 +124,8 @@ class ShippingAddressFormComponent extends Component {
                   validate={[required, phoneValue]}
                   placeholder="051 234 5678"
                   type="number"
+                  onChange={(e)=>this.onChangeVal('shippingPhone',e)}
+                  value={this.state.shippingPhone}
                 />
               </div>
               <div className="form-group">
@@ -87,6 +134,8 @@ class ShippingAddressFormComponent extends Component {
                   className="form-control"
                   validate={required}
                   name="shippingCityId"
+                  onChange={(e)=>this.onChangeVal('shippingCityId',e)}
+                  value={this.state.shippingCityId}
                 >
                   <option value="" selected disabled>
                     اختر المدينة
@@ -102,8 +151,17 @@ class ShippingAddressFormComponent extends Component {
                   name="shippingAddress"
                   component={textareaField}
                   validate={required}
+                  onChange={(e)=>this.onChangeVal('shippingAddress',e)}
+                  value={this.state.shippingAddress}
                 />
               </div>
+              <button
+                  className="btn light-outline-btn w-50 ml-1"
+                  disabled={this.state.isDisabled}
+                  onClick={this.confirmationPopup}
+              >
+                تأكيد بيانات التوصيل
+              </button>
             </div>
           </div>
         </form>

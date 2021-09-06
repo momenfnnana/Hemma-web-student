@@ -153,4 +153,4 @@ forgotPasswordComponent = reduxForm({
 
 forgotPasswordComponent = connect(mapStateToProps)(forgotPasswordComponent);
 
-export const forgotPassword = withRouter(forgotPasswordComponent);
+export default withRouter(forgotPasswordComponent);

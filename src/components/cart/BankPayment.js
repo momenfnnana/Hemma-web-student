@@ -37,7 +37,7 @@ class BankPaymentComponent extends Component {
   state = {
     file: null,
     loading: false,
-    disabled: false,
+    disabled: !this.props.isShippingAddressFilled,
     bankSlip: null,
     imageLoader: false
   };
@@ -46,6 +46,11 @@ class BankPaymentComponent extends Component {
     super(props);
     this.onFileInputChange = this.onFileInputChange.bind(this);
   }
+    componentWillReceiveProps(nextprops){
+        if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
+          this.setState({disabled:!nextprops.isShippingAddressFilled})
+        }
+    }
 
   /**
    * Handle selecting a bank slip image

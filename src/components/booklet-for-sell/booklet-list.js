@@ -5,7 +5,7 @@ import { BookletCardList } from "../shared/bookletCardList/bookletCardList";
 import { apiBaseUrl } from "../../api/helpers";
 import "./styles.sass"
 import "./index.scss"
-export class BookletComponent extends Component {
+export default class BookletComponent extends Component {
    
     constructor(props) {
         super(props);

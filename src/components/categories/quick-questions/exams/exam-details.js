@@ -568,4 +568,4 @@ ExamDetailsComponent = reduxForm({
 
 ExamDetailsComponent = connect(mapStateToProps)(ExamDetailsComponent);
 
-export const ExamDetails = withRouter(ExamDetailsComponent);
+export default withRouter(ExamDetailsComponent);
