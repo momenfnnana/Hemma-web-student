@@ -37,7 +37,7 @@ class BankPaymentComponent extends Component {
   state = {
     file: null,
     loading: false,
-    disabled: !this.props.isShippingAddressFilled,
+    disabled: false,
     bankSlip: null,
     imageLoader: false
   };
@@ -45,11 +45,12 @@ class BankPaymentComponent extends Component {
   constructor(props) {
     super(props);
     this.onFileInputChange = this.onFileInputChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
   }
-    componentWillReceiveProps(nextprops){
-        if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
-          this.setState({disabled:!nextprops.isShippingAddressFilled})
-        }
+    componentDidUpdate(prevProps, prevState,){
+        // if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
+          // this.setState({disabled:!nextprops.isShippingAddressFilled})
+        // }
     }
 
   /**
@@ -151,6 +152,22 @@ class BankPaymentComponent extends Component {
   //   debugger;
    
   // }
+
+  onInputChange(e) {
+    try {
+      
+      const value = e?.target?.value
+      const name = e?.target?.name
+      const inputData ={
+        [name]: value
+      }
+      
+      this.setState({...inputData})
+      
+    } catch (error) {
+      
+    }
+  }
   componentDidMount()
   {
     var list = document.getElementsByClassName("form-control");
@@ -290,6 +307,7 @@ class BankPaymentComponent extends Component {
               className="form-control mt-3"
               validate={required}
               name="originBankName"
+              onChange={this.onInputChange}
             >
               <option value="" selected disabled hidden>
                 البنك المحول منه
@@ -305,6 +323,7 @@ class BankPaymentComponent extends Component {
               className="form-control border-left-0 pl-0"
               placeholder="اسم صاحب الحساب المحول منه"
               validate={required}
+              onChange={this.onInputChange}
             />
             <Field
               name="accountNumber"
@@ -313,12 +332,14 @@ class BankPaymentComponent extends Component {
               className="form-control border-left-0 pl-0 ltr-input"
               placeholder="رقم الحساب المحول منه"
               validate={required}
+              onChange={this.onInputChange}
             />
             <Field
               component={selectField}
               className="form-control"
               validate={required}
               name="destinationBankName"
+              onChange={this.onInputChange}
             >
               <option value="" selected disabled hidden>
                 البنك المحول إليه
@@ -334,6 +355,7 @@ class BankPaymentComponent extends Component {
               className="form-control border-left-0 pl-0 ltr-input"
               placeholder="القيمة المحولة"
               validate={required}
+              onChange={this.onInputChange}
             />
             <label className="dark-text small mb-2">وقت وتاريخ الحوالة</label>
             <div className="d-inline-flex flex-row">
@@ -344,6 +366,7 @@ class BankPaymentComponent extends Component {
                   dateFormat={false}
                   validate={required}
                   timeFormat="hh:mm a"
+                  onChange={this.onInputChange}
                 />
               </div>
               <div>
@@ -353,12 +376,25 @@ class BankPaymentComponent extends Component {
                   timeFormat={false}
                   dateFormat="DD-MM-YYYY"
                   validate={required}
+                  onChange={this.onInputChange}
                 />
               </div>
             </div>
             <h6 className="dark-silver-text smaller mt-2">
               ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
             </h6>
+            <div>
+                <button
+                  className="btn light-outline-btn mt-5 w-100"
+                  disabled={this.state.disabled || !items}
+                >
+                  {this.state.loading === true ? (
+                    <Loader type="ball-clip-rotate" />
+                  ) : (
+                    "إتمام الدفع"
+                  )}
+                </button>
+            </div>
           </div>
 
           <div className="col-md-6 text-center">
@@ -375,7 +411,7 @@ class BankPaymentComponent extends Component {
         </button> */}
         {items && (
           <div className="row mb-5">
-            <div className="col-12 text-center">
+            {/* <div className="col-12 text-center">
               {items === undefined || items === 0 ? (
                 <button
                   className="btn light-outline-btn mt-5 w-25"
@@ -395,7 +431,7 @@ class BankPaymentComponent extends Component {
                   )}
                 </button>
               )}
-            </div>
+            </div> */}
           </div>
         )}
       </form>

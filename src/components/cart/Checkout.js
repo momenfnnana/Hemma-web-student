@@ -90,7 +90,7 @@ class CheckoutComponent extends Component {
                   <MiniCartItemsList />
               </div>
               <div className="col-md-8 mt-5">
-            <Stepper currentStepIndex={this.state.currentStepIndex}>
+            <Stepper currentStepIndex={this.state.currentStepIndex+1}>
               {cart && cart.requireShippingAddress  &&  (
                 <Stepper.Step>
                   <DeliveryStage cart={cart} onFillShippingAddress={this.onFillShippingAddress} activeTab={this.state.activeTab} />

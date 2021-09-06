@@ -1,10 +1,15 @@
 import React from "react";
 import { OnlinePayment } from "../../OnlinePayment";
-import { BankPayment } from './../../BankPayment';
-import classnames  from 'classnames';
+import { BankPayment } from "./../../BankPayment";
+import classnames from "classnames";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 
-export default function PaymentStage({path,activeTab,isShippingAddressFilled,setActiveTab = ()=>{}}) {
+export default function PaymentStage({
+  path,
+  activeTab,
+  isShippingAddressFilled,
+  setActiveTab = () => {},
+}) {
   return (
     <div className="col-12">
       <Nav tabs className="custom-tabs w-50 mx-auto">
@@ -33,15 +38,11 @@ export default function PaymentStage({path,activeTab,isShippingAddressFilled,set
       </Nav>
 
       <TabContent activeTab={activeTab}>
-        <TabPane tabId="bank">
-          <BankPayment
-            isShippingAddressFilled={isShippingAddressFilled}
-          />
-        </TabPane>
+          <TabPane tabId="bank">
+            <BankPayment isShippingAddressFilled={isShippingAddressFilled} />
+          </TabPane>
         <TabPane tabId="online">
-          <OnlinePayment
-            isShippingAddressFilled={isShippingAddressFilled}
-          />
+          <OnlinePayment isShippingAddressFilled={isShippingAddressFilled} />
         </TabPane>
       </TabContent>
     </div>

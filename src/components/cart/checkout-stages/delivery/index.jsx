@@ -10,7 +10,9 @@ export default function DeliveryStage({
 }) {
   return (
     <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
-      {activeTab == "bank" ? (
+      {/* This line has been set to true because no difference found between those components */}
+      {/* {activeTab == "bank" ? ( */}
+      {true ? (
         <React.Fragment>
           {cart && cart.requireShippingAddress && (
             <ShippingAddressForm
