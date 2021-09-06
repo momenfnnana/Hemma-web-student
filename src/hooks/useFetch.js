@@ -43,11 +43,10 @@ export const useFetch = (url = "", mainConfig = {isAuthed:true}) => {
       const data = response?.data
       setData(data);
       onSuccess(data);
-    } catch (response) {
-      const errorMsg = response?.data;
-      setError(errorMsg);
+    } catch (err) {
+      setError(err);
       setLoading(false);
-      onError(data);
+      onError(err);
 
       // if (errorMsg)
       //   swal("عفواً", errorMsg, "error", {
