@@ -24,7 +24,7 @@ export default function Description() {
         </div>
         <div className="line-md mt-2">
           <span className="gheed-black-color h4 font-weight-600">
-            عرف ببساطة إنّ كل مخاوفك سببها
+            نعرف ببساطة إنّ كل مخاوفك سببها
           </span>
           <span className="gheed-purple-color mx-2 font-weight-600 h4">
             إنّ كل أحلامك مُعتمدة على اختبار القدرات ✨
@@ -37,7 +37,7 @@ export default function Description() {
           <span className="gheed-purple-color mx-2  h4 font-weight-600">
             ، كل اللي استعدوا معنا حققــوا درجــات خرافيــــة 🌪️
             <br />
-            🤝 حنّا هنا عشانك، ندعمك من أول يـــوم تكون معنا والى يوم اختبارك
+            🤝 حنّا هنا عشانك، ندعمك من أول يـــوم تكون معنا الى يوم اختبارك
           </span>
         </span>
         <h4 className="font-weight-bold mt-3">يلا!</h4>

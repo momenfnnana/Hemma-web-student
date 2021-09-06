@@ -15,8 +15,8 @@ export default function CampaignMarketing() {
 
   useEffect(() => {
       if(!videoRef.current) return
-    !showThumb ? videoRef.current.play() :videoRef.current.pause()  
-  },[showThumb])
+    videoRef.current.play()
+  },[videoRef])
 
   return (
     <div className="camapaign-marketing-wrapper position-absolute">
