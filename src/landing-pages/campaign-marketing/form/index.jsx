@@ -138,7 +138,7 @@ export default function CampaignForm() {
             defaultError={receiversMatchErrors}
             setErrors={setErrors}
             errors={errors}
-            label={`رقم جوال المرسل ${rec.title}`}
+            label={`رقم صديقك ${rec.title}`}
             name={index+''}
             onChange={handleReceverChange}
             classkey={index}
