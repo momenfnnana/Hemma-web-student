@@ -21,6 +21,8 @@ const numbersStringEnum = {
   4: "الخامس",
 };
 
+const sentBeforeString = (str)=>str.includes('Invetation Before')
+
 const recieversLength = 5;
 const defaultValus = {sender:'',receivers:{}}
 export default function CampaignForm() {
@@ -40,6 +42,19 @@ export default function CampaignForm() {
     },100)
   }
 
+  const hasSentBeforeAlert = ()=>{
+    swal("عفواً", "لا يمكن إرسال الدعوة لنفس الشخص أكثر من مرة ", "error", {
+      button: "متابعة"
+    });
+  }
+
+  const onError = (err)=>{
+    const {response:{data:{message}}} = err
+    const hasSentBefore = sentBeforeString(message)
+    if(hasSentBefore)
+    hasSentBeforeAlert()
+  }
+
   const submitInvitation = (e)=>{
       e.preventDefault();
       const {sender} = values
@@ -54,7 +69,7 @@ export default function CampaignForm() {
           swal("تم ارسال الدعوة بنجاح", "", {
             button: "متابعة"
           });
-      })
+      },onError)
   }
 
   const recievers = new Array(minInvention)
@@ -118,7 +133,7 @@ export default function CampaignForm() {
   return (
     <form className="mt-4" onSubmit={submitInvitation}>
       <span className="h3 gheed-black-color font-weight-600">
-        يمكنك دعوة أصدقائك للاشتراك بدورات منصة
+        يمكنك دعوة ٣ من أصدقاءك للاشتراك بدورات منصة همة التعليمية والحصول على مقعد مجاني في حال تم تسجيل اثنين من أصدقاءك في دورات القدرات لمنصة همة التعليمية تحصل على مقعد مجاني لدورة القدرات.
       </span>
       <CampaignField
         label="رقم جوال المرسل"
@@ -144,9 +159,9 @@ export default function CampaignForm() {
             classkey={index}
           />
         ))}
-        <button type="submit"  disabled={submitDisabled || !loading} className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
+        <button type="submit"  className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
           {
-              !loading ? "يتم الارسال" : values?.sent ? "تم الارسال" :"أرسل الدعوة"
+              !loading ? "يتم الارسال" :  "أرسل الدعوة"
           }
         </button>
       </div>
