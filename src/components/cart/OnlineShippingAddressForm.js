@@ -8,6 +8,7 @@ import { Api } from "../../api";
 import { withRouter } from "react-router-dom";
 import { selectField } from "../shared/inputs/selectField";
 import swal from "@sweetalert/with-react";
+import {Formik} from 'formik'
 
 const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
 const phoneValue = value => {
@@ -88,6 +89,8 @@ class OnlineShippingAddressFormComponent extends Component {
     }
 
     return (
+      <Formik>
+
       <form>
         <div className="off-white-bg w-100 border-top-0 border-bottom radius-top-0">
           <div className="p-4">
@@ -96,7 +99,7 @@ class OnlineShippingAddressFormComponent extends Component {
                 src={process.env.PUBLIC_URL + "/assets/images/box.png"}
                 className="contain-img mr-2"
                 height="30"
-              />
+                />
               <h6 className="dark-text small mb-0">بيانات التوصيل</h6>
             </div>
             <div className="form-group">
@@ -109,7 +112,7 @@ class OnlineShippingAddressFormComponent extends Component {
                 validate={required}
                 onChange={(e)=>this.onChangeVal('shippingRecipient',e)}
                 value={this.state.shippingRecipient}
-              />
+                />
             </div>
             <div className="form-group">
               <Field
@@ -122,7 +125,7 @@ class OnlineShippingAddressFormComponent extends Component {
                 type="number"
                 onChange={(e)=>this.onChangeVal('shippingPhone',e)}
                 value={this.state.shippingPhone}
-              />
+                />
             </div>
             <div className="form-group">
               <Field
@@ -132,7 +135,7 @@ class OnlineShippingAddressFormComponent extends Component {
                 name="shippingCityId"
                 onChange={(e)=>this.onChangeVal('shippingCityId',e)}
                 value={this.state.shippingCityId}
-              >
+                >
                 <option value="" selected disabled>
                   اختر المدينة
                 </option>
@@ -149,18 +152,19 @@ class OnlineShippingAddressFormComponent extends Component {
                 validate={required}
                 onChange={(e)=>this.onChangeVal('shippingAddress',e)}
                 value={this.state.shippingAddress}
-              />
+                />
             </div>
             <button
-                className="btn light-outline-btn w-50 ml-1"
+                className="btn light-outline-btn w-100 ml-1"
                 disabled={this.state.isDisabled}
                 onClick={this.confirmationPopup}
-            >
+                >
               تأكيد بيانات التوصيل
             </button>
           </div>
         </div>
       </form>
+              </Formik>
     );
   }
 }
