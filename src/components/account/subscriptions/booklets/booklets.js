@@ -237,7 +237,9 @@ const bookletId = this.props.m
         </>
       ) : null}
       </React.Fragment>
-): null}
+):
+    <p className='mb-1'>بإمكانك اتمام طلب الملزمة من <Link to='/cart'>مختاراتي</Link></p>
+}
                   
                   </div>
                 </div>
