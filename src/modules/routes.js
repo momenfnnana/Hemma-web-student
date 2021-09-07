@@ -58,7 +58,7 @@ import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
 import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
 import HemmaSuccessDetails from "../components/hemma-success";
 import LandingPage from "../components/landing-page";
-
+import CampaignMarketing from './../landing-pages/campaign-marketing/index';
 class AppBackground extends Component {
   componentDidMount()
   {
@@ -229,6 +229,7 @@ class MainRouterComponent extends Component {
               <Route path="/home" component={Home} />
               <Route path="/privacypolicy" component={PrivacyPolicy} />
               <Route path="/market" component={LandingPage} />
+              <Route path="/campaign-marketing" component={CampaignMarketing} />
 
               {/* TODO hide initiative */}
               { <Route

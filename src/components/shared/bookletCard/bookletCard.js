@@ -14,7 +14,6 @@ export class BookletCardComponent extends Component {
     super(props);
   }
   showAlert() {
-    alert("I'm an alert");
   }
   onSubmit(type) {
     const booklet = this.props.booklet;
