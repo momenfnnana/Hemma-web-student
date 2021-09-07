@@ -8,6 +8,7 @@ const headers = {
   Authorization: `Bearer ${token}`,
 };
 
+
 const initConfig = {
   method: "GET",
 };
@@ -18,11 +19,11 @@ const authedInstance = Axios.create({
 
 const baseInstance = Axios.create();
 
-export const useFetch = (url = "", mainConfig = {}) => {
+export const useFetch = (url = "", mainConfig = {isAuthed:true}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const {isAuthed} = mainConfig
+  const {isAuthed = true} = mainConfig;
 
   const fetchData = async (
     reqConf = initConfig,
@@ -32,26 +33,25 @@ export const useFetch = (url = "", mainConfig = {}) => {
     const reqConfig = { ...mainConfig, ...reqConf };
     const AxiosInstance = isAuthed ? authedInstance : baseInstance;
     try {
-
       setLoading(true);
       setError("");
-      const { data: response } = await AxiosInstance({
+      const response = await AxiosInstance({
         url,
         ...initConfig,
         ...reqConfig,
       });
-      setData(response);
-      if (response?.status === SUCCESS_STATUS) onSuccess(response);
-    } catch ({response : {data}}) {
-      const errorMsg = "";
-      setError(errorMsg);
+      const data = response?.data
+      setData(data);
+      onSuccess(data);
+    } catch (err) {
+      setError(err);
       setLoading(false);
-      onError(data);
+      onError(err);
 
-      if (errorMsg)
-        swal("عفواً", errorMsg, "error", {
-          button: "متابعة",
-        });
+      // if (errorMsg)
+      //   swal("عفواً", errorMsg, "error", {
+      //     button: "متابعة",
+      //   });
     }
     setLoading(false);
   };
