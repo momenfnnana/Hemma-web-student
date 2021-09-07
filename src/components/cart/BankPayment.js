@@ -9,6 +9,7 @@ import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { checkoutWithBankTransfer, uploadBankSlip } from "../../actions";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import moment  from 'moment';
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -148,16 +149,11 @@ class BankPaymentComponent extends Component {
         }
       });
   };
-  // cancelCourse = () => { 
-  //   debugger;
-   
-  // }
 
-  onInputChange(e) {
+  onInputChange(e,dateFormat,defaultName) {
     try {
-      
-      const value = e?.target?.value
-      const name = e?.target?.name
+      const value = !dateFormat?   e?.target?.value :  moment(e).format(dateFormat)
+      const name = e?.target?.name || defaultName
       const inputData ={
         [name]: value
       }
@@ -307,7 +303,6 @@ class BankPaymentComponent extends Component {
               className="form-control mt-3"
               validate={required}
               name="originBankName"
-              onChange={this.onInputChange}
             >
               <option value="" selected disabled hidden>
                 البنك المحول منه
@@ -323,7 +318,6 @@ class BankPaymentComponent extends Component {
               className="form-control border-left-0 pl-0"
               placeholder="اسم صاحب الحساب المحول منه"
               validate={required}
-              onChange={this.onInputChange}
             />
             <Field
               name="accountNumber"
@@ -332,14 +326,12 @@ class BankPaymentComponent extends Component {
               className="form-control border-left-0 pl-0 ltr-input"
               placeholder="رقم الحساب المحول منه"
               validate={required}
-              onChange={this.onInputChange}
             />
             <Field
               component={selectField}
               className="form-control"
               validate={required}
               name="destinationBankName"
-              onChange={this.onInputChange}
             >
               <option value="" selected disabled hidden>
                 البنك المحول إليه
@@ -355,7 +347,6 @@ class BankPaymentComponent extends Component {
               className="form-control border-left-0 pl-0 ltr-input"
               placeholder="القيمة المحولة"
               validate={required}
-              onChange={this.onInputChange}
             />
             <label className="dark-text small mb-2">وقت وتاريخ الحوالة</label>
             <div className="d-inline-flex flex-row">
@@ -366,7 +357,6 @@ class BankPaymentComponent extends Component {
                   dateFormat={false}
                   validate={required}
                   timeFormat="hh:mm a"
-                  onChange={this.onInputChange}
                 />
               </div>
               <div>
@@ -376,7 +366,6 @@ class BankPaymentComponent extends Component {
                   timeFormat={false}
                   dateFormat="DD-MM-YYYY"
                   validate={required}
-                  onChange={this.onInputChange}
                 />
               </div>
             </div>
