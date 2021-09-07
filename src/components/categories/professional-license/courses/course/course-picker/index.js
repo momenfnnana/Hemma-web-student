@@ -25,7 +25,7 @@ export default function CourseTabPicker({
   const [disabled, setDisabled] = useState(false);
   const [changeCounter, setChangeCounter] = useState(0);
   const isMobile = window.innerWidth < 768;
-  const overlayPlacement = isMobile ? "top" : "left";
+  const overlayPlacement = isMobile ? "bottom" : "left";
 
   const disableClass = (disabled && "disabled-label") || "";
   const tabClass = [baseClassName, selectedClassName, disableClass].join(" ");
