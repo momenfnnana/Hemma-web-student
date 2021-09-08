@@ -165,24 +165,22 @@ export default function CampaignForm() {
       />
 
       <div className="mt-4 w-100 row m-0">
-        {showForm &&
-          recievers.map((rec, index) => (
-            <CampaignField
-              values={values?.receivers}
-              defaultError={receiversMatchErrors}
-              setErrors={setErrors}
-              errors={errors}
-              label={`رقم صديقك ${rec.title}`}
-              name={index + ""}
-              onChange={handleReceverChange}
-              classkey={index}
-            />
-          ))}
-        <button
-          type="submit"
-          className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3"
-        >
-          {!loading ? "يتم الارسال" : "أرسل الدعوة"}
+        {showForm && recievers.map((rec, index) => (
+          <CampaignField
+            values={values?.receivers}
+            defaultError={receiversMatchErrors}
+            setErrors={setErrors}
+            errors={errors}
+            label={`رقم صديقك ${rec.title}`}
+            name={index+''}
+            onChange={handleReceverChange}
+            classkey={index}
+          />
+        ))}
+        <button disabled={submitDisabled} type="submit"  className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
+          {
+              !loading ? "يتم الارسال" :  "أرسل الدعوة"
+          }
         </button>
       </div>
     </form>
