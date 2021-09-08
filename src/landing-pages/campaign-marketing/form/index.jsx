@@ -159,7 +159,7 @@ export default function CampaignForm() {
             classkey={index}
           />
         ))}
-        <button type="submit"  className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
+        <button disabled={submitDisabled} type="submit"  className="btn gheed-purple-bg p-2 color-white col-md-6 px-1 h-fit  mt-md-auto mt-3">
           {
               !loading ? "يتم الارسال" :  "أرسل الدعوة"
           }
