@@ -26,9 +26,9 @@ export default class PopupHemma  extends Component {
 	render(){
 	return (
 		<>
-			<Modal show={false}
-			       onHide={this.handleTogglePopup}
+			<Modal onHide={this.handleTogglePopup}
 			       centered
+				   show={false}
 			>
 				<div className='container-popup p-4'>
 					<Modal.Header closeButton>
