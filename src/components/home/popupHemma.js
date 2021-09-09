@@ -17,7 +17,7 @@ export default class PopupHemma  extends Component {
 	};
 
 	componentDidMount() {
-	this.handleTogglePopup();
+	// this.handleTogglePopup();
 	}
 	handleChangeGroup = (e) =>{
 		this.setState({path:e.target.value})
