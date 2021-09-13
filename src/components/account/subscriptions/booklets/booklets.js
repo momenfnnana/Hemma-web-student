@@ -193,7 +193,7 @@ const bookletId = this.props.m
                   <h6 className="dark-text mb-0 mt-0"></h6>
 
                   <div>
-                    {this.state.booklet.agency == "Printsa" ? (
+                    {/* {this.state.booklet.agency == "Printsa" ? (
                       <a
                         className="btn blue-border-btn mr-2"
                         href={`https://www.aramex.com/sa/ar/track/track-shipments/track-results?mode=0&ShipmentNumber=${this.state.booklet.trackingId}`}
@@ -207,9 +207,9 @@ const bookletId = this.props.m
                         href={`http://www.smsaexpress.com/Track.aspx?tracknumbers=${this.state.booklet.trackingId}`}
                         target="_blank"
                       >
-                        تتبع
+                        تتبع//
                       </a>
-                    ) : null}
+                    ) : null} */}
 {this.state.showOrderBooklet ?(
    <React.Fragment>
      {this.state.booklet &&

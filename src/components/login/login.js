@@ -211,23 +211,13 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
             >
               <MdLockOutline />
             </Field>
-            {this.state.hidden ? (
               <img
-                src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+                src={process.env.PUBLIC_URL + `/assets/images/${this.state.hidden ? 'closed-' : ''}eye.png`}
                 width="100%"
                 width="20"
-                className="position-absolute left-input-icon"
+                className="position-absolute left-input-icon top-50 z-5"
                 onClick={this.togglePasswordShow}
               />
-            ) : (
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-                width="100%"
-                width="20"
-                className="position-absolute left-input-icon"
-                onClick={this.togglePasswordShow}
-              />
-            )}
           </div>
           <div>
           <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />

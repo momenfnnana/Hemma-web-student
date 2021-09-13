@@ -129,7 +129,6 @@ export class SidebarComponent extends Component {
           <div className="sidebar-list">
             <ul className="list-unstyled mb-0">
               <SideBarItems id={this.props.id} history={this.props.history} />
-             
             </ul>
           </div>
         </div>
