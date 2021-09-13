@@ -43,7 +43,7 @@ class AddQuestion extends Component {
 			.get(`${apiBaseUrl}/Content/${courseId}/Sections`, { headers })
 			.then(response => {
 				this.setState({ sections: response.data.data });
-				if(response.data.data && response.data.data.length==1){
+				if(response.data.data && response.data.data.length>=1){
 					this.setState({sectionId:response.data.data[0].id})
 				}
 			})
