@@ -203,7 +203,7 @@ const bookletId = this.props.m
                         href={`http://www.smsaexpress.com/Track.aspx?tracknumbers=${this.state.booklet.trackingId}`}
                         target="_blank"
                       >
-                        تتبع
+                        تتبع//
                       </a>
                     ) : null} */}
 {this.state.showOrderBooklet ?(
