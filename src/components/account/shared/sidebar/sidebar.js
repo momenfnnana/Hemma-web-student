@@ -134,8 +134,8 @@ export class SidebarComponent extends Component {
                     className="mr-2 contain-img"
                     alt="booklet"
                   />
-                  طلب الملازم مطبوعة
-                </NavLink>
+الملزمة + طلب الملزمة             
+   </NavLink>
               </li>
               <li>
                 <NavLink
