@@ -9,6 +9,7 @@ import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { checkoutWithBankTransfer, uploadBankSlip } from "../../actions";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
+import moment  from 'moment';
 
 const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
 
@@ -45,7 +46,13 @@ class BankPaymentComponent extends Component {
   constructor(props) {
     super(props);
     this.onFileInputChange = this.onFileInputChange.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
   }
+    componentDidUpdate(prevProps, prevState,){
+        // if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
+          // this.setState({disabled:!nextprops.isShippingAddressFilled})
+        // }
+    }
 
   /**
    * Handle selecting a bank slip image
@@ -142,10 +149,21 @@ class BankPaymentComponent extends Component {
         }
       });
   };
-  // cancelCourse = () => { 
-  //   debugger;
-   
-  // }
+
+  onInputChange(e,dateFormat,defaultName) {
+    try {
+      const value = !dateFormat?   e?.target?.value :  moment(e).format(dateFormat)
+      const name = e?.target?.name || defaultName
+      const inputData ={
+        [name]: value
+      }
+      
+      this.setState({...inputData})
+      
+    } catch (error) {
+      
+    }
+  }
   componentDidMount()
   {
     var list = document.getElementsByClassName("form-control");
@@ -354,6 +372,18 @@ class BankPaymentComponent extends Component {
             <h6 className="dark-silver-text smaller mt-2">
               ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
             </h6>
+            <div>
+                <button
+                  className="btn light-outline-btn mt-5 w-100"
+                  disabled={this.state.disabled || !items}
+                >
+                  {this.state.loading === true ? (
+                    <Loader type="ball-clip-rotate" />
+                  ) : (
+                    "إتمام الدفع"
+                  )}
+                </button>
+            </div>
           </div>
 
           <div className="col-md-6 text-center">
@@ -370,7 +400,7 @@ class BankPaymentComponent extends Component {
         </button> */}
         {items && (
           <div className="row mb-5">
-            <div className="col-12 text-center">
+            {/* <div className="col-12 text-center">
               {items === undefined || items === 0 ? (
                 <button
                   className="btn light-outline-btn mt-5 w-25"
@@ -390,7 +420,7 @@ class BankPaymentComponent extends Component {
                   )}
                 </button>
               )}
-            </div>
+            </div> */}
           </div>
         )}
       </form>

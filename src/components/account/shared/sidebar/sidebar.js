@@ -5,6 +5,80 @@ import { getUser } from "../../../../actions/user.actions";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
 import "./styles.sass";
+import "./index.scss";
+import { bookIcon , scheduleIcon,telegramIcon,quizIcon,trainingsIcon,askMentor } from './svg-icons';
+
+const sideBarItems = [
+  {
+    title: "جدول الدورة",
+    icon : scheduleIcon,
+    to: (id)=>`/course/content/${id}/schedule`
+  },
+  {
+    title: "الملزمة",
+    icon : bookIcon,
+    to: (id)=>`/course/content/${id}/booklets`
+
+
+  },
+  {
+    title: "قروب التلجرام",
+    icon : telegramIcon,
+    to: (id)=>`/course/content/${id}/chat`
+
+  },
+  {
+    title: "الاختبارات الاكترونية",
+    icon : quizIcon,
+    to: (id)=>`/course/content/${id}/exams/list`
+
+  },
+  {
+    title: "التدريبات",
+    icon : trainingsIcon,
+    to: (id)=>`/course/content/${id}/training/list`
+
+  },
+  {
+    title: "اسال المدرب",
+    icon : askMentor,
+    to: (id)=>`/course/content/${id}/askQuestions/list`
+
+  },
+];
+
+export const SideBarItem = ({title = "لا يوجد عنوان",icon,link="/",id , to = ()=>{},history}) => (
+  <li class="nav-item w-100">
+    <NavLink
+      to={to(id)}
+      onClick={()=> history.push(to(id))}
+      class="nav-link d-flex align-items-center no-style"
+      activeClassName="nav-link d-flex align-items-center active"
+      data-bs-toggle="tab"
+      data-bs-target=""
+    >
+      {icon}
+      <span>{title}</span>
+    </NavLink>
+  </li>
+);
+
+const SideBarItems = ({id,history})=>(
+  <ul className="list-unstyled p-0 m-0 nav courses-features">
+    {sideBarItems.map(item =>(
+      <SideBarItem {...item} id={id} history={history} />
+    ))}
+  </ul>
+  )
+
+
+  const SideBarHeader = ({ studentName = "اسم الطالب" }) => (
+    <div class="card-header main-color-bg border-bottom pt-4">
+      <h5 class="h5 text-white font-weight-bold text-center my-2">
+        {studentName}
+      </h5>
+    </div>
+  );
 
 export class SidebarComponent extends Component {
   state = {
@@ -50,200 +124,11 @@ export class SidebarComponent extends Component {
     const channelID = this.props.chatChannelSid;
     return (
       <React.Fragment>
-        <div className="sidebar mb-3">
-          <div className="header">
-            <div className="d-inline-flex align-items-center flex-wrap justify-content-center">
-              {this.props.user && this.props.user.gender === "Male" ? (
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/male-avatar.png"
-                  }
-                  height="70"
-                  className="mr-3 contain-img"
-                  alt="male-avatar"
-                />
-              ) : (
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/female-avatar.png"
-                  }
-                  height="70"
-                  className="mr-3 contain-img"
-                  alt="female-avatar"
-                />
-              )}
-
-              <div className="d-flex flex-column align-items-center">
-                <h6 className="dark-text mb-0 mt-2"> {user && user.name}</h6>
-              </div>
-            </div>
-          </div>
+        <div className="sidebar courses-features  card-hover border-radius-30 border-main-color overflow-hidden mb-3">
+         <SideBarHeader studentName={user?.name} />
           <div className="sidebar-list">
             <ul className="list-unstyled mb-0">
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/schedule`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-schedule.png"
-                    }
-                    height="18"
-                    width="18"
-                    className="mr-2 contain-img"
-                    alt="course-schedule"
-                  />
-                  جدول الدورة
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/recorded-lectures`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-recorded.png"
-                    }
-                    height="22"
-                    width="22"
-                    className="mr-2 contain-img"
-                    alt="recorded-lectures"
-                  />
-                  المحاضرات المسجلة
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/booklets`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-booklet.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                    alt="booklet"
-                  />
-الملزمة + طلب الملزمة             
-   </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/discussions`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL +
-                      "/assets/images/course-discussions.png"
-                    }
-                    height="24"
-                    width="24"
-                    className="mr-2 contain-img"
-                  />
-                  المناقشات
-                </NavLink>
-              </li>
-              {channelID && (
-                <li>
-                  <NavLink
-                    to={`/course/content/${this.props.id}/chat`}
-                    activeClassName="active"
-                    className="dark-text small"
-                  >
-                    <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        "/assets/images/course-chat.png"
-                      }
-                      height="20"
-                      width="20"
-                      className="mr-2 contain-img"
-                      alt="chat"
-                    />
-                    قروب التيليجرام
-                  </NavLink>
-                </li>
-              )}
-              <li>
-                <NavLink
-                  to={`/course/content/${this.props.id}/speed-up`}
-                  activeClassName="active"
-                  className="dark-text small"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/flash.png"}
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                    alt="speed-ups"
-                  />
-                  مرفقات الدورة
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/exams/list`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/course-exam.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                    alt="exams"
-                  />
-                  الاختبارات الإلكترونية 
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/training/list`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={process.env.PUBLIC_URL + "/assets/images/training.png"}
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                    alt="training"
-                  />
-                  التدريبات
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  className="dark-text small"
-                  to={`/course/content/${this.props.id}/askQuestions/list`}
-                  activeClassName="active"
-                >
-                  <img
-                    src={
-                      process.env.PUBLIC_URL + "/assets/images/ask-question.png"
-                    }
-                    height="20"
-                    width="20"
-                    className="mr-2 contain-img"
-                    alt="ask-question"
-                  />
-                  اسأل مدرب
-                </NavLink>
-              </li>
+              <SideBarItems id={this.props.id} history={this.props.history} />
             </ul>
           </div>
         </div>

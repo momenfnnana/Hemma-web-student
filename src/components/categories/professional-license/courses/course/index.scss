@@ -1,8 +1,20 @@
+// @import "/src/constants/styles/variables.scss";
+
 .video-tag {
   width: 100%;
   height: 100%;
   object-fit: cover;
   cursor: pointer;
+}
+.pro-license-btn{
+  
+  @media (min-width:768px) {
+    width: 100% !important;
+  }
+}
+
+.next-btn{
+  width: fit-content !important;
 }
 
 .video-title {

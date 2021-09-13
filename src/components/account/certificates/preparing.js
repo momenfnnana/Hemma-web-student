@@ -74,4 +74,4 @@ class PreparingComponent extends Component {
     );
   }
 }
-export const Preparing = withRouter(PreparingComponent);
+export default withRouter(PreparingComponent);

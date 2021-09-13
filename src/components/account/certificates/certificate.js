@@ -185,4 +185,4 @@ class CertificateComponent extends Component {
     );
   }
 }
-export const Certificate = withRouter(CertificateComponent);
+export default withRouter(CertificateComponent);

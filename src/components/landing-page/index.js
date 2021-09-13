@@ -2,10 +2,14 @@ import React, {Component} from "react";
 import axios from "axios";
 
 import './main.css'
+import TextArea from './text-area/index';
 
 export default class LandingPage  extends Component {
 	constructor(props) {
 		super(props);
+		this.errorClass = "border border-danger"
+		this.toPlacholder = ["966xxxxxxxxx"," أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني"]
+		this.fromPlcholder = ["966xxxxxxxxx "," أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"]
 		this.state = {
 			isPlaying:false,
 			pinkBg:true ,
@@ -50,14 +54,15 @@ export default class LandingPage  extends Component {
 		// };
 		const from = this.state.from;
 		const to = this.state.to;
-
+		this.setState({...this.state,loading:true})
 		axios
-			.post
-		(`https://www.gheeed.com/hemaa?from=${from}&to=${to}`,
-			{},{
+			.get
+		(`https://www.gheeed.com/hemaa/index.php?from=${from}&to=${to}`,{
 			headers,
 		}
 		).then((response) => {
+			this.setState({...this.state,loading:false})
+
 			if (response.data.status) {
 				alert(response.data.message || "Message Sent.");
 				this.resetForm()
@@ -66,7 +71,7 @@ export default class LandingPage  extends Component {
 			}
 		})
 			.catch((error) => {
-				this.setState({ disabled: false });
+				this.setState({...this.state,loading:false,disabled: false})
 				console.log(error);
 			});
 	};
@@ -74,18 +79,25 @@ export default class LandingPage  extends Component {
 		this.setState({from:'',to:''})
 	}
 
+	componentDidMount() {
+		setTimeout(
+			() => this.onclick(), 
+			1000
+		  );
+	}
 
+	
 
 	render(){
 		return (
 			<div className='fragment'>
 				<div className="w-100" dir="ltr">
-					<div className="d-flex mt-4 justify-content-between align-items-center">
-						<div className="main-color-dark w-100 text-center ">
+					<div className="d-flex mt-4 flex-column flex-md-row justify-content-between align-items-center">
+						<div className="order-1 main-color-dark w-100 text-center ">
 							<h2 className="font-lg">مع همة الرخصة المهنية ما هي هم</h2>
 							<h4 className="mt-4 dark-font font-weight-600">همة، المنصة الأولى في تمكين المُقبلين على اختبار الرخصة المهنية</h4>
 						</div>
-						<img className="h-auto logo" src='/assets/images/Hemma-logo.png' alt="Logo" />
+						<img className="h-auto logo order-md-1 order-0" src='/assets/images/Hemma-logo.png' alt="Logo" />
 					</div>
 
 					<div className="hidden">a</div>
@@ -93,17 +105,17 @@ export default class LandingPage  extends Component {
 						<div className="col-lg-5">
 							<div className="left-img-wrapper h-100 position-relative">
 								<div className="img-wrapper stretched-absolute">
-									<img
+									{/* <img
 										src="/assets/images/video-thumb.png"
 										id="hemma-img"
 										className="position-relative"
 										alt=''
 										style={{ display: this.state.hemmaImg?'block': "none" }}
 
-									/>
-									<div id="pick-bg"
+									/> */}
+									{/* <div id="pick-bg"
 									     style={{ display: this.state.pinkBg?'block': "none" }}
-									     className="pink-shadow stretched-absolute"/>
+									     className="pink-shadow stretched-absolute"/> */}
 									<img
 										src="/assets/images/video-play-icon.png"
 										className="position-absolute play-icon absolute-center"
@@ -113,7 +125,7 @@ export default class LandingPage  extends Component {
 										style={{ display: this.state.playIcon?'block': "none" }}
 									/>
 									<video id="hemma-video" onPause={this.onPause} controls
-									       style={{ display: this.state.hemmaVideo?'block': "none" }}
+									       style={{ display: 'block' }}
 									       ref="vidRef"
 									>
 										<source src="https://hemma.ams3.cdn.digitaloceanspaces.com/videos/videos/V1-Boy.mp4" />
@@ -134,9 +146,9 @@ export default class LandingPage  extends Component {
 							</h6>
 							<h6 className="mt-3 dark-font font-weight-500 rtl">
 								أرسل الرسالة أدناه لخريج، أو معلم على رأس العمل، ومُقبل على اختبار الرخصة المهنية للانضمام لهِمّة من خلال ٣٠ مقعد مجاني، وبذلك تكون دخلت أنت أيضًا تلقائيًا على السحب
+								مبلغ نقدي ٥٠٠ ريال.
 							</h6>
 							<h6 className='dark-font font-weight-500 rtl'>
-								(مبلغ نقدي ٥٠٠ ريال).
 							</h6>
 						</div>
 					</div>
@@ -149,28 +161,32 @@ export default class LandingPage  extends Component {
 										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل
 										</h5>
-										<textarea
-											cols="40" rows="2"
-											placeholder="أدخل رقم جوالك لتدخل على السحب بقيمة ٥٠٠ ريال"
-											className="field-input"
-											value={this.state.from}
-											onChange={this.onFromChange}
+										<TextArea 
+										cols="40" rows={!this.state.from.length ?  3  : 1}
+										className={"field-input pb-0 position-relative"}
+										value={this.state.from}
+										onChange={this.onFromChange}
+										placholderText={this.fromPlcholder}
+										show={!this.state.from.length}
 										/>
+										{!!(this.state.from.length !== 12 && this.state.from.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="field mt-3 form-group">
 										<h5 className="field-title main-color font-md">
 											رقم جوال المرسل إليه
 										</h5>
-										<textarea
-											cols="40" rows="3"
-											placeholder="أدخل رقم جوال صديق، لتصله الرسالة وبذلك يدخل السحب على مقعد مجاني."
-											className="field-input"
-											value={this.state.to}
-											onChange={this.onToChange}
+										<TextArea 
+										cols="40" rows={!this.state.to.length ?  3  : 1}
+										className={"field-input pb-0"}
+										value={this.state.to}
+										onChange={this.onToChange}
+										placholderText={this.toPlacholder}
+										show={!this.state.to.length}
 										/>
+										{!!(this.state.to.length !== 12 && this.state.to.length) && <span className="text-danger font-sm">يجب ادخال الرقم على الصيغه التاليه 966xxxxxxxxx </span>}
 									</div>
 									<div className="d-flex w-100 justify-content-lg-start">
-										<button className="custom-btn mt-3 w-100" type="submit">أرسل</button>
+										<button disabled={this.state.loading} className="custom-btn mt-3 w-100" type="submit">{this.state.loading ? 'يتم الارسال' : 'أرسل'}</button>
 									</div>
 								</div>
 							</div>

@@ -44,7 +44,7 @@ export default class PopupHemma  extends Component {
 									<select onClick={this.handleChangeGroup}>
 										<option> </option>
 										<option value="/categories/details/%D9%87%D9%85%D8%A9_%D9%84%D9%84%D9%85%D8%B9%D9%84%D9%85%D9%8A%D9%868253/quick-questions/093fb168-df68-480d-8c40-33bb8830c508">اللغة العربية</option>
-										<option value="categories/details/همة_للمعلمين8253/quick-questions/264314fc-d49a-4975-befe-6bc980ce0ee1">الجغرافيا</option>
+										<option value="/categories/details/همة_للمعلمين8253/quick-questions/264314fc-d49a-4975-befe-6bc980ce0ee1">الجغرافيا</option>
 										<option value="/categories/details/همة_للمعلمين8253/quick-questions/290c2885-f2b8-48f5-b037-5e8158c5a489">التربية الاسرية</option>
 										<option value="/categories/details/همة_للمعلمين8253/quick-questions/5afe636b-060e-4d22-b311-36262c599505"> اللغة الانجليزية</option>
 										<option value="/categories/details/همة_للمعلمين8253/quick-questions/6640e26a-69bb-42f4-9902-65a3f6537b2b"> الحاسب الآلي</option>

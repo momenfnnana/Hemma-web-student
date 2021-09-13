@@ -6,7 +6,7 @@ import axios from "axios";
 import { CommentsList } from "./comments/comments-list";
 import { HeaderComponent } from "../../account/shared/quick-questions/header";
 
-export class QuestionSummary extends Component {
+export default class QuestionSummary extends Component {
   state = {
     details: []
   };

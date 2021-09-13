@@ -6,6 +6,7 @@ import swal from "@sweetalert/with-react";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import { withRouter, Link } from "react-router-dom";
+import "./index.scss"
 
 class SubscriptionsListComponent extends Component {
   page = 1;
@@ -67,8 +68,9 @@ class SubscriptionsListComponent extends Component {
     const subscriptions = this.state.subscriptions || [];
     return subscriptions.map(subscription => (
       <React.Fragment>
-        <div className="col-lg-4 card-container m-0">
+        <div className="col-lg-4 card-container mb-3">
           <div
+          className="h-100 card shadow-sm card-sm border-0"
             key={subscription.id}
             onClick={() => {
               subscription.cumulativePaymentStatus == "Unpaid" ||
@@ -111,25 +113,25 @@ class SubscriptionsListComponent extends Component {
                   );
             }}
           >
-            <div className="card card-sm md-height shadow-sm border-0 clickable">
+            <div className="  md-height border-0 clickable h-100 d-flex flex-column">
               <header className="card-thumb">
-                <img src={subscription.course.bannerUrl} alt="Course image" />
+                <img src={subscription.course.bannerUrl} alt="Course image" className="w-100 h-180 object-fit-contain" />
               </header>
-              <div className="card-body d-flex flex-column justify-content-center">
-                <h6 className="h6 font-weight-bold main-color">
+              <div className="d-flex flex-column justify-content-center px-2">
+                <h6 className="h6 font-weight-bold main-color mt-3">
                   {subscription.course.nameAr}
                 </h6>
 
                 {subscription.subscriptionStatus == "Replaced" ?(
-                  <p className="font-weight-bold text-muted">مستبدله</p>
+                  <p className="mb-2 mt-auto font-weight-bold text-muted">مستبدله</p>
                 ):subscription.cumulativePaymentStatus == "Withdrawn" ? (
-                  <p className="font-weight-bold text-muted">منسحب</p>
+                  <p className="mb-2 mt-auto font-weight-bold text-muted">منسحب</p>
                 ):subscription.cumulativePaymentStatus == "Unpaid" ? (
-                  <p className="font-weight-bold text-muted">غير مسدد</p>
+                  <p className="mb-2 mt-auto font-weight-bold text-muted">غير مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "PartiallyPaid" ? (
-                  <p className="font-weight-bold text-muted">مسدد جزئياً</p>
+                  <p className="mb-2 mt-auto font-weight-bold text-muted">مسدد جزئياً</p>
                 ) : subscription.cumulativePaymentStatus == "FullyPaid" || subscription.cumulativePaymentStatus == "FullyUsedForReplacement" ? (
-                  <p className="font-weight-bold text-muted">مسدد</p>
+                  <p className="mb-2 mt-auto font-weight-bold text-muted">مسدد</p>
                 ) : subscription.cumulativePaymentStatus == "Pending" ? (
                   <React.Fragment>
                     <p
@@ -194,7 +196,7 @@ class SubscriptionsListComponent extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className="row">{this.renderCourses()}</div>
+               {this.renderCourses()}
               </React.Fragment>
             )}
           </div>

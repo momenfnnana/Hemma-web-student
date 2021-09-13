@@ -12,18 +12,22 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
 import { BankPayment } from "./BankPayment";
 import { OnlinePayment } from "./OnlinePayment";
+import Stepper from './../../shared-components/stepper/index';
+import DeliveryStage from './checkout-stages/delivery/index';
+import PaymentStage from './checkout-stages/payment-stage/index';
 
 class CheckoutComponent extends Component {
   state = {
     busy: true,
-    activeTab: "bank"
+    activeTab: "bank",
+    isShippingAddressFilled:false,
+    currentStepIndex : 0
   };
 
   constructor(props) {
     super(props);
-    
     this.setActiveTab = this.setActiveTab.bind(this);
-   
+    this.nextStep = this.nextStep.bind(this);
   }
 
   /**
@@ -63,6 +67,15 @@ class CheckoutComponent extends Component {
       });
   }
 
+  nextStep(){
+    const {currentStepIndex:prevStepIndex} = this.state
+    this.setState({currentStepIndex:prevStepIndex + 1})
+  }
+
+  onFillShippingAddress =()=>{
+    this.setState({isShippingAddressFilled:true})
+    this.nextStep()
+  };
   render() {
     const cart = this.props.cart;
     const path = this.props.location.pathname;
@@ -71,27 +84,40 @@ class CheckoutComponent extends Component {
       <Fragment>
         <section className="cart-section">
           <div className="container">
-            <div className="row pt-5">
-              <div className="col-12">
-                <h3 className="dark-text">تأكيد الإشتراك</h3>
+                <h3 className="dark-text mb-0 mt-4">تأكيد الإشتراك</h3>
+            <div className="row">
+              <div className="col-md-4 mt-5">
+                  <MiniCartItemsList />
+              </div>
+              <div className="col-md-8 mt-5">
+            <Stepper currentStepIndex={this.state.currentStepIndex}>
+              {cart && cart.requireShippingAddress  &&  (
+                <Stepper.Step>
+                  <DeliveryStage cart={cart} onFillShippingAddress={this.onFillShippingAddress} activeTab={this.state.activeTab} />
+                </Stepper.Step>
+              )}
+              <Stepper.Step>
+                <PaymentStage path={path} activeTab={this.state.activeTab} setActiveTab={this.setActiveTab} isShippingAddressFilled={this.state.isShippingAddressFilled} />
+              </Stepper.Step>
+              </Stepper>
               </div>
             </div>
 
+
             <div className="row mt-4">
               <div className="col-md-4">
-                <MiniCartItemsList />
 
-                <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
+                {/* <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
                   {this.state.activeTab == "bank" ? (
                     <React.Fragment>
                       {cart && cart.requireShippingAddress && (
-                        <ShippingAddressForm />
+                        <ShippingAddressForm onFillShippingAddress={this.onFillShippingAddress} />
                       )}
                     </React.Fragment>
                   ) : (
                     <React.Fragment>
                       {cart && cart.requireShippingAddress && (
-                        <OnlineShippingAddressForm />
+                        <OnlineShippingAddressForm onFillShippingAddress={this.onFillShippingAddress} />
                       )}
                     </React.Fragment>
                   )}
@@ -108,12 +134,12 @@ class CheckoutComponent extends Component {
                       </h4>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div className="col-md-8 mt-3">
                 <div className="row">
-                  <div className="col-12">
+                  {/* <div className="col-12">
                     <Nav tabs className="custom-tabs w-50 mx-auto">
                       { path !== '/cart/anonymouscheckout' && 
                        <NavItem>
@@ -140,13 +166,13 @@ class CheckoutComponent extends Component {
 
                     <TabContent activeTab={this.state.activeTab}>
                       <TabPane tabId="bank">
-                        <BankPayment />
+                        <BankPayment  isShippingAddressFilled={this.state.isShippingAddressFilled}/>
                       </TabPane>
                       <TabPane tabId="online">
-                        <OnlinePayment />
+                        <OnlinePayment isShippingAddressFilled={this.state.isShippingAddressFilled} />
                       </TabPane>
                     </TabContent>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -182,7 +208,7 @@ const actionCreators = {
   getCart
 };
 
-export const Checkout = connect(
+export default connect(
   mapStateToProps,
   actionCreators
 )(CheckoutComponent);
