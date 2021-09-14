@@ -15,7 +15,7 @@ const sideBarItems = [
     to: (id)=>`/course/content/${id}/schedule`
   },
   {
-    title: "الملزمة",
+    title: "الملزمة + طلب الملزمة",
     icon : bookIcon,
     to: (id)=>`/course/content/${id}/booklets`
 
