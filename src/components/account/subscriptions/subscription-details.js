@@ -32,6 +32,10 @@ import { TrainingExamDetails } from "./training/training-details";
 
 import firebase from "../../../firebase";
 import ScheduleDetails from './scheduleDetails/index';
+import { ClassicSchedule } from "./schedule/schedule-classic";
+import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
+import {MergedSidebar} from '../shared/sidebar/merged-sidebar'
+import DesignSwitch from "./schedule/design-switch";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -150,14 +154,10 @@ class SubscriptionDetailsComponent extends Component {
               <div className="container mt-5 pb-5">
                 <div className="row">
                   <div className="col-md-3 col-12">
-                    {subscription && subscription.chatChannelSid && (
-                      <Sidebar
-                        id={courseId}
-                        chatChannelSid={
-                          subscription && subscription.chatChannelSid
-                        }
-                      />
-                    )}
+                    <MergedSidebar
+                      subscription={subscription}
+                      courseId={courseId}
+                    />
                     {ratingStatus === "Skipped" && (
                       <button
                         className="btn light-btn w-100 mb-3"
@@ -182,26 +182,29 @@ class SubscriptionDetailsComponent extends Component {
                     <Instructors id={courseId} />
                   </div>
                   <div className="col-md-9 col-12">
-                    <div className="row no-gutters">
-                      <div className="col-12">
-                        {subscription && subscription.chatChannelSid && (
-                          <>
-                            <p className="mb-3">{subscription.nameAr}</p>
-                            <Lecture
-                              id={courseId}
-                              chatChannelSid={subscription.chatChannelSid}
-                            />
-                          </>
-                        )}
-                      </div>
-                    </div>
-
+                    <Route path="/course/content/:id/:type">
+                      <DesignSwitch />
+                    </Route>
+                    <Route
+                      path="/course/content/:id/classic-schedule"
+                      exact
+                      render={(props) => (
+                        <>
+                          <ClassicSchedule
+                            courseName={subscription && subscription.nameAr}
+                            {...props}
+                          />
+                        </>
+                      )}
+                    />
                     <Route
                       path="/course/content/:id/schedule"
                       exact
                       render={(props) => (
                         <>
                           <Schedule
+                            subscription={subscription}
+                            courseId={courseId}
                             courseName={subscription && subscription.nameAr}
                             {...props}
                           />
