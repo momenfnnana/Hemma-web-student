@@ -6,24 +6,25 @@ import {
   Accordion,
   AccordionItem,
   AccordionItemTitle,
-  AccordionItemBody,
+  AccordionItemBody
 } from "react-accessible-accordion";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import { Link } from "react-router-dom";
 import Loader from "react-loaders";
-import "loaders.css/src/animations/ball-spin-fade-loader.scss";
-import ScheduleHeader from "./schedual-header/index";
-import {ScheduleSection} from "./section";
-import { Lecture } from "../../shared/lecture/lecture";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss"; 
+import "./index.scss";
+
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class Schedule extends Component {
+export class ClassicSchedule extends Component {
   constructor(props) {
     super(props);
-    this.state = { details: [], isPageLoading: false };
+    this.state = { details: [],
+      isPageLoading: false
+     };
   }
 
   componentDidMount() {
@@ -32,14 +33,14 @@ export class Schedule extends Component {
 
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
     axios
       .get(`${apiBaseUrl}/content/${courseId}/content`, { headers })
-      .then((response) => {
+      .then(response => {
         this.setState({ details: response.data.data, isPageLoading: false });
       })
-      .catch((error) => {
+      .catch(error => {
         this.setState({ isPageLoading: false });
         console.log(error);
       });
@@ -66,7 +67,7 @@ export class Schedule extends Component {
     const sections = this.state.details.sections;
 
     if (sections) {
-      return sections.map((section) => (
+      return sections.map(section => (
         <div className="row mt-3" key={section.id}>
           <div className="col-12">
             <div className="card section-card" key={section.id}>
@@ -84,11 +85,11 @@ export class Schedule extends Component {
   renderChapters(chapters) {
     const sortedChapters = chapters.sort((a, b) =>
       a.order > b.order ? 1 : -1
-    );
+    ).filter(chapter => chapter.lectures.length);
     if (sortedChapters) {
-      return sortedChapters.map((chapter) => (
+      return sortedChapters.map(chapter => (
         <Accordion key={chapter.id}>
-          <AccordionItem expanded={true}>
+          <AccordionItem>
             <AccordionItemTitle>
               <h6 className="dark-text mb-0 small dark-text">
                 {chapter.nameAr}
@@ -107,7 +108,7 @@ export class Schedule extends Component {
 
   renderMessages() {
     const messages = this.state.messages;
-    return messages.map((message) => {
+    return messages.map(message => {
       const user = this.getUser(message.author);
       return (
         <React.Fragment>
@@ -138,7 +139,7 @@ export class Schedule extends Component {
     );
 
     if (sortedLectures) {
-      return sortedLectures.map((lecture) => {
+      return sortedLectures.map(lecture => {
         return (
           <React.Fragment key={lecture.id}>
             {lecture.status == "Recorded" ? (
@@ -233,35 +234,19 @@ export class Schedule extends Component {
     //     }
     //   ]
     // };
-    const {subscription,courseId} = this.props
-
     return (
       <>
+      {this.state.isPageLoading ? (
+        <div
+        className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+        style={{ minHeight: 350 }}
+      >
+        <Loader type="ball-spin-fade-loader" className="dark-loader" />
+      </div>
+      ) : (
+      <React.Fragment>
         <div className="row no-gutters">
-          <div className="col-12">
-            {subscription && subscription.chatChannelSid && (
-              <>
-                <p className="mb-3 mt-3 mt-md-0">{subscription.nameAr}</p>
-                <Lecture
-                  subscription={subscription}
-                  id={courseId}
-                  chatChannelSid={subscription.chatChannelSid}
-                />
-              </>
-            )}
-          </div>
-        </div>
-        {this.state.isPageLoading ? (
-          <div
-            className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
-            style={{ minHeight: 350 }}
-          >
-            <Loader type="ball-spin-fade-loader" className="dark-loader" />
-          </div>
-        ) : (
-          <React.Fragment>
-            <div className="row no-gutters">
-              {/* <div className="col-12 mb-4">
+          {/* <div className="col-12 mb-4">
             <div className="d-flex justify-content-between">
               <h6 className="dark-text small mb-0 mt-0">
                 آخر التحديات المضافة
@@ -274,46 +259,33 @@ export class Schedule extends Component {
           <div className="col-12 mb-4">
             <Slider {...settings}>{this.renderChallenges()}</Slider>
           </div> */}
-              <div className="col-12">
-                {/* <h6 className="dark-text small mb-0 mt-0">
+          <div className="col-12 mt-3 mt-md-0">
+            <h6 className="dark-text small mb-0 mt-0">
               {this.props.courseName}
-            </h6> */}
+            </h6>
+          </div>
 
-                {this.state.details?.sections?.map((section) => (
-                  <ScheduleSection
-                    section={section}
-                    title={this.props.courseName}
-                    courses={this.props.courseName}
-                    {...this.props}
-                  />
-                ))}
+          {this.state.details.sections == undefined ||
+          this.state.details.sections == 0 ? (
+            <div className="col-12">
+              <div
+                className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                style={{ height: 250 }}
+              >
+                <img
+                  src={process.env.PUBLIC_URL + "/assets/images/event.png"}
+                  className="mb-3"
+                  height="60"
+                />{" "}
+                <p className="silver-text">سيتم عرض جدول الدورة فور توفره </p>
               </div>
-              {/* 
-              {this.state.details.sections == undefined ||
-              this.state.details.sections == 0 ? (
-                <div className="col-12">
-                  <div
-                    className="silver-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
-                    style={{ height: 250 }}
-                  >
-                    <img
-                      src={process.env.PUBLIC_URL + "/assets/images/event.png"}
-                      className="mb-3"
-                      height="60"
-                    />{" "}
-                    <p className="silver-text">
-                      سيتم عرض جدول الدورة فور توفره{" "}
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <>
-                <div className="col-12">{this.renderSections()}</div>
-                </>
-              )} */}
             </div>
-          </React.Fragment>
-        )}
+          ) : (
+            <div className="col-12">{this.renderSections()}</div>
+          )}
+        </div>
+      </React.Fragment>
+      )}
       </>
     );
   }

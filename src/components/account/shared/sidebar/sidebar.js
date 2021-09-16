@@ -93,7 +93,7 @@ export class SidebarComponent extends Component {
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    const courseId = this.props.match.params.id;
+    const courseId = this.props.courseId;
     axios
       .get(`${apiBaseUrl}/content/${courseId}/remaining_payment_details`, {
         headers,
