@@ -109,7 +109,7 @@ class SubscriptionsListComponent extends Component {
                     }
                   )
                 : this.props.history.push(
-                    `/course/content/${subscription.course.id}`
+                    `/course/content/${subscription.course.id}/classic-schedule`
                   );
             }}
           >
