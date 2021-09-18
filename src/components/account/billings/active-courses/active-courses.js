@@ -66,9 +66,9 @@ class ActiveCoursesComponent extends Component {
     const courses = this.state.courses || [];
     return courses.map(course => (
       <React.Fragment>
-        <div className="col-md-3 col-12">
+        <div className="col-md-3 col-12 mt-4">
           <Link to={`/billing/${course.course.id}`}>
-            <div className="card card-sm md-height shadow-sm border-0 clickable">
+            <div className="card card-sm md-height shadow-sm border-0 clickable mb-0 h-100">
               <header className="card-thumb">
                 <img src={course.course.bannerUrl} alt="Course image" />
               </header>

@@ -734,9 +734,9 @@ export class _CategoryDetails extends Component {
 
 	renderSuccess() {
 		return this.state.successes.map((successCase) => (
-			<React.Fragment>
-				<div class="col-lg-4">
-					<div class="status-card sider-items min-height-150">
+			<div class="" >
+				<div class="w-100 h-100">
+					<div class="status-card sider-items min-height-150 h-100">
 						<div class="quote-icon">
 							<i class="fas fa-quote-left"></i>
 						</div>
@@ -746,7 +746,7 @@ export class _CategoryDetails extends Component {
 						<div class="card">{contentReducer(successCase)}</div>
 					</div>
 				</div>
-			</React.Fragment>
+			</div>
 		));
 	}
 
@@ -890,9 +890,8 @@ export class _CategoryDetails extends Component {
 								
 									<div
 									>
-										<div className="container">
+										<div className="container d-grid" style={{gridTemplateColumns:"1fr 1fr 1fr",gridGap:'1.5rem'}}>
 											<ShowAt at={this.state.currentTab === "tab-four"}>
-												<div className="row">
 													{this.renderSuccess()}
 													{this.state.hideBtnSuccess && (
 														<div className="row col-md-12">
@@ -911,7 +910,6 @@ export class _CategoryDetails extends Component {
 															</div>
 														</div>
 													)}
-												</div>
 											</ShowAt>
 										</div>
 									</div>
@@ -946,7 +944,7 @@ const contentReducer = (successCase) => {
 				<a href={successCase?.url}>
 					<img
 						src={successCase?.img}
-						className="w-100 height-70"
+						className="w-100 mh-200"
 						style={{height: "170px !important"}}
 					/>
 				</a>
