@@ -28,7 +28,7 @@ class ScrollToTop extends Component {
 
   render() {
     return (
-      <div style={{ paddingTop: `${this.state.headerElem?.offsetHeight || 0}px` }}>
+      <div style={{ paddingTop: `70px` }}>
         {this.props.children}
       </div>
     );
