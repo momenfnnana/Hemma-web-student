@@ -744,7 +744,7 @@ export class CourseDetails extends Component {
                     ) : (
                       this.renderSections()
                     )}
-                    {this.state.details.price ? (
+                    {/* {this.state.details.price ? (
                       <div className="row mt-5">
                         <div className="col-12">
                           <h4 className="mid-text mb-2">الشروط والأحكام</h4>
@@ -769,7 +769,7 @@ export class CourseDetails extends Component {
                           </p>
                         </div>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                 </div>
               </div>
