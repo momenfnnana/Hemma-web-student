@@ -13,6 +13,7 @@ import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
+
 import RecordingVideo from "./recording-video";
 import "./styles.sass";
 import { PageLoader } from "./page-loader";
@@ -161,6 +162,29 @@ export default class CourseDetails extends Component {
               }
             );
             break;
+            case "UserNotConfirmed":
+              swal(
+                "عفواً",
+                "برجاء تأكيد رقم الهاتف الخاص بك ",
+                "error",
+                {
+                  button: "متابعة",
+                }
+              ).then((response) => {
+                Api.user.getUser().then((res) => {
+                  console.log(res);
+                  let data = {
+                    countryCode:res.countryCode,
+                    phoneNumber: res.phoneNumber
+                  };
+                  this.props.history.push({
+                    pathname: "/verify/identity",
+                    userInfo: data
+                  });
+                })
+               
+      });
+              break;
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة",
