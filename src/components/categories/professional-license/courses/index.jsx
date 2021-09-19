@@ -11,6 +11,7 @@ import { useLoaded } from "../../../../hooks/useLoaded";
 import { getErrorMsg } from "../../../../utils/error-handling";
 import { getAuthHeader, getToken } from "../../../../utils/auth";
 import { checkCoursesUrl } from "../../../../urls/professional-license";
+import errors from '../../../../../src/errors.json'
 
 const specUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/SpecialCourse`;
 const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse`;
@@ -196,15 +197,32 @@ export default withRouter(function ProfessionalCourses({
     });
   };
 
-  const notifyError = (msg) => {
-    swal("عفواً", getErrorMsg(msg), "error", {
+  const moveToCourse = (id)=>{
+    if(!id) return
+    const url =`/course/content/${id}/schedule`
+    push(url)
+  }
+
+  const handleErros = (error)=>{
+    const actions  = {
+      ItemAlreadyAdded : moveToCart,
+      UserHasActiveSubscription : moveToCourse
+    }
+    const action =actions?.[error]
+    return action
+  }
+
+  const notifyError = (msg,{courseId}) => {
+    swal(errors?.[msg] || '','', "error", {
       button: "متابعة",
-    });
+    }).then(result =>{
+      const action = handleErros(msg)
+      action(courseId)
+    })
   };
 
-  const handleAddError = (response) => {
-    const { error } = response;
-    notifyError(error);
+  const handleAddError = ({response:{data:{error}}},id) => {
+    notifyError(error,{courseId:id});
   };
 
   const checkAlreadyJoined = (id, cb) => {
@@ -215,8 +233,8 @@ export default withRouter(function ProfessionalCourses({
             courseId: id,
           },
         },
-        cb,
-        handleAddError
+        cb,(res)=>
+        handleAddError(res,id)
       );
     } else {
       cb();
@@ -298,6 +316,7 @@ export default withRouter(function ProfessionalCourses({
         response: { data },
       } = error;
       const errorMsg = data?.message || data?.error;
+      console.log({errorMsg});
       swal("عفواً", getErrorMsg(errorMsg), "error", {
         button: "متابعة",
       });
