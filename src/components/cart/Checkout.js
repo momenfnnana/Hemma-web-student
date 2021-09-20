@@ -72,8 +72,8 @@ class CheckoutComponent extends Component {
     this.setState({currentStepIndex:prevStepIndex + 1})
   }
 
-  onFillShippingAddress =()=>{
-    this.setState({isShippingAddressFilled:true})
+  onFillShippingAddress =(values)=>{
+    this.setState({isShippingAddressFilled:true,deliveryData:values})
     this.nextStep()
   };
   render() {
@@ -97,7 +97,7 @@ class CheckoutComponent extends Component {
                 </Stepper.Step>
               )}
               <Stepper.Step>
-                <PaymentStage path={path} activeTab={this.state.activeTab} setActiveTab={this.setActiveTab} isShippingAddressFilled={this.state.isShippingAddressFilled} />
+                <PaymentStage deliveryData={this.state.deliveryData} path={path} activeTab={this.state.activeTab} setActiveTab={this.setActiveTab} isShippingAddressFilled={this.state.isShippingAddressFilled} />
               </Stepper.Step>
               </Stepper>
               </div>

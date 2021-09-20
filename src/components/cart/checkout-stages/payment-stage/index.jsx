@@ -9,6 +9,7 @@ export default function PaymentStage({
   activeTab,
   isShippingAddressFilled,
   setActiveTab = () => {},
+  deliveryData,
 }) {
   return (
     <div className="col-12">
@@ -39,10 +40,10 @@ export default function PaymentStage({
 
       <TabContent activeTab={activeTab}>
           <TabPane tabId="bank">
-            <BankPayment isShippingAddressFilled={isShippingAddressFilled} />
+            <BankPayment deliveryData={deliveryData} isShippingAddressFilled={isShippingAddressFilled} />
           </TabPane>
         <TabPane tabId="online">
-          <OnlinePayment isShippingAddressFilled={isShippingAddressFilled} />
+          <OnlinePayment deliveryData={deliveryData} isShippingAddressFilled={isShippingAddressFilled} />
         </TabPane>
       </TabContent>
     </div>
