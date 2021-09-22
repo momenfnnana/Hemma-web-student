@@ -110,4 +110,4 @@ class CertificatesListComponent extends Component {
     );
   }
 }
-export const CertificatesList = withRouter(CertificatesListComponent);
+export default withRouter(CertificatesListComponent);

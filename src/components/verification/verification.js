@@ -214,4 +214,4 @@ VerificationComponent = reduxForm({
 
 VerificationComponent = connect(mapStateToProps)(VerificationComponent);
 
-export const Verification = withRouter(VerificationComponent);
+export default withRouter(VerificationComponent);
