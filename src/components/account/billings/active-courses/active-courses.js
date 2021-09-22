@@ -68,9 +68,9 @@ class ActiveCoursesComponent extends Component {
       <React.Fragment>
         <div className="col-md-3 col-12 mt-3">
           <Link to={`/billing/${course.course.id}`}>
-            <div className="card card-sm md-height shadow-sm border-0 clickable">
+            <div className="card card-sm md-height shadow-sm border-0 clickable mb-0 h-100">
               <header className="card-thumb">
-                <img className="w-100 h-150" src={course.course.bannerUrl} alt="Course image" />
+                <img className="w-100 mh-150" src={course.course.bannerUrl} alt="Course image" />
               </header>
               <div className="card-body d-flex flex-column justify-content-center">
                 <h6 className="card-title small mb-0 p-0 dark-text">
@@ -139,7 +139,7 @@ class ActiveCoursesComponent extends Component {
                     <img
                       src={process.env.PUBLIC_URL + "/assets/images/course.png"}
                       className="mb-1"
-                      height="80"
+                      height="w-100 h-auto"
                     />
                     <h5 className="dark-text mt-0">لا يوجد دورات</h5>
                   </div>

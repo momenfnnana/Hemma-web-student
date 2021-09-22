@@ -1002,22 +1002,22 @@ const Rating = ({ successCase }) => {
 };
 
 const contentReducer = (successCase) => {
-  switch (successCase?.source) {
-    case "Media":
-      return (
-        <a href={successCase?.url}>
-          <img
-            src={successCase?.img}
-            className="w-100 height-70"
-            style={{ height: "170px !important" }}
-          />
-        </a>
-      );
-    case "Rating":
-      return <Rating successCase={successCase} />;
-    default:
-      break;
-  }
+	switch (successCase?.source) {
+		case "Media":
+			return (
+				<a href={successCase?.url}>
+					<img
+						src={successCase?.img}
+						className="w-100 mh-200"
+						style={{height: "170px !important"}}
+					/>
+				</a>
+			);
+		case "Rating":
+			return <Rating successCase={successCase}/>;
+		default:
+			break;
+	}
 };
 
 const CategoryDetails = withRouter((props) => {
