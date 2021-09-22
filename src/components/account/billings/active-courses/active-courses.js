@@ -5,7 +5,7 @@ import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import { withRouter, Link } from "react-router-dom";
-
+import "./index.scss";
 class ActiveCoursesComponent extends Component {
   page = 1;
   limit = 50;
@@ -66,11 +66,11 @@ class ActiveCoursesComponent extends Component {
     const courses = this.state.courses || [];
     return courses.map(course => (
       <React.Fragment>
-        <div className="col-md-3 col-12">
+        <div className="col-md-3 col-12 mt-3">
           <Link to={`/billing/${course.course.id}`}>
             <div className="card card-sm md-height shadow-sm border-0 clickable">
               <header className="card-thumb">
-                <img src={course.course.bannerUrl} alt="Course image" />
+                <img className="w-100 h-150" src={course.course.bannerUrl} alt="Course image" />
               </header>
               <div className="card-body d-flex flex-column justify-content-center">
                 <h6 className="card-title small mb-0 p-0 dark-text">
