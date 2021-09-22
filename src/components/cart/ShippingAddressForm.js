@@ -98,7 +98,7 @@ class ShippingAddressFormComponent extends Component {
     }).then((value) => {
       switch (value) {
         case "ok":
-          this.props.onFillShippingAddress();
+          this.props.onFillShippingAddress(this.state.values);
         default:
           break;
       }

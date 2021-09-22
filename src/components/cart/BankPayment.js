@@ -47,6 +47,8 @@ class BankPaymentComponent extends Component {
     super(props);
     this.onFileInputChange = this.onFileInputChange.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
+    const {deliveryData} = props
+    this.deliveryData = deliveryData
   }
     componentDidUpdate(prevProps, prevState,){
         // if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
@@ -87,10 +89,10 @@ class BankPaymentComponent extends Component {
     );
     const itemDetails = itemsThatRequireShippingAddress.map(obj => ({
       id: obj.id,
-      shippingRecipient: values.shippingRecipient,
-      shippingCityId: values.shippingCityId,
-      shippingAddress: values.shippingAddress,
-      shippingPhone: values.shippingPhone
+      shippingRecipient: this.deliveryData.shippingRecipient,
+      shippingCityId: this.deliveryData.shippingCityId,
+      shippingAddress: this.deliveryData.shippingAddress,
+      shippingPhone: this.deliveryData.shippingPhone
     }));
     const data = {
       url: this.state.bankSlip,
@@ -104,6 +106,7 @@ class BankPaymentComponent extends Component {
         : new Date(Date.UTC()),
       checkoutItemDetails: itemDetails
     };
+    debugger
     this.setState({ loading: true, disabled: true });
     this.props
       .checkoutWithBankTransfer(data)

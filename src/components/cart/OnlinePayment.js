@@ -25,6 +25,8 @@ export class OnlinePaymentComponent extends Component {
       BankAccount: [],
       errors : {}
     };
+    const {deliveryData} = props
+    this.deliveryData = deliveryData
 
     this.onCreditCardChange = this.onCreditCardChange.bind(this);
     this.onCreditCardTypeChanged = this.onCreditCardTypeChanged.bind(this);
@@ -129,10 +131,10 @@ export class OnlinePaymentComponent extends Component {
     );
     const itemDetails = itemsThatRequireShippingAddress.map((obj) => ({
       id: obj.id,
-      shippingRecipient: values.shippingRecipient,
-      shippingCityId: values.shippingCityId,
-      shippingAddress: values.shippingAddress,
-      shippingPhone: values.shippingPhone,
+      shippingRecipient: this.deliveryData.shippingRecipient,
+      shippingCityId: this.deliveryData.shippingCityId,
+      shippingAddress: this.deliveryData.shippingAddress,
+      shippingPhone: this.deliveryData.shippingPhone,
     }));
     const data = {
       callbackUrl: `${window.location.origin}/transactions/{transactionId}`,
