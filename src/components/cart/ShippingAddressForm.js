@@ -307,6 +307,6 @@ function mapStateToProps(state) {
 export const ShippingAddressForm = connect(mapStateToProps)(
   reduxForm({
     form: "cart",
-    destroyOnUnmount: false,
+    destroyOnUnmount: true,
   })(withRouter(ShippingAddressFormComponent))
 );
