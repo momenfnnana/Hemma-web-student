@@ -328,7 +328,5 @@ function mapStateToProps(state) {
 TrainingResultComponent = reduxForm({
   form: "TrainingResult",
 })(TrainingResultComponent);
-
-TrainingResultComponent = connect(mapStateToProps)(TrainingResultComponent);
-
-export const TrainingResult = withRouter(TrainingResultComponent);
+export default connect(mapStateToProps)(TrainingResultComponent);
+// export const TrainingResult = withRouter(TrainingResultComponent);

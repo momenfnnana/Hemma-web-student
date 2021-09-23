@@ -33,6 +33,7 @@ class ExamDetailsComponent extends Component {
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   onCountdownEnd = () => {
@@ -121,6 +122,26 @@ class ExamDetailsComponent extends Component {
   closeConfirmExamModal = () => {
     this.setState({ isConfirmExamOpen: false });
   };
+
+  deleteAttempt(attemptId,cb=()=>{}){
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    axios
+      .delete(`${apiBaseUrl}/Exams/${attemptId}`, { headers })
+      .then(()=>{
+        cb()
+      })
+  }
+
+  async handleCancel(){
+    const {id : examId, attemptId} = this.props.match.params
+    const {history:{push}} =  this.props
+    this.deleteAttempt(attemptId,()=>{
+      push(`/course/content/${examId}/exams/list`)
+    })
+  }
 
   openHintModal = (id) => {
     this.setState({ isHintOpen: true, selectedQuestionId: id });
@@ -519,13 +540,13 @@ class ExamDetailsComponent extends Component {
 
                 <button
                   className="btn light-outline-btn w-75"
-                  onClick={this.submitAnswers}
+                  onClick={this.closeConfirmExamModal}
                 >
-                  اعتمد الاجابة
+                  استكمال الاختبار              
                 </button>
                 <h6
                   className="dark-silver-text small mt-3 mb-0 clickable"
-                  onClick={this.closeConfirmExamModal}
+                  onClick={this.handleCancel}
                 >
                   إلغاء
                 </h6>

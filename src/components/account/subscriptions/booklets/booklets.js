@@ -85,12 +85,12 @@ const bookletId = this.props.m
       .catch((error) => {
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
-            swal("عفواً", "هذه الملزمة مضافة سابقاً إلى سلة التسوق", "error", {
+            swal("عفواً", "هذه الملزمة مضافة سابقاً إلى مختاراتي", "error", {
               button: "متابعة",
             });
             break;
           case "BadRequest":
-            swal("عفواً", "هذه الملزمة مضافة سابقًا إلى سلة التسوق", "error", {
+            swal("عفواً", "هذه الملزمة مضافة سابقًا إلى مختاراتي", "error", {
               button: "متابعة",
             });
             break;
@@ -111,23 +111,27 @@ const bookletId = this.props.m
         }
       });
   }
-  confirmationPopup(type) {
-    swal(
-        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
-        {
-          buttons: {
-            ok: "موافق",
-          },
-        }
-    ).then((value) => {
-      switch (value) {
-        case "ok":
-          this.onSubmit(type)
-        default:
-          break;
-      }
-    });
-  }
+  // confirmationPopup = (type) =>{
+  //   swal(
+  //       `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
+  //       {
+  //         buttons: {
+  //           ok: "تأكيد",
+  //           cancel:'إلغاء'
+  //         },
+  //       }
+  //   ).then((value) => {
+  //     switch (value) {
+  //       case "ok":
+  //         this.onSubmit(type);
+  //
+  //       case "cancel":
+  //
+  //       default:
+  //         break;
+  //     }
+  //   });
+  // }
 
 
 
@@ -203,7 +207,7 @@ const bookletId = this.props.m
                         href={`http://www.smsaexpress.com/Track.aspx?tracknumbers=${this.state.booklet.trackingId}`}
                         target="_blank"
                       >
-                        تتبع
+                        تتبع//
                       </a>
                     ) : null} */}
 {this.state.showOrderBooklet ?(
@@ -216,7 +220,7 @@ const bookletId = this.props.m
             <button
               type="submit"
               className="btn blue-border-btn mr-1"
-              onClick={() => this.confirmationPopup('Colored')}
+              onClick={() => this.onSubmit('Colored')}
             >
               طلب الملزمة الملونة مطبوعة
             </button>
@@ -225,7 +229,7 @@ const bookletId = this.props.m
             <button
               type="submit"
               className="btn blue-border-btn"
-              onClick={() => this.confirmationPopup('BlackAndWhite')}
+              onClick={() => this.onSubmit('BlackAndWhite')}
             >
               طلب الملزمة الأبيض و الأسود مطبوعة
             </button>
@@ -233,7 +237,9 @@ const bookletId = this.props.m
         </>
       ) : null}
       </React.Fragment>
-): null}
+):
+    <p className='mb-1'>بإمكانك اتمام طلب الملزمة من <Link to='/cart'>مختاراتي</Link></p>
+}
                   
                   </div>
                 </div>

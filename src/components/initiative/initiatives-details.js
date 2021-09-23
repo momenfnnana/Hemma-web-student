@@ -339,4 +339,4 @@ class InitiativesDetailsComponent extends Component {
     );
   }
 }
-export const InitiativesDetails = InitiativesDetailsComponent;
+export default InitiativesDetailsComponent;

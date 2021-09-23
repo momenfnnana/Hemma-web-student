@@ -31,7 +31,7 @@ export const useFetch = (url = "", mainConfig = {isAuthed:true}) => {
     onError = () => {}
   ) => {
     const reqConfig = { ...mainConfig, ...reqConf };
-    const AxiosInstance = isAuthed ? authedInstance : baseInstance;
+    const AxiosInstance = token ? authedInstance : baseInstance;
     try {
       setLoading(true);
       setError("");

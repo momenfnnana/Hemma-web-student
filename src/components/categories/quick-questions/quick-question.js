@@ -3,7 +3,7 @@ import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { HeaderComponent } from "../../account/shared/quick-questions/header";
 
-export class QuickQuestion extends Component {
+export default class QuickQuestion extends Component {
   constructor(props) {
     super(props);
     this.state = {
