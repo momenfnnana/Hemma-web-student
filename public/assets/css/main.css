@@ -524,16 +524,43 @@ a:hover {text-decoration: none;}
   transform-style: preserve-3d;
 }
 .card-container .card-hover {
-  transition: all .3s ease-in-out; 
+  transition: all .3s ease-in-out;
   border: 1px solid #addfe6;
-  margin-bottom: 1.5rem
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 .card-container .card-hover:hover {
-  border-color: var(--main-color); 
+  border-color: var(--main-color);
   box-shadow: 0 3px 15px -5px  rgba(0,0,0, .2);
-  transform: translateZ(20px);
+  transform: translateZ(10px);
 }
-
+.card-container .card-hover.card-video {
+  height: 200px;
+}
+.card-container .card-hover.card-video .video-play {
+  position: absolute;
+  top: 30%; left: 50%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.card-container .card-hover.card-video .video-play img {height: 60px;}
+.card-container .card-hover.card-video .video-info {
+  position: absolute;
+  bottom: -5px;
+  background-color: #ADDFE6;
+  width: 100%;
+  padding: 20px 10px;
+  border-radius: 0 0 40px 40px;
+  z-index: 1;
+}
+.hemma-vd-wrapper {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 40px;
+  cursor: pointer
+}
 .headShake:hover {
   animation-duration: .5s;
   animation-timing-function: cubic-bezier(0,.23,1,.71);
