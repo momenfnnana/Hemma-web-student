@@ -28,6 +28,7 @@ export class QuickQuestions extends Component {
       questionsFavorites: [],
       disabled: false,
       hideBtn: false,
+      showplayimg: true,
       nextPageUrl: `${apiBaseUrl}/QuickQuestions?categoryGroupId=${this.props.match.params.categoryGroupId}&page=${this.page}&limit=${this.limit}`,
     };
     this.toggleJoin = this.toggleJoin.bind(this);
@@ -140,15 +141,13 @@ export class QuickQuestions extends Component {
         console.log(error);
       });
   }
-  createTrainingLink(slug,categoryGroupId,traId)
-  {
+  createTrainingLink(slug, categoryGroupId, traId) {
     let baseUrl = process.env.PUBLIC_URL;
-    return baseUrl+ `/categories/${slug}/${categoryGroupId}/training/${traId}`
+    return baseUrl + `/categories/${slug}/${categoryGroupId}/training/${traId}`
   }
-  createExamLink(slug,categoryGroupId,examId)
-  {
-  let baseUrl = process.env.PUBLIC_URL;
-  return baseUrl+ `/categories/${slug}/${categoryGroupId}/exam/${examId}`
+  createExamLink(slug, categoryGroupId, examId) {
+    let baseUrl = process.env.PUBLIC_URL;
+    return baseUrl + `/categories/${slug}/${categoryGroupId}/exam/${examId}`
   }
   toggleJoin() {
     const {
@@ -288,7 +287,7 @@ export class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
-              <ToastDemo copyLink={{ btnName:'مشاركة التدريب',link:this.createTrainingLink(slug,categoryGroupId,tra.id)}} />
+              <ToastDemo copyLink={{ btnName: 'مشاركة التدريب', link: this.createTrainingLink(slug, categoryGroupId, tra.id) }} />
             </td>
           </tr>
         </React.Fragment>
@@ -296,6 +295,10 @@ export class QuickQuestions extends Component {
     });
   }
 
+  onclick = () => {
+    this.setState({ showplayimg: false });
+    this.refs.vidRef.play();
+  };
   renderExams() {
     const exams = this.state.exams || [];
     const categoryGroupId = this.props.match.params.categoryGroupId;
@@ -337,7 +340,7 @@ export class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
-              <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createExamLink(slug,categoryGroupId,exam.id)}} />
+              <ToastDemo copyLink={{ btnName: 'مشاركة الاختبار', link: this.createExamLink(slug, categoryGroupId, exam.id) }} />
             </td>
           </tr>
         </React.Fragment>
@@ -633,6 +636,38 @@ export class QuickQuestions extends Component {
                   سؤال
                 </h6>
               </div>
+
+              {this.state.details.videoUrl && (
+                <>
+                  <div className="group-all-question">
+                    <div className="title-with-bg title-with-bg-blue">
+                      <div className="title-image-cover">
+                        <img src="/assets/images/icon-header.png" alt="Title Image" />
+                      </div>
+                      <h3 className="h5 m-0 px-3 font-weight-bold">فيديو</h3>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-6 card-container">
+                        <div className="card-video card-bordered-blue card-hover">
+                          <div className="video-play" style={{ display: this.state.showplayimg ? 'block' : "none" }}>
+                            <img src="/assets/images/video-play.png" onClick={this.onclick} alt="" />
+                          </div>
+                          <video className="hemma-video hemma-vd-wrapper" controls poster="/assets/images/video-poster.png" ref="vidRef">
+                            <source src={this.state.details.videoUrl} type="video/mp4" />
+                          </video>
+                          <div className="video-info" style={{ display: this.state.showplayimg ? 'block' : "none" }}>
+                            <div className="d-flex-items-center justify-content-center font-weight-bold main-color">
+                              <span className="mr-1">عدد الأسئلة المتاحة الآن على المجموعة :</span>
+                              <span className="ar-text"> <b>{this.state.details.numberOfQuickQuestion}</b> سؤال</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </>
+              )}
               {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row ">
@@ -655,7 +690,7 @@ export class QuickQuestions extends Component {
 
                   <div className="row pt-4">
                     {this.state.questionsFavorites === undefined ||
-                    this.state.questionsFavorites.length === 0 ? (
+                      this.state.questionsFavorites.length === 0 ? (
                       <div className="col-md-12">
                         <div className="question-card">
                           <div className="question-body">
@@ -711,7 +746,7 @@ export class QuickQuestions extends Component {
                   </div>
                   <div className="">
                     {this.state.quickQuestions === undefined ||
-                    this.state.quickQuestions.length === 0 ? (
+                      this.state.quickQuestions.length === 0 ? (
                       <div className="col-md-12">
                         <div className="question-card">
                           <div className="question-body">
@@ -778,7 +813,7 @@ export class QuickQuestions extends Component {
                   <div className="row no-gutters">
                     <div className="col-12">
                       {this.state.exams == undefined ||
-                      this.state.exams.length == 0 ? (
+                        this.state.exams.length == 0 ? (
                         <React.Fragment>
                           <div
                             className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
@@ -850,7 +885,7 @@ export class QuickQuestions extends Component {
                   <div className="row no-gutters">
                     <div className="col-12">
                       {this.state.training == undefined ||
-                      this.state.training.length == 0 ? (
+                        this.state.training.length == 0 ? (
                         <React.Fragment>
                           <div
                             className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
