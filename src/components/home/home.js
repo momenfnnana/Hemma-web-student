@@ -21,7 +21,13 @@ import WrapperText from './../../shared-components/WrappedText/inedx';
 import PopupHemma from "./popupHemma";
 // // Optional Theme Stylesheet
 // import "public/assets/css/glide.theme.min.css";
+const nationalDayImgName = 'national-day.png'
+const defaultImgPath = 'bg.png'
 
+const imgsPath = (img)=>`${process.env.PUBLIC_URL}/assets/images/${img}`
+
+const nationalDayImageUrl = imgsPath(nationalDayImgName)
+const defaultImgUrl = imgsPath(defaultImgPath)
 
 var moment = require("moment");
 moment().format();
@@ -72,6 +78,8 @@ const enabledCarsoulOptions = {
 
 class HomeComponent extends Component {
   constructor(props) {
+    //this is the expiration day
+    const nationalDayExpirationDay = 26
     super(props);
     this.state = {
       categories: [],
@@ -80,7 +88,8 @@ class HomeComponent extends Component {
       initiatives: [],
       categoryGroups: [],
       success : [],
-      maxSuccessHeight : 'fit-content'
+      maxSuccessHeight : 'fit-content',
+      isNationalDay:new Date().getDate() < nationalDayExpirationDay,
     };
   }
 
@@ -671,7 +680,7 @@ renderSucces()
       <React.Fragment>
        <PopupHemma/>
        <section id="hemma-banner" className="main-banner ">
-         <div className='banner banner-program'>
+        {!this.state.isNationalDay && <div className='banner banner-program'>
            <div className="container program-container py-4 ">
              <div>
                <h2>  برنامج
@@ -683,9 +692,9 @@ renderSucces()
                <button type="button" className="btn btn-warning join-now">انضم الان</button>
              </Link>
            </div>
-         </div>
+         </div>}
       {/* <!-- Start The Main Banner Text --> */}
-      <div className="banner-image fixed-image-bg overlay-bg">
+      <div className={`banner-image fixed-image-bg overlay-bg ${!this.state.isNationalDay ? 'has-overlay' : ''}`} style={{backgroundImage : `url(${this.state.isNationalDay ? nationalDayImageUrl : defaultImgUrl})` }} >
         <div className="banner-info d-flex-column overflow-hidden">
           <div className="container">
             <div className="banner-text text-white">

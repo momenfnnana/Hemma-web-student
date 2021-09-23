@@ -234,10 +234,13 @@ a:hover {text-decoration: none;}
   content: '';
   width: 100%;
   height: 100%;
-  background-color: rgba(74, 57, 133, .6);
   position: absolute;
   top: 0; left: 0;
   z-index: 1
+}
+
+.has-overlay:after{
+  background-color: rgba(74, 57, 133, .6);
 }
 .overlay-bg-dark:after
 {
@@ -825,8 +828,8 @@ a:hover {text-decoration: none;}
 }
 .banner-image {
   height: 500px;
-  background-image: url('../images/bg.png');
 }
+/* background-image: url('../images/national-day.png'); */
 .main-banner .banner-info,
 .about-wrapper {
   width: 100%;
