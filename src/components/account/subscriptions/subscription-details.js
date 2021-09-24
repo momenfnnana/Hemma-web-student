@@ -31,11 +31,12 @@ import { StartTrainingExam } from "./training/start-training";
 import { TrainingExamDetails } from "./training/training-details";
 
 import firebase from "../../../firebase";
-import ScheduleDetails from './scheduleDetails/index';
+import ScheduleDetails from "./scheduleDetails/index";
 import { ClassicSchedule } from "./schedule/schedule-classic";
 import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
-import {MergedSidebar} from '../shared/sidebar/merged-sidebar'
+import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
+const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -45,7 +46,9 @@ class SubscriptionDetailsComponent extends Component {
       isInstallmentOpen: false,
       isRefundOpen: false,
       channelsRef: firebase.database().ref("channels"),
+      designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
     };
+    this.toggleDesign = this.toggleDesign.bind(this);
   }
 
   openInstallmentModal = () => {
@@ -67,6 +70,10 @@ class SubscriptionDetailsComponent extends Component {
     this.props.getSubscription(courseId).then(() => {
       this.createChannel();
     });
+  }
+
+  toggleDesign() {
+    this.setState({ designType: +!this.state.designType });
   }
 
   createChannel = () => {
@@ -155,6 +162,7 @@ class SubscriptionDetailsComponent extends Component {
                 <div className="row">
                   <div className="col-md-3 col-12">
                     <MergedSidebar
+                      designType={this.state.designType}
                       subscription={subscription}
                       courseId={courseId}
                     />
@@ -182,32 +190,30 @@ class SubscriptionDetailsComponent extends Component {
                     <Instructors id={courseId} />
                   </div>
                   <div className="col-md-9 col-12">
-                    <Route path="/course/content/:id/:type">
-                      <DesignSwitch />
+                    <Route path="/course/content/:id/schedule" exact>
                     </Route>
-                    <Route
-                      path="/course/content/:id/classic-schedule"
-                      exact
-                      render={(props) => (
-                        <>
-                          <ClassicSchedule
-                            courseName={subscription && subscription.nameAr}
-                            {...props}
-                          />
-                        </>
-                      )}
-                    />
                     <Route
                       path="/course/content/:id/schedule"
                       exact
                       render={(props) => (
                         <>
-                          <Schedule
-                            subscription={subscription}
-                            courseId={courseId}
-                            courseName={subscription && subscription.nameAr}
-                            {...props}
-                          />
+                        <DesignSwitch
+                          designType={this.state.designType}
+                          onChange={this.toggleDesign}
+                        />
+                          {this.state.designType ? (
+                            <Schedule
+                              subscription={subscription}
+                              courseId={courseId}
+                              courseName={subscription && subscription.nameAr}
+                              {...props}
+                            />
+                          ) : (
+                            <ClassicSchedule
+                              courseName={subscription && subscription.nameAr}
+                              {...props}
+                            />
+                          )}
                         </>
                       )}
                     />
