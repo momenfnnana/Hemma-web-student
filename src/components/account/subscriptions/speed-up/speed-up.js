@@ -53,18 +53,18 @@ export class SpeedUp extends Component {
           >
             <header className="card-thumb d-flex align-items-center justify-content-center">
               {file.type == "Image" ? (
-                <img src={file.url} alt="File" className="cover-img mx-auto" />
+                <img src={file.url} alt="File" className="cover-img mx-auto w-100" />
               ) : file.type == "Pdf" ? (
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/pdf.png"}
                   alt="File"
-                  className="contain-img custom-img mx-auto"
+                  className="contain-img custom-img mx-auto w-100"
                 />
               ) : file.type == "Video" ? (
                 <img
                   src={process.env.PUBLIC_URL + "/assets/images/video.png"}
                   alt="File"
-                  className="contain-img custom-img mx-auto"
+                  className="contain-img custom-img mx-auto w-100"
                 />
               ) : (
                 <img
@@ -72,7 +72,7 @@ export class SpeedUp extends Component {
                     process.env.PUBLIC_URL + "/assets/images/file-outline.png"
                   }
                   alt="File"
-                  className="contain-img custom-img mx-auto"
+                  className="contain-img custom-img mx-auto w-100"
                 />
               )}
             </header>
@@ -117,7 +117,7 @@ export class SpeedUp extends Component {
                       process.env.PUBLIC_URL + "/assets/images/empty-files.png"
                     }
                     height="100"
-                    className="contain-img mb-3"
+                    className="contain-img mb-3 w-100"
                   />
                   <p className="dark-text mt-0 mb-0">لا يوجد لديك ملفات </p>
                 </div>
