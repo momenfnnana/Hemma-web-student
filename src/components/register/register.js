@@ -148,6 +148,7 @@ clearPendingActions(){
             .then(() => {
               this.handlePendingActions(()=>{
                 this.props.history.push("/home");
+                window.location.reload()
               })
             })
             .catch((error) => {
