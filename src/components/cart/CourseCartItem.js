@@ -266,7 +266,7 @@ export class CourseCartItem extends Component {
           </div>
           <div className="w-25">
             {item.canBePaidInInstallments && (
-              <form className="my-2 d-lg-block d-flex " style={{gridTemplateColumns:"1fr 1fr 1fr",gridGap:'0.5rem'}}>
+              <form className="my-2 d-lg-block d-flex " style={{gridTemplateColumns:"1fr 1fr 1fr",gridGap:'0.5rem',alignItems:'end'}}>
                 <div className="d-flex flex-row align-items-center flex-wrap">
                 <div className="align-items-center d-flex  flex-root">
                   <label className="dark-text smaller mb-0">قيمة القسط</label>
@@ -305,7 +305,7 @@ export class CourseCartItem extends Component {
                 </div>
                   {item.canBePaidInInstallments ? (
                 <div
-                  className="flex-root py-2 my-2 h-100 d-flex align-items-center badge blue-status light-font-text clickable cursor-pointer"
+                  className="flex-root py-2 my-0 my-md-2 h-100 d-flex align-items-center badge blue-status light-font-text clickable cursor-pointer"
                   onClick={this.onToggleEditInstallment}
                   disabled={!item.canBePaidInInstallments}
                 >
@@ -319,12 +319,12 @@ export class CourseCartItem extends Component {
                 </div>
               ) : null}
               {item.installment && (
-                <span
-                  className="badge  blue-status light-font-text clickable ml-1 cursor-pointer"
+                <div
+                  className="w-100 badge  blue-status light-font-text clickable cursor-pointer"
                   onClick={this.onPayFullAmount}
                 >
                   تسديد بالكامل
-                </span>
+                </div>
               )}
               </form>
             )}
