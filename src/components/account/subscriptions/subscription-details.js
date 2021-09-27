@@ -73,6 +73,17 @@ class SubscriptionDetailsComponent extends Component {
     });
   }
 
+  componentDidUpdate(prevProps,prevState){
+    if(this.props.designType !== prevProps.designType){
+      this.setState({loading:true},()=>{
+        setTimeout(() => {
+          this.setState({loading:false})
+        }, 300);
+      })
+    }
+  }
+
+
   toggleDesign() {
     this.props.setDeisgnType(+!this.props.designType)
     // this.setState({ designType: +!this.state.designType });
@@ -164,7 +175,9 @@ class SubscriptionDetailsComponent extends Component {
               <div className="container mt-5 pb-5">
                 <div className="row">
                   <div className="col-md-3 col-12">
-                    <MergedSidebar
+                  {!this.state.loading &&
+                  
+                  <div className="animate-down"><MergedSidebar
                       designType={this.props.designType}
                       subscription={subscription}
                       courseId={courseId}
@@ -191,6 +204,8 @@ class SubscriptionDetailsComponent extends Component {
                       courseId={courseId}
                     />
                     <Instructors id={courseId} />
+                    </div>
+                  }
                   </div>
                   <div className="col-md-9 col-12">
                     <Route path="/course/content/:id/schedule" exact>
@@ -204,19 +219,26 @@ class SubscriptionDetailsComponent extends Component {
                           designType={this.props.designType}
                           onChange={this.toggleDesign}
                         />
+                      {!this.state.loading &&  <>
                           {this.props.designType ? (
+                            <div className="animate-down">
                             <Schedule
                               subscription={subscription}
                               courseId={courseId}
                               courseName={subscription && subscription.nameAr}
                               {...props}
                             />
+                            </div>
+
                           ) : (
+                          <div className="animate-down">
                             <ClassicSchedule
                               courseName={subscription && subscription.nameAr}
                               {...props}
                             />
+                          </div>
                           )}
+                        </>}
                         </>
                       )}
                     />
