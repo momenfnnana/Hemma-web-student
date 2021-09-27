@@ -1,5 +1,18 @@
-.success-wrapper{
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
-    grid-gap: 1rem;
+.success-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+  grid-gap: 1.5rem;
+}
+.success-grid-item {
+  & > div {
+    height: 100%;
+  }
+  & a {
+    width: 100%;
+    height: 200px;
+  }
+  & a > img {
+    max-height: 300px;
+    object-fit: contain;
+  }
 }

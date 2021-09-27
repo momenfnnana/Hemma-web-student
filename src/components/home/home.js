@@ -628,7 +628,6 @@ async onClick(Category){
       if(elemNode?.offsetHeight > maxHeight)
       maxHeight = elemNode?.offsetHeight 
     })
-    console.log({maxHeight});
     this.setState({...this.state,maxSuccessHeight : maxHeight})
     return maxHeight
   }
@@ -646,9 +645,8 @@ renderSucces()
   return this.state.success.map((suc, index) => (
     <React.Fragment>
             <li className="glide__slide d-flex flex-column"  style={{minHeight:`${this.state.maxSuccessHeight}px`}}>
-                <div className="sider-items   flex-1" id={`success-item ${index}`} style={{minHeight:`${suc.height}px`}}>
+                <div className="sider-items   flex-1" id={`success-item ${index}`} style={{minHeight:`${this.state.maxSuccessHeight}px`}}>
                   <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
-                  {console.log({height:this.state.suc})}
                   <h4 className="color-danger wrapped-text">{suc.courseName}</h4>
                   {suc.source == "Media" ? (
                     <React.Fragment>
