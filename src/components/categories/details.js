@@ -109,7 +109,7 @@ export class _CategoryDetails extends Component {
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    const { subcategoriesdetails } = this.state;
+    const { subcategoriesdetails,hasProfessionalLicense } = this.state;
     axios.get(url, { headers }).then((response) => {
       const courses = response.data.data.data;
       this.setState({
@@ -120,8 +120,8 @@ export class _CategoryDetails extends Component {
       });
       if (
         !hasFreeFlag &&
-        !!courses?.length &&
-        !subcategoriesdetails.length
+        !!courses?.length 
+        && !hasProfessionalLicense
       )
         this.changeTab("tab-two");
     });
