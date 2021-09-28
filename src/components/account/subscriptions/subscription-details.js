@@ -17,7 +17,8 @@ import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
 import { ExamResult } from "./exams/exam-result";
 import { RatingModal } from "./rating/rating-modal";
-import { getSubscription } from "../../../actions/subscription.actions";
+import { getSubscription } from "../../../actions/subscription.actions"
+import { setDeisgnType } from "../../../actions/user.actions"
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
@@ -46,7 +47,7 @@ class SubscriptionDetailsComponent extends Component {
       isInstallmentOpen: false,
       isRefundOpen: false,
       channelsRef: firebase.database().ref("channels"),
-      designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
+      // designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
     };
     this.toggleDesign = this.toggleDesign.bind(this);
   }
@@ -72,8 +73,20 @@ class SubscriptionDetailsComponent extends Component {
     });
   }
 
+  componentDidUpdate(prevProps,prevState){
+    if(this.props.designType !== prevProps.designType){
+      this.setState({loading:true},()=>{
+        setTimeout(() => {
+          this.setState({loading:false})
+        }, 300);
+      })
+    }
+  }
+
+
   toggleDesign() {
-    this.setState({ designType: +!this.state.designType });
+    this.props.setDeisgnType(+!this.props.designType)
+    // this.setState({ designType: +!this.state.designType });
   }
 
   createChannel = () => {
@@ -93,11 +106,12 @@ class SubscriptionDetailsComponent extends Component {
   render() {
     const courseId = this.props.match.params.id;
     const subscription =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.subscription;
+    this.props &&
+    this.props.subscription &&
+    this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
+    
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -161,8 +175,10 @@ class SubscriptionDetailsComponent extends Component {
               <div className="container mt-5 pb-5">
                 <div className="row">
                   <div className="col-md-3 col-12">
-                    <MergedSidebar
-                      designType={this.state.designType}
+                  {!this.state.loading &&
+                  
+                  <div className="animate-down"><MergedSidebar
+                      designType={this.props.designType}
                       subscription={subscription}
                       courseId={courseId}
                     />
@@ -188,6 +204,8 @@ class SubscriptionDetailsComponent extends Component {
                       courseId={courseId}
                     />
                     <Instructors id={courseId} />
+                    </div>
+                  }
                   </div>
                   <div className="col-md-9 col-12">
                     <Route path="/course/content/:id/schedule" exact>
@@ -198,22 +216,29 @@ class SubscriptionDetailsComponent extends Component {
                       render={(props) => (
                         <>
                         <DesignSwitch
-                          designType={this.state.designType}
+                          designType={this.props.designType}
                           onChange={this.toggleDesign}
                         />
-                          {this.state.designType ? (
+                      {!this.state.loading &&  <>
+                          {this.props.designType ? (
+                            <div className="animate-down">
                             <Schedule
                               subscription={subscription}
                               courseId={courseId}
                               courseName={subscription && subscription.nameAr}
                               {...props}
                             />
+                            </div>
+
                           ) : (
+                          <div className="animate-down">
                             <ClassicSchedule
                               courseName={subscription && subscription.nameAr}
                               {...props}
                             />
+                          </div>
                           )}
+                        </>}
                         </>
                       )}
                     />
@@ -345,10 +370,16 @@ class SubscriptionDetailsComponent extends Component {
 function mapStateToProps(state) {
   return {
     subscription: state.subscription,
+    designType: state.user?.designType,
+    user: state.user,
   };
 }
+const mapDispatchToProps = {
+  getSubscription,
+  setDeisgnType
+}
 
-SubscriptionDetailsComponent = connect(mapStateToProps, { getSubscription })(
+SubscriptionDetailsComponent = connect(mapStateToProps, mapDispatchToProps)(
   SubscriptionDetailsComponent
 );
 
