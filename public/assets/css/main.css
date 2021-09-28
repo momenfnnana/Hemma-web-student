@@ -1062,6 +1062,7 @@ a:hover {text-decoration: none;}
   padding: 10px 30px;
   border-radius: 20px;
   position: relative;
+  flex: 1;
 }
 .sider-items .quote-icon {
   position: absolute;

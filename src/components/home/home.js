@@ -98,19 +98,20 @@ class HomeComponent extends Component {
     const lessThanThreeElemesOptions = count <= MIN_ELEM_COUNT ? disabledCarsoulOptions : null
     const isMobileOptions = isMobile ? mobileCarsoulOptions : null
     const mergedOptions = {...lessThanThreeElemesOptions,...isMobileOptions}
-    new Glide(glideWrapper,{...enabledCarsoulOptions,...mergedOptions}).mount()
+    const glide = new Glide(glideWrapper,{...enabledCarsoulOptions,...mergedOptions})
+    glide.mount()
   }
 
   componentDidMount() {
     const myOptions = {
-      type: 'carousel',
+      // type: 'carousel',
       startAt: 1,
       perView: 3,
       focusAt: 'center',
       gap: 20,
-      autoplay: 4000,
+      autoplay: 100000000,
       // animationTimingFunc: 'ease-in-out',
-      animationDuration: 800,
+      animationDuration: 1000000,
       // peek: {
       //   before: 100,
       //   after: 100
@@ -628,12 +629,14 @@ async onClick(Category){
       maxHeight = elemNode?.offsetHeight 
     })
     this.setState({...this.state,maxSuccessHeight : maxHeight})
+    return maxHeight
   }
 
   componentDidUpdate(prevProps, prevState){
     if(prevState.success?.length !== this.state.success?.length)
     setTimeout(() => {
-      this.findSuccessElemsHeight()
+     const maxHeight =  this.findSuccessElemsHeight()
+      this.setState({success:  this.state.success.map(suc => ({...suc, height:maxHeight}))})
     },1000)
   }
 
@@ -641,15 +644,15 @@ renderSucces()
 {
   return this.state.success.map((suc, index) => (
     <React.Fragment>
-<li className="glide__slide d-flex flex-column" id={`success-item ${index}`} style={{minHeight:+this.state.maxSuccessHeight ? `${this.state.maxSuccessHeight}px` :  'fit-content'}}>
-                <div className="sider-items  min-height-150 flex-1">
+            <li className="glide__slide d-flex flex-column"  style={{minHeight:`${this.state.maxSuccessHeight}px`}}>
+                <div className="sider-items   flex-1" id={`success-item ${index}`} style={{minHeight:`${this.state.maxSuccessHeight}px`}}>
                   <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
                   <h4 className="color-danger wrapped-text">{suc.courseName}</h4>
                   {suc.source == "Media" ? (
                     <React.Fragment>
-<a href={suc?.url}>
-        <img src={suc?.img} className="w-100 h-auto" />
-      </a>
+                      <a href={suc?.url}>
+                        <img src={suc?.img} className="w-100 h-auto" />
+                      </a>
 
                     </React.Fragment>
                    

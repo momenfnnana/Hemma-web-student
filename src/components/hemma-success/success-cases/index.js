@@ -46,7 +46,7 @@ const enabledCarsoulOptions = {
 
 const SuccessElem = ({ suc, index, id, style }) => (
   <>
-    <div id={id} className="sider-items  min-height-150 flex-1" style={style}>
+    <div id={id} className="sider-items flex-1" style={style}>
       <div className="quote-icon">
         <i className="fas fa-quote-left"></i>
       </div>
@@ -54,7 +54,7 @@ const SuccessElem = ({ suc, index, id, style }) => (
       {suc.source == "Media" ? (
         <>
           <a href={suc?.url}>
-            <img src={suc?.img} className="w-100 h-auto" />
+            <img src={suc?.img} className="w-100" />
           </a>
         </>
       ) : (
@@ -129,32 +129,14 @@ export default function SuccessCases() {
       }, 1000);
   });
 
-  useEffect(() => {
-    let glide = new Glide(".glide", enabledCarsoulOptions);
-    if (!allCases.length) return;
-    setPage((c) => c + 1);
-    if (!allCases.length || activeted) return;
-    setActiveted(true);
-    glide.destroy();
-    setTimeout(() => {
-      glide.mount();
-    }, 500);
-  }, [allCases?.length]);
-
   return (
     <div className="container-fluid py-5">
-      <div className="d-flex mx-auto">
-        <div class="glide">
-          <div class="glide__track" data-glide-el="track">
-            <ul class="glide__slides">
-              {allCases.map((_case) => (
-                <li className="glide__slide">
-                  <SuccessElem suc={_case} id={_case?.id} />
-                </li>
-              ))}
-            </ul>
+      <div className="success-wrapper" >
+        {allCases.map((_case) => (
+          <div className="w-100 success-grid-item h-100 ">
+            <SuccessElem suc={_case} id={_case?.id} />
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );
