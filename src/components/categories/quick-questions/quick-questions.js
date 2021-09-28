@@ -637,7 +637,7 @@ export default class QuickQuestions extends Component {
                 </h6>
               </div>
 
-              {this.state.details.videoUrl && (
+              {this.state.details.videoUrl && this.state.details.isJoined && (
                 <>
                   <div className="group-all-question">
                     <div className="title-with-bg title-with-bg-blue">
