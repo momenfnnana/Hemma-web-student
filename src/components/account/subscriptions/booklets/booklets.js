@@ -77,10 +77,14 @@ const bookletId = this.props.m
   }
 
   onSubmit(type) {
+    swal("بإمكانك اتمام طلب الملزمة من مختاراتي", "", {
+      button: "متابعة",
+    }).then(res=>{
+        this.props.history.push("/cart");
+    });
     Api.cart
       .addBooklet(this.state.booklet.id, type)
       .then((response) => {
-        this.props.history.push("/cart");
       })
       .catch((error) => {
         switch (error.response.data && error.response.data.error) {
@@ -100,7 +104,7 @@ const bookletId = this.props.m
             });
             break;
           case "ItemAlreadyAdded":
-            this.props.history.push("/cart");
+            // this.props.history.push("/cart");
             break;
 
           default:
@@ -210,7 +214,7 @@ const bookletId = this.props.m
                         تتبع//
                       </a>
                     ) : null} */}
-{this.state.showOrderBooklet ?(
+{this.state.showOrderBooklet && (
    <React.Fragment>
      {this.state.booklet &&
       this.state.booklet.canBePurchased &&
@@ -237,8 +241,7 @@ const bookletId = this.props.m
         </>
       ) : null}
       </React.Fragment>
-):
-    <p className='mb-1'>بإمكانك اتمام طلب الملزمة من <Link to='/cart'>مختاراتي</Link></p>
+)
 }
                   
                   </div>
