@@ -17,7 +17,8 @@ export class BookletsComponent extends Component {
       booklets: [],
       booklet: {},
       isPageLoading: false,
-      showOrderBooklet:true
+      showOrderBooklet:true,
+      tracking:""
     };
   }
 
@@ -42,6 +43,12 @@ const bookletId = this.props.m
     let headers = {
       Authorization: `Bearer ${token}`,
     };
+    axios.get(`${apiBaseUrl}/GeneralSettings`, { headers })
+    .then((response)=>{
+      this.setState({
+        tracking:response.data.data
+      })
+    })
     axios
       .get(`${apiBaseUrl}/content/${courseId}/booklet`, { headers })
       .then((response) => {
@@ -214,7 +221,16 @@ const bookletId = this.props.m
                         تتبع//
                       </a>
                     ) : null} */}
-{this.state.showOrderBooklet && (
+                      {this.state.tracking!=""?(
+                      <a
+                        className="btn blue-border-btn mr-2"
+                        href={`${this.state.tracking}`}
+                        target="_blank"
+                      >
+                        تتبع
+                      </a>
+                    ) : null}
+{this.state.showOrderBooklet ?(
    <React.Fragment>
      {this.state.booklet &&
       this.state.booklet.canBePurchased &&
