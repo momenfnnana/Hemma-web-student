@@ -17,7 +17,8 @@ import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
 import { ExamResult } from "./exams/exam-result";
 import { RatingModal } from "./rating/rating-modal";
-import { getSubscription } from "../../../actions/subscription.actions";
+import { getSubscription } from "../../../actions/subscription.actions"
+import { setDeisgnType } from "../../../actions/user.actions"
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
@@ -31,6 +32,12 @@ import { StartTrainingExam } from "./training/start-training";
 import { TrainingExamDetails } from "./training/training-details";
 
 import firebase from "../../../firebase";
+import ScheduleDetails from "./scheduleDetails/index";
+import { ClassicSchedule } from "./schedule/schedule-classic";
+import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
+import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
+import DesignSwitch from "./schedule/design-switch";
+const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -40,7 +47,9 @@ class SubscriptionDetailsComponent extends Component {
       isInstallmentOpen: false,
       isRefundOpen: false,
       channelsRef: firebase.database().ref("channels"),
+      // designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
     };
+    this.toggleDesign = this.toggleDesign.bind(this);
   }
 
   openInstallmentModal = () => {
@@ -64,6 +73,22 @@ class SubscriptionDetailsComponent extends Component {
     });
   }
 
+  componentDidUpdate(prevProps,prevState){
+    if(this.props.designType !== prevProps.designType){
+      this.setState({loading:true},()=>{
+        setTimeout(() => {
+          this.setState({loading:false})
+        }, 300);
+      })
+    }
+  }
+
+
+  toggleDesign() {
+    this.props.setDeisgnType(+!this.props.designType)
+    // this.setState({ designType: +!this.state.designType });
+  }
+
   createChannel = () => {
     const { channelsRef } = this.state;
     const { chatChannelSid } = this.props.subscription.subscription;
@@ -73,22 +98,20 @@ class SubscriptionDetailsComponent extends Component {
     const newChannel = {
       id: key,
     };
-if(forceInternalChat == true)
-{
-    channelsRef
-      .child(key)
-      .update(newChannel)
-}
+    if (forceInternalChat == true) {
+      channelsRef.child(key).update(newChannel);
+    }
   };
 
   render() {
     const courseId = this.props.match.params.id;
     const subscription =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.subscription;
+    this.props &&
+    this.props.subscription &&
+    this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
+    
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -147,174 +170,198 @@ if(forceInternalChat == true)
             />
           </React.Fragment>
         ) : (
-            <React.Fragment>
-              {this.props.location.pathname.indexOf("live-stream") < 0 && (
-                <div className="container mt-5 pb-5">
-                  <div className="row">
-                    <div className="col-md-3 col-12">
-                      {subscription && subscription.chatChannelSid && (
-                        <Sidebar
-                          id={courseId}
-                          chatChannelSid={
-                            subscription && subscription.chatChannelSid
-                          }
-                        />
-                      )}
-                      {ratingStatus === "Skipped" && (
-                        <button
-                          className="btn light-btn w-100 mb-3"
-                          onClick={() =>
-                            this.setState({ forceOpenRatingModal: true })
-                          }
-                        >
-                          قيّم الدورة
-                        </button>
-                      )}
-                      <RatingModal
-                        isRatingModalOpen={
-                          ratingStatus === "Available" ||
-                          this.state.forceOpenRatingModal
+          <React.Fragment>
+            {this.props.location.pathname.indexOf("live-stream") < 0 && (
+              <div className="container mt-5 pb-5">
+                <div className="row">
+                  <div className="col-md-3 col-12">
+                  {!this.state.loading &&
+                  
+                  <div className="animate-down"><MergedSidebar
+                      designType={this.props.designType}
+                      subscription={subscription}
+                      courseId={courseId}
+                    />
+                    {ratingStatus === "Skipped" && (
+                      <button
+                        className="btn light-btn w-100 mb-3"
+                        onClick={() =>
+                          this.setState({ forceOpenRatingModal: true })
                         }
-                        onClose={() =>
-                          this.setState({ forceOpenRatingModal: false })
-                        }
-                        status={ratingStatus}
-                        courseId={courseId}
-                      />
-                      <Instructors id={courseId} />
+                      >
+                        قيّم الدورة
+                      </button>
+                    )}
+                    <RatingModal
+                      isRatingModalOpen={
+                        ratingStatus === "Available" ||
+                        this.state.forceOpenRatingModal
+                      }
+                      onClose={() =>
+                        this.setState({ forceOpenRatingModal: false })
+                      }
+                      status={ratingStatus}
+                      courseId={courseId}
+                    />
+                    <Instructors id={courseId} />
                     </div>
-                    <div className="col-md-9 col-12">
-                      <div className="row no-gutters">
-                        <div className="col-12">
-                          {subscription && subscription.chatChannelSid && (
-                            <Lecture
-                              id={courseId}
-                              chatChannelSid={subscription.chatChannelSid}
+                  }
+                  </div>
+                  <div className="col-md-9 col-12">
+                    <Route path="/course/content/:id/schedule" exact>
+                    </Route>
+                    <Route
+                      path="/course/content/:id/schedule"
+                      exact
+                      render={(props) => (
+                        <>
+                        <DesignSwitch
+                          designType={this.props.designType}
+                          onChange={this.toggleDesign}
+                        />
+                      {!this.state.loading &&  <>
+                          {this.props.designType ? (
+                            <div className="animate-down">
+                            <Schedule
+                              subscription={subscription}
+                              courseId={courseId}
+                              courseName={subscription && subscription.nameAr}
+                              {...props}
                             />
-                          )}
-                        </div>
-                      </div>
+                            </div>
 
+                          ) : (
+                          <div className="animate-down">
+                            <ClassicSchedule
+                              courseName={subscription && subscription.nameAr}
+                              {...props}
+                            />
+                          </div>
+                          )}
+                        </>}
+                        </>
+                      )}
+                    />
+                    <Route
+                      path="/course/content/:id/schedule/:type/:nestedId/:contentType"
+                      exact
+                      render={(props) => (
+                        <>
+                          <ScheduleDetails {...props} />
+                        </>
+                      )}
+                    />
+                    <Route
+                      path="/course/content/:id/recorded-lectures"
+                      component={RecordedLectures}
+                    />
+                    <Route
+                      path="/course/content/:id/lecture/:lectureId"
+                      component={LectureDetails}
+                    />
+                    <Route
+                      path="/course/content/:id/speed-up"
+                      component={SpeedUp}
+                    />
+                    <Route
+                      exact
+                      path="/course/content/:id/booklets"
+                      component={Booklets}
+                    />
+                    <Route
+                      exact
+                      path="/course/content/:id/booklets/:bookletId"
+                      component={BookletDetails}
+                    />
+                    <Route
+                      path="/course/content/:id/discussions"
+                      exact
+                      component={DiscussionsList}
+                    />
+                    {subscription && subscription.chatChannelSid && (
                       <Route
-                        path="/course/content/:id/schedule"
+                        path="/course/content/:id/discussions/:discussionId"
+                        component={DiscussionDetails}
+                        chatChannelSid={subscription.chatChannelSid}
+                      />
+                    )}
+                    <Route
+                      path="/course/content/:id/exams/list"
+                      component={ExamsList}
+                    />
+                    <Route
+                      path="/course/content/:id/exam/:examId"
+                      component={StartExam}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/exam/:attemptId/details"
+                      component={ExamDetails}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/exam/:attemptId/result"
+                      component={ExamResult}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/training/list"
+                      component={TrainingList}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/exam/training/:examId"
+                      component={StartTrainingExam}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/training/:attemptId/details"
+                      component={TrainingExamDetails}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/training/:attemptId/result"
+                      component={TrainingResult}
+                      exact
+                    />
+                    <Route
+                      path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+                    <Route
+                      path="/course/content/:courseId/askQuestions/details/:id"
+                      component={AskQuestionDetails}
+                    />
+                    {subscription?.chatChannelSid && (
+                      <Route
+                        path="/course/content/:id/chat"
                         render={(props) => (
-                          <Schedule
-                            courseName={subscription && subscription.nameAr}
+                          <UsersChatComponent
+                            chatChannelSid={subscription.chatChannelSid}
+                            forceInternalChat={subscription.forceInternalChat}
+                            externalChannelUrl={subscription.externalChannelUrl}
                             {...props}
                           />
                         )}
                       />
-                      <Route
-                        path="/course/content/:id/recorded-lectures"
-                        component={RecordedLectures}
-                      />
-                      <Route
-                        path="/course/content/:id/lecture/:lectureId"
-                        component={LectureDetails}
-                      />
-                      <Route
-                        path="/course/content/:id/speed-up"
-                        component={SpeedUp}
-                      />
-                      <Route
-                        exact
-                        path="/course/content/:id/booklets"
-                        component={Booklets}
-                      />
-                      <Route
-                        exact
-                        path="/course/content/:id/booklets/:bookletId"
-                        component={BookletDetails}
-                      />
-                      <Route
-                        path="/course/content/:id/discussions"
-                        exact
-                        component={DiscussionsList}
-                      />
-                      {subscription && subscription.chatChannelSid && (
-                        <Route
-                          path="/course/content/:id/discussions/:discussionId"
-                          component={DiscussionDetails}
-                          chatChannelSid={subscription.chatChannelSid}
-                        />
-                      )}
-                      <Route
-                        path="/course/content/:id/exams/list"
-                        component={ExamsList}
-                      />
-                      <Route
-                        path="/course/content/:id/exam/:examId"
-                        component={StartExam}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/exam/:attemptId/details"
-                        component={ExamDetails}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/exam/:attemptId/result"
-                        component={ExamResult}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/training/list"
-                        component={TrainingList}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/exam/training/:examId"
-                        component={StartTrainingExam}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/training/:attemptId/details"
-                        component={TrainingExamDetails}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/training/:attemptId/result"
-                        component={TrainingResult}
-                        exact
-                      />
-                      <Route
-                        path="/course/content/:id/askQuestions/list"
-                        component={AskQuestionsList}
-                      />
-                      <Route
-                        path="/course/content/:courseId/askQuestions/details/:id"
-                        component={AskQuestionDetails}
-                      />
-                      {subscription?.chatChannelSid && (
-                        <Route
-                          path="/course/content/:id/chat"
-                          render={(props) => (
-                            <UsersChatComponent
-                              chatChannelSid={subscription.chatChannelSid}
-                              forceInternalChat={subscription.forceInternalChat}
-                              externalChannelUrl={subscription.externalChannelUrl}
-                              {...props}
-                            />
-                          )}
-                        />
-                      )}
-                    </div>
+                    )}
                   </div>
                 </div>
-              )}
-              {subscription && subscription.chatChannelSid && (
-                <Route
-                  path="/course/content/:id/live-stream/:lectureId"
-                  render={(props) => (
-                    <LiveStream
-                      chatChannelSid={subscription.chatChannelSid}
-                      {...props}
-                    />
-                  )}
-                />
-              )}
-            </React.Fragment>
-          )}
+              </div>
+            )}
+            {subscription && subscription.chatChannelSid && (
+              <Route
+                path="/course/content/:id/live-stream/:lectureId"
+                render={(props) => (
+                  <LiveStream
+                    chatChannelSid={subscription.chatChannelSid}
+                    {...props}
+                  />
+                )}
+              />
+            )}
+          </React.Fragment>
+        )}
       </React.Fragment>
     );
   }
@@ -323,11 +370,17 @@ if(forceInternalChat == true)
 function mapStateToProps(state) {
   return {
     subscription: state.subscription,
+    designType: state.user?.designType,
+    user: state.user,
   };
 }
+const mapDispatchToProps = {
+  getSubscription,
+  setDeisgnType
+}
 
-SubscriptionDetailsComponent = connect(mapStateToProps, { getSubscription })(
+SubscriptionDetailsComponent = connect(mapStateToProps, mapDispatchToProps)(
   SubscriptionDetailsComponent
 );
 
-export const SubscriptionDetails = withRouter(SubscriptionDetailsComponent);
+export default withRouter(SubscriptionDetailsComponent);

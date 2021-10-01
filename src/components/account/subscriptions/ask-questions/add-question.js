@@ -13,19 +13,23 @@ class AddQuestion extends Component {
 			questionType: "",
 			sections: [],
 			sectionId:'',
-			disableAdd: false,
+			disableAdd: true,
+			disable:true,
+			question:null
 		};
-
 	}
 
-	handleChange = event => {
-		let value = event.target.value;
-		this.setState({question: value});
-	};
 
-	handleChangeSection = e => {
-		const value = e.target.value;
-		this.setState({sectionId: value});
+
+	handleChange = (key ,event) => {
+		const value = event.target.value;
+		this.setState({[key]: value} , ()=>{
+			const {sectionId ,question} = this.state
+			if(sectionId !=='' && question!=null){
+				this.setState({disableAdd: false});
+
+			}
+		})
 	};
 
 	componentDidMount(){
@@ -119,7 +123,7 @@ class AddQuestion extends Component {
 			})
 			.then(response => {
 				this.props.toggleModal();
-				this.handleToggleAdd();
+				this.setState({sectionId:'',question:null})
 				this.props.updateQuestions(response.data.data);
 			})
 			.catch(error => {
@@ -148,9 +152,10 @@ class AddQuestion extends Component {
 							<select value={this.state.sectionId}
 							        className="form-select w-100 p-2 small dark-text border border-light-2"
 							        aria-label="Default select example"
-							        onChange={this.handleChangeSection}
+							        onChange={(e)=>this.handleChange('sectionId',e)}
 							        name='sectionId'
 							>
+								<option value='' disabled>اختر الجزء </option>
 								{
 									this.state.sections && this.state.sections.map( (row) =>
 										<option value={row.id}>{row.nameAr}</option>
@@ -165,11 +170,11 @@ class AddQuestion extends Component {
 	                id="content"
 	                type="text"
 	                name="content"
-	                onChange={this.handleChange}
+	                onChange={(e)=>this.handleChange('question',e)}
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={!this.state.sections}
+	                disabled={this.state.sectionId==''}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
@@ -178,7 +183,7 @@ class AddQuestion extends Component {
 											id="uploadImage"
 											type="file"
 											onChange={this.handleFileChange}
-											disabled={!this.state.sections}
+											disabled={this.state.sectionId==''}
 										/>
 										<img
 											src={

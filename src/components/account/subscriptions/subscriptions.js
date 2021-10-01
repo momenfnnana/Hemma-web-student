@@ -56,7 +56,6 @@ export class SubscriptionsComponent extends Component {
     } else if (this.props.initialValues.gender == "Female") {
       avatarImg = process.env.PUBLIC_URL + "/assets/images/women.png";
     }
-
     return (
       <React.Fragment>
         <section className="pt-5 pb-5">
@@ -321,4 +320,4 @@ SubscriptionsComponent = connect(mapStateToProps, { getProfile })(
   SubscriptionsComponent
 );
 
-export const Subscriptions = withRouter(SubscriptionsComponent);
+export default withRouter(SubscriptionsComponent);

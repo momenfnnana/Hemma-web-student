@@ -97,4 +97,4 @@ class EnterToLectureComponent extends Component {
     );
   }
 }
-export const EnterToLecture = EnterToLectureComponent;
+export default EnterToLectureComponent;

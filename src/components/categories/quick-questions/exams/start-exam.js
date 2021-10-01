@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 
-export class StartExam extends Component {
+export default class StartExam extends Component {
   state = {
     examDetails: [],
   };

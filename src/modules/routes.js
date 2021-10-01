@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Header } from "../components/shared/header/header";
 import { Footer } from "../components/shared/footer/footer";
-import { Auth } from "../components/auth/auth";
 import {
   BrowserRouter,
   Route,
@@ -10,55 +9,62 @@ import {
   withRouter,
 } from "react-router-dom";
 
-import { Verification } from "../components/verification/verification";
-import { Categories } from "../components/categories/list";
-import { Home } from "../components/home/home";
-import { PrivacyPolicy } from "../components/privacypolicy/privacypolicy";
+// import { Cart, Checkout } from "../components/cart";
 
-import { CategoryDetails } from "../components/categories/details";
-import { CourseDetails } from "../components/courses/details";
-import { forgotPassword } from "../components/phone-reset/forgot-password/forgot-password";
-import { VerifyId } from "../components/phone-reset/verify-id/verify";
-import { resetPassword } from "../components/phone-reset/reset-password/reset-password";
-
-import { Cart, Checkout } from "../components/cart";
-
-import { SubscriptionDetails } from "../components/account/subscriptions/subscription-details";
-import { Subscriptions } from "../components/account/subscriptions/subscriptions";
 import NotFound from "../components/shared/not-found/not-found";
 import requireAuth from "../components/shared/authentication/require-auth";
-
-import { Account } from "../components/account/settings/account";
-import BankAccounts from "../components/banks/banks";
-import FAQ from "../components/faq/faq";
-import { Transaction } from "../components/cart/transaction";
 import ScrollToTop from "../components/shared/scroll-to-top/ScrollToTop";
-import { Competition } from "../components/categories/competitions/competition";
-import { QuickQuestions } from "../components/categories/quick-questions/quick-questions";
-import { QuickQuestion } from "../components/categories/quick-questions/quick-question";
-import { QuestionSummary } from "../components/categories/quick-questions/question-summary";
-import { BillingCourses } from "../components/account/billings/billing-courses";
-import { BillingList } from "../components/account/billings/billing-list";
 import { connect } from "react-redux";
-import { EnterToLecture } from "../components/initiative/enter-lecture";
-import { InitiativesRole } from "../components/initiative/initiatives-role";
-import { InitiativesExam } from "../components/initiative/initiatives-exam";
-import { InitiativesDetails } from "../components/initiative/initiatives-details";
-import { CertificatesList } from "../components/account/certificates/certificates-list";
-import { Certificate } from "../components/account/certificates/certificate";
-import { Preparing } from "../components/account/certificates/preparing";
-import { StartExam } from "../components/categories/quick-questions/exams/start-exam";
-import { ExamDetails } from "../components/categories/quick-questions/exams/exam-details";
-import { ExamResult } from "../components/categories/quick-questions/exams/exam-result";
-import { StartTrainingExam } from "../components/categories/quick-questions/training/start-training";
-import { TrainingExamDetails } from "../components/categories/quick-questions/training/training-details";
-import { TrainingResult } from "../components/categories/quick-questions/training/training-result";
-import { Healthy } from "../components/shared/healthy";
-import { BookletComponent } from "../components/booklet-for-sell/booklet-list";
-import { BookletDetailsComponent } from "../components/booklet-for-sell/booklet-details";
-import HemmaSuccessDetails from "../components/hemma-success";
-import LandingPage from "../components/landing-page";
+// import { InitiativesRole } from "../components/initiative/initiatives-role";
+// import { InitiativesExam } from "../components/initiative/initiatives-exam";
+
+
+import {
+  Auth,
+  CategoryDetails,
+  resetPassword,
+  SubscriptionDetails,
+  CourseDetails,
+  Account,
+  Verification,
+  Certificate,
+  Transaction,
+  Subscriptions,
+  Competition,
+  QuickQuestion,
+  StartExam,
+  QuickQuestions,
+  Categories,
+  FAQ,
+  Healthy,
+  BankAccounts,
+  ExamResult,
+  Home,
+  HemmaSuccessDetails,
+  BookletDetailsComponent,
+  BookletComponent,
+  TrainingResult,
+  TrainingExamDetails,
+  PrivacyPolicy,
+  ExamDetails,
+  StartTrainingExam,
+  Preparing,
+  InitiativesDetails,
+  CertificatesList,
+  EnterToLecture,
+  BillingList,
+  BillingCourses,
+  QuestionSummary,
+  VerifyId,
+  Cart,
+  Checkout,
+  forgotPassword
+} from "./lazy-loaded-routes";
+import { Suspense } from "react";
+import LoadingScreen from './../shared-components/loading-screen/index';
+import LandingPage from './../components/landing-page/index';
 import CampaignMarketing from './../landing-pages/campaign-marketing/index';
+
 class AppBackground extends Component {
   componentDidMount()
   {
@@ -82,9 +88,9 @@ let plusPadding = 30;
 function checkIfNavbarFixedAndSetPadding() {
 
   if (document.querySelector('.navbar').classList.contains('fixed-top')) {
-      withFixedNav.style.paddingTop = document.querySelector('.navbar').clientHeight + 'px';
+      // withFixedNav.style.paddingTop = document.querySelector('.navbar').clientHeight + 'px';
   } else {
-    withFixedNav.style.paddingTop = '0';
+    // withFixedNav.style.paddingTop = '0';
   }
 }
 checkIfNavbarFixedAndSetPadding();
@@ -193,7 +199,7 @@ function loadingProgressbar() {
     return (
 
       <div
-        className="wrapper-bg with-fixed-header d-flex flex-column"
+        className="wrapper-bg d-flex flex-column"
         style={{
           backgroundImage: `url(/assets/images/${img})`,
           backgroundRepeat: "no-repeat",
@@ -216,6 +222,7 @@ class MainRouterComponent extends Component {
   render() {
     return (
       <BrowserRouter>
+      <Suspense fallback={<LoadingScreen />}>
         <ScrollToTop>
           <AppBackground>
             <Switch>
@@ -374,6 +381,7 @@ class MainRouterComponent extends Component {
             </Switch>
           </AppBackground>
         </ScrollToTop>
+      </Suspense>
       </BrowserRouter>
     );
   }

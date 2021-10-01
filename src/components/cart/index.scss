@@ -1,11 +1,20 @@
-.rules-wrapper{
-     p{
-        font-size: 14px !important;
-    }
+.rules-wrapper {
+  p {
+    font-size: 14px !important;
+  }
 }
 
+.normal-line-height {
+  line-height: 1 !important;
+}
 
-.form-check{
-    display: flex;
-    align-items: center;
+.badge {
+  background-color: #2bc3cc;
+  padding: 7px;
+  color: #fff;
+  text-align: center;
+  height:fit-content;
+  &:hover {
+    background-color: #2bc4cca0;
+  }
 }

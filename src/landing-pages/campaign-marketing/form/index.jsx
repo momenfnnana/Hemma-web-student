@@ -9,7 +9,7 @@ const url = (CategoryId) =>
   `${apiBaseUrl}/MarketingCampaign${CategoryId ? `/${CategoryId}` : ""}`;
 
 const fixedToken = "ec054203e5aaefed0a9390a9d6099703a8137f8a";
-const category = "69da69f7-6ef7-4e60-bf22-821aedd77ce3";
+const category = "3ccb028d-bb70-450c-b4cd-d21bc23f3102";
 
 const senderCanNotBeReceiverError = "لا يمكن أن يتطابق رقم المرسل و المستقبل";
 

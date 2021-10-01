@@ -12,7 +12,7 @@ import { ToastDemo } from "./toast-notification";
 var moment = require("moment");
 moment().format();
 
-export class QuickQuestions extends Component {
+export default class QuickQuestions extends Component {
   page = 1;
   limit = 6;
   endOfResults = false;
@@ -637,7 +637,7 @@ export class QuickQuestions extends Component {
                 </h6>
               </div>
 
-              {this.state.details.videoUrl && (
+              {this.state.details.videoUrl && this.state.details.isJoined && (
                 <>
                   <div className="group-all-question">
                     <div className="title-with-bg title-with-bg-blue">
