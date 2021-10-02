@@ -97,7 +97,7 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
   const filteredEmptySections = useMemo(
     () =>
       section?.chapters.filter((chapter) =>
-        getByMultiProp(chapter, ["isContainTraining", "isContainExam"])
+        getByMultiProp(chapter, ["isContainTraining", "isContainExam",'isContainAttachments'])
       ),
     [section]
   );
