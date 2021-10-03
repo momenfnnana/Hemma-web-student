@@ -5,4 +5,5 @@ export const ScheduleContext = createContext({
   sectionFound: {},
   chapters: [],
   details: {},
+  courseId: null
 });
