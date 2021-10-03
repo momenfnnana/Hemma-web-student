@@ -89,7 +89,7 @@ class HomeComponent extends Component {
       categoryGroups: [],
       success : [],
       maxSuccessHeight : 'fit-content',
-      isNationalDay:new Date().getDate() < nationalDayExpirationDay,
+      isNationalDay:new Date().getDate() < nationalDayExpirationDay && new Date().getMonth() === 8,
     };
   }
 
