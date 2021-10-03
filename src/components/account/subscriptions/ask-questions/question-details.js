@@ -8,11 +8,13 @@ import { connect } from "react-redux";
 import { getUser } from "../../../../actions/user.actions";
 import { reduxForm } from "redux-form";
 import Loader from "react-loaders";
+import Breadcrumbs from "./breadCrumbs";
 
 class AskQuestionDetailsComponent extends Component {
   constructor(props) {
     super(props);
     const questionId = this.props.match.params.id;
+    this.courseId = this.props.match.params.courseId;
     this.state = {
       details: [],
       showEditQuestionForm: false,
@@ -133,6 +135,8 @@ class AskQuestionDetailsComponent extends Component {
               <div className="row">
                 <div className="col-12">
                   <>
+                  
+                  <Breadcrumbs isMine={myIdentity == userId} courseId={this.courseId} />
                     <div>
                       <h6 className="dark-text">السؤال</h6>
                     </div>
@@ -192,7 +196,7 @@ class AskQuestionDetailsComponent extends Component {
                               src={this.state.details.content}
                               width="600"
                               height="400"
-                              className="contain-img"
+                              className="contain-img  w-100 h-auto"
                             />
                           ) : (
                             <p className="ar-text">
@@ -213,6 +217,7 @@ class AskQuestionDetailsComponent extends Component {
             </div>
             <div className="row">
               <CommentsList
+              courseId={this.courseId}
                 userId={this.state.details.studentId}
                 id={this.state.questionId}
               />

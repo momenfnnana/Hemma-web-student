@@ -3,6 +3,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Label} from "reactstrap";
 import axios from "axios";
 import {apiBaseUrl} from "../../../../api/helpers";
 import {withRouter} from "react-router-dom";
+import swal from "sweetalert";
 
 class AddQuestion extends Component {
 	constructor(props) {
@@ -15,8 +16,10 @@ class AddQuestion extends Component {
 			sectionId:'',
 			disableAdd: true,
 			disable:true,
-			question:null
+			question:null,
+			submitLoading: false,
 		};
+		this.setLoading = this.setLoading.bind(this)
 	}
 
 
@@ -31,6 +34,10 @@ class AddQuestion extends Component {
 			}
 		})
 	};
+
+	setLoading(loading){
+		this.setState({ submitLoading: loading });
+	}
 
 	componentDidMount(){
 		this.getSections();
@@ -47,9 +54,9 @@ class AddQuestion extends Component {
 			.get(`${apiBaseUrl}/Content/${courseId}/Sections`, { headers })
 			.then(response => {
 				this.setState({ sections: response.data.data });
-				if(response.data.data && response.data.data.length>=1){
-					this.setState({sectionId:response.data.data[0].id})
-				}
+				// if(response.data.data && response.data.data.length>=1){
+				// 	this.setState({sectionId:response.data.data[0].id})
+				// }
 			})
 			.catch(error => {
 				console.log(error);
@@ -62,37 +69,37 @@ class AddQuestion extends Component {
 
 	handleFileChange = event => {
 		event.preventDefault();
-		this.props.toggleModal();
 		let token = localStorage.getItem("token");
 		let headers = {
 			Authorization: `Bearer ${token}`
 		};
 		let data = new FormData();
-
+		
 		data.append("file", event.target.files[0]);
 		axios
-			.post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
-				headers
-			})
-			.then(response => {
-				this.setState({file: response.data.data.url, questionType: "Image"});
-				if (this.state.file) {
-					const courseId = this.props.match.params.id;
-					const sectionId = this.state.sectionId;
-					let token = localStorage.getItem("token");
-					let headers = {
-						Authorization: `Bearer ${token}`
-					};
-					let data = {
-						type: "Image",
-						content: this.state.file
-					};
-					axios
-						.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
-							headers
-						})
-						.then(response => {
-							this.props.updateQuestions(response.data.data);
+		.post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
+			headers
+		})
+		.then(response => {
+			this.setState({file: response.data.data.url, questionType: "Image"});
+			if (this.state.file) {
+				const courseId = this.props.match.params.id;
+				const sectionId = this.state.sectionId;
+				let token = localStorage.getItem("token");
+				let headers = {
+					Authorization: `Bearer ${token}`
+				};
+				let data = {
+					type: "Image",
+					content: this.state.file
+				};
+				axios
+				.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
+					headers
+				})
+				.then(response => {
+					this.props.updateQuestions(response.data.data);
+					this.props.toggleModal();
 						})
 						.catch(error => {
 							this.setState({disabled: false});
@@ -106,6 +113,7 @@ class AddQuestion extends Component {
 	};
 	handleSubmit = event => {
 		event.preventDefault();
+		this.setLoading(true)
 		this.handleToggleAdd();
 		const courseId = this.props.match.params.id;
 		const sectionId = this.state.sectionId;
@@ -127,8 +135,10 @@ class AddQuestion extends Component {
 				this.props.updateQuestions(response.data.data);
 			})
 			.catch(error => {
-				console.log(error);
-			});
+				swal("عفوا",error.message,"error")
+			}).finally(()=> {
+				this.setLoading(false)
+			})
 	}
 
 	render() {
@@ -155,7 +165,7 @@ class AddQuestion extends Component {
 							        onChange={(e)=>this.handleChange('sectionId',e)}
 							        name='sectionId'
 							>
-								<option value='' disabled>اختر الجزء </option>
+								<option value='' selected disabled>اختر الجزء </option>
 								{
 									this.state.sections && this.state.sections.map( (row) =>
 										<option value={row.id}>{row.nameAr}</option>
@@ -199,9 +209,8 @@ class AddQuestion extends Component {
 							</div>
 						</ModalBody>
 						<ModalFooter>
-							<button className="btn dark-outline-btn w-25" type="submit" onClick={this.onHide}
-							        disabled={this.state.disableAdd}>
-								اضافة
+							<button disabled={this.state.submitLoading} className="btn dark-outline-btn w-25" type="submit" onClick={this.onHide}>
+								{!this.state.submitLoading ? "اضافة" : "يتم الاضافة"}
 							</button>
 						</ModalFooter>
 					</form>

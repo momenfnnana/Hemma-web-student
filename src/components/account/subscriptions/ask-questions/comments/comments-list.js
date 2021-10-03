@@ -18,6 +18,7 @@ export class CommentsListComponent extends Component {
   endOfResults = false;
   constructor(props) {
     super(props);
+    this.courseId = this.props.courseId
     this.state = {
       comments: [],
       comment: "",
