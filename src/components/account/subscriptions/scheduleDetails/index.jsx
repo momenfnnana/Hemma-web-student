@@ -77,7 +77,8 @@ export default function ScheduleDetails(props) {
     chapters,
     chapterFound,
     details,
-    nestedId
+    nestedId,
+    courseId
   };
   //nestedId could be sectionId or chapterId accoring to type
   return (
