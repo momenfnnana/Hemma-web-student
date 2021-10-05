@@ -1,0 +1,19 @@
+.nav-item{
+    & li,a{
+        display: flex;
+        align-items: center;
+        justify-content: stretch;
+        &.active{
+            &  h6{
+                background-color: #4b3a85;
+                color: #fff !important;
+            }
+        }
+    }
+    &  h6{
+        padding: 7px;
+        background-color: #f4f4f4;
+        border-radius:7px;
+        margin: 0 0.5rem;
+    }
+}

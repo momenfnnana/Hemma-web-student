@@ -324,8 +324,14 @@ class SubscriptionDetailsComponent extends Component {
                       component={TrainingResult}
                       exact
                     />
-                    <Route
+                     <Route
+                      exact
                       path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+                    <Route
+                      exact
+                      path="/course/content/:id/askQuestions/list/:questionsType"
                       component={AskQuestionsList}
                     />
                     <Route
