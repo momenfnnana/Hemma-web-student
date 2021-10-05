@@ -93,7 +93,6 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
     })
     return propFound
   }
-
   const filteredEmptySections = useMemo(
     () =>
       section?.chapters.filter((chapter) =>
@@ -116,9 +115,9 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
             showToggle={!!section?.chapters?.length}
             {...props}
           />
-          {show && (
-            <div className="row">
-              {filteredEmptySections?.map((chapter) => (
+          {1 && (
+            <div className="d-grid fr-2-1">
+              {section?.chapters?.map((chapter) => (
                 <SectionContent isContainLectures={chapter?.lectures?.length} {...chapter} {...props} />
               ))}
             </div>
