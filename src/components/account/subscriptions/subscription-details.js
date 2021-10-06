@@ -18,6 +18,7 @@ import { ExamDetails } from "./exams/exam-details";
 import { ExamResult } from "./exams/exam-result";
 import { RatingModal } from "./rating/rating-modal";
 import { getSubscription } from "../../../actions/subscription.actions";
+import { setDeisgnType } from "../../../actions/user.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
@@ -72,8 +73,19 @@ class SubscriptionDetailsComponent extends Component {
     });
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.designType !== prevProps.designType) {
+      this.setState({ loading: true }, () => {
+        setTimeout(() => {
+          this.setState({ loading: false });
+        }, 300);
+      });
+    }
+  }
+
   toggleDesign() {
-    this.setState({ designType: +!this.state.designType });
+    this.props.setDeisgnType(+!this.props.designType);
+    // this.setState({ designType: +!this.state.designType });
   }
 
   createChannel = () => {
@@ -161,58 +173,72 @@ class SubscriptionDetailsComponent extends Component {
               <div className="container mt-5 pb-5">
                 <div className="row">
                   <div className="col-md-3 col-12">
-                    <MergedSidebar
-                      designType={this.state.designType}
-                      subscription={subscription}
-                      courseId={courseId}
-                    />
-                    {ratingStatus === "Skipped" && (
-                      <button
-                        className="btn light-btn w-100 mb-3"
-                        onClick={() =>
-                          this.setState({ forceOpenRatingModal: true })
-                        }
-                      >
-                        قيّم الدورة
-                      </button>
+                    {!this.state.loading && (
+                      <div className="animate-down">
+                        <MergedSidebar
+                          designType={this.props.designType}
+                          subscription={subscription}
+                          courseId={courseId}
+                        />
+                        {ratingStatus === "Skipped" && (
+                          <button
+                            className="btn light-btn w-100 mb-3"
+                            onClick={() =>
+                              this.setState({ forceOpenRatingModal: true })
+                            }
+                          >
+                            قيّم الدورة
+                          </button>
+                        )}
+                        <RatingModal
+                          isRatingModalOpen={
+                            ratingStatus === "Available" ||
+                            this.state.forceOpenRatingModal
+                          }
+                          onClose={() =>
+                            this.setState({ forceOpenRatingModal: false })
+                          }
+                          status={ratingStatus}
+                          courseId={courseId}
+                        />
+                        <Instructors id={courseId} />
+                      </div>
                     )}
-                    <RatingModal
-                      isRatingModalOpen={
-                        ratingStatus === "Available" ||
-                        this.state.forceOpenRatingModal
-                      }
-                      onClose={() =>
-                        this.setState({ forceOpenRatingModal: false })
-                      }
-                      status={ratingStatus}
-                      courseId={courseId}
-                    />
-                    <Instructors id={courseId} />
                   </div>
                   <div className="col-md-9 col-12">
-                    <Route path="/course/content/:id/schedule" exact>
-                    </Route>
+                    <Route path="/course/content/:id/schedule" exact></Route>
                     <Route
                       path="/course/content/:id/schedule"
                       exact
                       render={(props) => (
                         <>
-                        <DesignSwitch
-                          designType={this.state.designType}
-                          onChange={this.toggleDesign}
-                        />
-                          {this.state.designType ? (
-                            <Schedule
-                              subscription={subscription}
-                              courseId={courseId}
-                              courseName={subscription && subscription.nameAr}
-                              {...props}
-                            />
-                          ) : (
-                            <ClassicSchedule
-                              courseName={subscription && subscription.nameAr}
-                              {...props}
-                            />
+                          <DesignSwitch
+                            designType={this.props.designType}
+                            onChange={this.toggleDesign}
+                          />
+                          {!this.state.loading && (
+                            <>
+                              <div className="animate-down">
+                                <Schedule
+                                  designType={this.props.designType}
+                                  subscription={subscription}
+                                  courseId={courseId}
+                                  courseName={
+                                    subscription && subscription.nameAr
+                                  }
+                                  {...props}
+                                >
+                                  <div className="animate-down">
+                                    <ClassicSchedule
+                                      courseName={
+                                        subscription && subscription.nameAr
+                                      }
+                                      {...props}
+                                    />
+                                  </div>
+                                </Schedule>
+                              </div>
+                            </>
                           )}
                         </>
                       )}
@@ -300,6 +326,11 @@ class SubscriptionDetailsComponent extends Component {
                       exact
                     />
                     <Route
+                      exact
+                      path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+                    <Route
                       path="/course/content/:id/askQuestions/list"
                       component={AskQuestionsList}
                     />
@@ -347,9 +378,14 @@ function mapStateToProps(state) {
     subscription: state.subscription,
   };
 }
+const mapDispatchToProps = {
+  getSubscription,
+  setDeisgnType,
+};
 
-SubscriptionDetailsComponent = connect(mapStateToProps, { getSubscription })(
-  SubscriptionDetailsComponent
-);
+SubscriptionDetailsComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SubscriptionDetailsComponent);
 
 export default withRouter(SubscriptionDetailsComponent);
