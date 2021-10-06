@@ -53,7 +53,7 @@ class CartItemsListComponent extends Component {
     return (
       <div className="row">
         <div className="col-12">
-          <h6 className="dark-text">قائمة الدورات</h6>
+          <h6 className="dark-text">قائمة المشتريات</h6>
           {items &&
             items.map((item, i) => (
               <>
