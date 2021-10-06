@@ -71,9 +71,9 @@ export default function SectionContent({
   const filtedByDisplayKey = useMemo(()=>  filterHeaderTitles(sectionHeaderBtns,displayKeysObjects),[displayKeysObjects])
   
   return (
-    <div class="row col-md-6 col-12" id="lectures-lists-one">
-      <div class=" card-container col-12">
-        <div class="card-hover border-radius-20 overflow-hidden p-3">
+    <div class="" id="lectures-lists-one">
+      <div class="card-container h-100">
+        <div class="card-hover border-radius-20 overflow-hidden p-3 mb-0 h-100">
           <div class="d-flex align-items-center mb-3">
             <img
               src="https://hemmma.netlify.app/images/icon-title-section.png"

@@ -62,7 +62,9 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
 
-  const {isContainTraining,isContainExam} = section
+  const {chapters = []} = section || {}
+  const hasTrainings = chapters.some(chapter => chapter.isContainTraining) 
+  const hasExams = chapters.some(chapter => chapter.isContainExam) 
 
   const {
     match: {
@@ -71,27 +73,40 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
     history: { push },
   } = props;
 
-  // const displayKeysObjects = {
-  //   isContainTraining,
-  //   isContainExam,
-  // }
+  const displayKeysObjects = {
+    isContainTraining: hasTrainings,
+    isContainExam: hasExams,
+  }
 
-  // const sectionLinksfiltedByDisplayKey = useMemo(
-  //   () =>
-  //   sectionLinks(section)?.filter(
-  //       (_headerBtn) => !!displayKeysObjects?.[_headerBtn?.displayKey]
-  //     ),
-  //   [displayKeysObjects]
-  // );
+  const sectionLinksfiltedByDisplayKey = useMemo(
+    () =>
+    sectionLinks(section)?.filter(
+        (_headerBtn) => !!displayKeysObjects?.[_headerBtn?.displayKey]
+      ),
+    [displayKeysObjects]
+  );
 
-  const links = sectionLinks(section)
+  const getByMultiProp = (value,props = [])=>{
+    let propFound = false
+    props.forEach(prop => {
+      if(value?.[prop]) propFound = true
+    })
+    return propFound
+  }
+  const filteredEmptySections = useMemo(
+    () =>
+      section?.chapters.filter((chapter) =>
+        getByMultiProp(chapter, ["isContainTraining", "isContainExam",'isContainAttachments'])
+      ),
+    [section]
+  );
 
   return (
     <>
       {
         <div className="part-name-section">
           <ScheduleHeader
-            links={links}
+            links={sectionLinksfiltedByDisplayKey}
             courseId={courseId}
             push={push}
             name={section?.nameAr}
@@ -100,8 +115,8 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
             showToggle={!!section?.chapters?.length}
             {...props}
           />
-          {show && (
-            <div className="row">
+          {1 && (
+            <div className="d-grid fr-2-1">
               {section?.chapters?.map((chapter) => (
                 <SectionContent isContainLectures={chapter?.lectures?.length} {...chapter} {...props} />
               ))}

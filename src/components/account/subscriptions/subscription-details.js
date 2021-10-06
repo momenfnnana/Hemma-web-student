@@ -47,7 +47,7 @@ class SubscriptionDetailsComponent extends Component {
       isInstallmentOpen: false,
       isRefundOpen: false,
       channelsRef: firebase.database().ref("channels"),
-      designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
+      // designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
     };
     this.toggleDesign = this.toggleDesign.bind(this);
   }
@@ -105,11 +105,12 @@ class SubscriptionDetailsComponent extends Component {
   render() {
     const courseId = this.props.match.params.id;
     const subscription =
-      this.props &&
-      this.props.subscription &&
-      this.props.subscription.subscription;
+    this.props &&
+    this.props.subscription &&
+    this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
+    
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -335,6 +336,11 @@ class SubscriptionDetailsComponent extends Component {
                       component={AskQuestionsList}
                     />
                     <Route
+                      exact
+                      path="/course/content/:id/askQuestions/list/:questionsType"
+                      component={AskQuestionsList}
+                    />
+                    <Route
                       path="/course/content/:courseId/askQuestions/details/:id"
                       component={AskQuestionDetails}
                     />
@@ -376,6 +382,8 @@ class SubscriptionDetailsComponent extends Component {
 function mapStateToProps(state) {
   return {
     subscription: state.subscription,
+    designType: state.user?.designType,
+    user: state.user,
   };
 }
 const mapDispatchToProps = {

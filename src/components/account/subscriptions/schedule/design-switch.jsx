@@ -10,7 +10,7 @@ const btnSettings = [
     id: 0,
   },
   {
-    title: "الرجوع للتقيم السابق",
+    title: "الرجوع للتقسيم السابق",
     path: (id) => `/course/content/${id}/classic-schedule`,
     icon: "fas fa-grip-lines",
     id: 1,

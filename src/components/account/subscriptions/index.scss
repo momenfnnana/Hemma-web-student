@@ -27,3 +27,18 @@
     width: 100% !important;
   }
 }
+
+@keyframes animate-downs {
+  from{
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.animate-down{
+  animation:  animate-downs 0.7s  cubic-bezier(0.075, 0.82, 0.165, 1);
+}

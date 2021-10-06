@@ -34,7 +34,6 @@ class MiniCartItemsListComponent extends Component {
   }
   render() {
     const items = this.props.cart && this.props.cart.items;
-    console.log({ cart: this.props.cart });
 
     if (!items) return null;
     if (items.length == 0) {

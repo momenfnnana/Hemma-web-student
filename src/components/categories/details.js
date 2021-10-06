@@ -109,7 +109,7 @@ export class _CategoryDetails extends Component {
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    const { subcategoriesdetails } = this.state;
+    const { subcategoriesdetails,hasProfessionalLicense } = this.state;
     axios.get(url, { headers }).then((response) => {
       const courses = response.data.data.data;
       this.setState({
@@ -120,8 +120,8 @@ export class _CategoryDetails extends Component {
       });
       if (
         !hasFreeFlag &&
-        !!courses?.length &&
-        !subcategoriesdetails.length
+        !!courses?.length 
+        && !hasProfessionalLicense
       )
         this.changeTab("tab-two");
     });
@@ -784,8 +784,8 @@ export class _CategoryDetails extends Component {
   renderSuccess() {
     return this.state.successes.map((successCase) => (
       <React.Fragment>
-        <div class="col-lg-4">
-          <div class="status-card sider-items min-height-150">
+        <div class="h-100">
+          <div class="status-card sider-items h-100">
             <div class="quote-icon">
               <i class="fas fa-quote-left"></i>
             </div>
@@ -955,7 +955,14 @@ export class _CategoryDetails extends Component {
                   <div>
                     <div className="container">
                       <ShowAt at={this.state.currentTab === "tab-four"}>
-                        <div className="row">
+                        <div className=""
+                        
+                        style={{
+                          gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
+                          display:'grid',
+                          gridRowGap:"1.5rem",
+                          gridColumnGap:"0.5rem"
+                        }}>
                           {this.renderSuccess()}
                           {this.state.hideBtnSuccess && (
                             <div className="row col-md-12">
