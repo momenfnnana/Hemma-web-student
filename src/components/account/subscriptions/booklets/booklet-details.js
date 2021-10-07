@@ -72,6 +72,20 @@ export class BookletDetailsComponent extends Component {
                     )}
                     content={() => this.componentRef}
                   />
+                
+                      <a  href={this.props.location.state.url} target="_blank" className="white-border bg-transparent rounded d-flex align-items-center justify-content-center p-1 clickable ml-3"
+                      >
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/download.png"
+                          }
+                          height="25"
+                          className="contain-img clickable"
+                        />
+                      </a>
+               
+                  {/* <a href={this.props.location.state.url} target="_blank">تنزيل</a> */}
                 </div>
               </div>
               <div className="m-4">

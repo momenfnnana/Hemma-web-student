@@ -7,6 +7,7 @@ export const lvls = [
 
 export const findTitle = (id)=>{
  const foundLvl =   lvls.find(lvl => lvl.id === id)
+ if(hiddenLvlsIds.includes(foundLvl.id)) return ''
  return foundLvl?.title || ''
 }
 

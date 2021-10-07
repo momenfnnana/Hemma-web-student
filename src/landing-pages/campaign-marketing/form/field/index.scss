@@ -1,0 +1,17 @@
+.campaign-field{
+    & input{
+        min-height:fit-content !important;
+        border-radius: 5px;
+        border-color: #f4f4f4;
+        box-shadow: none;
+        border: 1px solid #ddd;
+        
+        &::placeholder{
+            color: #ddd;
+        }
+
+        &:focus{
+            outline: none;
+        }
+    }
+}

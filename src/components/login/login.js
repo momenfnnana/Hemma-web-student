@@ -55,6 +55,7 @@ class LoginComponent extends Component {
       nextPageUrl: `${apiBaseUrl}/courses/purchased?Page=1&Limit=50&SubscriptionStatus=${this.props.subscriptionStatus}`
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
+    this.handlePendingActions = this.handlePendingActions.bind(this);
   }
   componentDidMount() {
 
@@ -68,6 +69,54 @@ class LoginComponent extends Component {
         {this.myFormHandler(decryptedData)}
        
     }
+}
+
+async moveToCart(){
+  this.props.history.push("/cart")
+}
+
+alertError(errorMsg){
+  swal("عفواً", errorMsg, "error", {
+    button: "متابعة"
+  });
+}
+
+
+clearPendingActions(){
+  localStorage.removeItem("PostCardAction");
+}
+
+async handlePendingActions(onNoPendingActions = ()=>{}) {
+  let postCardActionstr = localStorage.getItem("PostCardAction");
+
+  if(postCardActionstr){
+    let postCardActions = JSON.parse(postCardActionstr);
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`
+    };
+    let promiseArray = []
+    postCardActions.forEach((postCardAction, index) =>{  
+      const promise = axios.post(postCardAction.url, postCardAction.body, {headers})
+      promiseArray.push(promise)
+    })
+      Promise.allSettled(promiseArray)
+        .then((results) => {
+          results.forEach(({status,value,reason}) =>{
+            if(reason){
+              const {response : {data: {error}}} = reason
+              if(error)
+              this.alertError(error)
+            }
+          })
+          this.clearPendingActions()
+          this.moveToCart()
+        })
+        .catch((err) => {
+        });
+  }else {
+    onNoPendingActions()
+  }
 }
 
   togglePasswordShow() {
@@ -87,7 +136,6 @@ class LoginComponent extends Component {
 
      //   GetUserSubscriptions(this.props);
         this.setState({ loading: false });
-
         if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
@@ -95,39 +143,21 @@ class LoginComponent extends Component {
               this.props.history.push("/verify");
             })
             .catch(error => {
-              this.props.history.push("/");
-            });
+              this.handlePendingActions(()=>this.props.history.push("/"))
+            }).finally(()=>{
+            })
         } else {
-          ;
+          this.handlePendingActions(()=>{
             if (this.state.isChecked) {
                 let storedobj=  JSON.stringify(values);
                 let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
                 localStorage.setItem('account',ciphertext);
                 localStorage.setItem('checkbox', this.state.isChecked);
             }
-            let postCardActionstr = localStorage.getItem("PostCardAction");
-            if(postCardActionstr != null)
-            {
-              let postCardActions = JSON.parse(postCardActionstr);
-              let token = localStorage.getItem("token");
-              let headers = {
-                Authorization: `Bearer ${token}`
-              };
-              const promises = postCardActions.map((postCardAction, index) =>{  
-                return axios.post(postCardAction.url, postCardAction.body, {headers})} );
-
-                promises.map(async (promise, index) => {
-                  try {
-                    const res = await promise;
-                    if (index === postCardActions.length - 1) {this.props.history.push("/cart");};
-                  } catch (error) {this.props.history.push("/cart");}
-                });
-            }
             else{
               this.props.history.goBack();
             }
-
-
+          })
         }
       })
       .catch(error => {
@@ -181,23 +211,13 @@ class LoginComponent extends Component {
             >
               <MdLockOutline />
             </Field>
-            {this.state.hidden ? (
               <img
-                src={process.env.PUBLIC_URL + "/assets/images/closed-eye.png"}
+                src={process.env.PUBLIC_URL + `/assets/images/${this.state.hidden ? 'closed-' : ''}eye.png`}
                 width="100%"
                 width="20"
-                className="position-absolute left-input-icon"
+                className="position-absolute left-input-icon top-50 z-5"
                 onClick={this.togglePasswordShow}
               />
-            ) : (
-              <img
-                src={process.env.PUBLIC_URL + "/assets/images/eye.png"}
-                width="100%"
-                width="20"
-                className="position-absolute left-input-icon"
-                onClick={this.togglePasswordShow}
-              />
-            )}
           </div>
           <div>
           <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />

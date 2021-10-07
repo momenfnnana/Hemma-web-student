@@ -21,7 +21,13 @@ import WrapperText from './../../shared-components/WrappedText/inedx';
 import PopupHemma from "./popupHemma";
 // // Optional Theme Stylesheet
 // import "public/assets/css/glide.theme.min.css";
+const nationalDayImgName = 'national-day.png'
+const defaultImgPath = 'bg.png'
 
+const imgsPath = (img)=>`${process.env.PUBLIC_URL}/assets/images/${img}`
+
+const nationalDayImageUrl = imgsPath(nationalDayImgName)
+const defaultImgUrl = imgsPath(defaultImgPath)
 
 var moment = require("moment");
 moment().format();
@@ -72,6 +78,8 @@ const enabledCarsoulOptions = {
 
 class HomeComponent extends Component {
   constructor(props) {
+    //this is the expiration day
+    const nationalDayExpirationDay = 26
     super(props);
     this.state = {
       categories: [],
@@ -80,7 +88,8 @@ class HomeComponent extends Component {
       initiatives: [],
       categoryGroups: [],
       success : [],
-      maxSuccessHeight : 'fit-content'
+      maxSuccessHeight : 'fit-content',
+      isNationalDay:new Date().getDate() < nationalDayExpirationDay && new Date().getMonth() === 8,
     };
   }
 
@@ -89,19 +98,20 @@ class HomeComponent extends Component {
     const lessThanThreeElemesOptions = count <= MIN_ELEM_COUNT ? disabledCarsoulOptions : null
     const isMobileOptions = isMobile ? mobileCarsoulOptions : null
     const mergedOptions = {...lessThanThreeElemesOptions,...isMobileOptions}
-    new Glide(glideWrapper,{...enabledCarsoulOptions,...mergedOptions}).mount()
+    const glide = new Glide(glideWrapper,{...enabledCarsoulOptions,...mergedOptions})
+    glide.mount()
   }
 
   componentDidMount() {
     const myOptions = {
-      type: 'carousel',
+      // type: 'carousel',
       startAt: 1,
       perView: 3,
       focusAt: 'center',
       gap: 20,
-      autoplay: 4000,
+      autoplay: 100000000,
       // animationTimingFunc: 'ease-in-out',
-      animationDuration: 800,
+      animationDuration: 1000000,
       // peek: {
       //   before: 100,
       //   after: 100
@@ -336,7 +346,6 @@ async onClick(Category){
     const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
     
     //if(!childCateg.length) this.handleNoChildCategories()
-
     const url = `/categories/details/${categSlug}`
     if(!navigationType) this.handleNoChildCategories()
     if(navigationType === '_blank') window.open(url)
@@ -620,12 +629,14 @@ async onClick(Category){
       maxHeight = elemNode?.offsetHeight 
     })
     this.setState({...this.state,maxSuccessHeight : maxHeight})
+    return maxHeight
   }
 
   componentDidUpdate(prevProps, prevState){
     if(prevState.success?.length !== this.state.success?.length)
     setTimeout(() => {
-      this.findSuccessElemsHeight()
+     const maxHeight =  this.findSuccessElemsHeight()
+      this.setState({success:  this.state.success.map(suc => ({...suc, height:maxHeight}))})
     },1000)
   }
 
@@ -633,15 +644,15 @@ renderSucces()
 {
   return this.state.success.map((suc, index) => (
     <React.Fragment>
-<li className="glide__slide d-flex flex-column" id={`success-item ${index}`} style={{minHeight:+this.state.maxSuccessHeight ? `${this.state.maxSuccessHeight}px` :  'fit-content'}}>
-                <div className="sider-items  min-height-150 flex-1">
+            <li className="glide__slide d-flex flex-column"  style={{minHeight:`${this.state.maxSuccessHeight}px`}}>
+                <div className="sider-items   flex-1" id={`success-item ${index}`} style={{minHeight:`${this.state.maxSuccessHeight}px`}}>
                   <div className="quote-icon"><i className="fas fa-quote-left"></i></div>
                   <h4 className="color-danger wrapped-text">{suc.courseName}</h4>
                   {suc.source == "Media" ? (
                     <React.Fragment>
-<a href={suc?.url}>
-        <img src={suc?.img} className="w-100 h-auto" />
-      </a>
+                      <a href={suc?.url}>
+                        <img src={suc?.img} className="w-100 h-auto" />
+                      </a>
 
                     </React.Fragment>
                    
@@ -672,7 +683,7 @@ renderSucces()
       <React.Fragment>
        <PopupHemma/>
        <section id="hemma-banner" className="main-banner ">
-         <div className='banner banner-program'>
+        {!this.state.isNationalDay && <div className='banner banner-program'>
            <div className="container program-container py-4 ">
              <div>
                <h2>  برنامج
@@ -684,9 +695,9 @@ renderSucces()
                <button type="button" className="btn btn-warning join-now">انضم الان</button>
              </Link>
            </div>
-         </div>
+         </div>}
       {/* <!-- Start The Main Banner Text --> */}
-      <div className="banner-image fixed-image-bg overlay-bg">
+      <div className={`banner-image fixed-image-bg overlay-bg ${!this.state.isNationalDay ? 'has-overlay' : ''}`} style={{backgroundImage : `url(${this.state.isNationalDay ? nationalDayImageUrl : defaultImgUrl})` }} >
         <div className="banner-info d-flex-column overflow-hidden">
           <div className="container">
             <div className="banner-text text-white">
@@ -897,6 +908,4 @@ function mapStateToProps(state) {
   };
 }
 
-HomeComponent = connect(mapStateToProps)(HomeComponent);
-
-export const Home = HomeComponent;
+export default connect(mapStateToProps)(HomeComponent);

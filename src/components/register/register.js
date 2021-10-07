@@ -70,10 +70,59 @@ class RegisterComponent extends Component {
       isPageLoading: false,
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
+    this.handlePendingActions = this.handlePendingActions.bind(this);
   }
 
   togglePasswordShow() {
     this.setState({ hidden: !this.state.hidden });
+  }
+
+  
+alertError(errorMsg){
+  swal("عفواً", errorMsg, "error", {
+    button: "متابعة"
+  });
+}
+
+
+clearPendingActions(){
+  localStorage.removeItem("PostCardAction");
+}
+
+  async handlePendingActions(onNoPendingActions = ()=>{}) {
+    let postCardActionstr = localStorage.getItem("PostCardAction");
+  
+    if(postCardActionstr){
+      let postCardActions = JSON.parse(postCardActionstr);
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`
+      };
+      let promiseArray = []
+      postCardActions.forEach((postCardAction, index) =>{  
+        const promise = axios.post(postCardAction.url, postCardAction.body, {headers})
+        promiseArray.push(promise)
+      })
+        Promise.allSettled(promiseArray)
+          .then((results) => {
+            results.forEach(({status,value,reason}) =>{
+              if(reason){
+                const {response : {data: {error}}} = reason
+                if(error)
+                this.alertError(error)
+              }
+            })
+            this.clearPendingActions()
+            this.moveToCart()
+          })
+          .catch((err) => {
+          });
+    }else {
+      onNoPendingActions()
+    }
+  }
+  async moveToCart(){
+    this.props.history.push("/cart")
   }
 
   myFormHandler = (values) => {
@@ -92,24 +141,31 @@ class RegisterComponent extends Component {
     this.setState({ loading: true });
     request
       .then((action) => {
-
         this.setState({ loading: false, isPageLoading: true });
         if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
             .then(() => {
-              this.props.history.push("/home");
+              this.handlePendingActions(()=>{
+                this.props.history.push("/home");
+                window.location.reload()
+              })
             })
             .catch((error) => {
-              this.props.history.push("/");
+              this.handlePendingActions(()=>{
+                this.props.history.push("/");
+              })
             });
         } else {
-          this.props.history.push("/");
+          this.handlePendingActions(()=>{
+            this.props.history.push("/");
+          })
         }
       })
       .catch((error) => {
         this.setState({ loading: false });
         switch (error.response.data && error.response.data.error) {
+
           case "Duplicate":
             swal("عفواً", "هذا المستخدم مسجل سابقاً", "error", {
               button: "متابعة",

@@ -236,4 +236,4 @@ ExamResultComponent = reduxForm({
 
 ExamResultComponent = connect(mapStateToProps)(ExamResultComponent);
 
-export const ExamResult = withRouter(ExamResultComponent);
+export default withRouter(ExamResultComponent);

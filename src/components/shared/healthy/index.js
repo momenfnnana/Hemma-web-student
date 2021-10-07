@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 
-export class Healthy extends Component {
+export default class Healthy extends Component {
     state = {
         healthy: true,
         status: 200

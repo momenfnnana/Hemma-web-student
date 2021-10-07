@@ -1,14 +1,15 @@
 import React, { Component } from "react";
-import { Table, TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
-import { withRouter, Link } from "react-router-dom";
+import { Table, TabContent, TabPane, Nav, NavItem,  } from "reactstrap";
+import { withRouter, Link, NavLink, Route } from "react-router-dom";
 import classnames from "classnames";
 import AddQuestion from "./add-question";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
-import {AskQuestionDetails} from "./question-details";
-import {connect} from "react-redux";
-
+import { AskQuestionDetails } from "./question-details";
+import { connect } from "react-redux";
+import SwitchRender from "../../../../HOC/SwitchRender";
+import "./index.scss"
 class AskQuestionsListComponent extends Component {
   page = 1;
   limit = 10;
@@ -16,8 +17,12 @@ class AskQuestionsListComponent extends Component {
   allQuestionPage = 1;
   endOfResults = false;
   endOfAllQuestionsResults = false;
+  constructor(props) {
+    super(props)
+    this.courseId = this.props.match.params.id;
+  }
   state = {
-    showTable:true,
+    showTable: true,
     isAddQuestionOpen: false,
     allQuestions: [],
     myQuestions: [],
@@ -26,61 +31,63 @@ class AskQuestionsListComponent extends Component {
     hideAllQuestionsBtn: false,
     disabled: false,
     nextPageUrl: `${apiBaseUrl}/AskQuestions/me?courseId=${this.props.match.params.id}&page=${this.page}&limit=${this.limit}`,
-    nextAllQuestionPageUrl: `${apiBaseUrl}/AskQuestions?courseId=${this.props.match.params.id}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`
+    nextAllQuestionPageUrl: `${apiBaseUrl}/AskQuestions?courseId=${this.props.match.params.id}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`,
   };
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({ activeTab: tab });
     }
+  }
+
+  hideTable = (id) => {
+    this.setState({ showTable: false, qstId: id });
   };
 
-  hideTable = (id) =>{
-    this.setState({showTable : false,qstId:id})
-  };
-
-  showTable = ()=>{
-    this.setState({showTable : true})
+  showTable = () => {
+    this.setState({ showTable: true });
   };
 
   toggleModal = () => {
     this.setState({ isAddQuestionOpen: !this.state.isAddQuestionOpen });
-    this.showTable()
+    this.showTable();
   };
 
   componentDidMount() {
     this.loadMore();
     this.loadAllQuestions();
+    if(!this.props.match.params.questionsType)
+    this.props.history.push(`/course/content/${this.courseId}/askQuestions/list/myQuestions`)
   }
 
   loadMore = async () => {
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     this.setState({ loading: true, disabled: true });
     if (!this.endOfResults) {
       axios
         .get(this.state.nextPageUrl, { headers })
-        .then(response => {
+        .then((response) => {
           this.setState({ loading: false, disabled: false });
           const paginationMyQuestions = [
             ...this.state.myQuestions,
-            ...response.data.data.data
+            ...response.data.data.data,
           ];
           this.endOfResults = response.data.data.data.itemCount < this.limit;
           this.page++;
           const nextUrl = `${apiBaseUrl}/AskQuestions/me?courseId=${courseId}&page=${this.page}&limit=${this.limit}`;
           this.setState({
             myQuestions: paginationMyQuestions,
-            nextPageUrl: nextUrl
+            nextPageUrl: nextUrl,
           });
           if (paginationMyQuestions.length === response.data.data.itemCount) {
             this.setState({ hideBtn: true });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.setState({ loading: false, disabled: false });
         });
@@ -91,17 +98,17 @@ class AskQuestionsListComponent extends Component {
     const courseId = this.props.match.params.id;
     let token = localStorage.getItem("token");
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     this.setState({ loading: true, disabled: true });
     if (!this.endOfAllQuestionsResults) {
       axios
         .get(this.state.nextAllQuestionPageUrl, { headers })
-        .then(response => {
+        .then((response) => {
           this.setState({ loading: false, disabled: false });
           const pagenationAllQuestions = [
             ...this.state.allQuestions,
-            ...response.data.data.data
+            ...response.data.data.data,
           ];
           this.endOfAllQuestionsResults =
             response.data.data.data.itemCount < this.limit;
@@ -109,13 +116,13 @@ class AskQuestionsListComponent extends Component {
           const nextUrl = `${apiBaseUrl}/AskQuestions?courseId=${courseId}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`;
           this.setState({
             allQuestions: pagenationAllQuestions,
-            nextAllQuestionPageUrl: nextUrl
+            nextAllQuestionPageUrl: nextUrl,
           });
           if (pagenationAllQuestions.length === response.data.data.itemCount) {
             this.setState({ hideAllQuestionsBtn: true });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
           this.setState({ loading: false, disabled: false });
         });
@@ -149,13 +156,12 @@ class AskQuestionsListComponent extends Component {
                 </span>
               </td>
               <td>
-                <button
-                    className="btn light-btn unset-height unset-line-height w-50"
-                    onClick={()=>this.hideTable(myQuestion.id)}
+                <Link
+                  className="btn light-btn unset-height unset-line-height w-50"
+                  to={`/course/content/${this.props.match.params.id}/askQuestions/details/${myQuestion.id}`}
                 >
                   التفاصيل
-                </button>
-
+                </Link>
               </td>
             </tr>
           </>
@@ -203,23 +209,27 @@ class AskQuestionsListComponent extends Component {
     }
   }
 
-  updateQuestionsList = newQuestion => {
+  updateQuestionsList = (newQuestion) => {
     this.setState({ myQuestions: [newQuestion, ...this.state.myQuestions] });
   };
 
   render() {
-    const hasAskQuestion = this.props.subscription && this.props.subscription.subscription.hasAskQuestion;
-	  return (
+    const hasAskQuestion =
+      this.props.subscription &&
+      this.props.subscription.subscription.hasAskQuestion;
+    return (
       <React.Fragment>
         <div className="container pb-5">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-6 d-flex align-items-center">
               <Nav tabs className="border-bottom-0">
                 <NavItem>
                   <NavLink
-                    className={`${classnames({
-                      active: this.state.activeTab === "userQuestions"
-                    })} ${"clickable"}`}
+                   
+                    to={`/course/content/${this.courseId}/askQuestions/list/myQuestions`}
+                    // className={`${classnames({
+                    //   active: this.state.activeTab === "userQuestions",
+                    // })} ${"clickable"}`}
                     onClick={() => {
                       this.showTable();
                       this.toggle("userQuestions");
@@ -230,8 +240,9 @@ class AskQuestionsListComponent extends Component {
                 </NavItem>
                 <NavItem>
                   <NavLink
+                    to={`/course/content/${this.courseId}/askQuestions/list/allQeustions`}
                     className={`${classnames({
-                      active: this.state.activeTab === "allQuestions"
+                      active: this.state.activeTab === "allQuestions",
                     })} ${"clickable"}`}
                     onClick={() => {
                       this.showTable();
@@ -239,105 +250,125 @@ class AskQuestionsListComponent extends Component {
                     }}
                   >
                     <h6 className="dark-text small mb-0 mt-0">جميع الأسئلة </h6>
+                    {console.log({ stae: this.props.location.pathname })}
                   </NavLink>
                 </NavItem>
               </Nav>
             </div>
-            {hasAskQuestion?
-            <div className="col-md-6 d-flex justify-content-end">
-              <button
-                className="btn border mid-text smaller"
-                onClick={this.toggleModal}
-              >
-                <img
-                  src={
-                    process.env.PUBLIC_URL + "/assets/images/ask-question.png"
-                  }
-                  height="20"
-                  width="20"
-                  className="mr-2 contain-img"
-                  alt="ask-question"
-                />
-                اضافة سؤال
-              </button>
-              <AddQuestion
-                toggleModal={this.toggleModal}
-                isAddQuestionOpen={this.state.isAddQuestionOpen}
-                updateQuestions={this.updateQuestionsList}
-              />
-            </div>
-                :
-                <></>}
-          </div>
-            <TabContent className="pt-3" activeTab={this.state.activeTab}>
-            <TabPane tabId="userQuestions">
-              {this.state.showTable ?
-              <div className="row no-gutters">
-                {this.state.myQuestions && this.state.myQuestions.length > 0 ? (
-                  <div className="col-12">
-                    <div className="box-layout shadow-sm">
-                      <Table className="mb-0">
-                        <thead className="silver-bg">
-                          <tr className="text-center">
-                            <th className="w-25 dark-silver-text small border-0">
-                              السؤال
-                            </th>
-                            <th className="w-25 dark-silver-text small border-0">
-                              الحالة
-                            </th>
-                            <th className="w-25 dark-silver-text small border-0">
-                              تحكم
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>{this.renderMyQuestions()}</tbody>
-                      </Table>
-                      {!this.state.hideBtn && (
-                        <div className="col-12 d-flex  justify-content-center">
-                          <button
-                            className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25 mb-3"
-                            onClick={this.loadMore}
-                            disabled={false}
-                          >
-                            {this.state.loading === true ? (
-                              <Loader
-                                type="ball-beat"
-                                className="dark-loader"
-                              />
-                            ) : (
-                              "تحميل المزيد"
-                            )}{" "}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <React.Fragment>
-                    <div
-                      className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
-                      style={{ height: 300 }}
-                    >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          "/assets/images/no-questions.png"
-                        }
-                        height="80"
-                        className="contain-img mb-3"
-                        alt="questions"
-                      />
-                      <h5 className="dark-silver-text mt-0">
-                        لا يوجد أسئلة مضافة
-                      </h5>
-                    </div>
-                  </React.Fragment>
+            {hasAskQuestion ? (
+              <div className="col-md-6 d-flex justify-content-end">
+                <button
+                  className="btn border mid-text smaller"
+                  onClick={this.toggleModal}
+                >
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + "/assets/images/ask-question.png"
+                    }
+                    height="20"
+                    width="20"
+                    className="mr-2 contain-img"
+                    alt="ask-question"
+                  />
+                  اضافة سؤال
+                </button>
+                {this.state.isAddQuestionOpen && (
+                  <AddQuestion
+                    toggleModal={this.toggleModal}
+                    isAddQuestionOpen={this.state.isAddQuestionOpen}
+                    updateQuestions={this.updateQuestionsList}
+                  />
                 )}
               </div>
-                  : ( <AskQuestionDetails id ={this.state.qstId} />)
-              }
-            </TabPane>
-            <TabPane tabId="allQuestions">
+            ) : (
+              <></>
+            )}
+          </div>
+          <SwitchRender
+            path={this.props.location.pathname}
+            className="pt-3"
+            activeTab={this.state.activeTab}
+          >
+            <SwitchRender.Route
+              routePath={`/course/content/${this.courseId}/askQuestions/list/myQuestions`}
+              exact
+              tabId="userQuestions"
+            >
+              <>
+                {this.state.showTable ? (
+                  <div className="row no-gutters">
+                    {this.state.myQuestions &&
+                    this.state.myQuestions.length > 0 ? (
+                      <div className="col-12">
+                        <div className="box-layout shadow-sm">
+                          <Table className="mb-0">
+                            <thead className="silver-bg">
+                              <tr className="text-center">
+                                <th className="w-25 dark-silver-text small border-0">
+                                  السؤال
+                                </th>
+                                <th className="w-25 dark-silver-text small border-0">
+                                  الحالة
+                                </th>
+                                <th className="w-25 dark-silver-text small border-0">
+                                  تحكم
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody>{this.renderMyQuestions()}</tbody>
+                          </Table>
+                          {!this.state.hideBtn && (
+                            <div className="col-12 d-flex  justify-content-center">
+                              <button
+                                className="btn dark-btn unset-height unset-line-height br-5 mt-3 w-25 mb-3"
+                                onClick={this.loadMore}
+                                disabled={false}
+                              >
+                                {this.state.loading === true ? (
+                                  <Loader
+                                    type="ball-beat"
+                                    className="dark-loader"
+                                  />
+                                ) : (
+                                  "تحميل المزيد"
+                                )}{" "}
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ) : (
+                      <React.Fragment>
+                        <div
+                          className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
+                          style={{ height: 300 }}
+                        >
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              "/assets/images/no-questions.png"
+                            }
+                            height="80"
+                            className="contain-img mb-3"
+                            alt="questions"
+                          />
+                          <h5 className="dark-silver-text mt-0">
+                            لا يوجد أسئلة مضافة
+                          </h5>
+                        </div>
+                      </React.Fragment>
+                    )}
+                  </div>
+                ) : (
+                  <AskQuestionDetails id={this.state.qstId} />
+                )}
+              </>
+            </SwitchRender.Route>
+            <SwitchRender.Route
+              routePath={`/course/content/${this.courseId}/askQuestions/list/allQeustions`}
+              exact
+              tabId="userQuestions"
+            >
               <div className="row no-gutters">
                 {this.state.allQuestions &&
                 this.state.allQuestions.length > 0 ? (
@@ -401,24 +432,23 @@ class AskQuestionsListComponent extends Component {
                   </React.Fragment>
                 )}
               </div>
-            </TabPane>
-          </TabContent>
+            </SwitchRender.Route>
+          </SwitchRender>
         </div>
       </React.Fragment>
     );
   }
 }
 
-
 function mapStateToProps(state) {
   return {
-    subscription: state.subscription
+    subscription: state.subscription,
   };
 }
 
 AskQuestionsListComponent = connect(
-    mapStateToProps,
-    {  }
+  mapStateToProps,
+  {}
 )(AskQuestionsListComponent);
 
 export const AskQuestionsList = withRouter(AskQuestionsListComponent);

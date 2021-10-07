@@ -167,6 +167,7 @@ class VerifyIdComponent extends Component {
 
   render() {
     const { userInfo } = this.props.location;
+    console.log(userInfo);
     const { handleSubmit, submitting } = this.props;
     const renderer = ({ seconds }) => <span>({seconds})</span>;
     return (
@@ -244,4 +245,4 @@ VerifyIdComponent = reduxForm({
 
 VerifyIdComponent = connect(mapStateToProps)(VerifyIdComponent);
 
-export const VerifyId = VerifyIdComponent;
+export default VerifyIdComponent;

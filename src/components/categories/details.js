@@ -23,11 +23,27 @@ import ProfessionalLicense, {
 import { NavLink, Link, withRouter } from "react-router-dom";
 import ShowAt from "../../HOC/show-at";
 import { getQuery } from "../../utils/query-params";
+import { SubCategories } from "./subCategories/index";
+const hasFreeFlag = getQuery("free");
 
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-const staticTabs = ['tab-three',ProfessionalLicenseText]
+const freeMeetingsText = "اللقاءات المجانية";
+const platformCoursesTab = "tab-two";
+
+/**
+ * tab-three => free groups
+ * tab-four => hemma successes
+ */
+
+const staticTabs = [
+  platformCoursesTab,
+  "tab-three",
+  ProfessionalLicenseText,
+  "tab-four",
+  freeMeetingsText,
+];
 
 export class _CategoryDetails extends Component {
   page = 1;
@@ -35,19 +51,22 @@ export class _CategoryDetails extends Component {
   endOfResults = false;
   SuccesesLimt = 12;
   Succesespage = 1;
+
   constructor(props) {
     super(props);
     this.state = {
       successes: [],
       details: [],
+      page: 0,
       subcategoriesdetails: [],
       lectures: [],
-      hiddenTabs : [],
+      hiddenTabs: [],
       content: [],
       publications: [],
       courses: [],
       competitions: [],
       categoryGroups: [],
+      hasProfessionalLicense: false,
       selectedPublicationId: null,
       modalIsOpen: false,
       hideBtn: false,
@@ -55,6 +74,7 @@ export class _CategoryDetails extends Component {
       hideBtnSuccess: false,
       loading: false,
       disabled: false,
+      hasNoPlatformCourses: false,
       active: "",
       defultActive: "show active",
       coursesShimmerLoader: true,
@@ -62,45 +82,67 @@ export class _CategoryDetails extends Component {
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
+      currentTab: null,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.changeTab = this.changeTab.bind(this);
-    this.intiReq = this.intiReq.bind(this)
+    this.intiReq = this.intiReq.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+    this.resetToInintPageState = this.resetToInintPageState.bind(this);
   }
 
   openModal(id) {
     this.setState({ modalIsOpen: true, selectedPublicationId: id });
   }
+
   closeModal() {
     this.setState({ modalIsOpen: false });
   }
 
-  intiReq(){
-    const url = `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${1}&Limit=${this.limit}&featuredOnly=true`;
+  intiReq() {
+    const url = `${apiBaseUrl}/categories/${
+      this.props.match.params.slug
+    }/courses?Page=${1}&Limit=${this.limit}&featuredOnly=true`;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    axios
-    .get(url, { headers })
-    .then((response) => {
-      this.setState({ loading: false, disabled: false });
-      const courses = response.data.data.data
-      this.setState({...this.state,courses})
-    })
+    const { subcategoriesdetails,hasProfessionalLicense } = this.state;
+    axios.get(url, { headers }).then((response) => {
+      const courses = response.data.data.data;
+      this.setState({
+        courses,
+        hasNoPlatformCourses: !courses?.length,
+        loading: false,
+        disabled: false,
+      });
+      if (
+        !hasFreeFlag &&
+        !!courses?.length 
+        && !hasProfessionalLicense
+      )
+        this.changeTab("tab-two");
+    });
   }
 
-  loadMore = async () => {
+  async loadMore() {
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
     };
     this.setState({ loading: true, disabled: true });
     if (!this.endOfResults) {
+      const {
+        state: { page: prevPage },
+      } = this;
+      const nextUrl = `${apiBaseUrl}/categories/${this.state.currentSlug ||
+        this.props.match.params.slug}/courses?Page=${prevPage + 1}&Limit=${
+        this.limit
+      }&featuredOnly=true`;
       axios
-        .get(this.state.nextPageUrl, { headers })
+        .get(nextUrl, { headers })
         .then((response) => {
           this.setState({ loading: false, disabled: false });
           const newCourses = [
@@ -109,12 +151,14 @@ export class _CategoryDetails extends Component {
           ];
           this.endOfResults = response.data.data.itemCount < this.limit;
           this.page++;
-          const nextUrl = `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`;
+          const noMoreCourses =
+            newCourses.length === response.data.data.itemCount;
           this.setState({
             courses: newCourses,
-            nextPageUrl: nextUrl,
             coursesShimmerLoader: false,
-            hasNocourses: !!!newCourses?.length
+            hasNocourses: !!!newCourses?.length,
+            page: this.state.page + 1,
+            noMoreCourses,
           });
           if (newCourses.length == response.data.data.itemCount) {
             this.setState({ hideBtn: true });
@@ -123,9 +167,10 @@ export class _CategoryDetails extends Component {
         .catch((error) => {
           console.log(error);
           this.setState({ loading: false, disabled: false });
-        });
+        })
+        .finally(() => {});
     }
-  };
+  }
   moreSucces = async () => {
     const {
       match: { params },
@@ -155,39 +200,61 @@ export class _CategoryDetails extends Component {
       });
   };
 
-  handleHasProfessionalLicense() {
-    //hide tab-two which is دورات المنصة and make defaulted to show الرخصة المهنية
-    this.setState({ ...this.state, currentTab: ProfessionalLicenseText,hiddenTabs : [...this.state.hiddenTabs,'tab-two'] });
+  handleHasProfessionalLicense(hasProLicense) {
+    this.setState({ hasProfessionalLicense: hasProLicense });
   }
 
   hasProfessionalLicense(details) {
     if (!details?.professionalLicense) return;
     const { professionalLicense } = details;
-    if (professionalLicense) this.handleHasProfessionalLicense();
+    return professionalLicense;
   }
 
-  handleNavFromFree(){
-    const hasFreeFlag = getQuery('free')
-    if(hasFreeFlag === 'true')
-    setTimeout(() => {
-      this.simulateClick('tab-three-nav')
-    }, 1500);
+  handleNavFromFree() {
+    if (hasFreeFlag === "true") {
+      this.changeTab("tab-three");
+    }
+  }
+  handleNavForProLicense() {
+    // this.simulateClick(ProfessionalLicenseText)
   }
 
   async componentDidMount() {
     const {
-      match: { params }
+      match: { params },
     } = this.props;
 
     axios
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
-        this.setState({ details: response.data.data}, () => {
-          this.hasProfessionalLicense(response.data.data);
-        });
+        const hasProLicense = this.hasProfessionalLicense(response.data.data);
+        if (hasProLicense) this.handleNavForProLicense();
+        this.setState(
+          {
+            details: response.data.data,
+            hasProfessionalLicense: hasProLicense,
+          },
+          () => {
+            this.handleHasProfessionalLicense(hasProLicense);
+            axios
+              .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
+              .then((response) => {
+                this.setState({
+                  subcategoriesdetails: response.data.data.childCatgories,
+                });
+                this.intiReq();
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        );
         this.setState({
           ...this.state,
           showgroupedPackagesBtn: response.data.data.groupedPackages,
+          currentTab: hasProLicense
+            ? ProfessionalLicenseText
+            : this.state.currentTab,
         });
       })
       .catch((error) => {
@@ -214,18 +281,8 @@ export class _CategoryDetails extends Component {
         console.log(error);
       });
 
-    this.handleNavFromFree()
+    this.handleNavFromFree();
 
-    axios
-    .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
-    .then((response) => {
-      this.setState({
-        subcategoriesdetails: response.data.data.childCatgories,
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then((response) => {
@@ -265,7 +322,7 @@ export class _CategoryDetails extends Component {
         this.setState({ competitionsShimmerLoader: false });
       });
 
-      //free groups
+    //free groups
     axios
       .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
       .then((response) => {
@@ -279,30 +336,15 @@ export class _CategoryDetails extends Component {
         this.setState({ categoryGroupsShimmerLoader: false });
       });
 
-    await this.loadMore();
     if (this.props.history.location.hash == "#tab-three") {
       this.setState({ active: "show active", defultActive: "" });
     }
   }
 
-  warningAlert(msg){
-
-    swal(
-
-      "عفواً",
-
-      msg,
-
-      "error",
-
-      {
-
-        button: "متابعة",
-
-      }
-
-    );
-
+  warningAlert(msg) {
+    swal("عفواً", msg, "error", {
+      button: "متابعة",
+    });
   }
 
   categoryGroupRedirection(CategoryGroup) {
@@ -325,78 +367,101 @@ export class _CategoryDetails extends Component {
       );
     }
   }
-  handleSubCategoriesChange(prevSubcategoriesdetails = [],subcategoriesdetails = []){
-    if(prevSubcategoriesdetails.length !== subcategoriesdetails?.length){
-      const [firstSubCategory] = subcategoriesdetails
-      const {slug} = firstSubCategory
-      if(!slug) return
-        setTimeout(() => {
-          this.simulateClick(slug)
-        }, 200);
+
+  handleSubCategoriesChange(
+    prevSubcategoriesdetails = [],
+    subcategoriesdetails = []
+  ) {
+    if (hasFreeFlag || this.state.hasProfessionalLicense) {
+      return;
+    }
+
+    if (prevSubcategoriesdetails.length !== subcategoriesdetails?.length) {
+      const [firstSubCategory] = subcategoriesdetails;
+      const { slug } = firstSubCategory;
+      if (!slug) return;
+      setTimeout(() => {
+        // this.changeTab(slug)
+      }, 200);
     }
   }
 
+  resetToInintPageState() {
+    this.setState({ currentSlug: "tab-two", page: 1, noMoreCourses: false });
+  }
 
-  componentDidUpdate(prevProps, prevState){
-    const {currentTab : prevTab,subcategoriesdetails : prevSubcategoriesdetails} = prevState
-    const {currentTab,subcategoriesdetails} = this.state
-    if(staticTabs.includes(currentTab) && currentTab !== prevTab) {
-      this.setState({courses:[]})
-    }
-    if(prevTab !== currentTab){
-      if(currentTab === 'tab-two'){
-            this.intiReq()
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      currentTab: prevTab,
+      subcategoriesdetails: prevSubcategoriesdetails,
+      hasProfessionalLicense: prevHasProfessionalLicense,
+      currentSlug: prevSlug,
+    } = prevState;
+    const {
+      currentTab,
+      subcategoriesdetails,
+      hasProfessionalLicense,
+      currentSlug,
+      hasNoPlatformCourses,
+    } = this.state;
+    if (prevTab !== currentTab) {
+      if (currentTab === "tab-two") {
+        this.intiReq();
+        this.resetToInintPageState();
       }
+    }
+    if (currentSlug !== prevSlug) {
+      this.handleCategChange(currentSlug);
+      // this.simulateClick(ProfessionalLicenseText)
+    }
+    if (
+      subcategoriesdetails.length !== prevSubcategoriesdetails.length &&
+      !hasProfessionalLicense &&
+      !hasFreeFlag
+    ) {
+      const [firstSubCateg] = subcategoriesdetails;
+      const { slug } = firstSubCateg;
+      if (this.validateProLicenseNav(firstSubCateg)) return;
+      this.changeTab(slug);
     }
     // this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
   }
 
   renderCategoryGroups() {
     //free groups
-    return this.state.categoryGroups.map((group) => (
-      <React.Fragment>
-        <div className="col-lg-4">
-          <div
-            className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150"
-            key={group.id}
-            onClick={() => this.categoryGroupRedirection(group.id)}
-          >
-            <div className="d-flex align-items-center">
-              <div className="mr-4">
-                <img
-                  src={process.env.PUBLIC_URL + "/assets/images/icon.svg"}
-                  className="width-80"
-                  alt="ICON"
-                />
-              </div>
-              <div className="text-white">
-                <h4 className="h4">{group.name}</h4>
-                <div className="font-size-18 mb-2">{group.description}</div>
-                <div className="font-size-14 d-flex align-items-center">
-                  <div className="mr-2">
-                    <i className="far fa-user-circle"></i>
+    return (
+      <div className="row">
+        {this.state.categoryGroups.map((group) => (
+          <div className="col-lg-4" key={group.id}>
+            <div
+              className="card p-3 card-gradient border-dashed card-ele mb-3 position-relative min-height-150"
+              onClick={() => this.categoryGroupRedirection(group.id)}
+            >
+              <div className="d-flex align-items-center">
+                <div className="mr-4">
+                  <img
+                    src={process.env.PUBLIC_URL + "/assets/images/icon.svg"}
+                    className="width-80"
+                    alt="ICON"
+                  />
+                </div>
+                <div className="text-white">
+                  <h4 className="h4">{group.name}</h4>
+                  <div className="font-size-18 mb-2">{group.description}</div>
+                  <div className="font-size-14 d-flex align-items-center">
+                    <div className="mr-2">
+                      <i className="far fa-user-circle"></i>
+                    </div>
+                    <div className="mr-2">طالب</div>
+                    <div>{group.numberOfMembers}</div>
                   </div>
-                  <div className="mr-2">طالب</div>
-                  <div>{group.numberOfMembers}</div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        {/* <div className="col-md-2">
-          <div
-            className="shadow-box d-flex flex-column align-items-center justify-content-center clickable"
-            key={group.id}
-            onClick={() => this.categoryGroupRedirection(group.id)}
-          >
-            <h6 className="dark-text mb-1">{group.name}</h6>
-            <p className="dark-text smaller mb-0 text-break text-center">
-              {group.description}
-            </p>
-          </div>
-        </div> */}
-      </React.Fragment>
-    ));
+        ))}
+      </div>
+    );
   }
 
   renderPublications() {
@@ -424,19 +489,18 @@ export class _CategoryDetails extends Component {
   }
 
   renderEmptyText() {
-    if(this.state.loading || this.state?.subcategoriesdetails?.length)
-    return null
-    
-    return(
+    if (this.state.loading || this.state?.subcategoriesdetails?.length)
+      return null;
+
+    return (
       <p className="col-12 text-center">
         انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا
       </p>
-    )
+    );
   }
 
   renderCards() {
-    if(this.state.courses.length === 0)
-    return this.renderEmptyText()
+    if (this.state.courses.length === 0) return this.renderEmptyText();
     return this.state.courses.map((course) => (
       <React.Fragment>
         <div className="col-lg-4">
@@ -445,13 +509,15 @@ export class _CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
+
   renderCourses(courses) {
     return courses.map((course) => (
       <div className="col-lg-4">
-          <Card key={course.id} course={course} />
-        </div>
+        <Card key={course.id} course={course} />
+      </div>
     ));
   }
+
   renderPanelSub() {
     return this.state.subcategoriesdetails.map((Category, count) => (
       <React.Fragment>
@@ -464,88 +530,87 @@ export class _CategoryDetails extends Component {
     ));
   }
 
-  hasSubcategoriesReq(slug){
-    return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`)
+  hasSubcategoriesReq(slug) {
+    return axios.get(`${apiBaseUrl}/categories/${slug}/SubCategories`);
   }
 
-  async validateHasSubCategories(slug){
+  async validateHasSubCategories(slug) {
     try {
-      const {data : {data : {childCatgories = [],courses}}} = await this.hasSubcategoriesReq(slug)
-      const navigationType = childCatgories?.length ? '_blank' : courses?.length ? 'direct' : null
-      return new Promise((res,rej)=>res({childCatgories,navigationType,courses}))
+      const {
+        data: {
+          data: { childCatgories = [], courses },
+        },
+      } = await this.hasSubcategoriesReq(slug);
+      const navigationType = childCatgories?.length
+        ? "_blank"
+        : courses?.length
+        ? "direct"
+        : null;
+      return new Promise((res, rej) =>
+        res({ childCatgories, navigationType, courses })
+      );
+    } catch (error) {}
+  }
+
+  handleNoChildCategories() {
+    throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا");
+  }
+
+  // handleProfessionalCase({professionalLicense, groupedPackages, rest}) {
+  // 	const isProLicencse = professionalLicense && groupedPackages
+  // 	if (!(professionalLicense && groupedPackages)) return
+  // 	return isProLicencse
+  // }
+
+  isStaticTab(tab) {
+    return staticTabs.includes(tab) || tab === platformCoursesTab;
+  }
+
+  async handleCategChange(categSlug) {
+    try {
+      if (this.isStaticTab(categSlug)) return;
+      const { navigationType, courses } = await this.validateHasSubCategories(
+        categSlug
+      );
+      const url = `./${categSlug}`;
+      // if (this.handleProfessionalCase({professionalLicense, groupedPackages, rest})) return
+      if (!navigationType) this.handleNoChildCategories();
+      if (navigationType === "_blank") window.open(url);
+      else {
+        this.setState({ ...this.state, courses, currentSlug: categSlug });
+      }
     } catch (error) {
-      
+      error?.message && this.warningAlert(error?.message);
     }
   }
 
-  handleNoChildCategories(){
-    throw new Error("انتهت الدورات الحالية نستأنف الدورات القادمة قريبًا")
+  validateProLicenseNav(Category) {
+    const { professionalLicense } = Category;
+    if (professionalLicense) {
+      this.changeTab(ProfessionalLicenseText);
+      this.setState({
+        proLicenseDetails: Category,
+        hasNoPlatformCourses: true,
+      });
+    } else return true;
+  }
+  async handleClick(Category) {
+    if (!this.validateProLicenseNav(Category)) return;
+    this.changeTab(Category?.slug);
   }
 
-  handleProfessionalCase({professionalLicense,groupedPackages,rest}){
-    const isProLicencse = professionalLicense && groupedPackages
-    if(!(professionalLicense && groupedPackages)) return
-    this.changeTab("الرخصة المهنية")
-    this.setState({...this.state,details : {...rest}})
-    return isProLicencse
-  }
   rendersubCategories() {
-   
-    const handleClick = async(Category) => {
-
-      try {
-
-        const { history } = this.props;
-        const { slug : categSlug ,professionalLicense,groupedPackages,...rest} = Category;
-
-        const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
-        const url = `./${categSlug}`
-        if(this.handleProfessionalCase({professionalLicense,groupedPackages,rest})) return
-        if(!navigationType) this.handleNoChildCategories()
-        if(navigationType === '_blank') window.open(url)
-        else{
-          this.changeTab(url);
-          this.setState({...this.state,courses})
-          // history.push(url);
-        }
-
-      } catch (error) {
-
-        this.warningAlert(error?.message)
-
-      }
-
-    };
-
-
-
     return this.state.subcategoriesdetails.map((Category, count) => (
-      <React.Fragment>
-        <NavLink
-          className="tab-items nav-link px-4"
-          data-toggle="tab"
-          role="tab"
-          to={`/${Category?.slug}`}
-          id={Category?.slug}
-          aria-selected="false"
-          onClick={() => handleClick(Category)}
-        >
-          <div className="tab-img">
-            <img
-              src={
-                process.env.PUBLIC_URL + "/assets/images/hemma-logo-light.svg"
-              }
-              className="width-50"
-              alt="Hemma-logo"
-            />
-          </div>
-          <div className="main-color font-weight-bold text-center">
-            {Category.nameAr}
-          </div>
-        </NavLink>
-      </React.Fragment>
+      <NavTab
+        key={Category.id}
+        currentTab={this.state.currentTab}
+        id={Category?.nameAr}
+        name={Category.nameAr}
+        onClick={() => this.handleClick(Category)}
+      />
     ));
   }
+
   openFreeLecture(lecture) {
     let token = localStorage.getItem("token");
     if (token) {
@@ -562,11 +627,11 @@ export class _CategoryDetails extends Component {
     }
   }
 
-  simulateClick(divId,event = 'click'){
+  simulateClick(divId, event = "click") {
     const element = document.getElementById(divId);
-    const evObj = document.createEvent('Events');
-    evObj.initEvent('click', true, false);
-    element.dispatchEvent(evObj)
+    const evObj = document.createEvent("Events");
+    evObj.initEvent("click", true, false);
+    element.dispatchEvent(evObj);
   }
 
   renderLectures() {
@@ -645,19 +710,16 @@ export class _CategoryDetails extends Component {
   }
 
   changeTab(tab) {
-    this.setState({ ...this.state, currentTab: tab });
+    this.setState({ ...this.state, currentTab: tab, currentSlug: tab });
   }
 
-  simulateClick(divId,event = 'click'){
+  simulateClick(divId, event = "click") {
     const element = document.getElementById(divId);
-    const evObj = document.createEvent('Events');
-    evObj.initEvent('click', true, false);
+    const evObj = document.createEvent("Events");
+    evObj.initEvent("click", true, false);
     try {
-      element.dispatchEvent(evObj)
-      
-    } catch (error) {
-    }
-      
+      element.dispatchEvent(evObj);
+    } catch (error) {}
   }
 
   renderCompetitions() {
@@ -703,6 +765,7 @@ export class _CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
+
   Rating = ({ successCase }) => {
     return (
       <div class="card-body px-2 py-2">
@@ -721,8 +784,8 @@ export class _CategoryDetails extends Component {
   renderSuccess() {
     return this.state.successes.map((successCase) => (
       <React.Fragment>
-        <div class="col-lg-4">
-          <div class="status-card sider-items min-height-150">
+        <div class="h-100">
+          <div class="status-card sider-items h-100">
             <div class="quote-icon">
               <i class="fas fa-quote-left"></i>
             </div>
@@ -735,80 +798,12 @@ export class _CategoryDetails extends Component {
       </React.Fragment>
     ));
   }
+
   render() {
     let token = localStorage.getItem("token");
-
-    console.log({show : this.state.currentTab === "tab-three"});
     const {
       match: { params },
     } = this.props;
-    var settings = {
-      dots: true,
-      infinite: false,
-      slidesToShow: 4,
-      slidesToScroll: 1,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            infinite: false,
-          },
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-          },
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-          },
-        },
-      ],
-    };
-
-    var verticalCarousel = {
-      infinite: false,
-      slidesToShow: 2,
-      slidesToScroll: 1,
-      autoplay: false,
-      autoplaySpeed: 2000,
-      arrows: true,
-      vertical: true,
-      responsive: [
-        {
-          breakpoint: 1024,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            infinite: false,
-          },
-        },
-        {
-          breakpoint: 600,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            initialSlide: 1,
-          },
-        },
-        {
-          breakpoint: 480,
-          settings: {
-            slidesToShow: 2,
-            slidesToScroll: 1,
-            dots: true,
-          },
-        },
-      ],
-    };
-
     return (
       <React.Fragment>
         <Helmet>
@@ -839,188 +834,135 @@ export class _CategoryDetails extends Component {
             <div className="lic-tabs">
               <nav>
                 <div
-                  className="nav d-flex align-items-center justify-content-center mb-6"
+                  className="nav d-flex align-items-center justify-content-center mb-6 col-12"
                   id="nav-tab"
                   role="tablist"
                 >
-                  {/* <a className="tab-items nav-link px-4 active" data-toggle="tab" href="#tab-one" role="tab" aria-controls="nav-one" aria-selected="true">
-                  <div className="tab-img">
-                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
-                  </div>
-                  <div className="main-color font-weight-bold">الرخصة المهنية</div>
-                </a> */}
-                  {/* <React.Fragment>
-                   {this.state.courses.length > 0 ?  (<a className={"tab-items nav-link px-4 "+this.state.defultActive} data-toggle="tab" href="#tab-two" role="tab" aria-controls="nav-two" aria-selected="false">
-                  <div className="tab-img">
-                    <img src={process.env.PUBLIC_URL +"/assets/images/hemma-logo-light.svg"}  className="width-50" alt="Hemma-logo"/>
-                  </div>
-                  <div className="main-color font-weight-bold">الرخصة المهنية</div>
-                </a>): null}
-                
-                   </React.Fragment> */}
-                  <React.Fragment>
-                    {this.state.courses.length > 0 ? (
-                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two') && !this.state.hasNocourses} >
-                        <a
-                          onClick={() => this.changeTab("tab-two")}
-                          className={
-                            "tab-items nav-link px-4 " + this.state.defultActive
-                          }
-                          data-toggle="tab"
-                          href="#tab-two"
-                          role="tab"
-                          aria-controls="nav-two"
-                          aria-selected="false"
-                        >
-                          <div className="tab-img">
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                "/assets/images/hemma-logo-light.svg"
-                              }
-                              className="width-50"
-                              alt="Hemma-logo"
-                            />
-                          </div>
-                          <div className="main-color font-weight-bold">
-                            دورات المنصة
-                          </div>
-                        </a>
-                      </ShowAt>
-                    ) : null}
-                  </React.Fragment>
-                  {this.state.showgroupedPackagesBtn ? (
+                  {/* {this.rendersubCategories()} */}
+                  <SubCategories
+                    hasProfessionalLicense={this.state.hasProfessionalLicense}
+                    handleClick={(category) => this.handleClick(category)}
+                    subCategories={this.state.subcategoriesdetails}
+                    currentTab={this.state.currentTab}
+                  />
+                  <ShowAt
+                    at={
+                      !this.state.hasProfessionalLicense &&
+                      !this.state.hasNoPlatformCourses
+                    }
+                  >
                     <NavTab
+                      currentTab={this.state.currentTab}
+                      id="tab-two"
+                      name={"دورات المنصة"}
+                      onClick={() => this.changeTab("tab-two")}
+                    />
+                  </ShowAt>
+                  {!!this.state.lectures?.length && (
+                    <NavTab
+                      id={freeMeetingsText}
+                      currentTab={this.state.currentTab}
+                      name={freeMeetingsText}
+                      onClick={() => this.changeTab(freeMeetingsText)}
+                    />
+                  )}
+
+                  {this.state.hasProfessionalLicense && (
+                    <NavTab
+                      currentTab={this.state.currentTab}
                       isActive={
                         this.state.currentTab === ProfessionalLicenseText
                       }
+                      id={ProfessionalLicenseText}
                       name="الرخصة المهنية"
                       onClick={() => this.changeTab("الرخصة المهنية")}
                     />
-                  ) : null}
-
-                  {this.rendersubCategories()}
-                  <React.Fragment>
-                    {this.state.categoryGroups.length > 0 ? (
-                      <a
-                        className={"tab-items nav-link px-4"}
-                        data-toggle="tab"
-                        href="#tab-three"
-                        role="tab"
-                        id="tab-three-nav"
-                        aria-controls="nav-three"
-                        aria-selected="false"
-                        onClick={() => this.changeTab("tab-three")}
-                      >
-                        <div className="tab-img">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/hemma-logo-light.svg"
-                            }
-                            className="width-50"
-                            alt="Hemma-logo"
-                          />
-                        </div>
-                        <div className="main-color font-weight-bold">
-                          المجموعات المجانيه
-                        </div>
-                      </a>
-                    ) : null}
-                    {this.state.successes.length > 0 ? (
-                      <a
-                        className="tab-items nav-link px-4 "
-                        data-toggle="tab"
-                        href="#tab-four"
-                        role="tab"
-                        aria-controls="nav-four"
-                        aria-selected="false"
-                        onClick={() => this.changeTab("tab-four")}
-                      >
-                        <div className="tab-img">
-                          <img
-                            src={
-                              process.env.PUBLIC_URL +
-                              "/assets/images/hemma-logo-light.svg"
-                            }
-                            className="width-50"
-                            alt="Hemma-logo"
-                          />
-                        </div>
-                        <div className="main-color font-weight-bold">
-                          نجاحات همة
-                        </div>
-                      </a>
-                    ) : null}
-                  </React.Fragment>
-                </div>
-                <div className="tab-content" id="nav-tabContent">
-                <div className="container">
-      <div className="row">
-                  {this.renderCourses(this.state.courses)}
-                  </div>
-                  </div>
-                  {this.state.currentTab !== ProfessionalLicenseText ? (
-                      <ShowAt at={!this.state.hiddenTabs.includes('tab-two')} >
-                      <div
-                        className={"tab-pane fade " + this.state.defultActive}
-                        id="tab-two"
-                        role="tabpanel"
-                        aria-labelledby="nav-profile-tab"
-                      >
-                        <div className="container">
-                          <div className="row">
-                            {!this.state.hideBtn && (
-                              <div className="row col-md-12">
-                                <div className="col-md-12 d-flex align-items-center justify-content-center">
-                                  <button
-                                    className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                                    onClick={this.loadMore}
-                                    disabled={this.state.disabled}
-                                  >
-                                    {this.state.loading == true ? (
-                                      <Loader type="ball-clip-rotate" />
-                                    ) : (
-                                      "عرض المزيد"
-                                    )}
-                                  </button>
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </ShowAt>
-                  ) : (
-                    <>
-                      {this.state.currentTab === ProfessionalLicenseText && (
-                        <ProfessionalLicense
-                          categoryData={this.state.details}
-                        />
-                      )}
-                    </>
                   )}
-                    <div
-                      className={"tab-pane fade " + this.state.active}
-                      id="tab-three"
-                      role="tabpanel"
-                      aria-labelledby="nav-contact-tab"
-                    >
-                  <ShowAt at={this.state.currentTab === "tab-three"}>
-                      <div className="container">
-                        <div className="row">{this.renderCategoryGroups()}</div>
+
+                  {!!this.state.successes.length && (
+                    <NavTab
+                      currentTab={this.state.currentTab}
+                      id={"tab-four"}
+                      name="نجاحات همة"
+                      onClick={() => this.changeTab("tab-four")}
+                    />
+                  )}
+
+                  {!!this.state.categoryGroups.length && (
+                    <NavTab
+                      currentTab={this.state.currentTab}
+                      id={"tab-three"}
+                      name="المجموعات المجانيه"
+                      onClick={() => this.changeTab("tab-three")}
+                    />
+                  )}
+                </div>
+                <ShowAt
+                  at={
+                    !staticTabs.includes(this.state.currentTab) ||
+                    this.state.currentTab === platformCoursesTab
+                  }
+                >
+                  <div className="row">
+                    {this.renderCourses(this.state.courses)}
+                  </div>
+                </ShowAt>
+                <div className="tab-content" id="nav-tabContent">
+                  <ShowAt at={!staticTabs.includes(this.state.currentTab)}>
+                    <div className="container">
+                      <div className="row">
+                        {!this.state.currentSlug && !this.state.noMoreCourses && (
+                          <div className="row col-md-12">
+                            <div className="col-md-12 d-flex align-items-center justify-content-center">
+                              <button
+                                className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                                onClick={this.loadMore}
+                                disabled={this.state.disabled}
+                              >
+                                {this.state.loading == true ? (
+                                  <Loader type="ball-clip-rotate" />
+                                ) : (
+                                  "عرض المزيد"
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                  </ShowAt>
                     </div>
-                  <div
-                    className="tab-pane fade "
-                    id="tab-four"
-                    role="tabpanel"
-                    aria-labelledby="nav-Success-tab"
-                  >
+                  </ShowAt>
+                  <>
+                    {this.state.currentTab === ProfessionalLicenseText && (
+                      <ProfessionalLicense
+                        categoryData={
+                          this.state.proLicenseDetails || this.state.details
+                        }
+                      />
+                    )}
+                  </>
+                  <>
+                    {this.state.currentTab === "tab-three" && (
+                      <>{this.renderCategoryGroups()}</>
+                    )}
+                  </>
+
+                  <ShowAt at={this.state.currentTab === freeMeetingsText}>
+                    <div className="container">
+                      <div className="row">{this.renderLectures()}</div>
+                    </div>
+                  </ShowAt>
+
+                  <div>
                     <div className="container">
                       <ShowAt at={this.state.currentTab === "tab-four"}>
-                        <div className="row">
+                        <div className=""
+                        
+                        style={{
+                          gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
+                          display:'grid',
+                          gridRowGap:"1.5rem",
+                          gridColumnGap:"0.5rem"
+                        }}>
                           {this.renderSuccess()}
                           {this.state.hideBtnSuccess && (
                             <div className="row col-md-12">
@@ -1067,25 +1009,25 @@ const Rating = ({ successCase }) => {
 };
 
 const contentReducer = (successCase) => {
-  switch (successCase?.source) {
-    case "Media":
-      return (
-        <a href={successCase?.url}>
-          <img
-            src={successCase?.img}
-            className="w-100 height-70"
-            style={{ height: "170px !important" }}
-          />
-        </a>
-      );
-    case "Rating":
-      return <Rating successCase={successCase} />;
-    default:
-      break;
-  }
+	switch (successCase?.source) {
+		case "Media":
+			return (
+				<a href={successCase?.url}>
+					<img
+						src={successCase?.img}
+						className="w-100 mh-200"
+						style={{height: "170px !important"}}
+					/>
+				</a>
+			);
+		case "Rating":
+			return <Rating successCase={successCase}/>;
+		default:
+			break;
+	}
 };
 
-export const CategoryDetails = withRouter((props) => {
+const CategoryDetails = withRouter((props) => {
   const [show, setShow] = useState(true);
   const {
     location: { pathname },
@@ -1103,3 +1045,5 @@ export const CategoryDetails = withRouter((props) => {
 
   return <>{show && <_CategoryDetails {...props} />}</>;
 });
+
+export default CategoryDetails;

@@ -3,6 +3,8 @@ import { MdClose } from "react-icons/md";
 import { formatPrice } from "./helpers";
 import { Api } from "../../api";
 import swal from "@sweetalert/with-react";
+const pricesKeys = ['blackAndWhiteBookletPrice','coloredBookletPrice']
+const colorKeys = ['BlackAndWhite','Colored']
 
 export class CourseCartItem extends Component {
   state = {
@@ -24,6 +26,9 @@ export class CourseCartItem extends Component {
     this.onUpdateInstallmentInput = this.onUpdateInstallmentInput.bind(this);
     this.getInstallmentInputValue = this.getInstallmentInputValue.bind(this);
     this.onPayFullAmount = this.onPayFullAmount.bind(this);
+    this.handleTwoZeroPriceCase = this.handleTwoZeroPriceCase.bind(this)
+    this.validateClick = this.validateClick.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -48,22 +53,22 @@ export class CourseCartItem extends Component {
   onSetInstallment(installment) {
     this.props.onSetInstallment(installment);
   }
-  confirmationPopup() {
-    swal(
-        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
-        {
-          buttons: {
-            ok: "موافق",
-          },
-        }
-    )
-  }
-  handleCheckClick = () => {
-    this.setState({ checked: !this.state.checked });
-    if(!this.state.checked){
-    this.confirmationPopup();
-    }
-  };
+  // confirmationPopup() {
+  //   swal(
+  //       `لا يمكن الانسحاب من الدورة بعد طلب الملزمة`,
+  //       {
+  //         buttons: {
+  //           ok: "موافق",
+  //         },
+  //       }
+  //   )
+  // }
+  // handleCheckClick = () => {
+  //   this.setState({ checked: true });
+  //   if(this.state.checked){
+  //   this.confirmationPopup();
+  //   }
+  // };
 
 
 
@@ -133,6 +138,32 @@ export class CourseCartItem extends Component {
     this.onSetInstallment(null);
   }
 
+  componentDidUpdate(){
+  }
+
+  handleTwoZeroPriceCase(){
+    setTimeout(() => {
+      this.onSetBookletColor(colorKeys[0])
+    }, 500);
+  }
+
+  componentDidMount(){
+    const {item : currentItem} = this.props
+    
+    let hasTwoZeroPrice = []
+    pricesKeys.forEach(key =>{
+      if (Number.isInteger(currentItem?.[key]) && currentItem?.[key] === 0) {
+        hasTwoZeroPrice.push(key);
+      }
+    })
+    if(pricesKeys.length === hasTwoZeroPrice.length){
+      this.setState({ ...this.state, hasTwoZeroPrice: true, inputsType : 'radio'});
+      if(currentItem.bookletType)
+      return
+      this.handleTwoZeroPriceCase()
+    }
+  }
+
   /**
    * Handle remove the current item from the cart
    */
@@ -155,6 +186,18 @@ export class CourseCartItem extends Component {
     return formatPrice(this.props.item.subtotal);
   }
 
+  validateClick(color){
+    //prevent toggle in case of two zeros
+    if(this.state.hasTwoZeroPrice && this.props.item.bookletType === color)return false
+    return true
+  }
+
+  handleClick({target:{value}}){
+    const canToggle = this.validateClick(value)
+    if(!canToggle) return
+    this.onSetBookletColor(value)
+  }
+
   render() {
     const item = this.props.item;
     if (!item) {
@@ -162,7 +205,7 @@ export class CourseCartItem extends Component {
     }
     return (
       <Fragment>
-        <div className="bg-white box-layout w-100 p-3 d-flex align-items-center mb-4 mt-3 responsive-item position-relative">
+        <div className="bg-white box-layout w-100 px-1 py-4 d-flex align-items-center mb-4 mt-3 responsive-item position-relative">
           <span
             className="badge red-bg text-white smaller light-font-text clickable close-btn cursor-pointer"
             onClick={this.onRemoveItem}
@@ -182,71 +225,53 @@ export class CourseCartItem extends Component {
               {item.bookletAvailable && (
                 <>
                   {item.bookletAvailableInBlackAndWhite && (
-                    <div className="form-check mb-1">
+                    <div className="form-check mb-1 d-flex align-items-center">
                       <input
-                        name="packageOption"
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        onClick={() => this.onSetBookletColor("BlackAndWhite")}
+                        className="form-check-input my-0"
+                        type={'radio'}
+                        value="BlackAndWhite"
+                        onClick={this.handleClick}
                         checked={item.bookletType === "BlackAndWhite"}
-                        onChange={this.handleCheckClick}
                       />
                       <label className="form-check-label smaller dark-silver-text">
-                        أرغب في الحصول على ملزمة أبيض و أسود مطبوعة
+                        أرغب في الحصول على ملزمة أبيض و أسود مطبوعة <span className="light-text mx-2">
+                          {item?.blackAndWhiteBookletPrice && `${item?.blackAndWhiteBookletPrice} +`}
+                        </span>
                       </label>
                     </div>
                   )}
 
                   {item.bookletAvailableInColor && (
-                    <div className="form-check mb-1">
+                    <div className="form-check mb-1 d-flex align-items-center">
                       <input
-                        name="packageOption"
-                        className="form-check-input"
-                        type="checkbox"
-                        value=""
-                        onClick={() => this.onSetBookletColor("Colored")}
+                        className="form-check-input my-0"
+                        type={'radio'}
+                        value="Colored"
+                        onClick={this.handleClick}
                         checked={item.bookletType === "Colored"}
-                        onChange={this.handleCheckClick}
                       />
                       <label className="form-check-label smaller dark-silver-text">
                         أرغب في الحصول على ملزمة ملونة مطبوعة
+                        <span className="light-text mx-2">
+                          {item?.coloredBookletPrice && `${item?.coloredBookletPrice} +`}
+                        </span>
                       </label>
                     </div>
                   )}
                 </>
               )}
 
-              {item.canBePaidInInstallments ? (
-                <span
-                  className="badge blue-status light-font-text clickable cursor-pointer"
-                  onClick={this.onToggleEditInstallment}
-                  disabled={!item.canBePaidInInstallments}
-                >
-                  {this.state.editingInstallment
-                    ? "اعتمد القسط"
-                    : item.installment
-                    ? "تعديل القسط"
-                    : "سداد بالأقساط؟"}
-                </span>
-              ) : null}
-              {item.installment && (
-                <span
-                  className="badge blue-status light-font-text clickable ml-1 cursor-pointer"
-                  onClick={this.onPayFullAmount}
-                >
-                  تسديد بالكامل
-                </span>
-              )}
+            
             </div>
           </div>
           <div className="w-25">
             {item.canBePaidInInstallments && (
-              <form className="mb-2 d-flex flex-row align-items-center">
-                <div className="flex-column">
+              <form className="my-2 d-lg-block d-flex " style={{gridTemplateColumns:"1fr 1fr 1fr",gridGap:'0.5rem',alignItems:'end'}}>
+                <div className="d-flex flex-row align-items-center flex-wrap">
+                <div className="align-items-center d-flex  flex-root">
                   <label className="dark-text smaller mb-0">قيمة القسط</label>
                   {this.state.editingInstallment && (
-                    <p className="red-text smaller light-font-text mb-0">
+                    <p className="mx-2 red-text smaller light-font-text mb-0 normal-line-height">
                       {item.canBePaidInInstallments === true &&
                       this.state.installmentValdation === false &&
                       this.state.priceValdation === false
@@ -272,11 +297,35 @@ export class CourseCartItem extends Component {
                 <input
                   disabled={!this.state.editingInstallment}
                   type="number"
-                  className="form-control form-control-sm mx-auto unset-height text-center en-text w-50"
+                  className="form-control flex-root form-control-sm mx-auto unset-height text-center en-text"
                   value={this.getInstallmentInputValue()}
                   name="itemPrice"
                   onChange={this.onUpdateInstallmentInput}
                 />
+                </div>
+                  {item.canBePaidInInstallments ? (
+                <div
+                  className="flex-root py-2 my-0 my-md-2 h-100 d-flex align-items-center badge blue-status light-font-text clickable cursor-pointer"
+                  onClick={this.onToggleEditInstallment}
+                  disabled={!item.canBePaidInInstallments}
+                >
+                  <span className="text-center w-100">
+                  {this.state.editingInstallment
+                    ? "اعتمد القسط"
+                    : item.installment
+                    ? "تعديل القسط"
+                    : "سداد بالأقساط؟"}
+                  </span>
+                </div>
+              ) : null}
+              {item.installment && (
+                <div
+                  className="w-100 badge  blue-status light-font-text clickable cursor-pointer"
+                  onClick={this.onPayFullAmount}
+                >
+                  تسديد بالكامل
+                </div>
+              )}
               </form>
             )}
             <div className="d-flex flex-row justify-content-between align-items-center">

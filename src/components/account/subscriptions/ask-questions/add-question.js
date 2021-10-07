@@ -3,6 +3,7 @@ import {Modal, ModalHeader, ModalBody, ModalFooter, Label} from "reactstrap";
 import axios from "axios";
 import {apiBaseUrl} from "../../../../api/helpers";
 import {withRouter} from "react-router-dom";
+import swal from "sweetalert";
 
 class AddQuestion extends Component {
 	constructor(props) {
@@ -13,20 +14,30 @@ class AddQuestion extends Component {
 			questionType: "",
 			sections: [],
 			sectionId:'',
-			disableAdd: false,
+			disableAdd: true,
+			disable:true,
+			question:null,
+			submitLoading: false,
 		};
-
+		this.setLoading = this.setLoading.bind(this)
 	}
 
-	handleChange = event => {
-		let value = event.target.value;
-		this.setState({question: value});
+
+
+	handleChange = (key ,event) => {
+		const value = event.target.value;
+		this.setState({[key]: value} , ()=>{
+			const {sectionId ,question} = this.state
+			if(sectionId !=='' && question!=null){
+				this.setState({disableAdd: false});
+
+			}
+		})
 	};
 
-	handleChangeSection = e => {
-		const value = e.target.value;
-		this.setState({sectionId: value});
-	};
+	setLoading(loading){
+		this.setState({ submitLoading: loading });
+	}
 
 	componentDidMount(){
 		this.getSections();
@@ -43,9 +54,9 @@ class AddQuestion extends Component {
 			.get(`${apiBaseUrl}/Content/${courseId}/Sections`, { headers })
 			.then(response => {
 				this.setState({ sections: response.data.data });
-				if(response.data.data && response.data.data.length==1){
-					this.setState({sectionId:response.data.data[0].id})
-				}
+				// if(response.data.data && response.data.data.length>=1){
+				// 	this.setState({sectionId:response.data.data[0].id})
+				// }
 			})
 			.catch(error => {
 				console.log(error);
@@ -58,37 +69,37 @@ class AddQuestion extends Component {
 
 	handleFileChange = event => {
 		event.preventDefault();
-		this.props.toggleModal();
 		let token = localStorage.getItem("token");
 		let headers = {
 			Authorization: `Bearer ${token}`
 		};
 		let data = new FormData();
-
+		
 		data.append("file", event.target.files[0]);
 		axios
-			.post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
-				headers
-			})
-			.then(response => {
-				this.setState({file: response.data.data.url, questionType: "Image"});
-				if (this.state.file) {
-					const courseId = this.props.match.params.id;
-					const sectionId = this.state.sectionId;
-					let token = localStorage.getItem("token");
-					let headers = {
-						Authorization: `Bearer ${token}`
-					};
-					let data = {
-						type: "Image",
-						content: this.state.file
-					};
-					axios
-						.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
-							headers
-						})
-						.then(response => {
-							this.props.updateQuestions(response.data.data);
+		.post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
+			headers
+		})
+		.then(response => {
+			this.setState({file: response.data.data.url, questionType: "Image"});
+			if (this.state.file) {
+				const courseId = this.props.match.params.id;
+				const sectionId = this.state.sectionId;
+				let token = localStorage.getItem("token");
+				let headers = {
+					Authorization: `Bearer ${token}`
+				};
+				let data = {
+					type: "Image",
+					content: this.state.file
+				};
+				axios
+				.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
+					headers
+				})
+				.then(response => {
+					this.props.updateQuestions(response.data.data);
+					this.props.toggleModal();
 						})
 						.catch(error => {
 							this.setState({disabled: false});
@@ -102,6 +113,7 @@ class AddQuestion extends Component {
 	};
 	handleSubmit = event => {
 		event.preventDefault();
+		this.setLoading(true)
 		this.handleToggleAdd();
 		const courseId = this.props.match.params.id;
 		const sectionId = this.state.sectionId;
@@ -119,12 +131,14 @@ class AddQuestion extends Component {
 			})
 			.then(response => {
 				this.props.toggleModal();
-				this.handleToggleAdd();
+				this.setState({sectionId:'',question:null})
 				this.props.updateQuestions(response.data.data);
 			})
 			.catch(error => {
-				console.log(error);
-			});
+				swal("عفوا",error.message,"error")
+			}).finally(()=> {
+				this.setLoading(false)
+			})
 	}
 
 	render() {
@@ -148,9 +162,10 @@ class AddQuestion extends Component {
 							<select value={this.state.sectionId}
 							        className="form-select w-100 p-2 small dark-text border border-light-2"
 							        aria-label="Default select example"
-							        onChange={this.handleChangeSection}
+							        onChange={(e)=>this.handleChange('sectionId',e)}
 							        name='sectionId'
 							>
+								<option value='' selected disabled>اختر الجزء </option>
 								{
 									this.state.sections && this.state.sections.map( (row) =>
 										<option value={row.id}>{row.nameAr}</option>
@@ -165,11 +180,11 @@ class AddQuestion extends Component {
 	                id="content"
 	                type="text"
 	                name="content"
-	                onChange={this.handleChange}
+	                onChange={(e)=>this.handleChange('question',e)}
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={!this.state.sections}
+	                disabled={this.state.sectionId==''}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
@@ -178,7 +193,7 @@ class AddQuestion extends Component {
 											id="uploadImage"
 											type="file"
 											onChange={this.handleFileChange}
-											disabled={!this.state.sections}
+											disabled={this.state.sectionId==''}
 										/>
 										<img
 											src={
@@ -194,9 +209,8 @@ class AddQuestion extends Component {
 							</div>
 						</ModalBody>
 						<ModalFooter>
-							<button className="btn dark-outline-btn w-25" type="submit" onClick={this.onHide}
-							        disabled={this.state.disableAdd}>
-								اضافة
+							<button disabled={this.state.submitLoading} className="btn dark-outline-btn w-25" type="submit" onClick={this.onHide}>
+								{!this.state.submitLoading ? "اضافة" : "يتم الاضافة"}
 							</button>
 						</ModalFooter>
 					</form>

@@ -13,6 +13,7 @@ import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
+
 import RecordingVideo from "./recording-video";
 import "./styles.sass";
 import { PageLoader } from "./page-loader";
@@ -20,7 +21,7 @@ import { getAuthenticatedAxios, getDataFromResponse } from "../../api/helpers";
 var moment = require("moment-hijri");
 moment().format("iYYYY/iM/iD");
 
-export class CourseDetails extends Component {
+export default class CourseDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -128,7 +129,7 @@ export class CourseDetails extends Component {
             break;
           // "BadRequest" is no longer a valid error code, however, the error that was being shown should be for "ItemAlreadyAdded"
           // case "BadRequest":
-          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى سلة التسوق", "error", {
+          //   swal("عفواً", "هذه الدورة مضافة سابقًا إلى مختاراتي", "error", {
           //     button: "متابعة"
           //   });
           //   break;
@@ -161,6 +162,29 @@ export class CourseDetails extends Component {
               }
             );
             break;
+            case "UserNotConfirmed":
+              swal(
+                "عفواً",
+                "برجاء تأكيد رقم الهاتف الخاص بك ",
+                "error",
+                {
+                  button: "متابعة",
+                }
+              ).then((response) => {
+                Api.user.getUser().then((res) => {
+                  console.log(res);
+                  let data = {
+                    countryCode:res.countryCode,
+                    phoneNumber: res.phoneNumber
+                  };
+                  this.props.history.push({
+                    pathname: "/verify/identity",
+                    userInfo: data
+                  });
+                })
+               
+      });
+              break;
           default:
             swal("عفواً", "عليك تسجيل الدخول للقيام بهذه الخطوة", "error", {
               button: "متابعة",
@@ -744,7 +768,7 @@ export class CourseDetails extends Component {
                     ) : (
                       this.renderSections()
                     )}
-                    {this.state.details.price ? (
+                    {/* {this.state.details.price ? (
                       <div className="row mt-5">
                         <div className="col-12">
                           <h4 className="mid-text mb-2">الشروط والأحكام</h4>
@@ -769,7 +793,7 @@ export class CourseDetails extends Component {
                           </p>
                         </div>
                       </div>
-                    ) : null}
+                    ) : null} */}
                   </div>
                 </div>
               </div>

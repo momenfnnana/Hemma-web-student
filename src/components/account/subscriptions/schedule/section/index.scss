@@ -1,42 +1,51 @@
 .card-container .card-hover {
-    transition: all .3s ease-in-out;
-    border: 1px solid #addfe6;
-    margin-bottom: 1.5rem;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #addfe6;
+  margin-bottom: 1.5rem;
 }
- 
+
 .border-radius-20 {
-    border-radius: 20px;
+  border-radius: 20px;
+}
+
+.fr-2-1 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+  & > * {
+    height: 100%;
+  }
 }
 
 .small-btn {
-    padding-left: 11px !important;
-    padding-right: 11px !important;
-    font-size: 10px !important;
+  padding-left: 11px !important;
+  padding-right: 11px !important;
+  font-size: 10px !important;
 }
 
 .btn-card-normal-outline {
-    display: block;
-    width: 150px;
-    text-align: center;
-    background-color: transparent;
-    border: 1px solid var(--main-color);
-    color: var(--main-color) !important;
-    border-radius: 50px;
-    padding-left: 15px;
-    padding-right: 15px;
-    margin: auto;
-    font-size: .8rem;
-    height: 30px;
-    line-height: 30px;
-    font-weight: bold;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -ms-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
-    cursor: pointer;
+  display: block;
+  width: 150px;
+  text-align: center;
+  background-color: transparent;
+  border: 1px solid var(--main-color);
+  color: var(--main-color) !important;
+  border-radius: 50px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: auto;
+  font-size: 0.8rem;
+  height: 30px;
+  line-height: 30px;
+  font-weight: bold;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
 
 .width-60 {
-    width: 60px;
+  width: 60px;
 }

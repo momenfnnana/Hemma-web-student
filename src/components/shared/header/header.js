@@ -394,7 +394,7 @@ return(
       <React.Fragment>
     
         {/* <!-- Start The Hemma Navbar --> */}
-    <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-white py-0">
+    <nav id="header-nav" className="navbar fixed-top navbar-expand-lg navbar-light bg-white py-0">
       <div className="container">
 
         {/* <!-- Start The Main Hemma Logo --> */}
@@ -423,13 +423,13 @@ return(
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <a href="/home"  className={"nav-link links-hover "+(this.state.ClikedTab=="Main"?"active":"")}>الرئيسية</a>
+              <NavLink to="/home" activeClassName="active"  className={"nav-link links-hover"}>الرئيسيه</NavLink>
             </li>
             <li className="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
-            <a href="/categories" className={"nav-link links-hover d-flex align-items-center justify-content-between "+(this.state.ClikedTab=="Category"?"active":"")}>
+            <NavLink to="/categories" activeClassName="active" className={"nav-link links-hover d-flex align-items-center justify-content-between"}>
                 <span className="mr-1">منصات همة</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
-              </a>
+              </NavLink>
                <ul className="category-sub-list list-unstyled m-0">
                  {this.renderSubCategory()}
                  {this.renderSubCategorylvl2()}
@@ -459,10 +459,10 @@ return(
             {!this.props.authenticated ? (
               <ul className="navbar-nav mb-2 mb-lg-0">
              <li className="nav-item">
-               <a href="/auth/login" className="nav-link links-hover"> تسجيل الدخول</a>
+               <NavLink to="/auth/login" className="nav-link links-hover"> تسجيل الدخول</NavLink>
              </li>
               <li className="nav-item">
-              <a href="/auth/register" className="nav-link links-hover">  إنشاء حساب </a>
+              <NavLink to="/auth/register" className="nav-link links-hover">  إنشاء حساب </NavLink>
             </li>
               </ul>
             ):(
@@ -479,19 +479,19 @@ return(
                         </DropdownToggle>
                         <DropdownMenu>
                           <DropdownItem className="p-0">
-                          <a href="/account/update" className="nav-link d-inline-block">  تعديل الملف</a>
+                          <NavLink to="/account/update" className="nav-link d-inline-block">  تعديل الملف</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a  href="/cart" className="nav-link d-inline-block">مختاراتي</a>
+                          <NavLink  to="/cart" className="nav-link d-inline-block">مختاراتي</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/course/content" className="nav-link d-inline-block"> دوراتي</a>
+                          <NavLink to="/course/content" className="nav-link d-inline-block"> دوراتي</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/billing" className="nav-link d-inline-block">الحركات المالية</a>
+                          <NavLink to="/billing" className="nav-link d-inline-block">الحركات المالية</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
-                          <a href="/certificates" className="nav-link d-inline-block"> شهاداتي</a>
+                          <NavLink to="/certificates" className="nav-link d-inline-block"> شهاداتي</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
                             <a

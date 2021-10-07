@@ -190,4 +190,4 @@ const actionCreators = {
   removeCoupon,
 };
 
-export const Cart = connect(mapStateToProps, actionCreators)(CartComponent);
+export default connect(mapStateToProps, actionCreators)(CartComponent);

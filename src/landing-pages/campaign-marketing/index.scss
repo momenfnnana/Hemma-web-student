@@ -1,0 +1,102 @@
+.camapaign-marketing-wrapper {
+  padding: 2rem 4rem;
+  min-height: 100vh;
+  background-color: #d7f7f7;
+
+  & .marketing-describtion {
+    padding-top: 5%;
+  }
+
+  & .font-xlg {
+    font-size: 3.4rem !important;
+  }
+  & .font-md {
+    font-size: 1rem !important;
+  }
+}
+
+.mh-200{
+  max-height: 200px !important;
+}
+
+table{
+  display: table !important;
+  width: 100%;
+}
+.col-12 > .box-layout.box-border{
+  width: 50% !important;
+}
+
+.font-xxlg {
+  font-size: 3.8rem !important;
+}
+
+@media (max-width: 780px) {
+  .font-xxlg {
+    font-size: 2.8rem !important;
+  }
+  .camapaign-marketing-wrapper {
+    padding: 2rem 1rem;
+  }
+
+  .h4 {
+    font-size: 1rem !important;
+  }
+
+  .line-md {
+    & * {
+      line-height: 1.8rem !important;
+    }
+  }
+}
+
+.bg-yellow{
+  background-color: #FCE77D;
+}
+
+.bg-gheed{
+  background-color: #6C69B0;
+}
+
+.color-white {
+  color: #fff;
+}
+
+.absolute-centered {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+.blured {
+  filter: blur(5px);
+}
+
+.z-3 {
+  z-index: 3;
+}
+
+.h-fit {
+  height: fit-content;
+}
+.z-2 {
+  z-index: 2;
+}
+
+.line-md {
+  * {
+    line-height: 2.5rem;
+  }
+}
+
+.gheed-purple-color {
+  color: #7566ad;
+}
+
+.gheed-black-color {
+  color: #484848;
+}
+
+.gheed-purple-bg {
+  background-color: #7566ad;
+}

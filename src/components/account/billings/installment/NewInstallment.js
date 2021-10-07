@@ -54,7 +54,7 @@ export class NewInstallmentComponent extends Component {
         this.props.closeInstallmentModal();
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
-            swal("عفواً", "القسط مضاف سابقًا إلى سلة التسوق", "error", {
+            swal("عفواً", "القسط مضاف سابقًا إلى مختاراتي", "error", {
               button: "متابعة"
             });
             this.props.history.push("/cart")
@@ -71,7 +71,7 @@ export class NewInstallmentComponent extends Component {
             });
             break;
             case "ItemAlreadyAdded":
-              swal("عفواً", "القسط مضاف سابقًا إلى سلة التسوق", "error", {
+              swal("عفواً", "القسط مضاف سابقًا إلى مختاراتي", "error", {
                 button: "متابعة"
               });
               break;
