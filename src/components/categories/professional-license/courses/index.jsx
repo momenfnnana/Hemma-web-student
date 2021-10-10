@@ -164,7 +164,7 @@ export default withRouter(function ProfessionalCourses({
     const prevButton = getPrevRef(ref)
     const nextButton = getNextRef(ref)
     //hide all btns in descktop case
-    if(window.innerWidth > 800) return {nextButton : undefined , prevButton : undefined}
+    if(window.innerWidth > 800) return {nextButton : {text:'متابعة',value:nextButton} , prevButton : undefined}
     const config =  {nextButton : nextButton ? {text:'متابعة',value:nextButton} : undefined,prevButton : prevButton ? {text:'السابق',value:prevButton} : undefined}
     return config
 
