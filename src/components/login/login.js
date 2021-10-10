@@ -18,6 +18,7 @@ import {
 } from "../../actions/login.actions";
 import axios from "axios";
 import { Helmet } from "react-helmet";
+import "./index.scss"
 
 const validate = values => {
   const errors = {};
@@ -215,7 +216,7 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 src={process.env.PUBLIC_URL + `/assets/images/${this.state.hidden ? 'closed-' : ''}eye.png`}
                 width="100%"
                 width="20"
-                className="position-absolute left-input-icon top-50 z-5"
+                className="position-absolute show-password-icon z-5"
                 onClick={this.togglePasswordShow}
               />
           </div>
