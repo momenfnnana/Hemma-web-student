@@ -19,7 +19,7 @@ import PaymentStage from './checkout-stages/payment-stage/index';
 class CheckoutComponent extends Component {
   state = {
     busy: true,
-    activeTab: "online",
+    activeTab: "bank",
     isShippingAddressFilled:false,
     currentStepIndex : 0
   };
