@@ -78,6 +78,11 @@ class BankPaymentComponent extends Component {
         });
       });
   }
+  notifySuccess(cb = ()=>{}){
+    swal("تمت العملية بنجاح", "", "success", {
+      button: "متابعة"
+    }).then(cb);
+  }
 
   /**
    * Handle submitting bank transfer payment form
@@ -112,7 +117,9 @@ class BankPaymentComponent extends Component {
       .checkoutWithBankTransfer(data)
       .then(() => {
         this.setState({ loading: false, disabled: false });
-        this.props.history.push("/course/content");
+        this.notifySuccess(()=>{
+          this.props.history.push("/course/content");
+        })
       })
       .catch(error => {
         this.setState({ loading: false, disabled: false });
