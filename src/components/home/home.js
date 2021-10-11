@@ -347,7 +347,7 @@ async onClick(Category){
     
     //if(!childCateg.length) this.handleNoChildCategories()
     const url = `/categories/details/${categSlug}`
-    if(!navigationType) this.handleNoChildCategories()
+    if(!navigationType) throw new Error(Category.inactiveCategoryMessage)
     if(navigationType === '_blank') window.open(url)
     else {
       const { history } = this.props;
