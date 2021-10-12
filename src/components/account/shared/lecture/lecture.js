@@ -56,7 +56,7 @@ export class Lecture extends Component {
     var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
     return (
       <React.Fragment>
-        {this.state.details && (
+        {this.props.details && (
           <div className="lecture-item w-100 d-flex align-items-center mb-4">
             <div className="media w-75">
               <div className="silver-box-bg mr-4 d-flex align-items-center justify-content-center">
@@ -64,20 +64,20 @@ export class Lecture extends Component {
               </div>
               <div className="media-body mt-2">
                 <h6 className="text-white light-font-text mb-0">
-                  {this.state.details.nameAr}
+                  {this.props.details.nameAr}
                 </h6>
                 <ul className="list-inline mt-2">
                   <li className="list-inline-item small mt-0">
                     <p className="text-white light-font-text mb-0">
-                      {this.state.details &&
-                        this.state.details.instructor &&
-                        this.state.details.instructor.name}
+                      {this.props.details &&
+                        this.props.details.instructor &&
+                        this.props.details.instructor.name}
                     </p>
                   </li>
                 </ul>
               </div>
             </div>
-            {this.state.details && this.state.details.status == "Live" ? (
+            {this.props.details && this.props.details.status == "Live" ? (
               <React.Fragment>
                 {liveID && (
                   <div className="w-25 d-flex justify-content-end">
@@ -101,7 +101,7 @@ export class Lecture extends Component {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {this.state.details.scheduledAt && (
+                {this.props.details.scheduledAt && (
                   <div className="w-25 d-flex justify-content-end">
                     <h6 className="text-white small">
                       وقت المحاضرة:{" "}
