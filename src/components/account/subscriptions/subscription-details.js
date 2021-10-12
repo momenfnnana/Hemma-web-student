@@ -219,27 +219,26 @@ class SubscriptionDetailsComponent extends Component {
                           />
                           {!this.state.loading && (
                             <>
-                              {this.props.designType ? (
-                                <div className="animate-down">
-                                  <Schedule
-                                    subscription={subscription}
-                                    courseId={courseId}
-                                    courseName={
-                                      subscription && subscription.nameAr
-                                    }
-                                    {...props}
-                                  />
-                                </div>
-                              ) : (
-                                <div className="animate-down">
-                                  <ClassicSchedule
-                                    courseName={
-                                      subscription && subscription.nameAr
-                                    }
-                                    {...props}
-                                  />
-                                </div>
-                              )}
+                              <div className="animate-down">
+                                <Schedule
+                                  designType={this.props.designType}
+                                  subscription={subscription}
+                                  courseId={courseId}
+                                  courseName={
+                                    subscription && subscription.nameAr
+                                  }
+                                  {...props}
+                                >
+                                  <div className="animate-down">
+                                    <ClassicSchedule
+                                      courseName={
+                                        subscription && subscription.nameAr
+                                      }
+                                      {...props}
+                                    />
+                                  </div>
+                                </Schedule>
+                              </div>
                             </>
                           )}
                         </>
@@ -329,6 +328,10 @@ class SubscriptionDetailsComponent extends Component {
                     />
                     <Route
                       exact
+                      path="/course/content/:id/askQuestions/list"
+                      component={AskQuestionsList}
+                    />
+                    <Route
                       path="/course/content/:id/askQuestions/list"
                       component={AskQuestionsList}
                     />
