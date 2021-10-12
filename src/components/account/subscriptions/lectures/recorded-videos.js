@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
-import "../styles.sass";
 import { CommentsList } from "./comments/comments-list";
 import Vimeo from "@u-wave/react-vimeo";
+import "./index.scss";
+import "../styles.sass";
 
 export class LectureDetails extends Component {
   constructor(props) {
@@ -115,8 +116,9 @@ export class LectureDetails extends Component {
 
   renderLecture(lecture) {
     const courseId = this.props.match.params.id;
+    const currentLecture = this.props.match.params.lectureId
     return (
-      <div className="custom-control custom-radio mt-3">
+      <div className={`custom-control custom-radio mt-3 ${currentLecture === lecture.id ? 'active':'' }`}>
         <div
           className="d-flex flex-column clickable"
           onClick={() =>

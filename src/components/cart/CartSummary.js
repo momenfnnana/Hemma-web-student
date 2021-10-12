@@ -20,8 +20,9 @@ class CartSummaryComponent extends Component {
    * Helper to render the financial details
    */
   renderDetails() {
-    const { cart, busy } = this.props;
 
+    const { cart, busy } = this.props;
+debugger;
     return (
       <Fragment>
         <div className="pb-0 p-4">
@@ -29,11 +30,12 @@ class CartSummaryComponent extends Component {
           <div className="d-flex flex-row align-items-center justify-content-between">
             <h4 className="light-text mt-2">
               <span className="en-text">
-                {cart ? formatPrice(cart.total) : "-"}
+                {cart ? formatPrice(cart.total)==0 && cart.items.length>0?"مجانى":formatPrice(cart.total) : "-"}
               </span>{" "}
-              ريال
+             {cart ?  formatPrice(cart.total)==0 && cart.items.length>0? "" :"ريال" : "ريال"} 
             </h4>
-
+{/* {formatPrice(cart.total)==0 ? 
+(<span>مجانى</span>):null} */}
             {cart && cart.totalBeforeDiscount && (
               <h4 className="dark-silver-text mt-2 mx-auto line-through-text align-items-center d-flex">
                 <span className="en-text">
