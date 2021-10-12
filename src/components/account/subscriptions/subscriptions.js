@@ -9,7 +9,7 @@ import classnames from "classnames";
 import { SubscriptionsList } from "./list/subscriptions-list";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
-
+import "./index.scss"
 export class SubscriptionsComponent extends Component {
   constructor(props) {
     super(props);
@@ -63,7 +63,7 @@ export class SubscriptionsComponent extends Component {
             <header className="mb-5">
               <div className="d-flex flex-column align-items-center">
                 <div className="card-container">
-                  <div className="img-wrapper card-hover mb-2">
+                  <div className="img-wrapper card-hover mb-2 mx-180">
                     <img
                       src="/assets/images/icon-header.png"
                       className="height-70"
