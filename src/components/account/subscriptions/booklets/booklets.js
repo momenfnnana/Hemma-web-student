@@ -267,7 +267,7 @@ export class BookletsComponent extends Component {
                         تتبع
                       </a>
                     ) : null}
-                    {/* {this.state.cumulativePaymentStatus === "Pending" ? (
+                    {this.state.cumulativePaymentStatus === "Pending" ? (
                       <div className="btn blue-border-btn mr-2">
                         <a aria-disabled="true">قيد المراجعة</a>
                       </div>
@@ -280,14 +280,14 @@ export class BookletsComponent extends Component {
                       <div className="btn blue-border-btn mr-2">
                         <a aria-disabled="true">مسترجع</a>
                       </div>
-                    ) : null} */}
-                    {/* {this.state.showOrderBooklet ? (
+                    ) : null}
+                    {this.state.showOrderBooklet ? (
                       <NavLink to="/cart">
                         <div className="btn blue-border-btn mr-1">
                           الملزمة موجودة في مختاراتي
                         </div>
                       </NavLink>
-                    ) : null} */}
+                    ) : null}
                     {this.state.canBePurchased &&
                     !this.state.purchased &&
                     !this.state.showOrderBooklet ? (
@@ -366,3 +366,4 @@ function mapStateToProps(state) {
 BookletsComponent = connect(mapStateToProps, { getUser })(BookletsComponent);
 
 export const Booklets = withRouter(BookletsComponent);
+
