@@ -12,6 +12,7 @@ import axios from "axios";
 import "../styles.sass";
 import Slider from "react-slick";
 import Countdown from "react-countdown-now";
+import { Link } from "react-router-dom";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -173,7 +174,6 @@ class ExamDetailsComponent extends Component {
       nav2: this.slider2,
     });
   };
-
   submitAnswers = () => {
     const attemptId = this.props.match.params.attemptId;
     let token = localStorage.getItem("token");
@@ -544,12 +544,18 @@ class ExamDetailsComponent extends Component {
                 >
                   استكمال الاختبار              
                 </button>
-                <h6
-                  className="dark-silver-text small mt-3 mb-0 clickable"
-                  onClick={this.handleCancel}
+                {/* <Link
+              className="btn light-btn unset-height unset-line-height"
+              to={`/course/content/${courseId}/exam/${attemptId}/result`}
+            >
+              التأكد من الإجابات
+            </Link> */}
+                <Link
+                 className="btn red-outline-btn light-outline-btn w-75 m-2"
+                  to={`/course/content/${courseId}/exam/${attemptId}/result`}
                 >
-                  إلغاء
-                </h6>
+                   إنهاء الامتحان
+                </Link>
               </div>
             </div>
           </div>

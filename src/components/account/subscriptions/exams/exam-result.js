@@ -24,8 +24,10 @@ class ExamResultComponent extends Component {
       questions: [],
       nav1: null,
       nav2: null,
+      status:'',
       selectedQuestion: 0
     };
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   openSolutionModal = id => {
@@ -54,7 +56,8 @@ class ExamResultComponent extends Component {
           headers
         })
         .then(response => {
-          this.setState({ questions: response.data.data.questions });
+          console.log(response.data.data);
+          this.setState({ questions: response.data.data.questions ,status:response.data.data.status });
         })
         .catch(error => {
           console.log(error);
@@ -175,7 +178,24 @@ class ExamResultComponent extends Component {
       </Accordion>
     );
   }
-
+  deleteAttempt(attemptId,cb=()=>{}){
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    axios
+      .delete(`${apiBaseUrl}/Exams/${attemptId}`, { headers })
+      .then(()=>{
+        cb()
+      })
+  }
+  async handleCancel(){
+    const {id : examId, attemptId} = this.props.match.params
+    const {history:{push}} =  this.props
+    this.deleteAttempt(attemptId,()=>{
+      push(`/course/content/${examId}/exams/list`)
+    })
+  }
   render() {
     const attemptId = this.props.match.params.attemptId;
     const courseId = this.props.match.params.id;
@@ -205,7 +225,18 @@ class ExamResultComponent extends Component {
                 </div>
               </div>
               {this.renderQuestions()}
+              
             </div>
+            { this.state.status == "Pending"?(
+              <div className="col-md-6">
+              <button
+                 className="btn red-outline-btn m-2 float-right d-flex"
+                 onClick={this.handleCancel}>
+  حذف المحاولة
+                </button>
+                </div>
+            ):null}
+            
           </div>
         </div>
 

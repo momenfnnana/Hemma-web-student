@@ -221,7 +221,7 @@ export class BookletsComponent extends Component {
                         تتبع//
                       </a>
                     ) : null} */}
-                    {this.state.tracking != "" ? (
+                    {this.state.tracking != "" && this.state.booklet.agency != "" ? (
                       <a
                         className="btn blue-border-btn mr-2"
                         href={`${this.state.tracking}`}
