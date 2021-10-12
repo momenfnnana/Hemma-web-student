@@ -17,8 +17,8 @@ import { StartExam } from "./exams/start-exam";
 import { ExamDetails } from "./exams/exam-details";
 import { ExamResult } from "./exams/exam-result";
 import { RatingModal } from "./rating/rating-modal";
-import { getSubscription } from "../../../actions/subscription.actions"
-import { setDeisgnType } from "../../../actions/user.actions"
+import { getSubscription } from "../../../actions/subscription.actions";
+import { setDeisgnType } from "../../../actions/user.actions";
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import { NewInstallment } from "../billings/installment/NewInstallment";
@@ -73,19 +73,18 @@ class SubscriptionDetailsComponent extends Component {
     });
   }
 
-  componentDidUpdate(prevProps,prevState){
-    if(this.props.designType !== prevProps.designType){
-      this.setState({loading:true},()=>{
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.designType !== prevProps.designType) {
+      this.setState({ loading: true }, () => {
         setTimeout(() => {
-          this.setState({loading:false})
+          this.setState({ loading: false });
         }, 300);
-      })
+      });
     }
   }
 
-
   toggleDesign() {
-    this.props.setDeisgnType(+!this.props.designType)
+    this.props.setDeisgnType(+!this.props.designType);
     // this.setState({ designType: +!this.state.designType });
   }
 
@@ -106,12 +105,12 @@ class SubscriptionDetailsComponent extends Component {
   render() {
     const courseId = this.props.match.params.id;
     const subscription =
-    this.props &&
-    this.props.subscription &&
-    this.props.subscription.subscription;
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-    
+
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -175,70 +174,74 @@ class SubscriptionDetailsComponent extends Component {
               <div className="container mt-5 pb-5">
                 <div className="row">
                   <div className="col-md-3 col-12">
-                  {!this.state.loading &&
-                  
-                  <div className="animate-down"><MergedSidebar
-                      designType={this.props.designType}
-                      subscription={subscription}
-                      courseId={courseId}
-                    />
-                    {ratingStatus === "Skipped" && (
-                      <button
-                        className="btn light-btn w-100 mb-3"
-                        onClick={() =>
-                          this.setState({ forceOpenRatingModal: true })
-                        }
-                      >
-                        قيّم الدورة
-                      </button>
+                    {!this.state.loading && (
+                      <div className="animate-down">
+                        <MergedSidebar
+                          designType={this.props.designType}
+                          subscription={subscription}
+                          courseId={courseId}
+                        />
+                        {ratingStatus === "Skipped" && (
+                          <button
+                            className="btn light-btn w-100 mb-3"
+                            onClick={() =>
+                              this.setState({ forceOpenRatingModal: true })
+                            }
+                          >
+                            قيّم الدورة
+                          </button>
+                        )}
+                        <RatingModal
+                          isRatingModalOpen={
+                            ratingStatus === "Available" ||
+                            this.state.forceOpenRatingModal
+                          }
+                          onClose={() =>
+                            this.setState({ forceOpenRatingModal: false })
+                          }
+                          status={ratingStatus}
+                          courseId={courseId}
+                        />
+                        <Instructors id={courseId} />
+                      </div>
                     )}
-                    <RatingModal
-                      isRatingModalOpen={
-                        ratingStatus === "Available" ||
-                        this.state.forceOpenRatingModal
-                      }
-                      onClose={() =>
-                        this.setState({ forceOpenRatingModal: false })
-                      }
-                      status={ratingStatus}
-                      courseId={courseId}
-                    />
-                    <Instructors id={courseId} />
-                    </div>
-                  }
                   </div>
                   <div className="col-md-9 col-12">
-                    <Route path="/course/content/:id/schedule" exact>
-                    </Route>
+                    <Route path="/course/content/:id/schedule" exact></Route>
                     <Route
                       path="/course/content/:id/schedule"
                       exact
                       render={(props) => (
                         <>
-                        <DesignSwitch
-                          designType={this.props.designType}
-                          onChange={this.toggleDesign}
-                        />
-                      {!this.state.loading &&  <>
-                          {this.props.designType ? (
-                            <div className="animate-down">
-                            <Schedule
-                              subscription={subscription}
-                              courseId={courseId}
-                              courseName={subscription && subscription.nameAr}
-                              {...props}
-                            />
-                            </div>
-
-                          ) : (
-                          <div className="animate-down">
-                            <ClassicSchedule
-                              courseName={subscription && subscription.nameAr}
-                              {...props}
-                            />
-                          </div>
+                          <DesignSwitch
+                            designType={this.props.designType}
+                            onChange={this.toggleDesign}
+                          />
+                          {!this.state.loading && (
+                            <>
+                              {this.props.designType ? (
+                                <div className="animate-down">
+                                  <Schedule
+                                    subscription={subscription}
+                                    courseId={courseId}
+                                    courseName={
+                                      subscription && subscription.nameAr
+                                    }
+                                    {...props}
+                                  />
+                                </div>
+                              ) : (
+                                <div className="animate-down">
+                                  <ClassicSchedule
+                                    courseName={
+                                      subscription && subscription.nameAr
+                                    }
+                                    {...props}
+                                  />
+                                </div>
+                              )}
+                            </>
                           )}
-                        </>}
                         </>
                       )}
                     />
@@ -324,7 +327,7 @@ class SubscriptionDetailsComponent extends Component {
                       component={TrainingResult}
                       exact
                     />
-                     <Route
+                    <Route
                       exact
                       path="/course/content/:id/askQuestions/list"
                       component={AskQuestionsList}
@@ -382,11 +385,13 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   getSubscription,
-  setDeisgnType
-}
+  setDeisgnType,
+};
 
-SubscriptionDetailsComponent = connect(mapStateToProps, mapDispatchToProps)(
-  SubscriptionDetailsComponent
-);
+SubscriptionDetailsComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SubscriptionDetailsComponent);
 
 export default withRouter(SubscriptionDetailsComponent);
+
