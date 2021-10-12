@@ -25,9 +25,15 @@ export class inputField extends Component {
             value={this.props.input.value}
             disabled={this.props.disabled}
           />
-          {this.props.meta.touched && this.props.meta.error && (
-            <small className="w-100 smaller">{this.props.meta.error}</small>
-          )}
+            <small
+              className="w-100 smaller"
+              style={{
+                opacity:
+                  this.props.meta.touched && this.props.meta.error ? 1 : 0,
+              }}
+            >
+              {this.props.meta.error}
+            </small>
         </div>
       </React.Fragment>
     );

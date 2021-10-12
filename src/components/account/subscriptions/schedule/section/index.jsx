@@ -61,7 +61,7 @@ export const urlTempalte = (docType, sectionType) => {
 export const ScheduleSection = ({ name, section, ...props }) =>{
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
-
+  console.log({show});
   const {chapters = []} = section || {}
   const hasTrainings = chapters.some(chapter => chapter.isContainTraining) 
   const hasExams = chapters.some(chapter => chapter.isContainExam) 
@@ -104,7 +104,7 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
   return (
     <>
       {
-        <div className="part-name-section">
+        <div className="part-name-section mt-3">
           <ScheduleHeader
             links={sectionLinksfiltedByDisplayKey}
             courseId={courseId}
@@ -115,7 +115,7 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
             showToggle={!!section?.chapters?.length}
             {...props}
           />
-          {1 && (
+          {show && (
             <div className="d-grid fr-2-1">
               {section?.chapters?.map((chapter) => (
                 <SectionContent isContainLectures={chapter?.lectures?.length} {...chapter} {...props} />

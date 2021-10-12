@@ -44,4 +44,4 @@ pipelines:
           image: atlassian/pipelines-kubectl
           script:
             - export IMAGE_NAME=hemmaeducationa/student:$BITBUCKET_COMMIT
-            - kubectl --kubeconfig=./scripts/hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/student-dep student=$IMAGE_NAME --record=true
+            - kubectl --kubeconfig=./scripts/bak-hemma-stg-cluster-kubeconfig.yaml --namespace=default set image deployment/student-dep student=$IMAGE_NAME --record=true
