@@ -122,8 +122,8 @@ class ShippingAddressFormComponent extends Component {
     e.preventDefault();
     this.setState({ values }, () => {
       swal(
-        `لا يمكن الانسحاب من الدورة بعد طلب الملزمة
-        
+        `لا يمكن الانسحاب
+         من الدورة بعد طلب الملزمة
         هل أنت متأكد من هذا الرقم  (${this.state.values?.shippingPhone})؟`,
         {
           buttons: {
