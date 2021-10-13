@@ -259,12 +259,6 @@ export class ClassicSchedule extends Component {
           <div className="col-12 mb-4">
             <Slider {...settings}>{this.renderChallenges()}</Slider>
           </div> */}
-          <div className="col-12 mt-3 mt-md-0">
-            <h6 className="dark-text small mb-0 mt-0">
-              {this.props.courseName}
-            </h6>
-          </div>
-
           {this.state.details.sections == undefined ||
           this.state.details.sections == 0 ? (
             <div className="col-12">
