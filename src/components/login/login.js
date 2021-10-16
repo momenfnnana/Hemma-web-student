@@ -218,6 +218,7 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 width="20"
                 className="position-absolute show-password-icon z-5"
                 onClick={this.togglePasswordShow}
+                style={{top:'11px',left:'7px',zIndex:10}}
               />
           </div>
           <div>
