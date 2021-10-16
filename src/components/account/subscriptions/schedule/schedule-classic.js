@@ -85,7 +85,7 @@ export class ClassicSchedule extends Component {
   renderChapters(chapters) {
     const sortedChapters = chapters.sort((a, b) =>
       a.order > b.order ? 1 : -1
-    ).filter(chapter => chapter.lectures.length);
+    );
     if (sortedChapters) {
       return sortedChapters.map(chapter => (
         <Accordion key={chapter.id}>
