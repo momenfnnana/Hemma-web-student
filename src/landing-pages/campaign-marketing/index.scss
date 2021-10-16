@@ -24,9 +24,13 @@ table {
   width: 100%;
 }
 .col-12 > .box-layout.box-border {
-  width: 50% !important;
+  width: 70% !important;
   @media (max-width: 1000px) {
     width: 85% !important;
+  }
+
+  p  img{
+    max-width: 10%;
   }
 }
 
