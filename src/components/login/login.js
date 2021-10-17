@@ -222,7 +222,7 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
               />
           </div>
           <div>
-          <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
+          <input type="checkbox" className="mx-2" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
           <label>تذكرني</label>
           </div>
           <button
