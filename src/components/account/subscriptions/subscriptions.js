@@ -10,7 +10,6 @@ import { SubscriptionsList } from "./list/subscriptions-list";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import "./index.scss"
-
 export class SubscriptionsComponent extends Component {
   constructor(props) {
     super(props);

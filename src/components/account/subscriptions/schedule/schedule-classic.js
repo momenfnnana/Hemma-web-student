@@ -23,8 +23,10 @@ export class ClassicSchedule extends Component {
   constructor(props) {
     super(props);
     this.state = { details: [],
-      isPageLoading: false
+      isPageLoading: false,
+      showToggle:true
      };
+     this.onToggle = this.onToggle.bind(this)
   }
 
   componentDidMount() {
@@ -63,18 +65,30 @@ export class ClassicSchedule extends Component {
     );
   }
 
+  onToggle(id){
+    this.setState({showToggle: this.state.showToggle === id ? null : id});
+  }
+
   renderSections() {
     const sections = this.state.details.sections;
-
+    const {showToggle}=  this.state
     if (sections) {
       return sections.map(section => (
         <div className="row mt-3" key={section.id}>
           <div className="col-12">
             <div className="card section-card" key={section.id}>
-              <div className="card-header border-bottom-0">
+              <div className="card-header border-bottom-0 d-flex justify-content-between">
                 <h6 className="text-white small mb-0 ">{section.nameAr}</h6>
+                <a
+            className="collapse-anchor d-block  ml-2 width-20 text-center cursor-pointer"
+            data-opening="lectures-lists-one"
+            onClick={()=>this.onToggle(section.id)}
+            style={{transform: `rotate(${section.id === this.state.showToggle  ? '180deg':"0deg"})`}}
+          >
+            <i className={`text-white fas fa-chevron-up`}></i>
+          </a>
               </div>
-              {this.renderChapters(section.chapters)}
+              {showToggle ===  section.id && this.renderChapters(section.chapters)}
             </div>
           </div>
         </div>
@@ -85,7 +99,7 @@ export class ClassicSchedule extends Component {
   renderChapters(chapters) {
     const sortedChapters = chapters.sort((a, b) =>
       a.order > b.order ? 1 : -1
-    ).filter(chapter => chapter.lectures.length);
+    );
     if (sortedChapters) {
       return sortedChapters.map(chapter => (
         <Accordion key={chapter.id}>
