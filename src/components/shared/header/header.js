@@ -423,7 +423,7 @@ return(
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink to="/home" activeClassName="active"  className={"nav-link links-hover"}>الرئيسيه</NavLink>
+              <NavLink to="/home" activeClassName="active"  className={"nav-link links-hover"}>الرئيسية</NavLink>
             </li>
             <li className="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
             <NavLink to="/categories" activeClassName="active" className={"nav-link links-hover d-flex align-items-center justify-content-between"}>
