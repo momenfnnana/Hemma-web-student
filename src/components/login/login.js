@@ -59,7 +59,7 @@ class LoginComponent extends Component {
     this.handlePendingActions = this.handlePendingActions.bind(this);
   }
   componentDidMount() {
-
+    document.getElementsByName("phone")[0].maxLength=11;
     const checked= localStorage.getItem('checkbox');
     if (checked ) {
         this.setState({
