@@ -1,0 +1,9 @@
+.custom-radio {
+  &.active {
+    & label {
+      &::before {
+        background-color: #fff;
+      }
+    }
+  }
+}

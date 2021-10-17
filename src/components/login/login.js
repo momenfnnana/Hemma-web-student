@@ -59,7 +59,7 @@ class LoginComponent extends Component {
     this.handlePendingActions = this.handlePendingActions.bind(this);
   }
   componentDidMount() {
-
+    document.getElementsByName("phone")[0].maxLength=11;
     const checked= localStorage.getItem('checkbox');
     if (checked ) {
         this.setState({
@@ -218,10 +218,11 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 width="20"
                 className="position-absolute show-password-icon z-5"
                 onClick={this.togglePasswordShow}
+                style={{top:'11px',left:'7px',zIndex:10}}
               />
           </div>
           <div>
-          <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
+          <input type="checkbox" className="mx-2" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
           <label>تذكرني</label>
           </div>
           <button
