@@ -15,16 +15,23 @@
   }
 }
 
-.mh-200{
+.mh-200 {
   max-height: 200px !important;
 }
 
-table{
+table {
   display: table !important;
   width: 100%;
 }
-.col-12 > .box-layout.box-border{
-  width: 30% !important;
+.col-12 > .box-layout.box-border {
+  width: 70% !important;
+  @media (max-width: 1000px) {
+    width: 85% !important;
+  }
+
+  p  img{
+    max-width: 10%;
+  }
 }
 
 .font-xxlg {
@@ -50,12 +57,12 @@ table{
   }
 }
 
-.bg-yellow{
-  background-color: #FCE77D;
+.bg-yellow {
+  background-color: #fce77d;
 }
 
-.bg-gheed{
-  background-color: #6C69B0;
+.bg-gheed {
+  background-color: #6c69b0;
 }
 
 .color-white {

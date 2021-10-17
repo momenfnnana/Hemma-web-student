@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import ScheduleHeader from "./schedual-header/index";
-import {ScheduleSection} from "./section";
+import { ScheduleSection } from "./section";
 import { Lecture } from "../../shared/lecture/lecture";
 
 var moment = require("moment-hijri");
@@ -233,7 +233,13 @@ export class Schedule extends Component {
     //     }
     //   ]
     // };
-    const {subscription,courseId} = this.props
+    const { subscription, courseId } = this.props;
+    const liveStatus = 'Live'
+
+    const allLectures  = this.state.details?.sections?.map(section => section.chapters)?.flat()?.map(chap => chap.lectures).flat()
+    const liveLecture = allLectures?.find(lecture => lecture.status === liveStatus)
+
+   
 
     return (
       <>
@@ -242,26 +248,31 @@ export class Schedule extends Component {
             {subscription && subscription.chatChannelSid && (
               <>
                 <p className="mb-3 mt-3 mt-md-0">{subscription.nameAr}</p>
-                <Lecture
+               {liveLecture &&  <Lecture
+               details={liveLecture}
                   subscription={subscription}
                   id={courseId}
                   chatChannelSid={subscription.chatChannelSid}
-                />
+                />}
               </>
             )}
           </div>
         </div>
-        {this.state.isPageLoading ? (
-          <div
-            className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
-            style={{ minHeight: 350 }}
-          >
-            <Loader type="ball-spin-fade-loader" className="dark-loader" />
-          </div>
+        {this.props.designType == 0 ? (
+          <>{this.props.children}</>
         ) : (
-          <React.Fragment>
-            <div className="row no-gutters">
-              {/* <div className="col-12 mb-4">
+          <>
+            {this.state.isPageLoading ? (
+              <div
+                className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+                style={{ minHeight: 350 }}
+              >
+                <Loader type="ball-spin-fade-loader" className="dark-loader" />
+              </div>
+            ) : (
+              <React.Fragment>
+                <div className="row no-gutters">
+                  {/* <div className="col-12 mb-4">
             <div className="d-flex justify-content-between">
               <h6 className="dark-text small mb-0 mt-0">
                 آخر التحديات المضافة
@@ -274,21 +285,21 @@ export class Schedule extends Component {
           <div className="col-12 mb-4">
             <Slider {...settings}>{this.renderChallenges()}</Slider>
           </div> */}
-              <div className="col-12">
-                {/* <h6 className="dark-text small mb-0 mt-0">
+                  <div className="col-12">
+                    {/* <h6 className="dark-text small mb-0 mt-0">
               {this.props.courseName}
             </h6> */}
 
-                {this.state.details?.sections?.map((section) => (
-                  <ScheduleSection
-                    section={section}
-                    title={this.props.courseName}
-                    courses={this.props.courseName}
-                    {...this.props}
-                  />
-                ))}
-              </div>
-              {/* 
+                    {this.state.details?.sections?.map((section) => (
+                      <ScheduleSection
+                        section={section}
+                        title={this.props.courseName}
+                        courses={this.props.courseName}
+                        {...this.props}
+                      />
+                    ))}
+                  </div>
+                  {/* 
               {this.state.details.sections == undefined ||
               this.state.details.sections == 0 ? (
                 <div className="col-12">
@@ -311,8 +322,10 @@ export class Schedule extends Component {
                 <div className="col-12">{this.renderSections()}</div>
                 </>
               )} */}
-            </div>
-          </React.Fragment>
+                </div>
+              </React.Fragment>
+            )}
+          </>
         )}
       </>
     );
