@@ -84,6 +84,39 @@ class BankPaymentComponent extends Component {
    */
   myFormHandler = values => {
     const cart = this.props.cart;
+    console.log(cart);
+    debugger;
+
+    if(cart.items.filter(c=>c.type=="Course"||c.type=="Installment").length == 0)
+    {
+
+        if(cart.total > values.amount  )
+        {
+          swal(
+            "عفواً",
+            "المبلغ المحول أقل من ثمن الملزمة",
+            "error",
+            {
+              button: "متابعة"
+            }
+          );
+          return null;
+        }
+        if(cart.total < values.amount  )
+        {
+          swal(
+            "عفواً",
+            "المبلغ المحول أكبر من ثمن الملزمة",
+            "error",
+            {
+              button: "متابعة"
+            }
+          );
+          return null;
+        }
+      
+    }
+
     const itemsThatRequireShippingAddress = cart.items.filter(
       i => i.requiresShippingAddress
     );

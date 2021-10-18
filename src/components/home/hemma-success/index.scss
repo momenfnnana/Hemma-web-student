@@ -3,8 +3,9 @@
     width: 335px !important;
   }
 
-  & .glide__slides {
-    transition: transform 1000ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
-    width: 100%;
-  }
+}
+.glide__slides {
+  overflow: initial !important;
+  transition: transform 1000ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s;
+  width: 100%;
 }
