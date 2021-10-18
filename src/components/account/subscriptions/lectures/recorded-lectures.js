@@ -92,6 +92,7 @@ export class RecordedLectures extends Component {
                   <img
                     src={process.env.PUBLIC_URL + "/assets/images/course1.png"}
                     alt={lecture.nameAr}
+                    className="w-100"
                   />
                 </header>
                 <div className="card-body d-flex justify-content-center flex-column">
