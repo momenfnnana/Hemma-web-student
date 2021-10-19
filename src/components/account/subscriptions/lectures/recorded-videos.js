@@ -200,7 +200,9 @@ export class LectureDetails extends Component {
                     </>
                   )}
                 </div>
+                {this.state.details &&  this.state.courseDetails.activateComments? (
                 <CommentsList lectureId={lectureId} />
+                ):null}
               </div>
             </div>
           </div>
