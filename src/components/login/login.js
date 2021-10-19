@@ -154,6 +154,7 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
                 localStorage.setItem('account',ciphertext);
                 localStorage.setItem('checkbox', this.state.isChecked);
+                this.props.history.push("/")
             }
             else{
               this.props.history.goBack();
