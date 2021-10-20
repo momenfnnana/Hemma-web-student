@@ -175,7 +175,7 @@ class RefundComponent extends Component {
                     rows="5"
                     validate={required}
                   />
-                  <button className="btn light-outline-btn mt-4 w-100">
+                  <button disabled={this.state.disabled} className="btn light-outline-btn mt-4 w-100">
                     استرجاع الرسوم
                   </button>
                 </form>
