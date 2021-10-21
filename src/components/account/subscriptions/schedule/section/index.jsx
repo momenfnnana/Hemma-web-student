@@ -51,6 +51,20 @@ export  const chapterLinks = (chapter)=> [
     docType :"chapter",
     displayKey : 'isContainAttachments'
   },
+  {
+    title: "اختبارات",
+    path: chapter?.id,
+    nestedPath: chapterSections.EXAMS,
+    docType :"chapter",
+    displayKey : 'isContainsectionExam'
+  },
+  {
+    title: "تدريبات",
+    path: chapter?.id,
+    nestedPath: chapterSections.TRAININGS,
+    docType :"chapter",
+    displayKey : 'isContainsectionTraining'
+  },
 ];
 
 export const urlTempalte = (docType, sectionType) => {
@@ -63,8 +77,8 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
   const toggleShow = () => setShow(!show);
   console.log({show});
   const {chapters = []} = section || {}
-  const hasTrainings = chapters.some(chapter => chapter.isContainTraining) 
-  const hasExams = chapters.some(chapter => chapter.isContainExam) 
+  const hasTrainings = chapters.some(chapter => chapter.isContainTraining) || section.isContainTraining
+  const hasExams = chapters.some(chapter => chapter.isContainExam) || section.isContainExam
 
   const {
     match: {

@@ -8,10 +8,13 @@ import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import { ToastDemo } from "../../../categories/quick-questions/toast-notification";
 
 export class TrainingList extends Component {
-    state = {
-        training: [],
-        isPageLoading: false
-      };
+  constructor(props) {
+    super(props);
+    this.state = {
+      training: [],
+    isPageLoading: false
+  };
+}
     componentDidMount = () => {
         this.setState({ isPageLoading: true });
         const courseId = this.props.match.params.id;
@@ -19,7 +22,15 @@ export class TrainingList extends Component {
         let headers = {
           Authorization: `Bearer ${token}`
         };
-        let url = new URL(`${apiBaseUrl}/Exams?courseId=${courseId}`);
+        let url="";
+        if(this.props.designType)
+        {
+        url = new URL(`${apiBaseUrl}/Exams?courseId=${courseId}`);
+        }
+        else
+        {
+          url = new URL(`${apiBaseUrl}/Exams/All?courseId=${courseId}`);
+        }
         url.searchParams.append("type", "Training");
         axios
           .get(url, { headers })

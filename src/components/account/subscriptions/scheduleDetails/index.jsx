@@ -10,7 +10,9 @@ import { ScheduleContext } from "./context";
 
 
 export const filterHeaderTitles = (links,displayKeysObjects)=> {
-  return links?.filter(_headerBtn => !!displayKeysObjects?.[_headerBtn?.displayKey])
+  var chapter= links?.filter(_headerBtn => !!displayKeysObjects?.[_headerBtn?.displayKey])
+   console.log(chapter);
+   return chapter;
 }
 
 export default function ScheduleDetails(props) {
@@ -25,6 +27,7 @@ export default function ScheduleDetails(props) {
 
   const getCourseData = () => {
     setLoading(true);
+    debugger;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
@@ -53,13 +56,15 @@ export default function ScheduleDetails(props) {
   const chapterFound = chapters?.find((chapter) => chapter.id === nestedId);
 
   const isContainLectures = chapterFound?.lectures?.length
+  // const{isContainExam,isContainTraining}=sectionFound?sectionFound:{}
   const {isContainExam,isContainAttachments,isContainTraining} = chapterFound ? chapterFound : {}  
-
+  const {isContainsectionExam,isContainsectionTraining} = sectionFound ? sectionFound : {}  
   const displayKeysObjects = {
     isContainExam,
     isContainAttachments,
     isContainTraining,
-    isContainLectures
+    isContainLectures,
+    isContainsectionExam,isContainsectionTraining
   }
 
   const chapterLinksfiltedByDisplayKey = useMemo(()=>  filterHeaderTitles(chapterLinks(chapterFound),displayKeysObjects),[displayKeysObjects])
