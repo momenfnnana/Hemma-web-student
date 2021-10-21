@@ -105,12 +105,12 @@ class SubscriptionDetailsComponent extends Component {
   render() {
     const courseId = this.props.match.params.id;
     const subscription =
-    this.props &&
-    this.props.subscription &&
-    this.props.subscription.subscription;
+      this.props &&
+      this.props.subscription &&
+      this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-    
+
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -397,3 +397,4 @@ SubscriptionDetailsComponent = connect(
 )(SubscriptionDetailsComponent);
 
 export default withRouter(SubscriptionDetailsComponent);
+
