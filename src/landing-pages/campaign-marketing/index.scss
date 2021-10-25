@@ -24,17 +24,18 @@ table {
   width: 100%;
 }
 .col-12 > .box-layout.box-border {
-  width: 70% !important;
-  @media (max-width: 1000px) {
-    width: 85% !important;
-  }
-
   p  img{
     width:  auto !important;
     height:auto !important;
     max-width: 100%;
     object-fit: contain !important;
   }
+  width: 70% !important;
+  @media (max-width: 1000px) {
+    width: 85% !important;
+  }
+
+  
 }
 
 .font-xxlg {
