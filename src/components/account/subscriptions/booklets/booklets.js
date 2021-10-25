@@ -95,12 +95,15 @@ export class BookletsComponent extends Component {
           })
           .catch((error) => {
             // this.setState({ isPageLoading: false });
-            console.log(error);
+            console.log({ error });
           });
       })
       .catch((error) => {
         this.setState({ isPageLoading: false });
-        console.log(error);
+        if (error?.response.status === 404) {
+          this.setState({ showOrderBooklet: false });
+        }
+        console.log({ error });
       });
   }
 
@@ -366,4 +369,3 @@ function mapStateToProps(state) {
 BookletsComponent = connect(mapStateToProps, { getUser })(BookletsComponent);
 
 export const Booklets = withRouter(BookletsComponent);
-
