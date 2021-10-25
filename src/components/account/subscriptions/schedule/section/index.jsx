@@ -125,9 +125,9 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
             push={push}
             name={section?.nameAr}
             onToggle={toggleShow}
-            show={show}
             showToggle={!!section?.chapters?.length}
             {...props}
+            show={show}
           />
           {show && (
             <div className="d-grid fr-2-1">
