@@ -396,6 +396,7 @@ class BankPaymentComponent extends Component {
               <div className="mr-3">
                 <Field
                   component={dateTimeField}
+                  defaultValue={new Date()}
                   name="date"
                   dateFormat={false}
                   validate={required}
@@ -404,6 +405,7 @@ class BankPaymentComponent extends Component {
               </div>
               <div>
                 <Field
+                  defaultValue={new Date()}
                   component={dateTimeField}
                   name="date"
                   timeFormat={false}
