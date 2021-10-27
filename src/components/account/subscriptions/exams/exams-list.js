@@ -6,13 +6,17 @@ import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import { ToastDemo } from "../../../categories/quick-questions/toast-notification";
-
-
+// import { setDeisgnType } from "../../../actions/user.actions";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 export class ExamsList extends Component {
-  state = {
+  constructor(props) {
+    super(props);
+    this.state = {
     exams: [],
     isPageLoading: false
   };
+}
 
   componentDidMount = () => {
     this.setState({ isPageLoading: true });
@@ -21,16 +25,33 @@ export class ExamsList extends Component {
     let headers = {
       Authorization: `Bearer ${token}`
     };
+   if(this.props.designType)
+   {
     axios
-      .get(`${apiBaseUrl}/Exams?courseId=${courseId}`, { headers })
-      .then(response => {
-        this.setState({ exams: response.data.data, isPageLoading: false });
-      })
-      .catch(error => {
-        this.setState({ isPageLoading: false });
-        console.log(error);
-      });
+    .get(`${apiBaseUrl}/Exams?courseId=${courseId}`, { headers })
+    .then(response => {
+      this.setState({ exams: response.data.data, isPageLoading: false });
+    })
+    .catch(error => {
+      this.setState({ isPageLoading: false });
+      console.log(error);
+    });
+
+   }
+   else
+   {
+    axios
+    .get(`${apiBaseUrl}/Exams/All?courseId=${courseId}`, { headers })
+    .then(response => {
+      this.setState({ exams: response.data.data, isPageLoading: false });
+    })
+    .catch(error => {
+      this.setState({ isPageLoading: false });
+      console.log(error);
+    });
+   }
   };
+    
 createCourseLink(courseId,examid)
 {
   let baseUrl = process.env.PUBLIC_URL;
@@ -160,4 +181,16 @@ createCourseLink(courseId,examid)
       </>
     );
   }
+
 }
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+    designType: state.user?.designType,
+  };
+}
+ExamsList = connect(
+  mapStateToProps,
+ 
+)(ExamsList);
+export default withRouter(ExamsList);

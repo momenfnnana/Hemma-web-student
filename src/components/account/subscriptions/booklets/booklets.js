@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import { NavLink } from "react-router-dom";
+
 import { apiBaseUrl } from "../../../../api/helpers";
 import swal from "@sweetalert/with-react";
 import { getUser } from "../../../../actions/user.actions";
@@ -18,7 +20,12 @@ export class BookletsComponent extends Component {
       booklet: {},
       isPageLoading: false,
       showOrderBooklet: true,
-      tracking: ""
+      tracking: "",
+      purchased: false,
+      canBePurchased: false,
+      cumulativePaymentStatus: "",
+      printingStatus: "",
+      status: "",
     };
   }
 
@@ -38,43 +45,66 @@ export class BookletsComponent extends Component {
       this.props.getUser();
     }
     const courseId = this.props.match.params.id;
-    const bookletId = this.props.m
+    const bookletId = this.props.m;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
     };
-    axios.get(`${apiBaseUrl}/GeneralSettings`, { headers })
-      .then((response) => {
-        this.setState({
-          tracking: response.data.data
-        })
-      })
+    axios.get(`${apiBaseUrl}/GeneralSettings`, { headers }).then((response) => {
+      this.setState({
+        tracking: response.data.data,
+      });
+    });
     axios
       .get(`${apiBaseUrl}/content/${courseId}/booklet`, { headers })
       .then((response) => {
-
         this.setState({
           booklets: response.data.data.parts,
           isPageLoading: false,
           booklet: response.data.data,
+          purchased: response.data?.data?.purchased,
+          canBePurchased: response.data?.data?.canBePurchased,
         });
+        if (this.state.purchased === true) {
+          axios
+            .get(
+              `${apiBaseUrl}/content/${this.state.booklet.id}/bookletDetailes`,
+              { headers }
+            )
+            .then((response) => {
+              console.log({
+                response: response.data?.data,
+              });
+              this.setState({
+                cumulativePaymentStatus:
+                  response.data?.data?.cumulativePaymentStatus,
+                printingStatus: response.data?.data?.printingStatus,
+                status: response.data?.data?.status,
+              });
+            });
+        }
         axios
-          .get(`${apiBaseUrl}/cart_v2/Check_Booklet_Exist/${this.state.booklet.id}`, { headers })
+          .get(
+            `${apiBaseUrl}/cart_v2/Check_Booklet_Exist/${this.state.booklet.id}`,
+            { headers }
+          )
           .then((response) => {
             this.setState({
-              showOrderBooklet: !response.data.data,
+              showOrderBooklet: response.data.data,
             });
           })
           .catch((error) => {
             // this.setState({ isPageLoading: false });
-            console.log(error);
+            console.log({ error });
           });
       })
       .catch((error) => {
         this.setState({ isPageLoading: false });
-        console.log(error);
+        if (error?.response.status === 404) {
+          this.setState({ showOrderBooklet: false });
+        }
+        console.log({ error });
       });
-
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -86,13 +116,12 @@ export class BookletsComponent extends Component {
   onSubmit(type) {
     swal("بإمكانك اتمام طلب الملزمة من مختاراتي", "", {
       button: "متابعة",
-    }).then(res => {
+    }).then((res) => {
       this.props.history.push("/cart");
     });
     Api.cart
       .addBooklet(this.state.booklet.id, type)
-      .then((response) => {
-      })
+      .then((response) => {})
       .catch((error) => {
         switch (error.response.data && error.response.data.error) {
           case "Duplicate":
@@ -143,9 +172,6 @@ export class BookletsComponent extends Component {
   //     }
   //   });
   // }
-
-
-
 
   renderBooklets() {
     const booklets = this.state.booklets;
@@ -221,7 +247,21 @@ export class BookletsComponent extends Component {
                         تتبع//
                       </a>
                     ) : null} */}
-                    {this.state.tracking != "" && this.state.booklet.agency != "" ? (
+                    {/* {this.state.purchased &&
+                    !this.state.canBePurchased &&
+                    this.state.tracking != "" ? (
+                      <a
+                        className="btn blue-border-btn mr-2"
+                        href={`${this.state.tracking}`}
+                        target="_blank"
+                      >
+                        تتبع
+                      </a>
+                    ) : null} */}
+                    {this.state.printingStatus === "Printed" &&
+                    this.state.purchased &&
+                    this.state.tracking !== "" &&
+                    this.state.status === "None" ? (
                       <a
                         className="btn blue-border-btn mr-2"
                         href={`${this.state.tracking}`}
@@ -230,17 +270,40 @@ export class BookletsComponent extends Component {
                         تتبع
                       </a>
                     ) : null}
+                    {this.state.cumulativePaymentStatus === "Pending" ? (
+                      <div className="btn blue-border-btn mr-2">
+                        <a aria-disabled="true">قيد المراجعة</a>
+                      </div>
+                    ) : this.state.cumulativePaymentStatus ===
+                      "PartiallyPaid" ? (
+                      <div className="btn blue-border-btn mr-2">
+                        <a aria-disabled="true">مدفوع جزئيا</a>
+                      </div>
+                    ) : this.state.cumulativePaymentStatus === "Refunded" ? (
+                      <div className="btn blue-border-btn mr-2">
+                        <a aria-disabled="true">مسترجع</a>
+                      </div>
+                    ) : null}
                     {this.state.showOrderBooklet ? (
+                      <NavLink to="/cart">
+                        <div className="btn blue-border-btn mr-1">
+                          الملزمة موجودة في مختاراتي
+                        </div>
+                      </NavLink>
+                    ) : null}
+                    {this.state.canBePurchased &&
+                    !this.state.purchased &&
+                    !this.state.showOrderBooklet ? (
                       <React.Fragment>
                         {this.state.booklet &&
-                          this.state.booklet.canBePurchased &&
-                          this.state.booklet.availableInPrint ? (
+                        this.state.booklet.canBePurchased &&
+                        this.state.booklet.availableInPrint ? (
                           <>
                             {this.state.booklet.availableInColor && (
                               <button
                                 type="submit"
                                 className="btn blue-border-btn mr-1"
-                                onClick={() => this.onSubmit('Colored')}
+                                onClick={() => this.onSubmit("Colored")}
                               >
                                 طلب الملزمة الملونة مطبوعة
                               </button>
@@ -249,7 +312,7 @@ export class BookletsComponent extends Component {
                               <button
                                 type="submit"
                                 className="btn blue-border-btn"
-                                onClick={() => this.onSubmit('BlackAndWhite')}
+                                onClick={() => this.onSubmit("BlackAndWhite")}
                               >
                                 طلب الملزمة الأبيض و الأسود مطبوعة
                               </button>
@@ -257,15 +320,13 @@ export class BookletsComponent extends Component {
                           </>
                         ) : null}
                       </React.Fragment>
-                    ) : null
-                    }
-
+                    ) : null}
                   </div>
                 </div>
               </div>
               <div className="box-layout silver-bg shadow-sm d-flex flex-column w-100 rounded p-4 pb-0">
                 {this.state.booklets == undefined ||
-                  this.state.booklets.length == 0 ? (
+                this.state.booklets.length == 0 ? (
                   <React.Fragment>
                     <div className="col-12">
                       <div

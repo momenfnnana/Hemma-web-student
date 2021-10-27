@@ -51,6 +51,20 @@ export  const chapterLinks = (chapter)=> [
     docType :"chapter",
     displayKey : 'isContainAttachments'
   },
+  {
+    title: "اختبارات",
+    path: chapter?.id,
+    nestedPath: chapterSections.EXAMS,
+    docType :"chapter",
+    displayKey : 'isContainsectionExam'
+  },
+  {
+    title: "تدريبات",
+    path: chapter?.id,
+    nestedPath: chapterSections.TRAININGS,
+    docType :"chapter",
+    displayKey : 'isContainsectionTraining'
+  },
 ];
 
 export const urlTempalte = (docType, sectionType) => {
@@ -61,10 +75,10 @@ export const urlTempalte = (docType, sectionType) => {
 export const ScheduleSection = ({ name, section, ...props }) =>{
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
-
+  console.log({show});
   const {chapters = []} = section || {}
-  const hasTrainings = chapters.some(chapter => chapter.isContainTraining) 
-  const hasExams = chapters.some(chapter => chapter.isContainExam) 
+  const hasTrainings = chapters.some(chapter => chapter.isContainTraining) || section.isContainTraining
+  const hasExams = chapters.some(chapter => chapter.isContainExam) || section.isContainExam
 
   const {
     match: {
@@ -104,18 +118,18 @@ export const ScheduleSection = ({ name, section, ...props }) =>{
   return (
     <>
       {
-        <div className="part-name-section">
+        <div className="part-name-section mt-3">
           <ScheduleHeader
             links={sectionLinksfiltedByDisplayKey}
             courseId={courseId}
             push={push}
             name={section?.nameAr}
             onToggle={toggleShow}
-            show={show}
             showToggle={!!section?.chapters?.length}
             {...props}
+            show={show}
           />
-          {1 && (
+          {show && (
             <div className="d-grid fr-2-1">
               {section?.chapters?.map((chapter) => (
                 <SectionContent isContainLectures={chapter?.lectures?.length} {...chapter} {...props} />

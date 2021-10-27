@@ -18,6 +18,7 @@ import {
 } from "../../actions/login.actions";
 import axios from "axios";
 import { Helmet } from "react-helmet";
+import "./index.scss"
 
 const validate = values => {
   const errors = {};
@@ -58,7 +59,7 @@ class LoginComponent extends Component {
     this.handlePendingActions = this.handlePendingActions.bind(this);
   }
   componentDidMount() {
-
+    document.getElementsByName("phone")[0].maxLength=11;
     const checked= localStorage.getItem('checkbox');
     if (checked ) {
         this.setState({
@@ -153,6 +154,7 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 let ciphertext = CryptoJS.AES.encrypt(storedobj, 'secret key 123').toString();
                 localStorage.setItem('account',ciphertext);
                 localStorage.setItem('checkbox', this.state.isChecked);
+                this.props.history.push("/")
             }
             else{
               this.props.history.goBack();
@@ -215,13 +217,13 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 src={process.env.PUBLIC_URL + `/assets/images/${this.state.hidden ? 'closed-' : ''}eye.png`}
                 width="100%"
                 width="20"
-                className="position-absolute left-input-icon top-50 z-5"
+                className="position-absolute show-password-icon z-5"
                 onClick={this.togglePasswordShow}
                 style={{top:'11px',left:'7px',zIndex:10}}
               />
           </div>
           <div>
-          <input type="checkbox" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
+          <input type="checkbox" className="mx-2" checked={this.state.isChecked} name="lsRememberMe" onChange={this.onChangeCheckbox} />
           <label>تذكرني</label>
           </div>
           <button
