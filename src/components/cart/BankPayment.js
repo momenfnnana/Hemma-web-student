@@ -40,7 +40,8 @@ class BankPaymentComponent extends Component {
     loading: false,
     disabled: false,
     bankSlip: null,
-    imageLoader: false
+    imageLoader: false,
+    dateError: false
   };
 
   constructor(props) {
@@ -91,6 +92,9 @@ class BankPaymentComponent extends Component {
     const cart = this.props.cart;
     console.log(cart);
     debugger;
+    var isafter = moment(values?.date).isAfter(new Date());
+    if(!isafter){
+      this.setState({dateError:false})
 
     if(cart.items.filter(c=>c.type=="Course"||c.type=="Installment").length == 0)
     {
@@ -191,6 +195,9 @@ class BankPaymentComponent extends Component {
             break;
         }
       });
+    }else{
+      this.setState({dateError:true})
+    }
   };
 
   onInputChange(e,dateFormat,defaultName) {
@@ -414,6 +421,12 @@ class BankPaymentComponent extends Component {
                 />
               </div>
             </div>
+            {
+              this.state.dateError&&
+                <p className="text-danger">
+                  يرجى اختيار وقت صحيح اقل من الوقت المدرج
+                </p>
+            }
             <h6 className="dark-silver-text smaller mt-2">
               ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
             </h6>
