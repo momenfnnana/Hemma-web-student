@@ -91,18 +91,19 @@ class ShippingAddressFormComponent extends Component {
   }
 
   paymentAllowPopup() {
-    swal("بامكانك ادخال بيانات الدفع لتأكيد الاشتراك بشكل كامل", {
-      buttons: {
-        ok: "تأكيد",
-      },
-    }).then((value) => {
-      switch (value) {
-        case "ok":
-          this.props.onFillShippingAddress(this.state.values);
-        default:
-          break;
-      }
-    });
+    this.props.onFillShippingAddress(this.state.values);
+    // swal("بامكانك ادخال بيانات الدفع لتأكيد الاشتراك بشكل كامل", {
+    //   buttons: {
+    //     ok: "تأكيد",
+    //   },
+    // }).then((value) => {
+    //   switch (value) {
+    //     case "ok":
+    //       this.props.onFillShippingAddress(this.state.values);
+    //     default:
+    //       break;
+    //   }
+    // });
   }
 
   isSubmitButtonDisabled = () => {
