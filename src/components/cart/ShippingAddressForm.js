@@ -261,6 +261,7 @@ class ShippingAddressFormComponent extends Component {
                     </Field>
                   </div>
                   <div className="form-group mb-0">
+                    <h6 className='light-text mb-1 mt-0 mr-3'>أرجو كتابة العنوان صحيحا لتصل شحنتك بأقرب وقت</h6>
                     <Field
                       className="form-control small"
                       placeholder="عنوان التوصيل"
