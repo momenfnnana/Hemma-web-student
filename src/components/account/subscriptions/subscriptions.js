@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import swal from "@sweetalert/with-react";
 import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { Link, withRouter, Redirect } from "react-router-dom";
 import { apiBaseUrl } from "../../../api/helpers";
@@ -9,7 +10,8 @@ import classnames from "classnames";
 import { SubscriptionsList } from "./list/subscriptions-list";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
-import "./index.scss"
+import "./index.scss";
+import { ValidateEmailAlert } from "./components";
 export class SubscriptionsComponent extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ export class SubscriptionsComponent extends Component {
       subscriptions: [],
       activeTab: "Active",
       isPageLoading: false,
+      emailInput: "",
     };
     this.setActiveTab = this.setActiveTab.bind(this);
   }
@@ -26,13 +29,63 @@ export class SubscriptionsComponent extends Component {
     this.setState({ activeTab: tab });
   }
 
+  ValidateEmail(mail) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+      return true;
+    }
+    alert("You have entered an invalid email address!");
+    return false;
+  }
+
   async componentDidMount() {
-    this.setState({ isPageLoading: true });
-    this.props.getProfile();
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,
     };
+    axios
+      .get(`${apiBaseUrl}/Email`, {
+        headers,
+      })
+      .then((response) => {
+        swal({
+          content: <ValidateEmailAlert />,
+          buttons: false,
+          allowOutsideClick: false,
+          closeOnClickOutside: false,
+          closeOnEsc: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({ isPageLoading: false });
+        console.log(error);
+      });
+    // swal("برجاء إدخال البريد الإلكتروني الخاص بك.", "", {
+    //   content: {
+    //     element: "input",
+    //     attributes: {
+    //       placeholder: "اكتب ايميلك هنا",
+    //       type: "email",
+    //       value: this.state.emailInput,
+    //       onChange: (val) => console.log({ val }),
+    //       id: "myEmail",
+    //       onkeypress: (value) => console.log({ value: value.key === "Enter" }),
+    //     },
+    //   },
+    //   closeOnClickOutside: false,
+    //   closeOnEsc: false,
+    //   buttons: {
+    //     confirm: {
+    //       text: "حفظ",
+    //       closeModal: false,
+    //       value: true,
+    //     },
+    //   },
+    // }).then(() => {
+    //   var emailValue = document.getElementById("myEmail").value;
+    //   this.ValidateEmail(emailValue);
+    // });
+    this.setState({ isPageLoading: true });
+    this.props.getProfile();
     axios
       .get(`${apiBaseUrl}/courses/purchased?SubscriptionStatus=All`, {
         headers,
