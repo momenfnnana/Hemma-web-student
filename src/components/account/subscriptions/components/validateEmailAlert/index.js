@@ -1,19 +1,48 @@
 import React, { useState } from "react";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
+import axios from "axios";
+import swal from "@sweetalert/with-react";
 
 import "./index.scss";
+import { apiBaseUrl } from "../../../../../api/helpers";
 
 const ValidateEmailAlert = () => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  let token = localStorage.getItem("token");
+  let headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
+  const addEmail = async () => {
+    await axios({
+      method: "put",
+      url: `${apiBaseUrl}/Email?Email=${email}`,
+      headers,
+    })
+      .then(() => {
+        swal({
+          title: "تم اضافة الايميل بنجاح",
+          icon: "success",
+        });
+      })
+      .catch((error) =>
+        swal({
+          title: "مشكلة في اضافة الايميل حاول لاحقا",
+          icon: "error",
+        })
+      );
+  };
+
   const submitForm = (keyName = "Enter") => {
     if (keyName === "Enter") {
       const checkResult = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
         email
       );
+      addEmail();
       setEmailError(!checkResult);
       setLoading(!loading);
     }
@@ -44,7 +73,11 @@ const ValidateEmailAlert = () => {
           onClick={() => submitForm()}
         >
           {loading ? (
-            <Loader type="ball-spin-fade-loader" className="loader p-2" style={{transform: 'scale(0.5)'}}/>
+            <Loader
+              type="ball-spin-fade-loader"
+              className="loader p-2"
+              style={{ transform: "scale(0.5)" }}
+            />
           ) : (
             "حفظ"
           )}
