@@ -47,43 +47,21 @@ export class SubscriptionsComponent extends Component {
         headers,
       })
       .then((response) => {
-        swal({
-          content: <ValidateEmailAlert />,
-          buttons: false,
-          allowOutsideClick: false,
-          closeOnClickOutside: false,
-          closeOnEsc: false,
-        });
+        if(!response.data?.data?.hasValidEmail){
+          swal({
+            content: <ValidateEmailAlert />,
+            buttons: false,
+            allowOutsideClick: false,
+            closeOnClickOutside: false,
+            closeOnEsc: false,
+          });
+        }
       })
       .catch((error) => {
         this.setState({ isPageLoading: false });
-        console.log(error);
+        console.log({error});
       });
-    // swal("برجاء إدخال البريد الإلكتروني الخاص بك.", "", {
-    //   content: {
-    //     element: "input",
-    //     attributes: {
-    //       placeholder: "اكتب ايميلك هنا",
-    //       type: "email",
-    //       value: this.state.emailInput,
-    //       onChange: (val) => console.log({ val }),
-    //       id: "myEmail",
-    //       onkeypress: (value) => console.log({ value: value.key === "Enter" }),
-    //     },
-    //   },
-    //   closeOnClickOutside: false,
-    //   closeOnEsc: false,
-    //   buttons: {
-    //     confirm: {
-    //       text: "حفظ",
-    //       closeModal: false,
-    //       value: true,
-    //     },
-    //   },
-    // }).then(() => {
-    //   var emailValue = document.getElementById("myEmail").value;
-    //   this.ValidateEmail(emailValue);
-    // });
+
     this.setState({ isPageLoading: true });
     this.props.getProfile();
     axios
