@@ -1,4 +1,6 @@
 import React from "react";
+
+import Star from "./components/star";
 import "./index.scss";
 
 const bands = [
@@ -95,41 +97,37 @@ const Header = () => (
   </div>
 );
 
-const TableBody = () => (
-  <div className="container-fluid">
-    {bands.map((item) => (
-      <div className="row border border-info table-container">
-        <div className="col-3 border-right table-title-container d-flex justify-content-center align-items-center">
-          <h5 className="table-line-title">{item.typeTitle}</h5>
-        </div>
-        <div className="col-6 border-right table-title-container p-0">
-          {item.items.map((item) => (
-            <div className="rate-item border-bottom px-3 py-3">
-              {item?.title}
-            </div>
-          ))}
-        </div>
-        <div className="col-3 px-0">
-          {item.items.map((fatherItem) => {
-            return (
-              <div className="py-3 border-bottom d-flex justify-content-center">
-                {[1, 2, 3, 4, 5].map((item) => (
-                  <span
-                    className={
-                      fatherItem?.rate >= item
-                        ? "fa fa-star checked star-size"
-                        : "fa fa-star star-size"
-                    }
-                  />
-                ))}
+const TableBody = () => {
+  return (
+    <div className="container-fluid">
+      {bands.map((item, fatherIndex) => (
+        <div className="row border border-info table-container">
+          <div className="col-3 border-right table-title-container d-flex justify-content-center align-items-center">
+            <h5 className="table-line-title">{item.typeTitle}</h5>
+          </div>
+          <div className="col-6 border-right table-title-container p-0">
+            {item.items.map((item, index) => (
+              <div
+                className={
+                  item.items?.length === index + 1
+                    ? "rate-item px-3 py-3"
+                    : "rate-item border-bottom px-3 py-3"
+                }
+              >
+                {item?.title}
               </div>
-            );
-          })}
+            ))}
+          </div>
+          <div className="col-3 px-0 py-0">
+            {item.items.map((item, index) => {
+              return <Star item={item} index={index} />;
+            })}
+          </div>
         </div>
-      </div>
-    ))}
-  </div>
-);
+      ))}
+    </div>
+  );
+};
 
 const Evaluation = () => {
   return (
