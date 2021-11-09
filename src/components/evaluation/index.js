@@ -115,11 +115,10 @@ const TableBody = () => (
               <div className="py-3 border-bottom d-flex justify-content-center">
                 {[1, 2, 3, 4, 5].map((item) => (
                   <span
-                    style={{ fontSize: '24px' }}
                     className={
                       fatherItem?.rate >= item
-                        ? "fa fa-star checked"
-                        : "fa fa-star"
+                        ? "fa fa-star checked star-size"
+                        : "fa fa-star star-size"
                     }
                   />
                 ))}
