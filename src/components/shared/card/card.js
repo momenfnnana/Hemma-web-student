@@ -75,7 +75,7 @@ class CardComponent extends Component {
               course.endsAt == undefined ||  new Date(course.endsAt) > new Date() ?  history.push(`/course/details/${course.slug}`):
                swal(
                    "عفواً",
-                   "الدورة مغلقة، لا يمكنك شراؤها وبإمكانك التواصل مع الدعم الفني في حال أردت",
+                   "انتهى التسجيل في الدورة",
                    "error",
                   {
                     button: "متابعة"
