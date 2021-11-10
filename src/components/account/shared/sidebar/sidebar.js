@@ -45,6 +45,12 @@ const sideBarItems = [
     to: (id)=>`/course/content/${id}/askQuestions/list`
 
   },
+  {
+    title: "تقييمات الدورة",
+    icon : askMentor,
+    to: (id)=>`/course/content/${id}/evaluations`
+
+  },
 ];
 
 export const SideBarItem = ({title = "لا يوجد عنوان",icon,link="/",id , to = ()=>{},history}) => (
