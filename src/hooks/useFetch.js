@@ -30,6 +30,8 @@ export const useFetch = (url = "", mainConfig = {isAuthed:true}) => {
     onSuccess = () => {},
     onError = () => {}
   ) => {
+    debugger;
+    console.log(token);
     const reqConfig = { ...mainConfig, ...reqConf };
     const AxiosInstance = token ? authedInstance : baseInstance;
     try {
