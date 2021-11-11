@@ -10,6 +10,7 @@ export default function SubscribtionRequest({
   refreshShow = () => {},
   localTotal = 0,
   onSubscribe = () => {},
+  showDescription=false
 }) {
   const { data, error } = info;
   const validPackageData = !error && data;
@@ -40,8 +41,8 @@ export default function SubscribtionRequest({
         <div class="d-flex flex-column justify-content-between">
           <div class="mb-5 ">
             <p class="font-size-15 font-weight-bold mb-4 text-center text-white">
-              {data?.description ||
-                "يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام"}
+              {data?.description ||(showDescription &&
+                "يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام")}
             </p>
             {error && !data && (
               <div className="w-100 text-center bg-danger btn-card-normal big-height mb-4">
