@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { signOutAction } from "../../../actions/login.actions";
 import { getUser } from "../../../actions/user.actions";
 import jwtDecode from "jwt-decode";
-import SearchBox from "./components/searchBox";
+import {SearchBox} from "./components/searchBox";
 
 class HeaderComponent extends Component {
   constructor(props) {
