@@ -6,13 +6,14 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import { withRouter } from "react-router-dom";
 
 import "./index.scss";
 
-const SearchBox = () => {
+const SearchBoxComponent = (props) => {
   const [searchValue, setSearchValue] = useState("");
   const handleSubmit = () => {
-    console.log({ handleSubmit: "handleSubmit" });
+    props.history.push(`/search/${searchValue?.length ? searchValue : " "}`);
   };
   const handleSearchInput = (event) => {
     event.key === "Enter" ? handleSubmit() : console.log("auto complete");
@@ -27,8 +28,9 @@ const SearchBox = () => {
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               onKeyPress={(e) => handleSearchInput(e)}
+              placeholder="ابحث عن دورة"
             />
-            <BsSearch color={"red"} />
+            <BsSearch className="main-color" onClick={() => handleSubmit()} />
           </div>
         </DropdownToggle>
         {searchValue?.length ? (
@@ -43,4 +45,4 @@ const SearchBox = () => {
   );
 };
 
-export default SearchBox;
+export const SearchBox = withRouter(SearchBoxComponent);
