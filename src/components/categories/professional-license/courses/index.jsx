@@ -18,6 +18,7 @@ const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse
 const getTrinerInfoUrl = (id) =>
   `${process.env.REACT_APP_API_ENDPOINT}/Users/instructor/${id}`;
 const getTotalsUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages`;
+const getHavePackage = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GetCoursePackage`;
 const noPackageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/items/courses`;
 const packageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/packages`;
 export const ITEAM_CAN_BE_ADDED = "ItemCanAdded";
@@ -239,9 +240,10 @@ export default withRouter(function ProfessionalCourses({
     toggleShow("spec");
   };
   const refreshShow = () => {
-    handleSpecDelete();
+    setSelectedGeneralCourse(null);
+    setSelectedSpecCourse(null);
+    setMeregedData({general:null,spec:null})
     setTimeout(() => {
-      handleGeneralDelete();
       setMeregedData({ general: null, spec: null });
       scrollToTop()
     }, 100);
@@ -327,9 +329,29 @@ export default withRouter(function ProfessionalCourses({
     handleShowThirdCard();
     if (noSelectedCourses || showThirdCard) return;
     generalAlert();
-    specAlert();
   }, [mergedData.general, mergedData.spec]);
 
+  useEffect(()=>{
+    if(mergedData.spec){
+      (async()=>{
+        try {
+          const { data } = await Axios.get(getHavePackage, {
+            headers: getAuthHeader(),
+            params: {
+              CourseId: mergedData?.spec?.id,
+            },
+          });
+          console.log({data});
+          if(data?.data?.length){
+            specAlert()
+          }
+        } catch (error) {
+          console.log({error});
+        }
+      })()
+    }
+  },[mergedData.spec])
+  
   const onGeneralCourseSelect = (course = null) => {
     setSelectedGeneralCourse(course);
   };
