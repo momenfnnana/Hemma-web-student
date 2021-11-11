@@ -53,6 +53,7 @@ export default withRouter(function ProfessionalCourses({
     data: null,
     error: "",
   });
+  const [showBouquetsDescription,setShowBouquetsDescription]=useState(false);
 
   const redirectToLogin = () => {
     const loginPath = `/auth/login`;
@@ -165,7 +166,8 @@ export default withRouter(function ProfessionalCourses({
     const prevButton = getPrevRef(ref)
     const nextButton = getNextRef(ref)
     //hide all btns in descktop case
-    if(window.innerWidth > 800) return {nextButton : {text:'متابعة',value:nextButton} , prevButton : undefined}
+    // if(window.innerWidth > 800) return {nextButton : {text:'متابعة',value:nextButton} , prevButton : undefined}
+    if(window.innerWidth > 800) return {nextButton : undefined , prevButton : undefined}
     const config =  {nextButton : nextButton ? {text:'متابعة',value:nextButton} : undefined,prevButton : prevButton ? {text:'السابق',value:prevButton} : undefined}
     return config
 
@@ -341,9 +343,22 @@ export default withRouter(function ProfessionalCourses({
               CourseId: mergedData?.spec?.id,
             },
           });
-          console.log({data});
           if(data?.data?.length){
-            specAlert()
+            // data?.data?.map(item=>console.log({active:item?.active}))
+
+            const findItem =data.data.findIndex(dataHere=>dataHere?.active===true)
+
+            if(findItem!==-1){
+
+              setShowBouquetsDescription(true)
+
+              specAlert()
+
+            }else{
+
+              setShowBouquetsDescription(false)
+
+            }
           }
         } catch (error) {
           console.log({error});
@@ -567,6 +582,7 @@ export default withRouter(function ProfessionalCourses({
           categoryData={categoryData}
           refreshShow={refreshShow}
           onSubscribe={handleSubscribtion}
+          showDescription={showBouquetsDescription}
         />
       )}
       <KnowMore trainer={trainer.info} />
