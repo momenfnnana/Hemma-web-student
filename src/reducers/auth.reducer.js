@@ -27,7 +27,7 @@ export const authReducer = (state = null, action) => {
   switch (action.type) {
     case AUTHENTICATED:
       // store the token
-      debugger;
+
       localStorage.setItem("token", action.payload.token);
       if (action.error) return state;
       return {
@@ -40,7 +40,6 @@ export const authReducer = (state = null, action) => {
       // store the token
     
       if (action.error) return state;
-      debugger;
       localStorage.setItem("token", action.payload.value.data.token);
       return {
         ...state,
