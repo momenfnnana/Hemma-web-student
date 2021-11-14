@@ -137,7 +137,7 @@ export class _CategoryDetails extends Component {
       const {
         state: { page: prevPage },
       } = this;
-      const nextUrl = `${apiBaseUrl}/categories/${this.state.currentSlug ||
+      const nextUrl = `${apiBaseUrl}/categories/${
         this.props.match.params.slug}/courses?Page=${prevPage + 1}&Limit=${
         this.limit
       }&featuredOnly=true`;
@@ -908,10 +908,15 @@ export class _CategoryDetails extends Component {
                   </div>
                 </ShowAt>
                 <div className="tab-content" id="nav-tabContent">
-                  <ShowAt at={!staticTabs.includes(this.state.currentTab)}>
+                  <ShowAt 
+                    at={
+                      !staticTabs.includes(this.state.currentTab) ||
+                      this.state.currentTab === platformCoursesTab
+                    }
+                  >
                     <div className="container">
                       <div className="row">
-                        {!this.state.currentSlug && !this.state.noMoreCourses && (
+                        {this.state.currentSlug && !this.state.noMoreCourses && (
                           <div className="row col-md-12">
                             <div className="col-md-12 d-flex align-items-center justify-content-center">
                               <button
