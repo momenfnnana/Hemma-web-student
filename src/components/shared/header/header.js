@@ -18,7 +18,7 @@ import { connect } from "react-redux";
 import { signOutAction } from "../../../actions/login.actions";
 import { getUser } from "../../../actions/user.actions";
 import jwtDecode from "jwt-decode";
-import SearchBox from "./components/searchBox";
+import {SearchBox} from "./components/searchBox";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -253,7 +253,6 @@ return;
 renderSubCategory()
 {
   const Categories = this.state.categorieslvl1;
-  
 return(
   <React.Fragment>
  <div className="sm-scroll category-drop_one">
@@ -261,7 +260,7 @@ return(
     
       Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-one" data-dropmenu={"drop_"+category.id}  data-hasChild={category.hasChild}>
-      <a href={"/categories/details/"+category.slug} className="linked">
+      <a href={"/categories/details/"+category.id} className="linked">
       <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
@@ -290,7 +289,7 @@ return(
      <div  className={"sm-scroll category-sub-dropdown drop_"+categoryId}>
      { Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-two" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
-      <a href={"/categories/details/"+category.slug} className="linked" >
+      <a href={"/categories/details/"+category.id} className="linked" >
       <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
@@ -318,7 +317,7 @@ return(
      <div  className={"sm-scroll category-sub-dropdown2 drop_"+categoryId}>
      { Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-three" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
-      <a href={"/categories/details/"+category.slug} className="linked">
+      <a href={"/categories/details/"+category.id} className="linked">
       <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
@@ -345,7 +344,7 @@ return(
      <div  className={"sm-scroll category-sub-dropdown3 drop_"+categoryId}>
      { Categories.childCategories[categoryId].map((category,index) => (
       <li className="category-dropdown-sub-wrapper-four" data-dropmenu={"drop_"+category.id} data-hasChild={category.hasChild}>
-      <a href={"/categories/details/"+category.slug} className="linked" >
+      <a href={"/categories/details/"+category.id} className="linked" >
       <span>{category.nameAr}</span>
         {
           category.hasChild == true? <i className="fas fa-chevron-left font-size-13 lighter-gray drop-icon"></i> : ""
@@ -379,7 +378,7 @@ return(
       <React.Fragment>
          {Categories.map((category,index) => (
 <li className="dropdown-sub-wrapper-four">
-                    <a href={"/categories/details/"+category.slug+"?free=true"} >
+                    <a href={"/categories/details/"+category.id+"?free=true"} >
                       <span>{category.nameAr}</span>
                     </a>
                   </li>
