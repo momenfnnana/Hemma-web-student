@@ -84,12 +84,12 @@ export default class CourseDetails extends Component {
     const result=(1-(discountvalue/100))*originalprice;
     return result;
   }
-  componentDidMount() {
+  getCourseDetails (){
     this.setState({ isPageLoading: true });
     const {
       match: { params },
     } = this.props;
-    
+
     getAuthenticatedAxios()
       .get(`${apiBaseUrl}/courses/${params.slug}`)
       .then((response) => {
@@ -112,10 +112,18 @@ export default class CourseDetails extends Component {
         this.setState({ isPageLoading: false });
         console.log(error);
       });
-      
   }
-  
+  componentDidMount() {
+    this.getCourseDetails();
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    const {slug: prevSlug} =prevProps?.match?.params;
+    const {slug: currentSlug} =this.props?.match?.params;
+    if(prevSlug!==currentSlug){
+      this.getCourseDetails();
+    }
+  }
   addToCart(id) {
     Api.cart
       .addCourse(id)
