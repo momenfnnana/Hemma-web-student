@@ -190,7 +190,7 @@ export default withRouter(function ProfessionalCourses({
     const nameAr = mergedData?.general?.nameAr
     if (!mergedData?.spec)
       sweetAlert(
-        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : undefined}
+        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : 'متابعة'}
       ).then((navType) => {
         handleModalNav(navType,[config?.nextButton,config?.prevButton])
       });
