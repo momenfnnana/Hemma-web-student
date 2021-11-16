@@ -182,7 +182,7 @@ class SubscriptionDetailsComponent extends Component {
                           subscription={subscription}
                           courseId={courseId}
                         />
-                        {ratingStatus === "Skipped" && (
+                        {/* {ratingStatus === "Skipped" && (
                           <button
                             className="btn light-btn w-100 mb-3"
                             onClick={() =>
@@ -191,16 +191,8 @@ class SubscriptionDetailsComponent extends Component {
                           >
                             قيّم الدورة
                           </button>
-                        )}
-                        {ratingStatus === "Skipped" && (
-                          <button
-                            className="btn light-btn w-100 mb-3"
-                            onClick={()=> this.props.history.push(`/course/content/${courseId}/evaluations`)}
-                          >
-                            قيّم الدورة جديد
-                          </button>
-                        )}
-                        <RatingModal
+                        )} */}
+                        {/* <RatingModal
                           isRatingModalOpen={
                             ratingStatus === "Available" ||
                             this.state.forceOpenRatingModal
@@ -210,7 +202,7 @@ class SubscriptionDetailsComponent extends Component {
                           }
                           status={ratingStatus}
                           courseId={courseId}
-                        />
+                        /> */}
                         <Instructors id={courseId} />
                       </div>
                     )}
