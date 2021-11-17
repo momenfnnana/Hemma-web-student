@@ -33,10 +33,10 @@ export const minLength = (min) => (value) =>
   value && value.length < min
     ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
     : undefined;
-const IdentificationMaxLength = (max) => (value) =>
-  value && value.length > max
+const IdentificationMaxLength = (max) => (value) =>{
+  return value && value.length > max
     ? `رقم الهوية يجيب أن لا يزيد عن ${max} خانات`
-    : undefined;
+    : undefined}
 const IdentificationMaxLength10 = IdentificationMaxLength(10);
 export const IdentificationMinLength = (min) => (value) =>
   value && value.length < min
@@ -59,7 +59,8 @@ const phoneValue = (value) => {
 };
 
 export const minLength4 = minLength(4);
-export const IdentificationMinLength0 = IdentificationMinLength(0);
+export const IdentificationMinLength0 = IdentificationMinLength(10);
+const validateIdentification = (value)=> !/^[0-9]*$/.test(value)?'هذه الخانة يجب ان تحتوي على ارقام فقط':undefined;
 const emailValue = (value) =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "يرجى إدخال البريد الإلكتروني بصيغة صحيحة"
@@ -353,13 +354,11 @@ clearPendingActions(){
               </Field>
               <Field
                 name="IdentificationNumber"
-                type="IdentificationNumber"
                 component={inputField}
                 className="form-control border-left-0 pl-0 ltr-input"
                 placeholder="رقم الهوية"
-                validate={(IdentificationMaxLength10,IdentificationMinLength0)}
-                inputMode='numeric'
-                type='number'
+                maxLength={10}
+                validate={[IdentificationMaxLength10,IdentificationMinLength0, validateIdentification]}
               >
                 <ImProfile />
               </Field>
