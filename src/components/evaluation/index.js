@@ -83,15 +83,15 @@ const bands = [
 
 const Header = () => (
   <div className="container-fluid">
-    <div className="row border d-flex justify-content-between header-container align-items-center">
+    <div className="row border header-container">
       <div className="col-3 border-right title-container d-flex justify-content-center align-items-center">
-        <h5 className="header-title">مجال التقييم</h5>
+        <p className="header-title">مجال التقييم</p>
       </div>
       <div className="col-6 border-right title-container d-flex align-items-center">
-        <h5 className="header-title">البند</h5>
+        <p className="header-title">البند</p>
       </div>
       <div className="col-3 title-container d-flex align-items-center">
-        <h5 className="header-title">التقييم</h5>
+        <p className="header-title">التقييم</p>
       </div>
     </div>
   </div>
@@ -103,24 +103,24 @@ const TableBody = () => {
       {bands.map((item, fatherIndex) => (
         <div className="row border border-info table-container">
           <div className="col-3 border-right table-title-container d-flex justify-content-center align-items-center">
-            <h5 className="table-line-title">{item.typeTitle}</h5>
+            <p className="table-line-title">{item.typeTitle}</p>
           </div>
           <div className="col-6 border-right table-title-container p-0">
             {item.items.map((item, index) => (
               <div
                 className={
                   item.items?.length === index + 1
-                    ? "rate-item px-3 py-3"
-                    : "rate-item border-bottom px-3 py-3"
+                    ? "rate-item px-3 py-0 py-lg-3 d-flex align-items-center"
+                    : "rate-item border-bottom px-3 py-0 py-lg-3 d-flex align-items-center"
                 }
               >
                 {item?.title}
               </div>
             ))}
           </div>
-          <div className="col-3 px-0 py-0">
+          <div className="col-3 p-0">
             {item.items.map((item, index) => {
-              return <Star item={item} index={index} />;
+              return <Star item={item} index={index} className="star" />;
             })}
           </div>
         </div>
@@ -132,7 +132,7 @@ const TableBody = () => {
 const Evaluation = () => {
   return (
     <div>
-      <h4>تقييمات الدورة</h4>
+      <p className="my-3 my-lg-0 mb-0 mb-lg-3 rate-title">تقييمات الدورة</p>
       <Header />
       <TableBody />
     </div>
