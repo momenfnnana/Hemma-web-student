@@ -214,7 +214,7 @@ export class CourseCartItem extends Component {
           </span>
           <div className="media w-75">
             <img
-              className="mr-3 rounded cover-img"
+              className="mr-3 rounded fill-img"
               src={item.imageUrl}
               height="100"
               width="100"
