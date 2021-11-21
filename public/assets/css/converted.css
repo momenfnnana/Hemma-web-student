@@ -283,7 +283,10 @@ a:hover, a:focus, a:active {
 	object-fit: cover;
 	object-position: left;
 }
-
+.fill-img {
+	object-fit: fill;
+	object-position: left;
+}
 .contain-img {
 	object-fit: contain;
 }
