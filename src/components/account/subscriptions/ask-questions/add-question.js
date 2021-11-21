@@ -135,7 +135,8 @@ class AddQuestion extends Component {
 				this.props.updateQuestions(response.data.data);
 			})
 			.catch(error => {
-				swal("عفوا",error.message,"error")
+				console.log(error);
+				swal("عفوا","السؤال فارغ","error")
 			}).finally(()=> {
 				this.setLoading(false)
 			})
@@ -159,7 +160,7 @@ class AddQuestion extends Component {
 						<ModalBody>
 							<label className="dark-text small mb-0 mt-0">الجزء</label>
 
-							<select value={this.state.sectionId}
+							<select required value={this.state.sectionId}
 							        className="form-select w-100 p-2 small dark-text border border-light-2"
 							        aria-label="Default select example"
 							        onChange={(e)=>this.handleChange('sectionId',e)}
