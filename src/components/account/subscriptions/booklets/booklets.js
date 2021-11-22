@@ -258,10 +258,14 @@ export class BookletsComponent extends Component {
                         تتبع
                       </a>
                     ) : null} */}
-                    {this.state.printingStatus === "Printed" &&
+                    {(this.state.printingStatus === "Printed" &&
                     this.state.purchased &&
                     this.state.tracking !== "" &&
-                    this.state.status === "None" ? (
+                    this.state.status === "Shipped") ||(
+                      this.state.printingStatus === "Printed" &&
+                    this.state.purchased &&
+                    this.state.tracking !== "" &&
+                    this.state.status === "None") ? (
                       <a
                         className="btn blue-border-btn mr-2"
                         href={`${this.state.tracking}`}
