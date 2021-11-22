@@ -26,7 +26,7 @@ export default function PaymentStage({
             </NavLink>
           </NavItem>
         )}
-        {/* <NavItem>
+        <NavItem>
           <NavLink
             className={classnames({
               active: activeTab === "online",
@@ -35,7 +35,7 @@ export default function PaymentStage({
           >
             بطاقة إئتمانية
           </NavLink>
-        </NavItem> */}
+        </NavItem>
       </Nav>
 
       <TabContent activeTab={activeTab}>
