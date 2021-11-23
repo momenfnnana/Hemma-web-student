@@ -222,12 +222,12 @@ getSearchResult (){
         <section className="pt-3 pb-5">
         <form>
           <div className="row col-md-12"> 
-          <input type="button" className="form-control col-md-1 m-2"  onClick={this.getSearchResult} value="بحث"></input>
-            <input placeholder="أسم المنصة" value={this.state.CategoryName} onChange={this.handleChangeCategory} className="form-control col-md-3 m-2">
+        
+            <input placeholder="اسم المنصة" value={this.state.CategoryName} onChange={this.handleChangeCategory} className="form-control col-md-3 m-2">
             </input>
             <input placeholder="اسم الكورس"  value={this.state.CourseName} onChange={this.handleChangeCourse} className="form-control col-md-3 m-2">
             </input>
-            
+            <input type="button" className="form-control col-md-1 m-2"  onClick={this.getSearchResult} value="بحث"></input>
             </div>
             </form>
           <div className="container">{this.renderCategories()}</div>
