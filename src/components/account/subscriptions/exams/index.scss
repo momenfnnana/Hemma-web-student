@@ -1,7 +1,12 @@
-figure > img{
-    width: 100% !important;
+figure > img {
+  width: 100% !important;
 }
 
-.break-word{
-    word-break: break-word !important;
+.break-word {
+  word-break: break-word !important;
+}
+.question-container {
+  img {
+    max-width: 100%;
+  }
 }
