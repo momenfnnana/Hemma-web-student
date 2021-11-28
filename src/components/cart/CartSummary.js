@@ -22,7 +22,6 @@ class CartSummaryComponent extends Component {
   renderDetails() {
 
     const { cart, busy } = this.props;
-debugger;
     return (
       <Fragment>
         <div className="pb-0 p-4">
