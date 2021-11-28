@@ -254,7 +254,7 @@ class ExamDetailsComponent extends Component {
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
                   <h6
-                    className="dark-text mb-0 encoded-text break-word"
+                    className="dark-text mb-0 encoded-text break-word question-container"
                     dangerouslySetInnerHTML={{
                       __html: question.encodedStem,
                     }}
