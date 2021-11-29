@@ -89,6 +89,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const [showThirdCard, setShowThirdCard] = useState(false);
+  const [loadingSubScribtion, setLoadingSubScribtion] = useState(false);
 
   const getTotalData = async () => {
     setTotalInfo({ ...totalInfo, error: "" });
@@ -190,7 +191,7 @@ export default withRouter(function ProfessionalCourses({
     const nameAr = mergedData?.general?.nameAr
     if (!mergedData?.spec)
       sweetAlert(
-        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : undefined}
+        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : 'متابعة'}
       ).then((navType) => {
         handleModalNav(navType,[config?.nextButton,config?.prevButton])
       });
@@ -306,7 +307,14 @@ export default withRouter(function ProfessionalCourses({
       [key]: value,
     };
     const { id } = value;
+    const checkFounded = mergedData.spec?.id===id||mergedData.general?.id===id
+    if(checkFounded){
+      swal("عفواً", 'تم اضافة الكورس بالفعل', "error", {
+        button: "متابعة",
+      });
+    }else{
     checkAlreadyJoined(id, () => setMeregedData({ ...mergedData, ...data }));
+    }
   };
 
   const delayedAction = (onTimeout = () => {}) => {
@@ -373,6 +381,7 @@ export default withRouter(function ProfessionalCourses({
   }, [categoryData]);
 
   const hasPackageCase = async (ids = [], pkg, onEnd) => {
+    setLoadingSubScribtion(prevState=>!prevState);
     const pkgID = pkg.id;
     const token = getToken();
     const body = {
@@ -409,6 +418,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCaseSingleReq = (id) => {
+    setLoadingSubScribtion(prevState=>!prevState);
     const body = {
       courseId: id,
     };
@@ -575,9 +585,11 @@ export default withRouter(function ProfessionalCourses({
           refreshShow={refreshShow}
           onSubscribe={handleSubscribtion}
           showDescription={showBouquetsDescription}
+          LoadingSubScribtion={loadingSubScribtion}
         />
       )}
       <KnowMore trainer={trainer.info} />
     </div>
   );
 });
+
