@@ -30,7 +30,8 @@ export const signupUser = ({
   educationalLevel,
   educationalEntityId,
   saCityId,
-  nationalityId
+  nationalityId,
+  studentId
 }) => {
   return {
     type: AUTHENTICATE_USER,
@@ -44,7 +45,8 @@ export const signupUser = ({
       educationalLevel,
       educationalEntityId,
       saCityId,
-      nationalityId
+      nationalityId,
+      studentId
     )
   };
 };

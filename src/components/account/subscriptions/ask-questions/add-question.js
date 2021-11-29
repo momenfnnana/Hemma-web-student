@@ -18,6 +18,8 @@ class AddQuestion extends Component {
 			disable:true,
 			question:null,
 			submitLoading: false,
+			// type:"Text",
+			// content:null
 		};
 		this.setLoading = this.setLoading.bind(this)
 	}
@@ -82,33 +84,33 @@ class AddQuestion extends Component {
 		})
 		.then(response => {
 			this.setState({file: response.data.data.url, questionType: "Image"});
-			if (this.state.file) {
-				const courseId = this.props.match.params.id;
-				const sectionId = this.state.sectionId;
-				let token = localStorage.getItem("token");
-				let headers = {
-					Authorization: `Bearer ${token}`
-				};
-				let data = {
-					type: "Image",
-					content: this.state.file
-				};
-				axios
-				.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
-					headers
-				})
-				.then(response => {
-					this.props.updateQuestions(response.data.data);
-					this.props.toggleModal();
-						})
-						.catch(error => {
-							this.setState({disabled: false});
-							console.log(error);
-						});
-				}
-			})
-			.catch(error => {
-				console.log(error);
+			// if (this.state.file) {
+			// 	const courseId = this.props.match.params.id;
+			// 	const sectionId = this.state.sectionId;
+			// 	let token = localStorage.getItem("token");
+			// 	let headers = {
+			// 		Authorization: `Bearer ${token}`
+			// 	};
+			// 	let data = {
+			// 		type: "Image",
+			// 		content: this.state.file
+			// 	};
+			// 	axios
+			// 	.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
+			// 		headers
+			// 	})
+			// 	.then(response => {
+			// 		this.props.updateQuestions(response.data.data);
+			// 		this.props.toggleModal();
+			// 			})
+			// 			.catch(error => {
+			// 				this.setState({disabled: false});
+			// 				console.log(error);
+			// 			});
+			// 	}
+			// })
+			// .catch(error => {
+			// 	console.log(error);
 			});
 	};
 	handleSubmit = event => {
@@ -121,10 +123,23 @@ class AddQuestion extends Component {
 		let headers = {
 			Authorization: `Bearer ${token}`
 		};
-		let data = {
-			type: "Text",
-			content: this.state.question,
-		};
+		var data=null
+		if(this.state.file)
+		{
+			data = {
+				type: "Image",
+				content: this.state.file
+	};
+		}
+		else
+		{
+			data = {
+				type: "Text",
+				content: this.state.question,
+			};
+		
+		}
+		
 		axios
 			.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
 				headers
@@ -135,7 +150,8 @@ class AddQuestion extends Component {
 				this.props.updateQuestions(response.data.data);
 			})
 			.catch(error => {
-				swal("عفوا",error.message,"error")
+				console.log(error);
+				swal("عفوا","السؤال فارغ","error")
 			}).finally(()=> {
 				this.setLoading(false)
 			})
@@ -159,7 +175,7 @@ class AddQuestion extends Component {
 						<ModalBody>
 							<label className="dark-text small mb-0 mt-0">الجزء</label>
 
-							<select value={this.state.sectionId}
+							<select required value={this.state.sectionId}
 							        className="form-select w-100 p-2 small dark-text border border-light-2"
 							        aria-label="Default select example"
 							        onChange={(e)=>this.handleChange('sectionId',e)}
@@ -184,7 +200,7 @@ class AddQuestion extends Component {
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={this.state.sectionId==''}
+	                disabled={this.state.sectionId==''|| this.state.file}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
@@ -193,7 +209,7 @@ class AddQuestion extends Component {
 											id="uploadImage"
 											type="file"
 											onChange={this.handleFileChange}
-											disabled={this.state.sectionId==''}
+											disabled={this.state.sectionId=='' }
 										/>
 										<img
 											src={
