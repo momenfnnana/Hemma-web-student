@@ -194,7 +194,7 @@ class SubscriptionDetailsComponent extends Component {
                         )}
                         <RatingModal
                           isRatingModalOpen={
-                            ratingStatus === "Available" ||
+                            // ratingStatus === "Available" ||
                             this.state.forceOpenRatingModal
                           }
                           onClose={() =>
