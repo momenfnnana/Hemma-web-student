@@ -111,7 +111,7 @@ class SubscriptionDetailsComponent extends Component {
       this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-
+const designType=this.props.designType
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -182,12 +182,13 @@ class SubscriptionDetailsComponent extends Component {
                           subscription={subscription}
                           courseId={courseId}
                         />
-                        {ratingStatus === "Skipped" && (
+                        {ratingStatus === "Skipped" && !designType && (
                           <button
                             className="btn light-btn w-100 mb-3"
-                            onClick={() =>
-                              this.setState({ forceOpenRatingModal: true })
-                            }
+                            onClick={() =>{
+                              this.props.history.push(`/course/content/${this.props.id}/evaluations`)
+                              // this.setState({ forceOpenRatingModal: true })
+                            }}
                           >
                             قيّم الدورة
                           </button>
