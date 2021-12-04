@@ -195,7 +195,7 @@ const designType=this.props.designType
                         )}
                         <RatingModal
                           isRatingModalOpen={
-                            ratingStatus === "Available" ||
+                            // ratingStatus === "Available" ||
                             this.state.forceOpenRatingModal
                           }
                           onClose={() =>
