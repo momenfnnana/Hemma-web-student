@@ -307,7 +307,14 @@ export default withRouter(function ProfessionalCourses({
       [key]: value,
     };
     const { id } = value;
+    const checkFounded = mergedData.spec?.id===id||mergedData.general?.id===id
+    if(checkFounded){
+      swal("عفواً", 'تم اضافة الكورس بالفعل', "error", {
+        button: "متابعة",
+      });
+    }else{
     checkAlreadyJoined(id, () => setMeregedData({ ...mergedData, ...data }));
+    }
   };
 
   const delayedAction = (onTimeout = () => {}) => {
@@ -585,3 +592,4 @@ export default withRouter(function ProfessionalCourses({
     </div>
   );
 });
+
