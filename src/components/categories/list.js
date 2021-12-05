@@ -59,11 +59,38 @@ export class CategoriesComponent extends Component {
     super(props);
     this.state = {
       categories: [],
-      loading: false
+      loading: false,
+      CategoryName:"",
+      CourseName:""
     };
+    this.handleChangeCategory = this.handleChangeCategory.bind(this);
+    this.handleChangeCourse = this.handleChangeCourse.bind(this);
+    this.getSearchResult = this.getSearchResult.bind(this);
   }
-
+getSearchResult (){
+  this.setState({ loading: true });
+  debugger;
+    axios
+      .get(`${apiBaseUrl}/categories?limit=40&CategoryName=${this.state.CategoryName}&CourseName=${this.state.CourseName}`)
+      .then(response => {
+        this.setState({ categories: response.data.data.data });
+        setTimeout(
+          function () {
+            this.setState({loading: false });
+          }.bind(this),
+          800 
+        );
+      })
+      .catch(error => {
+        console.log(error);
+      });
+}
+// componentWillMount()
+// {
+  
+// }
   componentDidMount() {
+    debugger;
     this.setState({ loading: true });
     axios
       .get(`${apiBaseUrl}/categories?limit=40`)
@@ -80,7 +107,14 @@ export class CategoriesComponent extends Component {
         console.log(error);
       });
   }
-
+  handleChangeCategory(event)
+  {
+    this.setState({CategoryName: event.target.value});
+  }
+  handleChangeCourse(event)
+  {
+    this.setState({CourseName: event.target.value});
+  }
   renderCategories() {
     const cats = this.state.categories;
     const { match, location, history } = this.props;
@@ -186,6 +220,16 @@ export class CategoriesComponent extends Component {
           />
         </Helmet>
         <section className="pt-3 pb-5">
+        <form>
+          <div className="row col-md-12"> 
+          <input type="button" className="form-control col-md-1 m-2"  onClick={this.getSearchResult} value="بحث"></input>
+            <input placeholder="أسم المنصة" value={this.state.CategoryName} onChange={this.handleChangeCategory} className="form-control col-md-3 m-2">
+            </input>
+            <input placeholder="اسم الكورس"  value={this.state.CourseName} onChange={this.handleChangeCourse} className="form-control col-md-3 m-2">
+            </input>
+            
+            </div>
+            </form>
           <div className="container">{this.renderCategories()}</div>
         </section>
       </React.Fragment>
