@@ -90,6 +90,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const [showThirdCard, setShowThirdCard] = useState(false);
+  const [loadingSubScribtion, setLoadingSubScribtion] = useState(false);
 
   const getTotalData = async () => {
     setTotalInfo({ ...totalInfo, error: "" });
@@ -381,6 +382,7 @@ export default withRouter(function ProfessionalCourses({
   }, [categoryData]);
 
   const hasPackageCase = async (ids = [], pkg, onEnd) => {
+    setLoadingSubScribtion(prevState=>!prevState);
     const pkgID = pkg.id;
     const token = getToken();
     const body = {
@@ -417,6 +419,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCaseSingleReq = (id) => {
+    setLoadingSubScribtion(prevState=>!prevState);
     const body = {
       courseId: id,
     };
@@ -583,6 +586,7 @@ export default withRouter(function ProfessionalCourses({
           refreshShow={refreshShow}
           onSubscribe={handleSubscribtion}
           showDescription={showBouquetsDescription}
+          LoadingSubScribtion={loadingSubScribtion}
         />
       )}
       <KnowMore trainer={trainer.info} />
