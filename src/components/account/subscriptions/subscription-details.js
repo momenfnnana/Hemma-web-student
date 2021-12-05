@@ -37,6 +37,7 @@ import { ClassicSchedule } from "./schedule/schedule-classic";
 import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
 import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
+import Evaluation from "../../evaluation";
 const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
@@ -202,6 +203,27 @@ class SubscriptionDetailsComponent extends Component {
                           status={ratingStatus}
                           courseId={courseId}
                         /> */}
+
+
+                                                {ratingStatus === "Skipped" && (
+                                                    <button
+                                                        className="btn light-btn w-100 mb-3"
+                                                        onClick={() => this.props.history.push(`/course/content/${courseId}/evaluations`)}
+                                                    >
+                                                        قيّم الدورة جديد
+                                                    </button>
+                                                )}
+                                                <RatingModal
+                                                    isRatingModalOpen={
+                                                        ratingStatus === "Available" ||
+                                                        this.state.forceOpenRatingModal
+                                                    }
+                                                    onClose={() =>
+                                                        this.setState({ forceOpenRatingModal: false })
+                                                    }
+                                                    status={ratingStatus}
+                                                    courseId={courseId}
+                                                />
                         <Instructors id={courseId} />
                       </div>
                     )}
@@ -343,6 +365,10 @@ class SubscriptionDetailsComponent extends Component {
                     <Route
                       path="/course/content/:courseId/askQuestions/details/:id"
                       component={AskQuestionDetails}
+                    />
+                    <Route
+                      path="/course/content/:courseId/evaluations"
+                      component={Evaluation}
                     />
                     {subscription?.chatChannelSid && (
                       <Route
