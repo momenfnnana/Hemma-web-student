@@ -32,6 +32,7 @@ export const Competition = lazy(()=> import('./../components/categories/competit
 export const QuickQuestions = lazy(()=> import('./../components/categories/quick-questions/quick-questions'))
 export const Transaction = lazy(()=> import('./../components/cart/transaction'))
 export const FAQ = lazy(()=> import('./../components/faq/faq'))
+export const Search = lazy(()=> import('../components/search/search'))
 export const BankAccounts = lazy(()=> import('./../components/banks/banks'))
 export const Account = lazy(()=> import('./../components/account/settings/account'))
 export const NotFound = lazy(()=> import('./../components/shared/not-found/not-found'))
