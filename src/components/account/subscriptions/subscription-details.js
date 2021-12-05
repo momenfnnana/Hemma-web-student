@@ -203,27 +203,6 @@ class SubscriptionDetailsComponent extends Component {
                           status={ratingStatus}
                           courseId={courseId}
                         /> */}
-
-
-                                                {ratingStatus === "Skipped" && (
-                                                    <button
-                                                        className="btn light-btn w-100 mb-3"
-                                                        onClick={() => this.props.history.push(`/course/content/${courseId}/evaluations`)}
-                                                    >
-                                                        قيّم الدورة جديد
-                                                    </button>
-                                                )}
-                                                <RatingModal
-                                                    isRatingModalOpen={
-                                                        ratingStatus === "Available" ||
-                                                        this.state.forceOpenRatingModal
-                                                    }
-                                                    onClose={() =>
-                                                        this.setState({ forceOpenRatingModal: false })
-                                                    }
-                                                    status={ratingStatus}
-                                                    courseId={courseId}
-                                                />
                         <Instructors id={courseId} />
                       </div>
                     )}
