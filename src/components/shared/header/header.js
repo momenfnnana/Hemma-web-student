@@ -18,6 +18,7 @@ import { connect } from "react-redux";
 import { signOutAction } from "../../../actions/login.actions";
 import { getUser } from "../../../actions/user.actions";
 import jwtDecode from "jwt-decode";
+import SearchBox from "./components/searchBox";
 
 class HeaderComponent extends Component {
   constructor(props) {
@@ -421,7 +422,7 @@ return(
 
         {/* <!-- Start The Main Links Of Hemma --> */}
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
-          <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
+          <ul className="navbar-nav mx-auto mb-2 mb-lg-0 d-flex align-items-center">
             <li className="nav-item">
               <NavLink to="/home" activeClassName="active"  className={"nav-link links-hover"}>الرئيسية</NavLink>
             </li>
@@ -454,7 +455,7 @@ return(
                 </div>
                 </ul>
             </li>
-           
+              <SearchBox />
             </ul>
             {!this.props.authenticated ? (
               <ul className="navbar-nav mb-2 mb-lg-0">
