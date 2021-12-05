@@ -146,7 +146,7 @@ getSearchResult (){
                      button: "متابعة"
                    }
                       )
-                   :history.push(`/categories/details/${cat.slug}`)}}
+                   :history.push(`/categories/details/${cat.id}`)}}
                 >
               
                   {/* <Link
@@ -179,7 +179,7 @@ getSearchResult (){
                  
                   <Link
                     to={{
-                      pathname: `/categories/details/${cat.slug}`,
+                      pathname: `/categories/details/${cat.id}`,
                       state: {
                         catId: cat.id
                       }
