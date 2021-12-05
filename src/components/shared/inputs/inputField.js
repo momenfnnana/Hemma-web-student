@@ -24,6 +24,7 @@ export class inputField extends Component {
             placeholder={this.props.placeholder}
             value={this.props.input.value}
             disabled={this.props.disabled}
+            maxLength={this.props.maxLength}
           />
             <small
               className="w-100 smaller"
