@@ -14,7 +14,7 @@ export const useFetch = (url = "", mainConfig = {isAuthed:true}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [accessToken,setAccessToken]=useState(null);
+  const [accessToken,setAccessToken]=useState(localStorage.getItem("token"));
   const {isAuthed = true} = mainConfig;
 
   useEffect(()=>{
