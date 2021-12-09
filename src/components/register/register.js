@@ -149,7 +149,8 @@ clearPendingActions(){
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
       saCityId: values.saCityId,
-      nationalityId: values.nationalityId,
+        nationalityId: values.nationalityId,
+        studentId: values.IdentificationNumber
     });
     this.setState({ loading: true });
     request
