@@ -186,7 +186,7 @@ const designType=this.props.designType
                           <button
                             className="btn light-btn w-100 mb-3"
                             onClick={() =>{
-                              this.props.history.push(`/course/content/${this.props.id}/evaluations`)
+                              this.props.history.push(`/course/content/${courseId}/evaluations`)
                               // this.setState({ forceOpenRatingModal: true })
                             }}
                           >
