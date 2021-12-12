@@ -193,7 +193,7 @@ clearPendingActions(){
   };
 
   componentDidMount() {
-    document.getElementsByName("phone")[0].maxLength=11;
+    // document.getElementsByName("phone")[0].maxLength=11;
     Api.auth.getCities().then((cities) => this.setState({ cities: cities }));
     axios.get(`${apiBaseUrl}/Nationalities/lookup`).then((response) => {
       this.setState({ nationalities: response.data.data });
