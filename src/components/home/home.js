@@ -2,6 +2,8 @@ import React, { Component,useEffect ,useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
+import { FaWhatsapp } from "react-icons/fa";
+
 import { Card } from "../shared/card/card";
 import { apiBaseUrl } from "../../api/helpers";
 import { connect } from "react-redux";
@@ -686,14 +688,15 @@ renderSucces()
         {!this.state.isNationalDay && <div className='banner banner-program'>
            <div className="container program-container py-4 ">
              <div>
-               <h2>  برنامج
+               <p className='d-flex justify-contet-center align-items-center'>عزيزي المشترك في حال واجهتك مشكلة في انشاء الحساب الرجاء التواصل على <a href='https://hemma.sa/?support'>الدعم الفني</a> او على<div className='rounded-circle btn-success mx-2 p-2 cursor-poiner' onClick={()=>window.open('http://wa.me/966539412412','_blank')}><FaWhatsapp size={40} /></div></p>
+               {/* <h2>  برنامج
                         <span className='program-name'> معلم كفؤ </span>             الإثرائي والمجاني
                </h2>
-               <p> صمم هذا البرنامج بعناية مع نخبة من الخبراء ليحقق احتياج المعلمين في تطوير مهاراتهم التدريسية </p>
+               <p> صمم هذا البرنامج بعناية مع نخبة من الخبراء ليحقق احتياج المعلمين في تطوير مهاراتهم التدريسية </p> */}
              </div>
-             <Link to='/course/details/معلم_كفؤ42327'>
-               <button type="button" className="btn btn-warning join-now">انضم الان</button>
-             </Link>
+             {/* <div onClick={()=>window.open('http://wa.me/966539412412','_blank')}>
+               <button type="button" className="btn btn-success join-now d-flex justify-content-center align-items-center"><FaWhatsapp className='mx-1' size={40} /></button>
+             </div> */}
            </div>
          </div>}
       {/* <!-- Start The Main Banner Text --> */}

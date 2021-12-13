@@ -258,10 +258,14 @@ export class BookletsComponent extends Component {
                         تتبع
                       </a>
                     ) : null} */}
-                    {this.state.printingStatus === "Printed" &&
+                    {(this.state.printingStatus === "Printed" &&
                     this.state.purchased &&
                     this.state.tracking !== "" &&
-                    this.state.status === "None" ? (
+                    this.state.status === "Shipped") ||(
+                      this.state.printingStatus === "Printed" &&
+                    this.state.purchased &&
+                    this.state.tracking !== "" &&
+                    this.state.status === "None") ? (
                       <a
                         className="btn blue-border-btn mr-2"
                         href={`${this.state.tracking}`}
@@ -325,8 +329,10 @@ export class BookletsComponent extends Component {
                 </div>
               </div>
               <div className="box-layout silver-bg shadow-sm d-flex flex-column w-100 rounded p-4 pb-0">
-                {this.state.booklets == undefined ||
-                this.state.booklets.length == 0 ? (
+                {(this.state.booklets == undefined ||
+                this.state.booklets.length == 0)&&
+                (this.state.booklet.availableInColor||
+                  this.state.booklet.availableInBlackAndWhite) ? (
                   <React.Fragment>
                     <div className="col-12">
                       <div
@@ -341,10 +347,30 @@ export class BookletsComponent extends Component {
                           className="mb-1"
                           height="80"
                         />
-                        <h5 className="dark-text mt-0">لا يوجد ملازم متاحة</h5>
+                        <h5 className="dark-text mt-0">لا تظهر مرفقات متاحة للملزمة</h5>
                       </div>
                     </div>
                   </React.Fragment>
+                ) : (this.state.booklets == undefined ||
+                  this.state.booklets.length == 0)? (
+                  <React.Fragment>
+                  <div className="col-12">
+                    <div
+                      className="d-flex flex-column align-items-center justify-content-center"
+                      style={{ height: 200 }}
+                    >
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          "/assets/images/empty-files.png"
+                        }
+                        className="mb-1"
+                        height="80"
+                      />
+                      <h5 className="dark-text mt-0">لا يوجد ملازم متاحة</h5>
+                    </div>
+                  </div>
+                </React.Fragment>
                 ) : (
                   <React.Fragment>
                     <div className="row">{this.renderBooklets()}</div>

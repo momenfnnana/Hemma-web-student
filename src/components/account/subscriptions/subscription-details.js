@@ -37,7 +37,7 @@ import { ClassicSchedule } from "./schedule/schedule-classic";
 import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
 import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
-import Evaluation from "../../evaluation";
+import {Evaluation} from "../../evaluation";
 const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
@@ -111,7 +111,7 @@ class SubscriptionDetailsComponent extends Component {
       this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-
+const designType=this.props.designType
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
@@ -182,27 +182,20 @@ class SubscriptionDetailsComponent extends Component {
                           subscription={subscription}
                           courseId={courseId}
                         />
-                        {ratingStatus === "Skipped" && (
+                        {ratingStatus === "Skipped" && !designType && (
                           <button
                             className="btn light-btn w-100 mb-3"
-                            onClick={() =>
-                              this.setState({ forceOpenRatingModal: true })
-                            }
+                            onClick={() =>{
+                              this.props.history.push(`/course/content/${this.props.id}/evaluations`)
+                              // this.setState({ forceOpenRatingModal: true })
+                            }}
                           >
                             قيّم الدورة
                           </button>
                         )}
-                        {ratingStatus === "Skipped" && (
-                          <button
-                            className="btn light-btn w-100 mb-3"
-                            onClick={()=> this.props.history.push(`/course/content/${courseId}/evaluations`)}
-                          >
-                            قيّم الدورة جديد
-                          </button>
-                        )}
                         <RatingModal
                           isRatingModalOpen={
-                            ratingStatus === "Available" ||
+                            // ratingStatus === "Available" ||
                             this.state.forceOpenRatingModal
                           }
                           onClose={() =>

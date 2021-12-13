@@ -1,4 +1,5 @@
 import React from "react";
+import Loader from "react-loaders";
 import CourseOverview from "./course-elem-display";
 import "./index.scss";
 
@@ -9,7 +10,9 @@ export default function SubscribtionRequest({
   onSpecDelete = () => {},
   refreshShow = () => {},
   localTotal = 0,
-  onSubscribe = () => {},
+  onSubscribe = () => true,
+  showDescription=false,
+  LoadingSubScribtion=false
 }) {
   const { data, error } = info;
   const validPackageData = !error && data;
@@ -40,8 +43,8 @@ export default function SubscribtionRequest({
         <div class="d-flex flex-column justify-content-between">
           <div class="mb-5 ">
             <p class="font-size-15 font-weight-bold mb-4 text-center text-white">
-              {data?.description ||
-                "يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام"}
+              {data?.description ||(showDescription &&
+                "يمكنك أيضا اختيار دورة إضافيـــــــة بجانب الدورة الحالية لتحصل على نسبة خصـــــم باقة الاشتراك لدورتي التخصص والعــام")}
             </p>
             {error && !data && (
               <div className="w-100 text-center bg-danger btn-card-normal big-height mb-4">
@@ -75,13 +78,20 @@ export default function SubscribtionRequest({
             }
           </div>
           <div class="d-flex align-items-center justify-content-center">
-            <a
-              class="btn-card-normal headShake big-height light-sub-bgcolor m-0 flex-root"
-              onClick={onSubscribe}
-            >
-              الاشتراك
-            </a>
-
+            {LoadingSubScribtion?
+            (
+                <div class="btn-card-normal headShake big-height light-sub-bgcolor m-0 flex-root">
+                  <Loader type="ball-clip-rotate" />
+                </div>
+              ):(
+                <a
+                  class="btn-card-normal headShake big-height light-sub-bgcolor m-0 flex-root"
+                  onClick={!LoadingSubScribtion?onSubscribe:()=>true}
+                >
+                  الاشتراك
+                </a>
+              )
+            }
             <span class="mx-1"></span>
             <a
               class="btn-card-normal headShake big-height m-0 flex-root"

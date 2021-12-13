@@ -3,6 +3,8 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import swal from "@sweetalert/with-react";
 import { FaRegUser, FaRegEnvelope } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
+
 import { MdLockOutline } from "react-icons/md";
 import { inputField } from "../shared/inputs/inputField";
 import { phoneField } from "../shared/inputs/phoneField";
@@ -31,6 +33,15 @@ export const minLength = (min) => (value) =>
   value && value.length < min
     ? `كلمة المرور يجب أن لا تقل عن ${min} خانات`
     : undefined;
+const IdentificationMaxLength = (max) => (value) =>{
+  return value && value.length > max
+    ? `رقم الهوية يجيب أن لا يزيد عن ${max} خانات`
+    : undefined}
+const IdentificationMaxLength10 = IdentificationMaxLength(10);
+export const IdentificationMinLength = (min) => (value) =>
+  value && value.length < min
+    ? `رقم الهوية يجب أن لا يقل عن ${min} خانات`
+    : undefined;
 const nameValue = (value) => {
   value = value || "";
   const trimmed = value.replace(/\s/g, "");
@@ -48,6 +59,8 @@ const phoneValue = (value) => {
 };
 
 export const minLength4 = minLength(4);
+export const IdentificationMinLength0 = IdentificationMinLength(10);
+const validateIdentification = (value)=> !/^[0-9]*$/.test(value)?'هذه الخانة يجب ان تحتوي على ارقام فقط':undefined;
 const emailValue = (value) =>
   value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)
     ? "يرجى إدخال البريد الإلكتروني بصيغة صحيحة"
@@ -137,6 +150,7 @@ clearPendingActions(){
       educationalEntityId: values.educationalEntityId,
       saCityId: values.saCityId,
       nationalityId: values.nationalityId,
+      studentId:values.IdentificationNumber
     });
     this.setState({ loading: true });
     request
@@ -179,6 +193,7 @@ clearPendingActions(){
   };
 
   componentDidMount() {
+    // document.getElementsByName("phone")[0].maxLength=11;
     Api.auth.getCities().then((cities) => this.setState({ cities: cities }));
     axios.get(`${apiBaseUrl}/Nationalities/lookup`).then((response) => {
       this.setState({ nationalities: response.data.data });
@@ -337,6 +352,16 @@ clearPendingActions(){
                 validate={emailValue}
               >
                 <FaRegEnvelope />
+              </Field>
+              <Field
+                name="IdentificationNumber"
+                component={inputField}
+                className="form-control border-left-0 pl-0 ltr-input"
+                placeholder="رقم الهوية"
+                maxLength={10}
+                validate={[IdentificationMaxLength10,IdentificationMinLength0, validateIdentification]}
+              >
+                <ImProfile />
               </Field>
               {/* <Field
                         component={selectField}

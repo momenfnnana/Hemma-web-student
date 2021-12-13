@@ -1,21 +1,12 @@
 import Axios from "axios";
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import swal from "@sweetalert/with-react";
 const SUCCESS_STATUS = 200;
-const token = localStorage.getItem("token");
-
-const headers = {
-  Authorization: `Bearer ${token}`,
-};
-
+// const token = localStorage.getItem("token");
 
 const initConfig = {
   method: "GET",
 };
-
-const authedInstance = Axios.create({
-  headers,
-});
 
 const baseInstance = Axios.create();
 
@@ -23,15 +14,26 @@ export const useFetch = (url = "", mainConfig = {isAuthed:true}) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [accessToken,setAccessToken]=useState(localStorage.getItem("token"));
   const {isAuthed = true} = mainConfig;
 
+  useEffect(()=>{
+    const token = localStorage.getItem("token");
+    setAccessToken(token)
+  },[])
+  const headers = {
+    Authorization: `Bearer ${accessToken}`,
+  };
+  const authedInstance = Axios.create({
+    headers,
+  });
   const fetchData = async (
     reqConf = initConfig,
     onSuccess = () => {},
     onError = () => {}
   ) => {
     const reqConfig = { ...mainConfig, ...reqConf };
-    const AxiosInstance = token ? authedInstance : baseInstance;
+    const AxiosInstance = accessToken ? authedInstance : baseInstance;
     try {
       setLoading(true);
       setError("");

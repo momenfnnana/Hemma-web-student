@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { reduxForm } from "redux-form";
+import Axios from "axios";
+import swal from "@sweetalert/with-react";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
-import Star from "./components/star";
+import { apiBaseUrl } from "../../api/helpers";
+import { useFetch } from "../../hooks/useFetch";
+
+import { Star } from "./components/star";
 import "./index.scss";
 
 const bands = [
@@ -83,44 +93,74 @@ const bands = [
 
 const Header = () => (
   <div className="container-fluid">
-    <div className="row border d-flex justify-content-between header-container align-items-center">
+    <div className="row border header-container">
       <div className="col-3 border-right title-container d-flex justify-content-center align-items-center">
-        <h5 className="header-title">مجال التقييم</h5>
+        <p className="header-title">مجال التقييم</p>
       </div>
       <div className="col-6 border-right title-container d-flex align-items-center">
-        <h5 className="header-title">البند</h5>
+        <p className="header-title">البند</p>
       </div>
       <div className="col-3 title-container d-flex align-items-center">
-        <h5 className="header-title">التقييم</h5>
+        <p className="header-title">التقييم</p>
       </div>
     </div>
   </div>
 );
 
-const TableBody = () => {
+const TableBody = ({ courseId, savedRates }) => {
+  const url = `${apiBaseUrl}/Ratings/GetRatingQuestion`;
+  const [getQuestions, questions, loading] = useFetch(url);
+
+  useEffect(() => {
+    getQuestions();
+  }, []);
+  if (loading) {
+    return (
+      <div className="align-items-center d-flex justify-content-center loader-container">
+        <Loader
+          type="ball-spin-fade-loader"
+          className="dark-loader mx-auto w-10"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="container-fluid">
-      {bands.map((item, fatherIndex) => (
+      {bands.map((fatherItem, fatherIndex) => (
         <div className="row border border-info table-container">
           <div className="col-3 border-right table-title-container d-flex justify-content-center align-items-center">
-            <h5 className="table-line-title">{item.typeTitle}</h5>
+            <p className="table-line-title">{fatherItem.typeTitle}</p>
           </div>
           <div className="col-6 border-right table-title-container p-0">
-            {item.items.map((item, index) => (
-              <div
-                className={
-                  item.items?.length === index + 1
-                    ? "rate-item px-3 py-3"
-                    : "rate-item border-bottom px-3 py-3"
-                }
-              >
-                {item?.title}
-              </div>
+            {questions?.data.map((item, index) => (
+              <>
+                {item?.ratingArea === fatherItem?.typeTitle && (
+                  <div
+                    className={
+                      item.items?.length === index + 1
+                        ? "rate-item px-3 py-0 py-lg-3 d-flex align-items-center"
+                        : "rate-item border-bottom px-3 py-0 py-lg-3 d-flex align-items-center"
+                    }
+                  >
+                    {item?.ratingQuestion}
+                  </div>
+                )}
+              </>
             ))}
           </div>
-          <div className="col-3 px-0 py-0">
-            {item.items.map((item, index) => {
-              return <Star item={item} index={index} />;
+          <div className="col-3 p-0">
+            {questions?.data.map((item, index) => {
+              return (
+                item?.ratingArea === fatherItem?.typeTitle && (
+                  <Star
+                    item={item}
+                    index={index}
+                    courseId={courseId}
+                    savedRates={savedRates}
+                  />
+                )
+              );
             })}
           </div>
         </div>
@@ -129,14 +169,101 @@ const TableBody = () => {
   );
 };
 
-const Evaluation = () => {
+const EvaluationComponent = (props) => {
+  const courseId = props?.location?.pathname.split("/")[3];
+  let token = localStorage.getItem("token");
+  let headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const rateValue = props?.rateValue?.subscription?.rateValue;
+  const [ratesAnswers, setRatesAnswers] = useState({
+    courseId,
+    ratingQuesionAnswer: [],
+  });
+  const [savedRates, setSavedRates] = useState([]);
+  const [reload, setReload] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(rateValue || {})?.length) {
+      const findedRate = ratesAnswers?.ratingQuesionAnswer?.find(
+        (item) => item?.ratingQuesionId === rateValue?.ratingQuesionId
+      );
+      if (findedRate === undefined) {
+        setRatesAnswers({
+          ...ratesAnswers,
+          ratingQuesionAnswer: [
+            ...ratesAnswers?.ratingQuesionAnswer,
+            rateValue,
+          ],
+        });
+      } else {
+        const newArr = ratesAnswers?.ratingQuesionAnswer?.filter(
+          (element) => element?.ratingQuesionId !== rateValue?.ratingQuesionId
+        );
+        setRatesAnswers({
+          ...ratesAnswers,
+          ratingQuesionAnswer: [...newArr, rateValue],
+        });
+      }
+    }
+  }, [rateValue]);
+
+  useEffect(() => {
+    (async () => {
+      Axios({
+        method: "get",
+        url: `${apiBaseUrl}/Ratings/GetCourseRating?courseId=${courseId}`,
+        headers,
+      })
+        .then((res) => setSavedRates(res?.data?.data))
+        .catch((error) => console.log({ error }));
+    })();
+  }, [courseId, reload]);
+
+  const sendAnswers = () => {
+    Axios({
+      method: "post",
+      url: `${apiBaseUrl}/Ratings/AddRatingAnswer`,
+      headers,
+      data: ratesAnswers,
+    })
+      .then((res) => {
+        setReload((prevState) => !prevState);
+        swal("تنبيه", "تم اعتماد التقييم بنجاح", "success", {
+          button: "متابعة",
+        });
+      })
+      .catch((error) => console.log({ error }));
+  };
   return (
     <div>
-      <h4>تقييمات الدورة</h4>
+      <p className="my-3 my-lg-0 mb-0 mb-lg-3 rate-title">تقييمات الدورة</p>
       <Header />
-      <TableBody />
+      <TableBody courseId={courseId} savedRates={savedRates} />
+      <div
+        className="rate-course-btn d-flex justify-content-center align-items-center my-4"
+        onClick={() => sendAnswers()}
+      >
+        <h4 className="rate-course-btn-text">حفظ التقييم</h4>
+      </div>
     </div>
   );
 };
 
-export default Evaluation;
+function mapStateToProps(state) {
+  return {
+    rateValue: state,
+  };
+}
+
+const actionCreators = {};
+
+export const Evaluation = connect(
+  mapStateToProps,
+  actionCreators
+)(
+  reduxForm({
+    form: "subscription",
+    destroyOnUnmount: false,
+  })(withRouter(EvaluationComponent))
+);

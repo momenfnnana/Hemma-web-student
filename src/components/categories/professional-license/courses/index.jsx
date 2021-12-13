@@ -18,6 +18,7 @@ const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse
 const getTrinerInfoUrl = (id) =>
   `${process.env.REACT_APP_API_ENDPOINT}/Users/instructor/${id}`;
 const getTotalsUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages`;
+const getHavePackage = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GetCoursePackage`;
 const noPackageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/items/courses`;
 const packageSubscribtionUrl = `${process.env.REACT_APP_API_ENDPOINT}/cart_v2/packages`;
 export const ITEAM_CAN_BE_ADDED = "ItemCanAdded";
@@ -52,7 +53,7 @@ export default withRouter(function ProfessionalCourses({
     data: null,
     error: "",
   });
-
+  const [showBouquetsDescription,setShowBouquetsDescription]=useState(false);
   const redirectToLogin = () => {
     const loginPath = `/auth/login`;
     window.location = loginPath;
@@ -88,6 +89,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const [showThirdCard, setShowThirdCard] = useState(false);
+  const [loadingSubScribtion, setLoadingSubScribtion] = useState(false);
 
   const getTotalData = async () => {
     setTotalInfo({ ...totalInfo, error: "" });
@@ -164,7 +166,8 @@ export default withRouter(function ProfessionalCourses({
     const prevButton = getPrevRef(ref)
     const nextButton = getNextRef(ref)
     //hide all btns in descktop case
-    if(window.innerWidth > 800) return {nextButton : {text:'متابعة',value:nextButton} , prevButton : undefined}
+    // if(window.innerWidth > 800) return {nextButton : {text:'متابعة',value:nextButton} , prevButton : undefined}
+    if(window.innerWidth > 800) return {nextButton : undefined , prevButton : undefined}
     const config =  {nextButton : nextButton ? {text:'متابعة',value:nextButton} : undefined,prevButton : prevButton ? {text:'السابق',value:prevButton} : undefined}
     return config
 
@@ -188,7 +191,7 @@ export default withRouter(function ProfessionalCourses({
     const nameAr = mergedData?.general?.nameAr
     if (!mergedData?.spec)
       sweetAlert(
-        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : undefined}
+        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : 'متابعة'}
       ).then((navType) => {
         handleModalNav(navType,[config?.nextButton,config?.prevButton])
       });
@@ -239,9 +242,10 @@ export default withRouter(function ProfessionalCourses({
     toggleShow("spec");
   };
   const refreshShow = () => {
-    handleSpecDelete();
+    setSelectedGeneralCourse(null);
+    setSelectedSpecCourse(null);
+    setMeregedData({general:null,spec:null})
     setTimeout(() => {
-      handleGeneralDelete();
       setMeregedData({ general: null, spec: null });
       scrollToTop()
     }, 100);
@@ -303,7 +307,14 @@ export default withRouter(function ProfessionalCourses({
       [key]: value,
     };
     const { id } = value;
+    const checkFounded = mergedData.spec?.id===id||mergedData.general?.id===id
+    if(checkFounded){
+      swal("عفواً", 'تم اضافة الكورس بالفعل', "error", {
+        button: "متابعة",
+      });
+    }else{
     checkAlreadyJoined(id, () => setMeregedData({ ...mergedData, ...data }));
+    }
   };
 
   const delayedAction = (onTimeout = () => {}) => {
@@ -327,9 +338,35 @@ export default withRouter(function ProfessionalCourses({
     handleShowThirdCard();
     if (noSelectedCourses || showThirdCard) return;
     generalAlert();
-    specAlert();
   }, [mergedData.general, mergedData.spec]);
 
+  useEffect(()=>{
+    if(mergedData.spec){
+      (async()=>{
+        try {
+          const { data } = await Axios.get(getHavePackage, {
+            headers: getAuthHeader(),
+            params: {
+              CourseId: mergedData?.spec?.id,
+            },
+          });
+          if(data?.data?.length){
+            // data?.data?.map(item=>console.log({active:item?.active}))
+            const findItem =data.data.findIndex(dataHere=>dataHere?.active===true)
+            if(findItem!==-1){
+              setShowBouquetsDescription(true)
+              specAlert()
+            }else{
+              setShowBouquetsDescription(false)
+            }
+          }
+        } catch (error) {
+          console.log({error});
+        }
+      })()
+    }
+  },[mergedData.spec])
+  
   const onGeneralCourseSelect = (course = null) => {
     setSelectedGeneralCourse(course);
   };
@@ -344,6 +381,7 @@ export default withRouter(function ProfessionalCourses({
   }, [categoryData]);
 
   const hasPackageCase = async (ids = [], pkg, onEnd) => {
+    setLoadingSubScribtion(prevState=>!prevState);
     const pkgID = pkg.id;
     const token = getToken();
     const body = {
@@ -380,6 +418,7 @@ export default withRouter(function ProfessionalCourses({
   };
 
   const hasNoPackageCaseSingleReq = (id) => {
+    setLoadingSubScribtion(prevState=>!prevState);
     const body = {
       courseId: id,
     };
@@ -545,9 +584,12 @@ export default withRouter(function ProfessionalCourses({
           categoryData={categoryData}
           refreshShow={refreshShow}
           onSubscribe={handleSubscribtion}
+          showDescription={showBouquetsDescription}
+          LoadingSubScribtion={loadingSubScribtion}
         />
       )}
       <KnowMore trainer={trainer.info} />
     </div>
   );
 });
+

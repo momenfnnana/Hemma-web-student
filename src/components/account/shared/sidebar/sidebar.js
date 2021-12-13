@@ -45,12 +45,6 @@ const sideBarItems = [
     to: (id)=>`/course/content/${id}/askQuestions/list`
 
   },
-  {
-    title: "تقييمات الدورة",
-    icon : askMentor,
-    to: (id)=>`/course/content/${id}/evaluations`
-
-  },
 ];
 
 export const SideBarItem = ({title = "لا يوجد عنوان",icon,link="/",id , to = ()=>{},history}) => (
@@ -137,6 +131,13 @@ export class SidebarComponent extends Component {
               <SideBarItems id={this.props.id} history={this.props.history} />
             </ul>
           </div>
+        </div>
+        <div 
+          className='rate-course-btn d-flex justify-content-center align-items-center my-4' 
+          onClick={()=>
+            this.props.history.push(`/course/content/${this.props.id}/evaluations`)
+        }>
+          <h4 className="rate-course-btn-text">قيم الدورة</h4>
         </div>
       </React.Fragment>
     );

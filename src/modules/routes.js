@@ -36,6 +36,7 @@ import {
   QuickQuestions,
   Categories,
   FAQ,
+  Search,
   Healthy,
   BankAccounts,
   ExamResult,
@@ -177,6 +178,7 @@ function loadingProgressbar() {
       path.startsWith("/initiative-exam")||
       path.startsWith("/billing")||
       path.startsWith("/certificate")||
+      path.startsWith("/search")||
       path.startsWith("/home/hemma-succes")
       
     ) {
@@ -369,6 +371,7 @@ class MainRouterComponent extends Component {
               />
               <Route path="/banks" component={BankAccounts} />
               <Route path="/faq" component={FAQ} />
+              <Route path="/search/:slug" component={Search} />
               <Route path="/transactions/:id" component={Transaction} />
               <Route path="/not-found" component={NotFound} />
 

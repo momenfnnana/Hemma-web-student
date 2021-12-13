@@ -1,31 +1,43 @@
+.rate-title {
+  font-size: 30px;
+  color: #4b3a85;
+}
+
 .header-container {
   background-color: #a8ebef;
   border-radius: 20px;
   border-color: transparent !important;
-  height: 70px;
   & .title-container {
     border-color: #a0e1e5 !important;
     height: 70px;
     & .header-title {
+      font-size: 25px;
       font-weight: bold;
       color: #707070;
     }
   }
 }
+.loader-container {
+  height: 300px;
+}
 
 .table-container {
   border-radius: 20px;
   background-color: transparent;
-  & .table-line-title {
-    font-weight: bold;
-  }
   border-color: #a8ebef !important;
+  & .table-line-title {
+    color: #4b3a85;
+    font-weight: bold;
+    font-size: 20px;
+  }
   & .table-title-container {
     border-color: #a0e1e5 !important;
     & .rate-item {
       height: 60px;
+      overflow: auto;
       font-weight: bold;
       color: #707070;
+      font-size: 16px;
     }
   }
   & .checked {
@@ -36,8 +48,28 @@
     height: 60px;
     font-size: 24px;
   }
-
-  & .star-icon {
-    height: 70px;
+}
+@media only screen and (max-width: 600px) {
+  .header-container {
+    border-radius: 10px;
+    & .title-container {
+      & .header-title {
+        font-size: 18px;
+      }
+    }
+  }
+  .table-container {
+    border-radius: 15px;
+    & .star-size {
+      height: 60px;
+      font-size: 16px;
+    }
+  }
+  & .table-title-container {
+    border-color: #a0e1e5 !important;
+    & .rate-item {
+      font-size: 12px !important;
+      font-weight: bolder !important;
+    }
   }
 }
