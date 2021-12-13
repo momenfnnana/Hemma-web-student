@@ -341,7 +341,7 @@ warningAlert(msg){
 
 async onClick(Category){
   try {
-    const { slug : categSlug } = Category;
+    const { id : categSlug } = Category;
 
     const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
     
@@ -403,7 +403,7 @@ async onClick(Category){
 
                    <div
                     to={{
-                      pathname: `categories/details/${child.slug}`,
+                      pathname: `categories/details/${child.id}`,
                       state: {
                         catId: cat.id
                       }
