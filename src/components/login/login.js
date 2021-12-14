@@ -22,6 +22,7 @@ import "./index.scss"
 
 const validate = values => {
   const errors = {};
+  const validateFistNumber=Number(values?.phone?.phoneNumber[0])===0;
   if (
     !values.phone ||
     !values.phone.phoneNumber ||
@@ -30,8 +31,8 @@ const validate = values => {
     errors.phone = "يجب تعبئة هذه الخانة";
   } else if (!/^[0-9]*$/.test(values.phone.phoneNumber)) {
     errors.phone = "هذه الخانة يجب أن تحتوي على أرقام فقط";
-  } else if (!/^0\d{9}$/.test(values.phone.phoneNumber)  && values.phone.countryCode !="eg") {
-    errors.phone = "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
+  } else if (!validateFistNumber  && values.phone.countryCode !="eg") {
+    errors.phone = "رقم الهاتف يجب ان يبدأ بصفر";
   } 
  else if (!/^0\d{10}$/.test(values.phone.phoneNumber) && values.phone.countryCode =="eg") {
   errors.phone = "رقم الهاتف يجب أن يحتوي 11 ارقام وان يبدأ بصفر";

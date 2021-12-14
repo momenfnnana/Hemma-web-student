@@ -343,7 +343,7 @@ warningAlert(msg){
 
 async onClick(Category){
   try {
-    const { slug : categSlug } = Category;
+    const { id : categSlug } = Category;
 
     const {navigationType,courses}  = await this.validateHasSubCategories(categSlug)
     
@@ -405,7 +405,7 @@ async onClick(Category){
 
                    <div
                     to={{
-                      pathname: `categories/details/${child.slug}`,
+                      pathname: `categories/details/${child.id}`,
                       state: {
                         catId: cat.id
                       }
@@ -688,7 +688,7 @@ renderSucces()
         {!this.state.isNationalDay && <div className='banner banner-program'>
            <div className="container program-container py-4 ">
              <div>
-               <p className='d-flex justify-contet-center align-items-center'>عزيزي المشترك في حال واجهتك مشكلة في انشاء الحساب الرجاء التواصل على <a href='https://hemma.sa/?support'>الدعم الفني</a> او على<div className='rounded-circle btn-success mx-2 p-2 cursor-poiner' onClick={()=>window.open('http://wa.me/966539412412','_blank')}><FaWhatsapp size={40} /></div></p>
+               <p className='d-flex justify-contet-center align-items-center'>عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء التواصل على<span className="mx-1 font-weight-bold text-primary cursor-pointer" onClick={()=>window.Intercom("show")}> الدعم الفني </span> او على<div className='rounded-circle btn-success mx-2 p-2 cursor-poiner' onClick={()=>window.open('http://wa.me/966539412412','_blank')}><FaWhatsapp size={40} /></div></p>
                {/* <h2>  برنامج
                         <span className='program-name'> معلم كفؤ </span>             الإثرائي والمجاني
                </h2>

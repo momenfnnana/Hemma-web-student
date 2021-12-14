@@ -1,0 +1,36 @@
+.popup-container {
+  & .popup-hint-title {
+    color: #4b3a85;
+    text-align: right;
+  }
+  & .popup-email-lable {
+    text-align: right;
+    width: 80%;
+    color: #4b3a85;
+  }
+  & .filed-width {
+    & .email-lable {
+      text-align: right;
+    }
+    & .email-input {
+      text-align: right;
+    }
+    & .error-email {
+      color: red;
+      font-size: 12px;
+    }
+    & .save-btn {
+      background-color: #addfe6;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      & .loader {
+        height: 30px;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
