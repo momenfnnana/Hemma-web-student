@@ -37,7 +37,7 @@ import { ClassicSchedule } from "./schedule/schedule-classic";
 import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
 import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
-import Evaluation from "../../evaluation";
+import {Evaluation} from "../../evaluation";
 const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
