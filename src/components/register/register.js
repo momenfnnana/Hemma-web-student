@@ -159,15 +159,13 @@ clearPendingActions(){
         if (!this.props.phoneNumberConfirmed) {
           this.props
             .sendToken()
-            .then(() => {
-              this.handlePendingActions(()=>{
-                this.props.history.push("/home");
-                window.location.reload()
-              })
+            .then((res) => {
+              this.props.history.push("/verify");
             })
             .catch((error) => {
               this.handlePendingActions(()=>{
-                this.props.history.push("/");
+                this.props.history.push("/home");
+                window.location.reload()
               })
             });
         } else {
