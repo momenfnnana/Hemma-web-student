@@ -47,6 +47,7 @@ import {
   TrainingResult,
   TrainingExamDetails,
   PrivacyPolicy,
+  NewPrivacyPolicy,
   ExamDetails,
   StartTrainingExam,
   Preparing,
@@ -179,7 +180,8 @@ function loadingProgressbar() {
       path.startsWith("/billing")||
       path.startsWith("/certificate")||
       path.startsWith("/search")||
-      path.startsWith("/home/hemma-succes")
+      path.startsWith("/home/hemma-succes")||
+      path.startsWith("/hemma-new-polices")
       
     ) {
       img = "pages-bg.png";
@@ -237,6 +239,7 @@ class MainRouterComponent extends Component {
               <Route path="/home/hemma-succes" exact component={HemmaSuccessDetails} />
               <Route path="/home" component={Home} />
               <Route path="/privacypolicy" component={PrivacyPolicy} />
+              <Route path="/hemma-new-polices" component={NewPrivacyPolicy} />
               <Route path="/market" component={LandingPage} />
               <Route path="/campaign-marketing" component={CampaignMarketing} />
 
