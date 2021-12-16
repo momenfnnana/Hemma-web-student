@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import {Modal, ModalHeader, ModalBody, ModalFooter, Label} from "reactstrap";
 import axios from "axios";
-import {apiBaseUrl} from "../../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import {withRouter} from "react-router-dom";
 import swal from "sweetalert";
+import {apiBaseUrl} from "../../../../api/helpers";
 
 class AddQuestion extends Component {
 	constructor(props) {
@@ -18,6 +20,7 @@ class AddQuestion extends Component {
 			disable:true,
 			question:null,
 			submitLoading: false,
+			loadingUpload: false,
 			// type:"Text",
 			// content:null
 		};
@@ -78,12 +81,14 @@ class AddQuestion extends Component {
 		let data = new FormData();
 		
 		data.append("file", event.target.files[0]);
+		this.setState({loadingUpload:true})
 		axios
 		.post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
 			headers
 		})
 		.then(response => {
 			this.setState({file: response.data.data.url, questionType: "Image"});
+			this.setState({loadingUpload:false})
 			// if (this.state.file) {
 			// 	const courseId = this.props.match.params.id;
 			// 	const sectionId = this.state.sectionId;
@@ -111,6 +116,9 @@ class AddQuestion extends Component {
 			// })
 			// .catch(error => {
 			// 	console.log(error);
+			}).catch(error=>{
+				this.setState({loadingUpload:false})
+				console.log({error});
 			});
 	};
 	handleSubmit = event => {
@@ -225,6 +233,14 @@ class AddQuestion extends Component {
 										/>
 									</label>
 								</div>
+								{
+									this.state.loadingUpload&&<div
+									className="silver-bg w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+									style={{ minHeight: 100 }}
+								  >
+									<Loader type="ball-spin-fade-loader" className="dark-loader" />
+								  </div>
+								}
 								{
 											this.state.file&&
 											endFile==='mp4'?
