@@ -156,7 +156,7 @@ class VerificationComponent extends Component {
               </h6>
             </div>
 
-            <form className="centered">
+            <form className="centered w-100">
               <div className="mb-3 text-center">
                 <Field
                   name="token"
