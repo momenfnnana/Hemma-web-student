@@ -182,7 +182,18 @@ const designType=this.props.designType
                           subscription={subscription}
                           courseId={courseId}
                         />
-                        {ratingStatus === "Skipped" && !designType && (
+                        {/* {ratingStatus === "Skipped" && !designType && (
+                          <button
+                            className="btn light-btn w-100 mb-3"
+                            onClick={() =>{
+                              this.props.history.push(`/course/content/${courseId}/evaluations`)
+                              // this.setState({ forceOpenRatingModal: true })
+                            }}
+                          >
+                            قيّم الدورة
+                          </button>
+                        )} */}
+                        {!designType && (
                           <button
                             className="btn light-btn w-100 mb-3"
                             onClick={() =>{
