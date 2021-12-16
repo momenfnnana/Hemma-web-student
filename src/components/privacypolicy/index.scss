@@ -1,0 +1,9 @@
+.page-container {
+  & .table {
+    width: 100%;
+    & .table-header {
+    }
+    & .table-body {
+    }
+  }
+}
