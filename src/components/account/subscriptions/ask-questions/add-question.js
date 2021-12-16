@@ -158,6 +158,9 @@ class AddQuestion extends Component {
 	}
 
 	render() {
+		const file= this.state.file;
+		const endFile = file.slice(file.lastIndexOf('.') + 1);
+		const isImage =endFile==='png'||endFile==='jpeg' || endFile==='svg'||endFile==='jpg';
 		return (
 			<React.Fragment>
 				<Modal
@@ -200,7 +203,7 @@ class AddQuestion extends Component {
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={this.state.sectionId==''|| this.state.file}
+	                disabled={this.state.sectionId==''}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
@@ -222,6 +225,22 @@ class AddQuestion extends Component {
 										/>
 									</label>
 								</div>
+								{
+											this.state.file&&
+											endFile==='mp4'?
+											<video src={this.state.file} controls className="w-100" height='130' />:
+											endFile==='pdf'?
+											<embed src={this.state.file} type="application/pdf" height="130px" className="w-100"></embed>:
+											isImage&&
+											<img
+													src={
+														this.state.file
+													}
+													className="contain-img clickable w-100"
+													height="130px"
+													alt="comment"
+												/>
+										}
 							</div>
 						</ModalBody>
 						<ModalFooter>
