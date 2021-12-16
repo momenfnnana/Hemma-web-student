@@ -125,6 +125,7 @@ class FooterComponent extends Component {
                   <li><NavLink to="/faq" className="cursor-pointer links-hover mb-1">الاسئلة المتكررة</NavLink></li>
                   {/* <li><a className="cursor-pointer links-hover mb-1">متجر همة للكتب</a></li> */}
                   <li><NavLink to="/banks" className="cursor-pointer links-hover mb-1">الحسابات البنكية</NavLink></li>
+                  <li><NavLink to="/hemma-new-polices" className="cursor-pointer links-hover mb-1">سياسات منصة همة للتدريب - التعليم الالكتروني</NavLink></li>
                </ul>
             </div>
             <div className="col-lg-5">
