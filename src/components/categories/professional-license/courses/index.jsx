@@ -6,12 +6,14 @@ import { useState } from "react";
 import swal from "@sweetalert/with-react";
 import { useHistory, withRouter } from "react-router-dom";
 import KnowMore from "./course/video-content";
+import { IoMdClose } from "react-icons/io";
 import { hasLogin, useFetch } from "../../../../hooks/useFetch";
 import { useLoaded } from "../../../../hooks/useLoaded";
 import { getErrorMsg } from "../../../../utils/error-handling";
 import { getAuthHeader, getToken } from "../../../../utils/auth";
 import { checkCoursesUrl } from "../../../../urls/professional-license";
 import errors from '../../../../../src/errors.json'
+import "./index.scss";
 
 const specUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/SpecialCourse`;
 const generalUrl = `${process.env.REACT_APP_API_ENDPOINT}/Packages/GeneralCourse`;
@@ -54,7 +56,8 @@ export default withRouter(function ProfessionalCourses({
     error: "",
   });
   const [showBouquetsDescription,setShowBouquetsDescription]=useState(false);
-
+  const [enableTopScroll,setEnableTopScroll]=useState(true);
+  const [toggleScroll,setToggleScroll]=useState(true);
   const redirectToLogin = () => {
     const loginPath = `/auth/login`;
     window.location = loginPath;
@@ -179,11 +182,37 @@ export default withRouter(function ProfessionalCourses({
     const config = getBtnsConfig(ref)
     const nameAr = mergedData?.spec?.nameAr
     if (!mergedData?.general)
-      sweetAlert(
-        ` اختيار دورة تخصص ${nameAr} يمكنك اختيار دورة عام للحصول علي خصم مميز`,config
-      ).then((navType) => {
-        handleModalNav(navType,[config?.nextButton,config?.prevButton])
-      });
+    swal(
+      <div>
+        <h4 className='text-confirm-alert'>{` اختيار دورة تخصص ${nameAr} يمكنك اختيار دورة عام للحصول علي خصم مميز`}</h4>
+        <IoMdClose 
+          className='close-confirm-alert' 
+          size={30} 
+          onClick={()=>{
+              setEnableTopScroll(false,()=>console.log('accessed here'));
+              swal.close()
+          }} 
+        />
+      </div>,  {
+        buttons: {
+          cancel: {
+            text: "Cancel",
+            value: null,
+            visible: false,
+            className: "",
+            closeModal: true,
+          },
+          confirm: {
+            text: "متابعة",
+            value: true,
+            visible: true,
+            className: "confirm-button",
+            closeModal: true
+          }
+        }}
+    )
+    .then(res=>setToggleScroll(prevState=>!prevState))
+    .catch(error=>console.log({error}))
   };
 
   const generalAlert = () => {
@@ -191,11 +220,37 @@ export default withRouter(function ProfessionalCourses({
     const config = getBtnsConfig(ref)
     const nameAr = mergedData?.general?.nameAr
     if (!mergedData?.spec)
-      sweetAlert(
-        `تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`,{...config,ok : undefined}
-      ).then((navType) => {
-        handleModalNav(navType,[config?.nextButton,config?.prevButton])
-      });
+    swal(
+      <div>
+        <h4 className='text-confirm-alert'>{`تم اختيار دورة عام ${nameAr} يمكنك اختيار دورة تخصص للحصول علي خصم مميز`}</h4>
+        <IoMdClose 
+          className='close-confirm-alert' 
+          size={30} 
+          onClick={()=>{
+              setEnableTopScroll(false,()=>console.log('accessed here'));
+              swal.close()
+          }} 
+        />
+      </div>,  {
+        buttons: {
+          cancel: {
+            text: "Cancel",
+            value: null,
+            visible: false,
+            className: "",
+            closeModal: true,
+          },
+          confirm: {
+            text: "متابعة",
+            value: true,
+            visible: true,
+            className: "confirm-button",
+            closeModal: true
+          }
+        }}
+    )
+    .then(res=>setToggleScroll(prevState=>!prevState))
+    .catch(error=>console.log({error}))
   };
 
   useEffect(() => {
@@ -214,6 +269,13 @@ export default withRouter(function ProfessionalCourses({
     setSelectedSpecCourse(null);
   }, [resetTrigger]);
 
+  useEffect(()=>{
+    if(enableTopScroll){
+      scrollToTop()
+    }
+    setEnableTopScroll(true);
+  },[toggleScroll])
+  
   const toggleShow = (key) => {
     setShow({
       ...show,
