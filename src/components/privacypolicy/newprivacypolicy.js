@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { dummyData } from "./data";
 
 import "./index.scss";
+const widthTableValue = { width: window.screen.width * 0.3 };
 
 const PrivacyPolicyComponent = () => {
   const [selectedSection, setSelectedSection] = useState({});
-  console.log({ selectedSection });
   return (
     <div className="page-container container-fluid my-5">
       {/* start table */}
@@ -44,7 +44,7 @@ const PrivacyPolicyComponent = () => {
               key={index}
               className="text-right section-title w-75 mx-auto cursor-pointer sections-title my-3"
             >
-              {item?.title}
+              {item?.title}.
             </li>
           ))}
         </ul>
@@ -65,7 +65,7 @@ const PrivacyPolicyComponent = () => {
                       className="w-75 my-2 text-right mx-auto section-descriptions"
                       key={index}
                     >
-                      {item}
+                      {item}.
                     </div>
                   ))
                 : selectedSection?.descriptions?.map((item, index) => (
@@ -81,7 +81,7 @@ const PrivacyPolicyComponent = () => {
                           : index === 2 && "ثالثاَ"}{" "}
                         -
                       </div>
-                      <div>{item}</div>
+                      <div>{item}.</div>
                     </div>
                   ))}
             </div>
@@ -90,16 +90,16 @@ const PrivacyPolicyComponent = () => {
                 ? selectedSection?.numricList?.map((item) => (
                     <div className="mb-5">
                       <h4 className="text-right section-title w-75 mx-auto">
-                        {item?.title}
+                        {item?.title}:
                       </h4>
                       <div className="w-75 my-3 text-right mx-auto section-descriptions">
-                        {item?.subTitle}
+                        {item?.subTitle}:
                       </div>
                       <ol>
                         {item?.list?.length &&
                           item?.list?.map((itemList) => (
                             <li className="w-75 my-2 text-right mx-auto">
-                              {itemList}
+                              {itemList}.
                             </li>
                           ))}
                       </ol>
@@ -117,7 +117,7 @@ const PrivacyPolicyComponent = () => {
                       key={index}
                       className="text-right section-title w-75 mx-auto"
                     >
-                      {item?.title}
+                      {item?.title}:
                     </h4>
                     {item?.descriptions?.length
                       ? item?.descriptions?.map(
@@ -126,7 +126,7 @@ const PrivacyPolicyComponent = () => {
                               key={descriptionIndex}
                               className="w-75 text-right mx-auto section-descriptions"
                             >
-                              {descriptionItem}
+                              {descriptionItem}.
                             </div>
                           )
                         )
@@ -145,7 +145,7 @@ const PrivacyPolicyComponent = () => {
                                   .
                                 </h5>
                                 <h5 className="text-right section-title mt-5">
-                                  {subSectionItem?.title}
+                                  {subSectionItem?.title}:
                                 </h5>
                               </div>
                               {subSectionItem?.descriptions?.length &&
@@ -158,7 +158,7 @@ const PrivacyPolicyComponent = () => {
                                       key={subSectionItemDescriptionIndex}
                                       className="w-75 text-right mx-auto section-descriptions"
                                     >
-                                      {subSectionItemDescription}
+                                      {subSectionItemDescription}.
                                     </div>
                                   )
                                 )}
@@ -172,10 +172,10 @@ const PrivacyPolicyComponent = () => {
             {Object.keys(selectedSection?.hint)?.length ? (
               <>
                 <h4 className="text-right section-title w-75 mx-auto font-weight-bold">
-                  {selectedSection?.hint?.title}
+                  {selectedSection?.hint?.title}:
                 </h4>
                 <div className="w-75 text-right mx-auto section-descriptions">
-                  {selectedSection?.hint?.description}
+                  {selectedSection?.hint?.description}.
                 </div>
               </>
             ) : null}
@@ -198,7 +198,7 @@ const PrivacyPolicyComponent = () => {
                               {tableItem?.key}
                             </div>
                             <div className="w-75 border-left px-3 text-right mx-auto section-descriptions">
-                              {tableItem?.value}
+                              {tableItem?.value}.
                             </div>
                           </div>
                         ))
@@ -212,13 +212,22 @@ const PrivacyPolicyComponent = () => {
                 <div className="container">
                   <div className="row">
                     <div className="border col-12 mx-auto d-flex px-0">
-                      <div className="w-75 text-right mx-auto section-descriptions table-title px-3">
+                      <div
+                        className="text-right mx-auto section-descriptions table-title px-1 px-lg-3"
+                        style={widthTableValue}
+                      >
                         وصف الإجراء
                       </div>
-                      <div className="w-75 border-left text-right mx-auto section-descriptions table-title px-3">
+                      <div
+                        className="border-left text-right mx-auto section-descriptions table-title px-1 px-lg-3"
+                        style={widthTableValue}
+                      >
                         المسؤول عن الإجراء
                       </div>
-                      <div className="w-75 border-left text-right mx-auto section-descriptions table-title px-3">
+                      <div
+                        className="border-left text-right mx-auto section-descriptions table-title px-1 px-lg-3"
+                        style={widthTableValue}
+                      >
                         قنوات الاتصال
                       </div>
                     </div>
@@ -226,20 +235,32 @@ const PrivacyPolicyComponent = () => {
                       ? selectedSection?.table2?.map(
                           (tableItem, tableIndex) => (
                             <div className="border col-12 mx-auto d-flex px-0">
-                              <div className="w-75 px-3 text-right mx-auto section-descriptions">
+                              <div
+                                className="px-1 px-lg-3 text-right mx-auto section-descriptions"
+                                style={widthTableValue}
+                              >
                                 {tableItem?.key}
                               </div>
-                              <div className="w-75 border-left px-3 text-right mx-auto section-descriptions">
-                                {tableItem?.Administrator}
+                              <div
+                                className="border-left px-1 px-lg-3 text-right mx-auto section-descriptions"
+                                style={widthTableValue}
+                              >
+                                {tableItem?.Administrator}.
                               </div>
-                              <div className="w-75 border-left px-3 text-right mx-auto section-descriptions">
+                              <div
+                                className="border-left px-1 px-lg-3 text-right mx-auto section-descriptions"
+                                style={widthTableValue}
+                              >
                                 {tableItem?.values?.map(
                                   (
                                     tableItemDescription,
                                     tableItemDescriptionIndex
                                   ) => (
-                                    <div key={tableItemDescriptionIndex}>
-                                      {tableItemDescription}
+                                    <div
+                                      className="section-descriptions"
+                                      key={tableItemDescriptionIndex}
+                                    >
+                                      {tableItemDescription}.
                                     </div>
                                   )
                                 )}
@@ -272,7 +293,7 @@ const PrivacyPolicyComponent = () => {
                                 {tableItem?.key}
                               </div>
                               <div className="w-75 border-left px-3 text-right mx-auto section-descriptions">
-                                {tableItem?.value}
+                                {tableItem?.value}.
                               </div>{" "}
                             </div>
                           )
@@ -305,10 +326,10 @@ const PrivacyPolicyComponent = () => {
                                 {tableItem?.key}
                               </div>
                               <div className="w-75 border-left px-3 text-right mx-auto section-descriptions">
-                                {tableItem?.explain}
+                                {tableItem?.explain}.
                               </div>
                               <div className="w-75 border-left px-3 text-right mx-auto section-descriptions">
-                                {tableItem?.notes}
+                                {tableItem?.notes}.
                               </div>
                             </div>
                           )
@@ -326,7 +347,7 @@ const PrivacyPolicyComponent = () => {
                       key={unNumricListIndex}
                       className="text-right section-title w-75 mx-auto"
                     >
-                      {unNumricListItem?.title}
+                      {unNumricListItem?.title}:
                     </h4>
                     <ul>
                       {unNumricListItem?.list?.length
@@ -335,7 +356,7 @@ const PrivacyPolicyComponent = () => {
                               key={listIndex}
                               className="w-75 px-3 text-right mx-auto section-descriptions"
                             >
-                              {listItem}
+                              {listItem}.
                             </li>
                           ))
                         : null}
@@ -351,7 +372,7 @@ const PrivacyPolicyComponent = () => {
                     key={UnOrderedListIndex}
                     className="text-right section-title w-75 mx-auto"
                   >
-                    {UnOrderedListItem?.title}
+                    {UnOrderedListItem?.title}:
                   </h4>
                   <ul>
                     {UnOrderedListItem?.list?.map((itemList, itemIndex) => (
@@ -359,7 +380,7 @@ const PrivacyPolicyComponent = () => {
                         key={itemIndex}
                         className="w-75 px-3 text-right mx-auto section-descriptions"
                       >
-                        {itemList}
+                        {itemList}.
                       </li>
                     ))}
                   </ul>
@@ -374,7 +395,7 @@ const PrivacyPolicyComponent = () => {
                         key={sections2Index}
                         className="text-right section-title w-75 mx-auto"
                       >
-                        {sections2Item?.title}
+                        {sections2Item?.title}:
                       </h4>
                       {sections2Item?.descriptions?.length
                         ? sections2Item?.descriptions?.map(
@@ -383,7 +404,7 @@ const PrivacyPolicyComponent = () => {
                                 className="w-75 px-3 text-right mx-auto section-descriptions"
                                 key={description1Index}
                               >
-                                {description1Item}
+                                {description1Item}.
                               </div>
                             )
                           )
@@ -397,7 +418,7 @@ const PrivacyPolicyComponent = () => {
                                     key={UnOrderedListIndex}
                                     className="text-right section-title w-75 mx-auto"
                                   >
-                                    {UnOrderedListItem?.title}
+                                    {UnOrderedListItem?.title}:
                                   </h5>
                                   {UnOrderedListItem?.descriptions?.length
                                     ? UnOrderedListItem?.descriptions?.map(
@@ -409,7 +430,7 @@ const PrivacyPolicyComponent = () => {
                                             className="w-75 px-3 text-right mx-auto section-descriptions"
                                             key={descriptionsIndex}
                                           >
-                                            {descriptionsItem}
+                                            {descriptionsItem}.
                                           </div>
                                         )
                                       )
@@ -422,7 +443,7 @@ const PrivacyPolicyComponent = () => {
                                               className="w-75 px-3 text-right mx-auto section-descriptions"
                                               key={ListsIndex}
                                             >
-                                              {ListsItem}
+                                              {ListsItem}.
                                             </li>
                                           )
                                         )
@@ -438,7 +459,7 @@ const PrivacyPolicyComponent = () => {
                                             className="w-75 px-3 text-right mx-auto section-descriptions"
                                             key={descriptionsIndex2}
                                           >
-                                            {descriptionsItem2}
+                                            {descriptionsItem2}.
                                           </div>
                                         )
                                       )
@@ -451,7 +472,7 @@ const PrivacyPolicyComponent = () => {
                                               className="w-75 px-3 text-right mx-auto section-descriptions"
                                               key={ListsIndex2}
                                             >
-                                              {ListsItem2}
+                                              {ListsItem2}.
                                             </li>
                                           )
                                         )
@@ -467,24 +488,47 @@ const PrivacyPolicyComponent = () => {
                           ? sections2Item?.subSections1?.map(
                               (subSection1Item, subSection1Index) => (
                                 <div className="my-3">
-                                  <h5
-                                    className="text-right section-title w-75 mx-auto"
-                                    key={subSection1Index}
-                                  >
-                                    {subSection1Item?.title}
-                                  </h5>
+                                  {subSection1Item?.title ===
+                                  "سياسة استرجاع المال" ? (
+                                    <h4
+                                      className="text-right section-title w-75 mx-auto"
+                                      key={subSection1Index}
+                                    >
+                                      {subSection1Item?.title}:
+                                    </h4>
+                                  ) : (
+                                    <h5 className="text-right section-title w-75 mx-auto px-5">
+                                      {subSection1Item?.title}:
+                                    </h5>
+                                  )}
                                   {subSection1Item?.descriptions?.length
                                     ? subSection1Item?.descriptions?.map(
                                         (
                                           subSection1DescriptionItem,
                                           subSection1DescriptionIndex
                                         ) => (
-                                          <div
-                                            key={subSection1DescriptionIndex}
-                                            className="w-75 px-3 text-right mx-auto section-descriptions"
-                                          >
-                                            {subSection1DescriptionItem}
-                                          </div>
+                                          <>
+                                            {subSection1Item?.title ===
+                                            "سياسة استرجاع المال" ? (
+                                              <div
+                                                key={
+                                                  subSection1DescriptionIndex
+                                                }
+                                                className="w-75 px-3 text-right mx-auto section-descriptions"
+                                              >
+                                                {subSection1DescriptionItem}.
+                                              </div>
+                                            ) : (
+                                              <div
+                                                key={
+                                                  subSection1DescriptionIndex
+                                                }
+                                                className="w-75 px-3 text-right mx-auto section-descriptions px-5"
+                                              >
+                                                {subSection1DescriptionItem}.
+                                              </div>
+                                            )}
+                                          </>
                                         )
                                       )
                                     : null}
@@ -499,7 +543,7 @@ const PrivacyPolicyComponent = () => {
                                               key={subSection2Index}
                                               className="w-75 px-3 text-right mx-auto section-descriptions"
                                             >
-                                              {subSection2Item}
+                                              {subSection2Item}.
                                             </li>
                                           )
                                         )
@@ -515,7 +559,7 @@ const PrivacyPolicyComponent = () => {
                                             key={subSection2DescriptionIndex}
                                             className="w-75 px-3 text-right mx-auto section-descriptions"
                                           >
-                                            {subSection2Description}
+                                            {subSection2Description}.
                                           </div>
                                         )
                                       )
@@ -525,10 +569,12 @@ const PrivacyPolicyComponent = () => {
                                         (subSection2Item, subSection1Index) => (
                                           <div className="my-3">
                                             <h5
-                                              className="text-right w-75 mx-auto border-bottom"
+                                              className="text-right w-75 mx-auto px-2 px-lg-5"
                                               key={subSection1Index}
                                             >
-                                              {subSection2Item?.title}
+                                              <span className="border-bottom mx-0 mx-lg-5">
+                                                {subSection2Item?.title}:
+                                              </span>
                                             </h5>
                                             {subSection2Item?.descriptions
                                               ?.length
@@ -541,11 +587,14 @@ const PrivacyPolicyComponent = () => {
                                                       key={
                                                         subSection2DescriptionsIndex
                                                       }
-                                                      className="w-75 px-3 text-right mx-auto section-descriptions"
+                                                      className="w-75 text-right mx-auto section-descriptions px-2 px-lg-5"
                                                     >
-                                                      {
-                                                        subSection2DescriptionsItem
-                                                      }
+                                                      <div className="mx-0 mx-lg-5">
+                                                        {
+                                                          subSection2DescriptionsItem
+                                                        }
+                                                        .
+                                                      </div>
                                                     </div>
                                                   )
                                                 )
