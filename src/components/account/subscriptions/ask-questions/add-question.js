@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import {Modal, ModalHeader, ModalBody, ModalFooter, Label} from "reactstrap";
 import axios from "axios";
-import {apiBaseUrl} from "../../../../api/helpers";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import {withRouter} from "react-router-dom";
 import swal from "sweetalert";
+import {apiBaseUrl} from "../../../../api/helpers";
 
 class AddQuestion extends Component {
 	constructor(props) {
@@ -18,6 +20,7 @@ class AddQuestion extends Component {
 			disable:true,
 			question:null,
 			submitLoading: false,
+			loadingUpload: false,
 			// type:"Text",
 			// content:null
 		};
@@ -78,12 +81,14 @@ class AddQuestion extends Component {
 		let data = new FormData();
 		
 		data.append("file", event.target.files[0]);
+		this.setState({loadingUpload:true})
 		axios
 		.post(`${apiBaseUrl}/AskQuestions/Uploads`, data, {
 			headers
 		})
 		.then(response => {
 			this.setState({file: response.data.data.url, questionType: "Image"});
+			this.setState({loadingUpload:false})
 			// if (this.state.file) {
 			// 	const courseId = this.props.match.params.id;
 			// 	const sectionId = this.state.sectionId;
@@ -111,6 +116,9 @@ class AddQuestion extends Component {
 			// })
 			// .catch(error => {
 			// 	console.log(error);
+			}).catch(error=>{
+				this.setState({loadingUpload:false})
+				console.log({error});
 			});
 	};
 	handleSubmit = event => {
@@ -158,6 +166,9 @@ class AddQuestion extends Component {
 	}
 
 	render() {
+		const file= this.state.file;
+		const endFile = file.slice(file.lastIndexOf('.') + 1);
+		const isImage =endFile==='png'||endFile==='jpeg' || endFile==='svg'||endFile==='jpg';
 		return (
 			<React.Fragment>
 				<Modal
@@ -200,7 +211,7 @@ class AddQuestion extends Component {
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={this.state.sectionId==''|| this.state.file}
+	                disabled={this.state.sectionId==''}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
@@ -222,6 +233,30 @@ class AddQuestion extends Component {
 										/>
 									</label>
 								</div>
+								{
+									this.state.loadingUpload&&<div
+									className="silver-bg w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+									style={{ minHeight: 100 }}
+								  >
+									<Loader type="ball-spin-fade-loader" className="dark-loader" />
+								  </div>
+								}
+								{
+											this.state.file&&
+											endFile==='mp4'?
+											<video src={this.state.file} controls className="w-100" height='130' />:
+											endFile==='pdf'?
+											<embed src={this.state.file} type="application/pdf" height="130px" className="w-100"></embed>:
+											isImage&&
+											<img
+													src={
+														this.state.file
+													}
+													className="contain-img clickable w-100"
+													height="130px"
+													alt="comment"
+												/>
+										}
 							</div>
 						</ModalBody>
 						<ModalFooter>
