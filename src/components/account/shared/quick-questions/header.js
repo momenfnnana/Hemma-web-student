@@ -39,10 +39,10 @@ export class HeaderComponent extends Component {
         </div>
         <div className="row pl-4">
           <div className="col-md-12 ">
-            <p className="dark-text mt-2 w-40 small text-break">
+            {/* <p className="dark-text mt-2 w-40 small text-break">
               لا تفوت فرصة الاشتراك بأحدث دوراتنا التي تؤهلك لاجتياز امتحان
               القدرات والتحصيلي بأعلى العلامات!
-            </p>
+            </p> */}
           </div>
         </div>
       </React.Fragment>
