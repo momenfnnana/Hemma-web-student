@@ -623,9 +623,9 @@ export default class QuickQuestions extends Component {
             <div className="col-md-10">
               <div className="col-md-12">
                 <h5 className="dark-text mt-2">الأسئلة السريعة</h5>
-                <p className="dark-silver-text small text-break mb-2">
+                {/* <p className="dark-silver-text small text-break mb-2">
                   احصل على آخر إصداراتنا في القدرات والتحصيلي
-                </p>
+                </p> */}
               </div>
               <div className="col-md-12 d-flex align-items-center mb-4">
                 <h6 className="dark-text">
