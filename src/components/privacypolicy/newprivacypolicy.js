@@ -1,11 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 import { dummyData } from "./data";
 
 import "./index.scss";
+import { apiBaseUrl } from "../../api/helpers";
 const widthTableValue = { width: window.screen.width * 0.3 };
 
 const PrivacyPolicyComponent = () => {
   const [selectedSection, setSelectedSection] = useState({});
+  const [PoliciesList, setPoliciesList] = useState([]);
+  const [policyDetails, setPolicyDetails] = useState({});
+  const getAllPolicies = async () => {
+    await Axios({
+      method: "get",
+      url: `${apiBaseUrl}/PrivacyPolicySetting/GetAllPrivacyPolicy`,
+    })
+      .then((res) => setPoliciesList(res.data?.data))
+      .catch((error) => {
+        console.log({ error });
+        setPoliciesList([]);
+      });
+  };
+
+  const getPolicyDetails = async () => {
+    await Axios({
+      method: "get",
+      url: `${apiBaseUrl}/PrivacyPolicySetting/GetPrivacyPolicyDetails?id=${selectedSection?.id}`,
+    })
+      .then((res) => setPolicyDetails(res.data?.data))
+      .catch((error) => {
+        setPolicyDetails({});
+        console.log({ error });
+      });
+  };
+  useEffect(() => {
+    getAllPolicies();
+  }, []);
+
+  useEffect(() => {
+    if (selectedSection?.id) {
+      getPolicyDetails();
+    }
+  }, [selectedSection?.id]);
+  console.log({ policyDetails });
   return (
     <div className="page-container container-fluid my-5">
       {/* start table */}
@@ -38,17 +75,28 @@ const PrivacyPolicyComponent = () => {
       {/* page content */}
       <div>
         <ul className="my-5">
-          {dummyData?.map((item, index) => (
+          {PoliciesList?.map((item) => (
             <li
               onClick={() => setSelectedSection(item)}
-              key={index}
+              key={item?.id}
               className="text-right section-title w-75 mx-auto cursor-pointer sections-title my-3"
             >
-              {item?.title}.
+              {item?.policyTitle}.
             </li>
           ))}
         </ul>
-        {Object.keys(selectedSection).length ? (
+        <div className="section">
+          <h4 className="text-center section-title">
+            {policyDetails?.policyTitle}
+          </h4>
+          <div
+            className="w-75 my-2 text-right mx-auto section-descriptions"
+            dangerouslySetInnerHTML={{
+              __html: policyDetails?.policyContent,
+            }}
+          ></div>
+        </div>
+        {/* {Object.keys(selectedSection).length ? (
           <div className="section">
             <h4 className="text-center section-title">
               {selectedSection?.title}
@@ -613,7 +661,7 @@ const PrivacyPolicyComponent = () => {
                 )
               : null}
           </div>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );
