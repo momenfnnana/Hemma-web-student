@@ -26,12 +26,10 @@ class TrainingList extends Component {
         let url="";
         if(this.props.designType)
         {
-          console.log({designType:this.props.designType});
         url = new URL(`${apiBaseUrl}/Exams?courseId=${courseId}`);
         }
         else
         {
-          console.log({designType:this.props.designType});
           url = new URL(`${apiBaseUrl}/Exams/All?courseId=${courseId}`);
         }
         url.searchParams.append("type", "Training");
