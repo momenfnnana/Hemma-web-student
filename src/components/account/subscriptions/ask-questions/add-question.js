@@ -260,7 +260,7 @@ class AddQuestion extends Component {
 							</div>
 						</ModalBody>
 						<ModalFooter>
-							<button disabled={this.state.submitLoading} className="btn dark-outline-btn w-25" type="submit" onClick={this.onHide}>
+							<button disabled={this.state.submitLoading||this.state.loadingUpload} className="btn dark-outline-btn w-25" type="submit" onClick={this.onHide}>
 								{!this.state.submitLoading ? "اضافة" : "يتم الاضافة"}
 							</button>
 						</ModalFooter>
