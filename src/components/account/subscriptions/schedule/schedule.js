@@ -27,7 +27,6 @@ export class Schedule extends Component {
   }
 
   componentDidMount() {
-    debugger;
     this.setState({ isPageLoading: true });
     const courseId = this.props.match.params.id;
 

@@ -30,6 +30,7 @@ import { TrainingList } from "./training/training-list";
 import { TrainingResult } from "./training/training-result";
 import { StartTrainingExam } from "./training/start-training";
 import { TrainingExamDetails } from "./training/training-details";
+import Axios from "axios";
 
 import firebase from "../../../firebase";
 import ScheduleDetails from "./scheduleDetails/index";
@@ -38,6 +39,7 @@ import { ClassicSidebar } from "../shared/sidebar/sidebar-classic";
 import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
 import {Evaluation} from "../../evaluation";
+import { apiBaseUrl } from "../../../api/helpers";
 const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
@@ -48,6 +50,7 @@ class SubscriptionDetailsComponent extends Component {
       isInstallmentOpen: false,
       isRefundOpen: false,
       channelsRef: firebase.database().ref("channels"),
+      isPending:false
       // designType: Number.isInteger(+storedDesignType) ? +storedDesignType : 0,
     };
     this.toggleDesign = this.toggleDesign.bind(this);
@@ -71,6 +74,21 @@ class SubscriptionDetailsComponent extends Component {
     const courseId = this.props.match.params.id;
     this.props.getSubscription(courseId).then(() => {
       this.createChannel();
+    });
+    let token = localStorage.getItem("token");
+    let headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    Axios
+    .get(`${apiBaseUrl}/courses/${courseId}`, { headers })
+    .then((response) => {
+      if(response.data?.data?.paymentStatus==='Pending'){
+        this.setState({isPending:true})
+      }
+    })
+    .catch((error) => {
+      this.setState({ isPageLoading: false, isPending:false });
+      console.log(error);
     });
   }
 
@@ -112,9 +130,35 @@ class SubscriptionDetailsComponent extends Component {
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
 const designType=this.props.designType
+const isPending = this.state.isPending;
     return (
       <React.Fragment>
-        {remainingAmount > 0 ? (
+        {isPending?
+        <React.Fragment>
+        <div className="container mt-5 pb-5">
+          <div className="row">
+            <div className="col-12">
+              <div
+                className="white-bg box-layout w-100 pb-0 p-4 mt-4 d-flex flex-column align-items-center justify-content-center"
+                style={{ height: 350 }}
+              >
+                <img
+                  src={
+                    process.env.PUBLIC_URL + "/assets/images/warning.png"
+                  }
+                  className="mb-4"
+                  height="65"
+                  alt="warning"
+                />
+                <p className="dark-silver-text mb-0">
+                  المبلغ المدفوع قيد المراجعة
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+        :remainingAmount > 0 ? (
           <React.Fragment>
             <div className="container mt-5 pb-5">
               <div className="row">
