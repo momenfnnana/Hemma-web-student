@@ -29,7 +29,7 @@ export class TrainingList extends Component {
         }
         else
         {
-          url = new URL(`${apiBaseUrl}/Exams/All?courseId=${courseId}`);
+          url = new URL(`${apiBaseUrl}/Exams?courseId=${courseId}`);
         }
         url.searchParams.append("type", "Training");
         axios
