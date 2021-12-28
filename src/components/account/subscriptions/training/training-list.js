@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import { apiBaseUrl } from "../../../../api/helpers";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import { ToastDemo } from "../../../categories/quick-questions/toast-notification";
+import { connect } from "react-redux";
 
-export class TrainingList extends Component {
+class TrainingList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -151,3 +152,19 @@ export class TrainingList extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+  return {
+    subscription: state.subscription,
+    designType: state.user?.designType,
+    user: state.user,
+  };
+}
+const mapDispatchToProps = {};
+
+TrainingList = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TrainingList);
+
+export default withRouter(TrainingList);
