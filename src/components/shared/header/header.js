@@ -13,6 +13,8 @@ import {
   DropdownItem,
 } from "reactstrap";
 import axios from "axios";
+import * as $ from 'jquery';
+import 'bootstrap';
 import { apiBaseUrl } from "../../../api/helpers";
 import { connect } from "react-redux";
 import { signOutAction } from "../../../actions/login.actions";
@@ -50,7 +52,20 @@ class HeaderComponent extends Component {
     this.props.history.push("/home");
   };
   componentDidMount() {
-
+    var collapseBox = $( "#main-menu-mobile-navbar" );
+    var hamburgerClass = $( ".hamburger-classes" );
+    $(".login-btn").on( "click", function() {
+      collapseBox.collapse('hide')
+      hamburgerClass.removeClass('is-active')
+    });
+    $(".header-mobile-icon").on( "click", function() {
+      collapseBox.collapse('hide')
+      hamburgerClass.removeClass('is-active')
+    });
+    $(".collapse-close-btn").on( "click", function() {
+      collapseBox.collapse('hide')
+      hamburgerClass.removeClass('is-active')
+    });
     
 
     if (this.props.authenticated) {
@@ -400,7 +415,7 @@ return(
         {/* <!-- Start The Main Hemma Logo --> */}
      
         <Link to="/home" className="navbar-brand mr-0" >
-                <img className="logo-img"
+                <img className="logo-img header-mobile-icon"
                   src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
                   height="60"
                 />
@@ -410,7 +425,7 @@ return(
         {/* <!-- Start The Mobile Button In Small Screen --> */}
    
 
-        <button className="hamburger hamburger--spring navbar-toggler border p-2" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu-mobile-navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button className="hamburger hamburger--spring navbar-toggler border p-2 hamburger-classes" type="button" data-bs-toggle="collapse" data-bs-target="#main-menu-mobile-navbar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span className="d-flex align-items-center justify-content-center">
             <span className="hamburger-box">
               <span className="hamburger-inner"></span>
@@ -423,11 +438,11 @@ return(
         <div className="collapse navbar-collapse" id="main-menu-mobile-navbar">
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0 d-flex align-items-center">
             <li className="nav-item">
-              <NavLink to="/home" activeClassName="active"  className={"nav-link links-hover"}>الرئيسية</NavLink>
+              <NavLink to="/home" activeClassName="active"  className="nav-link links-hover collapse-close-btn">الرئيسية</NavLink>
             </li>
             <li className="category-dropdown-wrapper nav-item position-relative" data-hover="category-sub-list">
             <NavLink to="/categories" activeClassName="active" className={"nav-link links-hover d-flex align-items-center justify-content-between"}>
-                <span className="mr-1">منصات همة</span>
+                <span className="mr-1 header-mobile-icon">منصات همة</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </NavLink>
                <ul className="category-sub-list list-unstyled m-0">
@@ -444,7 +459,7 @@ return(
           
             <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
               <a className="nav-link links-hover d-flex align-items-center justify-content-between">
-                <span className="mr-1">المجموعات المجانية</span>
+                <span className="mr-1 header-mobile-icon">المجموعات المجانية</span>
                 <i className="fas fa-chevron-down font-size-13"></i>
               </a>
               <ul className="sub-list list-unstyled m-0">
@@ -459,10 +474,10 @@ return(
             {!this.props.authenticated ? (
               <ul className="navbar-nav mb-2 mb-lg-0">
              <li className="nav-item">
-               <NavLink to="/auth/login" className="nav-link links-hover"> تسجيل الدخول</NavLink>
+               <NavLink to="/auth/login" className="nav-link links-hover login-btn"> تسجيل الدخول</NavLink>
              </li>
               <li className="nav-item">
-              <NavLink to="/auth/register" className="nav-link links-hover">  إنشاء حساب </NavLink>
+              <NavLink to="/auth/register" className="nav-link links-hover login-btn">  إنشاء حساب </NavLink>
             </li>
               </ul>
             ):(
