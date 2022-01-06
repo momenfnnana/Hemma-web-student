@@ -164,12 +164,16 @@ clearPendingActions(){
             })
             .catch((error) => {
               this.handlePendingActions(()=>{
-                this.props.history.push("/home");
+                // this.props.history.push("/home");
+                // add next line for force go to my courses screen
+                this.props.history.push("/course/content")
                 window.location.reload()
               })
             });
         } else {
           this.handlePendingActions(()=>{
+            // add next line for force go to my courses screen
+            this.props.history.push("/course/content")
             this.props.history.push("/");
           })
         }
