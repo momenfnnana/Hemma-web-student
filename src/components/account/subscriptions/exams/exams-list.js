@@ -90,14 +90,15 @@ createCourseLink(courseId,examid)
             <td className="en-text dark-silver-text small text-center">
               {exam.totalAttempts}
             </td>
-            <td>
-              <Link
-                to={`/course/content/${courseId}/exam/${exam.id}`}
-                className="badge dark-bg text-white w-100"
-              >
+            <td className="en-text dark-silver-text small text-center">
+            <div
+              className="dark-bg text-white w-100 rounded"
+            >
+            <Link to={`/course/content/${courseId}/exam/${exam.id}`} className="text-white">
                 اختبر الآن
               </Link>
              {/* <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createCourseLink(courseId,exam.id)}} />*/}
+            </div>
             </td>
           </tr>
         </React.Fragment>
