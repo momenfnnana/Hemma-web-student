@@ -17,9 +17,21 @@ class CardComponent extends Component {
   };
   constructor(props) {
     super(props);
+    this.renderPrice = this.renderPrice.bind(this);
   }
   
-             
+  renderPrice(price) {
+    console.log(price);
+    if (price === 0) {
+      return <>مجانا</>;
+    } else {
+      return (
+        <>
+          {parseFloat(price.toFixed(2))} <span className="ar-text mr-1">ريال</span>
+        </>
+      );
+    }
+  }         
   render() {
     const course = this.props.course;
     var date = new Date(course.startsAt);
@@ -81,14 +93,14 @@ class CardComponent extends Component {
                     button: "متابعة"
                   }
                   ) }} >
-                      <div className="card  border-dashed card-ele min-height-410 position-relative mb-6 overflow-hidden">
+                      <div className="card  border-dashed card-ele min-height-410 position-relative mb-6 overflow-hidden" style={{backgroundColor:"#8979C1", color:"white"}}>
                         <div className="card-img">
 
                           <img key={course.id} src={course.bannerUrl} alt={course.nameAr} className="img-rounding img-dropshadow"/>
-                          <div className="img-tag"> {course.price && parseFloat(course.price.toFixed(2))} <span className="ar-text mr-1">ريال</span></div>
+                          <div className="img-tag" style={{backgroundColor:course.price === 0 && "#FF6575"}}> {(course.price || course.price === 0) && this.renderPrice(course.price)}</div>
                         </div>
                         <div className="mt-3 p-3">
-                          <h5 className="h5 main-color mb-3 font-weight-bold text-center">{course.nameAr}</h5>
+                          <h5 className="h5 mb-3 font-weight-bold text-center">{course.nameAr}</h5>
                           <div>
                           <ul className="list-unstyled">
                            
@@ -96,10 +108,10 @@ class CardComponent extends Component {
                              {course.descriptionAr.length > 150 ?(<span>...</span>):null }
                               </li> */}
                               
-                              {course.instructors.length > 0 ?(<li className="sub-color my-2"> <span className="mr-2">
+                              {course.instructors.length > 0 ?(<li className=" my-2"> <span className="mr-2">
                                 <i class="far fa-user"></i>
                               </span> 
-<span>
+<span >
 {course.instructors[0].name}
 </span>
                              
