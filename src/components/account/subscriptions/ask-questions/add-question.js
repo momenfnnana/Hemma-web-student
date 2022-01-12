@@ -211,7 +211,7 @@ class AddQuestion extends Component {
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={this.state.sectionId==''}
+	                disabled={this.state.sectionId==''|| this.state.file}
                 />
 								<div className="textarea-icon d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">

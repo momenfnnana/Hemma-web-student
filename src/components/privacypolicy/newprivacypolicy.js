@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { dummyData } from "./data";
 
 import "./index.scss";
 import { apiBaseUrl } from "../../api/helpers";
