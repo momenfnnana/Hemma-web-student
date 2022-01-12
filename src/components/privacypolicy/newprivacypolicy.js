@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { dummyData } from "./data";
 
 import "./index.scss";
 import { apiBaseUrl } from "../../api/helpers";
+
 const widthTableValue = { width: window.screen.width * 0.3 };
 
 const PrivacyPolicyComponent = () => {
@@ -97,6 +97,17 @@ const PrivacyPolicyComponent = () => {
           ></div>
         </div>
         {/* {Object.keys(selectedSection).length ? (
+          {dummyData?.map((item, index) => (
+            <li
+              onClick={() => setSelectedSection(item)}
+              key={index}
+              className="text-right section-title w-75 mx-auto cursor-pointer sections-title my-3"
+            >
+              {item?.title}.
+            </li>
+          ))}
+        </ul>
+        {Object.keys(selectedSection).length ? (
           <div className="section">
             <h4 className="text-center section-title">
               {selectedSection?.title}
