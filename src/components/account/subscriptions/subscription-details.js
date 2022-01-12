@@ -71,6 +71,7 @@ class SubscriptionDetailsComponent extends Component {
   };
 
   componentDidMount() {
+       this.props.setDeisgnType(0);
     const courseId = this.props.match.params.id;
     this.props.getSubscription(courseId).then(() => {
       this.createChannel();
@@ -103,7 +104,8 @@ class SubscriptionDetailsComponent extends Component {
   }
 
   toggleDesign() {
-    this.props.setDeisgnType(+!this.props.designType);
+    this.props.setDeisgnType(0);
+        // this.props.setDeisgnType(+!this.props.designType);
     // this.setState({ designType: +!this.state.designType });
   }
 
@@ -270,10 +272,10 @@ const isPending = this.state.isPending;
                       exact
                       render={(props) => (
                         <>
-                          <DesignSwitch
+                              {/*<DesignSwitch
                             designType={this.props.designType}
                             onChange={this.toggleDesign}
-                          />
+                          />*/}
                           {!this.state.loading && (
                             <>
                               <div className="animate-down">
