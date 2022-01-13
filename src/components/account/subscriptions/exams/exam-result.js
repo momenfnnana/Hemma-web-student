@@ -11,7 +11,7 @@ import {
   AccordionItemTitle
 } from "react-accessible-accordion";
 import "../styles.sass";
-import "./index.sass";
+// import "./index.sass";
 import { SolutionModal } from "./solution";
 import * as Sentry from "@sentry/react";
 
