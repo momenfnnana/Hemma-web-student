@@ -110,6 +110,7 @@ class HomeComponent extends Component {
   }
 
   componentDidMount() {
+    console.log(window.innerWidth);
     const myOptions = {
       // type: 'carousel',
       startAt: 1,
@@ -717,41 +718,76 @@ class HomeComponent extends Component {
               style={{
                 backgroundImage: `url(${bannerImageUrl})`,
                 backgroundRepeat: "no-repeat",
-                backgroundSize: "contain",
-                backgroundPosition: "25%",
+                backgroundSize: "auto  100%",
+                backgroundPosition: window.innerWidth > 768 ? "25%" : "5%",
+                height: "85px"
               }}
             >
               <div className="container program-container py-4 ">
                 <div>
-                  <h1 className="h1 m-0 mb-4 animated bounceInUp">
-                    <span
-                      className="d-block"
-                      style={{
-                        fontSize: "xxx-large",
-                        fontWeight: "bolder",
-                        color: "#4b3a85",
-                      }}
-                    >
-                      STEP برايم كورس
-                    </span>
-
-                    <span className="d-block">
-                      مجاني بالكامل لا تضيع الفرصة
-                      <a
-                        className="btn d-inline-block"
+                  {window.innerWidth > 768 ? (
+                    <h1 className="h1 m-0 mb-4 animated bounceInUp">
+                      <span
+                        className="d-block"
                         style={{
-                          marginRight: "10px",
-                          fontSize: "medium",
-                          backgroundColor: "#FF6575",
-                          color: "white",
-                          borderRadius: "25px",
+                          fontSize: "xxx-large",
+                          fontWeight: "bolder",
+                          color: "#4b3a85",
                         }}
-                        href="https://hemma.sa/course/details/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%8A%D9%85_%D9%83%D9%88%D8%B1%D8%B32863"
                       >
-                        سجل الان
-                      </a>
-                    </span>
-                  </h1>
+                        STEP برايم كورس
+                      </span>
+
+                      <span className="d-block">
+                        مجاني بالكامل لا تضيع الفرصة
+                        <a
+                          className="btn d-inline-block"
+                          style={{
+                            marginRight: "10px",
+                            fontSize: "medium",
+                            backgroundColor: "#FF6575",
+                            color: "white",
+                            borderRadius: "25px",
+                          }}
+                          href="https://hemma.sa/course/details/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%8A%D9%85_%D9%83%D9%88%D8%B1%D8%B32863"
+                        >
+                          سجل الان
+                        </a>
+                      </span>
+                    </h1>
+                  ) : (
+                    <h1 className="h1 m-0 mb-4 animated bounceInUp ">
+                      <span
+                        className="d-block"
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "bolder",
+                          color: "#4b3a85",
+                        }}
+                      >
+                        STEP برايم كورس
+                      </span>
+
+                      <span className="d-block" style={{fontSize:"12px"}}>
+                        مجاني بالكامل لا تضيع الفرصة
+                        <a
+                          className="btn btn-sm d-inline-block"
+                          style={{
+                            marginRight: "5px",
+                            fontSize: "10px",
+                            backgroundColor: "#FF6575",
+                            color: "white",
+                            borderRadius: "25px",
+                            padding:"0px 10px 0px 10px"
+                          }}
+                          href="https://hemma.sa/course/details/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%8A%D9%85_%D9%83%D9%88%D8%B1%D8%B32863"
+                        >
+                          سجل الان
+                        </a>
+                      </span>
+                    </h1>
+                  )}
+
                   {/* <p className="d-flex justify-contet-center align-items-center">
                     عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
                     التواصل على
