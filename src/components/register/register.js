@@ -53,9 +53,9 @@ const phoneValue = (value) => {
   var code = value.countryCode;
   value = value.phoneNumber || "";
   const trimmed = value.replace(/\s/g, "");
-  const valid = (/^0\d{9}$/.test(trimmed)&& code != "eg")||(/^0\d{10}$/.test(trimmed) && code == "eg");
-
-  return valid ? undefined : "رقم الهاتف يجب أن يحتوي 10 ارقام وان يبدأ بصفر";
+  const validateFistNumber=Number(trimmed[0])===0;
+  const valid = ( validateFistNumber && code!="eg");
+  return valid ?undefined :"رقم الهاتف يجب ان يبدأ بصفر";
 };
 
 export const minLength4 = minLength(4);
@@ -149,8 +149,8 @@ clearPendingActions(){
       educationalLevel: values.educationalLevel,
       educationalEntityId: values.educationalEntityId,
       saCityId: values.saCityId,
-        nationalityId: values.nationalityId,
-        studentId: values.IdentificationNumber
+      nationalityId: values.nationalityId,
+      studentId:values.IdentificationNumber
     });
     this.setState({ loading: true });
     request
@@ -191,6 +191,7 @@ clearPendingActions(){
   };
 
   componentDidMount() {
+    // document.getElementsByName("phone")[0].maxLength=11;
     Api.auth.getCities().then((cities) => this.setState({ cities: cities }));
     axios.get(`${apiBaseUrl}/Nationalities/lookup`).then((response) => {
       this.setState({ nationalities: response.data.data });
