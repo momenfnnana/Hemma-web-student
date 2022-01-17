@@ -82,7 +82,7 @@ export class _CategoryDetails extends Component {
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
-      currentTab: null,
+      currentTab: freeMeetingsText,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
     };
     this.openModal = this.openModal.bind(this);
@@ -118,12 +118,12 @@ export class _CategoryDetails extends Component {
         loading: false,
         disabled: false,
       });
-      if (
-        !hasFreeFlag &&
-        !!courses?.length 
-        && !hasProfessionalLicense
-      )
-        this.changeTab("tab-two");
+      // if (
+      //   !hasFreeFlag &&
+      //   !!courses?.length 
+      //   && !hasProfessionalLicense
+      // )
+      //   this.changeTab("tab-two");
     });
   }
 
