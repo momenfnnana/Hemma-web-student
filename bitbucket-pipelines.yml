@@ -24,7 +24,7 @@ pipelines:
   default:
     - <<: *build
   branches:
-    staging:
+    Staging2022:
       - <<: *build
 
       - step:

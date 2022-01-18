@@ -3,7 +3,6 @@ import Axios from "axios";
 
 import "./index.scss";
 import { apiBaseUrl } from "../../api/helpers";
-
 const widthTableValue = { width: window.screen.width * 0.3 };
 
 const PrivacyPolicyComponent = () => {
