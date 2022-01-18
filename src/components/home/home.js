@@ -110,6 +110,7 @@ class HomeComponent extends Component {
   }
 
   componentDidMount() {
+    console.log(window.innerWidth);
     const myOptions = {
       // type: 'carousel',
       startAt: 1,
@@ -714,73 +715,106 @@ class HomeComponent extends Component {
           {!this.state.isNationalDay && (
             <div
               className="banner banner-program"
-              style={{
-                backgroundImage: `url(${bannerImageUrl})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "contain",
-                backgroundPosition: "25%",
-              }}
+              // style={{
+              //   backgroundImage: `url(${bannerImageUrl})`,
+              //   backgroundRepeat: "no-repeat",
+              //   backgroundSize: "auto  100%",
+              //   backgroundPosition: window.innerWidth > 768 ? "25%" : "5%",
+              //   height: "85px"
+              // }}
             >
               <div className="container program-container py-4 ">
-                <div>
-                  <h1 className="h1 m-0 mb-4 animated bounceInUp">
-                    <span
-                      className="d-block"
-                      style={{
-                        fontSize: "xxx-large",
-                        fontWeight: "bolder",
-                        color: "#4b3a85",
-                      }}
-                    >
-                      STEP برايم كورس
-                    </span>
-
-                    <span className="d-block">
-                      مجاني بالكامل لا تضيع الفرصة
-                      <a
-                        className="btn d-inline-block"
+                <p className="d-flex justify-contet-center align-items-center">
+                  عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
+                  التواصل على
+                  <span
+                    className="mx-1 font-weight-bold text-primary cursor-pointer"
+                    onClick={() => window.Intercom("show")}
+                  >
+                    {" "}
+                    الدعم الفني{" "}
+                  </span>{" "}
+                  او على
+                  <div
+                    className="rounded-circle btn-success mx-2 p-2 cursor-poiner"
+                    onClick={() =>
+                      window.open("http://wa.me/966539412412", "_blank")
+                    }
+                  >
+                    <FaWhatsapp size={40} />
+                  </div>
+                </p>
+                {/* {window.innerWidth > 768 ? (
+                    <h1 className="h1 m-0 mb-4 animated bounceInUp">
+                      <span
+                        className="d-block"
                         style={{
-                          marginRight: "10px",
-                          fontSize: "medium",
-                          backgroundColor: "#FF6575",
-                          color: "white",
-                          borderRadius: "25px",
+                          fontSize: "xxx-large",
+                          fontWeight: "bolder",
+                          color: "#4b3a85",
                         }}
-                        href="https://hemma.sa/course/details/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%8A%D9%85_%D9%83%D9%88%D8%B1%D8%B32863"
                       >
-                        سجل الان
-                      </a>
-                    </span>
-                  </h1>
-                  {/* <p className="d-flex justify-contet-center align-items-center">
-                    عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
-                    التواصل على
-                    <span
-                      className="mx-1 font-weight-bold text-primary cursor-pointer"
-                      onClick={() => window.Intercom("show")}
-                    >
-                      {" "}
-                      الدعم الفني{" "}
-                    </span>{" "}
-                    او على
-                    <div
-                      className="rounded-circle btn-success mx-2 p-2 cursor-poiner"
-                      onClick={() =>
-                        window.open("http://wa.me/966539412412", "_blank")
-                      }
-                    >
-                      <FaWhatsapp size={40} />
-                    </div>
-                  </p>  */}
-                  {/* <h2>  برنامج
+                        STEP برايم كورس
+                      </span>
+
+                      <span className="d-block">
+                        مجاني بالكامل لا تضيع الفرصة
+                        <a
+                          className="btn d-inline-block"
+                          style={{
+                            marginRight: "10px",
+                            fontSize: "medium",
+                            backgroundColor: "#FF6575",
+                            color: "white",
+                            borderRadius: "25px",
+                          }}
+                          href="https://hemma.sa/course/details/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%8A%D9%85_%D9%83%D9%88%D8%B1%D8%B32863"
+                        >
+                          سجل الان
+                        </a>
+                      </span>
+                    </h1>
+                  ) : (
+                    <h1 className="h1 m-0 mb-4 animated bounceInUp ">
+                      <span
+                        className="d-block"
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "bolder",
+                          color: "#4b3a85",
+                        }}
+                      >
+                        STEP برايم كورس
+                      </span>
+
+                      <span className="d-block" style={{fontSize:"12px"}}>
+                        مجاني بالكامل لا تضيع الفرصة
+                        <a
+                          className="btn btn-sm d-inline-block"
+                          style={{
+                            marginRight: "5px",
+                            fontSize: "10px",
+                            backgroundColor: "#FF6575",
+                            color: "white",
+                            borderRadius: "25px",
+                            padding:"0px 10px 0px 10px"
+                          }}
+                          href="https://hemma.sa/course/details/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%8A%D9%85_%D9%83%D9%88%D8%B1%D8%B32863"
+                        >
+                          سجل الان
+                        </a>
+                      </span>
+                    </h1>
+                  )} */}
+
+                {/* <h2>  برنامج
                         <span className='program-name'> معلم كفؤ </span>             الإثرائي والمجاني
                </h2>
                <p> صمم هذا البرنامج بعناية مع نخبة من الخبراء ليحقق احتياج المعلمين في تطوير مهاراتهم التدريسية </p> */}
-                </div>
-                {/* <div onClick={()=>window.open('http://wa.me/966539412412','_blank')}>
+              </div>
+              {/* <div onClick={()=>window.open('http://wa.me/966539412412','_blank')}>
                <button type="button" className="btn btn-success join-now d-flex justify-content-center align-items-center"><FaWhatsapp className='mx-1' size={40} /></button>
              </div> */}
-              </div>
             </div>
           )}
           {/* <!-- Start The Main Banner Text --> */}

@@ -40,7 +40,6 @@ import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
 import {Evaluation} from "../../evaluation";
 import { apiBaseUrl } from "../../../api/helpers";
-const storedDesignType = localStorage.getItem("designType");
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
