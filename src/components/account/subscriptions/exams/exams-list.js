@@ -90,15 +90,13 @@ createCourseLink(courseId,examid)
             <td className="en-text dark-silver-text small text-center">
               {exam.totalAttempts}
             </td>
-            <td className="en-text dark-silver-text small text-center">
-            <div
-              className="dark-bg text-white w-100 rounded"
-            >
-            <Link to={`/course/content/${courseId}/exam/${exam.id}`} className="text-white">
-                اختبر الآن
-              </Link>
-             {/* <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createCourseLink(courseId,exam.id)}} />*/}
-            </div>
+            <td className="en-text dark-silver-text small text-center px-1">
+              <div className="dark-bg text-white w-100 rounded">
+                <Link to={`/course/content/${courseId}/exam/${exam.id}`} className="text-white">
+                  اختبر الآن
+                </Link>
+                {/* <ToastDemo copyLink={{ btnName:'مشاركة الاختبار',link:this.createCourseLink(courseId,exam.id)}} />*/}
+              </div>
             </td>
           </tr>
         </React.Fragment>
@@ -154,19 +152,19 @@ createCourseLink(courseId,examid)
                 <Table className="mb-0 table-responsive d-table">
                   <thead className="silver-bg">
                     <tr>
-                      <th className="w-40 dark-silver-text small border-0  white-space-pre">
+                      <th className="w-40 px-1 dark-silver-text small border-0  white-space-pre">
                         الامتحان
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
+                      <th className="w-15 px-1 dark-silver-text small border-0 text-center white-space-pre">
                         مدة الامتحان
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
+                      <th className="w-15 px-1 dark-silver-text small border-0 text-center white-space-pre">
                         عدد الأسئلة
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
+                      <th className="w-15 px-1 dark-silver-text small border-0 text-center white-space-pre">
                         عدد المحاولات
                       </th>
-                      <th className="w-15 dark-silver-text small border-0 text-center white-space-pre">
+                      <th className="w-15 px-4 dark-silver-text small border-0 text-center white-space-pre">
                         تحكم
                       </th>
                     </tr>
