@@ -1,3 +1,6 @@
+.section-title {
+  color: #4a3985;
+}
 .free-meetings-card {
   background-color: #a8ebef;
   height: 125px;
@@ -10,12 +13,12 @@
     position: absolute;
     right: 20%;
   }
-  & .join-free-meeting-btn{
-    color: #4A3985;
-    border-color: #4A3985;
-    &:hover{
+  & .join-free-meeting-btn {
+    color: #4a3985;
+    border-color: #4a3985;
+    &:hover {
       color: #fff;
-      background-color: #4A3985;
+      background-color: #4a3985;
     }
   }
   & .meeting-name {
