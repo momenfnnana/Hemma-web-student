@@ -150,7 +150,7 @@ clearPendingActions(){
       educationalEntityId: values.educationalEntityId,
       saCityId: values.saCityId,
       nationalityId: values.nationalityId,
-      studentId:values.IdentificationNumber
+      // studentId:values.IdentificationNumber
     });
     this.setState({ loading: true });
     request
@@ -355,7 +355,7 @@ clearPendingActions(){
               >
                 <FaRegEnvelope />
               </Field>
-              <Field
+              {/* <Field
                 name="IdentificationNumber"
                 component={inputField}
                 className="form-control border-left-0 pl-0 ltr-input"
@@ -364,7 +364,7 @@ clearPendingActions(){
                 validate={[IdentificationMaxLength10,IdentificationMinLength0, validateIdentification]}
               >
                 <ImProfile />
-              </Field>
+              </Field> */}
               {/* <Field
                         component={selectField}
                         className="form-control"
