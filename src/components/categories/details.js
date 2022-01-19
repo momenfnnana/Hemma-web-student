@@ -632,7 +632,9 @@ export class _CategoryDetails extends Component {
         {
           button: "متابعة",
         }
-      );
+      ).then(() => {
+        window.location = "/auth/login";
+      });
     }
   }
 
