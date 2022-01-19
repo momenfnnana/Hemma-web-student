@@ -30,7 +30,7 @@ export const AuthApiEndpoints = {
     educationalEntityId,
     saCityId,
     nationalityId,
-    // studentId
+    studentId
   ) =>
     getUnAuthenticatedAxios()
       .post("auth/register", {
@@ -44,7 +44,7 @@ export const AuthApiEndpoints = {
         educationalEntityId,
         saCityId,
         nationalityId,
-        // studentId
+        studentId
       })
       .then(getDataFromResponse),
 

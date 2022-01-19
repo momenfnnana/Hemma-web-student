@@ -715,17 +715,36 @@ class HomeComponent extends Component {
           {!this.state.isNationalDay && (
             <div
               className="banner banner-program"
-              style={{
-                backgroundImage: `url(${bannerImageUrl})`,
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "auto  100%",
-                backgroundPosition: window.innerWidth > 768 ? "25%" : "5%",
-                height: "85px"
-              }}
+              // style={{
+              //   backgroundImage: `url(${bannerImageUrl})`,
+              //   backgroundRepeat: "no-repeat",
+              //   backgroundSize: "auto  100%",
+              //   backgroundPosition: window.innerWidth > 768 ? "25%" : "5%",
+              //   height: "85px"
+              // }}
             >
               <div className="container program-container py-4 ">
-                <div>
-                  {window.innerWidth > 768 ? (
+                <p className="d-flex justify-contet-center align-items-center">
+                  عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
+                  التواصل على
+                  <span
+                    className="mx-1 font-weight-bold text-primary cursor-pointer"
+                    onClick={() => window.Intercom("show")}
+                  >
+                    {" "}
+                    الدعم الفني{" "}
+                  </span>{" "}
+                  او على
+                  <div
+                    className="rounded-circle btn-success mx-2 p-2 cursor-poiner"
+                    onClick={() =>
+                      window.open("http://wa.me/966539412412", "_blank")
+                    }
+                  >
+                    <FaWhatsapp size={40} />
+                  </div>
+                </p>
+                {/* {window.innerWidth > 768 ? (
                     <h1 className="h1 m-0 mb-4 animated bounceInUp">
                       <span
                         className="d-block"
@@ -786,37 +805,16 @@ class HomeComponent extends Component {
                         </a>
                       </span>
                     </h1>
-                  )}
+                  )} */}
 
-                  {/* <p className="d-flex justify-contet-center align-items-center">
-                    عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
-                    التواصل على
-                    <span
-                      className="mx-1 font-weight-bold text-primary cursor-pointer"
-                      onClick={() => window.Intercom("show")}
-                    >
-                      {" "}
-                      الدعم الفني{" "}
-                    </span>{" "}
-                    او على
-                    <div
-                      className="rounded-circle btn-success mx-2 p-2 cursor-poiner"
-                      onClick={() =>
-                        window.open("http://wa.me/966539412412", "_blank")
-                      }
-                    >
-                      <FaWhatsapp size={40} />
-                    </div>
-                  </p>  */}
-                  {/* <h2>  برنامج
+                {/* <h2>  برنامج
                         <span className='program-name'> معلم كفؤ </span>             الإثرائي والمجاني
                </h2>
                <p> صمم هذا البرنامج بعناية مع نخبة من الخبراء ليحقق احتياج المعلمين في تطوير مهاراتهم التدريسية </p> */}
-                </div>
-                {/* <div onClick={()=>window.open('http://wa.me/966539412412','_blank')}>
+              </div>
+              {/* <div onClick={()=>window.open('http://wa.me/966539412412','_blank')}>
                <button type="button" className="btn btn-success join-now d-flex justify-content-center align-items-center"><FaWhatsapp className='mx-1' size={40} /></button>
              </div> */}
-              </div>
             </div>
           )}
           {/* <!-- Start The Main Banner Text --> */}
