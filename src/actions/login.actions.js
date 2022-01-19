@@ -31,7 +31,7 @@ export const signupUser = ({
   educationalEntityId,
   saCityId,
   nationalityId,
-  studentId
+  // studentId
 }) => {
   return {
     type: AUTHENTICATE_USER,
@@ -46,7 +46,7 @@ export const signupUser = ({
       educationalEntityId,
       saCityId,
       nationalityId,
-      studentId
+      // studentId
     )
   };
 };
