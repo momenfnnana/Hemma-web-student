@@ -651,14 +651,20 @@ export class _CategoryDetails extends Component {
       var scheduledDate = year + "-" + month + "-" + day;
       var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
       //Time
+      function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+      }
       var lectureTime = scheduledAt.getTime();
-      const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
-      const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
-      const time = `${hours}:${minutes}`;
-      var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
 
       return (
-        <div className="col-6">
+        <div className="col-12 col-md-6">
         <div className="d-flex free-meetings-card justify-content-center align-items-center m-2">
           <img className="creativeMind-icon" src={process.env.PUBLIC_URL + "/assets/images/creativeMind.png"} />
           <div className="d-flex flex-column">
@@ -667,7 +673,7 @@ export class _CategoryDetails extends Component {
               <img className="dateBagIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/dateBagIcon.png"} />
               <p className="mx-1 my-0 p-0">{hijriDate}</p>
               <img className="documentTimeIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/documentTimeIcon.png"} />
-              <p className="mx-1 my-0 p-0">{time} {ampm}</p>
+              <p className="mx-1 my-0 p-0">{formatAMPM(new Date(lectureTime))}</p>
             </div>
             {lecture.broadcastUrl && (
               <button
