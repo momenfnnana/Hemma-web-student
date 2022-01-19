@@ -158,7 +158,14 @@ async handlePendingActions(onNoPendingActions = ()=>{}) {
                 this.props.history.push("/")
             }
             else{
-              this.props.history.goBack();
+              const prevPage = this.props.location?.state;
+              if(prevPage==='home'){
+                this.props.history.push("/course/content")
+              }else if(prevPage==='courses'){
+                this.props.history.push("/course/content")
+              }else{
+                this.props.history.goBack();
+              }
             }
           })
         }

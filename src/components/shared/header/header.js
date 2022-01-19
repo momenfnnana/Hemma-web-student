@@ -405,6 +405,7 @@ return(
 
   render() {
     const user = this.props.user;
+    const location = this.props?.location;
     return (
       <React.Fragment>
     
@@ -474,7 +475,10 @@ return(
             {!this.props.authenticated ? (
               <ul className="navbar-nav mb-2 mb-lg-0">
              <li className="nav-item">
-               <NavLink to="/auth/login" className="nav-link links-hover login-btn"> تسجيل الدخول</NavLink>
+               <NavLink to={{
+                 pathname:"/auth/login",
+                 state:location?.pathname==='/home'||location?.pathname==='/auth/register'?'home':undefined
+               }} className="nav-link links-hover login-btn"> تسجيل الدخول</NavLink>
              </li>
               <li className="nav-item">
               <NavLink to="/auth/register" className="nav-link links-hover login-btn">  إنشاء حساب </NavLink>

@@ -130,8 +130,8 @@ class SubscriptionDetailsComponent extends Component {
       this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-const designType=this.props.designType
-const isPending = this.state.isPending;
+    const designType=this.props.designType
+    const isPending = this.state.isPending;
     return (
       <React.Fragment>
         {isPending?

@@ -90,7 +90,10 @@ export default class Auth extends Component {
                   href=""
                   className="dark-text"
                   activeClassName="active"
-                  to="/auth/login"
+                  to={{
+                    pathname:"/auth/login",
+                    state:'courses'
+                  }}
                 >
                   تسجيل دخول
                 </NavLink>
@@ -100,7 +103,10 @@ export default class Auth extends Component {
                   href=""
                   className="dark-text"
                   activeClassName="active"
-                  to="/auth/register"
+                  to={{
+                    pathname:"/auth/register",
+                    state:'courses'
+                  }}
                 >
                   إنشاء حساب
                 </NavLink>
