@@ -131,8 +131,6 @@ export default class CourseDetails extends Component {
         this.props.history.push("/cart");
       })
       .catch((error) => {
-        debugger;
-        
         switch (error.response.data && error.response.data.error) {
           case "fullrefund Not Approved":
             swal("عفواً", "عفوا لا يمكن الاشتراك بهذه الدورة حتى يتم اعتماد طلب الانسحاب ويمكنك التواصل مع الدعم الفني", "error", {
