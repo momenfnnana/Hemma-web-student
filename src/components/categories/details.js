@@ -13,6 +13,7 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./styles.sass";
+import "./index.scss";
 import { PageLoader } from "../courses/page-loader";
 import ContentLoader from "react-content-loader";
 import { Category } from "emoji-mart";
@@ -82,7 +83,7 @@ export class _CategoryDetails extends Component {
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
-      currentTab: null,
+      currentTab: freeMeetingsText,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
     };
     this.openModal = this.openModal.bind(this);
@@ -118,12 +119,12 @@ export class _CategoryDetails extends Component {
         loading: false,
         disabled: false,
       });
-      if (
-        !hasFreeFlag &&
-        !!courses?.length 
-        && !hasProfessionalLicense
-      )
-        this.changeTab("tab-two");
+      // if (
+      //   !hasFreeFlag &&
+      //   !!courses?.length 
+      //   && !hasProfessionalLicense
+      // )
+      //   this.changeTab("tab-two");
     });
   }
 
@@ -639,7 +640,9 @@ export class _CategoryDetails extends Component {
       (b, a) => a.scheduledAt - b.scheduledAt
     );
 
-    return sortedLectures.map((lecture) => {
+    return <div className="container">
+      <div className="row">
+    {sortedLectures.map((lecture) => {
       const scheduledAt = new Date(lecture.scheduledAt);
       //Date
       var day = scheduledAt.getDate();
@@ -655,12 +658,37 @@ export class _CategoryDetails extends Component {
       var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
 
       return (
-        <li
+        <div className="col-6">
+        <div className="d-flex free-meetings-card justify-content-center align-items-center m-2">
+          <img className="creativeMind-icon" src={process.env.PUBLIC_URL + "/assets/images/creativeMind.png"} />
+          <div className="d-flex flex-column">
+            <p className="meeting-name text-center my-1">{lecture.nameAr}</p>
+            <div className="d-flex date-container align-items-center">
+              <img className="dateBagIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/dateBagIcon.png"} />
+              <p className="mx-1 my-0 p-0">{hijriDate}</p>
+              <img className="documentTimeIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/documentTimeIcon.png"} />
+              <p className="mx-1 my-0 p-0">{time} {ampm}</p>
+            </div>
+            {lecture.broadcastUrl && (
+              <button
+                className="btn light-outline-btn unset-height my-2 join-free-meeting-btn"
+                onClick={() => this.openFreeLecture(lecture)}
+              >
+                انضم
+              </button>
+            )}
+          </div>
+            {/* <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
+              <FaGraduationCap className="text-white" size="34" />
+            </div>
+            <h6 className="dark-text">{lecture.nameAr}</h6> */}
+        </div>
+        {/* <li
           key={lecture.id}
           className="list-group-item d-flex justify-content-between align-items-center"
           dir="rtl"
         >
-          <div className="media d-flex align-items-center">
+           <div className="media d-flex align-items-center">
             <div className="gradient-bg mr-4 d-flex align-items-center justify-content-center">
               <FaGraduationCap className="text-white" size="34" />
             </div>
@@ -703,10 +731,11 @@ export class _CategoryDetails extends Component {
             >
               انضم
             </button>
-          )}
-        </li>
+          )} 
+        </li>*/}
+        </div>
       );
-    });
+    })}</div></div>;
   }
 
   changeTab(tab) {
