@@ -368,6 +368,18 @@ class ExamDetailsComponent extends Component {
       slidesToShow: questionsLength,
       speed: 500,
       rtl: true,
+      arrows:false,
+      accessibility:false,
+      responsive: [
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            arrows:false,
+          }
+        },
+      ]
     };
     const isSafari = navigator.userAgent.toLowerCase().indexOf("safari/");
 
@@ -494,7 +506,7 @@ class ExamDetailsComponent extends Component {
                         ref={(slider) => (this.slider2 = slider)}
                         slidesToShow={3.5}
                         swipeToSlide={true}
-                        focusOnSelect={true}
+                        // focusOnSelect={true}
                         {...settings}
                         className="mb-3"
                       >
