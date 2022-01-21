@@ -1,54 +1,101 @@
-import React, { useState } from "react";
-import { dummyData } from "./data";
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
 
 import "./index.scss";
+import { apiBaseUrl } from "../../api/helpers";
 const widthTableValue = { width: window.screen.width * 0.3 };
 
 const PrivacyPolicyComponent = () => {
-  const [selectedSection, setSelectedSection] = useState({});
-  return (
-    <div className="page-container container-fluid my-5">
-      {/* start table */}
-      <div className="table mx-auto row border">
-        <div className="col-12 d-flex justify-content-center align-items-center p-0 table-header">
-          <div className="w-50 h-100 border d-flex justify-content-start align-items-center px-3">
-            <img
-              className="logo-img header-mobile-icon"
-              src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
-              height="60"
-            />
-          </div>
-          <div className="w-50 h-100 border p-3">
-            <p>مركز منصة همة للتدريب</p>
-            <p>إدارة التشغيل</p>
-            <p>سياسات ودالئل التشغيل</p>
-            <p>مبادئ حقوق الملكية الفكرية وحقوق النشر</p>
-          </div>
-        </div>
-        <div className="col-12 d-flex justify-content-center align-items-center p-0 table-body">
-          <div className="w-50 h-100 border"></div>
-          <div className="d-flex flex-column justify-content-center align-items-end border h-100 p-3 w-50">
-            <p className="m-0 p-0 font-weight-bold">IMS-35-01</p>
-            <p className="m-0 p-0 font-weight-bold">V:1/1</p>
-            <p className="m-0 p-0 font-weight-bold">DOI: 01/04/2021</p>
-          </div>
-        </div>
-      </div>
-      {/* end table */}
-      {/* page content */}
-      <div>
-        <ul className="my-5">
-          {dummyData?.map((item, index) => (
-            <li
-              onClick={() => setSelectedSection(item)}
-              key={index}
-              className="text-right section-title w-75 mx-auto cursor-pointer sections-title my-3"
-            >
-              {item?.title}.
-            </li>
-          ))}
-        </ul>
-        {Object.keys(selectedSection).length ? (
+    const [selectedSection, setSelectedSection] = useState({});
+    const [PoliciesList, setPoliciesList] = useState([]);
+    const [policyDetails, setPolicyDetails] = useState({});
+    const getAllPolicies = async () => {
+        await Axios({
+            method: "get",
+            url: `${apiBaseUrl}/PrivacyPolicySetting/GetAllPrivacyPolicy`,
+        })
+            .then((res) => setPoliciesList(res.data?.data))
+            .catch((error) => {
+                console.log({ error });
+                setPoliciesList([]);
+            });
+    };
+
+    const getPolicyDetails = async () => {
+        await Axios({
+            method: "get",
+            url: `${apiBaseUrl}/PrivacyPolicySetting/GetPrivacyPolicyDetails?id=${selectedSection?.id}`,
+        })
+            .then((res) => setPolicyDetails(res.data?.data))
+            .catch((error) => {
+                setPolicyDetails({});
+                console.log({ error });
+            });
+    };
+    useEffect(() => {
+        getAllPolicies();
+    }, []);
+
+    useEffect(() => {
+        if (selectedSection?.id) {
+            getPolicyDetails();
+        }
+    }, [selectedSection?.id]);
+    console.log({ policyDetails });
+    return (
+        <div className="page-container container-fluid my-5">
+            {/* start table */}
+            <div className="table mx-auto row border">
+                <div className="col-12 d-flex justify-content-center align-items-center p-0 table-header">
+                    <div className="w-50 h-100 border d-flex justify-content-start align-items-center px-3">
+                        <img
+                            className="logo-img header-mobile-icon"
+                            src={process.env.PUBLIC_URL + "/assets/images/logo.png"}
+                            height="60"
+                        />
+                    </div>
+                    <div className="w-50 h-100 border p-3">
+                        <p>مركز منصة همة للتدريب</p>
+                        <p>إدارة التشغيل</p>
+                        <p>سياسات ودالئل التشغيل</p>
+                        <p>مبادئ حقوق الملكية الفكرية وحقوق النشر</p>
+                    </div>
+                </div>
+                <div className="col-12 d-flex justify-content-center align-items-center p-0 table-body">
+                    <div className="w-50 h-100 border"></div>
+                    <div className="d-flex flex-column justify-content-center align-items-end border h-100 p-3 w-50">
+                        <p className="m-0 p-0 font-weight-bold">IMS-35-01</p>
+                        <p className="m-0 p-0 font-weight-bold">V:1/1</p>
+                        <p className="m-0 p-0 font-weight-bold">DOI: 01/04/2021</p>
+                    </div>
+                </div>
+            </div>
+            {/* end table */}
+            {/* page content */}
+            <div>
+                <ul className="my-5">
+                    {PoliciesList?.map((item) => (
+                        <li
+                            onClick={() => setSelectedSection(item)}
+                            key={item?.id}
+                            className="text-right section-title w-75 mx-auto cursor-pointer sections-title my-3"
+                        >
+                            {item?.policyTitle}.
+                        </li>
+                    ))}
+                </ul>
+                <div className="section">
+                    <h4 className="text-center section-title">
+                        {policyDetails?.policyTitle}
+                    </h4>
+                    <div
+                        className="w-75 my-2 text-right mx-auto section-descriptions"
+                        dangerouslySetInnerHTML={{
+                            __html: policyDetails?.policyContent,
+                        }}
+                    ></div>
+                </div>
+                {/* {Object.keys(selectedSection).length ? (
           <div className="section">
             <h4 className="text-center section-title">
               {selectedSection?.title}
@@ -613,10 +660,10 @@ const PrivacyPolicyComponent = () => {
                 )
               : null}
           </div>
-        ) : null}
-      </div>
-    </div>
-  );
+        ) : null} */}
+            </div>
+        </div>
+    );
 };
 
 export default PrivacyPolicyComponent;

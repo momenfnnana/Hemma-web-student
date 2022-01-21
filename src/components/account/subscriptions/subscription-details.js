@@ -39,6 +39,7 @@ import { MergedSidebar } from "../shared/sidebar/merged-sidebar";
 import DesignSwitch from "./schedule/design-switch";
 import {Evaluation} from "../../evaluation";
 const storedDesignType = localStorage.getItem("designType");
+import { apiBaseUrl } from "../../../api/helpers";
 
 class SubscriptionDetailsComponent extends Component {
   constructor(props) {
@@ -113,7 +114,8 @@ class SubscriptionDetailsComponent extends Component {
       this.props.subscription.subscription;
     const ratingStatus = subscription && subscription.ratingStatus;
     const remainingAmount = subscription && subscription.remainingAmount;
-const designType=this.props.designType
+    const designType=this.props.designType
+    const isPending = this.state.isPending;
     return (
       <React.Fragment>
         {remainingAmount > 0 ? (
