@@ -55,6 +55,9 @@ export class _CategoryDetails extends Component {
 
   constructor(props) {
     super(props);
+    this.coursesRef = React.createRef();
+    this.freeMeetingsRef = React.createRef();
+    this.successesRef = React.createRef();
     this.state = {
       successes: [],
       details: [],
@@ -139,7 +142,7 @@ export class _CategoryDetails extends Component {
         state: { page: prevPage },
       } = this;
       const nextUrl = `${apiBaseUrl}/categories/${
-        this.props.match.params.slug}/courses?Page=${prevPage + 1}&Limit=${
+        this.props.match.params.slug}/courses?Page=${prevPage===0?prevPage + 2:prevPage + 1}&Limit=${
         this.limit
       }&featuredOnly=true`;
       axios
@@ -153,7 +156,7 @@ export class _CategoryDetails extends Component {
           this.endOfResults = response.data.data.itemCount < this.limit;
           this.page++;
           const noMoreCourses =
-            newCourses.length === response.data.data.itemCount;
+            response.data.data?.itemCount===newCourses?.length;
           this.setState({
             courses: newCourses,
             coursesShimmerLoader: false,
@@ -629,7 +632,9 @@ export class _CategoryDetails extends Component {
         {
           button: "متابعة",
         }
-      );
+      ).then(() => {
+        window.location = "/auth/login";
+      });
     }
   }
 
@@ -895,7 +900,10 @@ export class _CategoryDetails extends Component {
                       currentTab={this.state.currentTab}
                       id="tab-two"
                       name={"دورات المنصة"}
-                      onClick={() => this.changeTab("tab-two")}
+                      onClick={() => {  
+                        this.coursesRef.current.scrollIntoView();
+                        this.changeTab("tab-two");
+                      }}
                     />
                   </ShowAt>
                   {!!this.state.lectures?.length && (
@@ -903,7 +911,10 @@ export class _CategoryDetails extends Component {
                       id={freeMeetingsText}
                       currentTab={this.state.currentTab}
                       name={freeMeetingsText}
-                      onClick={() => this.changeTab(freeMeetingsText)}
+                      onClick={() => {
+                        this.changeTab(freeMeetingsText);
+                        this.freeMeetingsRef.current.scrollIntoView();
+                      }}
                     />
                   )}
 
@@ -924,7 +935,10 @@ export class _CategoryDetails extends Component {
                       currentTab={this.state.currentTab}
                       id={"tab-four"}
                       name="نجاحات همة"
-                      onClick={() => this.changeTab("tab-four")}
+                      onClick={() => {
+                        this.changeTab("tab-four");
+                        this.successesRef.current.scrollIntoView();
+                      }}
                     />
                   )}
 
@@ -937,7 +951,7 @@ export class _CategoryDetails extends Component {
                     />
                   )}
                 </div>
-                <ShowAt
+                {/* <ShowAt
                   at={
                     !staticTabs.includes(this.state.currentTab) ||
                     this.state.currentTab === platformCoursesTab
@@ -946,9 +960,34 @@ export class _CategoryDetails extends Component {
                   <div className="row">
                     {this.renderCourses(this.state.courses)}
                   </div>
-                </ShowAt>
+                </ShowAt> */}
+                <h3 ref={this.coursesRef} className="section-title">دورات المنصة</h3>
+                <div className="row">
+                  {this.renderCourses(this.state.courses)}
+                </div>
                 <div className="tab-content" id="nav-tabContent">
-                  <ShowAt 
+                <div className="container">
+                      <div className="row">
+                        {this.state.currentSlug && !this.state.noMoreCourses && (
+                          <div className="row col-md-12">
+                            <div className="col-md-12 d-flex align-items-center justify-content-center">
+                              <button
+                                className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                                onClick={this.loadMore}
+                                disabled={this.state.disabled}
+                              >
+                                {this.state.loading == true ? (
+                                  <Loader type="ball-clip-rotate" />
+                                ) : (
+                                  "عرض المزيد"
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  {/* <ShowAt 
                     at={
                       !staticTabs.includes(this.state.currentTab) ||
                       this.state.currentTab === platformCoursesTab
@@ -975,7 +1014,7 @@ export class _CategoryDetails extends Component {
                         )}
                       </div>
                     </div>
-                  </ShowAt>
+                  </ShowAt> */}
                   <>
                     {this.state.currentTab === ProfessionalLicenseText && (
                       <ProfessionalLicense
@@ -990,24 +1029,51 @@ export class _CategoryDetails extends Component {
                       <>{this.renderCategoryGroups()}</>
                     )}
                   </>
-
-                  <ShowAt at={this.state.currentTab === freeMeetingsText}>
+                  <h3 ref={this.freeMeetingsRef} className="section-title">{freeMeetingsText}</h3>
+                  <div className="container">
+                    <div className="row">{this.renderLectures()}</div>
+                  </div>
+                  {/* <ShowAt at={this.state.currentTab === freeMeetingsText}>
                     <div className="container">
                       <div className="row">{this.renderLectures()}</div>
                     </div>
-                  </ShowAt>
-
+                  </ShowAt> */}
+                  <h3 ref={this.successesRef} className="section-title mt-5">نجاحات همة</h3>
+                  <div className=""
+                    style={{
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
+                      display:'grid',
+                      gridRowGap:"1.5rem",
+                      gridColumnGap:"0.5rem"
+                    }}>
+                    {this.renderSuccess()}
+                    {this.state.hideBtnSuccess && (
+                      <div className="row col-md-12">
+                        <div className="col-md-12 d-flex align-items-center justify-content-center">
+                          <button
+                            className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                            onClick={this.moreSucces}
+                          >
+                            {this.state.loading == true ? (
+                              <Loader type="ball-clip-rotate" />
+                            ) : (
+                              "عرض المزيد"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                   <div>
                     <div className="container">
                       <ShowAt at={this.state.currentTab === "tab-four"}>
                         <div className=""
-                        
-                        style={{
-                          gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
-                          display:'grid',
-                          gridRowGap:"1.5rem",
-                          gridColumnGap:"0.5rem"
-                        }}>
+                          style={{
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
+                            display:'grid',
+                            gridRowGap:"1.5rem",
+                            gridColumnGap:"0.5rem"
+                          }}>
                           {this.renderSuccess()}
                           {this.state.hideBtnSuccess && (
                             <div className="row col-md-12">
