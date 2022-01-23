@@ -58,10 +58,11 @@ export class _CategoryDetails extends Component {
     this.coursesRef = React.createRef();
     this.freeMeetingsRef = React.createRef();
     this.successesRef = React.createRef();
+    this.freeGroupsRef = React.createRef();
     this.state = {
       successes: [],
       details: [],
-      page: 0,
+      page: 1,
       subcategoriesdetails: [],
       lectures: [],
       hiddenTabs: [],
@@ -86,8 +87,10 @@ export class _CategoryDetails extends Component {
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
-      currentTab: freeMeetingsText,
+      currentTab: null,
+      currentSlug: "tab-two",
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
+      noMoreCourses:false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -116,6 +119,15 @@ export class _CategoryDetails extends Component {
     const { subcategoriesdetails,hasProfessionalLicense } = this.state;
     axios.get(url, { headers }).then((response) => {
       const courses = response.data.data.data;
+      if(response.data?.data?.page===response.data?.data?.pageCount){
+        this.setState({
+          noMoreCourses:true,
+        })
+      }else{
+        this.setState({
+          noMoreCourses:false,
+        })
+      }
       this.setState({
         courses,
         hasNoPlatformCourses: !courses?.length,
@@ -142,31 +154,39 @@ export class _CategoryDetails extends Component {
         state: { page: prevPage },
       } = this;
       const nextUrl = `${apiBaseUrl}/categories/${
-        this.props.match.params.slug}/courses?Page=${prevPage===0?prevPage + 2:prevPage + 1}&Limit=${
+        this.props.match.params.slug}/courses?Page=${prevPage + 1}&Limit=${
         this.limit
       }&featuredOnly=true`;
       axios
         .get(nextUrl, { headers })
         .then((response) => {
-          this.setState({ loading: false, disabled: false });
-          const newCourses = [
-            ...this.state.courses,
-            ...response.data.data.data,
-          ];
-          this.endOfResults = response.data.data.itemCount < this.limit;
-          this.page++;
-          const noMoreCourses =
-            response.data.data?.itemCount===newCourses?.length;
-          this.setState({
-            courses: newCourses,
-            coursesShimmerLoader: false,
-            hasNocourses: !!!newCourses?.length,
-            page: this.state.page + 1,
-            noMoreCourses,
-          });
-          if (newCourses.length == response.data.data.itemCount) {
-            this.setState({ hideBtn: true });
+          if(response.data?.data?.page===response.data?.data?.pageCount){
+            this.setState({
+              noMoreCourses:true,
+            })
+          }else{
+            this.setState({
+              noMoreCourses:false,
+            })
           }
+          if(response.data?.data?.page<=response.data?.data?.pageCount){
+            this.setState({ loading: false, disabled: false });
+            const newCourses = [
+              ...this.state.courses,
+              ...response.data.data.data,
+            ];
+            this.endOfResults = response.data.data.itemCount < this.limit;
+            this.page++;
+            this.setState({
+              courses: newCourses,
+              coursesShimmerLoader: false,
+              hasNocourses: !!!newCourses?.length,
+              page: this.state.page + 1,
+            });
+            if (newCourses.length == response.data.data.itemCount) {
+              this.setState({ hideBtn: true });
+            }
+          } 
         })
         .catch((error) => {
           console.log(error);
@@ -290,11 +310,6 @@ export class _CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then((response) => {
-        if(response.data.data?.length>0){
-            this.changeTab(freeMeetingsText)
-          } else {
-            this.changeTab("tab-two")
-          }
         this.setState({
           lectures: response.data.data,
           lecturesShimmerLoader: false,
@@ -405,6 +420,7 @@ export class _CategoryDetails extends Component {
       subcategoriesdetails: prevSubcategoriesdetails,
       hasProfessionalLicense: prevHasProfessionalLicense,
       currentSlug: prevSlug,
+      lectures: prevLectures
     } = prevState;
     const {
       currentTab,
@@ -412,7 +428,17 @@ export class _CategoryDetails extends Component {
       hasProfessionalLicense,
       currentSlug,
       hasNoPlatformCourses,
+      categoryGroups,
+      lectures
     } = this.state;
+    console.log({length:lectures?.length});
+    if(hasFreeFlag===null&&lectures?.length>0&&lectures?.length!==prevLectures?.length){
+      this.changeTab(freeMeetingsText);
+      this.freeMeetingsRef.current.scrollIntoView();
+    }
+    if(categoryGroups?.length>0&&hasFreeFlag === "true"&&currentTab==="tab-three"){
+      this.freeGroupsRef.current.scrollIntoView();
+    }
     if (prevTab !== currentTab) {
       if (currentTab === "tab-two") {
         this.intiReq();
@@ -901,8 +927,8 @@ export class _CategoryDetails extends Component {
                       id="tab-two"
                       name={"دورات المنصة"}
                       onClick={() => {  
-                        this.coursesRef.current.scrollIntoView();
                         this.changeTab("tab-two");
+                        this.coursesRef.current.scrollIntoView();
                       }}
                     />
                   </ShowAt>
@@ -942,12 +968,15 @@ export class _CategoryDetails extends Component {
                     />
                   )}
 
-                  {!!this.state.categoryGroups.length && (
+                  {!!this.state.categoryGroups.length&& (
                     <NavTab
                       currentTab={this.state.currentTab}
                       id={"tab-three"}
                       name="المجموعات المجانيه"
-                      onClick={() => this.changeTab("tab-three")}
+                      onClick={() => {
+                        this.changeTab("tab-three");
+                        this.freeGroupsRef.current.scrollIntoView();
+                      }}
                     />
                   )}
                 </div>
@@ -961,14 +990,18 @@ export class _CategoryDetails extends Component {
                     {this.renderCourses(this.state.courses)}
                   </div>
                 </ShowAt> */}
-                <h3 ref={this.coursesRef} className="section-title">دورات المنصة</h3>
+                {this.state.courses?.length ? (
+                    <h3 ref={this.coursesRef} className="section-title">دورات المنصة</h3>
+                  ):null}
                 <div className="row">
                   {this.renderCourses(this.state.courses)}
                 </div>
                 <div className="tab-content" id="nav-tabContent">
                 <div className="container">
                       <div className="row">
-                        {this.state.currentSlug && !this.state.noMoreCourses && (
+                        {
+                        this.state.noMoreCourses ||
+                        this.state.courses?.length>0 && (
                           <div className="row col-md-12">
                             <div className="col-md-12 d-flex align-items-center justify-content-center">
                               <button
@@ -1025,11 +1058,18 @@ export class _CategoryDetails extends Component {
                     )}
                   </>
                   <>
-                    {this.state.currentTab === "tab-three" && (
-                      <>{this.renderCategoryGroups()}</>
-                    )}
+                  {this.state.categoryGroups?.length>0? (
+                      <h3 ref={this.freeGroupsRef} className="section-title">المجموعات المجانيه</h3>
+                    ):null}
+                    {this.state.categoryGroups?.length>0?(
+                      <div className="mb-5">{this.renderCategoryGroups()}</div>
+                    ):null}
                   </>
-                  <h3 ref={this.freeMeetingsRef} className="section-title">{freeMeetingsText}</h3>
+                  {
+                    this.state.lectures?.length ? (
+                      <h3 ref={this.freeMeetingsRef} className="section-title">{freeMeetingsText}</h3>
+                    ) : null
+                  }
                   <div className="container">
                     <div className="row">{this.renderLectures()}</div>
                   </div>
@@ -1038,7 +1078,9 @@ export class _CategoryDetails extends Component {
                       <div className="row">{this.renderLectures()}</div>
                     </div>
                   </ShowAt> */}
-                  <h3 ref={this.successesRef} className="section-title mt-5">نجاحات همة</h3>
+                  {this.state.successes?.length?(
+                    <h3 ref={this.successesRef} className="section-title mt-5">نجاحات همة</h3>
+                  ):null}
                   <div className=""
                     style={{
                       gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
@@ -1064,6 +1106,22 @@ export class _CategoryDetails extends Component {
                       </div>
                     )}
                   </div>
+                  {this.state.subcategoriesdetails?.map((item,index)=>item?.courses?.length?(
+                      <>
+                        <h3 key={index} className="section-title mt-5">
+                          {item?.nameAr}
+                        </h3>
+                        {
+                          item?.courses?.map((courseItem)=>(
+                            <React.Fragment>
+                              <div className="col-lg-4">
+                                <Card key={courseItem.id} course={courseItem} />
+                              </div>
+                            </React.Fragment>
+                          ))
+                        }
+                      </>
+                    ):null)}
                   <div>
                     <div className="container">
                       <ShowAt at={this.state.currentTab === "tab-four"}>
