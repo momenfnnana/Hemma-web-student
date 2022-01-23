@@ -8,7 +8,7 @@ export const ToastDemo = ({ copyLink }) => {
   const [shortenUrl, setShortedUrl] = useState("");
   const { addToast } = useToasts();
   useEffect(() => {
-    BitlyHelper(window.location.origin.toString() + copyLink.link)
+    BitlyHelper(copyLink.link.includes("http") ? copyLink.link : window.location.origin.toString() + copyLink.link)
       .then((res) => {
         if (res.url) setShortedUrl(res.url);
       })
