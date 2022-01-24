@@ -13,6 +13,7 @@ import "../styles.sass";
 import Slider from "react-slick";
 import Countdown from "react-countdown-now";
 import { Link } from "react-router-dom";
+import Pagination from "react-js-pagination";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -500,18 +501,18 @@ class ExamDetailsComponent extends Component {
                 </div>
                 <div className="row">
                   <div className="col-12">
-                    <div className="question-item">
-                      <Slider
-                        asNavFor={this.state.nav1}
-                        ref={(slider) => (this.slider2 = slider)}
-                        slidesToShow={3.5}
-                        swipeToSlide={true}
-                        // focusOnSelect={true}
-                        {...settings}
-                        className="mb-3"
-                      >
-                        {this.renderQuestionsTitle()}
-                      </Slider>
+                    <div className="question-item d-flex justify-content-center">
+                    <Pagination
+                      activePage={this.state.selectedQuestion+1}
+                      itemsCountPerPage={10}
+                      totalItemsCount={this.state.questions?.length*10}
+                      pageRangeDisplayed={5}
+                      onChange={(e)=>{
+                        this.goTo(e)
+                      }}
+                      itemClass="page-item"
+                      linkClass="page-link"
+                    />
                     </div>
                   </div>
                 </div>
@@ -590,3 +591,4 @@ ExamDetailsComponent = reduxForm({
 ExamDetailsComponent = connect(mapStateToProps)(ExamDetailsComponent);
 
 export const ExamDetails = withRouter(ExamDetailsComponent);
+
