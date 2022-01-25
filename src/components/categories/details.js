@@ -59,6 +59,7 @@ export class _CategoryDetails extends Component {
     this.freeMeetingsRef = React.createRef();
     this.successesRef = React.createRef();
     this.freeGroupsRef = React.createRef();
+    this.professionalLicenseRef = React.createRef();
     this.state = {
       successes: [],
       details: [],
@@ -431,10 +432,14 @@ export class _CategoryDetails extends Component {
       categoryGroups,
       lectures
     } = this.state;
-    console.log({length:lectures?.length});
     if(hasFreeFlag===null&&lectures?.length>0&&lectures?.length!==prevLectures?.length){
-      this.changeTab(freeMeetingsText);
-      this.freeMeetingsRef.current.scrollIntoView();
+      if(this.state.hasProfessionalLicense){
+        this.changeTab("الرخصة المهنية");
+        this.professionalLicenseRef.current.scrollIntoView();
+      }else{
+        this.changeTab(freeMeetingsText);
+        this.freeMeetingsRef.current.scrollIntoView();
+      }
     }
     if(categoryGroups?.length>0&&hasFreeFlag === "true"&&currentTab==="tab-three"){
       this.freeGroupsRef.current.scrollIntoView();
@@ -704,7 +709,7 @@ export class _CategoryDetails extends Component {
         <div className="d-flex free-meetings-card justify-content-center align-items-center m-2">
           <img className="creativeMind-icon" src={process.env.PUBLIC_URL + "/assets/images/creativeMind.png"} />
           <div className="d-flex flex-column">
-            <p className="meeting-name text-center my-1">{lecture.nameAr}</p>
+            <p className="meeting-name text-center my-1">{lecture.nameAr?.substring(0,20)}</p>
             <div className="d-flex date-container align-items-center">
               <img className="dateBagIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/dateBagIcon.png"} />
               <p className="mx-1 my-0 p-0">{hijriDate}</p>
@@ -875,6 +880,7 @@ export class _CategoryDetails extends Component {
     const {
       match: { params },
     } = this.props;
+
     return (
       <React.Fragment>
         <Helmet>
@@ -952,7 +958,10 @@ export class _CategoryDetails extends Component {
                       }
                       id={ProfessionalLicenseText}
                       name="الرخصة المهنية"
-                      onClick={() => this.changeTab("الرخصة المهنية")}
+                      onClick={() => {
+                        this.changeTab("الرخصة المهنية");
+                        this.professionalLicenseRef.current.scrollIntoView();  
+                      }}
                     />
                   )}
 
@@ -1049,6 +1058,9 @@ export class _CategoryDetails extends Component {
                     </div>
                   </ShowAt> */}
                   <>
+                  {this.state.hasProfessionalLicense ? (
+                    <h3 ref={this.professionalLicenseRef} className="section-title">الرخصة المهنية</h3>
+                  ):null}
                     {this.state.currentTab === ProfessionalLicenseText && (
                       <ProfessionalLicense
                         categoryData={
