@@ -709,7 +709,7 @@ export class _CategoryDetails extends Component {
         <div className="d-flex free-meetings-card justify-content-center align-items-center m-2">
           <img className="creativeMind-icon" src={process.env.PUBLIC_URL + "/assets/images/creativeMind.png"} />
           <div className="d-flex flex-column">
-            <p className="meeting-name text-center my-1">{lecture.nameAr?.substring(0,20)}</p>
+            <p className="meeting-name text-center my-1">{`${lecture.nameAr?.substring(0,20)} ${lecture.nameAr?.length>20?'...':''}`}</p>
             <div className="d-flex date-container align-items-center">
               <img className="dateBagIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/dateBagIcon.png"} />
               <p className="mx-1 my-0 p-0">{hijriDate}</p>
