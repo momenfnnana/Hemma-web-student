@@ -26,7 +26,7 @@ import { Refund } from "../billings/refund/RefundForm";
 import { BookletDetails } from "./booklets/booklet-details";
 import { AskQuestionsList } from "./ask-questions/ask-questions-list";
 import { AskQuestionDetails } from "./ask-questions/question-details";
-import {TrainingList} from "./training/training-list";
+import TrainingList from "./training/training-list";
 import { TrainingResult } from "./training/training-result";
 import { StartTrainingExam } from "./training/start-training";
 import { TrainingExamDetails } from "./training/training-details";
