@@ -91,18 +91,19 @@ class ShippingAddressFormComponent extends Component {
   }
 
   paymentAllowPopup() {
-    swal("بامكانك ادخال بيانات الدفع لتأكيد الاشتراك بشكل كامل", {
-      buttons: {
-        ok: "تأكيد",
-      },
-    }).then((value) => {
-      switch (value) {
-        case "ok":
-          this.props.onFillShippingAddress(this.state.values);
-        default:
-          break;
-      }
-    });
+    this.props.onFillShippingAddress(this.state.values);
+    // swal("بامكانك ادخال بيانات الدفع لتأكيد الاشتراك بشكل كامل", {
+    //   buttons: {
+    //     ok: "تأكيد",
+    //   },
+    // }).then((value) => {
+    //   switch (value) {
+    //     case "ok":
+    //       this.props.onFillShippingAddress(this.state.values);
+    //     default:
+    //       break;
+    //   }
+    // });
   }
 
   isSubmitButtonDisabled = () => {
@@ -261,6 +262,7 @@ class ShippingAddressFormComponent extends Component {
                     </Field>
                   </div>
                   <div className="form-group mb-0">
+                    <h6 className='light-text mb-1 mt-0 mr-3'>أرجو كتابة العنوان صحيحا لتصل شحنتك بأقرب وقت</h6>
                     <Field
                       className="form-control small"
                       placeholder="عنوان التوصيل"

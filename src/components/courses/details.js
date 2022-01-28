@@ -131,8 +131,6 @@ export default class CourseDetails extends Component {
         this.props.history.push("/cart");
       })
       .catch((error) => {
-        debugger;
-        
         switch (error.response.data && error.response.data.error) {
           case "fullrefund Not Approved":
             swal("عفواً", "عفوا لا يمكن الاشتراك بهذه الدورة حتى يتم اعتماد طلب الانسحاب ويمكنك التواصل مع الدعم الفني", "error", {
@@ -220,7 +218,7 @@ export default class CourseDetails extends Component {
             className="col-md-6 col-12 align-items-center pb-2"
             key={feature.id}
           >
-            <p className="dark-text mb-0 w-75  d-flex align-items-center">
+            <p className="dark-text mb-0 w-75  d-flex align-items-start">
               <i className={`mr-2 font-16 fas fa-${feature.icon}`} />
               {feature.descriptionAr}
             </p>
@@ -421,6 +419,8 @@ export default class CourseDetails extends Component {
     var year = date.getFullYear();
     var courseDate = year + "-" + month + "-" + day;
     var hijriDate = moment(courseDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
+    const descriptionAr = this.state.details.descriptionAr;
+    const formatedDescription = descriptionAr?.replaceAll('\r\n','<br/>')
 
     return (
       <>
@@ -574,7 +574,7 @@ export default class CourseDetails extends Component {
                         <ul className="list-unstyled">
                           {this.state.details &&
                           this.state.details.durationTextAr ? (
-                            <li className=" dark-text mb-2">
+                            <li className="dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -590,7 +590,7 @@ export default class CourseDetails extends Component {
 
                           {this.state.details &&
                           this.state.details.validityTextAr ? (
-                            <li className="small dark-text mb-2">
+                            <li className="dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -605,7 +605,7 @@ export default class CourseDetails extends Component {
                           ) : null}
 
                           {courseDate ? (
-                            <li className="small dark-text mb-2">
+                            <li className="dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -621,7 +621,7 @@ export default class CourseDetails extends Component {
 
                           {this.state.details &&
                           this.state.details.scheduleTextAr ? (
-                            <li className="small dark-text mb-2">
+                            <li className="dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -637,7 +637,7 @@ export default class CourseDetails extends Component {
 
                           {this.state.details &&
                           this.state.details.companionBook ? (
-                            <li className="small dark-text mb-2">
+                            <li className="dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -663,7 +663,7 @@ export default class CourseDetails extends Component {
 
                           {this.state.details &&
                           this.state.details.companionBook ? (
-                            <li className="small dark-text mb-2">
+                            <li className="dark-text mb-2">
                               <img
                                 src={
                                   process.env.PUBLIC_URL +
@@ -752,8 +752,9 @@ export default class CourseDetails extends Component {
                             this.state.details.category &&
                             this.state.details.category.nameAr}
                         </Link>
-                        <p className="text-muted light-font-text w-75 mt-3 text-break details-para">
-                          {this.state.details.descriptionAr}
+                        <p className="text-muted light-font-text w-75 mt-3 text-break details-para" dangerouslySetInnerHTML={{
+                          __html: formatedDescription,
+                        }}>
                         </p>
                       </div>
                     </div>
@@ -825,3 +826,4 @@ export default class CourseDetails extends Component {
     );
   }
 }
+

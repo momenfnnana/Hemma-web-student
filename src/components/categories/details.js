@@ -55,10 +55,15 @@ export class _CategoryDetails extends Component {
 
   constructor(props) {
     super(props);
+    this.coursesRef = React.createRef();
+    this.freeMeetingsRef = React.createRef();
+    this.successesRef = React.createRef();
+    this.freeGroupsRef = React.createRef();
+    this.professionalLicenseRef = React.createRef();
     this.state = {
       successes: [],
       details: [],
-      page: 0,
+      page: 1,
       subcategoriesdetails: [],
       lectures: [],
       hiddenTabs: [],
@@ -83,8 +88,10 @@ export class _CategoryDetails extends Component {
       categoryGroupsShimmerLoader: true,
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
-      currentTab: freeMeetingsText,
+      currentTab: null,
+      currentSlug: "tab-two",
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
+      noMoreCourses:false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -113,6 +120,15 @@ export class _CategoryDetails extends Component {
     const { subcategoriesdetails,hasProfessionalLicense } = this.state;
     axios.get(url, { headers }).then((response) => {
       const courses = response.data.data.data;
+      if(response.data?.data?.page===response.data?.data?.pageCount){
+        this.setState({
+          noMoreCourses:true,
+        })
+      }else{
+        this.setState({
+          noMoreCourses:false,
+        })
+      }
       this.setState({
         courses,
         hasNoPlatformCourses: !courses?.length,
@@ -145,25 +161,33 @@ export class _CategoryDetails extends Component {
       axios
         .get(nextUrl, { headers })
         .then((response) => {
-          this.setState({ loading: false, disabled: false });
-          const newCourses = [
-            ...this.state.courses,
-            ...response.data.data.data,
-          ];
-          this.endOfResults = response.data.data.itemCount < this.limit;
-          this.page++;
-          const noMoreCourses =
-            newCourses.length === response.data.data.itemCount;
-          this.setState({
-            courses: newCourses,
-            coursesShimmerLoader: false,
-            hasNocourses: !!!newCourses?.length,
-            page: this.state.page + 1,
-            noMoreCourses,
-          });
-          if (newCourses.length == response.data.data.itemCount) {
-            this.setState({ hideBtn: true });
+          if(response.data?.data?.page===response.data?.data?.pageCount){
+            this.setState({
+              noMoreCourses:true,
+            })
+          }else{
+            this.setState({
+              noMoreCourses:false,
+            })
           }
+          if(response.data?.data?.page<=response.data?.data?.pageCount){
+            this.setState({ loading: false, disabled: false });
+            const newCourses = [
+              ...this.state.courses,
+              ...response.data.data.data,
+            ];
+            this.endOfResults = response.data.data.itemCount < this.limit;
+            this.page++;
+            this.setState({
+              courses: newCourses,
+              coursesShimmerLoader: false,
+              hasNocourses: !!!newCourses?.length,
+              page: this.state.page + 1,
+            });
+            if (newCourses.length == response.data.data.itemCount) {
+              this.setState({ hideBtn: true });
+            }
+          } 
         })
         .catch((error) => {
           console.log(error);
@@ -402,6 +426,7 @@ export class _CategoryDetails extends Component {
       subcategoriesdetails: prevSubcategoriesdetails,
       hasProfessionalLicense: prevHasProfessionalLicense,
       currentSlug: prevSlug,
+      lectures: prevLectures
     } = prevState;
     const {
       currentTab,
@@ -409,7 +434,21 @@ export class _CategoryDetails extends Component {
       hasProfessionalLicense,
       currentSlug,
       hasNoPlatformCourses,
+      categoryGroups,
+      lectures
     } = this.state;
+    if(hasFreeFlag===null&&lectures?.length>0&&lectures?.length!==prevLectures?.length){
+      if(this.state.hasProfessionalLicense){
+        this.changeTab("الرخصة المهنية");
+        this.professionalLicenseRef.current.scrollIntoView();
+      }else{
+        this.changeTab(freeMeetingsText);
+        this.freeMeetingsRef.current.scrollIntoView();
+      }
+    }
+    if(categoryGroups?.length>0&&hasFreeFlag === "true"&&currentTab==="tab-three"){
+      this.freeGroupsRef.current.scrollIntoView();
+    }
     if (prevTab !== currentTab) {
       if (currentTab === "tab-two") {
         this.intiReq();
@@ -629,7 +668,9 @@ export class _CategoryDetails extends Component {
         {
           button: "متابعة",
         }
-      );
+      ).then(() => {
+        window.location = "/auth/login";
+      });
     }
   }
 
@@ -656,23 +697,29 @@ export class _CategoryDetails extends Component {
       var scheduledDate = year + "-" + month + "-" + day;
       var hijriDate = moment(scheduledDate, "YYYY-MM-DD").format("iYYYY/iM/iD");
       //Time
+      function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+      }
       var lectureTime = scheduledAt.getTime();
-      const hours = `0${new Date(lectureTime).getHours()}`.slice(-2);
-      const minutes = `0${new Date(lectureTime).getMinutes()}`.slice(-2);
-      const time = `${hours}:${minutes}`;
-      var ampm = hours < 12 || hours === 24 ? "AM" : "PM";
 
       return (
-        <div className="col-6">
+        <div className="col-12 col-md-6">
         <div className="d-flex free-meetings-card justify-content-center align-items-center m-2">
           <img className="creativeMind-icon" src={process.env.PUBLIC_URL + "/assets/images/creativeMind.png"} />
           <div className="d-flex flex-column">
-            <p className="meeting-name text-center my-1">{lecture.nameAr}</p>
+            <p className="meeting-name text-center my-1">{`${lecture.nameAr?.substring(0,20)} ${lecture.nameAr?.length>20?'...':''}`}</p>
             <div className="d-flex date-container align-items-center">
               <img className="dateBagIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/dateBagIcon.png"} />
               <p className="mx-1 my-0 p-0">{hijriDate}</p>
               <img className="documentTimeIcon-icon" src={process.env.PUBLIC_URL + "/assets/images/documentTimeIcon.png"} />
-              <p className="mx-1 my-0 p-0">{time} {ampm}</p>
+              <p className="mx-1 my-0 p-0">{formatAMPM(new Date(lectureTime))}</p>
             </div>
             {lecture.broadcastUrl && (
               <button
@@ -838,6 +885,7 @@ export class _CategoryDetails extends Component {
     const {
       match: { params },
     } = this.props;
+
     return (
       <React.Fragment>
         <Helmet>
@@ -889,7 +937,10 @@ export class _CategoryDetails extends Component {
                       currentTab={this.state.currentTab}
                       id="tab-two"
                       name={"دورات المنصة"}
-                      onClick={() => this.changeTab("tab-two")}
+                      onClick={() => {  
+                        this.changeTab("tab-two");
+                        this.coursesRef.current.scrollIntoView();
+                      }}
                     />
                   </ShowAt>
                   {!!this.state.lectures?.length && (
@@ -897,7 +948,10 @@ export class _CategoryDetails extends Component {
                       id={freeMeetingsText}
                       currentTab={this.state.currentTab}
                       name={freeMeetingsText}
-                      onClick={() => this.changeTab(freeMeetingsText)}
+                      onClick={() => {
+                        this.changeTab(freeMeetingsText);
+                        this.freeMeetingsRef.current.scrollIntoView();
+                      }}
                     />
                   )}
 
@@ -909,7 +963,10 @@ export class _CategoryDetails extends Component {
                       }
                       id={ProfessionalLicenseText}
                       name="الرخصة المهنية"
-                      onClick={() => this.changeTab("الرخصة المهنية")}
+                      onClick={() => {
+                        this.changeTab("الرخصة المهنية");
+                        this.professionalLicenseRef.current.scrollIntoView();  
+                      }}
                     />
                   )}
 
@@ -918,20 +975,26 @@ export class _CategoryDetails extends Component {
                       currentTab={this.state.currentTab}
                       id={"tab-four"}
                       name="نجاحات همة"
-                      onClick={() => this.changeTab("tab-four")}
+                      onClick={() => {
+                        this.changeTab("tab-four");
+                        this.successesRef.current.scrollIntoView();
+                      }}
                     />
                   )}
 
-                  {!!this.state.categoryGroups.length && (
+                  {!!this.state.categoryGroups.length&& (
                     <NavTab
                       currentTab={this.state.currentTab}
                       id={"tab-three"}
                       name="المجموعات المجانيه"
-                      onClick={() => this.changeTab("tab-three")}
+                      onClick={() => {
+                        this.changeTab("tab-three");
+                        this.freeGroupsRef.current.scrollIntoView();
+                      }}
                     />
                   )}
                 </div>
-                <ShowAt
+                {/* <ShowAt
                   at={
                     !staticTabs.includes(this.state.currentTab) ||
                     this.state.currentTab === platformCoursesTab
@@ -940,9 +1003,38 @@ export class _CategoryDetails extends Component {
                   <div className="row">
                     {this.renderCourses(this.state.courses)}
                   </div>
-                </ShowAt>
+                </ShowAt> */}
+                {this.state.courses?.length ? (
+                    <h3 ref={this.coursesRef} className="section-title">دورات المنصة</h3>
+                  ):null}
+                <div className="row">
+                  {this.renderCourses(this.state.courses)}
+                </div>
                 <div className="tab-content" id="nav-tabContent">
-                  <ShowAt 
+                <div className="container">
+                      <div className="row">
+                        {
+                        this.state.noMoreCourses ||
+                        this.state.courses?.length>0 && (
+                          <div className="row col-md-12">
+                            <div className="col-md-12 d-flex align-items-center justify-content-center">
+                              <button
+                                className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                                onClick={this.loadMore}
+                                disabled={this.state.disabled}
+                              >
+                                {this.state.loading == true ? (
+                                  <Loader type="ball-clip-rotate" />
+                                ) : (
+                                  "عرض المزيد"
+                                )}
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  {/* <ShowAt 
                     at={
                       !staticTabs.includes(this.state.currentTab) ||
                       this.state.currentTab === platformCoursesTab
@@ -969,8 +1061,11 @@ export class _CategoryDetails extends Component {
                         )}
                       </div>
                     </div>
-                  </ShowAt>
+                  </ShowAt> */}
                   <>
+                  {this.state.hasProfessionalLicense ? (
+                    <h3 ref={this.professionalLicenseRef} className="section-title">الرخصة المهنية</h3>
+                  ):null}
                     {this.state.currentTab === ProfessionalLicenseText && (
                       <ProfessionalLicense
                         categoryData={
@@ -980,28 +1075,80 @@ export class _CategoryDetails extends Component {
                     )}
                   </>
                   <>
-                    {this.state.currentTab === "tab-three" && (
-                      <>{this.renderCategoryGroups()}</>
-                    )}
+                  {this.state.categoryGroups?.length>0? (
+                      <h3 ref={this.freeGroupsRef} className="section-title">المجموعات المجانيه</h3>
+                    ):null}
+                    {this.state.categoryGroups?.length>0?(
+                      <div className="mb-5">{this.renderCategoryGroups()}</div>
+                    ):null}
                   </>
-
-                  <ShowAt at={this.state.currentTab === freeMeetingsText}>
+                  {
+                    this.state.lectures?.length ? (
+                      <h3 ref={this.freeMeetingsRef} className="section-title">{freeMeetingsText}</h3>
+                    ) : null
+                  }
+                  <div className="container">
+                    <div className="row">{this.renderLectures()}</div>
+                  </div>
+                  {/* <ShowAt at={this.state.currentTab === freeMeetingsText}>
                     <div className="container">
                       <div className="row">{this.renderLectures()}</div>
                     </div>
-                  </ShowAt>
-
+                  </ShowAt> */}
+                  {this.state.successes?.length?(
+                    <h3 ref={this.successesRef} className="section-title mt-5">نجاحات همة</h3>
+                  ):null}
+                  <div className=""
+                    style={{
+                      gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
+                      display:'grid',
+                      gridRowGap:"1.5rem",
+                      gridColumnGap:"0.5rem"
+                    }}>
+                    {this.renderSuccess()}
+                    {this.state.hideBtnSuccess && (
+                      <div className="row col-md-12">
+                        <div className="col-md-12 d-flex align-items-center justify-content-center">
+                          <button
+                            className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                            onClick={this.moreSucces}
+                          >
+                            {this.state.loading == true ? (
+                              <Loader type="ball-clip-rotate" />
+                            ) : (
+                              "عرض المزيد"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {this.state.subcategoriesdetails?.map((item,index)=>item?.courses?.length?(
+                      <>
+                        <h3 key={index} className="section-title mt-5">
+                          {item?.nameAr}
+                        </h3>
+                        {
+                          item?.courses?.map((courseItem)=>(
+                            <React.Fragment>
+                              <div className="col-lg-4">
+                                <Card key={courseItem.id} course={courseItem} />
+                              </div>
+                            </React.Fragment>
+                          ))
+                        }
+                      </>
+                    ):null)}
                   <div>
                     <div className="container">
                       <ShowAt at={this.state.currentTab === "tab-four"}>
                         <div className=""
-                        
-                        style={{
-                          gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
-                          display:'grid',
-                          gridRowGap:"1.5rem",
-                          gridColumnGap:"0.5rem"
-                        }}>
+                          style={{
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
+                            display:'grid',
+                            gridRowGap:"1.5rem",
+                            gridColumnGap:"0.5rem"
+                          }}>
                           {this.renderSuccess()}
                           {this.state.hideBtnSuccess && (
                             <div className="row col-md-12">
