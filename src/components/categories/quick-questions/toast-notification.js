@@ -21,7 +21,7 @@ export const ToastDemo = ({ copyLink }) => {
 
   return (
     <CopyToClipboard
-      text={copyLink.link}
+      text={copyLink.link.includes("http") ? copyLink.link : window.location.origin.toString() + copyLink.link}
       onCopy={() =>
         addToast("تم النسخ", {
           appearance: "success",
