@@ -311,11 +311,6 @@ export class _CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then((response) => {
-        if(response.data.data?.length>0){
-            this.changeTab(freeMeetingsText)
-          } else {
-            this.changeTab("tab-two")
-          }
         this.setState({
           lectures: response.data.data,
           lecturesShimmerLoader: false,
