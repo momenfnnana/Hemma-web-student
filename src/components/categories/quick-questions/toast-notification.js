@@ -5,23 +5,23 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import BitlyHelper from "../../../utils/BitlyHelper";
 
 export const ToastDemo = ({ copyLink }) => {
-  //const [shortenUrl, setShortedUrl] = useState("");
+  const [shortenUrl, setShortedUrl] = useState("");
   const { addToast } = useToasts();
-  // useEffect(() => {
-  //   BitlyHelper(copyLink.link.includes("http") ? copyLink.link : window.location.origin.toString() + copyLink.link)
-  //     .then((res) => {
-  //       if (res.url) setShortedUrl(res.url);
-  //     })
-  //     .catch(() => {
-  //       swal("عفواً", "حدث خطأ ", "error", {
-  //         button: "متابعة",
-  //       });
-  //     });
-  // }, []);
+  useEffect(() => {
+    BitlyHelper(copyLink.link.includes("http") ? copyLink.link : window.location.origin.toString() + copyLink.link)
+      .then((res) => {
+        if (res.url) setShortedUrl(res.url);
+      })
+      .catch(() => {
+        swal("عفواً", "حدث خطأ ", "error", {
+          button: "متابعة",
+        });
+      });
+  }, []);
 
   return (
     <CopyToClipboard
-      text={copyLink.link.includes("http") ? copyLink.link : window.location.origin.toString() + copyLink.link}
+      text={shortenUrl.includes("http") ? shortenUrl : window.location.origin.toString() + shortenUrl}
       onCopy={() =>
         addToast("تم النسخ", {
           appearance: "success",
