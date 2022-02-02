@@ -1,5 +1,5 @@
 import { BitlyClient } from "bitly-react";
-const bitly = new BitlyClient("c949a757000d752c183bb382e861fc170628cb97", {});
+const bitly = new BitlyClient("a7e57a0ecaa346f25ae6f28be88e71a1363d6e61", {});
 
 const BitlyHelper = async (uri) => {
   let result;

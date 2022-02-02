@@ -21,7 +21,7 @@ export const ToastDemo = ({ copyLink }) => {
 
   return (
     <CopyToClipboard
-      text={shortenUrl}
+      text={shortenUrl.includes("http") ? shortenUrl : window.location.origin.toString() + shortenUrl}
       onCopy={() =>
         addToast("تم النسخ", {
           appearance: "success",
