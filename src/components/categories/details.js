@@ -389,7 +389,7 @@ export class _CategoryDetails extends Component {
         {
           button: "متابعة",
         }
-      );
+      ).then(res=>this.props.history.push("/auth/login"));
     }
   }
 
