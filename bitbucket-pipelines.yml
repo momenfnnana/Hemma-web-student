@@ -13,10 +13,9 @@ definitions:
       script:
         - export NODE_OPTIONS=--max_old_space_size=8192
         - unset CI
-        - yarn --ignore-optional
-        - yarn cache clean
+        - npm install
         - cp ./scripts/.env.stg .env
-        - yarn build
+        - npm run build
       artifacts:
         - "build/**"
         
