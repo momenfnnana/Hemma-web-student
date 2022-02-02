@@ -1,10 +1,10 @@
 # FROM node:12.18.1 as builder
 # WORKDIR '/app'
 # COPY ./package.json ./
-# RUN yarn
+# RUN npm install
 # COPY .env.docker .env
 # COPY . .
-# RUN yarn build
+# RUN npm run build
 
 FROM nginx:1.19.4
 EXPOSE 80
