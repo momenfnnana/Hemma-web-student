@@ -91,8 +91,7 @@ export class _CategoryDetails extends Component {
       currentTab: null,
       currentSlug: "tab-two",
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
-      noMoreCourses:false,
-      tabsScrollColor: null
+      noMoreCourses:false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -243,13 +242,6 @@ export class _CategoryDetails extends Component {
   }
   handleNavForProLicense() {
     // this.simulateClick(ProfessionalLicenseText)
-  }
-  listenScrollEvent = e => {
-    if (window.scrollY > 400) {
-      this.setState({...this.state, tabsScrollColor: 'white'})
-    } else {
-      this.setState({color: null})
-    }
   }
   async componentDidMount() {
     const {
@@ -918,7 +910,7 @@ export class _CategoryDetails extends Component {
             <div className="lic-tabs">
               <nav>
                 <div
-                  className="nav d-flex align-items-center justify-content-center mb-6 col-12 nav-scroll"
+                  className="nav d-flex align-items-center justify-content-center mb-6 col-12"
                   id="nav-tab"
                   role="tablist" 
                 >
