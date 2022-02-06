@@ -91,7 +91,7 @@ export class _CategoryDetails extends Component {
       currentTab: null,
       currentSlug: "tab-two",
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
-      noMoreCourses:false,
+      noMoreCourses:false
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -243,7 +243,6 @@ export class _CategoryDetails extends Component {
   handleNavForProLicense() {
     // this.simulateClick(ProfessionalLicenseText)
   }
-
   async componentDidMount() {
     const {
       match: { params },
@@ -913,7 +912,7 @@ export class _CategoryDetails extends Component {
                 <div
                   className="nav d-flex align-items-center justify-content-center mb-6 col-12"
                   id="nav-tab"
-                  role="tablist"
+                  role="tablist" 
                 >
                   {/* {this.rendersubCategories()} */}
                   <SubCategories
@@ -932,7 +931,7 @@ export class _CategoryDetails extends Component {
                       currentTab={this.state.currentTab}
                       id="tab-two"
                       name={"دورات المنصة"}
-                      onClick={() => {  
+                      onClick={() => {
                         this.changeTab("tab-two");
                         this.coursesRef.current.scrollIntoView();
                       }}
@@ -960,7 +959,7 @@ export class _CategoryDetails extends Component {
                       name="الرخصة المهنية"
                       onClick={() => {
                         this.changeTab("الرخصة المهنية");
-                        this.professionalLicenseRef.current.scrollIntoView();  
+                        this.professionalLicenseRef.current.scrollIntoView();
                       }}
                     />
                   )}
@@ -977,7 +976,7 @@ export class _CategoryDetails extends Component {
                     />
                   )}
 
-                  {!!this.state.categoryGroups.length&& (
+                  {!!this.state.categoryGroups.length && (
                     <NavTab
                       currentTab={this.state.currentTab}
                       id={"tab-three"}
@@ -999,18 +998,23 @@ export class _CategoryDetails extends Component {
                     {this.renderCourses(this.state.courses)}
                   </div>
                 </ShowAt> */}
-                {this.state.courses?.length ? (
-                    <h3 ref={this.coursesRef} className="section-title">دورات المنصة</h3>
-                  ):null}
-                <div className="row">
-                  {this.renderCourses(this.state.courses)}
-                </div>
+                {this.state.courses?.length &&
+                !this.state.hasProfessionalLicense ? (
+                  <>
+                    <h3 ref={this.coursesRef} className="section-title">
+                      دورات المنصة
+                    </h3>
+                    <div className="row">
+                      {this.renderCourses(this.state.courses)}
+                    </div>{" "}
+                  </>
+                ) : null}
+
                 <div className="tab-content" id="nav-tabContent">
-                <div className="container">
-                      <div className="row">
-                        {
-                        this.state.noMoreCourses ||
-                        this.state.courses?.length>0 && (
+                  <div className="container">
+                    <div className="row">
+                      {this.state.noMoreCourses ||
+                        (this.state.courses?.length > 0 && (
                           <div className="row col-md-12">
                             <div className="col-md-12 d-flex align-items-center justify-content-center">
                               <button
@@ -1026,9 +1030,9 @@ export class _CategoryDetails extends Component {
                               </button>
                             </div>
                           </div>
-                        )}
-                      </div>
+                        ))}
                     </div>
+                  </div>
                   {/* <ShowAt 
                     at={
                       !staticTabs.includes(this.state.currentTab) ||
@@ -1058,30 +1062,37 @@ export class _CategoryDetails extends Component {
                     </div>
                   </ShowAt> */}
                   <>
-                  {this.state.hasProfessionalLicense ? (
-                    <h3 ref={this.professionalLicenseRef} className="section-title">الرخصة المهنية</h3>
-                  ):null}
-                    {this.state.currentTab === ProfessionalLicenseText && (
+                    {this.state.hasProfessionalLicense ? (
+                    <>
+                      <h3
+                        ref={this.professionalLicenseRef}
+                        className="section-title"
+                      >
+                        الرخصة المهنية
+                      </h3>
                       <ProfessionalLicense
-                        categoryData={
-                          this.state.proLicenseDetails || this.state.details
-                        }
-                      />
-                    )}
+                      categoryData={
+                        this.state.proLicenseDetails || this.state.details
+                      }
+                    />
+                    </>
+                    ) : null}
                   </>
                   <>
-                  {this.state.categoryGroups?.length>0? (
-                      <h3 ref={this.freeGroupsRef} className="section-title">المجموعات المجانيه</h3>
-                    ):null}
-                    {this.state.categoryGroups?.length>0?(
+                    {this.state.categoryGroups?.length > 0 ? (
+                      <h3 ref={this.freeGroupsRef} className="section-title">
+                        المجموعات المجانيه
+                      </h3>
+                    ) : null}
+                    {this.state.categoryGroups?.length > 0 ? (
                       <div className="mb-5">{this.renderCategoryGroups()}</div>
-                    ):null}
+                    ) : null}
                   </>
-                  {
-                    this.state.lectures?.length ? (
-                      <h3 ref={this.freeMeetingsRef} className="section-title">{freeMeetingsText}</h3>
-                    ) : null
-                  }
+                  {this.state.lectures?.length ? (
+                    <h3 ref={this.freeMeetingsRef} className="section-title">
+                      {freeMeetingsText}
+                    </h3>
+                  ) : null}
                   <div className="container">
                     <div className="row">{this.renderLectures()}</div>
                   </div>
@@ -1090,16 +1101,21 @@ export class _CategoryDetails extends Component {
                       <div className="row">{this.renderLectures()}</div>
                     </div>
                   </ShowAt> */}
-                  {this.state.successes?.length?(
-                    <h3 ref={this.successesRef} className="section-title mt-5">نجاحات همة</h3>
-                  ):null}
-                  <div className=""
+                  {this.state.successes?.length ? (
+                    <h3 ref={this.successesRef} className="section-title mt-5">
+                      نجاحات همة
+                    </h3>
+                  ) : null}
+                  <div
+                    className=""
                     style={{
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
-                      display:'grid',
-                      gridRowGap:"1.5rem",
-                      gridColumnGap:"0.5rem"
-                    }}>
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(345px, 1fr))",
+                      display: "grid",
+                      gridRowGap: "1.5rem",
+                      gridColumnGap: "0.5rem",
+                    }}
+                  >
                     {this.renderSuccess()}
                     {this.state.hideBtnSuccess && (
                       <div className="row col-md-12">
@@ -1118,32 +1134,35 @@ export class _CategoryDetails extends Component {
                       </div>
                     )}
                   </div>
-                  {this.state.subcategoriesdetails?.map((item,index)=>item?.courses?.length?(
+                  {this.state.subcategoriesdetails?.map((item, index) =>
+                    item?.courses?.length ? (
                       <>
                         <h3 key={index} className="section-title mt-5">
                           {item?.nameAr}
                         </h3>
-                        {
-                          item?.courses?.map((courseItem)=>(
-                            <React.Fragment>
-                              <div className="col-lg-4">
-                                <Card key={courseItem.id} course={courseItem} />
-                              </div>
-                            </React.Fragment>
-                          ))
-                        }
+                        {item?.courses?.map((courseItem) => (
+                          <React.Fragment>
+                            <div className="col-lg-4">
+                              <Card key={courseItem.id} course={courseItem} />
+                            </div>
+                          </React.Fragment>
+                        ))}
                       </>
-                    ):null)}
+                    ) : null
+                  )}
                   <div>
                     <div className="container">
                       <ShowAt at={this.state.currentTab === "tab-four"}>
-                        <div className=""
+                        <div
+                          className=""
                           style={{
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(345px, 1fr))',
-                            display:'grid',
-                            gridRowGap:"1.5rem",
-                            gridColumnGap:"0.5rem"
-                          }}>
+                            gridTemplateColumns:
+                              "repeat(auto-fill, minmax(345px, 1fr))",
+                            display: "grid",
+                            gridRowGap: "1.5rem",
+                            gridColumnGap: "0.5rem",
+                          }}
+                        >
                           {this.renderSuccess()}
                           {this.state.hideBtnSuccess && (
                             <div className="row col-md-12">
