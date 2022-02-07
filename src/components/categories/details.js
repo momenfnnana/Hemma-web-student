@@ -91,7 +91,10 @@ export class _CategoryDetails extends Component {
       currentTab: null,
       currentSlug: "tab-two",
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
-      noMoreCourses:false
+      noMoreCourses:false,
+      showProLicense:true,
+      showGeneralCourse:true,
+      showSpecialityCourse:true,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -252,6 +255,25 @@ export class _CategoryDetails extends Component {
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
         const hasProLicense = this.hasProfessionalLicense(response.data.data);
+        if(hasProLicense){
+          axios
+          .get(`${apiBaseUrl}/categories/GetPlatformCoursesFlags/${params.slug}`)
+          .then((response) => {
+            this.setState({
+              showProLicense:response.data?.data?.hasActiveCourses,
+              showGeneralCourse:response.data?.data?.hasActiveGeneralCourses,
+              showSpecialityCourse:response.data?.data?.hasActiveSpecialityCourses,
+            })
+          })
+          .catch((error) => {
+            this.setState({
+              showProLicense:true,
+              showGeneralCourse:true,
+              showSpecialityCourse:true,
+            })
+            console.log(error);
+          });
+        }
         if (hasProLicense) this.handleNavForProLicense();
         this.setState(
           {
@@ -949,7 +971,7 @@ export class _CategoryDetails extends Component {
                     />
                   )}
 
-                  {this.state.hasProfessionalLicense && (
+                  {this.state.hasProfessionalLicense && this.state?.showProLicense && (
                     <NavTab
                       currentTab={this.state.currentTab}
                       isActive={
@@ -980,7 +1002,7 @@ export class _CategoryDetails extends Component {
                     <NavTab
                       currentTab={this.state.currentTab}
                       id={"tab-three"}
-                      name="المجموعات المجانيه"
+                      name="المجموعات المجانية"
                       onClick={() => {
                         this.changeTab("tab-three");
                         this.freeGroupsRef.current.scrollIntoView();
@@ -1070,18 +1092,25 @@ export class _CategoryDetails extends Component {
                     </div>
                   </ShowAt> */}
                   <>
-                    {this.state.hasProfessionalLicense ? (
+                    {this.state.hasProfessionalLicense ?  (
                     <>
                       <h3
                         ref={this.professionalLicenseRef}
-                        className="section-title"
+                        className="section-title mt-5"
                       >
-                        الرخصة المهنية
+                        {
+                          this.state.showProLicense?
+                        'الرخصة المهنية'
+:''
+                        }
                       </h3>
                       <ProfessionalLicense
                       categoryData={
                         this.state.proLicenseDetails || this.state.details
                       }
+                      showProLicense={this.state.showProLicense}
+                      showGeneralCourse={this.state.showGeneralCourse}
+                      showSpecialityCourse={this.state.showSpecialityCourse}
                     />
                     </>
                     ) : null}
@@ -1089,7 +1118,7 @@ export class _CategoryDetails extends Component {
                   <>
                     {this.state.categoryGroups?.length > 0 ? (
                       <h3 ref={this.freeGroupsRef} className="section-title">
-                        المجموعات المجانيه
+                        المجموعات المجانية
                       </h3>
                     ) : null}
                     {this.state.categoryGroups?.length > 0 ? (

@@ -36,6 +36,8 @@ const getSpecUrl = (CategoryId) =>
 export default withRouter(function ProfessionalCourses({
   categoryData,
   history,
+  showSpecialityCourse,
+  showGeneralCourse
 }) {
   const [_getSpecialties, _specialites, _specLoading] = useFetch("", {
     isAuthed: true,
@@ -595,7 +597,7 @@ export default withRouter(function ProfessionalCourses({
 
   return (
     <div className="row mt-6">
-      {show?.["spec"] && (
+      {show?.["spec"] && showSpecialityCourse && (
         <ProfessionalCourse
           url={specUrl}
           title={"دورات الرخصة المهنية"}
@@ -617,7 +619,7 @@ export default withRouter(function ProfessionalCourses({
           refMethods={refMethods}
         />
       )}
-      {show?.["general"] && (
+      {show?.["general"] && showGeneralCourse && (
         <ProfessionalCourse
           setSelectedGeneralCourse={setSelectedGeneralCourse}
           descriptionData={selectedGeneralCourse}
