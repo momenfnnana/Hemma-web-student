@@ -141,6 +141,46 @@ export default class QuickQuestions extends Component {
         console.log(error);
       });
   }
+  async componentDidUpdate(prevProps,prevState){
+    const {isJoined:currentIsJoined} = this.state;
+    const {isJoined:prevIsJoined}=prevState;
+    if(prevIsJoined!==currentIsJoined&&currentIsJoined===true){
+      const {
+        match: { params },
+      } = this.props;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(
+          `${apiBaseUrl}/CategoryGroupExams?categoryGroupId=${params.categoryGroupId}&type=Exam`,
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          this.setState({ exams: response.data.data });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  
+      axios
+        .get(
+          `${apiBaseUrl}/CategoryGroupExams?categoryGroupId=${params.categoryGroupId}&type=Training`,
+          {
+            headers,
+          }
+        )
+        .then((response) => {
+          this.setState({ training: response.data.data });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
   createTrainingLink(slug, categoryGroupId, traId) {
     let baseUrl = process.env.PUBLIC_URL;
     return baseUrl + `/categories/${slug}/${categoryGroupId}/training/${traId}`
