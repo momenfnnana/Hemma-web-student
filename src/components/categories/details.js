@@ -943,6 +943,31 @@ export class _CategoryDetails extends Component {
                     subCategories={this.state.subcategoriesdetails}
                     currentTab={this.state.currentTab}
                   />
+                  {!!this.state.lectures?.length && (
+                    <NavTab
+                      id={freeMeetingsText}
+                      currentTab={this.state.currentTab}
+                      name={freeMeetingsText}
+                      onClick={() => {
+                        this.changeTab(freeMeetingsText);
+                        this.freeMeetingsRef.current.scrollIntoView();
+                      }}
+                    />
+                  )}
+                  {this.state.hasProfessionalLicense && this.state?.showProLicense && (
+                    <NavTab
+                      currentTab={this.state.currentTab}
+                      isActive={
+                        this.state.currentTab === ProfessionalLicenseText
+                      }
+                      id={ProfessionalLicenseText}
+                      name="الرخصة المهنية"
+                      onClick={() => {
+                        this.changeTab("الرخصة المهنية");
+                        this.professionalLicenseRef.current.scrollIntoView();
+                      }}
+                    />
+                  )}
                   <ShowAt
                     at={
                       !this.state.hasProfessionalLicense &&
@@ -959,45 +984,6 @@ export class _CategoryDetails extends Component {
                       }}
                     />
                   </ShowAt>
-                  {!!this.state.lectures?.length && (
-                    <NavTab
-                      id={freeMeetingsText}
-                      currentTab={this.state.currentTab}
-                      name={freeMeetingsText}
-                      onClick={() => {
-                        this.changeTab(freeMeetingsText);
-                        this.freeMeetingsRef.current.scrollIntoView();
-                      }}
-                    />
-                  )}
-
-                  {this.state.hasProfessionalLicense && this.state?.showProLicense && (
-                    <NavTab
-                      currentTab={this.state.currentTab}
-                      isActive={
-                        this.state.currentTab === ProfessionalLicenseText
-                      }
-                      id={ProfessionalLicenseText}
-                      name="الرخصة المهنية"
-                      onClick={() => {
-                        this.changeTab("الرخصة المهنية");
-                        this.professionalLicenseRef.current.scrollIntoView();
-                      }}
-                    />
-                  )}
-
-                  {!!this.state.successes.length && (
-                    <NavTab
-                      currentTab={this.state.currentTab}
-                      id={"tab-four"}
-                      name="نجاحات همة"
-                      onClick={() => {
-                        this.changeTab("tab-four");
-                        this.successesRef.current.scrollIntoView();
-                      }}
-                    />
-                  )}
-
                   {!!this.state.categoryGroups.length && (
                     <NavTab
                       currentTab={this.state.currentTab}
@@ -1006,6 +992,17 @@ export class _CategoryDetails extends Component {
                       onClick={() => {
                         this.changeTab("tab-three");
                         this.freeGroupsRef.current.scrollIntoView();
+                      }}
+                    />
+                  )}
+                  {!!this.state.successes.length && (
+                    <NavTab
+                      currentTab={this.state.currentTab}
+                      id={"tab-four"}
+                      name="نجاحات همة"
+                      onClick={() => {
+                        this.changeTab("tab-four");
+                        this.successesRef.current.scrollIntoView();
                       }}
                     />
                   )}
