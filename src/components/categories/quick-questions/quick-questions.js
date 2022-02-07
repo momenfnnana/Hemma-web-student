@@ -668,7 +668,7 @@ export default class QuickQuestions extends Component {
                   </div>
                 </>
               )}
-              {this.state.isJoined && (
+              {/* {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row ">
                     <div className="col-md-12 d-flex align-items-center">
@@ -723,8 +723,8 @@ export default class QuickQuestions extends Component {
                     )}
                   </div>
                 </React.Fragment>
-              )}
-              {this.state.isJoined && (
+              )} */}
+              {/* {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row pt-4">
                     <div className="col-md-12 d-flex align-items-center">
@@ -789,7 +789,7 @@ export default class QuickQuestions extends Component {
                     )}
                   </div>
                 </React.Fragment>
-              )}
+              )} */}
               {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row pt-4">
