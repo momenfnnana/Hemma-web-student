@@ -998,6 +998,14 @@ export class _CategoryDetails extends Component {
                     {this.renderCourses(this.state.courses)}
                   </div>
                 </ShowAt> */}
+                {this.state.lectures?.length ? (
+                    <h3 ref={this.freeMeetingsRef} className="section-title">
+                      {freeMeetingsText}
+                    </h3>
+                  ) : null}
+                  <div className="container">
+                    <div className="row">{this.renderLectures()}</div>
+                  </div>
                 {this.state.courses?.length &&
                 !this.state.hasProfessionalLicense ? (
                   <>
@@ -1088,14 +1096,7 @@ export class _CategoryDetails extends Component {
                       <div className="mb-5">{this.renderCategoryGroups()}</div>
                     ) : null}
                   </>
-                  {this.state.lectures?.length ? (
-                    <h3 ref={this.freeMeetingsRef} className="section-title">
-                      {freeMeetingsText}
-                    </h3>
-                  ) : null}
-                  <div className="container">
-                    <div className="row">{this.renderLectures()}</div>
-                  </div>
+                  
                   {/* <ShowAt at={this.state.currentTab === freeMeetingsText}>
                     <div className="container">
                       <div className="row">{this.renderLectures()}</div>
