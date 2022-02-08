@@ -937,12 +937,6 @@ export class _CategoryDetails extends Component {
                   role="tablist" 
                 >
                   {/* {this.rendersubCategories()} */}
-                  <SubCategories
-                    hasProfessionalLicense={this.state.hasProfessionalLicense}
-                    handleClick={(category) => this.handleClick(category)}
-                    subCategories={this.state.subcategoriesdetails}
-                    currentTab={this.state.currentTab}
-                  />
                   {!!this.state.lectures?.length && (
                     <NavTab
                       id={freeMeetingsText}
@@ -951,20 +945,6 @@ export class _CategoryDetails extends Component {
                       onClick={() => {
                         this.changeTab(freeMeetingsText);
                         this.freeMeetingsRef.current.scrollIntoView();
-                      }}
-                    />
-                  )}
-                  {this.state.hasProfessionalLicense && this.state?.showProLicense && (
-                    <NavTab
-                      currentTab={this.state.currentTab}
-                      isActive={
-                        this.state.currentTab === ProfessionalLicenseText
-                      }
-                      id={ProfessionalLicenseText}
-                      name="الرخصة المهنية"
-                      onClick={() => {
-                        this.changeTab("الرخصة المهنية");
-                        this.professionalLicenseRef.current.scrollIntoView();
                       }}
                     />
                   )}
@@ -984,6 +964,26 @@ export class _CategoryDetails extends Component {
                       }}
                     />
                   </ShowAt>
+                  {this.state.hasProfessionalLicense && this.state?.showProLicense && (
+                    <NavTab
+                      currentTab={this.state.currentTab}
+                      isActive={
+                        this.state.currentTab === ProfessionalLicenseText
+                      }
+                      id={ProfessionalLicenseText}
+                      name="الرخصة المهنية"
+                      onClick={() => {
+                        this.changeTab("الرخصة المهنية");
+                        this.professionalLicenseRef.current.scrollIntoView();
+                      }}
+                    />
+                  )}
+                  <SubCategories
+                    hasProfessionalLicense={this.state.hasProfessionalLicense}
+                    handleClick={(category) => this.handleClick(category)}
+                    subCategories={this.state.subcategoriesdetails}
+                    currentTab={this.state.currentTab}
+                  />
                   {!!this.state.categoryGroups.length && (
                     <NavTab
                       currentTab={this.state.currentTab}
@@ -1028,7 +1028,7 @@ export class _CategoryDetails extends Component {
                 {this.state.courses?.length &&
                 !this.state.hasProfessionalLicense ? (
                   <>
-                    <h3 ref={this.coursesRef} className="section-title">
+                    <h3 ref={this.coursesRef} className="section-title mt-5">
                       دورات المنصة
                     </h3>
                     <div className="row">
@@ -1098,7 +1098,7 @@ export class _CategoryDetails extends Component {
                         {
                           this.state.showProLicense?
                         'الرخصة المهنية'
-:''
+                          :''
                         }
                       </h3>
                       <ProfessionalLicense
@@ -1112,6 +1112,22 @@ export class _CategoryDetails extends Component {
                     </>
                     ) : null}
                   </>
+                  {this.state.subcategoriesdetails?.map((item, index) =>
+                    item?.courses?.length ? (
+                      <>
+                        <h3 key={index} className="section-title mt-5">
+                          {item?.nameAr}
+                        </h3>
+                        {item?.courses?.map((courseItem) => (
+                          <React.Fragment>
+                            <div className="col-lg-4">
+                              <Card key={courseItem.id} course={courseItem} />
+                            </div>
+                          </React.Fragment>
+                        ))}
+                      </>
+                    ) : null
+                  )}
                   <>
                     {this.state.categoryGroups?.length > 0 ? (
                       <h3 ref={this.freeGroupsRef} className="section-title">
@@ -1160,56 +1176,6 @@ export class _CategoryDetails extends Component {
                         </div>
                       </div>
                     )}
-                  </div>
-                  {this.state.subcategoriesdetails?.map((item, index) =>
-                    item?.courses?.length ? (
-                      <>
-                        <h3 key={index} className="section-title mt-5">
-                          {item?.nameAr}
-                        </h3>
-                        {item?.courses?.map((courseItem) => (
-                          <React.Fragment>
-                            <div className="col-lg-4">
-                              <Card key={courseItem.id} course={courseItem} />
-                            </div>
-                          </React.Fragment>
-                        ))}
-                      </>
-                    ) : null
-                  )}
-                  <div>
-                    <div className="container">
-                      <ShowAt at={this.state.currentTab === "tab-four"}>
-                        <div
-                          className=""
-                          style={{
-                            gridTemplateColumns:
-                              "repeat(auto-fill, minmax(345px, 1fr))",
-                            display: "grid",
-                            gridRowGap: "1.5rem",
-                            gridColumnGap: "0.5rem",
-                          }}
-                        >
-                          {this.renderSuccess()}
-                          {this.state.hideBtnSuccess && (
-                            <div className="row col-md-12">
-                              <div className="col-md-12 d-flex align-items-center justify-content-center">
-                                <button
-                                  className="btn dark-btn unset-height unset-line-height br-5 w-20"
-                                  onClick={this.moreSucces}
-                                >
-                                  {this.state.loading == true ? (
-                                    <Loader type="ball-clip-rotate" />
-                                  ) : (
-                                    "عرض المزيد"
-                                  )}
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </ShowAt>
-                    </div>
                   </div>
                 </div>
               </nav>
