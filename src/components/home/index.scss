@@ -1,8 +1,102 @@
-.glide_features{
-
-    @media (max-width:768px){
-        & ul{
-            flex-direction: column !important;
-        }
+glide_features {
+  @media (max-width: 768px) {
+    & ul {
+      flex-direction: column !important;
     }
+  }
+}
+.banner-container {
+  background-color: #54bac5;
+  & .banner-title {
+    font-size: 57px;
+    font-weight: bold;
+    color: #53438b;
+    background-color: #fce77c;
+    border-top-left-radius: 56px;
+    border-bottom-left-radius: 56px;
+    text-align: left;
+    padding-left: 50px;
+    @media (max-width: 1620px) {
+      font-size: 40px;
+    }
+    @media (max-width: 1216px) {
+      font-size: 30px;
+    }
+    @media (max-width: 978px) {
+      font-size: 25px;
+    }
+    @media (max-width: 859px) {
+      font-size: 23px;
+    }
+    @media (max-width: 767px) {
+      font-size: 18px;
+    }
+    @media (max-width: 500px) {
+      font-size: 15px;
+    }
+    & .rectangle {
+      height: 100px;
+      width: 41px;
+      background-color: #fff;
+      margin-top: -50px;
+    }
+  }
+  & .free-container {
+    background-color: #ff4040;
+    height: 51.63px;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    @media (max-width: 516px) {
+      
+    }
+    & .free-text {
+      color: #fff;
+      font-size: 29px;
+      @media (max-width: 767px) {
+        font-size: 18px;
+      }
+    }
+    & .liveIcon {
+      border: 2px solid #54bac5;
+    }
+  }
+  & .live-hint-container {
+    background-color: #fce77c;
+    border-radius: 10px;
+    & .triangle-right {
+      width: 0;
+      height: 0;
+      border-top: 25px solid transparent;
+      border-left: 50px solid #fce77c;
+      border-bottom: 25px solid transparent;
+      top: -15px;
+      left: 15px;
+      z-index: 1;
+    }
+    & .live-text {
+      color: #54bac5;
+      font-size: 16px;
+      z-index: 2;
+      padding-inline: 30px;
+      padding-block: 10px;
+      @media (max-width: 1019px) {
+        padding-block: 8px;
+        padding-inline: 26px;
+      }
+      @media (max-width: 959px) {
+        padding-inline: 22px;
+      }
+      @media (max-width: 899px) {
+        font-size: 14px;
+        padding-inline: 20px;
+      }
+      @media (max-width: 809px) {
+        font-size: 14px;
+        padding-inline: 10px;
+      }
+    }
+  }
 }
