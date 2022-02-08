@@ -707,6 +707,11 @@ class HomeComponent extends Component {
       </React.Fragment>
     ));
   }
+  navigateToCategory(){
+    // staging id  3689f1e2-9394-48ba-b6bf-47ff95bff5dd
+    // production id 6243c50a-f031-4cdf-be05-940671c43ea8
+    this.props.history.push(`/categories/details/3689f1e2-9394-48ba-b6bf-47ff95bff5dd`);
+  }
   render() {
     return (
       <React.Fragment>
@@ -723,8 +728,34 @@ class HomeComponent extends Component {
               //   height: "85px"
               // }}
             >
-              <div className="container program-container py-4 ">
-                <p className="d-flex justify-contet-center align-items-center">
+              <div className="container-fluid banner-container py-4">
+                <div className="row">
+                  <div className='col-7 banner-title position-relative d-flex justify-content-end align-items-center'>
+                    <div className='rectangle mx-4'></div>
+                    <p className="m-0">المراجعة المكثفة للرخصة المهنية</p>
+                  </div>
+                  <div className="col-1"></div>
+                  <div className="col-4 my-auto">
+                    <div className="live-container w-40 d-flex-column align-items-end" onClick={()=>this.navigateToCategory()}>
+                      <div className="free-container d-flex justify-content-between align-items-center">
+                        <p className="free-text m-0 px-3">مجـــــــــانا</p>
+                        <img
+                          src={
+                            process.env.PUBLIC_URL +
+                            "/assets/images/liveIcon.png"
+                          }
+                          alt="liveIcon"
+                          className="liveIcon rounded-circle"
+                        />
+                      </div>
+                      <div className="live-hint-container d-flex justify-content-center align-items-center position-relative mt-2">
+                        <p className="m-0 live-text">بث مباشر</p>
+                        <div class="triangle-right position-absolute"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* <p className="d-flex justify-contet-center align-items-center">
                   عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
                   التواصل على
                   <span
@@ -743,7 +774,7 @@ class HomeComponent extends Component {
                   >
                     <FaWhatsapp size={40} />
                   </div>
-                </p>
+                </p> */}
                 {/* {window.innerWidth > 768 ? (
                     <h1 className="h1 m-0 mb-4 animated bounceInUp">
                       <span
