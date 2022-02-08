@@ -662,12 +662,12 @@ export default class QuickQuestions extends Component {
             </div>
             <div className="col-md-10">
               <div className="col-md-12">
-                <h5 className="dark-text mt-2">الأسئلة السريعة</h5>
+                {/* <h5 className="dark-text mt-2">الأسئلة السريعة</h5> */}
                 {/* <p className="dark-silver-text small text-break mb-2">
                   احصل على آخر إصداراتنا في القدرات والتحصيلي
                 </p> */}
               </div>
-              <div className="col-md-12 d-flex align-items-center mb-4">
+              {/* <div className="col-md-12 d-flex align-items-center mb-4">
                 <h6 className="dark-text">
                   عدد الأسئلة المتاحة الآن على المجموعة:{" "}
                   <span className="ar-text">
@@ -707,7 +707,7 @@ export default class QuickQuestions extends Component {
                     </div>
                   </div>
                 </>
-              )}
+              )} */}
               {/* {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row ">
@@ -830,7 +830,7 @@ export default class QuickQuestions extends Component {
                   </div>
                 </React.Fragment>
               )} */}
-              {this.state.isJoined && (
+              {/* {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row pt-4">
                     <div className="col-md-12 d-flex align-items-center pb-4">
@@ -901,7 +901,7 @@ export default class QuickQuestions extends Component {
                     </div>
                   </div>
                 </React.Fragment>
-              )}
+              )} */}
               {this.state.isJoined && (
                 <React.Fragment>
                   <div className="row pt-4">
