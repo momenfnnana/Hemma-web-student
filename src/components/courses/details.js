@@ -13,9 +13,11 @@ import { apiBaseUrl } from "../../api/helpers";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 import RecordingVideo from "./recording-video";
-import "./styles.sass";
+import "./styles.sass"; 
+import "./index.scss";
 import { PageLoader } from "./page-loader";
 import { getAuthenticatedAxios, getDataFromResponse } from "../../api/helpers";
 var moment = require("moment-hijri");
@@ -35,6 +37,7 @@ export default class CourseDetails extends Component {
       confirm: false,
       discountcourse:{},
       discountprecentage:0,
+      filterValue:4
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -272,8 +275,16 @@ export default class CourseDetails extends Component {
   }
   renderInstructors() {
     const instructors = this.state.details && this.state.details.instructors;
+    const {filterValue}=this.state;
+    const changeFliterValue=()=>{
+      if(filterValue===4){
+        this.setState({filterValue:instructors?.length})
+      }else{
+        this.setState({filterValue:4})
+      }
+    }
     if (instructors) {
-      return instructors.map((instructor) => (
+      return <>{instructors?.filter((_,i)=>i<filterValue)?.map((instructor) => (
         <div
           className="white-bg border-bottom d-flex align-items-center mh-55 p-3"
           key={instructor.id}
@@ -313,7 +324,10 @@ export default class CourseDetails extends Component {
             )}
           </div> */}
         </div>
-      ));
+      ))}{instructors?.length>=4?<div
+        className="white-bg border-bottom d-flex align-items-center justify-content-center mh-55 p-3 see-more"
+        onClick={()=>changeFliterValue()}
+      >مشاهدة المزيد<MdKeyboardArrowDown className={filterValue===4?"":"rotateBox"}/></div>:null}</>
     }
   }
 
