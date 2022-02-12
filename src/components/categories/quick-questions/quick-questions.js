@@ -330,7 +330,7 @@ export default class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
-              <ToastDemo copyLink={{ btnName: 'مشاركة التدريب', link: window.location.href }} />
+              <ToastDemo copyLink={{ btnName: 'مشاركة التدريب', link: `/categories/${slug}/${categoryGroupId}/training/${tra.id}` }} />
             </td>
           </tr>
         </React.Fragment>
