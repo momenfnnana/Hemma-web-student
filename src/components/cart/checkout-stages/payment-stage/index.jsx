@@ -1,5 +1,5 @@
 import React from "react";
-import { OnlinePayment } from "../../OnlinePayment";
+import OnlinePayment from "../../OnlinePayment";
 import { BankPayment } from "./../../BankPayment";
 import classnames from "classnames";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";

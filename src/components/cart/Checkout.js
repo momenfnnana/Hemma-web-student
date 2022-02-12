@@ -11,7 +11,7 @@ import { OnlineShippingAddressForm } from "./OnlineShippingAddressForm";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
 import { BankPayment } from "./BankPayment";
-import { OnlinePayment } from "./OnlinePayment";
+import OnlinePayment from "./OnlinePayment";
 import Stepper from './../../shared-components/stepper/index';
 import DeliveryStage from './checkout-stages/delivery/index';
 import PaymentStage from './checkout-stages/payment-stage/index';
