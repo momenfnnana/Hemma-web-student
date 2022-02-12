@@ -194,6 +194,9 @@ export default class QuickQuestions extends Component {
       match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
+    if(!token){
+      this.props.history.push("/auth/login");
+    }
     let headers = {
       Authorization: `Bearer ${token}`,
     };
