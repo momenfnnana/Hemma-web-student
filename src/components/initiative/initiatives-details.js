@@ -112,7 +112,7 @@ class InitiativesDetailsComponent extends Component {
               {
                 button: "متابعة",
               }
-            );
+            ).then(() => this.props.history.push("/auth/login"));
             break;
           default:
             console.log(error);

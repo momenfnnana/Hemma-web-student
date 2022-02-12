@@ -44,6 +44,10 @@ export default class CourseDetails extends Component {
   }
 
   confirmationPopup() {
+    var token = localStorage.getItem("token");
+    if(!token){
+      this.props.history.push("/auth/login");
+    }
     swal(
       `هل أنت متأكد أنك تريد الاشتراك في دورة (${this.state.details.nameAr})؟`,
       {
