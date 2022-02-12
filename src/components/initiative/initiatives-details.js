@@ -105,7 +105,14 @@ class InitiativesDetailsComponent extends Component {
       .catch((error) => {
         switch (error.response && error.response.status) {
           case 401:
-            this.props.history.push("/auth/login");
+            swal(
+              "عفواً",
+              "يجب عليك تسجيل الدخول/تسجيل حساب حتى تتمكن من القيام بهذه الخطوة",
+              "error",
+              {
+                button: "متابعة",
+              }
+            ).then(() => this.props.history.push("/auth/login"));
             break;
           default:
             console.log(error);
