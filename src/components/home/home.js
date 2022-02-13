@@ -354,14 +354,14 @@ class HomeComponent extends Component {
 
   async onClick(Category) {
     try {
-      const { slug: categSlug } = Category;
+      const { slug: categSlug,id } = Category;
 
       const { navigationType, courses } = await this.validateHasSubCategories(
         categSlug
       );
 
       //if(!childCateg.length) this.handleNoChildCategories()
-      const url = `/categories/details/${categSlug}`;
+      const url = `/categories/details/${id}`;
       if (!navigationType) throw new Error(Category.inactiveCategoryMessage);
       if (navigationType === "_blank") window.open(url);
       else {
