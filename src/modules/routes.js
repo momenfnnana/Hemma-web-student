@@ -53,6 +53,7 @@ import {
   Preparing,
   InitiativesDetails,
   CertificatesList,
+  myFreeGroups,
   EnterToLecture,
   BillingList,
   BillingCourses,
@@ -181,7 +182,8 @@ function loadingProgressbar() {
       path.startsWith("/certificate")||
       path.startsWith("/search")||
       path.startsWith("/home/hemma-succes")||
-      path.startsWith("/hemma-new-polices")
+      path.startsWith("/hemma-new-polices")||
+      path.startsWith("/myFreeGroups")
       
     ) {
       img = "pages-bg.png";
@@ -336,6 +338,11 @@ class MainRouterComponent extends Component {
 
               <Redirect exact from="/account" to="/account/update" />
               <Route path="/account" component={requireAuth(Account)} />
+              <Route
+                path="/myFreeGroups"
+                exact
+                component={requireAuth(myFreeGroups)}
+              />
               <Route
                 path="/certificates"
                 exact

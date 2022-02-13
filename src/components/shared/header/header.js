@@ -510,6 +510,9 @@ return(
                           <NavLink to="/billing" className="nav-link d-inline-block">الحركات المالية</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">
+                          <NavLink to="/myFreeGroups" className="nav-link d-inline-block">مجموعاتي المجانية</NavLink>
+                          </DropdownItem>
+                          <DropdownItem className="p-0">
                           <NavLink to="/certificates" className="nav-link d-inline-block"> شهاداتي</NavLink>
                           </DropdownItem>
                           <DropdownItem className="p-0">

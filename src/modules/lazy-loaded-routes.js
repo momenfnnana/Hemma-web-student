@@ -20,6 +20,7 @@ export const StartExam = lazy(()=> import("../components/categories/quick-questi
 export const Preparing = lazy(()=> import("../components/account/certificates/preparing"))
 export const Certificate = lazy(()=> import('./../components/account/certificates/certificate'))
 export const CertificatesList = lazy(()=> import('./../components/account/certificates/certificates-list'))
+export const myFreeGroups = lazy(()=> import('./../components/account/myFreeGroups'))
 export const InitiativesDetails = lazy(()=> import('./../components/initiative/initiatives-details'))
 export const InitiativesExam = lazy(()=> import('./../components/initiative/initiatives-exam'))
 export const InitiativesRole = lazy(()=> import('./../components/initiative/initiatives-role'))
