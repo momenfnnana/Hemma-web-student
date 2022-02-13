@@ -9,13 +9,15 @@ export const  SubCategories = ({subCategories,currentTab,handleClick})=> {
     }
 
     return subCategories.map((Category, count) => (
+      Category?.courses?.length ? (
         <NavTab
-            forceActive={Category.professionalLicense && currentTab=== ProfessionalLicenseText}
+            forceActive={currentTab === Category?.id}
             key={Category.id}
             currentTab={currentTab}
             id={Category?.slug}
             name={Category.nameAr}
             onClick={() => onClick(Category)}
         />
+        ) : null
 ));
 }
