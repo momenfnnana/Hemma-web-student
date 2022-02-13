@@ -89,12 +89,13 @@ export class _CategoryDetails extends Component {
       competitionsShimmerLoader: true,
       publicationsShimmerLoader: true,
       currentTab: null,
-      currentSlug: "tab-two",
+      currentSlug: null,
       nextPageUrl: `${apiBaseUrl}/categories/${this.props.match.params.slug}/courses?Page=${this.page}&Limit=${this.limit}&featuredOnly=true`,
       noMoreCourses:false,
       showProLicense:true,
       showGeneralCourse:true,
       showSpecialityCourse:true,
+      categoryDetails:{}
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -132,6 +133,9 @@ export class _CategoryDetails extends Component {
           noMoreCourses:false,
         })
       }
+      // if(courses?.length&& this.state.currentTab!==freeMeetingsText&&this.state.currentSlug!==freeMeetingsText){
+      //   this.changeTab("tab-two");
+      // }
       this.setState({
         courses,
         hasNoPlatformCourses: !courses?.length,
@@ -255,6 +259,10 @@ export class _CategoryDetails extends Component {
       .get(`${apiBaseUrl}/categories/${params.slug}`)
       .then((response) => {
         const hasProLicense = this.hasProfessionalLicense(response.data.data);
+        this.setState({
+          ...this.state,
+          categoryDetails:response.data.data
+        })
         if(hasProLicense){
           axios
           .get(`${apiBaseUrl}/categories/GetPlatformCoursesFlags/${params.slug}`)
@@ -288,7 +296,6 @@ export class _CategoryDetails extends Component {
                 this.setState({
                   subcategoriesdetails: response.data.data.childCatgories,
                 });
-                this.intiReq();
               })
               .catch((error) => {
                 console.log(error);
@@ -298,29 +305,9 @@ export class _CategoryDetails extends Component {
         this.setState({
           ...this.state,
           showgroupedPackagesBtn: response.data.data.groupedPackages,
-          currentTab: hasProLicense
-            ? ProfessionalLicenseText
-            : this.state.currentTab,
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    axios
-      .get(
-        `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
-      )
-      .then((response) => {
-        var more = false;
-        if (
-          response.data.data.itemCount >
-          response.data.data.limit * response.data.data.page
-        ) {
-          more = true;
-        }
-        this.setState({
-          successes: response.data.data.data,
-          hideBtnSuccess: more,
+          // currentTab: hasProLicense
+          //   ? ProfessionalLicenseText
+          //   : this.state.currentTab,
         });
       })
       .catch((error) => {
@@ -332,10 +319,14 @@ export class _CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
       .then((response) => {
+        // if(response.data?.data?.length&&!this.state.hasProfessionalLicense){
+        //   this.changeTab(freeMeetingsText);
+        // }
         this.setState({
           lectures: response.data.data,
           lecturesShimmerLoader: false,
         });
+        this.intiReq();
       })
       .catch((error) => {
         console.log(error);
@@ -372,6 +363,9 @@ export class _CategoryDetails extends Component {
     axios
       .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
       .then((response) => {
+        // if(response.data?.data?.length&&!this.state.courses&&!this.state.lectures){
+        //   this.changeTab("tab-three")
+        // }
         this.setState({
           categoryGroups: response.data.data,
           categoryGroupsShimmerLoader: false,
@@ -385,6 +379,29 @@ export class _CategoryDetails extends Component {
     if (this.props.history.location.hash == "#tab-three") {
       this.setState({ active: "show active", defultActive: "" });
     }
+    axios
+    .get(
+      `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+    )
+    .then((response) => {
+      // if(response.data?.data?.data?.length&&!this.state.courses&&!this.state.lectures&&!this.state.categoryGroups){
+      //   this.changeTab("tab-four");
+      // }
+      var more = false;
+      if (
+        response.data.data.itemCount >
+        response.data.data.limit * response.data.data.page
+      ) {
+        more = true;
+      }
+      this.setState({
+        successes: response.data.data.data,
+        hideBtnSuccess: more,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });  
   }
 
   warningAlert(msg) {
@@ -453,15 +470,15 @@ export class _CategoryDetails extends Component {
       categoryGroups,
       lectures
     } = this.state;
-    if(hasFreeFlag===null&&lectures?.length>0&&lectures?.length!==prevLectures?.length){
-      if(this.state.hasProfessionalLicense){
-        this.changeTab("الرخصة المهنية");
-        this.professionalLicenseRef.current.scrollIntoView();
-      }else{
-        this.changeTab(freeMeetingsText);
-        this.freeMeetingsRef.current.scrollIntoView();
-      }
-    }
+    // if(hasFreeFlag===null&&lectures?.length>0&&lectures?.length!==prevLectures?.length){
+    //   if(this.state.hasProfessionalLicense){
+    //     this.changeTab("الرخصة المهنية");
+    //     this.professionalLicenseRef.current.scrollIntoView();
+    //   }else{
+    //     this.changeTab(freeMeetingsText);
+    //     this.freeMeetingsRef.current.scrollIntoView();
+    //   }
+    // }
     if(categoryGroups?.length>0&&hasFreeFlag === "true"&&currentTab==="tab-three"){
       this.freeGroupsRef.current.scrollIntoView();
     }
@@ -483,7 +500,7 @@ export class _CategoryDetails extends Component {
       const [firstSubCateg] = subcategoriesdetails;
       const { slug } = firstSubCateg;
       if (this.validateProLicenseNav(firstSubCateg)) return;
-      this.changeTab(slug);
+      // this.changeTab(slug);
     }
     // this.handleSubCategoriesChange(prevSubcategoriesdetails,subcategoriesdetails)
   }
@@ -571,7 +588,7 @@ export class _CategoryDetails extends Component {
     ));
   }
 
-  renderCourses(courses) {
+  renderCourses(courses,professionalLicense=false) {
     return courses.map((course) => (
       <div className="col-lg-4">
         <Card key={course.id} course={course} />
@@ -656,8 +673,16 @@ export class _CategoryDetails extends Component {
     } else return true;
   }
   async handleClick(Category) {
-    if (!this.validateProLicenseNav(Category)) return;
-    this.changeTab(Category?.slug);
+    console.log({Category});
+    if (!this.validateProLicenseNav(Category)) {
+      this.props.history.push(
+        `/categories/details/${Category?.id}`
+      )
+    }else{
+      var elmnt = document.getElementById(Category?.id);
+      elmnt.scrollIntoView();
+      this.changeTab(Category?.id);
+    }
   }
 
   rendersubCategories() {
@@ -901,7 +926,12 @@ export class _CategoryDetails extends Component {
     const {
       match: { params },
     } = this.props;
-
+    const subcategoriesdetails = this.state.subcategoriesdetails;
+    var categories = 'subcategory';
+    var i = 0;
+    for(i = 1; i < subcategoriesdetails.length; i++) {
+        eval('var ' + categories + i + '= ' + i + ';');
+    }
     return (
       <React.Fragment>
         <Helmet>
@@ -964,7 +994,7 @@ export class _CategoryDetails extends Component {
                       }}
                     />
                   </ShowAt>
-                  {this.state.hasProfessionalLicense && this.state?.showProLicense && (
+                  {this.state.hasProfessionalLicense && this.state?.showProLicense ? (
                     <NavTab
                       currentTab={this.state.currentTab}
                       isActive={
@@ -973,15 +1003,15 @@ export class _CategoryDetails extends Component {
                       id={ProfessionalLicenseText}
                       name="الرخصة المهنية"
                       onClick={() => {
-                        this.changeTab("الرخصة المهنية");
-                        this.professionalLicenseRef.current.scrollIntoView();
+                          this.changeTab("الرخصة المهنية");
+                          this.professionalLicenseRef.current.scrollIntoView();
                       }}
                     />
-                  )}
+                  ):null}
                   <SubCategories
                     hasProfessionalLicense={this.state.hasProfessionalLicense}
                     handleClick={(category) => this.handleClick(category)}
-                    subCategories={this.state.subcategoriesdetails}
+                    subCategories={subcategoriesdetails}
                     currentTab={this.state.currentTab}
                   />
                   {!!this.state.categoryGroups.length && (
@@ -1115,16 +1145,17 @@ export class _CategoryDetails extends Component {
                   {this.state.subcategoriesdetails?.map((item, index) =>
                     item?.courses?.length ? (
                       <>
-                        <h3 key={index} className="section-title mt-5">
+                      {
+                        !item?.professionalLicense?
+                        <>
+                        <h3 key={index} className="section-title mt-5" id={item?.id}>
                           {item?.nameAr}
                         </h3>
-                        {item?.courses?.map((courseItem) => (
-                          <React.Fragment>
-                            <div className="col-lg-4">
-                              <Card key={courseItem.id} course={courseItem} />
-                            </div>
-                          </React.Fragment>
-                        ))}
+                        <div className="row">
+                          {this.renderCourses(item?.courses)}
+                        </div>
+                        </>:null
+                      }
                       </>
                     ) : null
                   )}
