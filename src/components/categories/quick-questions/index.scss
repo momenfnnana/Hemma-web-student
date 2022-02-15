@@ -5,3 +5,8 @@
 .w-fit{
     width: fit-content !important;
 }
+.question{
+    & img{
+        max-width: 100%;
+    }
+}
