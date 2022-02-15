@@ -1,23 +1,30 @@
-import React from 'react'
-import NavTab from '../tab-link';
-import { ProfessionalLicenseText } from './../professional-license/index';
+import React from "react";
+import NavTab from "../tab-link";
 
-export const  SubCategories = ({subCategories,currentTab,handleClick})=> {
+export const SubCategories = ({ subCategories, currentTab, handleClick }) => {
+  const onClick = (Category) => {
+    handleClick(Category);
+  };
 
-    const onClick = (Category)=>{
-        handleClick(Category)
-    }
-
-    return subCategories.map((Category, count) => (
-      Category?.courses?.length ? (
-        <NavTab
-            forceActive={currentTab === Category?.id}
-            key={Category.id}
-            currentTab={currentTab}
-            id={Category?.slug}
-            name={Category.nameAr}
-            onClick={() => onClick(Category)}
-        />
-        ) : null
-));
-}
+  return subCategories.map((Category, count) => {
+    const validateRenderCategory = () => {
+      return Category?.courses?.length ||
+        Category?.categoryGroups?.length ||
+        Category?.categorySuccesses?.length ||
+        Category?.childCatgories?.length ||
+        Category?.freeLectures?.length
+        ? true
+        : false;
+    };
+    return validateRenderCategory() ? (
+      <NavTab
+        forceActive={currentTab === Category?.id}
+        key={Category.id}
+        currentTab={currentTab}
+        id={Category?.slug}
+        name={Category.nameAr}
+        onClick={() => onClick(Category)}
+      />
+    ) : null;
+  });
+};
