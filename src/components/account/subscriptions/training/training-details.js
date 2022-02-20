@@ -362,7 +362,7 @@ class TrainingExamDetailsComponent extends Component {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        width: "35%",
+        // width: "35%",
         height: "auto",
         borderWidth: 0,
         padding: 20,

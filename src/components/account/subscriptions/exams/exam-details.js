@@ -10,6 +10,7 @@ import { ExamFail } from "./exam-fail";
 import Modal from "react-modal";
 import axios from "axios";
 import "../styles.sass";
+import "./index.scss";
 import Slider from "react-slick";
 import Countdown from "react-countdown-now";
 import { Link } from "react-router-dom";
@@ -341,7 +342,7 @@ class ExamDetailsComponent extends Component {
         bottom: "auto",
         marginRight: "-50%",
         transform: "translate(-50%, -50%)",
-        width: "35%",
+        // width: "35%",
         height: "auto",
         borderWidth: 0,
         padding: 20,

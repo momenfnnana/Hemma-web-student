@@ -10,3 +10,9 @@ figure > img {
     max-width: 100%;
   }
 }
+.page-item.active .page-link {
+  z-index: 2;
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
