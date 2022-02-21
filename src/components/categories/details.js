@@ -143,7 +143,7 @@ export class _CategoryDetails extends Component {
       //   && !hasProfessionalLicense
       // )
       //   this.changeTab("tab-two");
-    });
+    }).catch(error=>console.log({error}));
   }
 
   async loadMore() {
@@ -283,10 +283,235 @@ export class _CategoryDetails extends Component {
             this.handleHasProfessionalLicense(hasProLicense);
             axios
               .get(`${apiBaseUrl}/categories/${params.slug}/SubCategories`)
-              .then((response) => {
+              .then((SubCategoriesResponse) => {
+                const subCategoriesResponse=SubCategoriesResponse.data.data.childCatgories||[];
                 this.setState({
-                  subcategoriesdetails: response.data.data.childCatgories,
-                });
+                  subcategoriesdetails:subCategoriesResponse
+                })
+                const mergeData =(id,type,responseObject)=>{
+                  const filteredArray = subCategoriesResponse.filter(item=>item?.id!==id);
+                  const findedObject = subCategoriesResponse.find(item=>item?.id===id);
+                  var newCategoryData={};
+                  if(type==='categoryGroups'){
+                     newCategoryData = {...findedObject,categoryGroups:responseObject};
+                    }else if(type==='lectures'){
+                    newCategoryData = {...findedObject,lectures:responseObject};
+                  }else if(type==='successes'){
+                    newCategoryData = {...findedObject,successes:responseObject};
+                  }
+                  const newCategories =[...filteredArray,newCategoryData];
+                  return newCategories;
+                }
+                axios
+                .get(`${apiBaseUrl}/Categories/GetPlatformFlags/${params?.slug}`)
+                .then((response)=>{
+                  const {
+                    hasCourses:MainHasCourses,
+                    hasSubCategoriesData:MainHasSubCategoriesData,
+                    hasFreeGroups:MainHasFreeGroups,
+                    hasFreeLectures:MainHasFreeLectures,
+                    hasSuccess:MainHasSuccess
+                  } = response.data?.data;
+                  // for MainHasCourses and MainHasSubCategoriesData its actually return form init request
+                  if(MainHasSubCategoriesData){
+                    for (let index = 0; index < subCategoriesResponse.length; index++) {
+                      const element = subCategoriesResponse[index];
+                        axios
+                          .get(`${apiBaseUrl}/Categories/GetPlatformFlags/${element?.id}`)
+                          .then((response)=>{
+                            const {
+                              hasCourses,
+                              hasSubCategoriesData,
+                              hasFreeGroups,
+                              hasFreeLectures,
+                              hasSuccesss
+                            } = response.data?.data;
+                            if(hasFreeGroups){
+                              axios
+                              .get(`${apiBaseUrl}/CategoryGroups?category=${element?.id}`)
+                              .then((response) => {
+                                this.setState({
+                                  categoryGroupsShimmerLoader: false,
+                                  subcategoriesdetails:mergeData(element?.id,'categoryGroups',response.data?.data)
+                                });
+                              })
+                              .catch((error) => {
+                                console.log(error);
+                                if(error?.response?.status===500){
+                                  axios
+                                  .get(`${apiBaseUrl}/CategoryGroups?category=${element?.id}`)
+                                  .then((response) => {
+                                    this.setState({
+                                      categoryGroupsShimmerLoader: false,
+                                      subcategoriesdetails:mergeData(element?.id,'categoryGroups',response.data?.data)
+                                    });
+                                  })
+                                }
+                                this.setState({ categoryGroupsShimmerLoader: false });
+                              });
+                            }
+                            if(hasFreeLectures){
+                              axios
+                              .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${element?.id}`)
+                              .then((response) => {
+                                this.setState({
+                                  lectures: response.data.data,
+                                  lecturesShimmerLoader: false,
+                                  subcategoriesdetails:mergeData(element?.id,'lectures',response.data?.data)
+                                });
+                              })
+                              .catch((error) => {
+                                if(error?.response?.status===500){
+                                  axios
+                                    .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${element?.id}`)
+                                    .then((response) => {
+                                      this.setState({
+                                        lectures: response.data.data,
+                                        lecturesShimmerLoader: false,
+                                        subcategoriesdetails:mergeData(element?.id,'lectures',response.data?.data)
+                                      });
+                                    })
+                                }
+                                console.log(error);
+                                this.setState({ lecturesShimmerLoader: false });
+                              });
+                            }
+                            if(hasSuccesss){
+                              axios
+                                .get(
+                                  `${apiBaseUrl}/Success?CategoryId=${element?.id}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+                                )
+                                .then((response) => {
+                                  var more = false;
+                                  if (
+                                    response.data.data.itemCount >
+                                    response.data.data.limit * response.data.data.page
+                                  ) {
+                                    more = true;
+                                  }
+                                  this.setState({
+                                    successes: response.data.data.data,
+                                    hideBtnSuccess: more,
+                                    subcategoriesdetails:mergeData(element?.id,'successes',response.data?.data)
+                                  });
+                                })
+                                .catch((error) => {
+                                  if(error?.response?.status===500){
+                                    axios
+                                    .get(
+                                      `${apiBaseUrl}/Success?CategoryId=${element?.id}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+                                    )
+                                    .then((response) => {
+                                      var more = false;
+                                      if (
+                                        response.data.data.itemCount >
+                                        response.data.data.limit * response.data.data.page
+                                      ) {
+                                        more = true;
+                                      }
+                                      this.setState({
+                                        successes: response.data.data.data,
+                                        hideBtnSuccess: more,
+                                        subcategoriesdetails:mergeData(element?.id,'successes',response.data?.data)
+                                      });
+                                    })  
+                                  }
+                                  console.log(error);
+                                });
+                            }
+                          }).catch(error=>console.log({error}))
+                    }
+                  }
+                  if(MainHasFreeGroups){
+                    axios
+                    .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
+                    .then((response) => {
+                      this.setState({
+                        categoryGroups: response.data.data,
+                        categoryGroupsShimmerLoader: false,
+                      });
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                      if(error?.response?.status===500){
+                        axios
+                        .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
+                        .then((response) => {
+                          this.setState({
+                            categoryGroups: response.data.data,
+                            categoryGroupsShimmerLoader: false,
+                          });
+                        })
+                      }
+                      this.setState({ categoryGroupsShimmerLoader: false });
+                    });
+                  }
+                  if(MainHasFreeLectures){
+                    axios
+                    .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
+                    .then((response) => {
+                      this.setState({
+                        lectures: response.data.data,
+                        lecturesShimmerLoader: false,
+                      });
+                    })
+                    .catch((error) => {
+                      if(error?.response?.status===500){
+                        axios
+                          .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
+                          .then((response) => {
+                            this.setState({
+                              lectures: response.data.data,
+                              lecturesShimmerLoader: false,
+                            });
+                          })
+                      }
+                      console.log(error);
+                      this.setState({ lecturesShimmerLoader: false });
+                    });
+                  }
+                  if(MainHasSuccess){
+                    axios
+                      .get(
+                        `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+                      )
+                      .then((response) => {
+                        var more = false;
+                        if (
+                          response.data.data.itemCount >
+                          response.data.data.limit * response.data.data.page
+                        ) {
+                          more = true;
+                        }
+                        this.setState({
+                          successes: response.data.data.data,
+                          hideBtnSuccess: more,
+                        });
+                      })
+                      .catch((error) => {
+                        if(error?.response?.status===500){
+                          axios
+                          .get(
+                            `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
+                          )
+                          .then((response) => {
+                            var more = false;
+                            if (
+                              response.data.data.itemCount >
+                              response.data.data.limit * response.data.data.page
+                            ) {
+                              more = true;
+                            }
+                            this.setState({
+                              successes: response.data.data.data,
+                              hideBtnSuccess: more,
+                            });
+                          })  
+                        }
+                        console.log(error);
+                      });
+                  }
+                }).catch(error=>console.log({error}))
                 this.intiReq();
               })
               .catch((error) => {
@@ -408,233 +633,12 @@ export class _CategoryDetails extends Component {
       categoryGroups,
       lectures
     } = this.state;
-    if(subcategoriesdetails?.length){
-      axios
-        .get(`${apiBaseUrl}/Categories/GetPlatformFlags/${params?.slug}`)
-        .then((response)=>{
-          const {
-            hasCourses:MainHasCourses,
-            hasSubCategoriesData:MainHasSubCategoriesData,
-            hasFreeGroups:MainHasFreeGroups,
-            hasFreeLectures:MainHasFreeLectures,
-            hasSuccess:MainHasSuccess
-          } = response.data?.data;
-          if(MainHasFreeGroups){
-            axios
-            .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
-            .then((response) => {
-              this.setState({
-                categoryGroups: response.data.data,
-                categoryGroupsShimmerLoader: false,
-              });
-            })
-            .catch((error) => {
-              console.log(error);
-              if(error?.response?.status===500){
-                axios
-                .get(`${apiBaseUrl}/CategoryGroups?category=${params.slug}`)
-                .then((response) => {
-                  this.setState({
-                    categoryGroups: response.data.data,
-                    categoryGroupsShimmerLoader: false,
-                  });
-                })
-              }
-              this.setState({ categoryGroupsShimmerLoader: false });
-            });
-          }
-          if(MainHasFreeLectures){
-            axios
-            .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
-            .then((response) => {
-              this.setState({
-                lectures: response.data.data,
-                lecturesShimmerLoader: false,
-              });
-            })
-            .catch((error) => {
-              if(error?.response?.status===500){
-                axios
-                  .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${params.slug}`)
-                  .then((response) => {
-                    this.setState({
-                      lectures: response.data.data,
-                      lecturesShimmerLoader: false,
-                    });
-                  })
-              }
-              console.log(error);
-              this.setState({ lecturesShimmerLoader: false });
-            });
-          }
-          if(MainHasSuccess){
-            axios
-              .get(
-                `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
-              )
-              .then((response) => {
-                var more = false;
-                if (
-                  response.data.data.itemCount >
-                  response.data.data.limit * response.data.data.page
-                ) {
-                  more = true;
-                }
-                this.setState({
-                  successes: response.data.data.data,
-                  hideBtnSuccess: more,
-                });
-              })
-              .catch((error) => {
-                if(error?.response?.status===500){
-                  axios
-                  .get(
-                    `${apiBaseUrl}/Success?CategoryId=${params.slug}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
-                  )
-                  .then((response) => {
-                    var more = false;
-                    if (
-                      response.data.data.itemCount >
-                      response.data.data.limit * response.data.data.page
-                    ) {
-                      more = true;
-                    }
-                    this.setState({
-                      successes: response.data.data.data,
-                      hideBtnSuccess: more,
-                    });
-                  })  
-                }
-                console.log(error);
-              });
-          }
-          if(MainHasSubCategoriesData){
-            for (let index = 0; index < subcategoriesdetails.length; index++) {
-              const element = subcategoriesdetails[index];
-              axios
-                .get(`${apiBaseUrl}/Categories/GetPlatformFlags/${element?.id}`)
-                .then((response)=>{
-                  const {
-                    hasCourses,
-                    hasSubCategoriesData,
-                    hasFreeGroups,
-                    hasFreeLectures,
-                    hasSuccesss
-                  } = response.data?.data;
-                  if(hasFreeLectures){
-                    axios
-                    .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${element?.id}`)
-                    .then((response) => {
-                      const filteredArray = this.state.subcategoriesdetails.filter(item=>item?.id!==element?.id);
-                      const filteredObject = this.state.subcategoriesdetails.find(item=>item?.id===element?.id);
-                      const newObject= {freeLectures:response.data?.data,...filteredObject};
-                      const data={freeLectures:response.data?.data}
-                      const returnedTarget = Object.assign(filteredObject, data);
-                      const newArray =[...filteredArray,{...returnedTarget}]
-                      // this.setState({
-                      //   subcategoriesdetails:[...newArray]
-                      // })
-                    })
-                    .catch((error) => {
-                      if(error?.response?.status){
-                        axios
-                          .get(`${apiBaseUrl}/FreeLectures?categoryIdOrSlug=${element?.id}`)
-                          .then((response) => {
-                            const filteredArray = this.state.subcategoriesdetails.filter(item=>item?.id!==element?.id);
-                            const filteredObject = this.state.subcategoriesdetails.find(item=>item?.id===element?.id);
-                            const newObject= {freeLectures:response.data?.data,...filteredObject};
-                            const data={freeLectures:response.data?.data}
-                            const returnedTarget = Object.assign(filteredObject, data);
-                            const newArray =[...filteredArray,{...returnedTarget}]
-                            // this.setState({
-                            //   subcategoriesdetails:[...newArray]
-                            // })
-                          })
-                      }
-                      console.log(error);
-                      this.setState({ lecturesShimmerLoader: false });
-                    });
-                  }
-                  if(hasFreeGroups){
-                    axios
-                      .get(`${apiBaseUrl}/CategoryGroups?category=${element?.id}`)
-                      .then((response)=>{
-                        const filteredArray = this.state.subcategoriesdetails.filter(item=>item?.id!==element?.id);
-                        const filteredObject = this.state.subcategoriesdetails.find(item=>item?.id===element?.id);
-                        const newObject= {categoryGroups:response.data?.data,...filteredObject};
-                        const data={categoryGroups:response.data?.data}
-                        const returnedTarget = Object.assign(filteredObject, data);
-                        const newArray =[...filteredArray,{...returnedTarget}]
-                        // this.setState({
-                        //   subcategoriesdetails:[...newArray]
-                        // })
-                      })
-                      .catch(error=>{
-                        if(error?.response?.status){
-                          axios
-                          .get(`${apiBaseUrl}/CategoryGroups?category=${element?.id}`)
-                          .then((response)=>{
-                            const filteredArray = this.state.subcategoriesdetails.filter(item=>item?.id!==element?.id);
-                            const filteredObject = this.state.subcategoriesdetails.find(item=>item?.id===element?.id);
-                            const newObject= {categoryGroups:response.data?.data,...filteredObject};
-                            const data={categoryGroups:response.data?.data}
-                            const returnedTarget = Object.assign(filteredObject, data);
-                            const newArray =[...filteredArray,{...returnedTarget}]
-                            // this.setState({
-                            //   subcategoriesdetails:[...newArray]
-                            // })
-                          })  
-                        }
-                        console.log({error});
-                      })
-                  }
-                  if(hasSuccesss){
-                    axios
-                      .get(
-                        `${apiBaseUrl}/Success?CategoryId=${element?.id}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
-                      )
-                      .then((response) => {
-                        const filteredArray = this.state.subcategoriesdetails.filter(item=>item?.id!==element?.id);
-                        const filteredObject = this.state.subcategoriesdetails.find(item=>item?.id===element?.id);
-                        const newObject= {categorySuccesses:response.data?.data?.data,...filteredObject};
-                        const data={categorySuccesses:response.data?.data?.data}
-                        const returnedTarget = Object.assign(filteredObject, data);
-                        const newArray =[...filteredArray,{...returnedTarget}]
-                        // this.setState({
-                        //   subcategoriesdetails:[...newArray]
-                        // })
-                      }).catch(error=>{
-                        if(error?.response?.status){
-                          axios
-                            .get(
-                              `${apiBaseUrl}/Success?CategoryId=${element?.id}&Limit=${this.SuccesesLimt}&Page=${this.Succesespage}`
-                            )
-                            .then((response) => {
-                              const filteredArray = this.state.subcategoriesdetails.filter(item=>item?.id!==element?.id);
-                              const filteredObject = this.state.subcategoriesdetails.find(item=>item?.id===element?.id);
-                              const newObject= {categorySuccesses:response.data?.data?.data,...filteredObject};
-                              const data={categorySuccesses:response.data?.data?.data}
-                              const returnedTarget = Object.assign(filteredObject, data);
-                              const newArray =[...filteredArray,{...returnedTarget}]
-                              // this.setState({
-                              //   subcategoriesdetails:[...newArray]
-                              // })
-                            })
-                        }
-                        console.log({error})
-                      })
-                  }
-                })
-                .catch(error=>console.log({error}))
-            }
-          }
-        })
-        .catch(error=>console.log({error}))
-    }
+
     if(hasFreeFlag===null&&lectures?.length>0&&lectures?.length!==prevLectures?.length){
       if(this.state.hasProfessionalLicense){
-        this.changeTab("الرخصة المهنية");
-        this.professionalLicenseRef.current.scrollIntoView();
+        // next section has been removed the reason is removing auto scroll when openning the page
+        // this.changeTab("الرخصة المهنية");
+        // this.professionalLicenseRef.current.scrollIntoView();
       }else{
         this.changeTab(freeMeetingsText);
         this.freeMeetingsRef.current.scrollIntoView();
@@ -816,7 +820,7 @@ export class _CategoryDetails extends Component {
       if (!navigationType) this.handleNoChildCategories();
       if (navigationType === "_blank") window.open(url);
       else {
-        this.setState({ ...this.state, courses, currentSlug: categSlug });
+        this.setState({ ...this.state, currentSlug: categSlug });
       }
     } catch (error) {
       console.log({error});
@@ -834,8 +838,17 @@ export class _CategoryDetails extends Component {
       });
     } else return true;
   }
+  validateJustSubCategories(Category) {
+    return (
+      !Category?.lectures?.length &&
+      !Category?.categoryGroups?.length &&
+      !Category?.courses?.length &&
+      !Category?.successes?.length &&
+      Category?.childCatgories?.length
+    );
+  }
   async handleClick(Category) {
-    if (!this.validateProLicenseNav(Category)) {
+    if (!this.validateProLicenseNav(Category)||this.validateJustSubCategories(Category)) {
       this.props.history.push(
         `/categories/details/${Category?.id}`
       )
@@ -1088,7 +1101,6 @@ export class _CategoryDetails extends Component {
       match: { params },
     } = this.props;
     const {subcategoriesdetails}=this.state;
-    console.log({subcategoriesdetails});
     return (
       <React.Fragment>
         <Helmet>
@@ -1417,11 +1429,12 @@ export class _CategoryDetails extends Component {
                     }}
                   >
                     {this.renderSuccess(this.state.successes)}
-                    {this.state.hideBtnSuccess && (
-                      <div className="row col-md-12">
-                        <div className="col-md-12 d-flex align-items-center justify-content-center">
+                  </div>
+                  {this.state.hideBtnSuccess && (
+                      <div className="row mt-3">
+                        <div className="col-12 d-flex align-items-center justify-content-center">
                           <button
-                            className="btn dark-btn unset-height unset-line-height br-5 w-20"
+                            className="btn dark-btn unset-height unset-line-height br-5"
                             onClick={this.moreSucces}
                           >
                             {this.state.loading == true ? (
@@ -1433,7 +1446,6 @@ export class _CategoryDetails extends Component {
                         </div>
                       </div>
                     )}
-                  </div>
                 </div>
               </nav>
             </div>
