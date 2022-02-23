@@ -5,6 +5,7 @@ import { useFetch } from "../../../hooks/useFetch";
 import { SuccessCard } from "./success-card";
 import Glide from "@glidejs/glide";
 import "@glidejs/glide/dist/css/glide.core.min.css";
+import Loader from "react-loaders";
 
 import "./index.scss";
 import { Carousel } from "./../../../shared-components/carsoul/index";
@@ -79,7 +80,7 @@ const SuccessElem = ({ suc, index, id, style }) => (
 
 export default function SuccessCases() {
   const [page, setPage] = useState(1);
-  const [getCasesTest, casesResponse] = useFetch(successUrl(), {
+  const [getCasesTest, casesResponse, loadingCases] = useFetch(successUrl(), {
     method: "GET",
   });
   const [allCases, setCases] = useState([]);
@@ -97,6 +98,10 @@ export default function SuccessCases() {
       setNoMore(false);
     }
     setCases([...allCases, ...cases]);
+  };
+  const requestMoreSucces = () => {
+    getCasesTest({ url: successUrl(9, page + 1) }, handleCaseRequestSuccess);
+    getNaxtPage();
   };
   useEffect(() => {
     if (page <= 1) return;
@@ -131,13 +136,25 @@ export default function SuccessCases() {
 
   return (
     <div className="container-fluid py-5">
-      <div className="success-wrapper" >
+      <div className="success-wrapper">
         {allCases.map((_case) => (
           <div className="w-100 success-grid-item h-100 ">
             <SuccessElem suc={_case} id={_case?.id} />
           </div>
         ))}
       </div>
+      {allCases?.length < casesResponse?.data?.itemCount ? (
+        <div className="row col-md-12 mt-3">
+          <div className="col-md-12 d-flex align-items-center justify-content-center">
+            <button
+              className="btn dark-btn unset-height unset-line-height br-5 w-20"
+              onClick={requestMoreSucces}
+            >
+              {loadingCases ? <Loader type="ball-clip-rotate" /> : "عرض المزيد"}
+            </button>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
