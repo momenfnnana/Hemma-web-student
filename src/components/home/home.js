@@ -380,123 +380,117 @@ class HomeComponent extends Component {
     const fullWidthClass =
       window.innerWidth < MOBILE_SCREEN_WIDTH ? "w-100" : "";
     const elementClass = [slideElementBaseClassName, fullWidthClass].join(" ");
-    return (
-      <React.Fragment>
-        {cats.map((cat, indexcat) => {
-          //  if(indexcat < 3){
-
-          return (
-            <li className={elementClass}>
-              <div className="card">
-                <div className="card-items">
-                  <div
-                    className="title-card font-weight-bold"
-                    onClick={() => this.onClick(cat)}
-                  >
-                    <h3>
-                      {" "}
-                      <span>{cat.nameAr}</span>{" "}
-                    </h3>
-                  </div>
-
-                  <div className="text-card text-center mb-4">
-                    <h5 className="h6 font-weight-bold">
-                      <span className="d-block mb-2">
-                        {cat.descriptionAr.substring(0, 150)}
-                        {cat.descriptionAr.length > 150 ? (
-                          <span>...</span>
-                        ) : null}
-                      </span>
-                    </h5>
-                  </div>
-                  {cat.childCatgories.length > 0 ? (
-                    <div
-                      className={
-                        "collapse-box  buttons-card d-flex-row flex-wrap " +
-                        "collapser_" +
-                        indexcat
-                      }
-                    >
-                      {cat.childCatgories.map((child, indx) => {
-                        //   if(indx < 3)
-                        // {
-                        return (
-                          <div
-                            to={{
-                              pathname: `categories/details/${child.slug}`,
-                              state: {
-                                catId: cat.id,
-                              },
-                            }}
-                            key={cat.id}
-                            className="btn-card mx-2 mb-2 headShake"
-                            onClick={() => this.onClick(child)}
-                          >
-                            {child.nameAr}
-                          </div>
-                        );
-                        //}
-                        //return null;
-                      })}
-                    </div>
-                  ) : (
-                    <div
-                      className={
-                        "collapse-box  buttons-card d-flex-row flex-wrap " +
-                        "collapser_" +
-                        indexcat
-                      }
-                    >
-                      {cat.courses.map((course, indxcourse) => {
-                        //  if(indxcourse < 3)
-                        //    {
-                        return (
-                          <div
-                            className="btn-card mx-2 mb-2 headShake "
-                            onClick={() => {
-                              course.active == false &&
-                              course.featuredInMain == true
-                                ? course.inactiveCourseMessage
-                                  ? swal(
-                                      "عفواً",
-                                      course.inactiveCourseMessage,
-                                      "error",
-                                      {
-                                        button: "متابعة",
-                                      }
-                                    )
-                                  : swal(
-                                      "عفواً",
-                                      "سيتاح التسجيل في الدورة لاحقًا ، وسيتم الإعلان عن مواعيد التسجيل عبر منصتي تويتر و الإنستقرام (@hemmaedu) ",
-                                      "error",
-                                      {
-                                        button: "متابعة",
-                                      }
-                                    )
-                                : history.push(
-                                    `/course/details/${course.slug}`
-                                  );
-                            }}
-                          >
-                            {course.nameAr}
-                          </div>
-                        );
-                        //  }
-                        //    return null;
-                      })}
-                    </div>
-                  )}
-                  {/* <div className="collapsing-btn" data-collapser={"collapser_"+indexcat}>
-                          <span>المزيد</span>
-                          <i className="fas fa-chevron-down"></i>
-                        </div> */}
-                </div>
+    return cats.map((cat, indexcat) => {
+      //  if(indexcat < 3){
+      return (
+        <div>
+          <div className="card">
+            <div className="card-items">
+              <div
+                className="title-card font-weight-bold"
+                onClick={() => this.onClick(cat)}
+              >
+                <h3>
+                  <span>{cat.nameAr}</span>{" "}
+                </h3>
               </div>
-            </li>
-          );
-        })}
-      </React.Fragment>
-    );
+
+              <div className="text-card text-center mb-4">
+                <h5 className="h6 font-weight-bold">
+                  <span className="d-block mb-2">
+                    {cat.descriptionAr.substring(0, 150)}
+                    {cat.descriptionAr.length > 150 ? (
+                      <span>...</span>
+                    ) : null}
+                  </span>
+                </h5>
+              </div>
+              {cat.childCatgories.length > 0 ? (
+                <div
+                  className={
+                    "collapse-box  buttons-card d-flex-row flex-wrap " +
+                    "collapser_" +
+                    indexcat
+                  }
+                >
+                  {cat.childCatgories.map((child, indx) => {
+                    //   if(indx < 3)
+                    // {
+                    return (
+                      <div
+                        to={{
+                          pathname: `categories/details/${child.slug}`,
+                          state: {
+                            catId: cat.id,
+                          },
+                        }}
+                        key={cat.id}
+                        className="btn-card mx-2 mb-2 headShake"
+                        onClick={() => this.onClick(child)}
+                      >
+                        {child.nameAr}
+                      </div>
+                    );
+                    //}
+                    //return null;
+                  })}
+                </div>
+              ) : (
+                <div
+                  className={
+                    "collapse-box  buttons-card d-flex-row flex-wrap " +
+                    "collapser_" +
+                    indexcat
+                  }
+                >
+                  {cat.courses.map((course, indxcourse) => {
+                    //  if(indxcourse < 3)
+                    //    {
+                    return (
+                      <div
+                        className="btn-card mx-2 mb-2 headShake "
+                        onClick={() => {
+                          course.active == false &&
+                          course.featuredInMain == true
+                            ? course.inactiveCourseMessage
+                              ? swal(
+                                  "عفواً",
+                                  course.inactiveCourseMessage,
+                                  "error",
+                                  {
+                                    button: "متابعة",
+                                  }
+                                )
+                              : swal(
+                                  "عفواً",
+                                  "سيتاح التسجيل في الدورة لاحقًا ، وسيتم الإعلان عن مواعيد التسجيل عبر منصتي تويتر و الإنستقرام (@hemmaedu) ",
+                                  "error",
+                                  {
+                                    button: "متابعة",
+                                  }
+                                )
+                            : history.push(
+                                `/course/details/${course.slug}`
+                              );
+                        }}
+                      >
+                        {course.nameAr}
+                      </div>
+                    );
+                    //  }
+                    //    return null;
+                  })}
+                </div>
+              )}
+              {/* <div className="collapsing-btn" data-collapser={"collapser_"+indexcat}>
+                      <span>المزيد</span>
+                      <i className="fas fa-chevron-down"></i>
+                    </div> */}
+            </div>
+          </div>
+        </div>
+      );
+    })
   }
 
   categoryGroupRedirection(CategoryGroup, slug) {
@@ -712,7 +706,43 @@ class HomeComponent extends Component {
     // production id 6243c50a-f031-4cdf-be05-940671c43ea8
     this.props.history.push(`/categories/details/3689f1e2-9394-48ba-b6bf-47ff95bff5dd`);
   }
+  
   render() {
+    const settings = {
+      dots: true,
+      infinite: true,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay:true,
+      rtl:true,
+      responsive: [
+        {
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true,
+            dots: true
+          }
+        },
+        {
+          breakpoint: 600,
+          settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2,
+            initialSlide: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    };
     return (
       <React.Fragment>
         <PopupHemma />
@@ -875,16 +905,33 @@ class HomeComponent extends Component {
               </div>
             </div>
           </div>
+          {/* <div className="container">
+          <div class="glide">
+            <div data-glide-el="track" class="glide__track">
+              <ul class="glide__slides">
+                {this.renderCategories()}
+                <li class="glide__slide bg-danger">1</li>
+                <li class="glide__slide bg-danger">2</li>
+                <li class="glide__slide bg-danger">3</li>
+              </ul>
+            </div>
+          </div>
+          </div> */}
           <div className="banner-cards">
             <div className="container">
               <div className="slider">
                 <div className="glide_features">
-                  <div className="glide__track" data-glide-el="track">
+                <div>
+                  <Slider {...settings}>
+                    {this.renderCategories()}
+                  </Slider>
+                </div>
+                  {/* <div className="glide__track" data-glide-el="track">
                     <ul className="glide__slides py-2 w-100 px-2">
                       {this.renderCategories()}
                     </ul>
-                  </div>
-                  {this.state.categories?.length > MIN_ELEM_COUNT && (
+                  </div> */}
+                  {/* {this.state.categories?.length > MIN_ELEM_COUNT && (
                     <>
                       <div className="glide__arrows" data-glide-el="controls">
                         <button
@@ -907,7 +954,7 @@ class HomeComponent extends Component {
                         {this.renderBulit()}
                       </div>
                     </>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
