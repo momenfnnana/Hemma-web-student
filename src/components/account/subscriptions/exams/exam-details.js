@@ -15,6 +15,8 @@ import Slider from "react-slick";
 import Countdown from "react-countdown-now";
 import { Link } from "react-router-dom";
 import Pagination from "react-js-pagination";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 
 class ExamDetailsComponent extends Component {
   constructor() {
@@ -33,6 +35,7 @@ class ExamDetailsComponent extends Component {
       selectedQuestion: 0,
       endCountdown: false,
       isChecked: false,
+      isLoading:true
     };
     this.onInput = this.onInput.bind(this);
     this.onCountdownEnd = this.onCountdownEnd.bind(this);
@@ -165,9 +168,14 @@ class ExamDetailsComponent extends Component {
         this.setState({
           questions: response.data.data.questions,
           examDetails: response.data.data,
+          isLoading:false
         });
       })
       .catch((error) => {
+        this.setState({
+          ...this.state,
+          isLoading:false
+        })
         console.log(error);
       });
 
@@ -332,6 +340,17 @@ class ExamDetailsComponent extends Component {
   }
 
   render() {
+    if(this.state.isLoading){
+      return  <div
+      className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+      style={{ minHeight: 350 }}
+    >
+      <Loader
+        type="ball-spin-fade-loader"
+        className="dark-loader"
+      />
+    </div>
+    }
     const courseId = this.props.match.params.id;
     const attemptId = this.props.match.params.attemptId;
     const customStyles = {

@@ -15,6 +15,8 @@ import { TrainingPass } from "./training-pass";
 import { TrainingExamFail } from "./training-fail";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import Loader from "react-loaders";
+import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import {SolutionModal} from "../exams/solution"
 import "../index.scss";
 // import MathType from '@wiris/mathtype-ckeditor5';
@@ -39,6 +41,7 @@ class TrainingExamDetailsComponent extends Component {
       isChecked: false,
       isCorrect: false,
       correctAnswer: "",
+      isLoading:true
     };
     this.onInput = this.onInput.bind(this);
     this.correct = this.correct.bind(this);
@@ -120,9 +123,14 @@ class TrainingExamDetailsComponent extends Component {
           questions: response.data.data.questions,
           examDetails: response.data.data,
           correctAnswer: response.data.data.answers,
+          isLoading: false
         });
       })
       .catch((error) => {
+        this.setState({
+          ...this.state,
+          isLoading:false
+        })
         console.log(error);
       });
 
@@ -353,6 +361,17 @@ class TrainingExamDetailsComponent extends Component {
     );
   }
   render() {
+    if(this.state.isLoading){
+      return  <div
+      className="silver-bg box-layout w-100 pb-0 p-3 mt-4 d-flex justify-content-center align-items-center"
+      style={{ minHeight: 350 }}
+    >
+      <Loader
+        type="ball-spin-fade-loader"
+        className="dark-loader"
+      />
+    </div>
+    }
     const courseId = this.props.match.params.id;
     const attemptId = this.props.match.params.attemptId;
     const customStyles = {
