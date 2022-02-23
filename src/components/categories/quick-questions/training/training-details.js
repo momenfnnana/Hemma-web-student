@@ -6,7 +6,9 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import Modal from "react-modal";
 import axios from "axios";
+import Pagination from "react-js-pagination";
 import "../styles.sass";
+import "../index.scss";
 import Slider from "react-slick";
 import { TrainingExamFail } from "./training-fail";
 import { TrainingPass } from "./training-pass";
@@ -234,7 +236,7 @@ class TrainingExamDetailsComponent extends Component {
               <div className="col-12">
                 <div className="box-layout box-border shadow-sm p-3">
                   <h6
-                    className="dark-text mb-0 encoded-text"
+                    className="dark-text mb-0 encoded-text question"
                     dangerouslySetInnerHTML={{ __html: question.encodedStem }}
                   ></h6>
                 </div>
@@ -548,18 +550,18 @@ class TrainingExamDetailsComponent extends Component {
                   </div>
                   <div className="row">
                     <div className="col-12">
-                      <div className="question-item">
-                        <Slider
-                          asNavFor={this.state.nav1}
-                          ref={(slider) => (this.slider2 = slider)}
-                          slidesToShow={3.5}
-                          swipeToSlide={true}
-                          focusOnSelect={true}
-                          {...settings}
-                          className="mb-3"
-                        >
-                          {this.renderQuestionsTitle()}
-                        </Slider>
+                      <div className="question-item d-flex justify-content-center">
+                        <Pagination
+                          activePage={this.state.selectedQuestion+1}
+                          itemsCountPerPage={10}
+                          totalItemsCount={this.state.questions?.length*10}
+                          pageRangeDisplayed={5}
+                          onChange={(e)=>{
+                            this.goTo(e)
+                          }}
+                          itemClass="page-item"
+                          linkClass="page-link"
+                        />
                       </div>
                     </div>
                   </div>
