@@ -376,6 +376,7 @@ class MainRouterComponent extends Component {
               <Route path="/faq" component={FAQ} />
               <Route path="/search/:slug" component={Search} />
               <Route path="/transactions/:id" component={Transaction} />
+              <Route path="/transactions" component={Transaction} />
               <Route path="/not-found" component={NotFound} />
 
               {!this.props.authenticated ? (

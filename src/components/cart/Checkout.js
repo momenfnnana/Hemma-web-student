@@ -19,7 +19,7 @@ import PaymentStage from './checkout-stages/payment-stage/index';
 class CheckoutComponent extends Component {
   state = {
     busy: true,
-    activeTab: "bank",
+    activeTab: "online",
     isShippingAddressFilled:false,
     currentStepIndex : 0
   };
@@ -97,7 +97,7 @@ class CheckoutComponent extends Component {
                 </Stepper.Step>
               )}
               <Stepper.Step>
-                <PaymentStage deliveryData={this.state.deliveryData} path={path} activeTab={this.state.activeTab} setActiveTab={this.setActiveTab} isShippingAddressFilled={this.state.isShippingAddressFilled} />
+                <PaymentStage cart={cart} deliveryData={this.state.deliveryData} path={path} activeTab={this.state.activeTab} setActiveTab={this.setActiveTab} isShippingAddressFilled={this.state.isShippingAddressFilled} />
               </Stepper.Step>
               </Stepper>
               </div>
