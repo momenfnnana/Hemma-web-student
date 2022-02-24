@@ -69,7 +69,6 @@ export class CategoriesComponent extends Component {
   }
 getSearchResult (){
   this.setState({ loading: true });
-  debugger;
     axios
       .get(`${apiBaseUrl}/categories?limit=40&CategoryName=${this.state.CategoryName}&CourseName=${this.state.CourseName}`)
       .then(response => {
@@ -90,7 +89,6 @@ getSearchResult (){
   
 // }
   componentDidMount() {
-    debugger;
     this.setState({ loading: true });
     axios
       .get(`${apiBaseUrl}/categories?limit=40`)

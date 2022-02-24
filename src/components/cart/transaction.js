@@ -1,24 +1,39 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { apiBaseUrl } from "../../api/helpers";
+import { Api } from "../../api";
 import "@lottiefiles/lottie-player";
 import { Link } from "react-router-dom";
 
 export default class Transaction extends Component {
   state = {
-    paymentDetails: []
+    paymentDetails: [],
   };
 
   componentDidMount() {
-    let paymentId = this.props.match.params.id;
-    let token = localStorage.getItem("token");
-    let headers = {
-      Authorization: `Bearer ${token}`
-    };
-    axios
-      .get(`${apiBaseUrl}/payments/${paymentId}`, { headers })
-      .then(response => this.setState({ paymentDetails: response.data.data }))
-      .catch(error => console.log(error));
+    if (this.props.match.params.id) {
+      let paymentId = this.props.match.params.id;
+      let token = localStorage.getItem("token");
+      let headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      axios
+        .get(`${apiBaseUrl}/payments/${paymentId}`, { headers })
+        .then((response) =>
+          this.setState({ paymentDetails: response.data.data })
+        )
+        .catch((error) => console.log(error));
+    } else {
+      var tap_id = new URLSearchParams(this.props.location.search).get(
+        "tap_id"
+      );
+      Api.cart
+        .GetTapPaymentDetailsCheckout(tap_id)
+        .then((response) =>
+          this.setState({ paymentDetails: response })
+        )
+        .catch((error) => console.log(error));
+    }
   }
   render() {
     const transactionDate = new Date(
