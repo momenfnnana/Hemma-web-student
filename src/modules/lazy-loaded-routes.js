@@ -48,6 +48,7 @@ export const PrivacyPolicy = lazy(()=> import('./../components/privacypolicy/pri
 export const NewPrivacyPolicy = lazy(()=> import('./../components/privacypolicy/newprivacypolicy'))
 export const Home = lazy(()=> import("./../components/home/home"))
 export const Categories = lazy(()=> import('./../components/categories/list'))
+export const ScheduleDates = lazy(()=> import('./../components/ScheduleDates'))
 export const Verification = lazy(()=> import('./../components/verification/verification'))
 export const Auth = lazy(()=> import('./../components/auth/auth'))
 export const resetPassword = lazy(()=> import('./../components/phone-reset/reset-password/reset-password'))
