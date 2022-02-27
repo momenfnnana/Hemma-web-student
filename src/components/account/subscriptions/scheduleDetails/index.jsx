@@ -27,7 +27,6 @@ export default function ScheduleDetails(props) {
 
   const getCourseData = () => {
     setLoading(true);
-    debugger;
     let token = localStorage.getItem("token");
     let headers = {
       Authorization: `Bearer ${token}`,

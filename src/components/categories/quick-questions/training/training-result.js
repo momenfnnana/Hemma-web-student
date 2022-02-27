@@ -31,7 +31,7 @@ class TrainingResultComponent extends Component {
   }
 
   openSolutionModal = (id) => {
-    this.setState({ isSolutionOpen: true, selectedQuestionId: id });
+    this.setState({ isSolutionOpen: true, selectedQuestion: id} );
   };
   closeSolution = () => {
     this.setState({ isSolutionOpen: false });
@@ -96,7 +96,7 @@ class TrainingResultComponent extends Component {
         },
       };
     const questions = this.state.questions || [];
-    const question = questions[this.state.selectedQuestion];
+    const question = questions.find(x => x.id === this.state.selectedQuestion);
     return (
       <Accordion className="quiz-accordion">
         {questions.map((question) => (
@@ -193,7 +193,15 @@ class TrainingResultComponent extends Component {
                   </div>
                 )}
               </div>
-              <Modal
+              
+            </AccordionItemBody>
+            
+          
+          </AccordionItem>
+          
+        ))}
+        
+      {question && <Modal
           style={customStyles}
           ariaHideApp={false}
           isOpen={this.state.isSolutionOpen}
@@ -245,14 +253,7 @@ class TrainingResultComponent extends Component {
               </div>
             </div>
           </div>
-        </Modal>
-            </AccordionItemBody>
-            
-          
-          </AccordionItem>
-          
-        ))}
-       
+        </Modal>}
       </Accordion>
       
     );

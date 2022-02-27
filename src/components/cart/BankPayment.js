@@ -90,8 +90,6 @@ class BankPaymentComponent extends Component {
    */
   myFormHandler = values => {
     const cart = this.props.cart;
-    console.log(cart);
-    debugger;
     var isafter = moment(values?.date).isAfter(new Date());
     if(!isafter){
       this.setState({dateError:false})
@@ -148,7 +146,7 @@ class BankPaymentComponent extends Component {
         : new Date(Date.UTC()),
       checkoutItemDetails: itemDetails
     };
-    debugger
+    
     this.setState({ loading: true, disabled: true });
     this.props
       .checkoutWithBankTransfer(data)
