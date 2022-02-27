@@ -1,0 +1,38 @@
+.page-container {
+  & .page-title {
+    font-size: 68px;
+    color: #4a3985;
+    z-index: 1;
+  }
+  & .bookitem {
+    position: absolute;
+    top: 100px;
+    z-index: 0;
+  }
+  & .card-container {
+    border-radius: 26px;
+    & .card-date {
+      color: #fff;
+      font-size: 23px;
+    }
+    & .card-title {
+      font-size: 31px;
+      font-weight: bold;
+      color: #fff;
+    }
+    & .card-footer {
+      border-radius: 0px 0px 26px 26px;
+      border: 2px solid;
+      & .counter-item {
+        width: 60px;
+        height: 60px;
+        background-color: transparent;
+        border: 2px solid;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+}
