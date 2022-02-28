@@ -1,77 +1,24 @@
-import React from "react";
-import { v4 as uuidv4 } from "uuid";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "./index.scss";
 import { Card } from "./card";
+import { apiBaseUrl } from "../../api/helpers";
 
-const data = [
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 1, 28),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 4, 15),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-  {
-    id: uuidv4(),
-    title: "التسجيل في الاختبار التحصيلي للطلاب والطالبات",
-    date: new Date(2022, 3, 12),
-  },
-];
-
+const getDates = async () => {
+  return await axios({
+    method: "GET",
+    url: `${apiBaseUrl}/HemmaDatesSchedule`,
+  })
+    .then((res) => res?.data)
+    .catch((error) => error);
+};
 const ScheduleDates = () => {
+  const [dates, setDates] = useState([]);
+
+  useEffect(() => {
+    getDates().then((res) => setDates(res?.data));
+  }, []);
+
   return (
     <div className="container-fluid page-container">
       <div className="d-flex justify-content-center align-items-center">
@@ -83,7 +30,7 @@ const ScheduleDates = () => {
         <p className="page-title text-center">تواريخ مهمة لك!</p>
       </div>
       <div className="row mt-5">
-        {data?.map((item, index) => {
+        {dates?.map((item, index) => {
           return <Card key={index} {...item} {...{ index }} />;
         })}
       </div>
