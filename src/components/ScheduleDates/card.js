@@ -26,7 +26,7 @@ export const Card = ({ index, ...item }) => {
       : "#56B3BE";
   const counterStyle = { borderColor: colorValidation, color: colorValidation };
   var date = new Date();
-  var date2 = item?.date;
+  var date2 = new Date(item?.date);
   var diff = new Date(date2.getTime() - date.getTime());
   useEffect(() => {
     let days = diff.getUTCDate() - 1;
@@ -41,7 +41,10 @@ export const Card = ({ index, ...item }) => {
     });
   }, [date]);
 
-  return (
+  return restOfDay > 0 &&
+    restOfHours > 0 &&
+    restOfMinuts > 0 &&
+    restOfSeconds > 0 ? (
     <div className="col-12 col-md-4 p-3">
       <div
         className="card-container d-flex flex-column justify-content-center align-items-center text-center"
@@ -53,22 +56,23 @@ export const Card = ({ index, ...item }) => {
           className="card-footer w-100 bg-white"
           style={{ borderColor: colorValidation }}
         >
+          <p style={{ color: colorValidation }}>الوقت المتبقي:</p>
           <div className="d-flex justify-content-center align-items-center my-1">
             <p className="my-0 mx-1 counter-item" style={counterStyle}>
-              {restOfSeconds}
+              {restOfSeconds} <br /> ثانية
             </p>
             <p className="my-0 mx-1 counter-item" style={counterStyle}>
-              {restOfMinuts}
+              {restOfMinuts} <br /> دقيقة
             </p>
             <p className="my-0 mx-1 counter-item" style={counterStyle}>
-              {restOfHours}
+              {restOfHours} <br /> ساعة
             </p>
             <p className="my-0 mx-1 counter-item" style={counterStyle}>
-              {restOfDay}
+              {restOfDay} <br /> يوم
             </p>
           </div>
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };
