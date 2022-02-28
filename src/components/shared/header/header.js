@@ -470,6 +470,11 @@ return(
                 </div>
                 </ul>
             </li>
+            <li className="dropdown-wrapper nav-item position-relative" data-hover="sub-list">
+            <NavLink to="/Schedule-dates" activeClassName="active" className={"nav-link links-hover d-flex align-items-center justify-content-between"}>
+                <span className="mr-1 header-mobile-icon">تواريخ مهمة لك!</span>
+                </NavLink>
+            </li>
               <SearchBox />
             </ul>
             {!this.props.authenticated ? (
