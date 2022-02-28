@@ -41,10 +41,10 @@ export const Card = ({ index, ...item }) => {
     });
   }, [date]);
 
-  return restOfDay > 0 &&
-    restOfHours > 0 &&
-    restOfMinuts > 0 &&
-    restOfSeconds > 0 ? (
+  return restOfDay >= 0 &&
+    restOfHours >= 0 &&
+    restOfMinuts >= 0 &&
+    restOfSeconds >= -1 ? (
     <div className="col-12 col-md-4 p-3">
       <div
         className="card-container d-flex flex-column justify-content-center align-items-center text-center"
@@ -59,7 +59,7 @@ export const Card = ({ index, ...item }) => {
           <p style={{ color: colorValidation }}>الوقت المتبقي:</p>
           <div className="d-flex justify-content-center align-items-center my-1">
             <p className="my-0 mx-1 counter-item" style={counterStyle}>
-              {restOfSeconds} <br /> ثانية
+              {restOfSeconds === -1 ? 59 : restOfSeconds} <br /> ثانية
             </p>
             <p className="my-0 mx-1 counter-item" style={counterStyle}>
               {restOfMinuts} <br /> دقيقة
