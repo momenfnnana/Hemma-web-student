@@ -51,7 +51,7 @@ class CheckoutComponent extends Component {
 
   componentDidMount() {
     this.GetPaymentMethods();
-    if(this.state.paymentMethods.length === 0) this.setState({ activeTab: "bank" });
+    
     this.setTokenforAnonymous(this.props.location.hash);
     if (this.props.location.pathname == "/cart/anonymouscheckout") {
       this.setState({ activeTab: "online" });
@@ -91,6 +91,7 @@ class CheckoutComponent extends Component {
             this.setState({
               paymentMethods: response.data.data.paymentMethods,
             });
+            if(response.data.data.paymentMethods === 0) this.setState({ activeTab: "bank" });
           }
         }
       })
