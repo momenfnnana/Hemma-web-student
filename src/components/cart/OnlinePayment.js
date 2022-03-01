@@ -104,7 +104,7 @@ const OnlinePayment = (props) => {
               return (
                 <img
                   className="padding-img"
-                  src={process.env.PUBLIC_URL + "/assets/" + item.imagePath}
+                  src={process.env.PUBLIC_URL + "/assets" + item.imagePath}
                   width="80"
                   height="80"
                   key={item.id}

@@ -14,40 +14,11 @@ export default function PaymentStage({
   isShippingAddressFilled,
   setActiveTab = () => {},
   deliveryData,
-  cart
+  cart,
+  paymentMethods,
+  paymentGateway
 }) {
-  const [paymentMethods, setPaymentMethods] = useState([]);
-  const [paymentGateway, setPaymentGateway] = useState("tap");
-
-  useEffect(() => {
-    GetPaymentMethods();
-  }, []);
-
-  const GetPaymentMethods = () => {
-    let token = localStorage.getItem("token");
-    axios
-      .get(`${apiBaseUrl}/cart_v2/GetDefaultPaymentGatewayAndPaymentMethods`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setPaymentGateway(response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase());
-          if (
-            response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase() ===
-            "tap"
-          ) {
-            setPaymentMethods(response.data.data.paymentMethods);
-          }
-        }
-      })
-      .catch(() => {
-        swal("عفواً", "حدث خطأ ما", "error", {
-          button: "متابعة",
-        });
-      });
-  };
+  
   return (
     <div className="col-12">
       <Nav tabs className="custom-tabs w-50 mx-auto">
@@ -63,7 +34,7 @@ export default function PaymentStage({
             </NavLink>
           </NavItem>
         )}
-        <NavItem>
+        { paymentMethods.length > 0 && <NavItem>
           <NavLink
             className={classnames({
               active: activeTab === "online",
@@ -72,7 +43,7 @@ export default function PaymentStage({
           >
             بطاقة إئتمانية
           </NavLink>
-        </NavItem>
+        </NavItem>}
       </Nav>
 
       <TabContent activeTab={activeTab}>

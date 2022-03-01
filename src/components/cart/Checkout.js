@@ -12,16 +12,21 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import classnames from "classnames";
 import { BankPayment } from "./BankPayment";
 import OnlinePayment from "./OnlinePayment";
-import Stepper from './../../shared-components/stepper/index';
-import DeliveryStage from './checkout-stages/delivery/index';
-import PaymentStage from './checkout-stages/payment-stage/index';
+import Stepper from "./../../shared-components/stepper/index";
+import DeliveryStage from "./checkout-stages/delivery/index";
+import PaymentStage from "./checkout-stages/payment-stage/index";
+import swal from "@sweetalert/with-react";
+import { apiBaseUrl } from "../../api/helpers";
+import axios from "axios";
 
 class CheckoutComponent extends Component {
   state = {
     busy: true,
     activeTab: "online",
-    isShippingAddressFilled:false,
-    currentStepIndex : 0
+    isShippingAddressFilled: false,
+    currentStepIndex: 0,
+    paymentGateway: "tap",
+    paymentMethods: [],
   };
 
   constructor(props) {
@@ -37,44 +42,73 @@ class CheckoutComponent extends Component {
     this.setState({ activeTab: tab });
   }
 
-  setTokenforAnonymous(hashRoute)
-  {
-      if(hashRoute && hashRoute !== "")
-      {
-          let tokenAnonymous = hashRoute.split("=");
-          localStorage.setItem("token",tokenAnonymous[1]);
-      }
+  setTokenforAnonymous(hashRoute) {
+    if (hashRoute && hashRoute !== "") {
+      let tokenAnonymous = hashRoute.split("=");
+      localStorage.setItem("token", tokenAnonymous[1]);
+    }
   }
 
   componentDidMount() {
+    this.GetPaymentMethods();
+    
     this.setTokenforAnonymous(this.props.location.hash);
-    if(this.props.location.pathname == "/cart/anonymouscheckout")
-    {
-      this.setState({ activeTab: 'online' });
+    if (this.props.location.pathname == "/cart/anonymouscheckout") {
+      this.setState({ activeTab: "online" });
     }
     this.props
       .getCart()
-      .then(result => {
+      .then((result) => {
         this.setState({
-          busy: false
+          busy: false,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error while fetching the cart");
         this.setState({
-          busy: false
+          busy: false,
         });
       });
   }
 
-  nextStep(){
-    const {currentStepIndex:prevStepIndex} = this.state
-    this.setState({currentStepIndex:prevStepIndex + 1})
+  GetPaymentMethods() {
+    let token = localStorage.getItem("token");
+    axios
+      .get(`${apiBaseUrl}/cart_v2/GetDefaultPaymentGatewayAndPaymentMethods`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.data.status === 200) {
+          this.setState({
+            paymentGateway: response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase(),
+          });
+          if (
+            response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase() ===
+            "tap"
+          ) {
+            this.setState({
+              paymentMethods: response.data.data.paymentMethods,
+            });
+            if(response.data.data.paymentMethods === 0) this.setState({ activeTab: "bank" });
+          }
+        }
+      })
+      .catch(() => {
+        swal("عفواً", "حدث خطأ ما", "error", {
+          button: "متابعة",
+        });
+      });
+  }
+  nextStep() {
+    const { currentStepIndex: prevStepIndex } = this.state;
+    this.setState({ currentStepIndex: prevStepIndex + 1 });
   }
 
-  onFillShippingAddress =(values)=>{
-    this.setState({isShippingAddressFilled:true,deliveryData:values})
-    this.nextStep()
+  onFillShippingAddress = (values) => {
+    this.setState({ isShippingAddressFilled: true, deliveryData: values });
+    this.nextStep();
   };
   render() {
     const cart = this.props.cart;
@@ -84,29 +118,42 @@ class CheckoutComponent extends Component {
       <Fragment>
         <section className="cart-section">
           <div className="container">
-                <h3 className="dark-text mb-0 mt-4">تأكيد الإشتراك</h3>
+            <h3 className="dark-text mb-0 mt-4">تأكيد الإشتراك</h3>
             <div className="row">
               <div className="col-md-4 mt-5">
-                  <MiniCartItemsList />
+                <MiniCartItemsList />
               </div>
               <div className="col-md-8 mt-5">
-            <Stepper currentStepIndex={this.state.currentStepIndex}>
-              {cart && cart.requireShippingAddress  &&  (
-                <Stepper.Step>
-                  <DeliveryStage cart={cart} onFillShippingAddress={this.onFillShippingAddress} activeTab={this.state.activeTab} />
-                </Stepper.Step>
-              )}
-              <Stepper.Step>
-                <PaymentStage cart={cart} deliveryData={this.state.deliveryData} path={path} activeTab={this.state.activeTab} setActiveTab={this.setActiveTab} isShippingAddressFilled={this.state.isShippingAddressFilled} />
-              </Stepper.Step>
-              </Stepper>
+                <Stepper currentStepIndex={this.state.currentStepIndex}>
+                  {cart && cart.requireShippingAddress && (
+                    <Stepper.Step>
+                      <DeliveryStage
+                        cart={cart}
+                        onFillShippingAddress={this.onFillShippingAddress}
+                        activeTab={this.state.activeTab}
+                      />
+                    </Stepper.Step>
+                  )}
+                  <Stepper.Step>
+                    <PaymentStage
+                      cart={cart}
+                      deliveryData={this.state.deliveryData}
+                      path={path}
+                      activeTab={this.state.activeTab}
+                      setActiveTab={this.setActiveTab}
+                      isShippingAddressFilled={
+                        this.state.isShippingAddressFilled
+                      }
+                      paymentMethods={this.state.paymentMethods}
+                      paymentGateway={this.state.paymentGateway}
+                    />
+                  </Stepper.Step>
+                </Stepper>
               </div>
             </div>
 
-
             <div className="row mt-4">
               <div className="col-md-4">
-
                 {/* <div className="off-white-bg box-layout w-100 border-top-0 radius-top-0">
                   {this.state.activeTab == "bank" ? (
                     <React.Fragment>
@@ -179,22 +226,22 @@ class CheckoutComponent extends Component {
           </div>
         </section>
 
-        {path !== '/cart/anonymouscheckout' && 
-        <section className="courses-section section-padder">
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <h4 className="dark-text pb-3">اشترك بدورات أخرى؟</h4>
+        {path !== "/cart/anonymouscheckout" && (
+          <section className="courses-section section-padder">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <h4 className="dark-text pb-3">اشترك بدورات أخرى؟</h4>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-12">
+                  <RecentCoursesSlider />
+                </div>
               </div>
             </div>
-            <div className="row">
-              <div className="col-md-12">
-                <RecentCoursesSlider />
-              </div>
-            </div>
-          </div>
-        </section>}
-        
+          </section>
+        )}
       </Fragment>
     );
   }
@@ -205,10 +252,7 @@ function mapStateToProps(state) {
 }
 
 const actionCreators = {
-  getCart
+  getCart,
 };
 
-export default connect(
-  mapStateToProps,
-  actionCreators
-)(CheckoutComponent);
+export default connect(mapStateToProps, actionCreators)(CheckoutComponent);

@@ -35,6 +35,7 @@ import {
   StartExam,
   QuickQuestions,
   Categories,
+  ScheduleDates,
   FAQ,
   Search,
   Healthy,
@@ -183,8 +184,8 @@ function loadingProgressbar() {
       path.startsWith("/search")||
       path.startsWith("/home/hemma-succes")||
       path.startsWith("/hemma-new-polices")||
-      path.startsWith("/myFreeGroups")
-      
+      path.startsWith("/myFreeGroups")||
+      path.startsWith("/Schedule-dates")
     ) {
       img = "pages-bg.png";
       imgSize = "100%";
@@ -270,6 +271,7 @@ class MainRouterComponent extends Component {
               <Route path="/forgot-password" component={forgotPassword} />
               <Route path="/reset-password" component={resetPassword} />
               <Route path="/categories" exact component={Categories} />
+              <Route path="/Schedule-dates" exact component={ScheduleDates} />
               <Route path="/booklet" exact component={BookletComponent} />
               <Route
                 path="/categories/details/:slug"
