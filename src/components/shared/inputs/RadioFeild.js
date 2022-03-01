@@ -2,35 +2,35 @@ import React, { Component } from "react";
 
 export class RadioField extends Component {
   render() {
-    const { input, meta, options } = this.props;
-    const hasError = meta.touched && meta.error;
-
+    const { input, meta, options, onChangeGender = () => true } = this.props;
+    const hasError = meta?.touched && meta?.error;
     return (
       <React.Fragment>
         <div className="form-check form-check-inline">
-          {options.map(o => (
+          {options.map((o) => (
             <label
               className="form-check-label dark-text small mr-3"
-              key={o.value}
+              key={o?.value}
             >
               <input
                 type="radio"
                 {...input}
-                value={o.value}
-                checked={o.value === input.value}
+                value={o?.value}
+                checked={o?.value === input?.value}
+                onChange={(e) => onChangeGender(e.target.value)}
               />
               <img
-                src={process.env.PUBLIC_URL + `/assets/images/${o.value}.png`}
+                src={process.env.PUBLIC_URL + `/assets/images/${o?.value}.png`}
                 width="100%"
                 className="mr-1 ml-1"
                 width="12"
               />
-              {o.title}
+              {o?.title}
             </label>
           ))}
         </div>
         <div>
-          {hasError && <small className="w-100 smaller">{meta.error}</small>}
+          {hasError && <small className="w-100 smaller">{meta?.error}</small>}
         </div>
       </React.Fragment>
     );
