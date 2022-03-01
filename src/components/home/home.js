@@ -21,6 +21,7 @@ import "./index.scss";
 // import "public/assets/css/glide.core.min.css";
 import WrapperText from "./../../shared-components/WrappedText/inedx";
 import PopupHemma from "./popupHemma";
+// import { LoginPopUp } from "../loginPopUp";
 // // Optional Theme Stylesheet
 // import "public/assets/css/glide.theme.min.css";
 const nationalDayImgName = "national-day.png";
@@ -746,6 +747,12 @@ class HomeComponent extends Component {
     return (
       <React.Fragment>
         <PopupHemma />
+        {/* add the usage of loginpopup component */}
+        {/* <LoginPopUp
+          onSuccess={(e) => console.log({ onSuccess: e })}
+          onError={(e) => console.log({ onError: e })}
+          history={this.props.history}
+        /> */}
         <section id="hemma-banner" className="main-banner ">
           {!this.state.isNationalDay && (
             <div
