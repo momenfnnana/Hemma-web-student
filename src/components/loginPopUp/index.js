@@ -116,8 +116,8 @@ const PhoneComponent = (props) => {
 };
 
 const LoginPopUpContent = ({
-  setCompeted = () => true,
-  setError = () => true,
+  onSuccess = () => true,
+  onError = () => true,
 }) => {
   const [showContent, setShowContent] = useState(loginContent);
   const [phoneNumber, setPhoneNumber] = useState({
@@ -186,13 +186,13 @@ const LoginPopUpContent = ({
         .then((response) => {
           setState({ ...state, loading: false });
           localStorage.setItem("token", response.data.data.token);
-          setCompeted(true);
-          setError(false);
+          onSuccess(true);
+          onError(false);
           // window.location = "/";
         })
         .catch((error) => {
-          setCompeted(false);
-          setError(true);
+          onSuccess(false);
+          onError(true);
           setState({ ...state, loading: false });
           switch (error.response.data && error.response.data.error) {
             case "ValidationError":
@@ -265,8 +265,8 @@ const LoginPopUpContent = ({
             <div
               className="dark-text small light-text clickable cursor-pointer"
               onClick={() => {
-                setCompeted(false);
-                setError(true);
+                onSuccess(false);
+                onError(true);
               }}
             >
               تخطى تأكيد الحساب
@@ -331,12 +331,12 @@ const LoginPopUpContent = ({
                       //   .then((meRes) => console.log({ meRes }))
                       //   .catch((error) => console.log({ error }));
                       localStorage.setItem("token", res?.data?.data?.token);
-                      setCompeted(true);
-                      setError(false);
+                      onSuccess(true);
+                      onError(false);
                     })
                     .catch((error) => {
-                      setCompeted(false);
-                      setError(true);
+                      onSuccess(false);
+                      onError(true);
                       console.log({ error });
                     });
                 } else {
@@ -427,8 +427,8 @@ const LoginPopUpContent = ({
                         console.log({ registerRes });
                       })
                       .catch((error) => {
-                        setCompeted(false);
-                        setError(true);
+                        onSuccess(false);
+                        onError(true);
                         console.log({ error });
                       });
                   }
@@ -527,22 +527,22 @@ const LoginPopUpContent = ({
 };
 
 export const LoginPopUp = ({
-  setCompeted = () => true,
-  setError = () => true,
+  onSuccess = () => true,
+  onError = () => true,
   history,
 }) => {
   useEffect(() => {
     swal({
       content: (
         <LoginPopUpContent
-          setCompeted={(e) => {
+          onSuccess={(e) => {
             swal.close();
-            setCompeted(e);
+            onSuccess(e);
           }}
-          setError={(e) => {
+          onError={(e) => {
             swal.close();
             history.push("/auth/login");
-            setError(e);
+            onError(e);
           }}
         />
       ),

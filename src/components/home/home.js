@@ -749,8 +749,8 @@ class HomeComponent extends Component {
         <PopupHemma />
         {/* add the usage of loginpopup component */}
         {/* <LoginPopUp
-          setCompeted={(e) => console.log({ setCompeted: e })}
-          setError={(e) => console.log({ setError: e })}
+          onSuccess={(e) => console.log({ onSuccess: e })}
+          onError={(e) => console.log({ onError: e })}
           history={this.props.history}
         /> */}
         <section id="hemma-banner" className="main-banner ">
