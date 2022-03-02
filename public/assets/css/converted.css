@@ -356,7 +356,7 @@ form input.form-control {
 	height: 40px;
 	border-radius: 5px;
 	border: 1px solid #dbdbdb;
-	font-size: 13px;
+	/* font-size: 13px; */
 }
 
 form select.form-control {
