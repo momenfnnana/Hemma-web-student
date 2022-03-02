@@ -527,9 +527,9 @@ const LoginPopUpContent = ({
 };
 
 export const LoginPopUp = ({
-  onSuccess = () => true,
-  onError = () => true,
-  history,
+  onSuccess = () => true, // if onSuccess return true the user must be logged in or registered and verified thier phone number
+  onError = () => true, // if onError return true somthing went wrong in login or register operation and will auto redirect user to login screen
+  history, // must pass history object to enable navigation process from this component if not passed the app may going to crash
 }) => {
   useEffect(() => {
     swal({
