@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import OnlinePaymentTap from "../../OnlinePayment";
-import { OnlinePayment  } from "../../OnlinePaymentold";
+import { OnlinePayment } from "../../OnlinePaymentold";
 import { BankPayment } from "./../../BankPayment";
 import classnames from "classnames";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
@@ -16,9 +16,15 @@ export default function PaymentStage({
   deliveryData,
   cart,
   paymentMethods,
-  paymentGateway
+  paymentGateway,
 }) {
-  
+  useEffect(() => {
+    if(paymentMethods.length > 0){
+      setActiveTab("online");
+    }else{
+      setActiveTab("bank");
+    }
+  });
   return (
     <div className="col-12">
       <Nav tabs className="custom-tabs w-50 mx-auto">
@@ -34,16 +40,18 @@ export default function PaymentStage({
             </NavLink>
           </NavItem>
         )}
-        { paymentMethods.length > 0 && <NavItem>
-          <NavLink
-            className={classnames({
-              active: activeTab === "online",
-            })}
-            onClick={() => setActiveTab("online")}
-          >
-            بطاقة إئتمانية
-          </NavLink>
-        </NavItem>}
+        {paymentMethods.length > 0 && (
+          <NavItem>
+            <NavLink
+              className={classnames({
+                active: activeTab === "online",
+              })}
+              onClick={() => setActiveTab("online")}
+            >
+              بطاقة إئتمانية
+            </NavLink>
+          </NavItem>
+        )}
       </Nav>
 
       <TabContent activeTab={activeTab}>
@@ -53,21 +61,24 @@ export default function PaymentStage({
             isShippingAddressFilled={isShippingAddressFilled}
           />
         </TabPane>
-        <TabPane tabId="online">
-          {paymentGateway === "tap" ?
-          <OnlinePaymentTap
-            cart={cart}
-            paymentMethods={paymentMethods}
-            deliveryData={deliveryData}
-            isShippingAddressFilled={isShippingAddressFilled}
-          />
-          :
-          <OnlinePayment
-            cart={cart}
-            deliveryData={deliveryData}
-            isShippingAddressFilled={isShippingAddressFilled}
-          />}
-        </TabPane>
+        {paymentMethods.length > 0 && (
+          <TabPane tabId="online">
+            {paymentGateway === "tap" ? (
+              <OnlinePaymentTap
+                cart={cart}
+                paymentMethods={[paymentMethods]}
+                deliveryData={deliveryData}
+                isShippingAddressFilled={isShippingAddressFilled}
+              />
+            ) : (
+              <OnlinePayment
+                cart={cart}
+                deliveryData={deliveryData}
+                isShippingAddressFilled={isShippingAddressFilled}
+              />
+            )}
+          </TabPane>
+        )}
       </TabContent>
     </div>
   );
