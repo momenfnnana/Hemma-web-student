@@ -765,8 +765,8 @@ class HomeComponent extends Component {
               //   height: "85px"
               // }}
             >
-              <div className="container-fluid banner-container py-4">
-                <div className="row">
+              <div className="container-fluid py-4">
+                {/* <div className="row">
                   <div className='col-7 banner-title position-relative d-flex justify-content-end align-items-center'>
                     <div className='rectangle mx-4'></div>
                     <p className="m-0">المراجعة المكثفة للرخصة المهنية</p>
@@ -791,8 +791,9 @@ class HomeComponent extends Component {
                       </div>
                     </div>
                   </div>
-                </div>
-                {/* <p className="d-flex justify-contet-center align-items-center">
+                </div> */}
+                <div className="d-flex justify-contet-center align-items-center">
+                <p className="d-flex justify-contet-center align-items-center mx-auto">
                   عزيزي المشترك في حال واجهتك اي مشكلة في انشاء الحساب الرجاء
                   التواصل على
                   <span
@@ -811,7 +812,8 @@ class HomeComponent extends Component {
                   >
                     <FaWhatsapp size={40} />
                   </div>
-                </p> */}
+                </p>
+                </div>
                 {/* {window.innerWidth > 768 ? (
                     <h1 className="h1 m-0 mb-4 animated bounceInUp">
                       <span
