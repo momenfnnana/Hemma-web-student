@@ -27,6 +27,7 @@ class CheckoutComponent extends Component {
     currentStepIndex: 0,
     paymentGateway: "tap",
     paymentMethods: [],
+    isBankActive: true,
   };
 
   constructor(props) {
@@ -51,7 +52,7 @@ class CheckoutComponent extends Component {
 
   componentDidMount() {
     this.GetPaymentMethods();
-    
+
     this.setTokenforAnonymous(this.props.location.hash);
     if (this.props.location.pathname == "/cart/anonymouscheckout") {
       this.setState({ activeTab: "online" });
@@ -84,16 +85,16 @@ class CheckoutComponent extends Component {
           this.setState({
             paymentGateway: response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase(),
           });
-          if (
-            response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase() ===
-            "tap"
-          ) {
             this.setState({
-              paymentMethods: response.data.data.paymentMethods,
+              paymentMethods: response.data.data.paymentMethods.filter(
+                (item) => item.id !== 4 && item.isActive === true
+              ),
             });
-            if(response.data.data.paymentMethods === 0) this.setState({ activeTab: "bank" });
+            const bankData = response.data.data.paymentMethods.filter(
+              (item) => item.id === 4 && item.isActive === true
+            );
+            if (!bankData) this.setState({ isBankActive: false });
           }
-        }
       })
       .catch(() => {
         swal("عفواً", "حدث خطأ ما", "error", {
@@ -146,6 +147,7 @@ class CheckoutComponent extends Component {
                       }
                       paymentMethods={this.state.paymentMethods}
                       paymentGateway={this.state.paymentGateway}
+                      isBankActive={this.state.isBankActive}
                     />
                   </Stepper.Step>
                 </Stepper>
