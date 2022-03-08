@@ -19,13 +19,6 @@ export default function PaymentStage({
   paymentGateway,
   isBankActive
 }) {
-  useEffect(() => {
-    if(paymentMethods.length > 0){
-      setActiveTab("online");
-    }else{
-      if(isBankActive) setActiveTab("bank");
-    }
-  });
   return (
     <div className="col-12">
       <Nav tabs className="custom-tabs w-50 mx-auto">
@@ -56,18 +49,18 @@ export default function PaymentStage({
       </Nav>
 
       <TabContent activeTab={activeTab}>
-        <TabPane tabId="bank">
+        {isBankActive && <TabPane tabId="bank">
           <BankPayment
             deliveryData={deliveryData}
             isShippingAddressFilled={isShippingAddressFilled}
           />
-        </TabPane>
+        </TabPane>}
         {paymentMethods.length > 0 && (
           <TabPane tabId="online">
             {paymentGateway === "tap" ? (
               <OnlinePaymentTap
                 cart={cart}
-                paymentMethods={[paymentMethods]}
+                paymentMethods={paymentMethods}
                 deliveryData={deliveryData}
                 isShippingAddressFilled={isShippingAddressFilled}
               />

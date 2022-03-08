@@ -85,15 +85,18 @@ class CheckoutComponent extends Component {
           this.setState({
             paymentGateway: response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase(),
           });
+          const methods = response.data.data.paymentMethods.filter(
+            (item) => item.id !== 4 && item.isActive === true
+          );
+          
             this.setState({
-              paymentMethods: response.data.data.paymentMethods.filter(
-                (item) => item.id !== 4 && item.isActive === true
-              ),
+              paymentMethods: methods
             });
             const bankData = response.data.data.paymentMethods.filter(
               (item) => item.id === 4 && item.isActive === true
             );
-            if (!bankData) this.setState({ isBankActive: false });
+            if (bankData.length === 0) this.setState({ isBankActive: false });
+            if(!this.state.paymentMethods.length > 0) this.setState({ activeTab: "bank" })
           }
       })
       .catch(() => {

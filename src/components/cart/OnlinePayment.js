@@ -14,7 +14,6 @@ import "loaders.css/src/animations/ball-clip-rotate.scss";
 import "./checkout.styles.sass";
 
 const OnlinePayment = (props) => {
-  
   const [cardData, setCardData] = useState({
     encriptedCardNumber: "",
     epireMonth: 0,
@@ -42,11 +41,12 @@ const OnlinePayment = (props) => {
       cardData: cardData,
       checkoutItemDetails: itemDetails,
     };
-    
+
     setLoading(true);
-    Api.cart.initiateTapOnlineCheckout(data)
+    Api.cart
+      .initiateTapOnlineCheckout(data)
       .then((res) => {
-        if(res.amount === 0) {
+        if (res.amount === 0) {
           swal("عفواً", "حدث خطأ ما", "error", {
             button: "متابعة",
           });
@@ -98,20 +98,17 @@ const OnlinePayment = (props) => {
   return (
     <div className="row mt-5">
       <div className="col-12 mada-img">
-        {props.paymentMethods.length > 0 &&
-          props.paymentMethods.map((item) => {
-            if (item.id !== 4) {
-              return (
-                <img
-                  className="padding-img"
-                  src={process.env.PUBLIC_URL + "/assets" + item.imagePath}
-                  width="80"
-                  height="80"
-                  key={item.id}
-                />
-              );
-            }
-          })}
+        {props.paymentMethods.map((item) => {
+          return (
+            <img
+              className="padding-img"
+              src={process.env.PUBLIC_URL + "/assets" + item.imagePath}
+              width="80"
+              height="80"
+              key={item.id}
+            />
+          );
+        })}
       </div>
       <div className="col-12 d-flex justify-content-center">
         <form className="w-60" onSubmit={handleSubmit}>
