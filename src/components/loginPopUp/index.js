@@ -9,6 +9,8 @@ import { MdLockOutline } from "react-icons/md";
 import Loader from "react-loaders";
 import { FaRegEnvelope, FaRegUser } from "react-icons/fa";
 import Countdown from "react-countdown-now";
+import CryptoJS from "react-native-crypto-js";
+
 import { RadioField } from "../shared/inputs/RadioFeild";
 import { apiBaseUrl } from "../../api/helpers";
 import { VerificationField } from "../shared/inputs/verificationField";
@@ -118,6 +120,8 @@ const PhoneComponent = (props) => {
 const LoginPopUpContent = ({
   onSuccess = () => true,
   onError = () => true,
+  loginResponse = () => true,
+  changeCheckedValue = () => true,
 }) => {
   const [showContent, setShowContent] = useState(loginContent);
   const [phoneNumber, setPhoneNumber] = useState({
@@ -134,6 +138,7 @@ const LoginPopUpContent = ({
     countdownApi: null,
     showResend: true,
   });
+  const [checked, setChecked] = useState(false);
   const validatePhoneNumber = () => {
     if (phoneNumber.number?.length < 1) {
       return "يجب ادخال رقم الهاتف";
@@ -188,6 +193,7 @@ const LoginPopUpContent = ({
           localStorage.setItem("token", response.data.data.token);
           onSuccess(true);
           onError(false);
+          loginResponse(response);
           // window.location = "/";
         })
         .catch((error) => {
@@ -280,26 +286,31 @@ const LoginPopUpContent = ({
               className="list-inline-item small cursor-pointer"
               onClick={() => setShowContent(loginContent)}
             >
-              <div
-                className="dark-text"
-                style={
-                  showContent === loginContent ? selectedTabStyle : undefined
-                }
-              >
+              <div className="dark-text">
                 تسجيل دخول
+                <div
+                  className="w-100"
+                  style={{
+                    height: showContent === loginContent ? 3 : 0,
+                    backgroundColor: "#4b3a8599",
+                  }}
+                />
               </div>
             </li>
             <li
               className="list-inline-item small cursor-pointer"
               onClick={() => setShowContent(registerContent)}
             >
-              <div
-                className="dark-text"
-                style={
-                  showContent === loginContent ? undefined : selectedTabStyle
-                }
-              >
+              <div className="dark-text">
                 إنشاء حساب
+                <div
+                  className="w-100"
+                  style={{
+                    height: showContent === registerContent ? 3 : 0,
+                    backgroundColor: "#4b3a8599",
+                  }}
+                />
+                <div />
               </div>
             </li>
           </ul>
@@ -319,6 +330,19 @@ const LoginPopUpContent = ({
                     password: values.password,
                   })
                     .then((res) => {
+                      if (checked) {
+                        const userObject = {
+                          ...values,
+                          phoneNumber: phoneNumber,
+                        };
+                        let storedobj = JSON.stringify(userObject);
+                        let ciphertext = CryptoJS.AES.encrypt(
+                          storedobj,
+                          "secret key 123"
+                        ).toString();
+                        localStorage.setItem("account", ciphertext);
+                        localStorage.setItem("checkbox", checked);
+                      }
                       // next for getting user data after login process
                       // let headers = {
                       //   Authorization: `Bearer ${res?.data?.data?.token}`,
@@ -332,6 +356,8 @@ const LoginPopUpContent = ({
                       //   .catch((error) => console.log({ error }));
                       localStorage.setItem("token", res?.data?.data?.token);
                       onSuccess(true);
+                      loginResponse(res);
+
                       onError(false);
                     })
                     .catch((error) => {
@@ -378,6 +404,19 @@ const LoginPopUpContent = ({
                     {errors.password && touched.password ? (
                       <div>{errors.password}</div>
                     ) : null}
+                    <div className="d-flex justify-content-start align-items-center m-2">
+                      <input
+                        type="checkbox"
+                        className="mx-2"
+                        checked={checked}
+                        name="lsRememberMe"
+                        onChange={(e) => {
+                          changeCheckedValue(e.target.checked);
+                          setChecked(e.target.checked);
+                        }}
+                      />
+                      <label className="m-0">تذكرني</label>
+                    </div>
                     <button
                       type="submit"
                       className="btn dark-outline-btn w-100 justify-content-center d-flex align-items-center"
@@ -529,6 +568,8 @@ const LoginPopUpContent = ({
 export const LoginPopUp = ({
   onSuccess = () => true, // if onSuccess return true the user must be logged in or registered and verified thier phone number
   onError = () => true, // if onError return true somthing went wrong in login or register operation and will auto redirect user to login screen
+  loginResponse = () => true,
+  changeCheckedValue = () => true,
   history, // must pass history object to enable navigation process from this component if not passed the app may going to crash
 }) => {
   useEffect(() => {
@@ -544,6 +585,8 @@ export const LoginPopUp = ({
             history.push("/auth/login");
             onError(e);
           }}
+          loginResponse={(e) => loginResponse(e)}
+          changeCheckedValue={(e) => changeCheckedValue(e)}
         />
       ),
       buttons: false,
