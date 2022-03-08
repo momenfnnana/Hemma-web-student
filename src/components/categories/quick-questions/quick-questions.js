@@ -5,10 +5,12 @@ import axios from "axios";
 import { apiBaseUrl } from "../../../api/helpers";
 import { Link } from "react-router-dom";
 import Loader from "react-loaders";
+import { connect } from "react-redux";
 import "loaders.css/src/animations/ball-beat.scss";
 import { Table } from "reactstrap";
 import { ToastDemo } from "./toast-notification";
-
+import { LoginPopUp } from "../../loginPopUp";
+import { forceLogin } from "../../../actions/login.actions";
 var moment = require("moment");
 moment().format();
 
@@ -73,8 +75,7 @@ export default class QuickQuestions extends Component {
         });
     }
   };
-
-  async componentDidMount() {
+  initRequest = async () => {
     const {
       match: { params },
     } = this.props;
@@ -140,11 +141,14 @@ export default class QuickQuestions extends Component {
       .catch((error) => {
         console.log(error);
       });
+  };
+  async componentDidMount() {
+    this.initRequest();
   }
-  async componentDidUpdate(prevProps,prevState){
-    const {isJoined:currentIsJoined} = this.state;
-    const {isJoined:prevIsJoined}=prevState;
-    if(prevIsJoined!==currentIsJoined&&currentIsJoined===true){
+  async componentDidUpdate(prevProps, prevState) {
+    const { isJoined: currentIsJoined } = this.state;
+    const { isJoined: prevIsJoined } = prevState;
+    if (prevIsJoined !== currentIsJoined && currentIsJoined === true) {
       const {
         match: { params },
       } = this.props;
@@ -165,7 +169,7 @@ export default class QuickQuestions extends Component {
         .catch((error) => {
           console.log(error);
         });
-  
+
       axios
         .get(
           `${apiBaseUrl}/CategoryGroupExams?categoryGroupId=${params.categoryGroupId}&type=Training`,
@@ -183,18 +187,18 @@ export default class QuickQuestions extends Component {
   }
   createTrainingLink(slug, categoryGroupId, traId) {
     let baseUrl = process.env.PUBLIC_URL;
-    return baseUrl + `/categories/${slug}/${categoryGroupId}/training/${traId}`
+    return baseUrl + `/categories/${slug}/${categoryGroupId}/training/${traId}`;
   }
   createExamLink(slug, categoryGroupId, examId) {
     let baseUrl = process.env.PUBLIC_URL;
-    return baseUrl + `/categories/${slug}/${categoryGroupId}/exam/${examId}`
+    return baseUrl + `/categories/${slug}/${categoryGroupId}/exam/${examId}`;
   }
   toggleJoin() {
     const {
       match: { params },
     } = this.props;
     let token = localStorage.getItem("token");
-    if(!token){
+    if (!token) {
       this.props.history.push("/auth/login");
     }
     let headers = {
@@ -330,7 +334,12 @@ export default class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
-              <ToastDemo copyLink={{ btnName: 'مشاركة التدريب', link: `/categories/${slug}/${categoryGroupId}/training/${tra.id}` }} />
+              <ToastDemo
+                copyLink={{
+                  btnName: "مشاركة التدريب",
+                  link: `/categories/${slug}/${categoryGroupId}/training/${tra.id}`,
+                }}
+              />
             </td>
           </tr>
         </React.Fragment>
@@ -341,6 +350,9 @@ export default class QuickQuestions extends Component {
   onclick = () => {
     this.setState({ showplayimg: false });
     this.refs.vidRef.play();
+  };
+  requestDataAgain = () => {
+    this.initRequest();
   };
   renderExams() {
     const exams = this.state.exams || [];
@@ -383,7 +395,12 @@ export default class QuickQuestions extends Component {
               >
                 اختبر الآن
               </Link>
-              <ToastDemo copyLink={{ btnName: 'مشاركة الاختبار', link: this.createExamLink(slug, categoryGroupId, exam.id) }} />
+              <ToastDemo
+                copyLink={{
+                  btnName: "مشاركة الاختبار",
+                  link: this.createExamLink(slug, categoryGroupId, exam.id),
+                }}
+              />
             </td>
           </tr>
         </React.Fragment>
@@ -618,10 +635,22 @@ export default class QuickQuestions extends Component {
     });
   }
   render() {
+    let token = localStorage.getItem("token");
     return (
       <section className="pt-5 pb-5">
         <div className="container">
           <div className="row">
+            {token === null ? (
+              <LoginPopUp
+                onSuccess={(e) => {
+                  if (e === true) {
+                    this.requestDataAgain();
+                  }
+                }}
+                // pass login response here to pass it throw redux logic
+                loginResponse={(data) => this.props?.forceLogin(data?.data?.data)}
+              />
+            ) : null}
             <div className="col-md-2">
               <div
                 className={
@@ -928,7 +957,7 @@ export default class QuickQuestions extends Component {
                   <div className="row no-gutters">
                     <div className="col-12">
                       {this.state.training == undefined ||
-                        this.state.training.length == 0 ? (
+                      this.state.training.length == 0 ? (
                         <React.Fragment>
                           <div
                             className="silver-bg box-layout shadow-sm d-flex flex-column w-100 rounded p-4 justify-content-center align-items-center mb-3"
@@ -981,3 +1010,12 @@ export default class QuickQuestions extends Component {
     );
   }
 }
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
+    user: state.user,
+  };
+}
+
+QuickQuestions = connect(mapStateToProps, { forceLogin })(QuickQuestions);
