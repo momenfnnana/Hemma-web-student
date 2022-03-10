@@ -39,7 +39,7 @@ export const Card = ({ index, ...item }) => {
       restOfMinuts: minuts,
       restOfSeconds: seconds,
     });
-  }, [date]);
+  }, [diff]);
 
   return restOfDay >= 0 &&
     restOfHours >= 0 &&

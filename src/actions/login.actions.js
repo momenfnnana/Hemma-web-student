@@ -13,6 +13,13 @@ export const loginAction = ({ countryCode, phoneNumber, password }) => {
   };
 };
 
+export const forceLogin =(data)=>{
+  return {
+    type: AUTHENTICATED,
+    payload: data
+  }
+}
+
 export const loginFailed = error => {
   return {
     type: AUTHENTICATION_ERROR,
