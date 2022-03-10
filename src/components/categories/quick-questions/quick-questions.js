@@ -636,6 +636,7 @@ export default class QuickQuestions extends Component {
   }
   render() {
     let token = localStorage.getItem("token");
+    const history = this.props?.history;
     return (
       <section className="pt-5 pb-5">
         <div className="container">
@@ -647,8 +648,12 @@ export default class QuickQuestions extends Component {
                     this.requestDataAgain();
                   }
                 }}
+                history={history}
                 // pass login response here to pass it throw redux logic
-                loginResponse={(data) => this.props?.forceLogin(data?.data?.data)}
+                loginResponse={(data) => {
+                  return this.props?.forceLogin(data?.data?.data);
+                }}
+                userData={this.props?.user}
               />
             ) : null}
             <div className="col-md-2">
