@@ -88,16 +88,17 @@ class CheckoutComponent extends Component {
           const methods = response.data.data.paymentMethods.filter(
             (item) => item.id !== 4 && item.isActive === true
           );
-          
-            this.setState({
-              paymentMethods: methods
-            });
-            const bankData = response.data.data.paymentMethods.filter(
-              (item) => item.id === 4 && item.isActive === true
-            );
-            if (bankData.length === 0) this.setState({ isBankActive: false });
-            if(!this.state.paymentMethods.length > 0) this.setState({ activeTab: "bank" })
-          }
+
+          this.setState({
+            paymentMethods: methods,
+          });
+          const bankData = response.data.data.paymentMethods.filter(
+            (item) => item.id === 4 && item.isActive === true
+          );
+          if (bankData.length === 0) this.setState({ isBankActive: false });
+          if (!this.state.paymentMethods.length > 0)
+            this.setState({ activeTab: "bank" });
+        }
       })
       .catch(() => {
         swal("عفواً", "حدث خطأ ما", "error", {
@@ -120,6 +121,34 @@ class CheckoutComponent extends Component {
 
     return (
       <Fragment>
+        {window.innerWidth < 768 && this.state.activeTab === "online" && (
+          <section
+            id="hemma-banner"
+            className="main-banner "
+            style={{ backgroundColor: "#4b3a85" }}
+          >
+            <div className="banner banner-program">
+              <div className="container-fluid py-4">
+                <div className="d-flex justify-contet-center align-items-center">
+                  <p
+                    className="d-flex justify-contet-center align-items-center mx-auto"
+                    style={{ color: "white", fontSize: "16px" }}
+                  >
+                    <img
+                      className="padding-img"
+                      src={
+                        process.env.PUBLIC_URL + "/assets/images/applePay.png"
+                      }
+                      width="150"
+                      height="90"
+                    />
+                    للتمكن من الدفع عن طريق ابل باي يجب عليك استخدام متصفح سفاري
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+        )}
         <section className="cart-section">
           <div className="container">
             <h3 className="dark-text mb-0 mt-4">تأكيد الإشتراك</h3>
