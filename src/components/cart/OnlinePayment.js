@@ -172,8 +172,8 @@ const OnlinePayment = (props) => {
                     encriptedCVC: encryptString(e.target.value),
                   })
                 }
-                maxlength="3"
-                pattern="\d{3}"
+                maxlength="4"
+                pattern="\d{4}"
               />
             </div>
             <div className="col-md-12 d-flex justify-content-center mt-4">
