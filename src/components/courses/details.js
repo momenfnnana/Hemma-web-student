@@ -14,6 +14,9 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Api } from "../../api";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { LoginPopUp } from "../loginPopUp";
+import { forceLogin } from "../../actions/login.actions";
+import { connect } from "react-redux";
 
 import RecordingVideo from "./recording-video";
 import "./styles.sass"; 
@@ -37,7 +40,8 @@ export default class CourseDetails extends Component {
       confirm: false,
       discountcourse:{},
       discountprecentage:0,
-      filterValue:4
+      filterValue:4,
+      showLoginComponent:false,
     };
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -48,8 +52,12 @@ export default class CourseDetails extends Component {
 
   confirmationPopup() {
     var token = localStorage.getItem("token");
-    if(!token){
-      this.props.history.push("/auth/login");
+    if (!token) {
+      // this.props.history.push("/auth/login");
+      this.setState({
+        showLoginComponent: true,
+      });
+      return;
     }
     swal(
       `هل أنت متأكد أنك تريد الاشتراك في دورة (${this.state.details.nameAr})؟`,
@@ -442,6 +450,21 @@ export default class CourseDetails extends Component {
 
     return (
       <>
+        {this.state?.showLoginComponent ? (
+          <LoginPopUp
+            onSuccess={(e) => {
+              if (e === true) {
+                this.getCourseDetails();
+              }
+            }}
+            history={this.props?.history}
+            // pass login response here to pass it throw redux logic
+            loginResponse={(data) => {
+              return this.props?.forceLogin(data?.data?.data);
+            }}
+            userData={this.props?.user}
+          />
+        ) : null}
         {this.state.isPageLoading ? (
           <PageLoader />
         ) : (
@@ -845,3 +868,12 @@ export default class CourseDetails extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    authenticated: state.auth.authenticated,
+    phoneNumberConfirmed: state.auth.phoneNumberConfirmed,
+    user: state.user,
+  };
+}
+
+CourseDetails = connect(mapStateToProps, { forceLogin })(CourseDetails);
