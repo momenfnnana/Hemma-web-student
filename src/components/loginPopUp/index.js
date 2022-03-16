@@ -364,10 +364,7 @@ const LoginPopUpContent = ({
                   {validatePasswordError?.length ? (
                     <>{validatePasswordError}</>
                   ) : null}
-                  <button
-                    type="submit"
-                    className="btn dark-outline-btn w-100"
-                  >
+                  <button type="submit" className="btn dark-outline-btn w-100">
                     إرسال
                   </button>
                 </Form>
@@ -871,8 +868,10 @@ export const LoginPopUp = ({
           }}
           onError={(e) => {
             swal.close();
-            history.push("/auth/login");
             onError(e);
+            if (e === true) {
+              history.push("/auth/login");
+            }
           }}
           loginResponse={(e) => loginResponse(e)}
           changeCheckedValue={(e) => changeCheckedValue(e)}
