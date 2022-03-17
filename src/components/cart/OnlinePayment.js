@@ -173,7 +173,7 @@ const OnlinePayment = (props) => {
                   })
                 }
                 maxlength="4"
-                pattern="\d{4}"
+                pattern="\d{3,4}"
               />
             </div>
             <div className="col-md-12 d-flex justify-content-center mt-4">
