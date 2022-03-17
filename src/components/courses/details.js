@@ -454,7 +454,7 @@ export default class CourseDetails extends Component {
           <LoginPopUp
             onSuccess={(e) => {
               if (e === true) {
-                this.getCourseDetails();
+                this.confirmationPopup();
               }
             }}
             history={this.props?.history}
