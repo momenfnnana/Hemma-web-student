@@ -1,0 +1,7 @@
+.see-more {
+  color: #4b3a85;
+  cursor: pointer;
+  & .rotateBox {
+    transform: rotate(180deg);
+  }
+}

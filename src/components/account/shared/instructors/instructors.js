@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import "./styles.sass";
+import "./styles.scss";
 import StarRatingComponent from "react-star-rating-component";
 import axios from "axios";
+import { MdKeyboardArrowDown } from "react-icons/md";
+
 import { apiBaseUrl } from "../../../../api/helpers";
 export class Instructors extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { instructors: [] };
+    this.state = { instructors: [], filterValue:4 };
   }
 
   componentDidMount() {
@@ -26,9 +28,16 @@ export class Instructors extends Component {
   }
 
   renderInstructors() {
-    const instructors = this.state.instructors;
+    const {instructors,filterValue}=this.state;
+    const changeFliterValue=()=>{
+      if(filterValue===4){
+        this.setState({filterValue:instructors?.length})
+      }else{
+        this.setState({filterValue:4})
+      }
+    }
     if (instructors) {
-      return instructors.map((instructor, index) => (
+      return <>{instructors?.filter((_,i)=>i<filterValue)?.map((instructor, index) => (
         <div
           className="white-bg border-bottom d-flex align-items-center mh-55 p-3"
           key={index}
@@ -69,7 +78,19 @@ export class Instructors extends Component {
             )}
           </div>
         </div>
-      ));
+      ))}
+      {instructors?.length >= 4 ? (
+            <div
+              className="white-bg border-bottom d-flex align-items-center justify-content-center mh-55 p-3 see-more pointer"
+              onClick={() => changeFliterValue()}
+            >
+              مشاهدة المزيد
+              <MdKeyboardArrowDown
+                className={filterValue === 4 ? "" : "rotateBox"}
+              />
+            </div>
+          ) : null}
+      </>
     }
   }
 
