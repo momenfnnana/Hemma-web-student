@@ -81,6 +81,7 @@ class RegisterComponent extends Component {
       selected: null,
       nationalities: [],
       isPageLoading: false,
+      selectedGender:''
     };
     this.togglePasswordShow = this.togglePasswordShow.bind(this);
     this.handlePendingActions = this.handlePendingActions.bind(this);
@@ -303,6 +304,8 @@ clearPendingActions(){
                     { title: "ذكر", value: "male" },
                     { title: "أنثى", value: "female" },
                   ]}
+                  onChangeGender={value=>this.setState({selectedGender:value})}
+                  selectedGender={this.state.selectedGender}
                 />{" "}
               </div>{" "}
               <Field
