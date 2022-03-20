@@ -23,6 +23,11 @@ const OnlinePayment = (props) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(IsSubmitButtonDisabled);
+  }, [cardData]);
 
   const InitiateCardPayment = () => {
     const itemDetails = [];
@@ -179,7 +184,7 @@ const OnlinePayment = (props) => {
             <div className="col-md-12 d-flex justify-content-center mt-4">
               <button
                 className="btn light-outline-btn w-50"
-                disabled={() => IsSubmitButtonDisabled()}
+                disabled={disabled}
                 style={{ opacity: IsSubmitButtonDisabled() ? 0.5 : 1 }}
               >
                 {loading == true ? (
