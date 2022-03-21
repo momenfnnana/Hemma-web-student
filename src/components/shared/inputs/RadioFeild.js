@@ -2,7 +2,13 @@ import React, { Component } from "react";
 
 export class RadioField extends Component {
   render() {
-    const { input, meta, options, onChangeGender = () => true } = this.props;
+    const {
+      input,
+      meta,
+      options,
+      onChangeGender = () => true,
+      selectedGender,
+    } = this.props;
     const hasError = meta?.touched && meta?.error;
     return (
       <React.Fragment>
@@ -16,7 +22,7 @@ export class RadioField extends Component {
                 type="radio"
                 {...input}
                 value={o?.value}
-                checked={o?.value === input?.value}
+                checked={o?.value === selectedGender}
                 onChange={(e) => onChangeGender(e.target.value)}
               />
               <img
