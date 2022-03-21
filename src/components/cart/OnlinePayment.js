@@ -86,7 +86,6 @@ const OnlinePayment = (props) => {
   };
 
   const handleSubmit = (event) => {
-    debugger;
     event.preventDefault();
     InitiateCardPayment();
   };
