@@ -132,7 +132,7 @@ class CheckoutComponent extends Component {
                 <div className="d-flex justify-contet-center align-items-center">
                   <p
                     className="d-flex justify-contet-center align-items-center mx-auto"
-                    style={{ color: "white", fontSize: "16px" }}
+                    style={{ color: "black", fontSize: "16px" }}
                   >
                     <img
                       className="padding-img"
