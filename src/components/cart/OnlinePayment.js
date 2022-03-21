@@ -92,9 +92,9 @@ const OnlinePayment = (props) => {
   const IsSubmitButtonDisabled = () => {
     // check for errors
     const disabled =
-      cardData.cardOwnerName == "" ||
-      cardData.encriptedCVC == "" ||
-      cardData.encriptedCardNumber == "" ||
+      cardData.cardOwnerName.trim().length === 0 ||
+      cardData.encriptedCVC.trim().length === 0 ||
+      cardData.encriptedCardNumber.trim().length === 0 ||
       cardData.epireMonth == 0 ||
       cardData.epireYear == 0;
 
