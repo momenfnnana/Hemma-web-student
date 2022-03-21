@@ -67,8 +67,9 @@ export default class Transaction extends Component {
                       ></lottie-player>
                       <h5 className="dark-text">
                         {this.state.paymentDetails &&
-                          this.state.paymentDetails
-                            .stsResponseStatusDescription}
+                        this.state.paymentDetails.paymentStatus
+                          ? " لقد تمت عملية الدفع بنجاح"
+                          : " عفوًا لقد فشلت عملية الدفع"}
                       </h5>
                       <h5 className="dark-text mb-3">
                         رقم العملية{" "}
