@@ -30,7 +30,7 @@ const OnlinePayment = (props) => {
   }, [cardData]);
 
   const InitiateCardPayment = () => {
-    const itemDetails = [];
+    let itemDetails = [];
     if (props.cart && props.deliveryData) {
       itemDetails = props.cart.items.map((obj) => ({
         id: obj.id,
