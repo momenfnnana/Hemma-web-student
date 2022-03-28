@@ -390,10 +390,6 @@ class SubscriptionDetailsComponent extends Component {
                       component={AskQuestionsList}
                     />
                     <Route
-                      path="/course/content/:id/askQuestions/list"
-                      component={AskQuestionsList}
-                    />
-                    <Route
                       exact
                       path="/course/content/:id/askQuestions/list/:questionsType"
                       component={AskQuestionsList}
