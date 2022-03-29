@@ -56,8 +56,13 @@ const OnlinePayment = (props) => {
             button: "متابعة",
           });
         }
+       if(res?.transaction?.url != undefined){
         window.location.href = res.transaction.url;
-        console.log(res.transaction.url);
+        //console.log(res.transaction.url);
+        }
+        else{
+          window.location.href = res.redirect.url + "?tap_id=" + res.id;
+        }
         setLoading(false);
       })
       .catch((err) => {
