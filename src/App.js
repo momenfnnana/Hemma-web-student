@@ -8,10 +8,10 @@ import { Provider } from "react-redux";
 import { hemmaReducer } from "./reducers";
 import ReduxPromise from "redux-promise";
 import { apiBaseUrl } from "./api/helpers";
-import Intercom from "./Intercom";
+import LiveChat from "./LiveChat";
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
-import { ToastProvider } from 'react-toast-notifications'
+import { ToastProvider } from "react-toast-notifications";
 
 const store = createStore(hemmaReducer, {}, applyMiddleware(ReduxPromise));
 
@@ -21,16 +21,16 @@ export default class AppComponent extends Component {
     let token = localStorage.getItem("token");
     let data = {};
     let headers = {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     };
     await axios
       .post(`${apiBaseUrl}/auth/intercom/token`, data, {
-        headers
+        headers,
       })
-      .then(response => {
+      .then((response) => {
         localStorage.setItem("intercomToken", response.data.data.token);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -44,20 +44,19 @@ export default class AppComponent extends Component {
     return (
       <ToastProvider>
         <Provider store={store}>
-          <Intercom />
+          <LiveChat />
           <React.Fragment>
             <div>
               <Helmet>
                 <title>
                   منصّة همّة التعليمية | 25 عاماً في خدمة الطلاب والطالبات
-              </title>
+                </title>
               </Helmet>
               <MainRouter />
             </div>
           </React.Fragment>
         </Provider>
       </ToastProvider>
-
     );
   }
 }
