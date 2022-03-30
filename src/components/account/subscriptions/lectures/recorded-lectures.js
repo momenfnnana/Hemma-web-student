@@ -38,6 +38,9 @@ export class RecordedLectures extends Component {
 
   renderSections() {
     const sections = this.state.details.sections;
+    sections.sort((a, b) => {
+      return a.order - b.order;
+  });
     if (sections) {
       return sections.map(section => (
         <React.Fragment>
