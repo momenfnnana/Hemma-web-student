@@ -7,7 +7,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink } from "reactstrap";
 import swal from "@sweetalert/with-react";
 import { apiBaseUrl } from "../../../../api/helpers";
 import axios from "axios";
-
+import TestGoSell from "../../TestGoSell";
 export default function PaymentStage({
   path,
   activeTab,
@@ -17,7 +17,8 @@ export default function PaymentStage({
   cart,
   paymentMethods,
   paymentGateway,
-  isBankActive
+  isBankActive,
+  tabId,
 }) {
   return (
     <div className="col-12">
@@ -49,21 +50,30 @@ export default function PaymentStage({
       </Nav>
 
       <TabContent activeTab={activeTab}>
-        {isBankActive && <TabPane tabId="bank">
-          <BankPayment
-            deliveryData={deliveryData}
-            isShippingAddressFilled={isShippingAddressFilled}
-          />
-        </TabPane>}
+        {isBankActive && (
+          <TabPane tabId="bank">
+            <BankPayment
+              deliveryData={deliveryData}
+              isShippingAddressFilled={isShippingAddressFilled}
+            />
+          </TabPane>
+        )}
         {paymentMethods.length > 0 && (
           <TabPane tabId="online">
             {paymentGateway === "tap" ? (
-              <OnlinePaymentTap
-                cart={cart}
-                paymentMethods={paymentMethods}
-                deliveryData={deliveryData}
-                isShippingAddressFilled={isShippingAddressFilled}
-              />
+              // <OnlinePaymentTap
+              //   cart={cart}
+              //   paymentMethods={paymentMethods}
+              //   deliveryData={deliveryData}
+              //   isShippingAddressFilled={isShippingAddressFilled}
+              // />
+              <TestGoSell
+              cart={cart}
+              paymentMethods={paymentMethods}
+              deliveryData={deliveryData}
+              isShippingAddressFilled={isShippingAddressFilled}
+              tabId={tabId}
+            />
             ) : (
               <OnlinePayment
                 cart={cart}
