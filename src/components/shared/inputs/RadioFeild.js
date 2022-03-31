@@ -6,8 +6,6 @@ export class RadioField extends Component {
       input,
       meta,
       options,
-      onChangeGender = () => true,
-      selectedGender,
     } = this.props;
     const hasError = meta?.touched && meta?.error;
     return (
@@ -22,8 +20,6 @@ export class RadioField extends Component {
                 type="radio"
                 {...input}
                 value={o?.value}
-                checked={o?.value === selectedGender}
-                onChange={(e) => onChangeGender(e.target.value)}
               />
               <img
                 src={process.env.PUBLIC_URL + `/assets/images/${o?.value}.png`}

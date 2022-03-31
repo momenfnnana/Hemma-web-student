@@ -304,8 +304,6 @@ clearPendingActions(){
                     { title: "ذكر", value: "male" },
                     { title: "أنثى", value: "female" },
                   ]}
-                  onChangeGender={value=>this.setState({selectedGender:value})}
-                  selectedGender={this.state.selectedGender}
                 />{" "}
               </div>{" "}
               <Field
