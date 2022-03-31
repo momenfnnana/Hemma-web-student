@@ -250,7 +250,6 @@ class AskQuestionsListComponent extends Component {
                     }}
                   >
                     <h6 className="dark-text small mb-0 mt-0">جميع الأسئلة </h6>
-                    {console.log({ stae: this.props.location.pathname })}
                   </NavLink>
                 </NavItem>
               </Nav>
