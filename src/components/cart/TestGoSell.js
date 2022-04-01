@@ -62,7 +62,7 @@ const TestGoSell = (props) => {
     <div style={{ marginTop: "25px" }}>
       <GoSellElements
         gateway={{
-          publicKey: "pk_live_dkeibmTLXQS4P8Cc0BvyzAos",
+          publicKey: props.tabId,
           language: "ar",
           supportedCurrencies: "all",
           supportedPaymentMethods: ["MADA", "VISA", "MASTERCARD"],
