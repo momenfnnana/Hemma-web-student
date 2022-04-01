@@ -28,6 +28,7 @@ class CheckoutComponent extends Component {
     paymentGateway: "tap",
     paymentMethods: [],
     isBankActive: true,
+    tabId:null
   };
 
   constructor(props) {
@@ -84,6 +85,7 @@ class CheckoutComponent extends Component {
         if (response.data.status === 200) {
           this.setState({
             paymentGateway: response.data.data.defaultGatewaySetting.defaultGatewayName.toLowerCase(),
+            tabId: response.data.data.defaultGatewaySetting.publishableApiKey
           });
           const methods = response.data.data.paymentMethods.filter(
             (item) => item.id !== 4 && item.isActive === true
@@ -180,6 +182,7 @@ class CheckoutComponent extends Component {
                       paymentMethods={this.state.paymentMethods}
                       paymentGateway={this.state.paymentGateway}
                       isBankActive={this.state.isBankActive}
+                      tabId={this.state.tabId}
                     />
                   </Stepper.Step>
                 </Stepper>
