@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment";
 import "./index.scss";
 import { Card } from "./card";
 import { apiBaseUrl } from "../../api/helpers";
@@ -16,7 +17,8 @@ const ScheduleDates = () => {
   const [dates, setDates] = useState([]);
 
   useEffect(() => {
-    getDates().then((res) => setDates(res?.data));
+    getDates().then((res) => {
+      setDates(res?.data.sort((a, b) => new Date(a.date) - new Date(b.date)));});
   }, []);
 
   return (
