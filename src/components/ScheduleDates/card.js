@@ -22,10 +22,10 @@ export const Card = ({ index, ...item }) => {
               className="card-container d-flex flex-column justify-content-center align-items-center text-center"
               style={{ backgroundColor: colorValidation }}
             >
+              <p className="card-title">{item?.title}</p>
               <p className="card-date mt-3">
                 {moment(item?.date).format("DD-MM-YYYY")}
               </p>
-              <p className="card-title">{item?.title}</p>
               <div
                 className="card-footer w-100 bg-white"
                 style={{ borderColor: colorValidation }}
