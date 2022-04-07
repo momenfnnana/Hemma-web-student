@@ -9,6 +9,7 @@ import Loader from "react-loaders";
 import { AskQuestionDetails } from "./question-details";
 import { connect } from "react-redux";
 import SwitchRender from "../../../../HOC/SwitchRender";
+import { Tooltip } from "reactstrap";
 import "./index.scss"
 class AskQuestionsListComponent extends Component {
   page = 1;
@@ -33,6 +34,31 @@ class AskQuestionsListComponent extends Component {
     nextPageUrl: `${apiBaseUrl}/AskQuestions/me?courseId=${this.props.match.params.id}&page=${this.page}&limit=${this.limit}`,
     nextAllQuestionPageUrl: `${apiBaseUrl}/AskQuestions?courseId=${this.props.match.params.id}&page=${this.allQuestionPage}&limit=${this.AllQuestionsLimit}`,
   };
+
+  // Start handle operations for multiple Tooltips
+  toggleTooltip = targetName => {
+    if (!this.state[targetName]) {
+      this.setState({
+        ...this.state,
+        [targetName]: {
+          tooltipOpen: true
+        }
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        [targetName]: {
+          tooltipOpen: !this.state[targetName].tooltipOpen
+        }
+      });
+    }
+  };
+
+  isToolTipOpen = targetName => {
+    return this.state[targetName] ? this.state[targetName].tooltipOpen : false;
+  };
+  // Start handle operations for multiple Tooltips
+
 
   toggle(tab) {
     if (this.state.activeTab !== tab) {
@@ -137,16 +163,67 @@ class AskQuestionsListComponent extends Component {
           <>
             <tr className="text-center" key={index}>
               <td className="ar-text dark-silver-text small">
-                {myQuestion.type === "Image" ? (
+              { myQuestion.type === "Both"? 
+                  <div className="d-flex flex-column align-items-center" id={`question-text-${index}`}>
+                    <img
+                      src={myQuestion.imageUrl}
+                      width="100"
+                      className="contain-img  mb-2"
+                      alt="question"
+                    />
+                    <span className="ar-text" >
+                      {myQuestion.content && myQuestion.content.length > 30 ?
+                       myQuestion.content.slice(0, 30).concat("..."): 
+                       myQuestion.content 
+                      }
+                    </span>
+                    <Tooltip
+                      isOpen={this.isToolTipOpen(`question-text-${index}`)}
+                      target={`question-text-${index}`}
+                      toggle={() => this.toggleTooltip(`question-text-${index}`)}
+                      style={{
+                        backgroundColor: "#2bc3cc",
+                        color: "#4b3a85"
+                      }}
+                      placement="top"
+                    >
+                      <p className="light-font-text small mb-1 mt-2 text-break">
+                        {myQuestion.content}
+                      </p>
+                    </Tooltip>
+                  </div>:
+                  myQuestion.type === "Image" ?
                   <img
-                    src={myQuestion.content}
+                  src={myQuestion.imageUrl}
                     width="100"
                     className="contain-img"
                     alt="question"
-                  />
-                ) : (
-                  <span className="ar-text">{myQuestion.content}</span>
-                )}
+                  />: 
+                  <>
+                    <span className="ar-text" id={`question-text-${index}`}>
+                      {myQuestion.content && myQuestion.content.length > 30?
+                      myQuestion.content.slice(0, 30).concat("..."):
+                      myQuestion.content
+                      }
+                    </span>
+                    <Tooltip
+                      isOpen={this.isToolTipOpen(`question-text-${index}`)}
+                      target={`question-text-${index}`}
+                      toggle={() => this.toggleTooltip(`question-text-${index}`)}
+                      style={{
+                        backgroundColor: "#2bc3cc",
+                        color: "#4b3a85"
+                      }}
+                      placement="bottom"
+                    >
+                      <p className="light-font-text small mb-1 mt-2 text-break">
+                        {myQuestion.content}
+                      </p>
+                    </Tooltip>
+                  </>
+                  
+                }
+
               </td>
               <td className="dark-silver-text small">
                 <span className="ar-text">

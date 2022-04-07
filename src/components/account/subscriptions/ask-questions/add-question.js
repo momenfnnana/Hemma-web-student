@@ -6,6 +6,7 @@ import "loaders.css/src/animations/ball-spin-fade-loader.scss";
 import {withRouter} from "react-router-dom";
 import swal from "sweetalert";
 import {apiBaseUrl} from "../../../../api/helpers";
+import { Tooltip } from "reactstrap";
 
 class AddQuestion extends Component {
 	constructor(props) {
@@ -13,6 +14,7 @@ class AddQuestion extends Component {
 		this.state = {
 			questions: [],
 			file: "",
+			fileError: "",
 			questionType: "",
 			sections: [],
 			sectionId:'',
@@ -25,11 +27,12 @@ class AddQuestion extends Component {
 			// content:null
 		};
 		this.setLoading = this.setLoading.bind(this)
+		
 	}
 
 
-
 	handleChange = (key ,event) => {
+		this.setState({fileError: ""})
 		const value = event.target.value;
 		this.setState({[key]: value} , ()=>{
 			const {sectionId ,question} = this.state
@@ -74,6 +77,31 @@ class AddQuestion extends Component {
 
 	handleFileChange = event => {
 		event.preventDefault();
+		this.setState({fileError: ""})
+		let file = event.target.value
+
+		// Start Image Validation
+		const notAllowedImage = ["عفواً امتداد الصورة يجب أن يكون أحد الأنواع png, jpg, jpeg, svg", "مساحة الصورة يجب ألا تتجاوز 1 ميجا بايت"]
+		const endFile = file.slice(file.lastIndexOf('.') + 1);
+		const isImage =endFile==='png'||endFile==='jpeg' || endFile==='svg'||endFile==='jpg';
+
+		if(!isImage){
+			this.setState({file: "", fileError: notAllowedImage[0]})
+			event.target.value = ""
+			return;
+		}
+
+		let size = parseFloat(event.target.files[0].size / (1024 * 1024)).toFixed(2); 
+		if(size > 1) {
+			this.setState({file: "", fileError: notAllowedImage[1]});
+			event.target.value = ""
+			return;
+		}
+
+		console.log("size: ", size);
+		// End Image Validation
+
+		
 		let token = localStorage.getItem("token");
 		let headers = {
 			Authorization: `Bearer ${token}`
@@ -132,21 +160,31 @@ class AddQuestion extends Component {
 			Authorization: `Bearer ${token}`
 		};
 		var data=null
-		if(this.state.file)
+		if(this.state.file && this.state.question!==null)
 		{
+			data = {
+				type: "Both",
+				content: this.state.question,
+				imageUrl: this.state.file
+			};
+		}
+		else if(this.state.file)
+ 		{
 			data = {
 				type: "Image",
-				content: this.state.file
-	};
-		}
-		else
-		{
-			data = {
+				content: "",
+				imageUrl: this.state.file
+			};
+		}else if(this.state.question!==null)
+        {
+            data = {
 				type: "Text",
 				content: this.state.question,
+				imageUrl: ""
 			};
-		
-		}
+        }
+
+		console.log("data is: ", data);
 		
 		axios
 			.post(`${apiBaseUrl}/AskQuestions?courseId=${courseId}&&sectionId=${sectionId}`, data, {
@@ -169,6 +207,10 @@ class AddQuestion extends Component {
 		const file= this.state.file;
 		const endFile = file.slice(file.lastIndexOf('.') + 1);
 		const isImage =endFile==='png'||endFile==='jpeg' || endFile==='svg'||endFile==='jpg';
+		const imageNotes = [
+			"الصورة المرفقة يجب أن تكون من أحد الإمتدادات الآتية png, jpg, jpeg, svg",
+			"أقصى حد مسموح به للصورة هو 1 ميجابايت"
+		]
 		return (
 			<React.Fragment>
 				<Modal
@@ -211,16 +253,16 @@ class AddQuestion extends Component {
 	                placeholder="الرجاء ادخال السؤال"
 	                rows="6"
 	                className="form-control small dark-text shadow-sm mb-3"
-	                disabled={this.state.sectionId==''|| this.state.file}
+	                disabled={this.state.sectionId==''}
                 />
-								<div className="textarea-icon d-flex align-items-center">
+								<div className=" d-flex align-items-center">
 									<label htmlFor="uploadImage" className="mb-0">
 										<input
 											className="d-none"
 											id="uploadImage"
 											type="file"
 											onChange={this.handleFileChange}
-											disabled={this.state.sectionId=='' }
+											disabled={this.state.sectionId==='' }
 										/>
 										<img
 											src={
@@ -228,8 +270,9 @@ class AddQuestion extends Component {
 											}
 											height="30"
 											width="30"
-											className="contain-img clickable"
+											className="textarea-icon contain-img clickable"
 											alt="comment"
+											style={{bottom: "80px"}}
 										/>
 									</label>
 								</div>
@@ -248,6 +291,7 @@ class AddQuestion extends Component {
 											endFile==='pdf'?
 											<embed src={this.state.file} type="application/pdf" height="130px" className="w-100"></embed>:
 											isImage&&
+											<>
 											<img
 													src={
 														this.state.file
@@ -255,7 +299,38 @@ class AddQuestion extends Component {
 													className="contain-img clickable w-100"
 													height="130px"
 													alt="comment"
+													id="picture-icon"
 												/>
+												
+											</>
+												
+										}
+										
+										{
+											this.state.fileError ?
+											<>
+											<img
+											src={
+												process.env.PUBLIC_URL + "/assets/images/not-verified.png"
+											}
+											height="20"
+											width="20"
+											className="contain-img clickable mr-1"
+											alt="comment"
+										/>
+											<small className="ar-text">{this.state.fileError}</small>
+											</>
+											 : !isImage &&
+											<div className="d-flex flex-column align-items-start justify-content-start">
+												{
+													imageNotes?.map(note=>
+															<small className="ar-text">
+																<span className="font-size-18">*</span> {note}
+															</small>
+													)
+												}
+												
+											</div>
 										}
 							</div>
 						</ModalBody>
