@@ -51,7 +51,7 @@ const TestGoSell = (props) => {
         setLoading(false);
       })
       .catch((err) => {
-        swal("عفواً", "حدث خطأ ما", "error", {
+        swal("عفواً", err.response.data.error, "error", {
           button: "متابعة",
         });
         setLoading(false);
