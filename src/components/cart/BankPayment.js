@@ -9,11 +9,11 @@ import { dateTimeField } from "../shared/inputs/dateTimeField";
 import { checkoutWithBankTransfer, uploadBankSlip } from "../../actions";
 import Loader from "react-loaders";
 import "loaders.css/src/animations/ball-clip-rotate.scss";
-import moment  from 'moment';
+import moment from "moment";
 
-const adaptFileEventToValue = delegate => e => delegate(e.target.files[0]);
+const adaptFileEventToValue = (delegate) => (e) => delegate(e.target.files[0]);
 
-const required = value => (value ? undefined : "يجب تعبئة هذه الخانة");
+const required = (value) => (value ? undefined : "يجب تعبئة هذه الخانة");
 
 const FileInput = ({
   input: { value: omitValue, onChange, onBlur, ...inputProps },
@@ -41,21 +41,22 @@ class BankPaymentComponent extends Component {
     disabled: false,
     bankSlip: null,
     imageLoader: false,
-    dateError: false
+    dateError: false,
   };
 
   constructor(props) {
     super(props);
     this.onFileInputChange = this.onFileInputChange.bind(this);
     this.onInputChange = this.onInputChange.bind(this);
-    const {deliveryData} = props
-    this.deliveryData = deliveryData
+    console.log(this.props.cart);
+    const { deliveryData } = props;
+    this.deliveryData = deliveryData;
   }
-    componentDidUpdate(prevProps, prevState,){
-        // if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
-          // this.setState({disabled:!nextprops.isShippingAddressFilled})
-        // }
-    }
+  componentDidUpdate(prevProps, prevState) {
+    // if(this.props.isShippingAddressFilled !== nextprops.isShippingAddressFilled){
+    // this.setState({disabled:!nextprops.isShippingAddressFilled})
+    // }
+  }
 
   /**
    * Handle selecting a bank slip image
@@ -64,159 +65,160 @@ class BankPaymentComponent extends Component {
   onFileInputChange(file) {
     this.setState({
       file: URL.createObjectURL(file),
-      imageLoader: true
+      imageLoader: true,
     });
     this.props
       .uploadBankSlip(file)
-      .then(response => {
+      .then((response) => {
         this.setState({ bankSlip: response.payload.url, imageLoader: false });
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ file: null, imageLoader: false });
 
         swal("عفواً", "حدث خطأ عند رفع الصورة", "error", {
-          button: "متابعة"
+          button: "متابعة",
         });
       });
   }
-  notifySuccess(cb = ()=>{}){
+  notifySuccess(cb = () => {}) {
     swal("تمت العملية بنجاح", "", "success", {
-      button: "متابعة"
+      button: "متابعة",
     }).then(cb);
   }
 
   /**
    * Handle submitting bank transfer payment form
    */
-  myFormHandler = values => {
+  myFormHandler = (values) => {
     const cart = this.props.cart;
     var isafter = moment(values?.date).isAfter(new Date());
-    if(!isafter){
-      this.setState({dateError:false})
+    if (!isafter) {
+      this.setState({ dateError: false });
 
-    if(cart.items.filter(c=>c.type=="Course"||c.type=="Installment").length == 0)
-    {
-
-        if(cart.total > values.amount  )
-        {
-          swal(
-            "عفواً",
-            "المبلغ المحول أقل من ثمن الملزمة",
-            "error",
-            {
-              button: "متابعة"
-            }
-          );
+      if (
+        cart.items.filter((c) => c.type == "Course" || c.type == "Installment")
+          .length == 0
+      ) {
+        if (cart.total > values.amount) {
+          swal("عفواً", "المبلغ المحول أقل من ثمن الملزمة", "error", {
+            button: "متابعة",
+          });
           return null;
         }
-        if(cart.total < values.amount  )
-        {
-          swal(
-            "عفواً",
-            "المبلغ المحول أكبر من ثمن الملزمة",
-            "error",
-            {
-              button: "متابعة"
-            }
-          );
+        if (cart.total < values.amount) {
+          swal("عفواً", "المبلغ المحول أكبر من ثمن الملزمة", "error", {
+            button: "متابعة",
+          });
           return null;
         }
-      
-    }
+      }
 
-    const itemsThatRequireShippingAddress = cart.items.filter(
-      i => i.requiresShippingAddress
-    );
-    const itemDetails = itemsThatRequireShippingAddress.map(obj => ({
-      id: obj.id,
-      shippingRecipient: this.deliveryData.shippingRecipient,
-      shippingCityId: this.deliveryData.shippingCityId,
-      shippingAddress: this.deliveryData.shippingAddress,
-      shippingPhone: this.deliveryData.shippingPhone
-    }));
-    const data = {
-      url: this.state.bankSlip,
-      originBankName: values.originBankName,
-      destinationBankName: values.destinationBankName,
-      accountHolderName: values.accountHolderName,
-      accountNumber: values.accountNumber,
-      amount: values.amount,
-      date: values.date
-        ? values.date.utc().toISOString()
-        : new Date(Date.UTC()),
-      checkoutItemDetails: itemDetails
-    };
-    
-    this.setState({ loading: true, disabled: true });
-    this.props
-      .checkoutWithBankTransfer(data)
-      .then(() => {
-        this.setState({ loading: false, disabled: false });
-        this.notifySuccess(()=>{
-          this.props.history.push("/course/content");
+      if (cart.payingInInstallments) {
+        if (cart.installment > values.amount) {
+          swal("عفواً", "المبلغ المحول أقل من القسط", "error", {
+            button: "متابعة",
+          });
+          return null;
+        }
+        if (cart.installment < values.amount) {
+          swal("عفواً", "المبلغ المحول أكبر من القسط", "error", {
+            button: "متابعة",
+          });
+          return null;
+        }
+      }
+
+      const itemsThatRequireShippingAddress = cart.items.filter(
+        (i) => i.requiresShippingAddress
+      );
+      const itemDetails = itemsThatRequireShippingAddress.map((obj) => ({
+        id: obj.id,
+        shippingRecipient: this.deliveryData.shippingRecipient,
+        shippingCityId: this.deliveryData.shippingCityId,
+        shippingAddress: this.deliveryData.shippingAddress,
+        shippingPhone: this.deliveryData.shippingPhone,
+      }));
+      const data = {
+        url: this.state.bankSlip,
+        originBankName: values.originBankName,
+        destinationBankName: values.destinationBankName,
+        accountHolderName: values.accountHolderName,
+        accountNumber: values.accountNumber,
+        amount: values.amount,
+        date: values.date
+          ? values.date.utc().toISOString()
+          : new Date(Date.UTC()),
+        checkoutItemDetails: itemDetails,
+      };
+
+      this.setState({ loading: true, disabled: true });
+      this.props
+        .checkoutWithBankTransfer(data)
+        .then(() => {
+          this.setState({ loading: false, disabled: false });
+          this.notifySuccess(() => {
+            this.props.history.push("/course/content");
+          });
         })
-      })
-      .catch(error => {
-        this.setState({ loading: false, disabled: false });
+        .catch((error) => {
+          this.setState({ loading: false, disabled: false });
 
-        switch (error.response.data && error.response.data.error) {
-          case "HasPaymentUnderProcessing":
-            swal(
-              "عفواً",
-              "يرجى الانتظار حتى تتمكن من القيام بحركة أخرى",
-              "error",
-              {
-                button: "متابعة"
-              }
-            );
-            break;
-          case "Duplicate":
-            swal("عفواً", "تم شراء هذه الدورة سابقاً", "error", {
-              button: "متابعة"
-            });
-            break;
-          case "ServerError":
-            swal("عفواً", "حدث خطأ ما", "error", {
-              button: "متابعة"
-            });
-            break;
+          switch (error.response.data && error.response.data.error) {
+            case "HasPaymentUnderProcessing":
+              swal(
+                "عفواً",
+                "يرجى الانتظار حتى تتمكن من القيام بحركة أخرى",
+                "error",
+                {
+                  button: "متابعة",
+                }
+              );
+              break;
+            case "Duplicate":
+              swal("عفواً", "تم شراء هذه الدورة سابقاً", "error", {
+                button: "متابعة",
+              });
+              break;
+            case "ServerError":
+              swal("عفواً", "حدث خطأ ما", "error", {
+                button: "متابعة",
+              });
+              break;
 
-          default:
-            swal(
-              "عفواً",
-              "حدث خطأ خلال عملية الشراء، يرجى المحاولة لاحقاً",
-              "error",
-              {
-                button: "متابعة"
-              }
-            );
-            break;
-        }
-      });
-    }else{
-      this.setState({dateError:true})
+            default:
+              swal(
+                "عفواً",
+                "حدث خطأ خلال عملية الشراء، يرجى المحاولة لاحقاً",
+                "error",
+                {
+                  button: "متابعة",
+                }
+              );
+              break;
+          }
+        });
+    } else {
+      this.setState({ dateError: true });
     }
   };
 
-  onInputChange(e,dateFormat,defaultName) {
+  onInputChange(e, dateFormat, defaultName) {
     try {
-      const value = !dateFormat?   e?.target?.value :  moment(e).format(dateFormat)
-      const name = e?.target?.name || defaultName
-      const inputData ={
-        [name]: value
-      }
-      
-      this.setState({...inputData})
-      
-    } catch (error) {
-      
-    }
+      const value = !dateFormat
+        ? e?.target?.value
+        : moment(e).format(dateFormat);
+      const name = e?.target?.name || defaultName;
+      const inputData = {
+        [name]: value,
+      };
+
+      this.setState({ ...inputData });
+    } catch (error) {}
   }
-  componentDidMount()
-  {
+  componentDidMount() {
     var list = document.getElementsByClassName("form-control");
     for (var item of list) {
-      item.value ="";
+      item.value = "";
     }
   }
   render() {
@@ -419,26 +421,25 @@ class BankPaymentComponent extends Component {
                 />
               </div>
             </div>
-            {
-              this.state.dateError&&
-                <p className="text-danger">
-                  يرجى اختيار وقت صحيح اقل من الوقت المدرج
-                </p>
-            }
+            {this.state.dateError && (
+              <p className="text-danger">
+                يرجى اختيار وقت صحيح اقل من الوقت المدرج
+              </p>
+            )}
             <h6 className="dark-silver-text smaller mt-2">
               ملاحظة: يرجى التأكد من تاريخ ووقت الحوالة
             </h6>
             <div>
-                <button
-                  className="btn light-outline-btn mt-5 w-100"
-                  disabled={this.state.disabled || !items}
-                >
-                  {this.state.loading === true ? (
-                    <Loader type="ball-clip-rotate" />
-                  ) : (
-                    "إتمام الدفع"
-                  )}
-                </button>
+              <button
+                className="btn light-outline-btn mt-5 w-100"
+                disabled={this.state.disabled || !items}
+              >
+                {this.state.loading === true ? (
+                  <Loader type="ball-clip-rotate" />
+                ) : (
+                  "إتمام الدفع"
+                )}
+              </button>
             </div>
           </div>
 
@@ -487,13 +488,13 @@ class BankPaymentComponent extends Component {
 function mapStateToProps(state) {
   return {
     cart: state.cart,
-    formValues: state.form.cart && state.form.cart.values
+    formValues: state.form.cart && state.form.cart.values,
   };
 }
 
 const actionCreators = {
   checkoutWithBankTransfer,
-  uploadBankSlip
+  uploadBankSlip,
 };
 
 export const BankPayment = connect(
@@ -502,6 +503,6 @@ export const BankPayment = connect(
 )(
   reduxForm({
     form: "cart",
-    destroyOnUnmount: false
+    destroyOnUnmount: false,
   })(withRouter(BankPaymentComponent))
 );
